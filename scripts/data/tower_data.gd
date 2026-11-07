@@ -16,6 +16,8 @@ extends Resource
 @export var attacks_per_second: float = 1.0
 ## Pixels.
 @export var attack_range: float = 160.0
+## Pixels per second. Towers that chain hit instantly and ignore this.
+@export var projectile_speed: float = 700.0
 ## Pixels. 0 means single target.
 @export var splash_radius: float = 0.0
 ## Extra enemies a hit jumps to. 0 means no chaining.

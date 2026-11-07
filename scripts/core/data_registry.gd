@@ -10,12 +10,14 @@ const TOWERS_DIR := "res://data/towers"
 const ENEMIES_DIR := "res://data/enemies"
 const WAVES_DIR := "res://data/waves"
 const IN_RUN_TREE_DIR := "res://data/trees/in_run"
+const MAPS_DIR := "res://data/maps"
 const RUN_RULES_PATH := "res://data/rules/run_rules.tres"
 
 var elements: Dictionary[StringName, ElementData] = {}
 var towers: Dictionary[StringName, TowerData] = {}
 var enemies: Dictionary[StringName, EnemyData] = {}
 var wave_sets: Dictionary[StringName, WaveSet] = {}
+var maps: Dictionary[StringName, MapData] = {}
 var in_run_tree_nodes: Array[TreeNodeData] = []
 var run_rules: RunRules
 
@@ -32,6 +34,7 @@ func reload() -> void:
 	towers.clear()
 	enemies.clear()
 	wave_sets.clear()
+	maps.clear()
 	in_run_tree_nodes.clear()
 
 	for resource in load_folder(ELEMENTS_DIR):
@@ -42,6 +45,8 @@ func reload() -> void:
 		_index(enemies, resource as EnemyData, ENEMIES_DIR)
 	for resource in load_folder(WAVES_DIR):
 		_index(wave_sets, resource as WaveSet, WAVES_DIR)
+	for resource in load_folder(MAPS_DIR):
+		_index(maps, resource as MapData, MAPS_DIR)
 	for resource in load_folder(IN_RUN_TREE_DIR):
 		var node_data := resource as TreeNodeData
 		if node_data == null:
@@ -90,6 +95,7 @@ func validate() -> PackedStringArray:
 	_validate_towers(errors)
 	_validate_enemies(errors)
 	_validate_waves(errors)
+	_validate_maps(errors)
 	_validate_tree(errors, "in-run tree", in_run_tree_nodes)
 	if run_rules != null and run_rules.starting_lives <= 0:
 		errors.append("Run rules: starting lives must be above 0")
@@ -167,6 +173,14 @@ func _validate_waves(errors: PackedStringArray) -> void:
 					errors.append("%s: unknown enemy '%s'" % [label, group.enemy if group else &""])
 				elif group.count <= 0:
 					errors.append("%s: group of '%s' has count %d" % [label, group.enemy, group.count])
+
+
+func _validate_maps(errors: PackedStringArray) -> void:
+	for map: MapData in maps.values():
+		for problem in map.path_errors():
+			errors.append("Map '%s': %s" % [map.id, problem])
+		if not wave_sets.has(map.wave_set):
+			errors.append("Map '%s': unknown wave set '%s'" % [map.id, map.wave_set])
 
 
 func _validate_tree(errors: PackedStringArray, tree_name: String, nodes: Array[TreeNodeData]) -> void:
