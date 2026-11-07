@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ElementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/element_data.gd" id="1_icqwb"]
+
+[resource]
+script = ExtResource("1_icqwb")
+id = &"earth"
+display_name = "Earth"
+ring_index = 4
+color = Color(0.627451, 0.47058824, 0.3529412, 1)
+role = "Heavy single-target hits"
+signature = "Stun and armour break."

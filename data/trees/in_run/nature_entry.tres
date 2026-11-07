@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_lp0rk"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_0xu4p"]
+
+[resource]
+script = ExtResource("2_0xu4p")
+id = &"nature_entry"
+display_name = "Seedling"
+description = "Unlocks the Thornbush tower."
+kind = 1
+element = &"nature"
+position = Vector2(113, 65)
+links = Array[StringName]([&"start"])
+unlocks_towers = Array[StringName]([&"nature_thornbush"])

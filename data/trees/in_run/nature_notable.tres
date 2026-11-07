@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_wi15h"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_bg522"]
+
+[sub_resource type="Resource" id="Resource_6cnmw"]
+script = ExtResource("1_wi15h")
+stat = &"poison_spread_count"
+value = 2.0
+required_tags = Array[StringName]([&"nature"])
+
+[resource]
+script = ExtResource("2_bg522")
+id = &"nature_notable"
+display_name = "Blight"
+description = "When a poisoned enemy dies, its poison spreads to 2 nearby enemies."
+kind = 3
+element = &"nature"
+position = Vector2(251, 145)
+links = Array[StringName]([&"nature_core"])
+modifiers = Array[ExtResource("1_wi15h")]([SubResource("Resource_6cnmw")])

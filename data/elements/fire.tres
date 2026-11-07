@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ElementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/element_data.gd" id="1_74tbd"]
+
+[resource]
+script = ExtResource("1_74tbd")
+id = &"fire"
+display_name = "Fire"
+color = Color(0.89411765, 0.34117648, 0.18039216, 1)
+role = "Area damage"
+signature = "Burn that stacks the longer an enemy stays in range."

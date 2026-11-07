@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_t5baj"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_2c26n"]
+
+[sub_resource type="Resource" id="Resource_6rdff"]
+script = ExtResource("1_t5baj")
+stat = &"burn_spread_radius"
+value = 80.0
+required_tags = Array[StringName]([&"fire"])
+
+[resource]
+script = ExtResource("2_2c26n")
+id = &"fire_notable"
+display_name = "Inferno"
+description = "Burning enemies spread their burn to nearby enemies when they die."
+kind = 3
+element = &"fire"
+position = Vector2(0, -290)
+links = Array[StringName]([&"fire_core"])
+modifiers = Array[ExtResource("1_t5baj")]([SubResource("Resource_6rdff")])

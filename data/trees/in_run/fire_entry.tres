@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_4j7ni"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_3gu5c"]
+
+[resource]
+script = ExtResource("2_3gu5c")
+id = &"fire_entry"
+display_name = "Kindle"
+description = "Unlocks the Brazier tower."
+kind = 1
+element = &"fire"
+position = Vector2(0, -130)
+links = Array[StringName]([&"start"])
+unlocks_towers = Array[StringName]([&"fire_brazier"])

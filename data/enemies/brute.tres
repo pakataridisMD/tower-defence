@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enbfl"]
+
+[resource]
+script = ExtResource("1_enbfl")
+id = &"brute"
+display_name = "Brute"
+max_health = 150.0
+speed = 55.0
+armour = 4.0
+bounty = 8
+leak_damage = 2
+tags = Array[StringName]([&"armoured"])

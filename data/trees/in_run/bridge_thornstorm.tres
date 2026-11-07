@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_x7t5f"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_gjxoj"]
+
+[resource]
+script = ExtResource("2_gjxoj")
+id = &"bridge_thornstorm"
+display_name = "Thornstorm"
+description = "Unlocks the Thornstorm tower."
+kind = 4
+position = Vector2(235, 0)
+links = Array[StringName]([&"storm_cw", &"nature_ccw"])
+unlocks_towers = Array[StringName]([&"hybrid_thornstorm"])

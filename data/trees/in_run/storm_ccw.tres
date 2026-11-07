@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_lp15u"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_xmvgo"]
+
+[sub_resource type="Resource" id="Resource_k0h1v"]
+script = ExtResource("1_lp15u")
+stat = &"chain_range"
+kind = 1
+value = 0.25
+required_tags = Array[StringName]([&"storm"])
+
+[resource]
+script = ExtResource("2_xmvgo")
+id = &"storm_ccw"
+display_name = "Long Arc"
+description = "Chains from storm towers jump 25% further."
+element = &"storm"
+position = Vector2(127, -141)
+links = Array[StringName]([&"storm_entry"])
+modifiers = Array[ExtResource("1_lp15u")]([SubResource("Resource_k0h1v")])

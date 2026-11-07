@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ElementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/element_data.gd" id="1_7ww2y"]
+
+[resource]
+script = ExtResource("1_7ww2y")
+id = &"nature"
+display_name = "Nature"
+ring_index = 2
+color = Color(0.35686275, 0.7058824, 0.3137255, 1)
+role = "Damage over time and economy"
+signature = "Poison that spreads on death; some nodes earn gold."

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ElementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/element_data.gd" id="1_lafwr"]
+
+[resource]
+script = ExtResource("1_lafwr")
+id = &"storm"
+display_name = "Storm"
+ring_index = 1
+color = Color(0.9490196, 0.75686276, 0.30588236, 1)
+role = "Fast hits on many targets"
+signature = "Hits that chain between enemies."

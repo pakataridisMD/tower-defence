@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_ih5lp"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_i0kx7"]
+
+[sub_resource type="Resource" id="Resource_fwl5p"]
+script = ExtResource("1_ih5lp")
+stat = &"bounty_bonus"
+value = 1.0
+required_tags = Array[StringName]([&"nature"])
+
+[resource]
+script = ExtResource("2_i0kx7")
+id = &"nature_cw"
+display_name = "Forager"
+description = "Kills by nature towers earn 1 extra gold."
+element = &"nature"
+position = Vector2(127, 141)
+links = Array[StringName]([&"nature_entry"])
+modifiers = Array[ExtResource("1_ih5lp")]([SubResource("Resource_fwl5p")])

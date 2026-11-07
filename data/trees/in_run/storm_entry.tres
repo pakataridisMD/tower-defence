@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_qniwt"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_5800c"]
+
+[resource]
+script = ExtResource("2_5800c")
+id = &"storm_entry"
+display_name = "Static"
+description = "Unlocks the Spire tower."
+kind = 1
+element = &"storm"
+position = Vector2(113, -65)
+links = Array[StringName]([&"start"])
+unlocks_towers = Array[StringName]([&"storm_spire"])

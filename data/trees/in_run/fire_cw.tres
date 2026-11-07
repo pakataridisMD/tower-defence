@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_vyyuu"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_l0grc"]
+
+[sub_resource type="Resource" id="Resource_xgjfc"]
+script = ExtResource("1_vyyuu")
+stat = &"attack_range"
+kind = 1
+value = 0.1
+required_tags = Array[StringName]([&"fire"])
+
+[resource]
+script = ExtResource("2_l0grc")
+id = &"fire_cw"
+display_name = "Heat Haze"
+description = "Fire towers have 10% increased range."
+element = &"fire"
+position = Vector2(59, -181)
+links = Array[StringName]([&"fire_entry"])
+modifiers = Array[ExtResource("1_vyyuu")]([SubResource("Resource_xgjfc")])

@@ -1,0 +1,167 @@
+[gd_resource type="Resource" script_class="WaveSet" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/wave_set.gd" id="1_cielc"]
+[ext_resource type="Script" path="res://scripts/data/wave_data.gd" id="2_05gok"]
+[ext_resource type="Script" path="res://scripts/data/spawn_group.gd" id="3_p4gg6"]
+
+[sub_resource type="Resource" id="Resource_s1mdt"]
+script = ExtResource("3_p4gg6")
+enemy = &"grunt"
+spawn_interval = 0.9
+
+[sub_resource type="Resource" id="Resource_t4b7l"]
+script = ExtResource("2_05gok")
+element = &"fire"
+groups = Array[ExtResource("3_p4gg6")]([SubResource("Resource_s1mdt")])
+
+[sub_resource type="Resource" id="Resource_slc46"]
+script = ExtResource("3_p4gg6")
+enemy = &"grunt"
+count = 12
+
+[sub_resource type="Resource" id="Resource_7j8wx"]
+script = ExtResource("2_05gok")
+element = &"storm"
+groups = Array[ExtResource("3_p4gg6")]([SubResource("Resource_slc46")])
+
+[sub_resource type="Resource" id="Resource_5c7e4"]
+script = ExtResource("3_p4gg6")
+enemy = &"runner"
+spawn_interval = 0.6
+
+[sub_resource type="Resource" id="Resource_mnn2g"]
+script = ExtResource("3_p4gg6")
+enemy = &"grunt"
+count = 6
+spawn_interval = 0.9
+start_delay = 4.0
+
+[sub_resource type="Resource" id="Resource_the7f"]
+script = ExtResource("2_05gok")
+element = &"nature"
+groups = Array[ExtResource("3_p4gg6")]([SubResource("Resource_5c7e4"), SubResource("Resource_mnn2g")])
+
+[sub_resource type="Resource" id="Resource_ck1dt"]
+script = ExtResource("3_p4gg6")
+enemy = &"grunt"
+count = 14
+spawn_interval = 0.7
+
+[sub_resource type="Resource" id="Resource_xpvjb"]
+script = ExtResource("3_p4gg6")
+enemy = &"brute"
+count = 2
+spawn_interval = 2.0
+start_delay = 6.0
+
+[sub_resource type="Resource" id="Resource_nnx33"]
+script = ExtResource("2_05gok")
+element = &"fire"
+groups = Array[ExtResource("3_p4gg6")]([SubResource("Resource_ck1dt"), SubResource("Resource_xpvjb")])
+
+[sub_resource type="Resource" id="Resource_nl5hi"]
+script = ExtResource("3_p4gg6")
+enemy = &"runner"
+count = 18
+spawn_interval = 0.5
+
+[sub_resource type="Resource" id="Resource_xjayx"]
+script = ExtResource("2_05gok")
+element = &"storm"
+groups = Array[ExtResource("3_p4gg6")]([SubResource("Resource_nl5hi")])
+
+[sub_resource type="Resource" id="Resource_bt485"]
+script = ExtResource("3_p4gg6")
+enemy = &"brute"
+count = 5
+spawn_interval = 1.6
+
+[sub_resource type="Resource" id="Resource_gy0ey"]
+script = ExtResource("3_p4gg6")
+enemy = &"grunt"
+spawn_interval = 0.7
+start_delay = 3.0
+
+[sub_resource type="Resource" id="Resource_ybo8l"]
+script = ExtResource("2_05gok")
+element = &"nature"
+groups = Array[ExtResource("3_p4gg6")]([SubResource("Resource_bt485"), SubResource("Resource_gy0ey")])
+
+[sub_resource type="Resource" id="Resource_6gnw4"]
+script = ExtResource("3_p4gg6")
+enemy = &"runner"
+count = 14
+spawn_interval = 0.5
+
+[sub_resource type="Resource" id="Resource_8twai"]
+script = ExtResource("3_p4gg6")
+enemy = &"brute"
+count = 4
+spawn_interval = 1.5
+start_delay = 5.0
+
+[sub_resource type="Resource" id="Resource_20vdg"]
+script = ExtResource("2_05gok")
+element = &"fire"
+groups = Array[ExtResource("3_p4gg6")]([SubResource("Resource_6gnw4"), SubResource("Resource_8twai")])
+
+[sub_resource type="Resource" id="Resource_xongi"]
+script = ExtResource("3_p4gg6")
+enemy = &"grunt"
+count = 20
+spawn_interval = 0.5
+
+[sub_resource type="Resource" id="Resource_x4rpw"]
+script = ExtResource("3_p4gg6")
+enemy = &"brute"
+count = 4
+spawn_interval = 1.4
+start_delay = 6.0
+
+[sub_resource type="Resource" id="Resource_2va0a"]
+script = ExtResource("2_05gok")
+element = &"storm"
+groups = Array[ExtResource("3_p4gg6")]([SubResource("Resource_xongi"), SubResource("Resource_x4rpw")])
+
+[sub_resource type="Resource" id="Resource_cv7se"]
+script = ExtResource("3_p4gg6")
+enemy = &"runner"
+count = 20
+spawn_interval = 0.4
+
+[sub_resource type="Resource" id="Resource_eljcb"]
+script = ExtResource("3_p4gg6")
+enemy = &"brute"
+count = 6
+spawn_interval = 1.2
+start_delay = 6.0
+
+[sub_resource type="Resource" id="Resource_svhgk"]
+script = ExtResource("2_05gok")
+element = &"nature"
+groups = Array[ExtResource("3_p4gg6")]([SubResource("Resource_cv7se"), SubResource("Resource_eljcb")])
+
+[sub_resource type="Resource" id="Resource_pvl5j"]
+script = ExtResource("3_p4gg6")
+enemy = &"warden"
+count = 1
+spawn_interval = 1.0
+
+[sub_resource type="Resource" id="Resource_o2xi8"]
+script = ExtResource("3_p4gg6")
+enemy = &"grunt"
+count = 12
+spawn_interval = 0.6
+start_delay = 2.0
+
+[sub_resource type="Resource" id="Resource_atvi1"]
+script = ExtResource("2_05gok")
+element = &"fire"
+is_boss = true
+groups = Array[ExtResource("3_p4gg6")]([SubResource("Resource_pvl5j"), SubResource("Resource_o2xi8")])
+
+[resource]
+script = ExtResource("1_cielc")
+id = &"prototype"
+display_name = "Prototype waves"
+waves = Array[ExtResource("2_05gok")]([SubResource("Resource_t4b7l"), SubResource("Resource_7j8wx"), SubResource("Resource_the7f"), SubResource("Resource_nnx33"), SubResource("Resource_xjayx"), SubResource("Resource_ybo8l"), SubResource("Resource_20vdg"), SubResource("Resource_2va0a"), SubResource("Resource_svhgk"), SubResource("Resource_atvi1")])
