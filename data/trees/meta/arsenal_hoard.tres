@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"arsenal_hoard"
+display_name = "Hoard"
+description = "Adds the Hoard keystone to the skill web: kills earn 2 more gold but towers cost 20% more."
+kind = 3
+region = &"arsenal"
+cost = 3
+position = Vector2(0, -270)
+links = Array[StringName]([&"arsenal_overcharge", &"arsenal_focus"])
+unlocks_nodes = Array[StringName]([&"keystone_hoard"])

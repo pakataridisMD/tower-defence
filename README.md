@@ -4,16 +4,17 @@ An elemental tower defence game for Steam. Each run you grow a web of skill node
 element's region unlocks its towers, and the bridge nodes between two neighbouring elements unlock
 hybrid towers. A separate meta tree carries progress between runs.
 
-This repository is at **step 3 of 4**: a playable prototype with one map, ten waves, three elements
-(Fire, Storm and Nature), two hybrid towers and a small in-run skill web. All art is placeholder shapes.
-Step 4 adds the meta tree and saving.
+This repository is at **step 4 of 4**: a playable prototype with two maps, two difficulty levels, ten
+waves, three elements (Fire, Storm and Nature), two hybrid towers, a small in-run skill web, and a meta
+tree that is saved between runs. All art is placeholder shapes.
 
 ## Getting started
 
 1. Install [Godot 4.7.2](https://godotengine.org/download) (the standard build, not .NET).
 2. Install [Git LFS](https://git-lfs.com) and run `git lfs install` once. Art and audio in `assets/` are stored with it.
 3. Clone this repository and open `project.godot` in Godot.
-4. Press **F5** and choose **Play**. **Data check** on the main menu lists the loaded data and any data errors.
+4. Press **F5**. Pick a map and a difficulty level on the main menu, then choose **Play**. **Data check**
+   lists the loaded data and any data errors.
 
 ## How to play
 
@@ -40,6 +41,30 @@ Clear all ten waves to win.
 In the skill web, left-click takes a node. Right-click refunds a node you took in the current break between
 waves, until you start the next wave.
 
+## Meta tree and saves
+
+Every run pays **meta points**, won or lost: one for each wave cleared and two more for a win, times the
+difficulty level's multiplier (Hard pays 1.5x). Spend them in the **meta tree** from the main menu. It has four
+branches:
+
+- **Arsenal** opens advanced skill web nodes: the Thornstorm bridge and the three keystones.
+- **Command** gives run-wide bonuses: starting gold and lives, gold per wave, sell refunds, a starting skill point.
+- **Expeditions** unlocks the Serpentine map and the Hard difficulty level, and pays extra skill points for bosses.
+- **Mastery** makes towers stronger in every run: range, Fire damage, Nature poison, Storm attack speed.
+
+Refunds in the meta tree are always free: right-click a node at the tip of a branch, or use **Refund all**
+(it asks for a second click). A map, difficulty level or skill web node named in a meta node's `unlocks_*`
+list stays locked until that meta node is taken. Anything no meta node lists is open from the start.
+
+Progress is saved after every change to `user://save.json`. On Windows that is
+`%APPDATA%\Godot\app_userdata\Tower Defence 2D\save.json`; on Linux it is
+`~/.local/share/godot/app_userdata/Tower Defence 2D/save.json`. Each save is written to a temporary file and
+then moved into place, and the previous save is kept as `save.json.bak`. A save that cannot be read is copied
+to `save.json.corrupt` and the backup is loaded instead. To start over, delete those files.
+
+The save is versioned JSON. When its shape changes, bump `PlayerProfile.VERSION` and teach
+`PlayerProfile.migrate()` to upgrade older saves.
+
 ## Running the tests
 
 In the editor, open the **GUT** panel at the bottom and press **Run All**.
@@ -59,26 +84,29 @@ You can run that yourself:
 godot --headless --fixed-fps 60 -- --autoplay --quit-at-end
 ```
 
-Leave out `--headless` and `--quit-at-end` to watch the bot play.
+Leave out `--headless` and `--quit-at-end` to watch the bot play. The bot's runs, and every test run, keep
+progress in memory and never touch your real save. Add `--save-path=user://bot_save.json` after `--` to make the
+bot save somewhere else; CI does this to check that saving works.
 
 ### Tools
 
 - `godot --headless -s tools/benchmark_sim.gd` times the simulation with 40 towers and 500 enemies on the board.
 - `godot --resolution 1920x1080 --fixed-fps 30 res://tools/capture.tscn -- --out=<folder>` plays a run with the
-  bot and saves screenshots of the menu, a wave, the skill web and the end screen. It needs a window, so on a
-  server run it under `xvfb-run`.
+  bot and saves screenshots of the menu, the meta tree, a wave, the skill web and the end screen. Add `--quick`
+  to skip the run and only take the menu, the meta tree and the skill web. It needs a window, so on a server
+  run it under `xvfb-run`.
 
 ## Folder layout
 
 ```
-data/        game content as .tres files: elements, towers, enemies, waves, maps, rules, trees
-scenes/      main.tscn (main menu), game/game.tscn (a run), debug/data_check.tscn
+data/        game content as .tres files: elements, towers, enemies, waves, maps, difficulty levels, rules, trees
+scenes/      main.tscn (main menu), game/game.tscn (a run), meta/meta_tree.tscn, debug/data_check.tscn
 scripts/
-  core/      stat maths, element rules, skill trees, data loading
+  core/      stat maths, element rules, skill trees, data loading, meta progress and saving
   data/      the classes that define each kind of data file
   sim/       the run simulation: towers, enemies, waves, status effects. No drawing, so tests can run it
   game/      the run screen: board, HUD and skill web, which draw the simulation and send it player actions
-  ui/        main menu, shared styles, data check
+  ui/        main menu, meta tree screen, shared styles, data check
 tests/       GUT tests: unit tests and full simulated runs
 tools/       benchmark and screenshot tools (not part of the game)
 assets/      art and audio (Git LFS)
@@ -93,11 +121,19 @@ per frame. That keeps runs repeatable, which the balance tests rely on.
 All balance numbers live in `data/`. Open any `.tres` file in Godot and edit it in the Inspector.
 
 - **New tower:** duplicate a file in `data/towers/`, give it a new `id`, and unlock it from a tree node's `unlocks_towers`.
-- **New tree node:** add a `TreeNodeData` file to `data/trees/in_run/` and list the id of a node it connects to in `links`. Links work both ways.
+- **New tree node:** add a `TreeNodeData` file to `data/trees/in_run/` (or `data/trees/meta/` for the meta tree)
+  and list the id of a node it connects to in `links`. Links work both ways. `region` is the element id in the
+  skill web and the branch id (`arsenal`, `command`, `expeditions` or `mastery`) in the meta tree.
+- **Meta unlocks:** list ids in a meta node's `unlocks_nodes`, `unlocks_maps` or `unlocks_difficulties`.
+  Run-wide bonuses are modifiers to `starting_gold`, `starting_lives`, `starting_tree_points`, `gold_per_wave`,
+  `sell_refund` or `tree_points_per_boss`; tower bonuses work as in the skill web.
+- **New difficulty level:** add a `DifficultyData` file to `data/difficulties/` with its enemy health and meta
+  point multipliers.
 - **New enemy or wave:** add an `EnemyData` file to `data/enemies/`, then reference its id from a wave in `data/waves/`.
 - **New map:** add a `MapData` file to `data/maps/` with the path's turning points as grid cells and the id of
-  its wave set. The path may start and end one cell outside the grid, so enemies walk in and out.
-- **Starting gold, lives and points:** `data/rules/run_rules.tres`.
+  its wave set. The path may start and end one cell outside the grid, so enemies walk in and out. `order` sets
+  its place on the main menu.
+- **Starting gold, lives and points, and meta points per run:** `data/rules/run_rules.tres`.
 
 Each tree node and keystone carries `Modifier` entries. Modifiers to the same stat combine in a fixed order:
 
@@ -109,8 +145,9 @@ final = (base + every FLAT) × (1 + every INCREASED added together) × (1 + each
 and hybrids also get `hybrid`.
 
 The `test_real_data_has_no_errors` test loads every data file and checks that every id it references exists,
-that hybrids use neighbouring elements, and that every tree node can be reached from the start. A typo in a
-data file fails the tests instead of breaking a run.
+that hybrids use neighbouring elements, that every tree node can be reached from the start, and that at least
+one map and one difficulty level are open to a new player. A typo in a data file fails the tests instead of
+breaking a run.
 
 ## Element ring
 

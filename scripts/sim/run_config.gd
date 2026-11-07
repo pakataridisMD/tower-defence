@@ -13,6 +13,8 @@ var tree_nodes: Array[TreeNodeData] = []
 var run_modifiers: Array[Modifier] = []
 ## In-run tree nodes the player has not unlocked yet in the meta tree.
 var locked_tree_nodes: Array[StringName] = []
+## The difficulty level picked for the run. Null plays at normal strength.
+var difficulty: DifficultyData
 
 
 ## Config for a map using the data loaded by a DataRegistry.
@@ -27,6 +29,11 @@ static func from_registry(registry: Node, map_id: StringName) -> RunConfig:
 	config.elements = registry.elements
 	config.tree_nodes = registry.in_run_tree_nodes
 	return config
+
+
+## Every enemy's health is multiplied by this.
+func enemy_health_multiplier() -> float:
+	return difficulty.enemy_health_multiplier if difficulty != null else 1.0
 
 
 func element_index(id: StringName) -> int:

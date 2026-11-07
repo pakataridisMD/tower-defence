@@ -60,6 +60,22 @@ static func button(text: String, font_size: int = 20) -> Button:
 	return result
 
 
+## A toggle button for picking one option from a group, such as a map. The picked one gets a
+## gold border.
+static func choice_button(text: String, group: ButtonGroup, font_size: int = 20) -> Button:
+	var result := button(text, font_size)
+	result.toggle_mode = true
+	result.button_group = group
+	var picked := _button_box(Color("48536f"))
+	picked.border_color = GOLD
+	picked.set_border_width_all(2)
+	result.add_theme_stylebox_override("pressed", picked)
+	result.add_theme_stylebox_override("hover_pressed", picked)
+	result.add_theme_color_override("font_pressed_color", Color.WHITE)
+	result.add_theme_color_override("font_hover_pressed_color", Color.WHITE)
+	return result
+
+
 static func label(text: String, font_size: int = 20, color: Color = TEXT) -> Label:
 	var result := Label.new()
 	result.text = text

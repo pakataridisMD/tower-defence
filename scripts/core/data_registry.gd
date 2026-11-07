@@ -10,7 +10,9 @@ const TOWERS_DIR := "res://data/towers"
 const ENEMIES_DIR := "res://data/enemies"
 const WAVES_DIR := "res://data/waves"
 const IN_RUN_TREE_DIR := "res://data/trees/in_run"
+const META_TREE_DIR := "res://data/trees/meta"
 const MAPS_DIR := "res://data/maps"
+const DIFFICULTIES_DIR := "res://data/difficulties"
 const RUN_RULES_PATH := "res://data/rules/run_rules.tres"
 
 var elements: Dictionary[StringName, ElementData] = {}
@@ -18,7 +20,9 @@ var towers: Dictionary[StringName, TowerData] = {}
 var enemies: Dictionary[StringName, EnemyData] = {}
 var wave_sets: Dictionary[StringName, WaveSet] = {}
 var maps: Dictionary[StringName, MapData] = {}
+var difficulties: Dictionary[StringName, DifficultyData] = {}
 var in_run_tree_nodes: Array[TreeNodeData] = []
+var meta_tree_nodes: Array[TreeNodeData] = []
 var run_rules: RunRules
 
 var _load_errors: PackedStringArray = []
@@ -35,7 +39,9 @@ func reload() -> void:
 	enemies.clear()
 	wave_sets.clear()
 	maps.clear()
+	difficulties.clear()
 	in_run_tree_nodes.clear()
+	meta_tree_nodes.clear()
 
 	for resource in load_folder(ELEMENTS_DIR):
 		_index(elements, resource as ElementData, ELEMENTS_DIR)
@@ -47,12 +53,10 @@ func reload() -> void:
 		_index(wave_sets, resource as WaveSet, WAVES_DIR)
 	for resource in load_folder(MAPS_DIR):
 		_index(maps, resource as MapData, MAPS_DIR)
-	for resource in load_folder(IN_RUN_TREE_DIR):
-		var node_data := resource as TreeNodeData
-		if node_data == null:
-			_load_errors.append("%s: %s is not a TreeNodeData" % [IN_RUN_TREE_DIR, resource.resource_path])
-		else:
-			in_run_tree_nodes.append(node_data)
+	for resource in load_folder(DIFFICULTIES_DIR):
+		_index(difficulties, resource as DifficultyData, DIFFICULTIES_DIR)
+	_load_tree(IN_RUN_TREE_DIR, in_run_tree_nodes)
+	_load_tree(META_TREE_DIR, meta_tree_nodes)
 
 	run_rules = load(RUN_RULES_PATH) as RunRules
 	if run_rules == null:
@@ -88,6 +92,10 @@ func in_run_tree() -> TreeGraph:
 	return TreeGraph.new(in_run_tree_nodes)
 
 
+func meta_tree() -> TreeGraph:
+	return TreeGraph.new(meta_tree_nodes)
+
+
 ## Every problem found in the loaded data, as readable lines. Empty means the data is consistent.
 func validate() -> PackedStringArray:
 	var errors := _load_errors.duplicate()
@@ -96,10 +104,24 @@ func validate() -> PackedStringArray:
 	_validate_enemies(errors)
 	_validate_waves(errors)
 	_validate_maps(errors)
-	_validate_tree(errors, "in-run tree", in_run_tree_nodes)
+	_validate_difficulties(errors)
+	var element_ids: Array[StringName] = []
+	element_ids.assign(elements.keys())
+	_validate_tree(errors, "in-run tree", in_run_tree_nodes, element_ids)
+	_validate_tree(errors, "meta tree", meta_tree_nodes, MetaProgress.BRANCH_NAMES.keys())
+	_validate_unlocks(errors)
 	if run_rules != null and run_rules.starting_lives <= 0:
 		errors.append("Run rules: starting lives must be above 0")
 	return errors
+
+
+func _load_tree(dir: String, target: Array[TreeNodeData]) -> void:
+	for resource in load_folder(dir):
+		var node_data := resource as TreeNodeData
+		if node_data == null:
+			_load_errors.append("%s: %s is not a TreeNodeData" % [dir, resource.resource_path])
+		else:
+			target.append(node_data)
 
 
 func _index(target: Dictionary, resource: Resource, dir: String) -> void:
@@ -183,7 +205,47 @@ func _validate_maps(errors: PackedStringArray) -> void:
 			errors.append("Map '%s': unknown wave set '%s'" % [map.id, map.wave_set])
 
 
-func _validate_tree(errors: PackedStringArray, tree_name: String, nodes: Array[TreeNodeData]) -> void:
+func _validate_difficulties(errors: PackedStringArray) -> void:
+	if difficulties.is_empty():
+		errors.append("No difficulty levels in %s" % DIFFICULTIES_DIR)
+	for difficulty: DifficultyData in difficulties.values():
+		if difficulty.enemy_health_multiplier <= 0.0 or difficulty.meta_point_multiplier < 0.0:
+			errors.append("Difficulty '%s': multipliers must be above 0" % difficulty.id)
+
+
+## Meta nodes unlock things by listing their ids; in-run nodes only unlock towers.
+func _validate_unlocks(errors: PackedStringArray) -> void:
+	var in_run_ids: Dictionary[StringName, bool] = {}
+	for node_data in in_run_tree_nodes:
+		in_run_ids[node_data.id] = true
+		if not (node_data.unlocks_nodes.is_empty() and node_data.unlocks_maps.is_empty() \
+				and node_data.unlocks_difficulties.is_empty()):
+			errors.append("in-run tree node '%s': only meta tree nodes can unlock nodes, maps or difficulty levels" % node_data.id)
+	var gated_maps: Dictionary[StringName, bool] = {}
+	var gated_difficulties: Dictionary[StringName, bool] = {}
+	for node_data in meta_tree_nodes:
+		var label := "meta tree node '%s'" % node_data.id
+		if not node_data.unlocks_towers.is_empty():
+			errors.append("%s: towers are unlocked in the in-run web, not the meta tree" % label)
+		for id in node_data.unlocks_nodes:
+			if not in_run_ids.has(id):
+				errors.append("%s: unlocks unknown in-run node '%s'" % [label, id])
+		for id in node_data.unlocks_maps:
+			gated_maps[id] = true
+			if not maps.has(id):
+				errors.append("%s: unlocks unknown map '%s'" % [label, id])
+		for id in node_data.unlocks_difficulties:
+			gated_difficulties[id] = true
+			if not difficulties.has(id):
+				errors.append("%s: unlocks unknown difficulty '%s'" % [label, id])
+	if not maps.keys().any(func(id: StringName) -> bool: return not gated_maps.has(id)):
+		errors.append("Every map is locked behind the meta tree, so a new player has nowhere to play")
+	if not difficulties.keys().any(func(id: StringName) -> bool: return not gated_difficulties.has(id)):
+		errors.append("Every difficulty level is locked behind the meta tree")
+
+
+func _validate_tree(errors: PackedStringArray, tree_name: String, nodes: Array[TreeNodeData],
+		regions: Array) -> void:
 	var ids: Dictionary[StringName, bool] = {}
 	var starts := 0
 	for node_data in nodes:
@@ -195,8 +257,8 @@ func _validate_tree(errors: PackedStringArray, tree_name: String, nodes: Array[T
 		ids[node_data.id] = true
 		if node_data.kind == TreeNodeData.Kind.START:
 			starts += 1
-		if not node_data.element.is_empty() and not elements.has(node_data.element):
-			errors.append("%s: unknown element '%s'" % [label, node_data.element])
+		if not node_data.region.is_empty() and not regions.has(node_data.region):
+			errors.append("%s: unknown region '%s'" % [label, node_data.region])
 		for tower_id in node_data.unlocks_towers:
 			if not towers.has(tower_id):
 				errors.append("%s: unlocks unknown tower '%s'" % [label, tower_id])

@@ -15,6 +15,12 @@ extends Resource
 ## Share of a tower's price returned when it is sold.
 @export_range(0.0, 1.0) var sell_refund: float = 0.7
 
+@export_group("Meta points")
+## Meta points for each wave cleared, won or lost.
+@export var meta_points_per_wave: int = 1
+## Extra meta points for winning the run.
+@export var meta_points_for_win: int = 2
+
 
 ## Tree points earned for clearing a wave. wave_number starts at 1.
 func tree_points_after_wave(wave_number: int, wave_was_boss: bool) -> int:
@@ -24,3 +30,8 @@ func tree_points_after_wave(wave_number: int, wave_was_boss: bool) -> int:
 	if wave_was_boss:
 		points += tree_points_per_boss
 	return points
+
+
+## Meta points paid at the end of a run, before the difficulty multiplier.
+func meta_points_after_run(waves_cleared: int, won: bool) -> int:
+	return maxi(0, waves_cleared) * meta_points_per_wave + (meta_points_for_win if won else 0)

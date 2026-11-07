@@ -7,7 +7,6 @@ extends Node
 ##   --autoplay     the scripted AutoPlayer plays the run at top speed, for footage and smoke tests.
 ##   --quit-at-end  quit shortly after the run ends. Used with --autoplay by the CI smoke test.
 
-const MAP_ID := &"switchback"
 const BOARD_OFFSET := Vector2(24, 96)
 const SPEEDS: Array[int] = [1, 2, 3]
 ## Most simulation steps in one frame. A frame that needs more drops the rest, so one slow
@@ -40,7 +39,7 @@ func _ready() -> void:
 	var args := OS.get_cmdline_user_args()
 	autoplay = autoplay or args.has("--autoplay")
 	quit_at_end = quit_at_end or args.has("--quit-at-end")
-	sim = RunSim.new(RunConfig.from_registry(DataRegistry, MAP_ID))
+	sim = RunSim.new(Progress.run_config())
 	_build_views()
 	_connect_signals()
 	if autoplay:
@@ -144,7 +143,7 @@ func _toggle_web() -> void:
 		_close_web()
 	elif not sim.is_over():
 		board.cancel_placing()
-		web.show_tree(sim.tree, sim.config.elements)
+		web.show_tree(sim.tree, SkillWebView.element_regions(sim.config.elements))
 
 
 func _close_web() -> void:
@@ -198,9 +197,14 @@ func _sell_selected() -> void:
 func _on_run_ended(won: bool) -> void:
 	board.cancel_placing()
 	_close_web()
+	var meta_points := Progress.record_run(sim)
+	hud.show_end(won, meta_points)
 	if autoplay:
-		print("Autoplay run ended: %s after %d of %d waves, %d lives left, %d kills, %d towers" % [
-			"won" if won else "lost", sim.wave_index, sim.total_waves(), sim.lives, sim.kills, sim.towers.size()])
+		print("Autoplay run ended: %s after %d of %d waves on %s, %d lives left, %d kills, %d towers, +%d meta points" % [
+			"won" if won else "lost", sim.wave_index, sim.total_waves(), sim.config.map.display_name, sim.lives,
+			sim.kills, sim.towers.size(), meta_points])
+		if Progress.persist:
+			print("Progress saved to %s" % ProjectSettings.globalize_path(Progress.save_path))
 	if quit_at_end:
 		get_tree().create_timer(1.0).timeout.connect(func() -> void: get_tree().quit())
 

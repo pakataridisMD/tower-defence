@@ -154,3 +154,46 @@ func test_chain_towers_hit_several_enemies() -> void:
 	var points: PackedVector2Array = get_signal_parameters(sim, "chain_fired")[1]
 	assert_true(points.size() >= 2, "the tower and at least one enemy")
 	assert_true(tower.damage_dealt > 0.0)
+
+
+func test_meta_bonuses_raise_wave_gold_and_sell_refunds() -> void:
+	var rules: RunRules = registry.run_rules
+	var sim := _sim([
+		Modifier.create(&"gold_per_wave", Modifier.Kind.FLAT, 10.0),
+		Modifier.create(&"sell_refund", Modifier.Kind.FLAT, 0.15),
+	])
+	sim.allocate_node(&"fire_entry")
+	var tower := sim.place_tower(&"fire_brazier", CELL)
+	assert_eq(sim.sell_value(tower), floori(tower.price_paid * (rules.sell_refund + 0.15)))
+	watch_signals(sim)
+	AutoPlayer.new(sim).build_towers()
+	sim.start_next_wave()
+	_run_until_building(sim)
+	assert_signal_emitted_with_parameters(sim, "wave_cleared", [1, 1, rules.gold_per_wave + 10])
+
+
+func test_sell_refunds_never_pay_more_than_the_price() -> void:
+	var sim := _sim([Modifier.create(&"sell_refund", Modifier.Kind.FLAT, 5.0)])
+	sim.allocate_node(&"fire_entry")
+	var tower := sim.place_tower(&"fire_brazier", CELL)
+	assert_eq(sim.sell_value(tower), tower.price_paid)
+
+
+func test_harder_difficulty_levels_give_enemies_more_health() -> void:
+	var normal := _first_enemy_health(null)
+	var hard := DifficultyData.new()
+	hard.enemy_health_multiplier = 1.4
+	assert_almost_eq(_first_enemy_health(hard), normal * 1.4, 0.001)
+
+
+func _first_enemy_health(difficulty: DifficultyData) -> float:
+	var config := RunConfig.from_registry(registry, MAP)
+	config.difficulty = difficulty
+	var sim := RunSim.new(config)
+	sim.start_next_wave()
+	for i in 600:
+		if not sim.enemies.is_empty():
+			break
+		sim.step(RunSim.STEP)
+	assert_false(sim.enemies.is_empty(), "the first enemy spawned")
+	return sim.enemies[0].max_health if not sim.enemies.is_empty() else 0.0

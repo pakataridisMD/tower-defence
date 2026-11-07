@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DifficultyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/difficulty_data.gd" id="1_difficulty"]
+
+[resource]
+script = ExtResource("1_difficulty")
+id = &"hard"
+display_name = "Hard"
+description = "Enemies have 40% more health. Runs earn 50% more meta points."
+order = 1
+enemy_health_multiplier = 1.4
+meta_point_multiplier = 1.5
