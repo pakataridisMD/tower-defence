@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_2aoo8"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_o6dma"]
+
+[sub_resource type="Resource" id="Resource_585am"]
+script = ExtResource("1_2aoo8")
+stat = &"poison_damage"
+kind = 1
+value = 0.2
+required_tags = Array[StringName]([&"nature"])
+
+[resource]
+script = ExtResource("2_o6dma")
+id = &"nature_core"
+display_name = "Virulence"
+description = "Poison from nature towers deals 20% increased damage."
+element = &"nature"
+position = Vector2(182, 105)
+links = Array[StringName]([&"nature_entry"])
+modifiers = Array[ExtResource("1_2aoo8")]([SubResource("Resource_585am")])

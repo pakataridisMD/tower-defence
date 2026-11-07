@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ElementData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/element_data.gd" id="1_4tsgw"]
+
+[resource]
+script = ExtResource("1_4tsgw")
+id = &"void"
+display_name = "Void"
+ring_index = 5
+color = Color(0.5568628, 0.36078432, 0.8509804, 1)
+role = "Support"
+signature = "Curse that raises damage taken; boosts nearby towers."

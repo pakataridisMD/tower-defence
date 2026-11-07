@@ -1,0 +1,78 @@
+extends GutTest
+## Loads the real data files. If someone mistypes an id in a .tres file, these tests fail.
+
+const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
+
+var registry: Node
+
+
+func before_each() -> void:
+	registry = autofree(DataRegistryScript.new())
+	registry.reload()
+
+
+func test_real_data_has_no_errors() -> void:
+	var errors: PackedStringArray = registry.validate()
+	assert_eq(errors.size(), 0, "Data errors:\n" + "\n".join(errors))
+
+
+func test_all_six_elements_load_in_ring_order() -> void:
+	assert_eq(registry.elements.size(), 6)
+	assert_eq(registry.element_index(&"fire"), 0)
+	assert_eq(registry.element_index(&"void"), 5)
+	assert_eq(registry.element_index(&"missing"), -1)
+
+
+func test_prototype_content_loads() -> void:
+	assert_eq(registry.towers.size(), 5, "3 base towers and 2 hybrids")
+	assert_eq(registry.enemies.size(), 4)
+	assert_true(registry.wave_sets.has(&"prototype"))
+	assert_eq(registry.wave_sets[&"prototype"].waves.size(), 10)
+	assert_not_null(registry.run_rules)
+
+
+func test_in_run_tree_unlocks_every_prototype_tower() -> void:
+	var graph: TreeGraph = registry.in_run_tree()
+	var state := TreeState.new(graph, 999)
+	# Take every node, nearest first, as a player with unlimited points would.
+	var taken_any := true
+	while taken_any:
+		taken_any = false
+		for id in graph.ids():
+			if state.allocate(id):
+				taken_any = true
+	assert_eq(state.allocated_ids().size(), graph.size(), "every node is reachable")
+	for tower_id: StringName in registry.towers:
+		assert_has(state.unlocked_towers(), tower_id)
+
+
+func test_hybrid_of_non_neighbours_is_reported() -> void:
+	var bad := TowerData.new()
+	bad.id = &"bad_hybrid"
+	bad.elements = [&"fire", &"nature"]
+	registry.towers[bad.id] = bad
+	var errors: PackedStringArray = registry.validate()
+	assert_true(errors.size() == 1 and "neighbours" in errors[0], "Got: %s" % [errors])
+
+
+func test_unknown_tree_link_is_reported() -> void:
+	var node_data := TreeNodeData.new()
+	node_data.id = &"orphan"
+	node_data.links = [&"does_not_exist"]
+	registry.in_run_tree_nodes.append(node_data)
+	var errors := "\n".join(registry.validate())
+	assert_string_contains(errors, "links to unknown node 'does_not_exist'")
+	assert_string_contains(errors, "'orphan': cannot be reached from the start")
+
+
+func test_unknown_enemy_in_a_wave_is_reported() -> void:
+	var group := SpawnGroup.new()
+	group.enemy = &"ghost"
+	var wave := WaveData.new()
+	wave.groups = [group]
+	var wave_set := WaveSet.new()
+	wave_set.id = &"broken"
+	wave_set.waves = [wave]
+	registry.wave_sets[wave_set.id] = wave_set
+	var errors := "\n".join(registry.validate())
+	assert_string_contains(errors, "unknown enemy 'ghost'")

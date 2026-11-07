@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_gujvr"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_7gt7k"]
+
+[sub_resource type="Resource" id="Resource_exyxr"]
+script = ExtResource("2_7gt7k")
+kind = &"burn"
+damage_per_second = 4.0
+duration = 3.0
+max_stacks = 5
+
+[resource]
+script = ExtResource("1_gujvr")
+id = &"fire_brazier"
+display_name = "Brazier"
+description = "Lobs fireballs that burn every enemy in a small area."
+elements = Array[StringName]([&"fire"])
+tags = Array[StringName]([&"area"])
+damage = 8.0
+splash_radius = 60.0
+status_effects = Array[ExtResource("2_7gt7k")]([SubResource("Resource_exyxr")])

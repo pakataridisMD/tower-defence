@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_b1i6m"]
+
+[resource]
+script = ExtResource("1_b1i6m")
+id = &"warden"
+display_name = "Warden"
+max_health = 1200.0
+speed = 45.0
+armour = 8.0
+bounty = 50
+leak_damage = 10
+tags = Array[StringName]([&"boss"])

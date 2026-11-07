@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_wripe"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_si2mr"]
+
+[resource]
+script = ExtResource("1_wripe")
+id = &"storm_spire"
+display_name = "Spire"
+description = "Fast bolts that chain to nearby enemies."
+elements = Array[StringName]([&"storm"])
+cost = 60
+damage = 6.0
+attacks_per_second = 1.6
+attack_range = 180.0
+chain_count = 2
+chain_range = 120.0
+chain_falloff = 0.2
