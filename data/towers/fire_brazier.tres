@@ -18,5 +18,6 @@ description = "Lobs fireballs that burn every enemy in a small area."
 elements = Array[StringName]([&"fire"])
 tags = Array[StringName]([&"area"])
 damage = 8.0
+projectile_speed = 500.0
 splash_radius = 60.0
 status_effects = Array[ExtResource("2_7gt7k")]([SubResource("Resource_exyxr")])

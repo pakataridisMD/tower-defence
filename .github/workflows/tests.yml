@@ -26,3 +26,12 @@ jobs:
 
       - name: Run unit tests (GUT)
         run: /tmp/godot/godot --headless -s addons/gut/gut_cmdln.gd
+
+      - name: Smoke test (the bot plays a full run in the real game scenes)
+        run: |
+          timeout 600 /tmp/godot/godot --headless --fixed-fps 60 --quit-after 200000 -- --autoplay --quit-at-end 2>&1 | tee smoke.log
+          grep -q "Autoplay run ended" smoke.log
+          if grep -E "SCRIPT ERROR|^ERROR" smoke.log; then exit 1; fi
+
+      - name: Simulation benchmark (for information, never fails the build)
+        run: /tmp/godot/godot --headless -s tools/benchmark_sim.gd || true

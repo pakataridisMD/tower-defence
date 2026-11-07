@@ -1,0 +1,233 @@
+class_name Game
+extends Node
+## One run of the game. Builds the simulation from the loaded data, steps it at a fixed rate and
+## connects the board, the HUD and the skill web.
+##
+## Command line options, given after `--`:
+##   --autoplay     the scripted AutoPlayer plays the run at top speed, for footage and smoke tests.
+##   --quit-at-end  quit shortly after the run ends. Used with --autoplay by the CI smoke test.
+
+const MAP_ID := &"switchback"
+const BOARD_OFFSET := Vector2(24, 96)
+const SPEEDS: Array[int] = [1, 2, 3]
+## Most simulation steps in one frame. A frame that needs more drops the rest, so one slow
+## frame cannot snowball into a slower one.
+const MAX_STEPS_PER_FRAME := 12
+const MENU_SCENE := "res://scenes/main.tscn"
+## Seconds the autoplayer waits at each point of a break, so footage shows the build phase.
+const BOT_BREAK := 1.5
+const BOT_WEB_OPEN := 0.8
+const BOT_WEB_SHOW := 1.2
+
+var sim: RunSim
+var board: BoardView
+var hud: Hud
+var web: SkillWebView
+var paused := false
+## Set before the node enters the tree, or with --autoplay.
+var autoplay := false
+var quit_at_end := false
+
+var _speed_index := 0
+var _accumulator := 0.0
+var _max_steps := MAX_STEPS_PER_FRAME
+var _bot: AutoPlayer
+var _bot_wait := BOT_BREAK
+var _bot_spent := false
+
+
+func _ready() -> void:
+	var args := OS.get_cmdline_user_args()
+	autoplay = autoplay or args.has("--autoplay")
+	quit_at_end = quit_at_end or args.has("--quit-at-end")
+	sim = RunSim.new(RunConfig.from_registry(DataRegistry, MAP_ID))
+	_build_views()
+	_connect_signals()
+	if autoplay:
+		_bot = AutoPlayer.new(sim)
+		_speed_index = SPEEDS.size() - 1
+		_max_steps = 600
+		hud.speed = SPEEDS[_speed_index]
+
+
+func _build_views() -> void:
+	board = BoardView.new()
+	board.position = BOARD_OFFSET
+	board.setup(sim)
+	add_child(board)
+
+	var hud_layer := CanvasLayer.new()
+	add_child(hud_layer)
+	hud = Hud.new()
+	hud_layer.add_child(hud)
+	hud.setup(sim)
+
+	var web_layer := CanvasLayer.new()
+	web_layer.layer = 2
+	add_child(web_layer)
+	web = SkillWebView.new()
+	web.title = "Skill web"
+	web.subtitle = "Take nodes to unlock towers and make them stronger. You earn a point for every wave you clear. " + \
+		"Right-click refunds a node taken in this break, until you start the next wave."
+	web.can_refund = sim.can_refund_node
+	web.hide()
+	web_layer.add_child(web)
+
+
+func _connect_signals() -> void:
+	hud.start_wave_pressed.connect(_start_wave)
+	hud.web_pressed.connect(_toggle_web)
+	hud.speed_pressed.connect(_cycle_speed)
+	hud.tower_chosen.connect(_choose_tower)
+	hud.sell_pressed.connect(_sell_selected)
+	hud.play_again_pressed.connect(func() -> void: get_tree().reload_current_scene())
+	hud.menu_pressed.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+	board.selection_changed.connect(func(tower: SimTower) -> void: hud.selected = tower)
+	board.placement_failed.connect(func(reason: String) -> void: hud.show_message(reason, UiStyle.BAD))
+	web.close_requested.connect(_close_web)
+	web.node_clicked.connect(func(id: StringName) -> void: sim.allocate_node(id))
+	web.node_refund_requested.connect(func(id: StringName) -> void: sim.refund_node(id))
+	sim.run_ended.connect(_on_run_ended)
+
+
+func _process(delta: float) -> void:
+	if _bot != null:
+		_drive_bot(delta)
+	if paused or web.visible or sim.state != RunSim.State.WAVE:
+		_accumulator = 0.0
+		return
+	_accumulator += delta * SPEEDS[_speed_index]
+	var steps := 0
+	while _accumulator >= RunSim.STEP:
+		if steps >= _max_steps:
+			_accumulator = 0.0
+			break
+		sim.step(RunSim.STEP)
+		_accumulator -= RunSim.STEP
+		steps += 1
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	var key := event as InputEventKey
+	if key == null or not key.pressed or key.echo:
+		return
+	match key.keycode:
+		KEY_SPACE:
+			_start_wave()
+		KEY_T:
+			_toggle_web()
+		KEY_F:
+			_cycle_speed()
+		KEY_P:
+			_toggle_pause()
+		KEY_ESCAPE:
+			_escape()
+		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9:
+			if not web.visible:
+				_choose_tower(hud.tower_for_hotkey(key.keycode - KEY_0))
+		_:
+			return
+	get_viewport().set_input_as_handled()
+
+
+# --- Actions -------------------------------------------------------------------
+
+func _start_wave() -> void:
+	if sim.start_next_wave():
+		_close_web()
+		paused = false
+		hud.paused = false
+
+
+func _toggle_web() -> void:
+	if web.visible:
+		_close_web()
+	elif not sim.is_over():
+		board.cancel_placing()
+		web.show_tree(sim.tree, sim.config.elements)
+
+
+func _close_web() -> void:
+	web.hide()
+
+
+func _cycle_speed() -> void:
+	_speed_index = (_speed_index + 1) % SPEEDS.size()
+	hud.speed = SPEEDS[_speed_index]
+
+
+func _toggle_pause() -> void:
+	if sim.is_over():
+		return
+	paused = not paused
+	hud.paused = paused
+
+
+## Esc backs out of whatever is open: the web, then placing, then the selection, then pause.
+func _escape() -> void:
+	if web.visible:
+		_close_web()
+	elif not board.placing.is_empty():
+		board.cancel_placing()
+	elif board.selected != null:
+		board.select(null)
+	else:
+		_toggle_pause()
+
+
+func _choose_tower(tower_id: StringName) -> void:
+	if tower_id.is_empty() or sim.is_over():
+		return
+	if not sim.is_unlocked(tower_id):
+		hud.show_message("Unlock this tower in the skill web first (T)", UiStyle.BAD)
+	elif sim.gold < sim.tower_price(tower_id):
+		hud.show_message("Not enough gold", UiStyle.BAD)
+	else:
+		board.begin_placing(tower_id)
+
+
+func _sell_selected() -> void:
+	var tower := board.selected
+	if tower == null:
+		return
+	var refund := sim.sell_tower(tower)
+	board.select(null)
+	hud.show_message("Sold for %d gold" % refund, UiStyle.GOLD)
+
+
+func _on_run_ended(won: bool) -> void:
+	board.cancel_placing()
+	_close_web()
+	if autoplay:
+		print("Autoplay run ended: %s after %d of %d waves, %d lives left, %d kills, %d towers" % [
+			"won" if won else "lost", sim.wave_index, sim.total_waves(), sim.lives, sim.kills, sim.towers.size()])
+	if quit_at_end:
+		get_tree().create_timer(1.0).timeout.connect(func() -> void: get_tree().quit())
+
+
+# --- Autoplay ------------------------------------------------------------------
+
+## Plays each break like a person would: open the web, take nodes, close it, build, start.
+func _drive_bot(delta: float) -> void:
+	if sim.state != RunSim.State.BUILDING:
+		_bot_wait = BOT_BREAK
+		return
+	_bot_wait -= delta
+	if _bot_wait > 0.0:
+		return
+	if web.visible:
+		if not _bot_spent:
+			_bot.spend_points()
+			_bot_spent = true
+			_bot_wait = BOT_WEB_SHOW
+		else:
+			_close_web()
+			_bot_wait = 0.3
+		return
+	if sim.tree.points > 0 and not _bot_spent:
+		_toggle_web()
+		_bot_wait = BOT_WEB_OPEN
+		return
+	_bot.build_towers()
+	_bot_spent = false
+	_start_wave()

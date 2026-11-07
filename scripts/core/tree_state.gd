@@ -11,6 +11,7 @@ signal changed
 var graph: TreeGraph
 var points: int = 0
 var _allocated: Dictionary[StringName, bool] = {}
+var _locked: Dictionary[StringName, bool] = {}
 
 
 func _init(p_graph: TreeGraph, p_points: int = 0) -> void:
@@ -30,8 +31,18 @@ func allocated_ids() -> Array[StringName]:
 	return result
 
 
+## Locked nodes cannot be taken until something (such as the meta tree) unlocks them.
+func lock(ids: Array[StringName]) -> void:
+	for id in ids:
+		_locked[id] = true
+
+
+func is_locked(id: StringName) -> bool:
+	return _locked.has(id)
+
+
 func can_allocate(id: StringName) -> bool:
-	if not graph.has_node_id(id) or is_allocated(id):
+	if not graph.has_node_id(id) or is_allocated(id) or is_locked(id):
 		return false
 	if graph.node(id).cost > points:
 		return false

@@ -1,14 +1,16 @@
 extends Control
-## Placeholder start screen until the prototype exists in step 3.
-## Lists the loaded game data and any data errors, so a broken data file is obvious on launch.
+## Debug screen, opened from the main menu. Lists the loaded game data and any data errors,
+## so a broken data file is easy to spot.
 
-const BACKGROUND_COLOR := Color("1f2433")
-const TEXT_COLOR := Color("e9ecf2")
-const ERROR_COLOR := Color("ff6b6b")
-const SUCCESS_COLOR := Color("6bdc8a")
+const BACKGROUND_COLOR := UiStyle.BACKGROUND
+const TEXT_COLOR := UiStyle.TEXT
+const ERROR_COLOR := UiStyle.BAD
+const SUCCESS_COLOR := UiStyle.GOOD
+const MENU_SCENE := "res://scenes/main.tscn"
 
 
 func _ready() -> void:
+	theme = UiStyle.make_theme()
 	var background := ColorRect.new()
 	background.color = BACKGROUND_COLOR
 	background.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -24,8 +26,8 @@ func _ready() -> void:
 	column.add_theme_constant_override("separation", 16)
 	margin.add_child(column)
 
-	column.add_child(_label("Tower Defence 2D", 56, TEXT_COLOR))
-	column.add_child(_label("Data check. The playable prototype replaces this screen in step 3.", 24, TEXT_COLOR))
+	column.add_child(_label("Data check", 56, TEXT_COLOR))
+	column.add_child(_label("Everything the game loaded from the data folder.", 24, UiStyle.TEXT_DIM))
 	for line in _summary_lines():
 		column.add_child(_label(line, 28, TEXT_COLOR))
 
@@ -37,6 +39,22 @@ func _ready() -> void:
 		for error in errors:
 			column.add_child(_label(error, 22, ERROR_COLOR))
 			push_error(error)
+
+	var back := UiStyle.button("Back to menu (Esc)", 22)
+	back.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	back.pressed.connect(_back)
+	column.add_child(back)
+
+
+func _back() -> void:
+	get_tree().change_scene_to_file(MENU_SCENE)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	var key := event as InputEventKey
+	if key != null and key.pressed and key.keycode == KEY_ESCAPE:
+		get_viewport().set_input_as_handled()
+		_back()
 
 
 func _summary_lines() -> PackedStringArray:
@@ -61,6 +79,7 @@ func _summary_lines() -> PackedStringArray:
 		"Enemies: %d" % DataRegistry.enemies.size(),
 		"Wave sets: %d, with %d waves in total" % [DataRegistry.wave_sets.size(), wave_count],
 		"In-run tree nodes: %d" % DataRegistry.in_run_tree_nodes.size(),
+		"Maps: %d" % DataRegistry.maps.size(),
 	])
 
 
