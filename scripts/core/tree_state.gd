@@ -76,6 +76,61 @@ func refund(id: StringName) -> bool:
 	return true
 
 
+## The shortest chain of nodes that would connect `id` to the taken part of the tree: it starts
+## with the taken node it grows from and ends with `id`. Empty when `id` is taken, locked or cannot
+## be reached. The tree screen uses it to show what a far node costs.
+func path_to(id: StringName) -> Array[StringName]:
+	var path: Array[StringName] = []
+	if not graph.has_node_id(id) or is_allocated(id) or is_locked(id):
+		return path
+	# Breadth-first from the target outwards; toward[n] is the next step from n back to the target.
+	var toward: Dictionary[StringName, StringName] = {id: &""}
+	var queue: Array[StringName] = [id]
+	var head := 0
+	while head < queue.size():
+		var current := queue[head]
+		head += 1
+		for next in graph.neighbours(current):
+			if toward.has(next):
+				continue
+			if is_allocated(next):
+				path.append(next)
+				var step := current
+				while not step.is_empty():
+					path.append(step)
+					step = toward[step]
+				return path
+			if is_locked(next):
+				continue
+			toward[next] = current
+			queue.append(next)
+	return path
+
+
+## Takes the given nodes in any order, as far as links and points allow, for example when
+## loading a save. Ids that cannot be taken (unknown, unlinked, or too expensive) are skipped.
+func restore(ids: Array[StringName]) -> void:
+	var pending := ids.duplicate()
+	var progress := true
+	while progress and not pending.is_empty():
+		progress = false
+		for id in pending.duplicate():
+			if allocate(id):
+				pending.erase(id)
+				progress = true
+
+
+## Refunds every taken node except the start.
+func reset() -> void:
+	for id in _allocated:
+		if id != graph.start_id:
+			points += graph.node(id).cost
+	_allocated.clear()
+	if not graph.start_id.is_empty():
+		_allocated[graph.start_id] = true
+	changed.emit()
+
+
 ## Every modifier granted by the taken nodes.
 func modifiers() -> Array[Modifier]:
 	var result: Array[Modifier] = []

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"expedition_hard"
+display_name = "Hard Mode"
+description = "Unlocks Hard difficulty: enemies have 40% more health and runs earn 50% more meta points."
+kind = 3
+region = &"expeditions"
+cost = 4
+position = Vector2(-80, 185)
+links = Array[StringName]([&"expedition_serpentine"])
+unlocks_difficulties = Array[StringName]([&"hard"])

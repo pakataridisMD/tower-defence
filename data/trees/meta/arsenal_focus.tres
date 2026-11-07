@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"arsenal_focus"
+display_name = "Focus"
+description = "Adds the Focus keystone to the skill web: towers deal 60% more damage but attack 30% slower."
+kind = 3
+region = &"arsenal"
+cost = 3
+position = Vector2(80, -185)
+links = Array[StringName]([&"arsenal_thornstorm"])
+unlocks_nodes = Array[StringName]([&"keystone_focus"])

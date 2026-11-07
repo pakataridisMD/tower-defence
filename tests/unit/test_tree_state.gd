@@ -105,3 +105,50 @@ func test_changed_signal_fires() -> void:
 	watch_signals(state)
 	state.allocate(&"a")
 	assert_signal_emitted(state, "changed")
+
+
+func test_restore_takes_nodes_in_any_order() -> void:
+	var state := TreeState.new(graph, 10)
+	state.restore([&"c", &"d", &"b", &"a"])
+	for id: StringName in [&"a", &"b", &"c", &"d"]:
+		assert_true(state.is_allocated(id), "%s is taken" % id)
+	assert_eq(state.points, 5)
+
+
+func test_restore_skips_nodes_it_cannot_take() -> void:
+	var state := TreeState.new(graph, 2)
+	state.restore([&"missing", &"c", &"a", &"d"])
+	assert_eq(state.allocated_ids().size(), 2, "only the start and a")
+	assert_true(state.is_allocated(&"a"))
+	assert_false(state.is_allocated(&"c"), "c is cut off without b")
+	assert_false(state.is_allocated(&"d"), "d costs 2 and only 1 point is left")
+	assert_eq(state.points, 1)
+
+
+func test_reset_refunds_everything_but_the_start() -> void:
+	var state := TreeState.new(graph, 5)
+	state.restore([&"a", &"b", &"d"])
+	watch_signals(state)
+	state.reset()
+	assert_eq(state.allocated_ids().size(), 1)
+	assert_true(state.is_allocated(&"start"))
+	assert_eq(state.points, 5)
+	assert_signal_emitted(state, "changed")
+
+
+func test_path_to_a_far_node_starts_at_the_taken_part() -> void:
+	var state := TreeState.new(graph, 5)
+	var from_start: Array[StringName] = [&"start", &"a", &"b", &"c"]
+	assert_eq(state.path_to(&"c"), from_start)
+	state.allocate(&"a")
+	var from_a: Array[StringName] = [&"a", &"b", &"c"]
+	assert_eq(state.path_to(&"c"), from_a)
+
+
+func test_path_to_is_empty_for_taken_unknown_or_blocked_nodes() -> void:
+	var state := TreeState.new(graph, 5)
+	state.allocate(&"a")
+	assert_eq(state.path_to(&"a").size(), 0, "already taken")
+	assert_eq(state.path_to(&"missing").size(), 0)
+	state.lock([&"b"])
+	assert_eq(state.path_to(&"c").size(), 0, "the only way there runs through a locked node")

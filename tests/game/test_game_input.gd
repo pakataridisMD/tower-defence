@@ -10,6 +10,7 @@ var game: Game
 
 
 func before_each() -> void:
+	Progress.use_memory_profile()
 	game = GAME_SCENE.instantiate()
 	add_child_autofree(game)
 	await wait_process_frames(2)

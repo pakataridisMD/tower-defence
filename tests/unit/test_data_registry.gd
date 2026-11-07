@@ -76,3 +76,62 @@ func test_unknown_enemy_in_a_wave_is_reported() -> void:
 	registry.wave_sets[wave_set.id] = wave_set
 	var errors := "\n".join(registry.validate())
 	assert_string_contains(errors, "unknown enemy 'ghost'")
+
+
+func test_the_meta_tree_can_be_completed() -> void:
+	var graph: TreeGraph = registry.meta_tree()
+	var state := TreeState.new(graph, 999)
+	var taken_any := true
+	while taken_any:
+		taken_any = false
+		for id in graph.ids():
+			if state.allocate(id):
+				taken_any = true
+	assert_eq(state.allocated_ids().size(), graph.size(), "every meta node is reachable")
+
+
+func test_bad_meta_unlocks_are_reported() -> void:
+	var node_data := TreeNodeData.new()
+	node_data.id = &"bad_meta"
+	node_data.region = &"command"
+	node_data.links = [&"meta_start"]
+	node_data.unlocks_towers = [&"fire_brazier"]
+	node_data.unlocks_maps = [&"atlantis"]
+	node_data.unlocks_nodes = [&"nowhere"]
+	node_data.unlocks_difficulties = [&"nightmare"]
+	registry.meta_tree_nodes.append(node_data)
+	var errors := "\n".join(registry.validate())
+	assert_string_contains(errors, "towers are unlocked in the in-run web")
+	assert_string_contains(errors, "unknown map 'atlantis'")
+	assert_string_contains(errors, "unknown in-run node 'nowhere'")
+	assert_string_contains(errors, "unknown difficulty 'nightmare'")
+
+
+func test_in_run_nodes_cannot_unlock_maps() -> void:
+	var node_data := TreeNodeData.new()
+	node_data.id = &"greedy"
+	node_data.links = [&"start"]
+	node_data.unlocks_maps = [&"serpentine"]
+	registry.in_run_tree_nodes.append(node_data)
+	assert_string_contains("\n".join(registry.validate()), "only meta tree nodes can unlock")
+
+
+func test_locking_every_map_is_reported() -> void:
+	var node_data := TreeNodeData.new()
+	node_data.id = &"gatekeeper"
+	node_data.region = &"expeditions"
+	node_data.links = [&"meta_start"]
+	var all_maps: Array[StringName] = []
+	all_maps.assign(registry.maps.keys())
+	node_data.unlocks_maps = all_maps
+	registry.meta_tree_nodes.append(node_data)
+	assert_string_contains("\n".join(registry.validate()), "Every map is locked")
+
+
+func test_an_unknown_meta_branch_is_reported() -> void:
+	var node_data := TreeNodeData.new()
+	node_data.id = &"lost"
+	node_data.region = &"atlantis"
+	node_data.links = [&"meta_start"]
+	registry.meta_tree_nodes.append(node_data)
+	assert_string_contains("\n".join(registry.validate()), "unknown region 'atlantis'")

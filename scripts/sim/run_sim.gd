@@ -168,7 +168,12 @@ func place_tower(tower_id: StringName, cell: Vector2i) -> SimTower:
 
 
 func sell_value(tower: SimTower) -> int:
-	return floori(tower.price_paid * config.rules.sell_refund)
+	return floori(tower.price_paid * clampf(run_stat(&"sell_refund", config.rules.sell_refund), 0.0, 1.0))
+
+
+## A run-wide number, such as gold per wave, after the meta tree's and the skill web's bonuses.
+func run_stat(stat: StringName, base: float) -> float:
+	return StatCalculator.compute(stat, base, _modifiers)
 
 
 func sell_tower(tower: SimTower) -> int:
@@ -235,7 +240,7 @@ func step(delta: float) -> void:
 
 
 func _spawn(delta: float) -> void:
-	var multiplier := config.wave_set.health_multiplier(wave_number())
+	var multiplier := config.wave_set.health_multiplier(wave_number()) * config.enemy_health_multiplier()
 	for enemy_id in _spawner.advance(delta):
 		var data: EnemyData = config.enemies.get(enemy_id)
 		if data == null:
@@ -439,9 +444,12 @@ func _remove_dead() -> void:
 func _finish_wave() -> void:
 	var finished := current_wave()
 	wave_index += 1
-	var points := config.rules.tree_points_after_wave(wave_index, finished.is_boss)
+	var rules := config.rules
+	var points := rules.tree_points_after_wave(wave_index, false)
+	if finished.is_boss:
+		points += roundi(run_stat(&"tree_points_per_boss", rules.tree_points_per_boss))
 	tree.points += points
-	var bonus := config.rules.gold_per_wave
+	var bonus := roundi(run_stat(&"gold_per_wave", rules.gold_per_wave))
 	gold += bonus
 	gold_earned += bonus
 	projectiles.clear()

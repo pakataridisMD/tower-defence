@@ -4,6 +4,8 @@ extends Resource
 
 @export var id: StringName
 @export var display_name: String
+## Position in the menu, lowest first.
+@export var order: int = 0
 ## Columns and rows of build cells.
 @export var grid_size: Vector2i = Vector2i(24, 15)
 ## Pixels per cell.

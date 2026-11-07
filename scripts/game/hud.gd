@@ -34,6 +34,7 @@ var _message_time := 0.0
 var _end_panel: PanelContainer
 var _end_title: Label
 var _end_stats: Label
+var _end_meta: Label
 
 
 func setup(p_sim: RunSim) -> void:
@@ -47,7 +48,6 @@ func setup(p_sim: RunSim) -> void:
 	_build_end_panel()
 	sim.wave_cleared.connect(_on_wave_cleared)
 	sim.wave_started.connect(func(number: int) -> void: show_message("Wave %d" % number))
-	sim.run_ended.connect(_on_run_ended)
 
 
 func show_message(text: String, color: Color = UiStyle.TEXT) -> void:
@@ -122,6 +122,9 @@ func _build_side_panel() -> void:
 		button.icon = UiStyle.element_icon(colors)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.custom_minimum_size = Vector2(0, 64)
+		# Long names are cut short rather than pushing the panel off the screen.
+		button.clip_text = true
+		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		button.tooltip_text = "%s\n%s" % [data.display_name, data.description]
 		button.pressed.connect(func() -> void: tower_chosen.emit(tower_id))
 		button.set_meta(&"hotkey", number)
@@ -152,8 +155,8 @@ func _build_message() -> void:
 
 func _build_end_panel() -> void:
 	_end_panel = PanelContainer.new()
-	_end_panel.position = Vector2(560, 330)
-	_end_panel.size = Vector2(560, 360)
+	_end_panel.position = Vector2(540, 300)
+	_end_panel.size = Vector2(600, 440)
 	_end_panel.hide()
 	add_child(_end_panel)
 	var column := VBoxContainer.new()
@@ -166,6 +169,11 @@ func _build_end_panel() -> void:
 	_end_stats = UiStyle.label("", 22, UiStyle.TEXT_DIM)
 	_end_stats.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.add_child(_end_stats)
+	_end_meta = UiStyle.label("", 22, UiStyle.GOLD)
+	_end_meta.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_end_meta.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_end_meta.custom_minimum_size = Vector2(500, 0)
+	column.add_child(_end_meta)
 	var buttons := HBoxContainer.new()
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER
 	buttons.add_theme_constant_override("separation", 16)
@@ -203,6 +211,9 @@ func _refresh() -> void:
 	_gold.text = "Gold %d" % sim.gold
 	_lives.text = "Lives %d" % sim.lives
 	_wave.text = "Wave %d / %d" % [sim.wave_number(), sim.total_waves()]
+	var difficulty := sim.config.difficulty
+	if difficulty != null and difficulty.order > 0:
+		_wave.text += "  ·  " + difficulty.display_name
 	_next.text = _wave_text()
 	var points := sim.tree.points
 	_web_button.text = "Skill web (T)" + ("  ·  %d point%s" % [points, "" if points == 1 else "s"] if points > 0 else "")
@@ -255,7 +266,7 @@ func _refresh_tower_button(tower_id: StringName, button: Button) -> void:
 	var price := sim.tower_price(tower_id)
 	var hotkey: int = button.get_meta(&"hotkey")
 	if not sim.is_unlocked(tower_id):
-		button.text = "%s\nUnlock: %s" % [data.display_name, _unlocking_node_name(tower_id)]
+		button.text = "%s\n%s" % [data.display_name, _unlock_hint(tower_id)]
 		button.disabled = true
 	else:
 		button.text = "%d  %s  ·  %dg\n%s" % [hotkey, data.display_name, price, _element_names(data)]
@@ -270,11 +281,14 @@ func _element_names(data: TowerData) -> String:
 	return " + ".join(names)
 
 
-func _unlocking_node_name(tower_id: StringName) -> String:
+## Where a locked tower is unlocked: a skill web node, or the meta tree when that node is locked too.
+func _unlock_hint(tower_id: StringName) -> String:
 	for node_data in sim.config.tree_nodes:
 		if node_data.unlocks_towers.has(tower_id):
-			return node_data.display_name
-	return "?"
+			if sim.tree.is_locked(node_data.id):
+				return "Unlock in the meta tree"
+			return "Unlock: %s" % node_data.display_name
+	return "Locked"
 
 
 func _refresh_info() -> void:
@@ -316,9 +330,12 @@ func _on_wave_cleared(number: int, points: int, gold: int) -> void:
 	show_message(text, UiStyle.GOOD)
 
 
-func _on_run_ended(won: bool) -> void:
+## The win or lose panel, with the run's numbers and the meta points it paid.
+func show_end(won: bool, meta_points: int) -> void:
 	_end_title.text = "Victory" if won else "Defeat"
 	_end_title.add_theme_color_override("font_color", UiStyle.GOOD if won else UiStyle.BAD)
 	_end_stats.text = "Waves cleared: %d of %d\nEnemies killed: %d\nLives left: %d\nGold earned: %d" % [
 		sim.wave_index, sim.total_waves(), sim.kills, sim.lives, sim.gold_earned]
+	_end_meta.text = "+%d meta point%s. Spend them in the meta tree from the main menu." % [
+		meta_points, "" if meta_points == 1 else "s"]
 	_end_panel.show()
