@@ -156,6 +156,23 @@ func test_chain_towers_hit_several_enemies() -> void:
 	assert_true(tower.damage_dealt > 0.0)
 
 
+func test_towers_turn_to_face_what_they_attack() -> void:
+	var sim := _sim()
+	sim.allocate_node(&"fire_entry")
+	var tower := sim.place_tower(&"fire_brazier", CELL)
+	assert_almost_eq(tower.facing, PI / 2.0, 0.001, "new towers face down")
+	sim.start_next_wave()
+	var elapsed := 0.0
+	while tower.damage_dealt == 0.0 and sim.projectiles.is_empty() and elapsed < 60.0:
+		sim.step(0.05)
+		elapsed += 0.05
+	assert_false(sim.projectiles.is_empty() and tower.damage_dealt == 0.0, "the tower attacked")
+	var shot: SimProjectile = sim.projectiles[0] if not sim.projectiles.is_empty() else null
+	if shot != null:
+		var expected := (shot.target_point - tower.position).angle()
+		assert_almost_eq(angle_difference(tower.facing, expected), 0.0, 0.05)
+
+
 func test_meta_bonuses_raise_wave_gold_and_sell_refunds() -> void:
 	var rules: RunRules = registry.run_rules
 	var sim := _sim([

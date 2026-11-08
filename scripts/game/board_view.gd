@@ -28,6 +28,8 @@ var selected: SimTower
 var hover_cell := Vector2i(-1, -1)
 
 var _effects: Array[Effect] = []
+## Seconds since the board was set up, for tower art animations.
+var _time := 0.0
 var _font: Font
 ## The ground and path never change during a run, so they are drawn once on their own layer.
 var _ground: Node2D
@@ -75,6 +77,7 @@ func select(tower: SimTower) -> void:
 
 
 func _process(delta: float) -> void:
+	_time += delta
 	var active: Array[Effect] = []
 	for effect in _effects:
 		effect.time += delta
@@ -118,8 +121,11 @@ func _unhandled_input(event: InputEvent) -> void:
 func _draw() -> void:
 	if sim == null:
 		return
-	for tower in sim.towers:
-		_draw_tower(tower.data, tower.position, 1.0)
+	# Tower art is taller than a cell, so draw from the top row down and let nearer towers overlap.
+	var towers := sim.towers.duplicate()
+	towers.sort_custom(func(a: SimTower, b: SimTower) -> bool: return a.position.y < b.position.y)
+	for tower: SimTower in towers:
+		_draw_tower(tower.data, tower.position, 1.0, tower.facing, tower.id * 3)
 	if selected != null:
 		_draw_range(selected.position, selected.attack_range, Color(1, 1, 1, 0.55))
 	for enemy in sim.enemies:
@@ -184,7 +190,11 @@ func _draw_range(center: Vector2, radius: float, color: Color) -> void:
 	draw_arc(center, radius, 0.0, TAU, 72, color, 2.0, true)
 
 
-func _draw_tower(data: TowerData, center: Vector2, alpha: float) -> void:
+func _draw_tower(data: TowerData, center: Vector2, alpha: float, facing: float = PI / 2.0, phase: int = 0) -> void:
+	var art := TowerSpriteSet.for_tower(data.id)
+	if art != null:
+		art.draw(self, center, facing, _time, phase, Color(1, 1, 1, alpha))
+		return
 	var base := Rect2(center - Vector2(TOWER_HALF_SIZE, TOWER_HALF_SIZE), Vector2(TOWER_HALF_SIZE, TOWER_HALF_SIZE) * 2.0)
 	draw_rect(base, Color(TOWER_BASE, alpha))
 	draw_rect(base, Color(1, 1, 1, 0.12 * alpha), false, 2.0)

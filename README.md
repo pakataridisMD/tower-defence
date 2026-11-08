@@ -6,7 +6,8 @@ hybrid towers. A separate meta tree carries progress between runs.
 
 This repository is at **step 4 of 4**: a playable prototype with two maps, two difficulty levels, ten
 waves, three elements (Fire, Storm and Nature), two hybrid towers, a small in-run skill web, and a meta
-tree that is saved between runs. All art is placeholder shapes.
+tree that is saved between runs. The Fire Brazier and Storm Spire have pre-rendered pixel art from the Blender pipeline
+(see [docs/art-pipeline.md](docs/art-pipeline.md)); everything else is still placeholder shapes.
 
 ## Getting started
 
@@ -96,6 +97,9 @@ bot save somewhere else; CI does this to check that saving works.
   to skip the run and only take the menu, the meta tree and the skill web. It needs a window, so on a server
   run it under `xvfb-run`.
 
+- `blender -b -P art/blender/render_tower.py -- <tower id>` renders a tower's sprite sheet. See
+  [docs/art-pipeline.md](docs/art-pipeline.md) for options and how to add a tower.
+
 ## Folder layout
 
 ```
@@ -109,7 +113,9 @@ scripts/
   ui/        main menu, meta tree screen, shared styles, data check
 tests/       GUT tests: unit tests and full simulated runs
 tools/       benchmark and screenshot tools (not part of the game)
-assets/      art and audio (Git LFS)
+assets/      art and audio (Git LFS); sprites/towers/<id>/ holds rendered tower sheets
+art/blender/ Python scripts that model towers in Blender and render their sprite sheets
+docs/        the art pipeline guide
 addons/gut/  the GUT test framework (MIT licence)
 ```
 

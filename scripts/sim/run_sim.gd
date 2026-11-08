@@ -315,6 +315,7 @@ func _find_target(tower: SimTower) -> SimEnemy:
 
 
 func _attack(tower: SimTower, target: SimEnemy) -> void:
+	tower.facing = (target.position - tower.position).angle()
 	if tower.chains():
 		_fire_chain(tower, target)
 		return

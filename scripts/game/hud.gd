@@ -119,7 +119,14 @@ func _build_side_panel() -> void:
 		for element_id in data.elements:
 			colors.append(sim.config.element_color(element_id))
 		var button := UiStyle.button("", 18)
-		button.icon = UiStyle.element_icon(colors)
+		var art := TowerSpriteSet.for_tower(tower_id)
+		if art != null:
+			button.icon = art.portrait()
+			button.add_theme_constant_override("icon_max_width", 56)
+			if art.pixel_art:
+				button.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		else:
+			button.icon = UiStyle.element_icon(colors)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.custom_minimum_size = Vector2(0, 64)
 		# Long names are cut short rather than pushing the panel off the screen.
