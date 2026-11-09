@@ -100,8 +100,10 @@ func own_modifiers() -> Array[Modifier]:
 func recompute(modifiers: Array[Modifier]) -> void:
 	var own := own_modifiers()
 	if not own.is_empty():
-		modifiers = modifiers.duplicate()
-		modifiers.append_array(own)
+		var combined: Array[Modifier] = []
+		combined.append_array(modifiers)
+		combined.append_array(own)
+		modifiers = combined
 	damage = data.stat_with(&"damage", modifiers)
 	attacks_per_second = data.stat_with(&"attacks_per_second", modifiers)
 	attack_range = data.stat_with(&"attack_range", modifiers)
