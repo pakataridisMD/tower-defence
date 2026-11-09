@@ -5,6 +5,7 @@ extends Control
 const GAME_SCENE := "res://scenes/game/game.tscn"
 const META_TREE_SCENE := "res://scenes/meta/meta_tree.tscn"
 const DATA_CHECK_SCENE := "res://scenes/debug/data_check.tscn"
+const ART_TEST_SCENE := "res://scenes/demos/fire_tower_lighting.tscn"
 const RING_CENTER := Vector2(1340, 500)
 const RING_RADIUS := 230.0
 const ELEMENT_RADIUS := 44.0
@@ -66,6 +67,7 @@ func _build_menu() -> void:
 		meta_text += "  ·  %d point%s to spend" % [points, "" if points == 1 else "s"]
 	_add_button(column, meta_text, 24, func() -> void: get_tree().change_scene_to_file(META_TREE_SCENE))
 	_add_button(column, "Data check", 20, func() -> void: get_tree().change_scene_to_file(DATA_CHECK_SCENE))
+	_add_button(column, "Art test: lit Fire tower", 20, func() -> void: get_tree().change_scene_to_file(ART_TEST_SCENE))
 	_add_button(column, "Quit", 20, func() -> void: get_tree().quit())
 	_add_gap(column, 12)
 	column.add_child(UiStyle.label(_records_text(), 18, UiStyle.TEXT_DIM))

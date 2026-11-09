@@ -1,0 +1,764 @@
+#!/usr/bin/env python3
+"""Generates the in-game pixel art: tower, enemy and prop sprites, and each map's ground.
+
+Same look as the lighting test (tools/art/gen_lighting_demo.py): detailed top-down pixel art in the
+spirit of Graveyard Keeper, where every sprite has a normal map (OpenGL convention, green points up
+the screen) so Godot's 2D lights shade it, and glowing pixels go in a separate "_glow" image that the
+game draws unshaded.
+
+One art pixel is drawn as 2x2 screen pixels, so a 64 px map cell is 32 art pixels.
+
+Writes to assets/art/game/:
+  towers/<tower_id>.png, _n.png, _glow.png    one per tower in data/towers
+  enemies/<enemy_id>_<frame>.png, _n.png       body frames, drawn light so the game can tint them
+  enemies/<enemy_id>_gear_<frame>.png, _n.png  untinted parts (eyes, armour, crowns)
+  props/<prop>.png, _n.png                     grass tufts, stones, mushrooms, bushes
+  ground/<map_id>.png, _n.png                  the whole board, road included
+  ground/<map_id>.json                         where the props sit, by cell
+  art.json                                     anchors, light colours and muzzle points
+
+Run from the repository root:  python3 tools/art/gen_game_art.py
+Needs numpy and Pillow. The output is deterministic.
+"""
+from __future__ import annotations
+
+import glob
+import json
+import math
+import os
+import re
+import sys
+
+import numpy as np
+from PIL import Image
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from gen_lighting_demo import (  # noqa: E402  (shared palette and helpers)
+    BERRY, COAL, DIRT, DIRT_EDGE, FLOWER, GRASS, GRASS_TIP, IRON, LEAF, LICHEN, MORTAR, MOSS, ROCK,
+    STONE, encode_normals, fbm, hexc, normals_from_height, outline, ramp_pick, shade, value_noise,
+)
+
+OUT = os.path.join("assets", "art", "game")
+ART_SCALE = 2  # screen pixels per art pixel
+INK = hexc("17151b")
+
+WOOD = [hexc(c) for c in ("2b1d18", "3d2a20", "54392a", "6e4c35", "8a6444")]
+COPPER = [hexc(c) for c in ("3a2218", "6a3a22", "9a5a2e", "c8803e", "e8b070")]
+SPARK = [hexc(c) for c in ("6a5a20", "c8a83a", "f2d060", "fff0a0", "ffffff")]
+PLASMA = [hexc(c) for c in ("7a1d40", "d0406a", "ff8a5a", "ffd08a", "fff6e0")]
+SEED = [hexc(c) for c in ("2a5a1a", "5aa02a", "9ae04a", "d8ff8a")]
+SLIME_BODY = [hexc(c) for c in ("3a4250", "6a7484", "a0a8b4", "d2d8de", "f4f6f8")]
+MUSHROOM = [hexc(c) for c in ("6a2a3a", "a8404a", "d86a5a")]
+GLOWCAP = [hexc(c) for c in ("2a6a6a", "4ac0b0", "9af0e0")]
+
+
+# ---------------------------------------------------------------- a sprite canvas
+class Canvas:
+    """RGB, normals, alpha and glow for one sprite, with drawing helpers for the 3/4 view."""
+
+    TILT = 0.5  # how far a wall's normal leans down the screen
+
+    def __init__(self, w: int, h: int, seed: int = 0):
+        self.w, self.h = w, h
+        self.rgb = np.zeros((h, w, 3), np.float32)
+        self.nrm = np.zeros((h, w, 3), np.float32)
+        self.nrm[..., 2] = 1
+        self.alpha = np.zeros((h, w), np.uint8)
+        self.glow = np.zeros((h, w, 4), np.uint8)
+        self.rng = np.random.default_rng(seed)
+
+    def put(self, x, y, col, n=(0.0, 0.0, 1.0), glow=None) -> None:
+        x, y = int(round(x)), int(round(y))
+        if 0 <= x < self.w and 0 <= y < self.h:
+            n = np.asarray(n, np.float32)
+            self.rgb[y, x] = col
+            self.nrm[y, x] = n / max(1e-6, float(np.linalg.norm(n)))
+            self.alpha[y, x] = 255
+            if glow is not None:
+                self.glow[y, x, :3] = np.clip(glow, 0, 255).astype(np.uint8)
+                self.glow[y, x, 3] = 255
+
+    def wall_normal(self, u: float) -> np.ndarray:
+        theta = math.asin(max(-1.0, min(1.0, u)))
+        return np.array([math.sin(theta), -self.TILT * math.cos(theta), math.cos(theta)])
+
+    def cylinder(self, cx, bottom, height, radius, ramp, *, top_radius=None, course_h=4.0, stone_w=6.0,
+                 texture="stone", moss_rows=0, seed=0) -> None:
+        """The front of an upright cylinder (or a taper, with top_radius) whose front-bottom point is at y=bottom."""
+        rng = np.random.default_rng(seed)
+        tone = rng.random((64, 64))
+        top_radius = radius if top_radius is None else top_radius
+        max_r = max(radius, top_radius)
+        for x in range(self.w):
+            for y in range(self.h):
+                # Height above the base along the wall, for this column: solve per pixel since the radius varies.
+                dx = x - cx
+                found = None
+                for hv in np.arange(0, height + 0.01, 0.5):
+                    r = radius + (top_radius - radius) * (hv / max(height, 1e-6))
+                    if abs(dx) > r + 0.25:
+                        continue
+                    u = max(-1.0, min(1.0, dx / max(r, 0.5)))
+                    yy = bottom - r * 0.42 + r * 0.42 * math.sqrt(max(0.0, 1 - u * u)) - hv
+                    if abs(yy - y) <= 0.5:
+                        found = (hv, r, u)
+                        break
+                if found is None:
+                    continue
+                hv, r, u = found
+                theta = math.asin(u)
+                arc = theta * r
+                n = self.wall_normal(u)
+                lit = 0.5 + 0.5 * (-0.55 * math.sin(theta) + 0.3)
+                if texture == "stone":
+                    course = int(hv // course_h)
+                    in_course = hv - course * course_h
+                    offset = (course % 2) * stone_w * 0.5
+                    s = arc + offset + 40
+                    sidx = int(s // stone_w)
+                    in_stone = s - sidx * stone_w
+                    t = tone[course % 64, sidx % 64]
+                    joint = in_course < 1.0 or in_stone < max(0.35, math.cos(theta))
+                    if joint:
+                        col = MORTAR
+                    else:
+                        v = np.clip(0.15 + t * 0.45 + lit * 0.35 - 0.1 * (in_course < 1.8), 0, 0.999)
+                        col = ramp[int(v * len(ramp))]
+                        if in_course < 1.8:
+                            n = n + np.array([0, 0.35, 0])
+                        if in_stone < 1.6:
+                            n = n + np.array([-0.3, 0, 0])
+                elif texture == "bark":
+                    stripe = int((arc + 40) // 2.0)
+                    t = tone[int(hv // 3) % 64, stripe % 64]
+                    v = np.clip(0.1 + lit * 0.45 + t * 0.35 + 0.15 * math.sin(stripe * 1.7 + hv * 0.15), 0, 0.999)
+                    col = ramp[int(v * len(ramp))]
+                    if stripe % 3 == 0:
+                        col = ramp[0]
+                        n = n + np.array([0.25, 0, 0])
+                elif texture == "metal":
+                    v = np.clip(0.2 + lit * 0.7 + (0.25 if abs(u + 0.35) < 0.18 else 0), 0, 0.999)
+                    col = ramp[int(v * len(ramp))]
+                else:  # plain
+                    v = np.clip(0.15 + lit * 0.75, 0, 0.999)
+                    col = ramp[int(v * len(ramp))]
+                if moss_rows and hv < moss_rows and rng.random() < (1 - hv / moss_rows) * 0.65:
+                    col = MOSS[int(rng.integers(0, 3))]
+                if abs(u) > 0.86:
+                    col = col * 0.8
+                self.put(x, y, col, n)
+        del max_r
+
+    def disc(self, cx, cy, radius, ramp, *, flat=False, seed=0) -> None:
+        """A flat top seen from the 3/4 view: an ellipse."""
+        rng = np.random.default_rng(seed)
+        b = radius * 0.42
+        for y in range(self.h):
+            for x in range(self.w):
+                u = (x - cx) / radius
+                v = (y - cy) / max(b, 0.5)
+                rr = u * u + v * v
+                if rr > 1:
+                    continue
+                t = 0.55 - 0.25 * u - 0.2 * v + rng.random() * (0.0 if flat else 0.12)
+                col = ramp[int(np.clip(t, 0, 0.999) * len(ramp))]
+                self.put(x, y, col, (0.0, 0.6, 0.8))
+
+    def ring(self, cx, cy, radius, col, thickness=1, glow=None) -> None:
+        """The front half of a horizontal band around a cylinder."""
+        b = radius * 0.42
+        for x in range(self.w):
+            u = (x - cx) / radius
+            if abs(u) > 1:
+                continue
+            y = cy + b * math.sqrt(1 - u * u)
+            lit = 1.0 - 0.35 * (u + 1)
+            for k in range(thickness):
+                self.put(x, y - k, col * (0.7 + 0.45 * lit), self.wall_normal(u), glow)
+
+    def sphere(self, cx, cy, r, ramp, glow_ramp=None, light=(-0.45, 0.55, 0.7)) -> None:
+        for y in range(self.h):
+            for x in range(self.w):
+                dx, dy = (x - cx) / r, (y - cy) / r
+                rr = dx * dx + dy * dy
+                if rr > 1:
+                    continue
+                n = np.array([dx, -dy, math.sqrt(max(0.0, 1 - rr))])
+                t = float(shade(n[None, None, :], light)[0, 0]) * 0.85 + 0.12
+                col = ramp[int(np.clip(t, 0, 0.999) * len(ramp))]
+                g = glow_ramp[int(np.clip(t, 0, 0.999) * len(glow_ramp))] if glow_ramp is not None else None
+                self.put(x, y, col, n, g)
+
+    def crystal(self, cx, top, w, h, ramp, glow=True) -> None:
+        """An upright diamond with a lit left facet and a darker right one."""
+        mid = top + h * 0.38
+        for y in range(int(top), int(top + h) + 1):
+            if y <= mid:
+                half = w / 2 * (y - top) / max(mid - top, 1)
+            else:
+                half = w / 2 * (1 - (y - mid) / max(top + h - mid, 1))
+            for x in range(int(cx - half - 0.5), int(cx + half + 0.5) + 1):
+                if abs(x - cx) > half + 0.25:
+                    continue
+                left = x < cx
+                upper = y <= mid
+                idx = 3 if (left and upper) else 2 if left else 1 if upper else 0
+                if abs(x - cx) < 0.6:
+                    idx = 4
+                col = ramp[min(idx, len(ramp) - 1)]
+                n = ((-0.6 if left else 0.6), (0.4 if upper else -0.4), 0.7)
+                self.put(x, y, col, n, col if glow else None)
+
+    def line(self, x0, y0, x1, y1, col, n=(0.0, 0.0, 1.0), glow=None) -> None:
+        steps = int(max(abs(x1 - x0), abs(y1 - y0)) * 2) + 1
+        for i in range(steps + 1):
+            t = i / steps
+            self.put(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, col, n, glow)
+
+    def leaves(self, cx, cy, rx, ry, ramp, count=8, seed=0, berries=None) -> None:
+        rng = np.random.default_rng(seed)
+        blobs = []
+        for _ in range(count):
+            r = rng.uniform(min(rx, ry) * 0.45, min(rx, ry) * 0.7)
+            bx = cx + rng.uniform(-rx + r, rx - r)
+            by = cy + rng.uniform(-ry + r, ry - r)
+            blobs.append((bx, by, r))
+        blobs.sort(key=lambda b: b[1])
+        noise = value_noise(self.h, self.w, 1.6, rng)
+        for bx, by, r in blobs:
+            for y in range(max(0, int(by - r - 1)), min(self.h, int(by + r + 2))):
+                for x in range(max(0, int(bx - r - 1)), min(self.w, int(bx + r + 2))):
+                    dx, dy = (x - bx) / r, (y - by) / r
+                    rr = dx * dx + dy * dy
+                    if rr > 1:
+                        continue
+                    n = np.array([dx + (noise[y, x] - 0.5) * 0.5, -dy, math.sqrt(max(0.05, 1 - rr))])
+                    n /= np.linalg.norm(n)
+                    t = float(shade(n[None, None, :])[0, 0]) * 0.8 + (noise[y, x] - 0.5) * 0.35 + 0.1
+                    self.put(x, y, ramp[int(np.clip(t, 0, 0.999) * len(ramp))], n)
+        if berries is not None:
+            ys, xs = np.nonzero(self.alpha)
+            for _ in range(berries[0]):
+                i = int(rng.integers(0, len(ys)))
+                self.put(xs[i], ys[i], berries[1][1], glow=berries[2][1] if len(berries) > 2 else None)
+
+    def ink(self) -> None:
+        ring = outline(self.alpha)
+        ys, xs = np.nonzero(ring)
+        for y, x in zip(ys, xs):
+            self.put(x, y, INK)
+
+    def save(self, folder: str, name: str, glow: bool = False) -> None:
+        os.makedirs(folder, exist_ok=True)
+        rgba = np.zeros((self.h, self.w, 4), np.uint8)
+        rgba[..., :3] = np.clip(self.rgb + 0.5, 0, 255).astype(np.uint8)
+        rgba[..., 3] = self.alpha
+        Image.fromarray(rgba, "RGBA").save(os.path.join(folder, name + ".png"))
+        Image.fromarray(encode_normals(self.nrm, self.alpha), "RGBA").save(os.path.join(folder, name + "_n.png"))
+        if glow:
+            Image.fromarray(self.glow, "RGBA").save(os.path.join(folder, name + "_glow.png"))
+
+
+def battlement(c: Canvas, cx, cy, r, ramp=STONE) -> None:
+    """Back parapet, shaded walkway, then front merlons, for a round tower top centred at (cx, cy)."""
+    b = r * 0.42
+    parapet = 3
+    for x in range(c.w):
+        u = (x - cx) / r
+        if abs(u) > 1:
+            continue
+        y_back = cy - b * math.sqrt(1 - u * u)
+        for k in range(parapet + 1):
+            top = k == parapet
+            c.put(x, y_back - k, ramp[4] if top else ramp[2], (0, 0.6, 0.8) if top else (-u * 0.5, -c.TILT, 0.85))
+    c.disc(cx, cy, r - 1.2, [ramp[0], ramp[1], ramp[1]], flat=True)
+    for x in range(c.w):
+        u = (x - cx) / r
+        if abs(u) > 1:
+            continue
+        theta = math.asin(u)
+        y_front = cy + b * math.sqrt(1 - u * u)
+        tooth = int((theta * r + 40) // 4) % 2 == 0
+        rise = parapet if tooth else 1
+        for k in range(rise + 1):
+            if k == rise:
+                c.put(x, y_front - k, ramp[5] if u < 0.3 else ramp[4], (0, 0.6, 0.8))
+            else:
+                c.put(x, y_front - k, ramp[3] if u < 0.2 else ramp[2], c.wall_normal(u))
+
+
+# ---------------------------------------------------------------- towers
+TOWERS: dict[str, dict] = {}
+
+
+def tower(fn):
+    TOWERS[fn.__name__] = fn
+    return fn
+
+
+@tower
+def fire_brazier() -> dict:
+    c = Canvas(34, 66, seed=1)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 5, 14, STONE[:5], course_h=3, stone_w=6, moss_rows=4, seed=1)
+    c.cylinder(cx, base - 4, 25, 11.5, STONE[1:], course_h=4, stone_w=6, moss_rows=3, seed=2)
+    top_cy = base - 4 - 25 - 4.5
+    c.cylinder(cx, top_cy + 5.5 + 6, 6, 14, STONE[1:], course_h=6, stone_w=5, seed=3)
+    battlement(c, cx, top_cy, 14)
+    # Arrow slit with a warm glow inside.
+    for y in range(base - 22, base - 14):
+        c.put(cx, y, IRON[0], (0, -0.5, 0.85), COAL[3] if y > base - 21 else None)
+        c.put(cx - 1, y, STONE[4], (-0.5, -0.5, 0.8))
+        c.put(cx + 1, y, STONE[1], (0.5, -0.5, 0.8))
+    # Brazier: three legs, a riveted bowl and glowing coals.
+    bowl_cy = top_cy - 13
+    for lx in (-3, 0, 3):
+        c.line(cx + lx, bowl_cy + 4, cx + lx * 1.6, top_cy + 2, IRON[2] if lx <= 0 else IRON[1], (0.3 * lx, -0.3, 0.9))
+    for x in range(c.w):
+        u = (x - cx) / 6.5
+        if abs(u) > 1:
+            continue
+        depth = 5 * math.sqrt(1 - u * u)
+        for y in range(int(bowl_cy), int(bowl_cy + depth) + 1):
+            k = (y - bowl_cy) / max(depth, 1)
+            lit = -u * 0.5 - k * 0.6 + 0.6
+            col = IRON[3] if lit > 0.75 else IRON[2] if lit > 0.3 else IRON[1]
+            c.put(x, y, col, (u * 0.8, -0.6 * k, 0.7))
+    for y in range(c.h):
+        for x in range(c.w):
+            u, v = (x - cx) / 6.5, (y - bowl_cy) / 2.7
+            rr = u * u + v * v
+            if rr > 1:
+                continue
+            if rr > 0.6:
+                c.put(x, y, IRON[3] if v < 0 else IRON[2], (0, 0.6, 0.8))
+            else:
+                heat = (1 - rr) * 0.8 + c.rng.random() * 0.35
+                col = COAL[int(np.clip(heat, 0, 0.999) * len(COAL))]
+                c.put(x, y, col * 0.6, (0, 0.6, 0.8), col)
+    # Ivy on the left flank.
+    for _ in range(26):
+        y = int(c.rng.integers(base - 26, base - 4))
+        x = int(cx - 11 + c.rng.integers(0, 3))
+        if c.alpha[y, x]:
+            c.put(x, y, LEAF[int(c.rng.integers(1, 5))], (-0.4, 0.2, 0.9))
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "fire_brazier", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, bowl_cy - base - 2],
+            "light": {"color": "#ff9a48", "offset": [0, bowl_cy - base + 2], "energy": 1.2, "range": 120, "height": 40},
+            "emitter": "fire", "emitter_offset": [0, bowl_cy - base - 1]}
+
+
+@tower
+def storm_spire() -> dict:
+    c = Canvas(30, 66, seed=2)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 5, 12.5, STONE[:5], course_h=2.5, stone_w=5, moss_rows=3, seed=4)
+    c.cylinder(cx, base - 4, 30, 8.5, STONE[1:], top_radius=4.5, course_h=4, stone_w=5, seed=5)
+    # Copper bands and lightning rods.
+    for k, hv in enumerate((6, 14, 22)):
+        r = 8.5 + (4.5 - 8.5) * hv / 30
+        c.ring(cx, base - 4 - hv - r * 0.42 + 0.0, r + 0.6, COPPER[3], thickness=2 if k == 0 else 1)
+    top = base - 4 - 30 - 2
+    c.disc(cx, top + 1, 4.8, COPPER[1:])
+    for side in (-1, 1):
+        c.line(cx + side * 4, top + 1, cx + side * 6, top - 9, COPPER[2] if side < 0 else COPPER[1], (side * 0.5, 0, 0.8))
+        c.put(cx + side * 6, top - 10, SPARK[3], glow=SPARK[3])
+    # A floating storm crystal, crackling.
+    c.crystal(cx, top - 21, 9, 15, SPARK)
+    for _ in range(5):
+        x = cx + c.rng.integers(-6, 7)
+        y = top - 14 + c.rng.integers(-8, 8)
+        if not c.alpha[int(y), int(x)]:
+            c.put(x, y, SPARK[4], glow=SPARK[4])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "storm_spire", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, top - 14 - base],
+            "light": {"color": "#ffe27a", "offset": [0, top - 12 - base], "energy": 0.9, "range": 100, "height": 46},
+            "emitter": "sparks", "emitter_offset": [0, top - 14 - base]}
+
+
+@tower
+def nature_thornbush() -> dict:
+    c = Canvas(36, 52, seed=3)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    # Roots spreading over the ground, then a gnarled trunk.
+    for ang in (-2.6, -2.0, -1.0, -0.4, 0.3):
+        c.line(cx, base - 2, cx + math.cos(ang) * 13, base + math.sin(ang) * -3 + 1, WOOD[2], (math.cos(ang) * 0.5, 0.3, 0.8))
+    c.cylinder(cx, base, 16, 6.5, WOOD, top_radius=4.5, texture="bark", seed=6)
+    # Branches with thorns.
+    for x0, y0, x1, y1 in ((cx - 2, base - 12, cx - 11, base - 25), (cx + 2, base - 14, cx + 12, base - 27), (cx, base - 16, cx + 1, base - 30)):
+        c.line(x0, y0, x1, y1, WOOD[3], (0, 0.3, 0.9))
+        c.line(x0 + 1, y0, x1 + 1, y1, WOOD[1], (0.4, 0, 0.8))
+        for t in (0.3, 0.6, 0.85):
+            tx, ty = x0 + (x1 - x0) * t, y0 + (y1 - y0) * t
+            c.put(tx - 1, ty - 1, hexc("d8d0b0"), (0, 0.5, 0.8))
+    # Canopy of dark leaves with glowing seed pods.
+    c.leaves(cx, base - 32, 15, 11, LEAF, count=11, seed=7)
+    for _ in range(6):
+        ys, xs = np.nonzero(c.alpha[: base - 22])
+        i = int(c.rng.integers(0, len(ys)))
+        x, y = xs[i], ys[i]
+        c.put(x, y, SEED[2] * 0.7, (0, 0.3, 0.9), SEED[2])
+        c.put(x, y + 1, SEED[1] * 0.7, (0, -0.3, 0.9), SEED[1])
+    # Thorny brambles around the foot.
+    for _ in range(18):
+        ang = c.rng.uniform(0, math.tau)
+        x = cx + math.cos(ang) * c.rng.uniform(5, 12)
+        y = base - 2 + math.sin(ang) * c.rng.uniform(1, 4)
+        c.put(x, y, LEAF[int(c.rng.integers(1, 4))], (0, 0.4, 0.9))
+        c.put(x + 1, y - 1, hexc("d8d0b0"))
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "nature_thornbush", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, -32],
+            "light": {"color": "#9ae04a", "offset": [0, -30], "energy": 0.6, "range": 70, "height": 30},
+            "emitter": "leaves", "emitter_offset": [0, -32]}
+
+
+@tower
+def hybrid_plasma() -> dict:
+    c = Canvas(34, 68, seed=4)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 6, 14, STONE[:5], course_h=3, stone_w=6, moss_rows=3, seed=8)
+    c.cylinder(cx, base - 5, 16, 11, STONE[1:], top_radius=9, course_h=4, stone_w=6, seed=9)
+    # Copper coil: stacked rings narrowing upwards.
+    coil_base = base - 5 - 16 - 4
+    c.disc(cx, coil_base + 1, 9, STONE[2:])
+    c.cylinder(cx, coil_base + 1, 18, 3, COPPER, texture="metal", seed=10)
+    for k in range(7):
+        r = 7 - k * 0.6
+        c.ring(cx, coil_base - 2 - k * 2.5, r, COPPER[3] if k % 2 == 0 else COPPER[2], thickness=1)
+    # Plasma orb with a hot glow.
+    orb_y = coil_base - 24
+    c.sphere(cx, orb_y, 6, [p * 0.75 for p in PLASMA], PLASMA)
+    for _ in range(6):
+        ang = c.rng.uniform(0, math.tau)
+        c.put(cx + math.cos(ang) * 8, orb_y + math.sin(ang) * 7, SPARK[3], glow=SPARK[3])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_plasma", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, orb_y - base],
+            "light": {"color": "#ff8a6a", "offset": [0, orb_y - base + 2], "energy": 1.1, "range": 110, "height": 50},
+            "emitter": "plasma", "emitter_offset": [0, orb_y - base]}
+
+
+@tower
+def hybrid_thornstorm() -> dict:
+    c = Canvas(34, 64, seed=5)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 5, 12.5, STONE[:5], course_h=2.5, stone_w=5, moss_rows=5, seed=11)
+    # A carved wooden totem wrapped in vines.
+    c.cylinder(cx, base - 4, 26, 7, WOOD, top_radius=6, texture="bark", seed=12)
+    for k in range(9):
+        y = base - 6 - k * 3
+        x = cx - 6 + (k % 3) * 5
+        c.put(x, y, LEAF[3], (0, 0.3, 0.9))
+        c.put(x + 1, y - 1, LEAF[2], (0, 0.3, 0.9))
+    for y in (base - 14, base - 22):
+        c.put(cx - 2, y, SPARK[2] * 0.6, glow=SPARK[2])
+        c.put(cx + 2, y, SPARK[2] * 0.6, glow=SPARK[2])
+    # Roots grip a storm crystal on top; leaves crown it.
+    top = base - 4 - 26 - 2
+    c.disc(cx, top + 1, 6, WOOD[1:])
+    c.leaves(cx, top - 2, 12, 5, LEAF, count=7, seed=13, berries=(4, BERRY, SEED))
+    c.crystal(cx, top - 19, 8, 14, SPARK)
+    for side in (-1, 1):
+        c.line(cx + side * 5, top - 2, cx + side * 3, top - 10, WOOD[3], (side * 0.5, 0, 0.8))
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_thornstorm", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, top - 12 - base],
+            "light": {"color": "#d8f070", "offset": [0, top - 10 - base], "energy": 0.85, "range": 95, "height": 44},
+            "emitter": "sparks", "emitter_offset": [0, top - 12 - base]}
+
+
+# ---------------------------------------------------------------- enemies
+def slime(name: str, w: int, h: int, rx: float, ry: float, gear=None, seed: int = 0) -> dict:
+    frames = [(1.0, 1.0), (1.07, 0.9), (0.95, 1.08), (1.02, 0.97)]
+    for f, (sx, sy) in enumerate(frames):
+        body = Canvas(w, h, seed)
+        gear_c = Canvas(w, h, seed + 100)
+        erx, ery = rx * sx, ry * sy
+        cy = h - 1 - ery * 0.95
+        cx = (w - 1) / 2
+        for y in range(h):
+            for x in range(w):
+                u = (x - cx) / erx
+                v = (y - cy) / ery
+                v = v * 1.5 if v > 0 else v
+                rr = u * u + v * v
+                if rr > 1:
+                    continue
+                n = np.array([u, -v, math.sqrt(max(0.04, 1 - rr))])
+                t = float(shade(n[None, None, :])[0, 0]) * 0.85 + 0.1
+                body.put(x, y, SLIME_BODY[int(np.clip(t, 0, 0.999) * 4)], n)
+        hx, hy = cx - erx * 0.42, cy - ery * 0.48
+        body.put(hx, hy, SLIME_BODY[4], (0, 0.5, 0.9))
+        body.put(hx + 1, hy, SLIME_BODY[4], (0, 0.5, 0.9))
+        body.ink()
+        body.save(os.path.join(OUT, "enemies"), f"{name}_{f}")
+        if gear:
+            gear(gear_c, cx, cy, erx, ery)
+            gear_c.save(os.path.join(OUT, "enemies"), f"{name}_gear_{f}", glow=True)
+    return {"size": [w, h], "anchor": [w // 2, h - 1], "gear": gear is not None, "frames": len(frames)}
+
+
+def eyes(c: Canvas, cx, cy, rx, ry, glow=None, gap=2) -> None:
+    ey = cy - ry * 0.05
+    for ex in (cx - gap, cx + gap):
+        c.put(ex, ey, hexc("0b1220"), glow=glow)
+        c.put(ex, ey - 1, hexc("0b1220") if glow is None else glow * 0.8, glow=glow)
+
+
+def grunt_gear(c, cx, cy, rx, ry):
+    eyes(c, cx, cy, rx, ry)
+
+
+def runner_gear(c, cx, cy, rx, ry):
+    eyes(c, cx + 1, cy, rx, ry, gap=1.5)
+    # Swept-back ears make it read as fast.
+    c.put(cx - rx + 1, cy - ry * 0.7, SLIME_BODY[1])
+    c.put(cx - rx, cy - ry * 0.9, SLIME_BODY[1])
+
+
+def brute_gear(c, cx, cy, rx, ry):
+    # An iron helmet with rivets and a nose guard.
+    for x in range(c.w):
+        u = (x - cx) / (rx * 0.9)
+        if abs(u) > 1:
+            continue
+        top = cy - ry * 0.95 * math.sqrt(1 - u * u)
+        for y in range(int(top), int(cy - ry * 0.25)):
+            lit = 0.5 - 0.4 * u - 0.2 * (y - top) / ry
+            col = IRON[3] if lit > 0.55 else IRON[2] if lit > 0.2 else IRON[1]
+            c.put(x, y, col, (u * 0.8, 0.5, 0.6))
+        c.put(x, cy - ry * 0.25, IRON[0], (0, -0.5, 0.8))
+    for k in (-3, 0, 3):
+        c.put(cx + k, cy - ry * 0.4, IRON[3], (0, 0.5, 0.8))
+    for y in range(int(cy - ry * 0.3), int(cy + 1)):
+        c.put(cx, y, IRON[2], (0, -0.3, 0.9))
+    eyes(c, cx, cy + 1, rx, ry, glow=hexc("ff6a3a"), gap=3)
+    c.ink()
+
+
+def warden_gear(c, cx, cy, rx, ry):
+    # A bone crown with glowing eyes and a pair of horns.
+    crown_y = cy - ry * 0.9
+    for x in range(int(cx - 7), int(cx + 8)):
+        tooth = 3 if (x - int(cx)) % 3 == 0 else 1
+        for k in range(tooth + 1):
+            c.put(x, crown_y - k, hexc("e8dcc0") if x < cx else hexc("b8a888"), (0, 0.5, 0.8))
+        c.put(x, crown_y + 1, hexc("8a7a5a"))
+    for side in (-1, 1):
+        for k in range(7):
+            c.put(cx + side * (rx * 0.75 + k * 0.6), cy - ry * 0.5 - k * 1.1, hexc("d8ccb0") if k < 5 else hexc("f4ecd8"))
+    eyes(c, cx, cy, rx, ry, glow=hexc("ff4a6a"), gap=4)
+    c.ink()
+
+
+ENEMIES = {
+    "grunt": lambda: slime("grunt", 18, 15, 7.5, 6.5, grunt_gear, 1),
+    "runner": lambda: slime("runner", 14, 11, 5.5, 4.5, runner_gear, 2),
+    "brute": lambda: slime("brute", 24, 20, 10.5, 9.0, brute_gear, 3),
+    "warden": lambda: slime("warden", 36, 30, 16.0, 13.5, warden_gear, 4),
+}
+
+
+# ---------------------------------------------------------------- props
+def make_props() -> dict:
+    folder = os.path.join(OUT, "props")
+    info = {}
+    for i in range(3):
+        c = Canvas(9, 8, seed=40 + i)
+        for b in range(5):
+            x0 = 2 + b + int(c.rng.integers(-1, 1))
+            tall = int(c.rng.integers(4, 8))
+            lean = c.rng.uniform(-0.4, 0.4) + (b - 2) * 0.12
+            for k in range(tall):
+                col = GRASS[min(4, 1 + int(k / tall * 4))] if k < tall - 1 else GRASS_TIP
+                c.put(x0 + lean * k, c.h - 1 - k, col, (lean * 0.5, 0.35, 0.85))
+        c.save(folder, f"tuft_{i}")
+        info[f"tuft_{i}"] = {"size": [c.w, c.h], "sways": True}
+    for i, (w, h) in enumerate(((8, 6), (11, 8))):
+        c = Canvas(w, h, seed=50 + i)
+        yy, xx = np.mgrid[0:h, 0:w].astype(np.float64)
+        u = (xx - (w - 1) / 2) / (w / 2 - 0.5)
+        v = (yy - (h - 1) * 0.55) / (h * 0.55)
+        rr = u * u + v * v
+        hgt = np.round(np.sqrt(np.clip(1 - rr, 0, 1)) * w * 0.35)
+        nrm = normals_from_height(hgt, 0.9)
+        t = shade(nrm) * 0.75 + c.rng.random((h, w)) * 0.15
+        rgb = ramp_pick(ROCK, np.clip(t, 0, 0.999))
+        for y in range(h):
+            for x in range(w):
+                if rr[y, x] < 1:
+                    col = LICHEN if (c.rng.random() < 0.12 and nrm[y, x, 1] > 0.1) else rgb[y, x]
+                    c.put(x, y, col, nrm[y, x])
+        c.ink()
+        c.save(folder, f"stone_{i}")
+        info[f"stone_{i}"] = {"size": [w, h], "sways": False}
+    for i, (cap, glowing) in enumerate(((MUSHROOM, False), (GLOWCAP, True))):
+        c = Canvas(9, 9, seed=60 + i)
+        for k, (mx, my, r) in enumerate(((3, 6, 2.5), (6, 7, 1.8))):
+            for y in range(int(my - 1), c.h):
+                c.put(mx, y, hexc("e0d8c0") if k == 0 else hexc("c8c0a8"), (0, -0.3, 0.9))
+            for x in range(int(mx - r), int(mx + r) + 1):
+                for y in range(int(my - r - 1), int(my) + 1):
+                    if ((x - mx) / r) ** 2 + ((y - my + 0.5) / (r * 0.8)) ** 2 <= 1:
+                        lit = 0.6 - 0.3 * (x - mx) / r - 0.3 * (y - my) / r
+                        col = cap[2] if lit > 0.7 else cap[1] if lit > 0.35 else cap[0]
+                        c.put(x, y, col * (0.7 if glowing else 1.0), (0, 0.5, 0.8), col if glowing else None)
+        c.ink()
+        c.save(folder, f"mushroom_{i}", glow=glowing)
+        info[f"mushroom_{i}"] = {"size": [c.w, c.h], "sways": False, "glow": glowing}
+    for i in range(2):
+        c = Canvas(16, 13, seed=70 + i)
+        c.leaves(7.5, 7, 7.5, 5.5, LEAF, count=6, seed=70 + i, berries=(4, BERRY) if i else None)
+        c.ink()
+        c.save(folder, f"bush_{i}")
+        info[f"bush_{i}"] = {"size": [c.w, c.h], "sways": True}
+    return info
+
+
+# ---------------------------------------------------------------- ground per map
+def read_map(path: str) -> dict:
+    text = open(path).read()
+    mid = re.search(r'^id = &"(\w+)"', text, re.M).group(1)
+    grid = re.search(r"grid_size = Vector2i\((\d+), (\d+)\)", text)
+    cell = re.search(r"cell_size = (\d+)", text)
+    wps = re.findall(r"Vector2i\((-?\d+), (-?\d+)\)", re.search(r"waypoints = (.*)", text).group(1))
+    return {"id": mid, "grid": (int(grid.group(1)), int(grid.group(2))) if grid else (24, 15),
+            "cell": int(cell.group(1)) if cell else 64, "waypoints": [(int(a), int(b)) for a, b in wps]}
+
+
+def distance_to_segments(px, py, pts) -> np.ndarray:
+    best = np.full(px.shape, 1e9)
+    for (ax, ay), (bx, by) in zip(pts[:-1], pts[1:]):
+        vx, vy = bx - ax, by - ay
+        ll = max(vx * vx + vy * vy, 1e-9)
+        t = np.clip(((px - ax) * vx + (py - ay) * vy) / ll, 0, 1)
+        best = np.minimum(best, np.hypot(px - (ax + t * vx), py - (ay + t * vy)))
+    return best
+
+
+def make_ground(m: dict, props_info: dict) -> None:
+    cell_art = m["cell"] // ART_SCALE
+    W, H = m["grid"][0] * cell_art, m["grid"][1] * cell_art
+    rng = np.random.default_rng(abs(hash(m["id"])) % (2 ** 31) if False else sum(map(ord, m["id"])))
+    pts = [((x + 0.5) * cell_art, (y + 0.5) * cell_art) for x, y in m["waypoints"]]
+    # Stretch the ends so the road runs off the edge of the board.
+    if len(pts) >= 2:
+        for i, j in ((0, 1), (-1, -2)):
+            ax, ay = pts[i]
+            bx, by = pts[j]
+            d = math.hypot(ax - bx, ay - by) or 1
+            pts[i] = (ax + (ax - bx) / d * cell_art * 2, ay + (ay - by) / d * cell_art * 2)
+    half = cell_art * 0.46
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float64)
+    dist = distance_to_segments(xx, yy, pts)
+    wobble = (fbm(H, W, [7, 3], rng) - 0.5) * 4.0
+    road_d = dist + wobble
+    on_road = road_d < half
+    edge = (road_d >= half - 1.2) & on_road
+
+    patches = fbm(H, W, [26, 11, 5], rng)
+    fine = value_noise(H, W, 2.2, rng)
+    g = np.clip(patches * 0.85 + fine * 0.25 - 0.08, 0, 0.999)
+    g -= np.clip(1.0 - (road_d - half) / 5.0, 0, 1) * 0.25
+    g = np.clip(g, 0, 0.999)
+    rgb = ramp_pick(GRASS[:4], g, dither=0.35)
+    height = g * 0.6
+    for _ in range(int(W * H / 75)):
+        x, y = int(rng.integers(0, W)), int(rng.integers(3, H))
+        if road_d[y, x] < half + 1:
+            continue
+        tall = 2 + (rng.random() < 0.4)
+        lean = int(rng.choice([-1, 0, 0, 1]))
+        rgb[y, x] = GRASS[0]
+        for k in range(1, tall + 1):
+            xk = min(max(x + (lean if k == tall else 0), 0), W - 1)
+            rgb[y - k, xk] = GRASS[3] if k < tall else GRASS_TIP
+            height[y - k, xk] = 0.9
+    for _ in range(int(W * H / 2600)):
+        x, y = int(rng.integers(2, W - 2)), int(rng.integers(2, H - 2))
+        if road_d[y, x] < half + 3:
+            continue
+        rgb[y, x] = FLOWER[int(rng.integers(0, len(FLOWER)))]
+        rgb[y + 1, x] = GRASS[1]
+        height[y, x] = 1.0
+
+    dirt_t = np.clip(fbm(H, W, [12, 5, 3], rng) * 0.9 + 0.08, 0, 0.999)
+    rut = np.abs(dist - 6.0) < 1.2
+    dirt_t = np.clip(np.where(rut & on_road, dirt_t - 0.22, dirt_t), 0, 0.999)
+    rgb = np.where(on_road[..., None], ramp_pick(DIRT, dirt_t, dither=0.5), rgb)
+    rgb = np.where(edge[..., None], DIRT_EDGE, rgb)
+    height = np.where(on_road, -0.6 + dirt_t * 0.3 - rut * 0.25, height)
+    for _ in range(int(W * H / 1300)):
+        x, y = int(rng.integers(1, W - 2)), int(rng.integers(1, H - 2))
+        if road_d[y, x] > half - 3:
+            continue
+        rgb[y, x] = ROCK[3]
+        rgb[y, x + 1] = ROCK[2]
+        rgb[y + 1, x] = ROCK[1]
+        height[y, x] += 0.8
+    edge_pts = np.argwhere(edge)
+    for y, x in edge_pts[rng.random(len(edge_pts)) < 0.35]:
+        if y > 2:
+            rgb[y, x] = GRASS[2]
+            rgb[y - 1, x] = GRASS[3]
+            height[y, x] = 0.4
+
+    folder = os.path.join(OUT, "ground")
+    os.makedirs(folder, exist_ok=True)
+    rgba = np.zeros((H, W, 4), np.uint8)
+    rgba[..., :3] = np.clip(rgb + 0.5, 0, 255).astype(np.uint8)
+    rgba[..., 3] = 255
+    Image.fromarray(rgba, "RGBA").save(os.path.join(folder, m["id"] + ".png"))
+    Image.fromarray(encode_normals(normals_from_height(height, 1.6), np.full((H, W), 255, np.uint8)), "RGBA").save(
+        os.path.join(folder, m["id"] + "_n.png"))
+
+    # Props: small things in the grass, never on the road. The game hides a cell's props when a
+    # tower is built there.
+    props = []
+    weights = [("tuft_0", 6), ("tuft_1", 6), ("tuft_2", 6), ("stone_0", 2), ("stone_1", 1),
+               ("mushroom_0", 1), ("mushroom_1", 1), ("bush_0", 1), ("bush_1", 1)]
+    kinds = [k for k, n in weights for _ in range(n)]
+    for _ in range(int(m["grid"][0] * m["grid"][1] * 0.75)):
+        x, y = float(rng.uniform(4, W - 4)), float(rng.uniform(8, H - 2))
+        kind = kinds[int(rng.integers(0, len(kinds)))]
+        size = props_info[kind]["size"]
+        if road_d[int(y), int(x)] < half + size[0] * 0.5 + 2:
+            continue
+        cell = [int(x // cell_art), int(y // cell_art)]
+        props.append({"kind": kind, "pos": [round(x), round(y)], "cell": cell, "flip": bool(rng.random() < 0.5)})
+    with open(os.path.join(folder, m["id"] + ".json"), "w") as fh:
+        json.dump({"size": [W, H], "props": props}, fh, indent=0)
+
+
+def main() -> None:
+    os.makedirs(OUT, exist_ok=True)
+    art = {"art_scale": ART_SCALE, "towers": {}, "enemies": {}, "props": {}}
+    tower_ids = sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("data/towers/*.tres"))
+    for tid in tower_ids:
+        if tid in TOWERS:
+            art["towers"][tid] = TOWERS[tid]()
+        else:
+            print("No art recipe for tower", tid, "- the game draws a placeholder")
+    for eid in sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("data/enemies/*.tres")):
+        if eid in ENEMIES:
+            art["enemies"][eid] = ENEMIES[eid]()
+        else:
+            print("No art recipe for enemy", eid, "- the game draws a placeholder")
+    art["props"] = make_props()
+    for path in sorted(glob.glob("data/maps/*.tres")):
+        make_ground(read_map(path), art["props"])
+    with open(os.path.join(OUT, "art.json"), "w") as fh:
+        json.dump(art, fh, indent=1)
+    print("Wrote", OUT)
+
+
+if __name__ == "__main__":
+    main()

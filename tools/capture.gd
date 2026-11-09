@@ -80,6 +80,10 @@ func _run() -> void:
 	await _until(func() -> bool: return game.sim.wave_index >= 6 and game.sim.state == RunSim.State.WAVE \
 			and game.sim.time_in_wave > 14.0)
 	await _shot("battle")
+	# The last wave is fought at night, by the light of the towers.
+	await _until(func() -> bool: return game.sim.wave_index >= game.sim.total_waves() - 1 \
+			and game.sim.state == RunSim.State.WAVE and game.sim.time_in_wave > 12.0)
+	await _shot("night_battle")
 	await _until(func() -> bool: return game.sim.is_over())
 	await _wait(1.0)
 	await _shot("end")

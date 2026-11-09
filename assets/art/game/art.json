@@ -1,0 +1,267 @@
+{
+ "art_scale": 2,
+ "towers": {
+  "fire_brazier": {
+   "size": [
+    34,
+    66
+   ],
+   "anchor": [
+    17,
+    62
+   ],
+   "muzzle": [
+    0,
+    -48.5
+   ],
+   "light": {
+    "color": "#ff9a48",
+    "offset": [
+     0,
+     -44.5
+    ],
+    "energy": 1.2,
+    "range": 120,
+    "height": 40
+   },
+   "emitter": "fire",
+   "emitter_offset": [
+    0,
+    -47.5
+   ]
+  },
+  "hybrid_plasma": {
+   "size": [
+    34,
+    68
+   ],
+   "anchor": [
+    17,
+    64
+   ],
+   "muzzle": [
+    0,
+    -49
+   ],
+   "light": {
+    "color": "#ff8a6a",
+    "offset": [
+     0,
+     -47
+    ],
+    "energy": 1.1,
+    "range": 110,
+    "height": 50
+   },
+   "emitter": "plasma",
+   "emitter_offset": [
+    0,
+    -49
+   ]
+  },
+  "hybrid_thornstorm": {
+   "size": [
+    34,
+    64
+   ],
+   "anchor": [
+    17,
+    60
+   ],
+   "muzzle": [
+    0,
+    -44
+   ],
+   "light": {
+    "color": "#d8f070",
+    "offset": [
+     0,
+     -42
+    ],
+    "energy": 0.85,
+    "range": 95,
+    "height": 44
+   },
+   "emitter": "sparks",
+   "emitter_offset": [
+    0,
+    -44
+   ]
+  },
+  "nature_thornbush": {
+   "size": [
+    36,
+    52
+   ],
+   "anchor": [
+    18,
+    48
+   ],
+   "muzzle": [
+    0,
+    -32
+   ],
+   "light": {
+    "color": "#9ae04a",
+    "offset": [
+     0,
+     -30
+    ],
+    "energy": 0.6,
+    "range": 70,
+    "height": 30
+   },
+   "emitter": "leaves",
+   "emitter_offset": [
+    0,
+    -32
+   ]
+  },
+  "storm_spire": {
+   "size": [
+    30,
+    66
+   ],
+   "anchor": [
+    15,
+    62
+   ],
+   "muzzle": [
+    0,
+    -50
+   ],
+   "light": {
+    "color": "#ffe27a",
+    "offset": [
+     0,
+     -48
+    ],
+    "energy": 0.9,
+    "range": 100,
+    "height": 46
+   },
+   "emitter": "sparks",
+   "emitter_offset": [
+    0,
+    -50
+   ]
+  }
+ },
+ "enemies": {
+  "brute": {
+   "size": [
+    24,
+    20
+   ],
+   "anchor": [
+    12,
+    19
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "grunt": {
+   "size": [
+    18,
+    15
+   ],
+   "anchor": [
+    9,
+    14
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "runner": {
+   "size": [
+    14,
+    11
+   ],
+   "anchor": [
+    7,
+    10
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "warden": {
+   "size": [
+    36,
+    30
+   ],
+   "anchor": [
+    18,
+    29
+   ],
+   "gear": true,
+   "frames": 4
+  }
+ },
+ "props": {
+  "tuft_0": {
+   "size": [
+    9,
+    8
+   ],
+   "sways": true
+  },
+  "tuft_1": {
+   "size": [
+    9,
+    8
+   ],
+   "sways": true
+  },
+  "tuft_2": {
+   "size": [
+    9,
+    8
+   ],
+   "sways": true
+  },
+  "stone_0": {
+   "size": [
+    8,
+    6
+   ],
+   "sways": false
+  },
+  "stone_1": {
+   "size": [
+    11,
+    8
+   ],
+   "sways": false
+  },
+  "mushroom_0": {
+   "size": [
+    9,
+    9
+   ],
+   "sways": false,
+   "glow": false
+  },
+  "mushroom_1": {
+   "size": [
+    9,
+    9
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "bush_0": {
+   "size": [
+    16,
+    13
+   ],
+   "sways": true
+  },
+  "bush_1": {
+   "size": [
+    16,
+    13
+   ],
+   "sways": true
+  }
+ }
+}
