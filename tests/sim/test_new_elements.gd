@@ -252,3 +252,72 @@ func test_selling_refunds_levels_too() -> void:
 	sim.level_up(tower)
 	assert_eq(sim.sell_value(tower), floori(tower.price_paid * registry.run_rules.sell_refund))
 	assert_true(tower.price_paid > tower.type_price)
+
+
+func test_every_element_pair_has_exactly_one_hybrid() -> void:
+	var pairs: Dictionary[String, StringName] = {}
+	for tower_id: StringName in registry.towers:
+		var data: TowerData = registry.towers[tower_id]
+		if not data.is_hybrid():
+			continue
+		var names: Array[String] = [String(data.elements[0]), String(data.elements[1])]
+		names.sort()
+		var key := "+".join(names)
+		assert_false(pairs.has(key), "%s and %s share %s" % [tower_id, pairs.get(key, &""), key])
+		pairs[key] = tower_id
+	assert_eq(pairs.size(), 15)
+
+
+func test_far_hybrids_unlock_from_both_elements_nodes() -> void:
+	var sim := _sim()
+	for id: StringName in [&"fire_entry", &"fire_core", &"nature_entry"]:
+		sim.allocate_node(id)
+	assert_false(sim.is_unlocked(&"hybrid_wildfire"))
+	assert_string_contains(sim.placement_error(&"hybrid_wildfire", CELL), "Unlock")
+	sim.allocate_node(&"nature_core")
+	assert_true(sim.is_unlocked(&"hybrid_wildfire"))
+	assert_not_null(sim.place_tower(&"hybrid_wildfire", CELL))
+
+
+func test_opposite_hybrids_need_both_notables_and_are_never_resisted() -> void:
+	var sim := _sim()
+	for id: StringName in [&"fire_entry", &"fire_core", &"fire_notable", &"water_entry", &"water_core"]:
+		sim.allocate_node(id)
+	assert_false(sim.is_unlocked(&"hybrid_steam"))
+	sim.allocate_node(&"water_notable")
+	assert_true(sim.is_unlocked(&"hybrid_steam"))
+	var steam: TowerData = registry.towers[&"hybrid_steam"]
+	var indices := registry.tower_element_indices(steam)
+	for wave_element in 6:
+		assert_eq(ElementRules.damage_multiplier(indices, wave_element), 1.0, "never resisted, never weak-point")
+
+
+func test_a_base_tower_can_become_a_far_hybrid() -> void:
+	var sim := _sim()
+	for id: StringName in [&"storm_entry", &"storm_core", &"void_entry", &"void_core"]:
+		sim.allocate_node(id)
+	var tower := sim.place_tower(&"storm_spire", CELL)
+	assert_has(sim.hybrid_options(tower), &"hybrid_riftstorm")
+	assert_true(sim.upgrade_to_hybrid(tower, &"hybrid_riftstorm"))
+
+
+func test_far_hybrids_fight_a_wave() -> void:
+	for tower_id: StringName in [&"hybrid_wildfire", &"hybrid_squall", &"hybrid_ironbark", &"hybrid_abyss", &"hybrid_magma",
+			&"hybrid_riftstorm", &"hybrid_steam", &"hybrid_lodestone", &"hybrid_blightroot"]:
+		var sim := RunSim.new(RunConfig.from_registry(registry, MAP))
+		sim.tree.points = 20
+		sim.gold = 1000
+		var data: TowerData = registry.towers[tower_id]
+		for element_id in data.elements:
+			for part in ["entry", "core", "notable"]:
+				sim.allocate_node(StringName("%s_%s" % [element_id, part]))
+		var tower := sim.place_tower(tower_id, CELL)
+		assert_not_null(tower, "built %s" % tower_id)
+		if tower == null:
+			continue
+		sim.start_next_wave()
+		var elapsed := 0.0
+		while sim.state == RunSim.State.WAVE and elapsed < 300.0:
+			sim.step(0.05)
+			elapsed += 0.05
+		assert_gt(tower.damage_dealt, 0.0, "%s dealt damage" % tower_id)

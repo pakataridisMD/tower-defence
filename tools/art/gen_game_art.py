@@ -56,6 +56,10 @@ AMBER = [hexc(c) for c in ("6a3a10", "b06a1a", "e8a030", "ffd070", "fff2c0")]
 OBSIDIAN = [hexc(c) for c in ("120f1a", "1d1828", "2a2338", "3a3050", "4e4268", "6a5a88")]
 VOID = [hexc(c) for c in ("2a1048", "5a2a98", "8e5cd9", "c8a0ff", "f4e8ff")]
 SOUL = [hexc(c) for c in ("3a0f5a", "7a2ab0", "b25af0", "e0a8ff", "fff0ff")]
+CLOUD = [hexc(c) for c in ("3a4250", "56607a", "7a86a0", "a8b4c8", "d8e0ec")]
+EMBER_LEAF = [hexc(c) for c in ("3a1a10", "6a2a14", "a8401a", "e07a2a", "ffc04a")]
+BLIGHT = [hexc(c) for c in ("1e1228", "34204a", "4e2e6a", "6e4890", "9a70b8")]
+ABYSS = [hexc(c) for c in ("0a0f22", "121c3e", "1e2e5e", "34508a", "6a84c0", "b0c4f0")]
 MUD = [hexc(c) for c in ("231a14", "33261c", "463426", "5a4632", "6e5a40")]
 BOG = [hexc(c) for c in ("1a3a2a", "2a5a3a", "3f7a48", "6aa85a", "b0e08a")]
 
@@ -721,6 +725,223 @@ def hybrid_soulflame() -> dict:
     return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, bowl_cy - base - 2],
             "light": {"color": "#c07aff", "offset": [0, bowl_cy - base + 2], "energy": 1.1, "range": 115, "height": 40},
             "emitter": "soulfire", "emitter_offset": [0, bowl_cy - base - 1]}
+
+
+@tower
+def hybrid_wildfire() -> dict:
+    c = Canvas(38, 60, seed=101)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    for ang in (-2.7, -2.1, -1.0, -0.4, 0.4):
+        c.line(cx, base - 2, cx + math.cos(ang) * 13, base + math.sin(ang) * -3 + 1, WOOD[1], (math.cos(ang) * 0.5, 0.3, 0.8))
+    c.cylinder(cx, base, 18, 6, WOOD, top_radius=4, texture="bark", seed=102)
+    c.leaves(cx, base - 32, 16, 12, EMBER_LEAF, count=12, seed=103)
+    for _ in range(9):
+        ys, xs = np.nonzero(c.alpha[: base - 24])
+        i = int(c.rng.integers(0, len(ys)))
+        c.put(xs[i], ys[i], COAL[3] * 0.7, (0, 0.3, 0.9), COAL[3])
+    for _ in range(4):
+        ys, xs = np.nonzero(c.alpha[: base - 24])
+        i = int(c.rng.integers(0, len(ys)))
+        c.put(xs[i], ys[i], SEED[2] * 0.7, (0, 0.3, 0.9), SEED[2])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_wildfire", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, -34],
+            "light": {"color": "#ff9a48", "offset": [0, -32], "energy": 0.9, "range": 100, "height": 34},
+            "emitter": "fire", "emitter_offset": [0, -42]}
+
+
+@tower
+def hybrid_squall() -> dict:
+    c = Canvas(36, 70, seed=104)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 5, 12.5, STONE[:5], course_h=2.5, stone_w=5, moss_rows=3, seed=105)
+    c.cylinder(cx, base - 4, 26, 8, STONE[1:], top_radius=5, course_h=4, stone_w=5, seed=106)
+    for hv in (7, 17):
+        r = 8 + (5 - 8) * hv / 26
+        c.ring(cx, base - 4 - hv - r * 0.42, r + 0.5, WATER[3], thickness=1, glow=WATER[2])
+    top = base - 4 - 26 - 2
+    c.disc(cx, top + 1, 5.5, STONE[2:])
+    # A storm cloud with a crystal of lightning inside it.
+    c.leaves(cx, top - 12, 16, 7, CLOUD, count=10, seed=107)
+    c.crystal(cx, top - 18, 7, 12, SPARK)
+    for k in range(5):
+        x = cx - 10 + k * 5
+        c.put(x, top - 3, WATER[4], (0, 0.3, 0.9), WATER[3] * 0.8)
+        c.put(x + 1, top - 1, WATER[3], (0, 0.3, 0.9))
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_squall", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, top - 12 - base],
+            "light": {"color": "#a8d8ff", "offset": [0, top - 10 - base], "energy": 0.9, "range": 110, "height": 46},
+            "emitter": "drips", "emitter_offset": [0, top - 5 - base]}
+
+
+@tower
+def hybrid_ironbark() -> dict:
+    c = Canvas(40, 62, seed=108)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 5, 15, ROCK, course_h=4, stone_w=8, moss_rows=4, seed=109)
+    c.cylinder(cx, base - 4, 22, 8, WOOD, top_radius=6, texture="bark", seed=110)
+    for hv in (4, 12, 19):
+        r = 8 + (6 - 8) * hv / 22
+        c.ring(cx, base - 4 - hv - r * 0.42, r + 0.4, IRON[3], thickness=1)
+    top = base - 4 - 22
+    c.leaves(cx, top - 8, 18, 10, LEAF, count=12, seed=111)
+    for _ in range(14):
+        ys, xs = np.nonzero(c.alpha[: top + 2])
+        i = int(c.rng.integers(0, len(ys)))
+        c.put(xs[i], ys[i], IRON[3], (0, 0.5, 0.8))
+    for _ in range(5):
+        ys, xs = np.nonzero(c.alpha[: top + 2])
+        i = int(c.rng.integers(0, len(ys)))
+        c.put(xs[i], ys[i], AMBER[3] * 0.7, (0, 0.3, 0.9), AMBER[3])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_ironbark", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, top - 8 - base],
+            "light": {"color": "#d8c070", "offset": [0, top - 6 - base], "energy": 0.6, "range": 80, "height": 36},
+            "emitter": "leaves", "emitter_offset": [0, top - 8 - base]}
+
+
+@tower
+def hybrid_abyss() -> dict:
+    c = Canvas(40, 58, seed=112)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 6, 17, OBSIDIAN[:5], course_h=3, stone_w=7, seed=113)
+    pool_cy = base - 6 - 17 * 0.42
+    battlement(c, cx, pool_cy, 17, OBSIDIAN)
+    pool(c, cx, pool_cy, 14.5, 5.5, ABYSS, glow_ramp=VOID, ripples=3, seed=114)
+    for px in (-10, 10):
+        c.cylinder(cx + px, pool_cy + 2, 12, 1.6, OBSIDIAN[2:], texture="plain", seed=115 + px)
+        c.put(cx + px, pool_cy - 12, VOID[3], glow=VOID[3])
+    orb_y = pool_cy - 22
+    c.sphere(cx, orb_y, 6, [a * 0.9 for a in ABYSS[1:]], VOID[1:])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_abyss", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, orb_y - base],
+            "light": {"color": "#6a7aff", "offset": [0, orb_y - base + 2], "energy": 0.9, "range": 105, "height": 40},
+            "emitter": "void", "emitter_offset": [0, orb_y - base]}
+
+
+@tower
+def hybrid_magma() -> dict:
+    c = Canvas(42, 56, seed=116)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    # A small volcano: a tapering rock cone with a lava lake in its crater.
+    c.cylinder(cx, base, 24, 18, ROCK, top_radius=9, course_h=5, stone_w=9, moss_rows=3, seed=117)
+    crater = base - 24 - 9 * 0.42
+    c.disc(cx, crater, 9, ROCK[:3])
+    pool(c, cx, crater, 7.5, 2.8, COAL[:4], glow_ramp=COAL, ripples=1, seed=118)
+    for k, (x0, y0) in enumerate(((-6, crater + 3), (4, crater + 4), (-1, crater + 3))):
+        for d in range(5 + k * 3):
+            c.put(cx + x0 + (d % 2) * (1 if k % 2 else -1), y0 + d, COAL[2] * 0.7, (0, -0.4, 0.8), COAL[2])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_magma", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, crater - base - 2],
+            "light": {"color": "#ff7a30", "offset": [0, crater - base], "energy": 1.2, "range": 120, "height": 30},
+            "emitter": "fire", "emitter_offset": [0, crater - base - 1]}
+
+
+@tower
+def hybrid_riftstorm() -> dict:
+    c = Canvas(32, 70, seed=119)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 5, 12, OBSIDIAN[:5], course_h=3, stone_w=5, seed=120)
+    c.cylinder(cx, base - 4, 32, 7.5, OBSIDIAN[1:], top_radius=4, texture="metal", seed=121)
+    for hv in (6, 15, 24):
+        r = 7.5 + (4 - 7.5) * hv / 32
+        c.ring(cx, base - 4 - hv - r * 0.42, r + 0.6, COPPER[3], thickness=1)
+    top = base - 4 - 32 - 2
+    c.disc(cx, top + 1, 4.5, COPPER[1:])
+    for side in (-1, 1):
+        c.line(cx + side * 4, top + 1, cx + side * 7, top - 10, COPPER[2] if side < 0 else COPPER[1], (side * 0.5, 0, 0.8))
+        c.put(cx + side * 7, top - 11, VOID[3], glow=VOID[3])
+    c.crystal(cx, top - 20, 8, 14, VOID)
+    for _ in range(5):
+        x = cx + c.rng.integers(-7, 8)
+        y = top - 14 + c.rng.integers(-8, 8)
+        if not c.alpha[int(y), int(x)]:
+            c.put(x, y, SPARK[4], glow=SPARK[3])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_riftstorm", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, top - 13 - base],
+            "light": {"color": "#c08aff", "offset": [0, top - 11 - base], "energy": 1.0, "range": 110, "height": 48},
+            "emitter": "sparks", "emitter_offset": [0, top - 13 - base]}
+
+
+@tower
+def hybrid_steam() -> dict:
+    c = Canvas(38, 52, seed=122)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 10, 15, STONE[:5], course_h=3, stone_w=6, moss_rows=3, seed=123)
+    rim = base - 10 - 15 * 0.42
+    battlement(c, cx, rim, 15)
+    pool(c, cx, rim, 12, 4.6, WATER[1:], glow_ramp=WATER, ripples=2, seed=124)
+    # Copper pipes and a glowing fire grate under the water.
+    for side in (-1, 1):
+        c.line(cx + side * 15, base - 3, cx + side * 17, rim - 6, COPPER[2] if side < 0 else COPPER[1], (side * 0.6, 0, 0.8))
+        c.put(cx + side * 17, rim - 7, COPPER[4], (0, 0.6, 0.8))
+    for k in range(-2, 3):
+        c.put(cx + k * 3, base - 4, COAL[3] * 0.7, (0, -0.5, 0.85), COAL[3])
+        c.put(cx + k * 3, base - 5, COAL[2] * 0.7, (0, -0.5, 0.85), COAL[2])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_steam", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, rim - base - 3],
+            "light": {"color": "#ffc090", "offset": [0, -6], "energy": 0.8, "range": 90, "height": 20},
+            "emitter": "steam", "emitter_offset": [0, rim - base - 2]}
+
+
+@tower
+def hybrid_lodestone() -> dict:
+    c = Canvas(36, 70, seed=125)
+    cx = c.w / 2 - 1.5
+    base = c.h - 4
+    c.cylinder(cx + 1, base, 4, 15, ROCK, course_h=4, stone_w=8, moss_rows=3, seed=126)
+    c.disc(cx + 1, base - 4 - 15 * 0.42, 14, ROCK[1:], seed=127)
+    slab(c, cx, base - 7, 11, 32, SANDSTONE, depth=4, seed=128)
+    for y in range(base - 36, base - 10, 4):
+        for x in range(int(cx - 6), int(cx + 8)):
+            c.put(x, y, COPPER[3] if x < cx else COPPER[2], (0, -0.5, 0.85))
+    top = base - 7 - 32 - 6
+    c.crystal(cx + 1, top - 14, 9, 15, SPARK)
+    for ang in (0.3, 1.9, 3.5, 5.0):
+        c.put(cx + 1 + math.cos(ang) * 9, top - 7 + math.sin(ang) * 3, SPARK[3], glow=SPARK[3])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_lodestone", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [1, top - 8 - base],
+            "light": {"color": "#ffe27a", "offset": [0, top - 6 - base], "energy": 0.9, "range": 105, "height": 46},
+            "emitter": "sparks", "emitter_offset": [1, top - 8 - base]}
+
+
+@tower
+def hybrid_blightroot() -> dict:
+    c = Canvas(38, 58, seed=129)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    for ang in (-2.8, -2.2, -1.2, -0.3, 0.5):
+        c.line(cx, base - 2, cx + math.cos(ang) * 14, base + math.sin(ang) * -3 + 1, OBSIDIAN[3], (math.cos(ang) * 0.5, 0.3, 0.8))
+    c.cylinder(cx, base, 17, 6, [OBSIDIAN[1], OBSIDIAN[2], WOOD[1], WOOD[2], OBSIDIAN[4]], top_radius=4, texture="bark", seed=130)
+    for x0, y0, x1, y1 in ((cx - 2, base - 12, cx - 12, base - 24), (cx + 2, base - 14, cx + 12, base - 27)):
+        c.line(x0, y0, x1, y1, OBSIDIAN[3], (0, 0.3, 0.9))
+    c.leaves(cx, base - 31, 15, 11, BLIGHT, count=11, seed=131)
+    for _ in range(7):
+        ys, xs = np.nonzero(c.alpha[: base - 22])
+        i = int(c.rng.integers(0, len(ys)))
+        c.put(xs[i], ys[i], SEED[2] * 0.7, (0, 0.3, 0.9), SEED[2])
+    for _ in range(3):
+        ys, xs = np.nonzero(c.alpha[: base - 22])
+        i = int(c.rng.integers(0, len(ys)))
+        c.put(xs[i], ys[i], VOID[3] * 0.7, (0, 0.3, 0.9), VOID[3])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_blightroot", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, -32],
+            "light": {"color": "#a0e070", "offset": [0, -30], "energy": 0.7, "range": 85, "height": 30},
+            "emitter": "void", "emitter_offset": [0, -32]}
 
 
 # ---------------------------------------------------------------- enemies

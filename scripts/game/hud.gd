@@ -118,9 +118,10 @@ func _build_side_panel() -> void:
 	column.add_theme_constant_override("separation", 10)
 	panel.add_child(column)
 	column.add_child(UiStyle.label("Towers", 26))
-	# A grid of tower pictures: base towers on top, hybrids below. Names and details are in the tooltips.
+	# A grid of tower pictures: base towers on top, then the hybrids unlocked so far.
+	# Names and details are in the tooltips.
 	var grid := GridContainer.new()
-	grid.columns = 3
+	grid.columns = 4
 	grid.add_theme_constant_override("h_separation", 6)
 	grid.add_theme_constant_override("v_separation", 6)
 	column.add_child(grid)
@@ -134,17 +135,18 @@ func _build_side_panel() -> void:
 		button.icon = UiStyle.element_icon(colors)
 		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		button.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
-		button.custom_minimum_size = Vector2(96, 64)
+		button.custom_minimum_size = Vector2(72, 64)
 		var picture := BoardArt.tower_picture(tower_id)
 		if picture != null:
 			# The tower's own pixel art, at one screen pixel per art pixel.
 			button.icon = picture
 			button.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-			button.custom_minimum_size = Vector2(96, picture.get_height() + 34)
+			button.custom_minimum_size = Vector2(72, picture.get_height() + 30)
 		button.clip_text = true
 		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		button.pressed.connect(func() -> void: tower_chosen.emit(tower_id))
-		button.set_meta(&"hotkey", number if number <= 9 else 0)
+		# Number keys pick the six base towers.
+		button.set_meta(&"hotkey", number if not data.is_hybrid() and number <= 9 else 0)
 		grid.add_child(button)
 		_tower_buttons[tower_id] = button
 		number += 1
@@ -213,7 +215,9 @@ func _shop_order() -> Array[StringName]:
 	var rank := func(id: StringName) -> int:
 		var data: TowerData = sim.config.towers[id]
 		var first := sim.config.element_index(data.elements[0]) if not data.elements.is_empty() else 0
-		return (100 if data.is_hybrid() else 0) + first
+		if not data.is_hybrid():
+			return first
+		return 100 + first * 10 + sim.config.element_index(data.elements[1])
 	ids.sort_custom(func(a: StringName, b: StringName) -> bool: return rank.call(a) < rank.call(b))
 	return ids
 
@@ -286,6 +290,8 @@ func _refresh_tower_button(tower_id: StringName, button: Button) -> void:
 	var price := sim.tower_price(tower_id)
 	var hotkey: int = button.get_meta(&"hotkey")
 	var key := "%d · " % hotkey if hotkey > 0 else ""
+	# Hybrids stay out of the shop until they are unlocked, so the panel only grows as the run does.
+	button.visible = not data.is_hybrid() or sim.is_unlocked(tower_id)
 	if not sim.is_unlocked(tower_id):
 		button.text = "Locked"
 		button.tooltip_text = "%s (%s)\n%s\n%s" % [data.display_name, _element_names(data), data.description, _unlock_hint(tower_id)]
@@ -306,6 +312,13 @@ func _element_names(data: TowerData) -> String:
 
 ## Where a locked tower is unlocked: a skill web node, or the meta tree when that node is locked too.
 func _unlock_hint(tower_id: StringName) -> String:
+	var data: TowerData = sim.config.towers[tower_id]
+	if not data.requires_nodes.is_empty():
+		var needed: PackedStringArray = []
+		for node_data in sim.config.tree_nodes:
+			if data.requires_nodes.has(node_data.id):
+				needed.append(node_data.display_name)
+		return "Unlock: take %s" % " and ".join(needed)
 	for node_data in sim.config.tree_nodes:
 		if node_data.unlocks_towers.has(tower_id):
 			if sim.tree.is_locked(node_data.id):
@@ -322,7 +335,7 @@ func _refresh_info() -> void:
 			"Click a tower to level it up. At level %d it can ascend into one of two specialisations, " % SimTower.MAX_LEVEL + \
 			"and a base tower can turn into a hybrid once its bridge is taken.\n\n" + \
 			"Each wave resists its own element and is weak to the opposite one, so mix elements.\n\n" + \
-			"Space: start wave · F: speed · P: pause · 1-9: towers"
+			"Space: start wave · F: speed · P: pause · 1-6: towers"
 		_sell_button.hide()
 		_set_actions([])
 		return

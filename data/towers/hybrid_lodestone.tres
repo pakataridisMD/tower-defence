@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"stun"
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_e1"]
+script = ExtResource("2_status")
+kind = &"shatter"
+armour_reduction = 1.0
+duration = 4.0
+max_stacks = 4
+
+[sub_resource type="Resource" id="Asc_maglev_m0"]
+script = ExtResource("mod_script")
+stat = &"chain_count"
+value = 3.0
+
+[sub_resource type="Resource" id="Asc_maglev_m1"]
+script = ExtResource("mod_script")
+stat = &"chain_falloff"
+kind = 2
+value = -1.0
+
+[sub_resource type="Resource" id="Asc_maglev"]
+script = ExtResource("asc_script")
+id = &"maglev"
+display_name = "Maglev"
+description = "Chains to 3 more enemies with no loss of damage per jump."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_maglev_m0"), SubResource("Asc_maglev_m1")])
+
+[sub_resource type="Resource" id="Asc_polarity_m0"]
+script = ExtResource("mod_script")
+stat = &"stun_duration"
+kind = 1
+value = 0.6
+
+[sub_resource type="Resource" id="Asc_polarity_m1"]
+script = ExtResource("mod_script")
+stat = &"shatter_strength"
+kind = 1
+value = 1.0
+
+[sub_resource type="Resource" id="Asc_polarity"]
+script = ExtResource("asc_script")
+id = &"polarity"
+display_name = "Polarity"
+description = "Stuns last 60% longer and shatter is twice as strong."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_polarity_m0"), SubResource("Asc_polarity_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"hybrid_lodestone"
+display_name = "Lodestone"
+description = "Magnetised stone pulls lightning down: long chains that stun and crack armour."
+elements = Array[StringName]([&"storm", &"earth"])
+cost = 210
+damage = 20.0
+attacks_per_second = 0.8
+attack_range = 185.0
+chain_count = 4
+chain_range = 130.0
+chain_falloff = 0.1
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
+requires_nodes = Array[StringName]([&"storm_notable", &"earth_notable"])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_maglev"), SubResource("Asc_polarity")])

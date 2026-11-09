@@ -1,0 +1,67 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"curse"
+damage_taken = 0.15
+duration = 2.5
+
+[sub_resource type="Resource" id="Asc_singularity_m0"]
+script = ExtResource("mod_script")
+stat = &"aura_radius"
+kind = 1
+value = 0.4
+
+[sub_resource type="Resource" id="Asc_singularity_m1"]
+script = ExtResource("mod_script")
+stat = &"aura_damage"
+value = 0.1
+
+[sub_resource type="Resource" id="Asc_singularity"]
+script = ExtResource("asc_script")
+id = &"singularity"
+display_name = "Singularity"
+description = "The aura reaches 40% further and grants 10% more increased damage."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_singularity_m0"), SubResource("Asc_singularity_m1")])
+
+[sub_resource type="Resource" id="Asc_void_lightning_m0"]
+script = ExtResource("mod_script")
+stat = &"chain_count"
+value = 2.0
+
+[sub_resource type="Resource" id="Asc_void_lightning_m1"]
+script = ExtResource("mod_script")
+stat = &"curse_strength"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_void_lightning"]
+script = ExtResource("asc_script")
+id = &"void_lightning"
+display_name = "Void Lightning"
+description = "Chains to 2 more enemies and curses are 50% stronger."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_void_lightning_m0"), SubResource("Asc_void_lightning_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"hybrid_riftstorm"
+display_name = "Riftstorm"
+description = "Lightning torn from the void: cursed bolts that chain, and an aura that charges nearby towers."
+elements = Array[StringName]([&"storm", &"void"])
+cost = 150
+damage = 8.0
+attacks_per_second = 1.2
+attack_range = 175.0
+chain_count = 2
+chain_range = 120.0
+chain_falloff = 0.2
+aura_radius = 120.0
+aura_damage = 0.1
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0")])
+requires_nodes = Array[StringName]([&"storm_core", &"void_core"])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_singularity"), SubResource("Asc_void_lightning")])
