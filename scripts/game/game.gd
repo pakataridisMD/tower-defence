@@ -68,6 +68,7 @@ func _build_views() -> void:
 	web = SkillWebView.new()
 	web.title = "Skill web"
 	web.subtitle = "Take nodes to unlock towers and make them stronger. You earn a point for every wave you clear. " + \
+		"The core nodes of two elements unlock their dual tower, and of three their triple. " + \
 		"Right-click refunds a node taken in this break, until you start the next wave."
 	web.can_refund = sim.can_refund_node
 	web.hide()

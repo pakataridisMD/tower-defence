@@ -1,0 +1,81 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="3_asc"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="4_mod"]
+
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_status")
+kind = &"burn"
+damage_per_second = 10.0
+duration = 3.0
+max_stacks = 4
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("2_status")
+kind = &"shatter"
+armour_reduction = 1.5
+duration = 5.0
+max_stacks = 5
+
+[sub_resource type="Resource" id="Effect_2"]
+script = ExtResource("2_status")
+kind = &"curse"
+damage_taken = 0.2
+duration = 3.0
+
+[sub_resource type="Resource" id="Asc_slag_rain_m0"]
+script = ExtResource("4_mod")
+stat = &"splash_radius"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_slag_rain_m1"]
+script = ExtResource("4_mod")
+stat = &"burn_damage"
+kind = 2
+value = 0.6
+
+[sub_resource type="Resource" id="Asc_slag_rain"]
+script = ExtResource("3_asc")
+id = &"slag_rain"
+display_name = "Slag Rain"
+description = "Splashes 50% wider and burn deals 60% more damage."
+modifiers = Array[ExtResource("4_mod")]([SubResource("Asc_slag_rain_m0"), SubResource("Asc_slag_rain_m1")])
+
+[sub_resource type="Resource" id="Asc_soul_anvil_m0"]
+script = ExtResource("4_mod")
+stat = &"damage"
+kind = 2
+value = 1.0
+
+[sub_resource type="Resource" id="Asc_soul_anvil_m1"]
+script = ExtResource("4_mod")
+stat = &"curse_strength"
+kind = 1
+value = 0.6
+
+[sub_resource type="Resource" id="Asc_soul_anvil"]
+script = ExtResource("3_asc")
+id = &"soul_anvil"
+display_name = "Soul Anvil"
+description = "Deals double damage and curses are 60% stronger."
+modifiers = Array[ExtResource("4_mod")]([SubResource("Asc_soul_anvil_m0"), SubResource("Asc_soul_anvil_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"triple_hellforge"
+display_name = "Hellforge"
+description = "A cursed furnace hurling slag: it burns, melts armour and marks its victims for death."
+elements = Array[StringName]([&"earth", &"void", &"fire"])
+requires_nodes = Array[StringName]([&"earth_core", &"void_core", &"fire_core"])
+tags = Array[StringName]([&"area"])
+cost = 300
+damage = 40.0
+attacks_per_second = 0.5
+attack_range = 165.0
+projectile_speed = 380.0
+splash_radius = 75.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0"), SubResource("Effect_1"), SubResource("Effect_2")])
+ascendancies = Array[ExtResource("3_asc")]([SubResource("Asc_slag_rain"), SubResource("Asc_soul_anvil")])

@@ -944,6 +944,204 @@ def hybrid_blightroot() -> dict:
             "emitter": "void", "emitter_offset": [0, -32]}
 
 
+# ---------------------------------------------------------------- triple towers
+# A triple is built from its three elements: one gives the base, one the shaft and one the crown,
+# so all 20 are different and each still reads as the mix it is. Three gems in the elements' colours
+# circle the crown, which is how a triple is told from a dual at a glance.
+RING_ORDER = ["fire", "storm", "nature", "water", "earth", "void"]
+ELEMENT_GEM = {"fire": COAL, "storm": SPARK, "nature": SEED, "water": WATER[1:], "earth": AMBER, "void": VOID}
+ELEMENT_LIGHT = {"fire": (255, 154, 72), "storm": (255, 226, 122), "nature": (154, 224, 74),
+                 "water": (106, 192, 255), "earth": (255, 176, 74), "void": (160, 112, 255)}
+ELEMENT_EMITTER = {"fire": "fire", "storm": "sparks", "nature": "leaves", "water": "drips", "earth": "dust", "void": "void"}
+TRIPLE_W, TRIPLE_H = 44, 84
+
+
+def _triple_base(c: Canvas, element: str, cx: float, base: int, seed: int) -> float:
+    """A wide two-step plinth in the element's material. Returns the y of the shaft's front foot."""
+    r = 18.0
+    if element == "fire":
+        c.cylinder(cx, base, 8, r, STONE[:5], course_h=3, stone_w=6, moss_rows=3, seed=seed)
+        for k in range(-4, 5):  # a glowing grate around the foot
+            u = k / 5.0
+            y = base - 3 + (r * 0.42) * (math.sqrt(1 - u * u) - 1)
+            c.put(cx + u * r, y, COAL[2] * 0.7, (u, -0.5, 0.8), COAL[3])
+            c.put(cx + u * r, y - 1, COAL[1] * 0.7, (u, -0.5, 0.8), COAL[2])
+    elif element == "storm":
+        c.cylinder(cx, base, 8, r, STONE[:5], course_h=2.5, stone_w=5, moss_rows=2, seed=seed)
+        c.ring(cx, base - 4 - r * 0.42, r + 0.5, COPPER[3], thickness=2)
+    elif element == "nature":
+        for ang in (-2.8, -2.2, -1.2, -0.5, 0.2, 0.6):
+            c.line(cx, base - 3, cx + math.cos(ang) * 20, base + math.sin(ang) * -3 + 1, WOOD[2], (math.cos(ang) * 0.5, 0.3, 0.8))
+        c.cylinder(cx, base, 8, r - 1, WOOD, texture="bark", moss_rows=6, seed=seed)
+    elif element == "water":
+        c.cylinder(cx, base, 8, r, STONE[:5], course_h=3, stone_w=6, moss_rows=4, seed=seed)
+    elif element == "earth":
+        c.cylinder(cx, base, 8, r, ROCK, course_h=4, stone_w=9, moss_rows=3, seed=seed)
+    else:
+        c.cylinder(cx, base, 8, r, OBSIDIAN[:5], course_h=3, stone_w=6, seed=seed)
+        c.ring(cx, base - 4 - r * 0.42, r + 0.4, VOID[2], thickness=1, glow=VOID[2])
+    top_cy = base - 8 - r * 0.42
+    if element == "water":
+        battlement(c, cx, top_cy, r)
+        pool(c, cx, top_cy, r - 3.5, (r - 3.5) * 0.4, WATER, glow_ramp=WATER, ripples=2, seed=seed + 1)
+    else:
+        ramp_top = {"fire": STONE[2:], "storm": STONE[2:], "nature": WOOD[1:], "earth": ROCK[1:], "void": OBSIDIAN[1:]}[element]
+        c.disc(cx, top_cy, r - 1, ramp_top, seed=seed + 1)
+    return top_cy + 3
+
+
+def _triple_shaft(c: Canvas, element: str, cx: float, foot: float, seed: int) -> tuple[float, float]:
+    """The tall middle part. Returns the centre y and the radius of its top."""
+    h = 30
+    if element == "fire":
+        r0, r1 = 10.0, 9.0
+        c.cylinder(cx, foot, h, r0, STONE[1:], top_radius=r1, course_h=4, stone_w=6, seed=seed)
+        for y0 in (foot - 12, foot - 23):  # arrow slits with fire behind them
+            for y in range(int(y0), int(y0) + 6):
+                c.put(cx - 4, y, COAL[2] * 0.6, (0, -0.5, 0.85), COAL[3])
+                c.put(cx + 4, y, COAL[1] * 0.6, (0, -0.5, 0.85), COAL[2])
+    elif element == "storm":
+        r0, r1 = 9.0, 5.0
+        c.cylinder(cx, foot, h, r0, STONE[1:], top_radius=r1, course_h=4, stone_w=5, seed=seed)
+        for hv in (7, 15, 23):
+            r = r0 + (r1 - r0) * hv / h
+            c.ring(cx, foot - hv - r * 0.42, r + 0.6, COPPER[3], thickness=1)
+    elif element == "nature":
+        r0, r1 = 8.0, 6.0
+        c.cylinder(cx, foot, h, r0, WOOD, top_radius=r1, texture="bark", seed=seed)
+        for k in range(10):  # a vine winding up the trunk
+            y = foot - 3 - k * 2.8
+            x = cx + math.sin(k * 1.1) * 6
+            c.put(x, y, LEAF[3], (0, 0.3, 0.9))
+            c.put(x + 1, y - 1, LEAF[4], (0, 0.3, 0.9))
+    elif element == "water":
+        r0, r1 = 8.0, 7.0
+        c.cylinder(cx, foot, h, r0, STONE[1:], top_radius=r1, course_h=5, stone_w=5, seed=seed)
+        for hv in (9, 20):
+            r = r0 + (r1 - r0) * hv / h
+            c.ring(cx, foot - hv - r * 0.42, r + 0.5, WATER[3], thickness=1, glow=WATER[2])
+        for y in range(int(foot - h + 4), int(foot) - 1):  # a thin waterfall down the front
+            if y % 3:
+                c.put(cx - 1, y, WATER[4] if y % 2 else WATER[3], (0, -0.4, 0.9), WATER[3] * 0.6)
+    elif element == "earth":
+        r0, r1 = 8.0, 8.0
+        slab(c, cx - 1, foot, 15, h, SANDSTONE, depth=4, seed=seed)
+        for y0 in (foot - 24, foot - 15, foot - 7):
+            for dx, dy in ((0, 0), (-1, 1), (1, 1), (0, 2), (0, 3)):
+                c.put(cx - 2 + dx, y0 + dy, AMBER[2] * 0.7, (0, -0.5, 0.85), AMBER[3])
+        return foot - h - 3, 7.0
+    else:
+        r0, r1 = 8.0, 4.0
+        c.cylinder(cx, foot, h, r0, OBSIDIAN[1:], top_radius=r1, texture="metal", seed=seed)
+        for hv in (7, 15, 23):
+            r = r0 + (r1 - r0) * hv / h
+            c.ring(cx, foot - hv - r * 0.42, r + 0.4, VOID[2], thickness=1, glow=VOID[2])
+    return foot - h - r1 * 0.42, r1
+
+
+def _triple_crown(c: Canvas, element: str, cx: float, top_cy: float, top_r: float, seed: int) -> float:
+    """What sits on top and does the shooting. Returns the y its shots leave from."""
+    if element == "fire":
+        c.disc(cx, top_cy, top_r + 2, IRON[1:])
+        bowl = top_cy - 9
+        for lx in (-4, 0, 4):
+            c.line(cx + lx, bowl + 4, cx + lx * 1.4, top_cy, IRON[2] if lx <= 0 else IRON[1], (0.3 * lx, -0.3, 0.9))
+        for x in range(c.w):
+            u = (x - cx) / 8.0
+            if abs(u) > 1:
+                continue
+            depth = 5.5 * math.sqrt(1 - u * u)
+            for y in range(int(bowl), int(bowl + depth) + 1):
+                c.put(x, y, IRON[3] if u < -0.2 else IRON[2] if u < 0.5 else IRON[1], (u * 0.8, -0.5, 0.7))
+        for y in range(int(bowl) - 4, int(bowl) + 4):
+            for x in range(c.w):
+                u, v = (x - cx) / 8.0, (y - bowl) / 3.0
+                rr = u * u + v * v
+                if rr <= 0.75:
+                    heat = (1 - rr) * 0.8 + c.rng.random() * 0.35
+                    col = COAL[int(np.clip(heat, 0, 0.999) * len(COAL))]
+                    c.put(x, y, col * 0.6, (0, 0.6, 0.8), col)
+        return bowl - 3
+    if element == "storm":
+        c.disc(cx, top_cy, top_r + 1.5, COPPER[1:])
+        for side in (-1, 1):
+            c.line(cx + side * (top_r + 1), top_cy, cx + side * (top_r + 5), top_cy - 12, COPPER[2] if side < 0 else COPPER[1], (side * 0.5, 0, 0.8))
+            c.put(cx + side * (top_r + 5), top_cy - 13, SPARK[3], glow=SPARK[3])
+        c.crystal(cx, top_cy - 24, 11, 19, SPARK)
+        return top_cy - 15
+    if element == "nature":
+        c.leaves(cx, top_cy - 9, 19, 11, LEAF, count=13, seed=seed)
+        for _ in range(8):
+            ys, xs = np.nonzero(c.alpha[: int(top_cy)])
+            i = int(c.rng.integers(0, len(ys)))
+            c.put(xs[i], ys[i], SEED[2] * 0.7, (0, 0.3, 0.9), SEED[2])
+        return top_cy - 10
+    if element == "water":
+        c.disc(cx, top_cy, top_r + 2.5, STONE[3:])
+        pool(c, cx, top_cy, top_r + 1, (top_r + 1) * 0.4, WATER, glow_ramp=WATER, ripples=1, seed=seed)
+        orb = top_cy - 12
+        c.sphere(cx, orb, 7.5, [w * 0.8 for w in WATER[1:]], WATER[2:])
+        for k, dx in enumerate((-9, 9, -11, 11)):
+            c.put(cx + dx, top_cy - 4 + k * 2, WATER[4], (0, 0.3, 0.9), WATER[4] * 0.8)
+        return orb
+    if element == "earth":
+        rock = top_cy - 11
+        c.disc(cx, top_cy, top_r + 1.5, ROCK[1:])
+        c.sphere(cx, rock, 8, ROCK)
+        for dx, dy in ((-3, -2), (2, 1), (-1, 3), (4, -3)):
+            c.put(cx + dx, rock + dy, AMBER[2] * 0.7, (0, 0.2, 0.9), AMBER[3])
+        for dx in (-4, 0, 4):
+            c.put(cx + dx, rock + 9, AMBER[3], glow=AMBER[3])
+        return rock
+    orb = top_cy - 13
+    c.disc(cx, top_cy, top_r + 1.5, OBSIDIAN[2:])
+    for y in range(c.h):
+        for x in range(c.w):
+            d = math.hypot(x - cx, (y - orb) * 1.1)
+            if d <= 7.0:
+                rim = d > 5.4
+                c.put(x, y, VOID[2] * 0.6 if rim else OBSIDIAN[0], (0, 0, 1), VOID[3] if rim else None)
+    for ang in np.linspace(0, math.tau, 10, endpoint=False):
+        c.put(cx + math.cos(ang) * 11, orb + math.sin(ang) * 3.5, VOID[2] * 0.6, glow=VOID[2])
+    return orb
+
+
+def triple_tower(tower_id: str, elements: list[str]) -> dict:
+    """Draws one triple from its elements. The roles turn with the mix, so no element is always the base."""
+    order = sorted(elements, key=RING_ORDER.index)
+    turn = sum(RING_ORDER.index(e) for e in order) % 3
+    base_el, shaft_el, crown_el = order[turn:] + order[:turn]
+    seed = 300 + sum((i + 1) * 7 * (RING_ORDER.index(e) + 1) for i, e in enumerate(order))
+    c = Canvas(TRIPLE_W, TRIPLE_H, seed=seed)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    foot = _triple_base(c, base_el, cx, base, seed + 1)
+    top_cy, top_r = _triple_shaft(c, shaft_el, cx, foot, seed + 2)
+    muzzle_y = _triple_crown(c, crown_el, cx, top_cy, top_r, seed + 3)
+    # Three gems, one per element, set into the plinth where they always show.
+    for k, element in enumerate(order):
+        gx = cx + (k - 1) * 9
+        gy = base - 4 + (0 if k == 1 else -2)
+        gem = ELEMENT_GEM[element]
+        for dx, dy, idx in ((0, -1, 3), (-1, 0, 2), (1, 0, 1), (0, 0, 3), (0, 1, 1)):
+            col = gem[min(idx, len(gem) - 1)]
+            c.put(gx + dx, gy + dy, col * 0.8, (dx * 0.5, -0.4, 0.8), col)
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), tower_id, glow=True)
+    light = np.mean([ELEMENT_LIGHT[e] for e in order], axis=0)
+    light = light * 0.6 + np.array(ELEMENT_LIGHT[crown_el]) * 0.4
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, int(muzzle_y - base)],
+            "light": {"color": "#%02x%02x%02x" % tuple(int(v) for v in light), "offset": [0, int(muzzle_y - base) + 2],
+                      "energy": 1.25, "range": 135, "height": 52},
+            "emitter": ELEMENT_EMITTER[crown_el], "emitter_offset": [0, int(muzzle_y - base) - 1]}
+
+
+def tower_elements(tower_id: str) -> list[str]:
+    with open(os.path.join("data", "towers", tower_id + ".tres")) as fh:
+        line = re.search(r"^elements = .*$", fh.read(), re.M).group(0)
+    return re.findall(r'&"(\w+)"', line)
+
+
 # ---------------------------------------------------------------- enemies
 def slime(name: str, w: int, h: int, rx: float, ry: float, gear=None, seed: int = 0) -> dict:
     frames = [(1.0, 1.0), (1.07, 0.9), (0.95, 1.08), (1.02, 0.97)]
@@ -1687,15 +1885,54 @@ def make_ground(m: dict, props_info: dict) -> None:
         json.dump({"size": [W, H], "biome": m.get("biome", "meadow"), "props": props}, fh, indent=0)
 
 
+def write_missing_imports() -> int:
+    """Gives every new picture the Godot import file the others have (no mipmaps, lossless), so the art
+    loads the same way whether or not the editor has opened the project since it was drawn."""
+    import hashlib
+    template_path = os.path.join(OUT, "towers", "fire_brazier.png.import")
+    with open(template_path) as fh:
+        template = fh.read()
+    old_res = "res://assets/art/game/towers/fire_brazier.png"
+    old_hash = hashlib.md5(old_res.encode()).hexdigest()
+    old_uid = re.search(r'uid="(uid://\w+)"', template).group(1)
+    alphabet = "abcdefghijklmnopqrstuvwxy012345678"
+    written = 0
+    for path in sorted(glob.glob(os.path.join(OUT, "**", "*.png"), recursive=True)):
+        if os.path.exists(path + ".import"):
+            continue
+        res = "res://" + path.replace(os.sep, "/")
+        digest = hashlib.md5(res.encode()).hexdigest()
+        number = int(hashlib.sha1(res.encode()).hexdigest(), 16)
+        uid = "uid://" + alphabet[number % 25] + "".join(alphabet[(number >> (5 * k)) % 34] for k in range(1, 13))
+        text = template.replace(old_res, res).replace("fire_brazier.png-" + old_hash, os.path.basename(path) + "-" + digest)
+        with open(path + ".import", "w") as fh:
+            fh.write(text.replace(old_uid, uid))
+        written += 1
+    return written
+
+
 def main() -> None:
     os.makedirs(OUT, exist_ok=True)
     art = {"art_scale": ART_SCALE, "towers": {}, "enemies": {}, "props": {}}
+    # "--towers" redraws only the towers and keeps everything else in art.json as it is.
+    towers_only = "--towers" in sys.argv
+    if towers_only:
+        with open(os.path.join(OUT, "art.json")) as fh:
+            art = json.load(fh)
+        art["towers"] = {}
     tower_ids = sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("data/towers/*.tres"))
     for tid in tower_ids:
         if tid in TOWERS:
             art["towers"][tid] = TOWERS[tid]()
+        elif tid.startswith("triple_"):
+            art["towers"][tid] = triple_tower(tid, tower_elements(tid))
         else:
             print("No art recipe for tower", tid, "- the game draws a placeholder")
+    if towers_only:
+        with open(os.path.join(OUT, "art.json"), "w") as fh:
+            json.dump(art, fh, indent=1)
+        print("Wrote the towers in", OUT, "and", write_missing_imports(), "import files")
+        return
     for eid in sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("data/enemies/*.tres")):
         if eid in ENEMIES:
             art["enemies"][eid] = ENEMIES[eid]()
@@ -1706,7 +1943,7 @@ def main() -> None:
         make_ground(read_map(path), art["props"])
     with open(os.path.join(OUT, "art.json"), "w") as fh:
         json.dump(art, fh, indent=1)
-    print("Wrote", OUT)
+    print("Wrote", OUT, "and", write_missing_imports(), "import files")
 
 
 if __name__ == "__main__":

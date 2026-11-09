@@ -1,0 +1,74 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="3_asc"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="4_mod"]
+
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_status")
+kind = &"poison"
+damage_per_second = 7.0
+duration = 4.0
+max_stacks = 5
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("2_status")
+kind = &"slow"
+slow = 0.3
+duration = 2.0
+
+[sub_resource type="Resource" id="Asc_deluge_m0"]
+script = ExtResource("4_mod")
+stat = &"slow_strength"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_deluge_m1"]
+script = ExtResource("4_mod")
+stat = &"slow_duration"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_deluge"]
+script = ExtResource("3_asc")
+id = &"deluge"
+display_name = "Deluge"
+description = "Slows are 50% stronger and last 50% longer."
+modifiers = Array[ExtResource("4_mod")]([SubResource("Asc_deluge_m0"), SubResource("Asc_deluge_m1")])
+
+[sub_resource type="Resource" id="Asc_canopy_king_m0"]
+script = ExtResource("4_mod")
+stat = &"poison_damage"
+kind = 2
+value = 1.0
+
+[sub_resource type="Resource" id="Asc_canopy_king_m1"]
+script = ExtResource("4_mod")
+stat = &"bounty_bonus"
+value = 2.0
+
+[sub_resource type="Resource" id="Asc_canopy_king"]
+script = ExtResource("3_asc")
+id = &"canopy_king"
+display_name = "Canopy King"
+description = "Poison deals double damage and kills earn 2 more gold."
+modifiers = Array[ExtResource("4_mod")]([SubResource("Asc_canopy_king_m0"), SubResource("Asc_canopy_king_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"triple_rainwild"
+display_name = "Rainwild"
+description = "A living storm over the jungle: chilling rain, lightning and venom in every bolt."
+elements = Array[StringName]([&"storm", &"nature", &"water"])
+requires_nodes = Array[StringName]([&"storm_core", &"nature_core", &"water_core"])
+cost = 300
+damage = 16.0
+attacks_per_second = 1.5
+attack_range = 185.0
+chain_count = 4
+chain_range = 130.0
+chain_falloff = 0.15
+bounty_bonus = 1
+status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0"), SubResource("Effect_1")])
+ascendancies = Array[ExtResource("3_asc")]([SubResource("Asc_deluge"), SubResource("Asc_canopy_king")])

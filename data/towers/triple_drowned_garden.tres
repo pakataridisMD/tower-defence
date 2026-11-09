@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="3_asc"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="4_mod"]
+
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_status")
+kind = &"poison"
+damage_per_second = 9.0
+duration = 4.0
+max_stacks = 6
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("2_status")
+kind = &"slow"
+slow = 0.35
+duration = 2.5
+
+[sub_resource type="Resource" id="Effect_2"]
+script = ExtResource("2_status")
+kind = &"curse"
+damage_taken = 0.25
+duration = 3.0
+
+[sub_resource type="Resource" id="Asc_kelp_forest_m0"]
+script = ExtResource("4_mod")
+stat = &"slow_strength"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_kelp_forest_m1"]
+script = ExtResource("4_mod")
+stat = &"knockback"
+value = 14.0
+
+[sub_resource type="Resource" id="Asc_kelp_forest"]
+script = ExtResource("3_asc")
+id = &"kelp_forest"
+display_name = "Kelp Forest"
+description = "Slows are 50% stronger and hits drag enemies back 14 further."
+modifiers = Array[ExtResource("4_mod")]([SubResource("Asc_kelp_forest_m0"), SubResource("Asc_kelp_forest_m1")])
+
+[sub_resource type="Resource" id="Asc_siren_bloom_m0"]
+script = ExtResource("4_mod")
+stat = &"poison_damage"
+kind = 2
+value = 1.0
+
+[sub_resource type="Resource" id="Asc_siren_bloom_m1"]
+script = ExtResource("4_mod")
+stat = &"curse_strength"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_siren_bloom"]
+script = ExtResource("3_asc")
+id = &"siren_bloom"
+display_name = "Siren Bloom"
+description = "Poison deals double damage and curses are 50% stronger."
+modifiers = Array[ExtResource("4_mod")]([SubResource("Asc_siren_bloom_m0"), SubResource("Asc_siren_bloom_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"triple_drowned_garden"
+display_name = "Drowned Garden"
+description = "A sunken, haunted garden: splashes of black water that poison, slow and curse."
+elements = Array[StringName]([&"nature", &"water", &"void"])
+requires_nodes = Array[StringName]([&"nature_core", &"water_core", &"void_core"])
+tags = Array[StringName]([&"area"])
+cost = 340
+damage = 18.0
+attacks_per_second = 0.75
+attack_range = 165.0
+projectile_speed = 420.0
+splash_radius = 85.0
+knockback = 10.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0"), SubResource("Effect_1"), SubResource("Effect_2")])
+ascendancies = Array[ExtResource("3_asc")]([SubResource("Asc_kelp_forest"), SubResource("Asc_siren_bloom")])
