@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
 [ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
 
 [sub_resource type="Resource" id="Resource_e0"]
 script = ExtResource("2_status")
@@ -15,6 +17,42 @@ script = ExtResource("2_status")
 kind = &"curse"
 damage_taken = 0.2
 duration = 3.0
+
+[sub_resource type="Resource" id="Asc_reaper_m0"]
+script = ExtResource("mod_script")
+stat = &"burn_damage"
+kind = 2
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_reaper_m1"]
+script = ExtResource("mod_script")
+stat = &"burn_spread_radius"
+value = 90.0
+
+[sub_resource type="Resource" id="Asc_reaper"]
+script = ExtResource("asc_script")
+id = &"reaper"
+display_name = "Reaper"
+description = "Burn deals 50% more damage and leaps to enemies within 90 when its victim dies."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_reaper_m0"), SubResource("Asc_reaper_m1")])
+
+[sub_resource type="Resource" id="Asc_wraithfire_m0"]
+script = ExtResource("mod_script")
+stat = &"chain_count"
+value = 2.0
+
+[sub_resource type="Resource" id="Asc_wraithfire_m1"]
+script = ExtResource("mod_script")
+stat = &"curse_strength"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_wraithfire"]
+script = ExtResource("asc_script")
+id = &"wraithfire"
+display_name = "Wraithfire"
+description = "Chains to 2 more enemies and curses are 50% stronger."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_wraithfire_m0"), SubResource("Asc_wraithfire_m1")])
 
 [resource]
 script = ExtResource("1_tower")
@@ -32,3 +70,4 @@ chain_falloff = 0.3
 aura_radius = 110.0
 aura_damage = 0.1
 status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_reaper"), SubResource("Asc_wraithfire")])

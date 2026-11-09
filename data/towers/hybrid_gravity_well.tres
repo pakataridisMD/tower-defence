@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
 [ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
 
 [sub_resource type="Resource" id="Resource_e0"]
 script = ExtResource("2_status")
@@ -13,6 +15,43 @@ duration = 3.0
 script = ExtResource("2_status")
 kind = &"stun"
 duration = 0.3
+
+[sub_resource type="Resource" id="Asc_event_horizon_m0"]
+script = ExtResource("mod_script")
+stat = &"knockback"
+value = 20.0
+
+[sub_resource type="Resource" id="Asc_event_horizon_m1"]
+script = ExtResource("mod_script")
+stat = &"splash_radius"
+kind = 1
+value = 0.3
+
+[sub_resource type="Resource" id="Asc_event_horizon"]
+script = ExtResource("asc_script")
+id = &"event_horizon"
+display_name = "Event Horizon"
+description = "Pulls enemies back 20 further and the collapse is 30% wider."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_event_horizon_m0"), SubResource("Asc_event_horizon_m1")])
+
+[sub_resource type="Resource" id="Asc_collapse_m0"]
+script = ExtResource("mod_script")
+stat = &"damage"
+kind = 2
+value = 1.0
+
+[sub_resource type="Resource" id="Asc_collapse_m1"]
+script = ExtResource("mod_script")
+stat = &"curse_strength"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_collapse"]
+script = ExtResource("asc_script")
+id = &"collapse"
+display_name = "Collapse"
+description = "Deals double damage and curses are 50% stronger."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_collapse_m0"), SubResource("Asc_collapse_m1")])
 
 [resource]
 script = ExtResource("1_tower")
@@ -29,3 +68,4 @@ projectile_speed = 360.0
 splash_radius = 55.0
 knockback = 28.0
 status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_event_horizon"), SubResource("Asc_collapse")])

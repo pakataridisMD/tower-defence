@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
 [ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
 
 [sub_resource type="Resource" id="Resource_e0"]
 script = ExtResource("2_status")
@@ -15,6 +17,43 @@ armour_reduction = 1.0
 duration = 5.0
 max_stacks = 5
 
+[sub_resource type="Resource" id="Asc_earthshaker_m0"]
+script = ExtResource("mod_script")
+stat = &"splash_radius"
+value = 60.0
+
+[sub_resource type="Resource" id="Asc_earthshaker_m1"]
+script = ExtResource("mod_script")
+stat = &"stun_duration"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_earthshaker"]
+script = ExtResource("asc_script")
+id = &"earthshaker"
+display_name = "Earthshaker"
+description = "Boulders crush everything within 60 and stun 50% longer."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_earthshaker_m0"), SubResource("Asc_earthshaker_m1")])
+
+[sub_resource type="Resource" id="Asc_juggernaut_m0"]
+script = ExtResource("mod_script")
+stat = &"damage"
+kind = 2
+value = 1.0
+
+[sub_resource type="Resource" id="Asc_juggernaut_m1"]
+script = ExtResource("mod_script")
+stat = &"shatter_strength"
+kind = 1
+value = 1.0
+
+[sub_resource type="Resource" id="Asc_juggernaut"]
+script = ExtResource("asc_script")
+id = &"juggernaut"
+display_name = "Juggernaut"
+description = "Deals double damage and shatters twice as much armour."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_juggernaut_m0"), SubResource("Asc_juggernaut_m1")])
+
 [resource]
 script = ExtResource("1_tower")
 id = &"earth_monolith"
@@ -27,3 +66,4 @@ attacks_per_second = 0.45
 attack_range = 150.0
 projectile_speed = 430.0
 status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_earthshaker"), SubResource("Asc_juggernaut")])

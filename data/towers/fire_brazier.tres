@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_gujvr"]
 [ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_7gt7k"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
 
 [sub_resource type="Resource" id="Resource_exyxr"]
 script = ExtResource("2_7gt7k")
@@ -9,6 +11,43 @@ kind = &"burn"
 damage_per_second = 4.0
 duration = 3.0
 max_stacks = 5
+
+[sub_resource type="Resource" id="Asc_pyre_m0"]
+script = ExtResource("mod_script")
+stat = &"splash_radius"
+kind = 1
+value = 0.6
+
+[sub_resource type="Resource" id="Asc_pyre_m1"]
+script = ExtResource("mod_script")
+stat = &"damage"
+kind = 2
+value = 0.2
+
+[sub_resource type="Resource" id="Asc_pyre"]
+script = ExtResource("asc_script")
+id = &"pyre"
+display_name = "Pyre"
+description = "Fireballs splash 60% wider and deal 20% more damage."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_pyre_m0"), SubResource("Asc_pyre_m1")])
+
+[sub_resource type="Resource" id="Asc_hearth_m0"]
+script = ExtResource("mod_script")
+stat = &"burn_damage"
+kind = 2
+value = 1.0
+
+[sub_resource type="Resource" id="Asc_hearth_m1"]
+script = ExtResource("mod_script")
+stat = &"burn_stacks"
+value = 3.0
+
+[sub_resource type="Resource" id="Asc_hearth"]
+script = ExtResource("asc_script")
+id = &"hearth"
+display_name = "Hearth"
+description = "Burn deals double damage and stacks 3 more times."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_hearth_m0"), SubResource("Asc_hearth_m1")])
 
 [resource]
 script = ExtResource("1_gujvr")
@@ -21,3 +60,4 @@ damage = 8.0
 projectile_speed = 500.0
 splash_radius = 60.0
 status_effects = Array[ExtResource("2_7gt7k")]([SubResource("Resource_exyxr")])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_pyre"), SubResource("Asc_hearth")])

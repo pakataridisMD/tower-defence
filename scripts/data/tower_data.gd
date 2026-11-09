@@ -31,11 +31,22 @@ extends Resource
 @export var knockback: float = 0.0
 @export var status_effects: Array[StatusEffectData] = []
 
+@export_group("Upgrades")
+## The two specialisations offered at the top level. Empty means the tower cannot ascend.
+@export var ascendancies: Array[AscendancyData] = []
+
 @export_group("Aura")
 ## Pixels. Other towers this close get aura_damage as increased damage. The strongest aura wins.
 @export var aura_radius: float = 0.0
 ## Fraction: 0.15 means 15% increased damage for towers in the aura.
 @export var aura_damage: float = 0.0
+
+
+func ascendancy(ascendancy_id: StringName) -> AscendancyData:
+	for option in ascendancies:
+		if option.id == ascendancy_id:
+			return option
+	return null
 
 
 func is_hybrid() -> bool:

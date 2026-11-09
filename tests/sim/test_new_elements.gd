@@ -174,3 +174,81 @@ func test_new_towers_fight_a_wave() -> void:
 			sim.step(0.05)
 			elapsed += 0.05
 		assert_gt(tower.damage_dealt, 0.0, "%s dealt damage" % tower_id)
+
+
+func test_levels_cost_gold_and_raise_damage_and_range() -> void:
+	var sim := _sim()
+	sim.allocate_node(&"fire_entry")
+	var tower := sim.place_tower(&"fire_brazier", CELL)
+	var damage := tower.damage
+	var reach := tower.attack_range
+	var price := tower.level_up_price()
+	assert_eq(price, roundi(tower.type_price * 0.5))
+	var gold := sim.gold
+	assert_true(sim.level_up(tower))
+	assert_eq(tower.level, 2)
+	assert_eq(sim.gold, gold - price)
+	assert_almost_eq(tower.damage, damage * 1.3, 0.0001)
+	assert_almost_eq(tower.attack_range, reach * 1.08, 0.0001)
+	assert_true(sim.level_up(tower))
+	assert_false(sim.level_up(tower), "level 3 is the top")
+	assert_string_contains(sim.level_up_error(tower), "top level")
+	assert_eq(tower.price_paid, tower.type_price + roundi(tower.type_price * 0.5) + roundi(tower.type_price * 0.75))
+
+
+func test_every_tower_offers_two_ascendancies() -> void:
+	for tower_id: StringName in registry.towers:
+		var data: TowerData = registry.towers[tower_id]
+		assert_eq(data.ascendancies.size(), 2, "%s ascendancies" % tower_id)
+		for option in data.ascendancies:
+			assert_false(option.id.is_empty() or option.modifiers.is_empty(), "%s/%s is filled in" % [tower_id, option.id])
+
+
+func test_ascending_needs_the_top_level_and_is_final() -> void:
+	var sim := _sim()
+	sim.allocate_node(&"fire_entry")
+	var tower := sim.place_tower(&"fire_brazier", CELL)
+	assert_string_contains(sim.ascend_error(tower, &"pyre"), "level")
+	sim.level_up(tower)
+	sim.level_up(tower)
+	var splash := tower.splash_radius
+	assert_true(sim.ascend(tower, &"pyre"))
+	assert_almost_eq(tower.splash_radius, splash * 1.6, 0.0001)
+	assert_false(sim.ascend(tower, &"hearth"), "only one ascendancy")
+	assert_eq(tower.ascendancy.id, &"pyre")
+
+
+func test_ascendancies_can_add_status_stacks() -> void:
+	var sim := _sim()
+	sim.allocate_node(&"fire_entry")
+	var tower := sim.place_tower(&"fire_brazier", CELL)
+	sim.level_up(tower)
+	sim.level_up(tower)
+	var stacks := tower.effect_spec(&"burn").max_stacks
+	sim.ascend(tower, &"hearth")
+	assert_eq(tower.effect_spec(&"burn").max_stacks, stacks + 3)
+
+
+func test_a_levelled_base_tower_keeps_its_level_as_a_hybrid_but_ascended_ones_cannot_change() -> void:
+	var sim := _sim()
+	for id: StringName in [&"water_entry", &"water_ccw", &"nature_entry", &"nature_cw", &"bridge_bog"]:
+		sim.allocate_node(id)
+	var tower := sim.place_tower(&"water_wellspring", CELL)
+	sim.level_up(tower)
+	assert_true(sim.upgrade_to_hybrid(tower, &"hybrid_bog"))
+	assert_eq(tower.level, 2)
+	var other := sim.place_tower(&"water_wellspring", NEXT_CELL)
+	sim.level_up(other)
+	sim.level_up(other)
+	sim.ascend(other, &"frostspring")
+	assert_eq(sim.hybrid_options(other), [] as Array[StringName])
+	assert_false(sim.upgrade_to_hybrid(other, &"hybrid_bog"))
+
+
+func test_selling_refunds_levels_too() -> void:
+	var sim := _sim()
+	sim.allocate_node(&"fire_entry")
+	var tower := sim.place_tower(&"fire_brazier", CELL)
+	sim.level_up(tower)
+	assert_eq(sim.sell_value(tower), floori(tower.price_paid * registry.run_rules.sell_refund))
+	assert_true(tower.price_paid > tower.type_price)

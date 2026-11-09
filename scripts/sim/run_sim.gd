@@ -171,7 +171,7 @@ func place_tower(tower_id: StringName, cell: Vector2i) -> SimTower:
 ## Only base towers can change, so a hybrid never turns into another hybrid.
 func hybrid_options(tower: SimTower) -> Array[StringName]:
 	var result: Array[StringName] = []
-	if tower == null or tower.data.is_hybrid():
+	if tower == null or tower.data.is_hybrid() or tower.ascendancy != null:
 		return result
 	for id: StringName in config.towers:
 		var data: TowerData = config.towers[id]
@@ -183,7 +183,7 @@ func hybrid_options(tower: SimTower) -> Array[StringName]:
 
 ## Gold to turn a built base tower into a hybrid: the hybrid's price minus what the tower cost.
 func hybrid_upgrade_price(tower: SimTower, hybrid_id: StringName) -> int:
-	return maxi(0, tower_price(hybrid_id) - tower.price_paid)
+	return maxi(0, tower_price(hybrid_id) - tower.type_price)
 
 
 ## Why a tower cannot become this hybrid, or an empty string if it can.
@@ -192,6 +192,8 @@ func hybrid_upgrade_error(tower: SimTower, hybrid_id: StringName) -> String:
 		return "The run is over"
 	if not towers.has(tower):
 		return "Unknown tower"
+	if tower.ascendancy != null:
+		return "Ascended towers cannot change"
 	if not hybrid_options(tower).has(hybrid_id):
 		return "This tower cannot become that hybrid"
 	if gold < hybrid_upgrade_price(tower, hybrid_id):
@@ -204,11 +206,68 @@ func upgrade_to_hybrid(tower: SimTower, hybrid_id: StringName) -> bool:
 	if not hybrid_upgrade_error(tower, hybrid_id).is_empty():
 		return false
 	var data: TowerData = config.towers[hybrid_id]
-	gold -= hybrid_upgrade_price(tower, hybrid_id)
+	var price := hybrid_upgrade_price(tower, hybrid_id)
+	gold -= price
 	var indices: Array[int] = []
 	for element_id in data.elements:
 		indices.append(config.element_index(element_id))
-	tower.change_type(data, indices, maxi(tower.price_paid, tower_price(hybrid_id)))
+	tower.change_type(data, indices, tower.type_price + price, price)
+	_recompute_towers()
+	changed.emit()
+	return true
+
+
+## Why a tower cannot go up a level, or an empty string if it can.
+func level_up_error(tower: SimTower) -> String:
+	if is_over():
+		return "The run is over"
+	if not towers.has(tower):
+		return "Unknown tower"
+	if tower.level >= SimTower.MAX_LEVEL:
+		return "Already at the top level"
+	if gold < tower.level_up_price():
+		return "Not enough gold"
+	return ""
+
+
+func level_up(tower: SimTower) -> bool:
+	if not level_up_error(tower).is_empty():
+		return false
+	var price := tower.level_up_price()
+	gold -= price
+	tower.price_paid += price
+	tower.level += 1
+	_recompute_towers()
+	changed.emit()
+	return true
+
+
+## Why a tower cannot take this ascendancy, or an empty string if it can.
+func ascend_error(tower: SimTower, ascendancy_id: StringName) -> String:
+	if is_over():
+		return "The run is over"
+	if not towers.has(tower):
+		return "Unknown tower"
+	if tower.ascendancy != null:
+		return "Already ascended"
+	if tower.level < SimTower.MAX_LEVEL:
+		return "Reach level %d first" % SimTower.MAX_LEVEL
+	var option := tower.data.ascendancy(ascendancy_id)
+	if option == null:
+		return "Unknown ascendancy"
+	if gold < tower.ascend_price(option):
+		return "Not enough gold"
+	return ""
+
+
+func ascend(tower: SimTower, ascendancy_id: StringName) -> bool:
+	if not ascend_error(tower, ascendancy_id).is_empty():
+		return false
+	var option := tower.data.ascendancy(ascendancy_id)
+	var price := tower.ascend_price(option)
+	gold -= price
+	tower.price_paid += price
+	tower.ascendancy = option
 	_recompute_towers()
 	changed.emit()
 	return true
