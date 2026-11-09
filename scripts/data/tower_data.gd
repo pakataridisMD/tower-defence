@@ -1,6 +1,6 @@
 class_name TowerData
 extends Resource
-## A tower type. Base towers have one element; hybrids have two neighbouring elements.
+## A tower type. Base towers have one element, dual hybrids two and triples three.
 
 @export var id: StringName
 @export var display_name: String
@@ -11,7 +11,7 @@ extends Resource
 ## Skill web nodes that unlock this tower once every one of them is taken. Used by hybrids of
 ## elements that are not neighbours, which have no bridge node between them.
 @export var requires_nodes: Array[StringName] = []
-## Extra tags that tree modifiers can target. Element ids and "hybrid" are added automatically.
+## Extra tags that tree modifiers can target. Element ids, "hybrid" and "triple" are added automatically.
 @export var tags: Array[StringName] = []
 
 @export_group("Attack")
@@ -56,8 +56,17 @@ func ascendancy(ascendancy_id: StringName) -> AscendancyData:
 	return null
 
 
+## True for every tower of more than one element: duals and triples.
 func is_hybrid() -> bool:
+	return elements.size() >= 2
+
+
+func is_dual() -> bool:
 	return elements.size() == 2
+
+
+func is_triple() -> bool:
+	return elements.size() == 3
 
 
 ## Tags used to decide which modifiers apply to this tower.
@@ -69,6 +78,8 @@ func all_tags() -> Array[StringName]:
 			result.append(tag)
 	if is_hybrid():
 		result.append(&"hybrid")
+	if is_triple():
+		result.append(&"triple")
 	return result
 
 

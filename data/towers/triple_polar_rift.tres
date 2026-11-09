@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="3_asc"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="4_mod"]
+
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_status")
+kind = &"stun"
+duration = 0.3
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("2_status")
+kind = &"curse"
+damage_taken = 0.2
+duration = 3.0
+
+[sub_resource type="Resource" id="Effect_2"]
+script = ExtResource("2_status")
+kind = &"shatter"
+armour_reduction = 1.0
+duration = 5.0
+max_stacks = 4
+
+[sub_resource type="Resource" id="Asc_aurora_m0"]
+script = ExtResource("4_mod")
+stat = &"aura_radius"
+kind = 1
+value = 0.4
+
+[sub_resource type="Resource" id="Asc_aurora_m1"]
+script = ExtResource("4_mod")
+stat = &"aura_damage"
+value = 0.1
+
+[sub_resource type="Resource" id="Asc_aurora"]
+script = ExtResource("3_asc")
+id = &"aurora"
+display_name = "Aurora"
+description = "The aura reaches 40% further and grants 10% more increased damage."
+modifiers = Array[ExtResource("4_mod")]([SubResource("Asc_aurora_m0"), SubResource("Asc_aurora_m1")])
+
+[sub_resource type="Resource" id="Asc_null_field_m0"]
+script = ExtResource("4_mod")
+stat = &"curse_strength"
+kind = 1
+value = 0.6
+
+[sub_resource type="Resource" id="Asc_null_field_m1"]
+script = ExtResource("4_mod")
+stat = &"stun_duration"
+kind = 1
+value = 0.6
+
+[sub_resource type="Resource" id="Asc_null_field"]
+script = ExtResource("3_asc")
+id = &"null_field"
+display_name = "Null Field"
+description = "Curses are 60% stronger and stuns last 60% longer."
+modifiers = Array[ExtResource("4_mod")]([SubResource("Asc_null_field_m0"), SubResource("Asc_null_field_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"triple_polar_rift"
+display_name = "Polar Rift"
+description = "A magnetic tear in the sky: cursed, stunning chains and a field that charges nearby towers."
+elements = Array[StringName]([&"storm", &"earth", &"void"])
+requires_nodes = Array[StringName]([&"storm_core", &"earth_core", &"void_core"])
+cost = 340
+damage = 24.0
+attacks_per_second = 0.9
+attack_range = 190.0
+chain_count = 4
+chain_range = 135.0
+chain_falloff = 0.1
+aura_radius = 150.0
+aura_damage = 0.2
+status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0"), SubResource("Effect_1"), SubResource("Effect_2")])
+ascendancies = Array[ExtResource("3_asc")]([SubResource("Asc_aurora"), SubResource("Asc_null_field")])

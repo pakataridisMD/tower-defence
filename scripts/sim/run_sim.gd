@@ -201,15 +201,18 @@ func place_tower(tower_id: StringName, cell: Vector2i) -> SimTower:
 	return tower
 
 
-## Hybrids a built tower can turn into: unlocked ones that share one of its elements.
-## Only base towers can change, so a hybrid never turns into another hybrid.
+## Towers a built tower can turn into: unlocked ones with exactly one more element that keep all
+## of its own. A base tower becomes a dual, and a dual becomes a triple. Ascended towers stay as they are.
 func hybrid_options(tower: SimTower) -> Array[StringName]:
 	var result: Array[StringName] = []
-	if tower == null or tower.data.is_hybrid() or tower.ascendancy != null:
+	if tower == null or tower.ascendancy != null:
 		return result
+	var own := tower.data.elements
 	for id: StringName in config.towers:
 		var data: TowerData = config.towers[id]
-		if data.is_hybrid() and data.elements.has(tower.data.elements[0]) and is_unlocked(id):
+		if data.elements.size() != own.size() + 1 or not is_unlocked(id):
+			continue
+		if own.all(func(element_id: StringName) -> bool: return data.elements.has(element_id)):
 			result.append(id)
 	result.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
 	return result
@@ -229,7 +232,7 @@ func hybrid_upgrade_error(tower: SimTower, hybrid_id: StringName) -> String:
 	if tower.ascendancy != null:
 		return "Ascended towers cannot change"
 	if not hybrid_options(tower).has(hybrid_id):
-		return "This tower cannot become that hybrid"
+		return "This tower cannot become that tower"
 	if gold < hybrid_upgrade_price(tower, hybrid_id):
 		return "Not enough gold"
 	return ""

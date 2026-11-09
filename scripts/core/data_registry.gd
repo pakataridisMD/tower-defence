@@ -165,18 +165,20 @@ func _validate_elements(errors: PackedStringArray) -> void:
 func _validate_towers(errors: PackedStringArray) -> void:
 	for tower: TowerData in towers.values():
 		var label := "Tower '%s'" % tower.id
-		if tower.elements.is_empty() or tower.elements.size() > 2:
-			errors.append("%s: needs one element, or two for a hybrid" % label)
+		if tower.elements.is_empty() or tower.elements.size() > 3:
+			errors.append("%s: needs one element, two for a dual or three for a triple" % label)
 		for element_id in tower.elements:
 			if not elements.has(element_id):
 				errors.append("%s: unknown element '%s'" % [label, element_id])
-		if tower.is_hybrid():
+			elif tower.elements.count(element_id) > 1:
+				errors.append("%s: element '%s' is listed twice" % [label, element_id])
+		if tower.is_dual():
 			var indices := tower_element_indices(tower)
-			if indices[0] >= 0 and indices[0] == indices[1]:
-				errors.append("%s: a hybrid needs two different elements" % label)
-			elif indices[0] >= 0 and indices[1] >= 0 and not ElementRules.are_neighbours(indices[0], indices[1]) \
-					and tower.requires_nodes.is_empty():
+			if indices[0] >= 0 and indices[1] >= 0 and indices[0] != indices[1] \
+					and not ElementRules.are_neighbours(indices[0], indices[1]) and tower.requires_nodes.is_empty():
 				errors.append("%s: hybrids of elements that are not neighbours need requires_nodes" % label)
+		if tower.is_triple() and tower.requires_nodes.is_empty():
+			errors.append("%s: triples have no bridge node, so they need requires_nodes" % label)
 		for node_id in tower.requires_nodes:
 			if not in_run_tree_nodes.any(func(n: TreeNodeData) -> bool: return n.id == node_id):
 				errors.append("%s: requires unknown skill web node '%s'" % [label, node_id])

@@ -1,0 +1,79 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="3_asc"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="4_mod"]
+
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_status")
+kind = &"burn"
+damage_per_second = 9.0
+duration = 3.0
+max_stacks = 5
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("2_status")
+kind = &"poison"
+damage_per_second = 9.0
+duration = 4.0
+max_stacks = 6
+
+[sub_resource type="Resource" id="Effect_2"]
+script = ExtResource("2_status")
+kind = &"curse"
+damage_taken = 0.25
+duration = 3.0
+
+[sub_resource type="Resource" id="Asc_funeral_pyre_m0"]
+script = ExtResource("4_mod")
+stat = &"burn_damage"
+kind = 2
+value = 0.6
+
+[sub_resource type="Resource" id="Asc_funeral_pyre_m1"]
+script = ExtResource("4_mod")
+stat = &"burn_spread_radius"
+value = 100.0
+
+[sub_resource type="Resource" id="Asc_funeral_pyre"]
+script = ExtResource("3_asc")
+id = &"funeral_pyre"
+display_name = "Funeral Pyre"
+description = "Burn deals 60% more damage and leaps to enemies within 100 when its victim dies."
+modifiers = Array[ExtResource("4_mod")]([SubResource("Asc_funeral_pyre_m0"), SubResource("Asc_funeral_pyre_m1")])
+
+[sub_resource type="Resource" id="Asc_hexbloom_m0"]
+script = ExtResource("4_mod")
+stat = &"curse_strength"
+kind = 1
+value = 0.8
+
+[sub_resource type="Resource" id="Asc_hexbloom_m1"]
+script = ExtResource("4_mod")
+stat = &"poison_damage"
+kind = 2
+value = 0.8
+
+[sub_resource type="Resource" id="Asc_hexbloom"]
+script = ExtResource("3_asc")
+id = &"hexbloom"
+display_name = "Hexbloom"
+description = "Curses are 80% stronger and poison deals 80% more damage."
+modifiers = Array[ExtResource("4_mod")]([SubResource("Asc_hexbloom_m0"), SubResource("Asc_hexbloom_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"triple_witchfire"
+display_name = "Witchfire Tree"
+description = "A burning, cursed tree: its fire and venom leap from every corpse."
+elements = Array[StringName]([&"fire", &"nature", &"void"])
+requires_nodes = Array[StringName]([&"fire_core", &"nature_core", &"void_core"])
+cost = 340
+damage = 14.0
+attacks_per_second = 1.2
+attack_range = 175.0
+projectile_speed = 650.0
+poison_spread_count = 3
+status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0"), SubResource("Effect_1"), SubResource("Effect_2")])
+ascendancies = Array[ExtResource("3_asc")]([SubResource("Asc_funeral_pyre"), SubResource("Asc_hexbloom")])

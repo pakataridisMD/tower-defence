@@ -1,0 +1,74 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="3_asc"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="4_mod"]
+
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_status")
+kind = &"burn"
+damage_per_second = 7.0
+duration = 3.0
+max_stacks = 4
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("2_status")
+kind = &"poison"
+damage_per_second = 6.0
+duration = 4.0
+max_stacks = 5
+
+[sub_resource type="Resource" id="Asc_firefront_m0"]
+script = ExtResource("4_mod")
+stat = &"burn_damage"
+kind = 2
+value = 0.7
+
+[sub_resource type="Resource" id="Asc_firefront_m1"]
+script = ExtResource("4_mod")
+stat = &"poison_damage"
+kind = 2
+value = 0.7
+
+[sub_resource type="Resource" id="Asc_firefront"]
+script = ExtResource("3_asc")
+id = &"firefront"
+display_name = "Firefront"
+description = "Burn and poison deal 70% more damage."
+modifiers = Array[ExtResource("4_mod")]([SubResource("Asc_firefront_m0"), SubResource("Asc_firefront_m1")])
+
+[sub_resource type="Resource" id="Asc_stormcrown_m0"]
+script = ExtResource("4_mod")
+stat = &"chain_count"
+value = 3.0
+
+[sub_resource type="Resource" id="Asc_stormcrown_m1"]
+script = ExtResource("4_mod")
+stat = &"attacks_per_second"
+kind = 1
+value = 0.25
+
+[sub_resource type="Resource" id="Asc_stormcrown"]
+script = ExtResource("3_asc")
+id = &"stormcrown"
+display_name = "Stormcrown"
+description = "Chains to 3 more enemies and attacks 25% faster."
+modifiers = Array[ExtResource("4_mod")]([SubResource("Asc_stormcrown_m0"), SubResource("Asc_stormcrown_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"triple_cinderstorm"
+display_name = "Cinderstorm"
+description = "A burning thundercloud: its bolts chain through the wave, setting it alight and seeding it with poison."
+elements = Array[StringName]([&"fire", &"storm", &"nature"])
+requires_nodes = Array[StringName]([&"fire_core", &"storm_core", &"nature_core"])
+cost = 300
+damage = 20.0
+attacks_per_second = 1.3
+attack_range = 190.0
+chain_count = 4
+chain_range = 140.0
+chain_falloff = 0.15
+status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0"), SubResource("Effect_1")])
+ascendancies = Array[ExtResource("3_asc")]([SubResource("Asc_firefront"), SubResource("Asc_stormcrown")])

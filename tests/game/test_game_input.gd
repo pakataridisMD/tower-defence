@@ -195,6 +195,28 @@ func test_the_tower_panel_turns_a_base_tower_into_a_hybrid() -> void:
 	assert_eq(game.board.art._towers[tower.id].data_id, &"hybrid_plasma", "the board redraws the tower as its new type")
 
 
+func test_shop_tabs_show_duals_and_triples_once_unlocked() -> void:
+	game.sim.tree.points = 20
+	game.sim.gold = 2000
+	for element: String in ["fire", "storm", "nature"]:
+		game.sim.allocate_node(StringName(element + "_entry"))
+		game.sim.allocate_node(StringName(element + "_core"))
+	await wait_process_frames(2)
+	var triple: Button = game.hud._tower_buttons[&"triple_cinderstorm"]
+	assert_false(triple.visible, "the shop opens on the base towers")
+	assert_string_contains(game.hud._tier_tabs[3].text, "1")
+	game.hud.show_shop_tier(3)
+	await wait_process_frames(2)
+	assert_true(triple.visible)
+	assert_false(game.hud._tower_buttons[&"triple_starfall"].visible, "still locked")
+	assert_false(game.hud._tower_buttons[&"fire_brazier"].visible, "base towers are on their own tab")
+	_press(triple)
+	assert_eq(game.board.placing, &"triple_cinderstorm")
+	game.hud.show_shop_tier(2)
+	await wait_process_frames(2)
+	assert_true(game.hud._tower_buttons[&"hybrid_wildfire"].visible, "Fire and Nature cores unlock Wildfire")
+
+
 # --- Waves, speed and pause ------------------------------------------------------
 
 func test_space_starts_the_wave_and_time_moves() -> void:

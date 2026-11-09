@@ -47,6 +47,27 @@ func test_every_enemy_has_art() -> void:
 		assert_gt(BoardArt.enemy_height(enemy_id), 0.0)
 
 
+func test_enemies_walk_in_six_frames() -> void:
+	for enemy_id: StringName in registry.enemies:
+		var meta := BoardArt.enemy_info(enemy_id)
+		assert_eq(int(meta.get("frames", 0)), 6, "enemy %s walk cycle" % enemy_id)
+		var size: Array = meta.get("size", [0, 0])
+		var anchor: Array = meta.get("anchor", [0, 0])
+		assert_eq(int(anchor[1]), int(size[1]) - 1, "enemy %s stands on the bottom of its picture" % enemy_id)
+
+
+func test_shots_are_made_of_one_of_the_towers_elements() -> void:
+	for tower_id: StringName in registry.towers:
+		var data: TowerData = registry.towers[tower_id]
+		var style: StringName = BoardArt.shot_style(data)
+		assert_true(data.elements.has(style), "%s fires %s shots" % [tower_id, style])
+	var brazier: TowerData = registry.towers[&"fire_brazier"]
+	assert_eq(BoardArt.shot_style(brazier), &"fire")
+	var steam: TowerData = registry.towers[&"hybrid_steam"]
+	assert_eq(BoardArt.shot_style(steam), &"water", "the steam tower's crown is water")
+	assert_eq(BoardArt.shot_style(null), &"", "no tower, no style")
+
+
 func test_every_map_has_ground_art() -> void:
 	for map_id: StringName in registry.maps:
 		assert_true(BoardArt.has_ground(map_id), "map %s has ground art" % map_id)
@@ -112,3 +133,54 @@ func _count_sprites(node: Node) -> int:
 	for child in node.get_children():
 		count += _count_sprites(child)
 	return count
+
+
+## Plays through the moments the board marks: a tower levelling up and ascending, shots landing, and
+## an enemy under every status at once. The drawing must get through all of it without an error.
+func test_board_marks_upgrades_hits_and_statuses() -> void:
+	Progress.use_memory_profile()
+	var game: Game = GAME_SCENE.instantiate()
+	add_child_autofree(game)
+	await wait_process_frames(2)
+	var art: BoardArt = game.board.art
+	var sim: RunSim = game.sim
+	sim.gold = 99999
+	sim.allocate_node(&"fire_entry")
+	var tower: SimTower = null
+	for cell in sim.path_cell_list():
+		for step: Vector2i in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+			if tower == null and sim.placement_error(&"fire_brazier", cell + step).is_empty():
+				tower = sim.place_tower(&"fire_brazier", cell + step)
+	assert_not_null(tower, "found a cell beside the road")
+	if tower == null:
+		return
+	await wait_process_frames(2)
+	for i in SimTower.MAX_LEVEL - 1:
+		assert_true(sim.level_up(tower), "level up")
+	await wait_process_frames(2)
+	assert_true(sim.ascend(tower, tower.data.ascendancies[0].id), "ascend")
+	await wait_process_frames(2)
+	assert_true(art.has_live_effects(), "ascending sets off a ring")
+	assert_true(sim.start_next_wave(), "wave started")
+	for i in 900:
+		if not sim.enemies.is_empty():
+			break
+		sim.step(RunSim.STEP)
+	assert_false(sim.enemies.is_empty(), "an enemy walked in")
+	if sim.enemies.is_empty():
+		return
+	var enemy: SimEnemy = sim.enemies[0]
+	for kind: StringName in [&"burn", &"poison", &"slow", &"stun", &"curse", &"shatter"]:
+		var spec := StatusEffectData.new()
+		spec.kind = kind
+		spec.duration = 3.0
+		spec.slow = 0.3 if kind == &"slow" else 0.0
+		enemy.apply_status(spec, tower, 1.0)
+	assert_true(enemy.has_status(&"stun"), "the enemy is marked")
+	# Ten seconds of the wave, drawn now and then: shots fly, land and kill.
+	for second in 10:
+		await wait_process_frames(2)
+		for i in 60:
+			sim.step(RunSim.STEP)
+	await wait_process_frames(2)
+	assert_gt(tower.damage_dealt, 0.0, "the tower fought")

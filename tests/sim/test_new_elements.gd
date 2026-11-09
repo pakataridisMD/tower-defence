@@ -147,7 +147,7 @@ func test_a_base_tower_can_become_a_hybrid_in_place() -> void:
 	assert_eq(sim.tower_at(CELL), tower, "same tower, same place")
 	assert_eq(tower.price_paid, sim.tower_price(&"hybrid_bog"), "sells as a hybrid")
 	assert_true(tower.splash_radius > 0.0, "stats follow the new type")
-	assert_eq(sim.hybrid_options(tower), [] as Array[StringName], "hybrids do not change again")
+	assert_eq(sim.hybrid_options(tower), [] as Array[StringName], "no triple is unlocked, so the dual stays as it is")
 
 
 func test_hybrid_upgrade_needs_gold() -> void:
@@ -258,7 +258,7 @@ func test_every_element_pair_has_exactly_one_hybrid() -> void:
 	var pairs: Dictionary[String, StringName] = {}
 	for tower_id: StringName in registry.towers:
 		var data: TowerData = registry.towers[tower_id]
-		if not data.is_hybrid():
+		if not data.is_dual():
 			continue
 		var names: Array[String] = [String(data.elements[0]), String(data.elements[1])]
 		names.sort()

@@ -18,6 +18,8 @@ signal next_stage_pressed
 
 const TOP_BAR_HEIGHT := 72.0
 const SIDE_PANEL_X := 1584.0
+## Tallest the shop grid gets before it scrolls.
+const SHOP_MAX_HEIGHT := 330.0
 
 var sim: RunSim
 var speed := 1
@@ -32,6 +34,11 @@ var _web_button: Button
 var _speed_button: Button
 var _wave_button: Button
 var _tower_buttons: Dictionary[StringName, Button] = {}
+## Which shop tab is open: 1 for base towers, 2 for duals, 3 for triples.
+var _shop_tier := 1
+var _tier_tabs: Dictionary[int, Button] = {}
+var _shop_scroll: ScrollContainer
+var _shop_grid: GridContainer
 var _info: RichTextLabel
 var _sell_button: Button
 ## Level, ascendancy and hybrid buttons for the selected tower, rebuilt when the choices change.
@@ -123,13 +130,27 @@ func _build_side_panel() -> void:
 	column.add_theme_constant_override("separation", 10)
 	panel.add_child(column)
 	column.add_child(UiStyle.label("Towers", 26))
-	# A grid of tower pictures: base towers on top, then the hybrids unlocked so far.
-	# Names and details are in the tooltips.
+	# Tabs for base towers, duals and triples; hybrids only show once they are unlocked.
+	var tabs := HBoxContainer.new()
+	tabs.add_theme_constant_override("separation", 6)
+	column.add_child(tabs)
+	for tier in [1, 2, 3]:
+		var tab := UiStyle.button("", 16)
+		tab.toggle_mode = true
+		tab.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		tab.pressed.connect(show_shop_tier.bind(tier))
+		tabs.add_child(tab)
+		_tier_tabs[tier] = tab
+	# A grid of tower pictures. Names and details are in the tooltips.
+	_shop_scroll = ScrollContainer.new()
+	_shop_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	column.add_child(_shop_scroll)
 	var grid := GridContainer.new()
 	grid.columns = 4
 	grid.add_theme_constant_override("h_separation", 6)
 	grid.add_theme_constant_override("v_separation", 6)
-	column.add_child(grid)
+	_shop_scroll.add_child(grid)
+	_shop_grid = grid
 	var number := 1
 	for tower_id in _shop_order():
 		var data: TowerData = sim.config.towers[tower_id]
@@ -230,16 +251,27 @@ func _build_end_panel() -> void:
 	buttons.add_child(menu)
 
 
-## Base towers first in ring order, then hybrids.
+## Opens a shop tab: 1 for base towers, 2 for duals, 3 for triples.
+func show_shop_tier(tier: int) -> void:
+	_shop_tier = clampi(tier, 1, 3)
+	_shop_scroll.scroll_vertical = 0
+
+
+## Base towers first in ring order, then duals, then triples.
 func _shop_order() -> Array[StringName]:
 	var ids: Array[StringName] = []
 	ids.assign(sim.config.towers.keys())
 	var rank := func(id: StringName) -> int:
 		var data: TowerData = sim.config.towers[id]
-		var first := sim.config.element_index(data.elements[0]) if not data.elements.is_empty() else 0
-		if not data.is_hybrid():
-			return first
-		return 100 + first * 10 + sim.config.element_index(data.elements[1])
+		var indices: Array[int] = []
+		for element_id in data.elements:
+			indices.append(sim.config.element_index(element_id))
+		indices.sort()
+		var weights: Array[int] = [100, 10, 1]
+		var value := data.elements.size() * 1000
+		for i in indices.size():
+			value += indices[i] * weights[i]
+		return value
 	ids.sort_custom(func(a: StringName, b: StringName) -> bool: return rank.call(a) < rank.call(b))
 	return ids
 
@@ -276,6 +308,7 @@ func _refresh() -> void:
 			_wave_button.text = "Run over"
 	for tower_id in _tower_buttons:
 		_refresh_tower_button(tower_id, _tower_buttons[tower_id])
+	_refresh_shop_tabs()
 	_refresh_info()
 
 
@@ -320,13 +353,31 @@ func _element_at(ring_index: int) -> ElementData:
 	return null
 
 
+func _refresh_shop_tabs() -> void:
+	var unlocked := {1: 0, 2: 0, 3: 0}
+	for tower_id in _tower_buttons:
+		var data: TowerData = sim.config.towers[tower_id]
+		if not data.is_hybrid() or sim.is_unlocked(tower_id):
+			unlocked[data.elements.size()] += 1
+	var names := {1: "Base", 2: "Duals", 3: "Triples"}
+	for tier: int in _tier_tabs:
+		var tab := _tier_tabs[tier]
+		tab.text = names[tier] if tier == 1 else "%s %d" % [names[tier], unlocked[tier]]
+		tab.set_pressed_no_signal(tier == _shop_tier)
+		tab.tooltip_text = "" if unlocked[tier] > 0 else \
+				("Take a bridge node, or the core nodes of two elements, to unlock dual towers." if tier == 2 \
+				else "Take the core nodes of three elements to unlock their triple tower.")
+	# The grid scrolls once a tab holds more towers than fit above the tower panel.
+	_shop_scroll.custom_minimum_size.y = minf(_shop_grid.get_combined_minimum_size().y, SHOP_MAX_HEIGHT)
+
+
 func _refresh_tower_button(tower_id: StringName, button: Button) -> void:
 	var data: TowerData = sim.config.towers[tower_id]
 	var price := sim.tower_price(tower_id)
 	var hotkey: int = button.get_meta(&"hotkey")
 	var key := "%d · " % hotkey if hotkey > 0 else ""
 	# Hybrids stay out of the shop until they are unlocked, so the panel only grows as the run does.
-	button.visible = not data.is_hybrid() or sim.is_unlocked(tower_id)
+	button.visible = data.elements.size() == _shop_tier and (not data.is_hybrid() or sim.is_unlocked(tower_id))
 	if not sim.is_unlocked(tower_id):
 		button.text = "Locked"
 		button.tooltip_text = "%s (%s)\n%s\n%s" % [data.display_name, _element_names(data), data.description, _unlock_hint(tower_id)]
@@ -368,7 +419,7 @@ func _refresh_info() -> void:
 			"Open the skill web (T) and take an element to unlock its tower. " + \
 			"Pick a tower, then click an empty tile to build it. Shift-click builds several; right-click cancels.\n\n" + \
 			"Click a tower to level it up. At level %d it can ascend into one of two specialisations, " % SimTower.MAX_LEVEL + \
-			"and a base tower can turn into a hybrid once its bridge is taken.\n\n" + \
+			"and a tower can fuse into an unlocked tower with one more element.\n\n" + \
 			"Each wave resists its own element and is weak to the opposite one, so mix elements.\n\n" + \
 			_stage_rules() + \
 			"Space: start wave · F: speed · P: pause · 1-6: towers"
@@ -433,7 +484,7 @@ func _upgrade_choices(tower: SimTower) -> Array:
 	for hybrid_id in sim.hybrid_options(tower):
 		var data: TowerData = sim.config.towers[hybrid_id]
 		choices.append([&"hybrid", hybrid_id, "Become %s  ·  %dg" % [data.display_name, sim.hybrid_upgrade_price(tower, hybrid_id)],
-				"%s (%s)\n%s\nKeeps its level." % [data.display_name, _element_names(data), data.description],
+				"%s (%s)\n%s\nKeeps its level and its record." % [data.display_name, _element_names(data), data.description],
 				sim.hybrid_upgrade_error(tower, hybrid_id)])
 	return choices
 

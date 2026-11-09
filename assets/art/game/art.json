@@ -552,6 +552,586 @@
     -50
    ]
   },
+  "triple_abyssal_trench": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -58
+   ],
+   "light": {
+    "color": "#a88cda",
+    "offset": [
+     0,
+     -56
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "void",
+   "emitter_offset": [
+    0,
+    -59
+   ]
+  },
+  "triple_amber_spire": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -60
+   ],
+   "light": {
+    "color": "#ead766",
+    "offset": [
+     0,
+     -58
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "sparks",
+   "emitter_offset": [
+    0,
+    -61
+   ]
+  },
+  "triple_boiling_marsh": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -56
+   ],
+   "light": {
+    "color": "#a4cb6d",
+    "offset": [
+     0,
+     -54
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "leaves",
+   "emitter_offset": [
+    0,
+    -57
+   ]
+  },
+  "triple_cinderstorm": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -54
+   ],
+   "light": {
+    "color": "#c2d253",
+    "offset": [
+     0,
+     -52
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "leaves",
+   "emitter_offset": [
+    0,
+    -55
+   ]
+  },
+  "triple_drowned_garden": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -54
+   ],
+   "light": {
+    "color": "#91c392",
+    "offset": [
+     0,
+     -52
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "leaves",
+   "emitter_offset": [
+    0,
+    -55
+   ]
+  },
+  "triple_hellforge": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -58
+   ],
+   "light": {
+    "color": "#c685b6",
+    "offset": [
+     0,
+     -56
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "void",
+   "emitter_offset": [
+    0,
+    -59
+   ]
+  },
+  "triple_mire_colossus": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -56
+   ],
+   "light": {
+    "color": "#cdbc6e",
+    "offset": [
+     0,
+     -54
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "dust",
+   "emitter_offset": [
+    0,
+    -57
+   ]
+  },
+  "triple_mistwraith": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -58
+   ],
+   "light": {
+    "color": "#92a8da",
+    "offset": [
+     0,
+     -56
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "drips",
+   "emitter_offset": [
+    0,
+    -59
+   ]
+  },
+  "triple_obsidian_geyser": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -57
+   ],
+   "light": {
+    "color": "#e1a66c",
+    "offset": [
+     0,
+     -55
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "fire",
+   "emitter_offset": [
+    0,
+    -58
+   ]
+  },
+  "triple_plague_storm": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -54
+   ],
+   "light": {
+    "color": "#afca77",
+    "offset": [
+     0,
+     -52
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "leaves",
+   "emitter_offset": [
+    0,
+    -55
+   ]
+  },
+  "triple_polar_rift": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -59
+   ],
+   "light": {
+    "color": "#ecc18b",
+    "offset": [
+     0,
+     -57
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "sparks",
+   "emitter_offset": [
+    0,
+    -60
+   ]
+  },
+  "triple_rainwild": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -57
+   ],
+   "light": {
+    "color": "#91cdc0",
+    "offset": [
+     0,
+     -55
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "drips",
+   "emitter_offset": [
+    0,
+    -58
+   ]
+  },
+  "triple_starfall": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -57
+   ],
+   "light": {
+    "color": "#c68fbf",
+    "offset": [
+     0,
+     -55
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "void",
+   "emitter_offset": [
+    0,
+    -58
+   ]
+  },
+  "triple_storm_eye": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -58
+   ],
+   "light": {
+    "color": "#a896e4",
+    "offset": [
+     0,
+     -56
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "void",
+   "emitter_offset": [
+    0,
+    -59
+   ]
+  },
+  "triple_thunder_geyser": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -57
+   ],
+   "light": {
+    "color": "#e1b076",
+    "offset": [
+     0,
+     -55
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "fire",
+   "emitter_offset": [
+    0,
+    -58
+   ]
+  },
+  "triple_thunderforge": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -61
+   ],
+   "light": {
+    "color": "#ffc966",
+    "offset": [
+     0,
+     -59
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "sparks",
+   "emitter_offset": [
+    0,
+    -62
+   ]
+  },
+  "triple_tidal_dynamo": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -56
+   ],
+   "light": {
+    "color": "#a5c3c0",
+    "offset": [
+     0,
+     -54
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "drips",
+   "emitter_offset": [
+    0,
+    -57
+   ]
+  },
+  "triple_tombroot": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -56
+   ],
+   "light": {
+    "color": "#d7ac6e",
+    "offset": [
+     0,
+     -54
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "dust",
+   "emitter_offset": [
+    0,
+    -57
+   ]
+  },
+  "triple_witchfire": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -56
+   ],
+   "light": {
+    "color": "#d79f6c",
+    "offset": [
+     0,
+     -54
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "fire",
+   "emitter_offset": [
+    0,
+    -57
+   ]
+  },
+  "triple_worldforge": {
+   "size": [
+    44,
+    84
+   ],
+   "anchor": [
+    22,
+    80
+   ],
+   "muzzle": [
+    0,
+    -56
+   ],
+   "light": {
+    "color": "#eab549",
+    "offset": [
+     0,
+     -54
+    ],
+    "energy": 1.25,
+    "range": 135,
+    "height": 52
+   },
+   "emitter": "dust",
+   "emitter_offset": [
+    0,
+    -57
+   ]
+  },
   "void_obelisk": {
    "size": [
     30,
@@ -614,65 +1194,17 @@
  "enemies": {
   "broodmother": {
    "size": [
-    42,
-    36
+    44,
+    38
    ],
    "anchor": [
-    21,
-    35
+    22,
+    37
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "brute": {
-   "size": [
-    24,
-    20
-   ],
-   "anchor": [
-    12,
-    19
-   ],
-   "gear": true,
-   "frames": 4
-  },
-  "cinder_tyrant": {
-   "size": [
-    38,
-    36
-   ],
-   "anchor": [
-    19,
-    35
-   ],
-   "gear": true,
-   "frames": 4
-  },
-  "grunt": {
-   "size": [
-    18,
-    15
-   ],
-   "anchor": [
-    9,
-    14
-   ],
-   "gear": true,
-   "frames": 4
-  },
-  "hollow_king": {
-   "size": [
-    38,
-    36
-   ],
-   "anchor": [
-    19,
-    35
-   ],
-   "gear": true,
-   "frames": 4
-  },
-  "hollow_shade": {
    "size": [
     26,
     22
@@ -682,127 +1214,175 @@
     21
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
+  },
+  "cinder_tyrant": {
+   "size": [
+    42,
+    36
+   ],
+   "anchor": [
+    21,
+    35
+   ],
+   "gear": true,
+   "frames": 6
+  },
+  "grunt": {
+   "size": [
+    20,
+    17
+   ],
+   "anchor": [
+    10,
+    16
+   ],
+   "gear": true,
+   "frames": 6
+  },
+  "hollow_king": {
+   "size": [
+    40,
+    44
+   ],
+   "anchor": [
+    20,
+    43
+   ],
+   "gear": true,
+   "frames": 6
+  },
+  "hollow_shade": {
+   "size": [
+    26,
+    28
+   ],
+   "anchor": [
+    13,
+    27
+   ],
+   "gear": true,
+   "frames": 6
   },
   "leviathan": {
    "size": [
-    46,
+    68,
     38
    ],
    "anchor": [
-    23,
+    34,
     37
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "mender": {
    "size": [
-    18,
-    18
+    20,
+    21
    ],
    "anchor": [
-    9,
-    17
+    10,
+    20
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "mountain_titan": {
    "size": [
-    44,
-    38
+    46,
+    40
    ],
    "anchor": [
-    22,
-    37
+    23,
+    39
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "runner": {
    "size": [
-    14,
-    11
+    22,
+    13
    ],
    "anchor": [
-    7,
-    10
+    11,
+    12
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "shardling": {
    "size": [
-    10,
-    8
+    16,
+    11
    ],
    "anchor": [
-    5,
-    7
+    8,
+    10
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "splitter": {
    "size": [
-    22,
-    16
+    26,
+    17
    ],
    "anchor": [
-    11,
-    15
+    13,
+    16
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "sundered_heart": {
    "size": [
-    50,
+    52,
     46
    ],
    "anchor": [
-    25,
+    26,
     45
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "thunderhead": {
    "size": [
-    38,
-    38
+    40,
+    40
    ],
    "anchor": [
-    19,
-    37
+    20,
+    39
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "warded": {
    "size": [
-    22,
-    19
+    24,
+    20
    ],
    "anchor": [
-    11,
-    18
+    12,
+    19
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "warden": {
    "size": [
-    36,
-    30
+    42,
+    34
    ],
    "anchor": [
-    18,
-    29
+    21,
+    33
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   }
  },
  "props": {
