@@ -1,0 +1,74 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"burn"
+damage_per_second = 5.0
+duration = 3.0
+max_stacks = 4
+
+[sub_resource type="Resource" id="Resource_e1"]
+script = ExtResource("2_status")
+kind = &"poison"
+damage_per_second = 4.0
+duration = 4.0
+max_stacks = 5
+
+[sub_resource type="Resource" id="Asc_conflagration_m0"]
+script = ExtResource("mod_script")
+stat = &"splash_radius"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_conflagration_m1"]
+script = ExtResource("mod_script")
+stat = &"burn_spread_radius"
+value = 80.0
+
+[sub_resource type="Resource" id="Asc_conflagration"]
+script = ExtResource("asc_script")
+id = &"conflagration"
+display_name = "Conflagration"
+description = "Seed bursts are 50% wider and burn spreads to enemies within 80 when its victim dies."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_conflagration_m0"), SubResource("Asc_conflagration_m1")])
+
+[sub_resource type="Resource" id="Asc_rot_blossom_m0"]
+script = ExtResource("mod_script")
+stat = &"poison_damage"
+kind = 2
+value = 0.6
+
+[sub_resource type="Resource" id="Asc_rot_blossom_m1"]
+script = ExtResource("mod_script")
+stat = &"burn_damage"
+kind = 2
+value = 0.6
+
+[sub_resource type="Resource" id="Asc_rot_blossom"]
+script = ExtResource("asc_script")
+id = &"rot_blossom"
+display_name = "Rot Blossom"
+description = "Poison and burn deal 60% more damage."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_rot_blossom_m0"), SubResource("Asc_rot_blossom_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"hybrid_wildfire"
+display_name = "Wildfire"
+description = "Seeds that burst into flame: every hit both burns and poisons."
+elements = Array[StringName]([&"fire", &"nature"])
+tags = Array[StringName]([&"area"])
+cost = 150
+damage = 8.0
+attacks_per_second = 0.9
+attack_range = 165.0
+projectile_speed = 480.0
+splash_radius = 50.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
+requires_nodes = Array[StringName]([&"fire_core", &"nature_core"])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_conflagration"), SubResource("Asc_rot_blossom")])

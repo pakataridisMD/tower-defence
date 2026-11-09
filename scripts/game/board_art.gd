@@ -497,6 +497,17 @@ func _tower_emitter(kind: String) -> CPUParticles2D:
 			wisps.color_ramp = _gradient([Color(0.95, 0.85, 1.0), Color(0.7, 0.4, 1.0, 0.9), Color(0.3, 0.1, 0.6, 0)], [0.0, 0.35, 1.0])
 			wisps.material = _additive
 			return wisps
+		"steam":
+			var steam := _particles(10, 1.6, Vector2(8, 2))
+			steam.direction = Vector2(0, -1)
+			steam.spread = 18.0
+			steam.gravity = Vector2(2, -6)
+			steam.initial_velocity_min = 4.0
+			steam.initial_velocity_max = 10.0
+			steam.scale_amount_min = 1.0
+			steam.scale_amount_max = 3.0
+			steam.color_ramp = _gradient([Color(1, 1, 1, 0), Color(0.95, 0.97, 1.0, 0.6), Color(0.85, 0.9, 0.95, 0)], [0.0, 0.25, 1.0])
+			return steam
 		"bubbles":
 			var bubbles := _particles(5, 1.2, Vector2(9, 2))
 			bubbles.direction = Vector2(0, -1)

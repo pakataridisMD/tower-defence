@@ -97,7 +97,15 @@ func tower_price(tower_id: StringName) -> int:
 
 
 func is_unlocked(tower_id: StringName) -> bool:
-	return tree.unlocked_towers().has(tower_id)
+	if tree.unlocked_towers().has(tower_id):
+		return true
+	var data: TowerData = config.towers.get(tower_id)
+	if data == null or data.requires_nodes.is_empty():
+		return false
+	for node_id in data.requires_nodes:
+		if not tree.is_allocated(node_id):
+			return false
+	return true
 
 
 func tower_at(cell: Vector2i) -> SimTower:

@@ -1,0 +1,75 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"burn"
+damage_per_second = 7.0
+duration = 3.0
+max_stacks = 4
+
+[sub_resource type="Resource" id="Resource_e1"]
+script = ExtResource("2_status")
+kind = &"shatter"
+armour_reduction = 1.0
+duration = 5.0
+max_stacks = 5
+
+[sub_resource type="Resource" id="Asc_caldera_m0"]
+script = ExtResource("mod_script")
+stat = &"splash_radius"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_caldera_m1"]
+script = ExtResource("mod_script")
+stat = &"burn_damage"
+kind = 2
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_caldera"]
+script = ExtResource("asc_script")
+id = &"caldera"
+display_name = "Caldera"
+description = "Molten rock splashes 50% wider and burns 50% hotter."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_caldera_m0"), SubResource("Asc_caldera_m1")])
+
+[sub_resource type="Resource" id="Asc_obsidian_core_m0"]
+script = ExtResource("mod_script")
+stat = &"damage"
+kind = 2
+value = 1.0
+
+[sub_resource type="Resource" id="Asc_obsidian_core_m1"]
+script = ExtResource("mod_script")
+stat = &"shatter_strength"
+kind = 1
+value = 1.0
+
+[sub_resource type="Resource" id="Asc_obsidian_core"]
+script = ExtResource("asc_script")
+id = &"obsidian_core"
+display_name = "Obsidian Core"
+description = "Deals double damage and shatters twice as much armour."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_obsidian_core_m0"), SubResource("Asc_obsidian_core_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"hybrid_magma"
+display_name = "Magma Forge"
+description = "Lobs molten rock that melts armour and sets the ground alight."
+elements = Array[StringName]([&"earth", &"fire"])
+tags = Array[StringName]([&"area"])
+cost = 160
+damage = 20.0
+attacks_per_second = 0.55
+attack_range = 160.0
+projectile_speed = 380.0
+splash_radius = 65.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
+requires_nodes = Array[StringName]([&"earth_core", &"fire_core"])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_caldera"), SubResource("Asc_obsidian_core")])
