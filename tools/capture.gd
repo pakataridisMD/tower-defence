@@ -60,7 +60,7 @@ func _run() -> void:
 		await _wait(0.3)
 		game._toggle_web()
 		await _wait(0.3)
-		_hover(game.web.screen_position(&"keystone_overcharge"))
+		_hover(game.web.screen_position(&"bridge_plasma"))
 		await _wait(0.2)
 		await _shot("skill_web_start")
 		print("Screenshots saved to ", _out)

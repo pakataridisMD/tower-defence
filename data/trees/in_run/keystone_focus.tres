@@ -25,3 +25,4 @@ cost = 1
 position = Vector2(-95, -330)
 links = Array[StringName]([&"fire_notable"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0"), SubResource("Resource_m1")])
+icon = &"eye"
