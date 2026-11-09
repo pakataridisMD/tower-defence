@@ -1,7 +1,11 @@
 class_name BoardView
 extends Node2D
-## Draws the map, towers, enemies, shots and effects from the run simulation with placeholder
-## shapes, and handles clicks on the board: placing towers and selecting them.
+## Shows the run simulation on the board and handles clicks on it: placing towers and selecting them.
+##
+## The map, towers, enemies, shots and impacts are drawn as lit pixel art by a BoardArt child when the
+## map has art. This node draws the overlays on top (ranges, health bars, the build cursor, gold
+## text), unshaded so night never darkens them, and falls back to placeholder shapes for anything
+## without art.
 
 signal selection_changed(tower: SimTower)
 signal placement_failed(reason: String)
@@ -28,11 +32,12 @@ var selected: SimTower
 var hover_cell := Vector2i(-1, -1)
 
 var _effects: Array[Effect] = []
-## Seconds since the board was set up, for tower art animations.
-var _time := 0.0
 var _font: Font
 ## The ground and path never change during a run, so they are drawn once on their own layer.
+## Only used when the map has no art.
 var _ground: Node2D
+## The lit pixel art, or null when the map has no art.
+var art: BoardArt
 
 
 ## A short-lived visual: a lightning arc, an explosion, floating gold text or a leak flash.
@@ -50,10 +55,20 @@ class Effect:
 func setup(p_sim: RunSim) -> void:
 	sim = p_sim
 	_font = ThemeDB.fallback_font
-	_ground = Node2D.new()
-	_ground.show_behind_parent = true
-	_ground.draw.connect(_draw_ground_layer)
-	add_child(_ground)
+	var overlay := CanvasItemMaterial.new()
+	overlay.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	material = overlay
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	if BoardArt.has_ground(sim.config.map.id):
+		art = BoardArt.new()
+		art.show_behind_parent = true
+		add_child(art)
+		art.setup(sim)
+	else:
+		_ground = Node2D.new()
+		_ground.show_behind_parent = true
+		_ground.draw.connect(_draw_ground_layer)
+		add_child(_ground)
 	sim.chain_fired.connect(_on_chain_fired)
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.enemy_killed.connect(_on_enemy_killed)
@@ -77,7 +92,6 @@ func select(tower: SimTower) -> void:
 
 
 func _process(delta: float) -> void:
-	_time += delta
 	var active: Array[Effect] = []
 	for effect in _effects:
 		effect.time += delta
@@ -121,20 +135,39 @@ func _unhandled_input(event: InputEvent) -> void:
 func _draw() -> void:
 	if sim == null:
 		return
-	# Tower art is taller than a cell, so draw from the top row down and let nearer towers overlap.
-	var towers := sim.towers.duplicate()
-	towers.sort_custom(func(a: SimTower, b: SimTower) -> bool: return a.position.y < b.position.y)
-	for tower: SimTower in towers:
-		_draw_tower(tower.data, tower.position, 1.0, tower.facing, tower.id * 3)
+	for tower in sim.towers:
+		if not _has_tower_art(tower.data.id):
+			_draw_tower(tower.data, tower.position, 1.0)
 	if selected != null:
 		_draw_range(selected.position, selected.attack_range, Color(1, 1, 1, 0.55))
 	for enemy in sim.enemies:
 		_draw_enemy(enemy)
-	for shot in sim.projectiles:
-		var radius := 7.0 if shot.splash_radius > 0.0 else 4.0
-		draw_circle(shot.position, radius, _tower_color(shot.source.data, 0))
+	if art == null:
+		for shot in sim.projectiles:
+			var radius := 7.0 if shot.splash_radius > 0.0 else 4.0
+			draw_circle(shot.position, radius, _tower_color(shot.source.data, 0))
+	else:
+		_draw_road_labels()
 	_draw_effects()
 	_draw_cursor()
+
+
+func _has_tower_art(tower_id: StringName) -> bool:
+	return art != null and not BoardArt.tower_info(tower_id).is_empty()
+
+
+func _draw_road_labels() -> void:
+	var points := sim.config.map.path_points()
+	if points.size() < 2:
+		return
+	var board := Rect2(Vector2.ZERO, sim.config.map.size_in_pixels())
+	var cell_size := float(sim.config.map.cell_size)
+	var entry := Vector2(0, points[0].y)
+	var exit := Vector2(board.size.x, points[points.size() - 1].y)
+	draw_string_outline(_font, entry + Vector2(6, -cell_size * 0.5 - 6), "IN", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, 6, Color(0, 0, 0, 0.6))
+	draw_string(_font, entry + Vector2(6, -cell_size * 0.5 - 6), "IN", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, UiStyle.TEXT)
+	draw_string_outline(_font, exit + Vector2(-40, -cell_size * 0.5 - 6), "OUT", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, 6, Color(0, 0, 0, 0.6))
+	draw_string(_font, exit + Vector2(-40, -cell_size * 0.5 - 6), "OUT", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, UiStyle.LIFE)
 
 
 func _draw_ground_layer() -> void:
@@ -190,11 +223,7 @@ func _draw_range(center: Vector2, radius: float, color: Color) -> void:
 	draw_arc(center, radius, 0.0, TAU, 72, color, 2.0, true)
 
 
-func _draw_tower(data: TowerData, center: Vector2, alpha: float, facing: float = PI / 2.0, phase: int = 0) -> void:
-	var art := TowerSpriteSet.for_tower(data.id)
-	if art != null:
-		art.draw(self, center, facing, _time, phase, Color(1, 1, 1, alpha))
-		return
+func _draw_tower(data: TowerData, center: Vector2, alpha: float) -> void:
 	var base := Rect2(center - Vector2(TOWER_HALF_SIZE, TOWER_HALF_SIZE), Vector2(TOWER_HALF_SIZE, TOWER_HALF_SIZE) * 2.0)
 	draw_rect(base, Color(TOWER_BASE, alpha))
 	draw_rect(base, Color(1, 1, 1, 0.12 * alpha), false, 2.0)
@@ -243,22 +272,28 @@ func _enemy_radius(enemy: SimEnemy) -> float:
 
 func _draw_enemy(enemy: SimEnemy) -> void:
 	var radius := _enemy_radius(enemy)
-	var wave := sim.current_wave()
-	var aura := sim.config.element_color(wave.element) if wave != null else Color.WHITE
-	draw_circle(enemy.position, radius + 3.0, aura)
-	draw_circle(enemy.position, radius, ENEMY_OUTLINE)
-	draw_circle(enemy.position, radius - 2.0, ENEMY_BODY)
-	if enemy.data.tags.has(&"armoured") or enemy.data.tags.has(&"boss"):
-		draw_arc(enemy.position, radius - 5.0, 0.0, TAU, 24, Color("8a93a6"), 3.0, true)
-	if enemy.has_status(&"burn"):
-		draw_arc(enemy.position, radius + 6.0, 0.0, TAU, 24, Color("ff8a3d"), 2.5, true)
-	if enemy.has_status(&"poison"):
-		draw_circle(enemy.position + Vector2(radius * 0.7, -radius * 0.7), 4.0, Color("7be35b"))
+	var art_height := BoardArt.enemy_height(enemy.data.id) if art != null else 0.0
+	if art_height <= 0.0:
+		var wave := sim.current_wave()
+		var aura := sim.config.element_color(wave.element) if wave != null else Color.WHITE
+		draw_circle(enemy.position, radius + 3.0, aura)
+		draw_circle(enemy.position, radius, ENEMY_OUTLINE)
+		draw_circle(enemy.position, radius - 2.0, ENEMY_BODY)
+		if enemy.data.tags.has(&"armoured") or enemy.data.tags.has(&"boss"):
+			draw_arc(enemy.position, radius - 5.0, 0.0, TAU, 24, Color("8a93a6"), 3.0, true)
+		if enemy.has_status(&"burn"):
+			draw_arc(enemy.position, radius + 6.0, 0.0, TAU, 24, Color("ff8a3d"), 2.5, true)
+		if enemy.has_status(&"poison"):
+			draw_circle(enemy.position + Vector2(radius * 0.7, -radius * 0.7), 4.0, Color("7be35b"))
 	if enemy.health < enemy.max_health:
 		var width := radius * 2.0 + 8.0
-		var top_left := enemy.position + Vector2(-width * 0.5, -radius - 12.0)
-		draw_rect(Rect2(top_left, Vector2(width, 5)), Color(0, 0, 0, 0.7))
-		draw_rect(Rect2(top_left, Vector2(width * enemy.health / enemy.max_health, 5)), UiStyle.GOOD)
+		var top := -radius - 12.0
+		if art_height > 0.0:
+			# Enemy art stands on its position, so the bar goes above the sprite.
+			top = BoardArt.ENEMY_DROP * BoardArt.SCALE - art_height - 6.0
+		var top_left := enemy.position + Vector2(-width * 0.5, top)
+		draw_rect(Rect2(top_left - Vector2(1, 1), Vector2(width + 2, 6)), Color(0, 0, 0, 0.75))
+		draw_rect(Rect2(top_left, Vector2(width * enemy.health / enemy.max_health, 4)), UiStyle.GOOD)
 
 
 func _draw_effects() -> void:
@@ -266,9 +301,13 @@ func _draw_effects() -> void:
 		var fade := 1.0 - effect.time / effect.duration
 		match effect.kind:
 			&"chain":
+				if art != null:
+					continue
 				draw_polyline(effect.points, Color(effect.color, fade), 4.0, true)
 				draw_polyline(effect.points, Color(1, 1, 1, fade), 1.5, true)
 			&"blast":
+				if art != null:
+					continue
 				var radius := effect.radius * (0.6 + 0.4 * (1.0 - fade))
 				draw_circle(effect.position, radius, Color(effect.color, 0.35 * fade))
 			&"text":
@@ -285,15 +324,38 @@ func _draw_cursor() -> void:
 	var cell_size := float(map.cell_size)
 	var rect := Rect2(Vector2(hover_cell) * cell_size, Vector2(cell_size, cell_size))
 	if placing.is_empty():
-		draw_rect(rect, Color(1, 1, 1, 0.05))
+		draw_rect(rect, Color(1, 1, 1, 0.06))
+		draw_rect(rect, Color(1, 1, 1, 0.18), false, 2.0)
 		return
 	var data: TowerData = sim.config.towers.get(placing)
 	if data == null:
 		return
+	if art != null:
+		_draw_build_grid()
 	var center := map.cell_center(hover_cell)
-	draw_rect(rect, VALID if sim.can_place(placing, hover_cell) else INVALID)
+	var valid := sim.can_place(placing, hover_cell)
+	draw_rect(rect, VALID if valid else INVALID)
+	draw_rect(rect, Color(VALID if valid else INVALID, 0.9), false, 2.0)
 	_draw_range(center, data.stat_with(&"attack_range", sim.modifiers()), Color(1, 1, 1, 0.45))
-	_draw_tower(data, center, 0.65)
+	var picture := BoardArt.tower_picture(data.id) if art != null else null
+	if picture == null:
+		_draw_tower(data, center, 0.65)
+		return
+	var anchor: Array = BoardArt.tower_info(data.id)["anchor"]
+	var base := center + Vector2(0, BoardArt.TOWER_BASE_DROP * BoardArt.SCALE)
+	var top_left := base - Vector2(anchor[0], anchor[1]) * BoardArt.SCALE
+	draw_texture_rect(picture, Rect2(top_left, picture.get_size() * BoardArt.SCALE), false, Color(1, 1, 1, 0.7))
+
+
+## Faint cell lines over the grass while building, so the grid is clear without cluttering the art.
+func _draw_build_grid() -> void:
+	var map := sim.config.map
+	var cell_size := float(map.cell_size)
+	var board := map.size_in_pixels()
+	for x in range(1, map.grid_size.x):
+		draw_line(Vector2(x * cell_size, 0), Vector2(x * cell_size, board.y), Color(1, 1, 1, 0.07))
+	for y in range(1, map.grid_size.y):
+		draw_line(Vector2(0, y * cell_size), Vector2(board.x, y * cell_size), Color(1, 1, 1, 0.07))
 
 
 # --- Effects -----------------------------------------------------------------

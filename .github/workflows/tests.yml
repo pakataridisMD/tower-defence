@@ -13,9 +13,6 @@ jobs:
       GODOT_VERSION: 4.7.2
     steps:
       - uses: actions/checkout@v5
-        with:
-          # Sprite sheets live in Git LFS; without them Godot imports pointer files and fails.
-          lfs: true
 
       - name: Download Godot ${{ env.GODOT_VERSION }}
         run: |

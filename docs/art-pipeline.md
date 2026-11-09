@@ -1,22 +1,27 @@
 # Art pipeline: Blender to sprite sheets
 
-Tower art is modelled in Blender **from Python scripts** and rendered to sprite sheets that the game
-draws in 2D. The default output is **hi-bit pixel art** aimed at the look of Graveyard Keeper,
+This is a second way to make tower art, next to the hand-coded pixel art that the game draws today
+(`tools/art/gen_game_art.py`, drawn by `scripts/game/board_art.gd`). Towers are modelled in Blender
+**from Python scripts** and rendered to sprite sheets. It is not wired into the game yet; see
+"Feeding renders into the game" below. The default output is **hi-bit pixel art** aimed at the look of Graveyard Keeper,
 Romestead and Emberville: chunky readable shapes, a warm shared palette with hue-shifted shading,
 dark ink outlines and rich lighting. This is the "3D to pixel art" technique Dead Cells made famous:
-render the model large, shrink it by a whole factor, snap every pixel to the palette and outline it. Nothing is hand-placed in the Blender UI, so every tower is reproducible, diffable and
+render the model large, shrink it by a whole factor, snap every pixel to the palette and outline it.
+
+Nothing is hand-placed in the Blender UI, so every tower is reproducible, diffable and
 easy for Claude (or you) to tweak: change a number, re-run, and the sheet updates.
 
 ```
 art/blender/
   kit.py               camera, lights, render settings, materials, mesh helpers (shared)
-  render_tower.py      renders one tower to assets/sprites/towers/<id>/
+  render_tower.py      renders one tower to art/blender/out/<id>/ (not committed)
   pixelate.py          shrink, palette snap, outline and flat shadows (numpy only)
   towers/<id>.py       one file per tower: builds the model and its idle animation
-assets/sprites/towers/<id>/
-  <id>.png             the sheet (Git LFS)
+art/blender/out/<id>/
+  <id>.png             the sheet: one row per aim direction, one column per animation frame
   <id>_n.png           matching normal map sheet (pixel style), for Godot 2D lighting
   <id>.json            frame size, anchor, directions, frames, fps, filter
+docs/art-pipeline/     sample sheets for the Fire Brazier and Storm Spire
 ```
 
 ## Rendering a tower
@@ -45,7 +50,6 @@ a GPU. Useful options:
 | `--samples 32` | Faster, noisier renders (the denoiser cleans most of it up). |
 | `--no-outline` | Skip the dark outline pass. |
 
-Then open Godot once so it imports the new PNG, and commit the PNG, its `.import` file and the JSON.
 
 ## Conventions
 
@@ -71,12 +75,10 @@ Then open Godot once so it imports the new PNG, and commit the PNG, its `.import
   shadow colour, and solid parts get a one-pixel ink outline; glowing parts get a darker shade of
   their own colour instead, so fire and crystals keep a soft edge.
 - **Standard view transform**, not AgX. AgX turns hot oranges pale pink at sprite size.
-
 - **Normal maps come free.** Each frame is rendered a second time with every surface showing its
   camera-facing normal, then shrunk to the same pixels. Godot's `PointLight2D` and
   `DirectionalLight2D` use it, so a torch or a fire tower lights the stone on the side that faces
-  it. This is how Graveyard Keeper-style lighting works on pixel art; nothing uses it yet, but it is
-  ready for a day-night cycle and glowing towers.
+  it, the same way the game's hand-coded art is lit.
 
 ## Adding a tower
 
@@ -84,19 +86,19 @@ Then open Godot once so it imports the new PNG, and commit the PNG, its `.import
 2. Build the base from `kit.cylinder`, `kit.tube`, `kit.bowl` and the material helpers, and parent
    anything that aims to the head pivot. Keep the footprint inside a radius of about 0.43.
 3. Iterate with `--preview` until it looks right, then render the sheet.
-4. Nothing else is needed in the game: `TowerSpriteSet.for_tower(id)` finds the art, the board draws
-   it and the shop uses a close-up as the button icon. Towers without art keep their placeholder shapes.
+4. To use it in the game, see "Feeding renders into the game" below.
 
-## In the game
+## Feeding renders into the game
 
-`scripts/game/tower_sprite_set.gd` loads a sheet and its JSON, and draws pixel art with nearest
-filtering and HD sheets with mipmaps. `BoardView` draws each tower's frame
-for its `SimTower.facing` angle (the direction of its last attack), sorted by height so nearer towers
-overlap the ones behind them, and offsets the animation per tower so neighbours do not flicker in
-sync. `tests/unit/test_tower_sprite_set.gd` checks every sheet against its JSON.
+The game's art lives in `assets/art/game/` in the format `BoardArt` reads: one upright tower
+picture (`towers/<id>.png`), its normal map (`_n.png`), a glow layer (`_glow.png`) and an entry in
+`art.json` with the anchor, muzzle and light. A Blender tower can replace a hand-coded one by
+exporting a frame in that format: take the frame facing down from the sheet, crop it to the tower,
+split pixels brighter than the glow threshold into `_glow.png`, and write the anchor. The normal map
+already uses the same convention (OpenGL, green up the screen).
 
-When the game gets an export preset, add `*.json` to its non-resource export filter, or the sprite
-JSON files will be left out of the build.
+The sheets also have 16 aim directions and an idle loop, which the hand-coded art does not. Using
+them needs the board to turn towers towards their target and step through frames.
 
 ## Recommendations: getting great art for the whole game
 
@@ -105,7 +107,7 @@ so only search summaries were used from there).
 
 1. **Pre-rendered 3D turned into pixel art, as here, is the best fit for towers.** Dead Cells
    built its whole look this way, and the lighting-rich pixel art of Graveyard Keeper and Romestead
-   is the target. Hand touch-ups in Aseprite on top of the renders are the usual last 10%. It is how many polished 2D games get
+   is the target. Hand touch-ups in Aseprite on top of the renders are the usual last 10%. It gives
    consistent lighting, smooth rotations and animation for free. Claude is strongest at hard-surface
    and architectural shapes in code, which is exactly what towers are. Community advice for
    Claude + Blender is consistent: work in small steps, render a preview after each step and correct

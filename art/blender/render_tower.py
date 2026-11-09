@@ -10,7 +10,7 @@ Options:
     --directions N   aim directions to render (default 16)
     --frames N       animation frames per direction (default: the tower's own setting)
     --samples N      Cycles samples per frame (default 32 for pixel, 64 for hd)
-    --out DIR        output folder (default assets/sprites/towers/<id>)
+    --out DIR        output folder (default art/blender/out/<id>, not committed)
     --preview PATH   render one frame to PATH (plus PATH_board.png on the board colour)
     --no-outline     skip the outline pass
 
@@ -181,7 +181,7 @@ def main() -> None:
         return
 
     frames = args.frames or rig.frames
-    out_dir = os.path.abspath(args.out or os.path.join(REPO, "assets", "sprites", "towers", rig.id))
+    out_dir = os.path.abspath(args.out or os.path.join(HERE, "out", rig.id))
     os.makedirs(out_dir, exist_ok=True)
     factor = PIXEL_FACTOR if pixel else 1
     size = RENDER_SIZE // factor

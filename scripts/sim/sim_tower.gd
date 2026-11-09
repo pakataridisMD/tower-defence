@@ -11,9 +11,6 @@ var price_paid: int
 var element_indices: Array[int] = []
 var tags: Array[StringName] = []
 var cooldown := 0.0
-## Screen angle (radians, 0 = right, clockwise) of the last enemy this tower attacked. Only the
-## view uses it, to turn the tower's art. New towers face down, towards the player.
-var facing := PI / 2.0
 
 var damage := 0.0
 var attacks_per_second := 1.0
