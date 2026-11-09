@@ -370,7 +370,7 @@ static func _effect_text(spec: StatusEffectData) -> String:
 	return "%s %.1f/s for %.1fs, up to %d stacks" % [String(spec.kind).capitalize(), spec.damage_per_second, spec.duration, spec.max_stacks]
 
 
-## One entry per upgrade button: [kind, id, label, tooltip, price, error].
+## One entry per upgrade button: [kind, id, label, tooltip, error].
 func _upgrade_choices(tower: SimTower) -> Array:
 	var choices := []
 	if tower.level < SimTower.MAX_LEVEL:
@@ -417,15 +417,18 @@ func _set_actions(choices: Array) -> void:
 		var id: StringName = choice[1]
 		button.set_meta(&"action", kind)
 		button.set_meta(&"id", id)
-		button.pressed.connect(func() -> void:
-			match kind:
-				&"level":
-					level_up_pressed.emit()
-				&"ascend":
-					ascend_pressed.emit(id)
-				&"hybrid":
-					hybrid_pressed.emit(id))
+		button.pressed.connect(_on_action_pressed.bind(kind, id))
 		_actions.add_child(button)
+
+
+func _on_action_pressed(kind: StringName, id: StringName) -> void:
+	match kind:
+		&"level":
+			level_up_pressed.emit()
+		&"ascend":
+			ascend_pressed.emit(id)
+		&"hybrid":
+			hybrid_pressed.emit(id)
 
 
 # --- Events --------------------------------------------------------------------
