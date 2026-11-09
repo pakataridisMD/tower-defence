@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"burn"
+damage_per_second = 6.0
+duration = 3.0
+max_stacks = 4
+
+[sub_resource type="Resource" id="Resource_e1"]
+script = ExtResource("2_status")
+kind = &"curse"
+damage_taken = 0.2
+duration = 3.0
+
+[resource]
+script = ExtResource("1_tower")
+id = &"hybrid_soulflame"
+display_name = "Soulflame"
+description = "Ghostly fire that curses what it burns and leaps to the next soul."
+elements = Array[StringName]([&"void", &"fire"])
+cost = 140
+damage = 12.0
+attacks_per_second = 1.0
+attack_range = 175.0
+chain_count = 1
+chain_range = 120.0
+chain_falloff = 0.3
+aura_radius = 110.0
+aura_damage = 0.1
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])

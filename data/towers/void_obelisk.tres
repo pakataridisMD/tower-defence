@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"curse"
+damage_taken = 0.15
+duration = 3.0
+
+[resource]
+script = ExtResource("1_tower")
+id = &"void_obelisk"
+display_name = "Obelisk"
+description = "Curses enemies to take more damage and empowers nearby towers."
+elements = Array[StringName]([&"void"])
+tags = Array[StringName]([&"support"])
+cost = 65
+damage = 5.0
+attacks_per_second = 1.0
+attack_range = 150.0
+projectile_speed = 650.0
+aura_radius = 140.0
+aura_damage = 0.15
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0")])

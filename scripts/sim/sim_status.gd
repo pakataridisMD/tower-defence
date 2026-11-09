@@ -10,6 +10,7 @@ var max_stacks := 1
 var time_left := 0.0
 var slow := 0.0
 var damage_taken := 0.0
+var armour_reduction := 0.0
 ## Damage multiplier from the wave's element, fixed when the effect was applied.
 var element_multiplier := 1.0
 ## The tower credited with kills from this effect.

@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"curse"
+damage_taken = 0.2
+duration = 3.0
+
+[sub_resource type="Resource" id="Resource_e1"]
+script = ExtResource("2_status")
+kind = &"stun"
+duration = 0.3
+
+[resource]
+script = ExtResource("1_tower")
+id = &"hybrid_gravity_well"
+display_name = "Gravity Well"
+description = "Collapses space around a target, dragging the whole group backwards."
+elements = Array[StringName]([&"earth", &"void"])
+tags = Array[StringName]([&"area"])
+cost = 150
+damage = 24.0
+attacks_per_second = 0.5
+attack_range = 170.0
+projectile_speed = 360.0
+splash_radius = 55.0
+knockback = 28.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])

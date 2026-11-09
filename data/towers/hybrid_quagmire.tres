@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"slow"
+slow = 0.45
+duration = 2.5
+
+[sub_resource type="Resource" id="Resource_e1"]
+script = ExtResource("2_status")
+kind = &"shatter"
+armour_reduction = 2.0
+duration = 5.0
+max_stacks = 4
+
+[resource]
+script = ExtResource("1_tower")
+id = &"hybrid_quagmire"
+display_name = "Quagmire"
+description = "Turns the ground to sucking mud: heavy splashes that slow and crack armour."
+elements = Array[StringName]([&"water", &"earth"])
+tags = Array[StringName]([&"area"])
+cost = 140
+damage = 14.0
+attacks_per_second = 0.6
+attack_range = 160.0
+projectile_speed = 380.0
+splash_radius = 70.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])

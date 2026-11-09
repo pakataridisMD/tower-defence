@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"stun"
+duration = 0.4
+
+[sub_resource type="Resource" id="Resource_e1"]
+script = ExtResource("2_status")
+kind = &"shatter"
+armour_reduction = 1.0
+duration = 5.0
+max_stacks = 5
+
+[resource]
+script = ExtResource("1_tower")
+id = &"earth_monolith"
+display_name = "Monolith"
+description = "Hurls heavy boulders that stun and crack armour."
+elements = Array[StringName]([&"earth"])
+cost = 75
+damage = 34.0
+attacks_per_second = 0.45
+attack_range = 150.0
+projectile_speed = 430.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])

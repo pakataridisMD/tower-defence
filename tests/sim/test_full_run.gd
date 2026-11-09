@@ -38,3 +38,17 @@ func test_doing_nothing_loses() -> void:
 	var sim := _play([], [])
 	assert_eq(sim.state, RunSim.State.LOST)
 	assert_true(sim.wave_index < sim.total_waves())
+
+
+## The new elements must be able to carry a run on their own, without Fire, Storm or Nature.
+func test_a_water_earth_void_strategy_wins() -> void:
+	var nodes: Array[StringName] = [
+		&"earth_entry", &"water_entry", &"earth_ccw", &"water_cw", &"bridge_quagmire",
+		&"earth_core", &"earth_notable", &"void_entry", &"earth_cw", &"void_ccw", &"bridge_gravity_well",
+		&"water_core", &"water_notable", &"void_core", &"void_notable", &"void_cw", &"water_ccw",
+	]
+	var towers: Array[StringName] = [
+		&"hybrid_gravity_well", &"hybrid_quagmire", &"earth_monolith", &"void_obelisk", &"water_wellspring",
+	]
+	var sim := _play(nodes, towers)
+	assert_eq(sim.state, RunSim.State.WON)
