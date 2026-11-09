@@ -287,7 +287,7 @@ func test_opposite_hybrids_need_both_notables_and_are_never_resisted() -> void:
 	sim.allocate_node(&"water_notable")
 	assert_true(sim.is_unlocked(&"hybrid_steam"))
 	var steam: TowerData = registry.towers[&"hybrid_steam"]
-	var indices := registry.tower_element_indices(steam)
+	var indices: Array[int] = registry.tower_element_indices(steam)
 	for wave_element in 6:
 		assert_eq(ElementRules.damage_multiplier(indices, wave_element), 1.0, "never resisted, never weak-point")
 
