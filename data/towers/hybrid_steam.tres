@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"burn"
+damage_per_second = 8.0
+duration = 3.0
+max_stacks = 4
+
+[sub_resource type="Resource" id="Resource_e1"]
+script = ExtResource("2_status")
+kind = &"slow"
+slow = 0.35
+duration = 2.0
+
+[sub_resource type="Resource" id="Asc_geyser_m0"]
+script = ExtResource("mod_script")
+stat = &"damage"
+kind = 2
+value = 0.6
+
+[sub_resource type="Resource" id="Asc_geyser_m1"]
+script = ExtResource("mod_script")
+stat = &"knockback"
+value = 20.0
+
+[sub_resource type="Resource" id="Asc_geyser"]
+script = ExtResource("asc_script")
+id = &"geyser"
+display_name = "Geyser"
+description = "Blasts deal 60% more damage and push enemies back 20."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_geyser_m0"), SubResource("Asc_geyser_m1")])
+
+[sub_resource type="Resource" id="Asc_scald_m0"]
+script = ExtResource("mod_script")
+stat = &"burn_damage"
+kind = 2
+value = 1.0
+
+[sub_resource type="Resource" id="Asc_scald_m1"]
+script = ExtResource("mod_script")
+stat = &"burn_stacks"
+value = 3.0
+
+[sub_resource type="Resource" id="Asc_scald"]
+script = ExtResource("asc_script")
+id = &"scald"
+display_name = "Scald"
+description = "Burn deals double damage and stacks 3 more times."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_scald_m0"), SubResource("Asc_scald_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"hybrid_steam"
+display_name = "Steam Vent"
+description = "Fire meets water: scalding blasts that burn and slow everything nearby."
+elements = Array[StringName]([&"fire", &"water"])
+tags = Array[StringName]([&"area"])
+cost = 210
+damage = 18.0
+attacks_per_second = 0.7
+attack_range = 150.0
+projectile_speed = 520.0
+splash_radius = 85.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
+requires_nodes = Array[StringName]([&"fire_notable", &"water_notable"])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_geyser"), SubResource("Asc_scald")])

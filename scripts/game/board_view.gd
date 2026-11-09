@@ -138,8 +138,12 @@ func _draw() -> void:
 	for tower in sim.towers:
 		if not _has_tower_art(tower.data.id):
 			_draw_tower(tower.data, tower.position, 1.0)
+	for tower in sim.towers:
+		_draw_level(tower)
 	if selected != null:
 		_draw_range(selected.position, selected.attack_range, Color(1, 1, 1, 0.55))
+		if selected.aura_radius > 0.0 and selected.aura_damage > 0.0:
+			_draw_range(selected.position, selected.aura_radius, Color(0.75, 0.5, 1.0, 0.5))
 	for enemy in sim.enemies:
 		_draw_enemy(enemy)
 	if art == null:
@@ -150,6 +154,22 @@ func _draw() -> void:
 		_draw_road_labels()
 	_draw_effects()
 	_draw_cursor()
+
+
+## Small gems under a tower: one per level above the first, gold once it has ascended.
+func _draw_level(tower: SimTower) -> void:
+	var gems := tower.level - 1 + (1 if tower.ascendancy != null else 0)
+	if gems <= 0:
+		return
+	var y := tower.position.y + 26.0
+	var start := tower.position.x - (gems - 1) * 6.0
+	for i in gems:
+		var gold := tower.ascendancy != null and i == gems - 1
+		var c := Vector2(start + i * 12.0, y)
+		var gem := PackedVector2Array([c + Vector2(0, -5), c + Vector2(4, 0), c + Vector2(0, 5), c + Vector2(-4, 0)])
+		draw_colored_polygon(gem, Color(0.1, 0.08, 0.12, 0.9))
+		var inner := PackedVector2Array([c + Vector2(0, -3.5), c + Vector2(2.6, 0), c + Vector2(0, 3.5), c + Vector2(-2.6, 0)])
+		draw_colored_polygon(inner, Color(1.0, 0.82, 0.3) if gold else Color(0.75, 0.92, 1.0))
 
 
 func _has_tower_art(tower_id: StringName) -> bool:

@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"slow"
+slow = 0.3
+duration = 2.0
+
+[sub_resource type="Resource" id="Resource_e1"]
+script = ExtResource("2_status")
+kind = &"curse"
+damage_taken = 0.15
+duration = 3.0
+
+[sub_resource type="Resource" id="Asc_maelstrom_m0"]
+script = ExtResource("mod_script")
+stat = &"knockback"
+value = 14.0
+
+[sub_resource type="Resource" id="Asc_maelstrom_m1"]
+script = ExtResource("mod_script")
+stat = &"splash_radius"
+kind = 1
+value = 0.3
+
+[sub_resource type="Resource" id="Asc_maelstrom"]
+script = ExtResource("asc_script")
+id = &"maelstrom"
+display_name = "Maelstrom"
+description = "Drags enemies back 14 further and splashes 30% wider."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_maelstrom_m0"), SubResource("Asc_maelstrom_m1")])
+
+[sub_resource type="Resource" id="Asc_drowned_god_m0"]
+script = ExtResource("mod_script")
+stat = &"curse_strength"
+kind = 1
+value = 0.6
+
+[sub_resource type="Resource" id="Asc_drowned_god_m1"]
+script = ExtResource("mod_script")
+stat = &"slow_strength"
+kind = 1
+value = 0.3
+
+[sub_resource type="Resource" id="Asc_drowned_god"]
+script = ExtResource("asc_script")
+id = &"drowned_god"
+display_name = "Drowned God"
+description = "Curses are 60% stronger and slows 30% stronger."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_drowned_god_m0"), SubResource("Asc_drowned_god_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"hybrid_abyss"
+display_name = "Abyss"
+description = "Black water from the deep: drags enemies back and curses them."
+elements = Array[StringName]([&"water", &"void"])
+tags = Array[StringName]([&"area"])
+cost = 150
+damage = 10.0
+attacks_per_second = 0.7
+attack_range = 165.0
+projectile_speed = 420.0
+splash_radius = 55.0
+knockback = 14.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
+requires_nodes = Array[StringName]([&"water_core", &"void_core"])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_maelstrom"), SubResource("Asc_drowned_god")])

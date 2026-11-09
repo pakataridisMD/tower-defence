@@ -24,7 +24,7 @@ func test_all_six_elements_load_in_ring_order() -> void:
 
 
 func test_prototype_content_loads() -> void:
-	assert_eq(registry.towers.size(), 5, "3 base towers and 2 hybrids")
+	assert_eq(registry.towers.size(), 21, "6 base towers and a hybrid for each of the 15 element pairs")
 	assert_eq(registry.enemies.size(), 4)
 	assert_true(registry.wave_sets.has(&"prototype"))
 	assert_eq(registry.wave_sets[&"prototype"].waves.size(), 10)
@@ -43,7 +43,12 @@ func test_in_run_tree_unlocks_every_prototype_tower() -> void:
 				taken_any = true
 	assert_eq(state.allocated_ids().size(), graph.size(), "every node is reachable")
 	for tower_id: StringName in registry.towers:
-		assert_has(state.unlocked_towers(), tower_id)
+		var data: TowerData = registry.towers[tower_id]
+		if data.requires_nodes.is_empty():
+			assert_has(state.unlocked_towers(), tower_id)
+		else:
+			for node_id in data.requires_nodes:
+				assert_true(state.is_allocated(node_id), "%s needs %s" % [tower_id, node_id])
 
 
 func test_hybrid_of_non_neighbours_is_reported() -> void:
@@ -52,7 +57,7 @@ func test_hybrid_of_non_neighbours_is_reported() -> void:
 	bad.elements = [&"fire", &"nature"]
 	registry.towers[bad.id] = bad
 	var errors: PackedStringArray = registry.validate()
-	assert_true(errors.size() == 1 and "neighbours" in errors[0], "Got: %s" % [errors])
+	assert_true(errors.size() == 1 and "requires_nodes" in errors[0], "Got: %s" % [errors])
 
 
 func test_unknown_tree_link_is_reported() -> void:

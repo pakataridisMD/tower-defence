@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"shatter"
+armour_reduction = 1.5
+duration = 5.0
+max_stacks = 4
+
+[sub_resource type="Resource" id="Resource_e1"]
+script = ExtResource("2_status")
+kind = &"poison"
+damage_per_second = 6.0
+duration = 4.0
+max_stacks = 4
+
+[sub_resource type="Resource" id="Asc_elder_oak_m0"]
+script = ExtResource("mod_script")
+stat = &"bounty_bonus"
+value = 2.0
+
+[sub_resource type="Resource" id="Asc_elder_oak_m1"]
+script = ExtResource("mod_script")
+stat = &"attack_range"
+kind = 1
+value = 0.2
+
+[sub_resource type="Resource" id="Asc_elder_oak"]
+script = ExtResource("asc_script")
+id = &"elder_oak"
+display_name = "Elder Oak"
+description = "Kills earn 2 more gold and range is 20% longer."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_elder_oak_m0"), SubResource("Asc_elder_oak_m1")])
+
+[sub_resource type="Resource" id="Asc_thornplate_m0"]
+script = ExtResource("mod_script")
+stat = &"damage"
+kind = 2
+value = 0.7
+
+[sub_resource type="Resource" id="Asc_thornplate_m1"]
+script = ExtResource("mod_script")
+stat = &"shatter_strength"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_thornplate"]
+script = ExtResource("asc_script")
+id = &"thornplate"
+display_name = "Thornplate"
+description = "Deals 70% more damage and shatters 50% more armour."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_thornplate_m0"), SubResource("Asc_thornplate_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"hybrid_ironbark"
+display_name = "Ironbark"
+description = "An ancient tree with iron thorns that pierce armour and poison the wound."
+elements = Array[StringName]([&"nature", &"earth"])
+cost = 150
+damage = 22.0
+attacks_per_second = 0.75
+attack_range = 160.0
+projectile_speed = 700.0
+bounty_bonus = 1
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
+requires_nodes = Array[StringName]([&"nature_core", &"earth_core"])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_elder_oak"), SubResource("Asc_thornplate")])

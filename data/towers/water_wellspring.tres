@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"slow"
+slow = 0.35
+duration = 2.0
+
+[sub_resource type="Resource" id="Asc_tidecaller_m0"]
+script = ExtResource("mod_script")
+stat = &"knockback"
+value = 16.0
+
+[sub_resource type="Resource" id="Asc_tidecaller_m1"]
+script = ExtResource("mod_script")
+stat = &"attacks_per_second"
+kind = 1
+value = 0.25
+
+[sub_resource type="Resource" id="Asc_tidecaller"]
+script = ExtResource("asc_script")
+id = &"tidecaller"
+display_name = "Tidecaller"
+description = "Pushes enemies back 16 further and attacks 25% faster."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_tidecaller_m0"), SubResource("Asc_tidecaller_m1")])
+
+[sub_resource type="Resource" id="Asc_frostspring_m0"]
+script = ExtResource("mod_script")
+stat = &"slow_strength"
+kind = 1
+value = 0.4
+
+[sub_resource type="Resource" id="Asc_frostspring_m1"]
+script = ExtResource("mod_script")
+stat = &"slow_duration"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_frostspring"]
+script = ExtResource("asc_script")
+id = &"frostspring"
+display_name = "Frostspring"
+description = "Slows are 40% stronger and last 50% longer."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_frostspring_m0"), SubResource("Asc_frostspring_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"water_wellspring"
+display_name = "Wellspring"
+description = "Bursts of cold water that slow enemies and push them back."
+elements = Array[StringName]([&"water"])
+cost = 55
+damage = 7.0
+attacks_per_second = 0.9
+attack_range = 160.0
+projectile_speed = 520.0
+knockback = 16.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0")])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_tidecaller"), SubResource("Asc_frostspring")])

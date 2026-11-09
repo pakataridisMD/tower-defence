@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Resource_e0"]
+script = ExtResource("2_status")
+kind = &"poison"
+damage_per_second = 5.0
+duration = 4.0
+max_stacks = 5
+
+[sub_resource type="Resource" id="Resource_e1"]
+script = ExtResource("2_status")
+kind = &"slow"
+slow = 0.3
+duration = 2.0
+
+[sub_resource type="Resource" id="Asc_miasma_m0"]
+script = ExtResource("mod_script")
+stat = &"splash_radius"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_miasma_m1"]
+script = ExtResource("mod_script")
+stat = &"poison_damage"
+kind = 2
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_miasma"]
+script = ExtResource("asc_script")
+id = &"miasma"
+display_name = "Miasma"
+description = "Splashes 50% wider and poison deals 50% more damage."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_miasma_m0"), SubResource("Asc_miasma_m1")])
+
+[sub_resource type="Resource" id="Asc_sinkhole_m0"]
+script = ExtResource("mod_script")
+stat = &"slow_strength"
+kind = 1
+value = 0.4
+
+[sub_resource type="Resource" id="Asc_sinkhole_m1"]
+script = ExtResource("mod_script")
+stat = &"knockback"
+value = 12.0
+
+[sub_resource type="Resource" id="Asc_sinkhole"]
+script = ExtResource("asc_script")
+id = &"sinkhole"
+display_name = "Sinkhole"
+description = "Slows are 40% stronger and hits push enemies back 12."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_sinkhole_m0"), SubResource("Asc_sinkhole_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"hybrid_bog"
+display_name = "Bog"
+description = "Lobs globs of poisoned mud that slow everything they splash."
+elements = Array[StringName]([&"nature", &"water"])
+tags = Array[StringName]([&"area"])
+cost = 130
+damage = 5.0
+attacks_per_second = 0.8
+attack_range = 165.0
+projectile_speed = 420.0
+splash_radius = 55.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_miasma"), SubResource("Asc_sinkhole")])

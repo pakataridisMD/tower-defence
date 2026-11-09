@@ -8,6 +8,9 @@ signal web_pressed
 signal speed_pressed
 signal tower_chosen(tower_id: StringName)
 signal sell_pressed
+signal level_up_pressed
+signal ascend_pressed(ascendancy_id: StringName)
+signal hybrid_pressed(hybrid_id: StringName)
 signal play_again_pressed
 signal menu_pressed
 
@@ -29,6 +32,9 @@ var _wave_button: Button
 var _tower_buttons: Dictionary[StringName, Button] = {}
 var _info: RichTextLabel
 var _sell_button: Button
+## Level, ascendancy and hybrid buttons for the selected tower, rebuilt when the choices change.
+var _actions: VBoxContainer
+var _actions_key := ""
 var _message: Label
 var _message_time := 0.0
 var _end_panel: PanelContainer
@@ -112,29 +118,36 @@ func _build_side_panel() -> void:
 	column.add_theme_constant_override("separation", 10)
 	panel.add_child(column)
 	column.add_child(UiStyle.label("Towers", 26))
+	# A grid of tower pictures: base towers on top, then the hybrids unlocked so far.
+	# Names and details are in the tooltips.
+	var grid := GridContainer.new()
+	grid.columns = 4
+	grid.add_theme_constant_override("h_separation", 6)
+	grid.add_theme_constant_override("v_separation", 6)
+	column.add_child(grid)
 	var number := 1
 	for tower_id in _shop_order():
 		var data: TowerData = sim.config.towers[tower_id]
 		var colors: Array[Color] = []
 		for element_id in data.elements:
 			colors.append(sim.config.element_color(element_id))
-		var button := UiStyle.button("", 18)
+		var button := UiStyle.button("", 16)
 		button.icon = UiStyle.element_icon(colors)
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.custom_minimum_size = Vector2(0, 64)
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		button.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
+		button.custom_minimum_size = Vector2(72, 64)
 		var picture := BoardArt.tower_picture(tower_id)
 		if picture != null:
 			# The tower's own pixel art, at one screen pixel per art pixel.
 			button.icon = picture
 			button.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-			button.custom_minimum_size = Vector2(0, picture.get_height() + 8)
-		# Long names are cut short rather than pushing the panel off the screen.
+			button.custom_minimum_size = Vector2(72, picture.get_height() + 30)
 		button.clip_text = true
 		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		button.tooltip_text = "%s\n%s" % [data.display_name, data.description]
 		button.pressed.connect(func() -> void: tower_chosen.emit(tower_id))
-		button.set_meta(&"hotkey", number)
-		column.add_child(button)
+		# Number keys pick the six base towers.
+		button.set_meta(&"hotkey", number if not data.is_hybrid() and number <= 9 else 0)
+		grid.add_child(button)
 		_tower_buttons[tower_id] = button
 		number += 1
 	column.add_child(HSeparator.new())
@@ -145,6 +158,9 @@ func _build_side_panel() -> void:
 	_info.add_theme_font_size_override("normal_font_size", 18)
 	_info.add_theme_font_size_override("bold_font_size", 22)
 	column.add_child(_info)
+	_actions = VBoxContainer.new()
+	_actions.add_theme_constant_override("separation", 6)
+	column.add_child(_actions)
 	_sell_button = UiStyle.button("", 20)
 	_sell_button.pressed.connect(func() -> void: sell_pressed.emit())
 	column.add_child(_sell_button)
@@ -199,7 +215,9 @@ func _shop_order() -> Array[StringName]:
 	var rank := func(id: StringName) -> int:
 		var data: TowerData = sim.config.towers[id]
 		var first := sim.config.element_index(data.elements[0]) if not data.elements.is_empty() else 0
-		return (100 if data.is_hybrid() else 0) + first
+		if not data.is_hybrid():
+			return first
+		return 100 + first * 10 + sim.config.element_index(data.elements[1])
 	ids.sort_custom(func(a: StringName, b: StringName) -> bool: return rank.call(a) < rank.call(b))
 	return ids
 
@@ -271,11 +289,16 @@ func _refresh_tower_button(tower_id: StringName, button: Button) -> void:
 	var data: TowerData = sim.config.towers[tower_id]
 	var price := sim.tower_price(tower_id)
 	var hotkey: int = button.get_meta(&"hotkey")
+	var key := "%d · " % hotkey if hotkey > 0 else ""
+	# Hybrids stay out of the shop until they are unlocked, so the panel only grows as the run does.
+	button.visible = not data.is_hybrid() or sim.is_unlocked(tower_id)
 	if not sim.is_unlocked(tower_id):
-		button.text = "%s\n%s" % [data.display_name, _unlock_hint(tower_id)]
+		button.text = "Locked"
+		button.tooltip_text = "%s (%s)\n%s\n%s" % [data.display_name, _element_names(data), data.description, _unlock_hint(tower_id)]
 		button.disabled = true
 	else:
-		button.text = "%d  %s  ·  %dg\n%s" % [hotkey, data.display_name, price, _element_names(data)]
+		button.text = "%s%dg" % [key, price]
+		button.tooltip_text = "%s (%s)\n%s" % [data.display_name, _element_names(data), data.description]
 		button.disabled = sim.gold < price or sim.is_over()
 
 
@@ -289,6 +312,13 @@ func _element_names(data: TowerData) -> String:
 
 ## Where a locked tower is unlocked: a skill web node, or the meta tree when that node is locked too.
 func _unlock_hint(tower_id: StringName) -> String:
+	var data: TowerData = sim.config.towers[tower_id]
+	if not data.requires_nodes.is_empty():
+		var needed: PackedStringArray = []
+		for node_data in sim.config.tree_nodes:
+			if data.requires_nodes.has(node_data.id):
+				needed.append(node_data.display_name)
+		return "Unlock: take %s" % " and ".join(needed)
 	for node_data in sim.config.tree_nodes:
 		if node_data.unlocks_towers.has(tower_id):
 			if sim.tree.is_locked(node_data.id):
@@ -302,27 +332,116 @@ func _refresh_info() -> void:
 		_info.text = "[b]How to play[/b]\n" + \
 			"Open the skill web (T) and take an element to unlock its tower. " + \
 			"Pick a tower, then click an empty tile to build it. Shift-click builds several; right-click cancels.\n\n" + \
+			"Click a tower to level it up. At level %d it can ascend into one of two specialisations, " % SimTower.MAX_LEVEL + \
+			"and a base tower can turn into a hybrid once its bridge is taken.\n\n" + \
 			"Each wave resists its own element and is weak to the opposite one, so mix elements.\n\n" + \
-			"Space: start wave · F: speed · P: pause · 1-5: towers"
+			"Space: start wave · F: speed · P: pause · 1-6: towers"
 		_sell_button.hide()
+		_set_actions([])
 		return
 	var tower := selected
 	var lines: PackedStringArray = []
-	lines.append("[b]%s[/b]" % tower.data.display_name)
-	lines.append(_element_names(tower.data))
+	var title := tower.data.display_name
+	if tower.ascendancy != null:
+		title = "%s · %s" % [tower.ascendancy.display_name, title]
+	lines.append("[b]%s[/b]" % title)
+	lines.append("%s  ·  Level %d / %d" % [_element_names(tower.data), tower.level, SimTower.MAX_LEVEL])
 	lines.append("Damage %.1f  ·  %.2f attacks/s" % [tower.damage, tower.attacks_per_second])
 	lines.append("Range %d" % roundi(tower.attack_range))
 	if tower.splash_radius > 0.0:
 		lines.append("Splash radius %d" % roundi(tower.splash_radius))
 	if tower.chains():
 		lines.append("Chains to %d more (−%d%% per jump)" % [tower.chain_count, roundi(tower.chain_falloff * 100.0)])
+	if tower.knockback > 0.0:
+		lines.append("Pushes enemies back %d" % roundi(tower.knockback))
+	if tower.aura_radius > 0.0 and tower.aura_damage > 0.0:
+		lines.append("Aura: +%d%% damage to towers within %d" % [roundi(tower.aura_damage * 100.0), roundi(tower.aura_radius)])
+	if tower.aura_bonus > 0.0:
+		lines.append("[color=#c8a0ff]Empowered: +%d%% damage[/color]" % roundi(tower.aura_bonus * 100.0))
 	for spec in tower.effects:
-		lines.append("%s %.1f/s for %.1fs, up to %d stacks" % [String(spec.kind).capitalize(), spec.damage_per_second, spec.duration, spec.max_stacks])
+		lines.append(_effect_text(spec))
+	if tower.ascendancy != null:
+		lines.append("[i]%s[/i]" % tower.ascendancy.description)
 	lines.append("")
 	lines.append("Kills %d  ·  Damage %d" % [tower.kills, roundi(tower.damage_dealt)])
 	_info.text = "\n".join(lines)
 	_sell_button.text = "Sell for %dg" % sim.sell_value(tower)
 	_sell_button.show()
+	_refresh_actions(tower)
+
+
+static func _effect_text(spec: StatusEffectData) -> String:
+	match spec.kind:
+		&"slow":
+			return "Slows by %d%% for %.1fs" % [roundi(spec.slow * 100.0), spec.duration]
+		&"stun":
+			return "Stuns for %.1fs" % spec.duration
+		&"curse":
+			return "Curse: +%d%% damage taken for %.1fs" % [roundi(spec.damage_taken * 100.0), spec.duration]
+		&"shatter":
+			return "Shatter: −%.1f armour per stack, up to %d" % [spec.armour_reduction, spec.max_stacks]
+	return "%s %.1f/s for %.1fs, up to %d stacks" % [String(spec.kind).capitalize(), spec.damage_per_second, spec.duration, spec.max_stacks]
+
+
+## One entry per upgrade button: [kind, id, label, tooltip, error].
+func _upgrade_choices(tower: SimTower) -> Array:
+	var choices := []
+	if tower.level < SimTower.MAX_LEVEL:
+		choices.append([&"level", &"", "Level %d  ·  %dg" % [tower.level + 1, tower.level_up_price()],
+				"+%d%% more damage and +%d%% range per level." % [roundi(SimTower.DAMAGE_PER_LEVEL * 100.0), roundi(SimTower.RANGE_PER_LEVEL * 100.0)],
+				sim.level_up_error(tower)])
+	elif tower.can_ascend():
+		for option in tower.data.ascendancies:
+			choices.append([&"ascend", option.id, "Ascend: %s  ·  %dg" % [option.display_name, tower.ascend_price(option)],
+					option.description + "\nAscending is final.", sim.ascend_error(tower, option.id)])
+	for hybrid_id in sim.hybrid_options(tower):
+		var data: TowerData = sim.config.towers[hybrid_id]
+		choices.append([&"hybrid", hybrid_id, "Become %s  ·  %dg" % [data.display_name, sim.hybrid_upgrade_price(tower, hybrid_id)],
+				"%s (%s)\n%s\nKeeps its level." % [data.display_name, _element_names(data), data.description],
+				sim.hybrid_upgrade_error(tower, hybrid_id)])
+	return choices
+
+
+func _refresh_actions(tower: SimTower) -> void:
+	var choices := _upgrade_choices(tower)
+	_set_actions(choices)
+	for i in choices.size():
+		var button := _actions.get_child(i) as Button
+		var error: String = choices[i][4]
+		button.disabled = not error.is_empty()
+
+
+func _set_actions(choices: Array) -> void:
+	var key := ""
+	for choice: Array in choices:
+		key += "%s|" % choice[2]
+	if key == _actions_key:
+		return
+	_actions_key = key
+	for child in _actions.get_children():
+		_actions.remove_child(child)
+		child.queue_free()
+	for choice: Array in choices:
+		var button := UiStyle.button(choice[2], 18)
+		button.tooltip_text = choice[3]
+		button.clip_text = true
+		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		var kind: StringName = choice[0]
+		var id: StringName = choice[1]
+		button.set_meta(&"action", kind)
+		button.set_meta(&"id", id)
+		button.pressed.connect(_on_action_pressed.bind(kind, id))
+		_actions.add_child(button)
+
+
+func _on_action_pressed(kind: StringName, id: StringName) -> void:
+	match kind:
+		&"level":
+			level_up_pressed.emit()
+		&"ascend":
+			ascend_pressed.emit(id)
+		&"hybrid":
+			hybrid_pressed.emit(id)
 
 
 # --- Events --------------------------------------------------------------------

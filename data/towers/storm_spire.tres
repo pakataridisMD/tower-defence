@@ -2,6 +2,38 @@
 
 [ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_wripe"]
 [ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_si2mr"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Asc_tempest_m0"]
+script = ExtResource("mod_script")
+stat = &"chain_count"
+value = 2.0
+
+[sub_resource type="Resource" id="Asc_tempest"]
+script = ExtResource("asc_script")
+id = &"tempest"
+display_name = "Tempest"
+description = "Bolts chain to 2 more enemies."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_tempest_m0")])
+
+[sub_resource type="Resource" id="Asc_conductor_m0"]
+script = ExtResource("mod_script")
+stat = &"damage"
+kind = 2
+value = 0.9
+
+[sub_resource type="Resource" id="Asc_conductor_m1"]
+script = ExtResource("mod_script")
+stat = &"chain_count"
+value = -1.0
+
+[sub_resource type="Resource" id="Asc_conductor"]
+script = ExtResource("asc_script")
+id = &"conductor"
+display_name = "Conductor"
+description = "Bolts deal 90% more damage but chain to 1 fewer enemy."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_conductor_m0"), SubResource("Asc_conductor_m1")])
 
 [resource]
 script = ExtResource("1_wripe")
@@ -16,3 +48,4 @@ attack_range = 180.0
 chain_count = 2
 chain_range = 120.0
 chain_falloff = 0.2
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_tempest"), SubResource("Asc_conductor")])

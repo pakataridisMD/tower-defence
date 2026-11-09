@@ -97,7 +97,15 @@ func tower_price(tower_id: StringName) -> int:
 
 
 func is_unlocked(tower_id: StringName) -> bool:
-	return tree.unlocked_towers().has(tower_id)
+	if tree.unlocked_towers().has(tower_id):
+		return true
+	var data: TowerData = config.towers.get(tower_id)
+	if data == null or data.requires_nodes.is_empty():
+		return false
+	for node_id in data.requires_nodes:
+		if not tree.is_allocated(node_id):
+			return false
+	return true
 
 
 func tower_at(cell: Vector2i) -> SimTower:
@@ -159,12 +167,118 @@ func place_tower(tower_id: StringName, cell: Vector2i) -> SimTower:
 	for element_id in data.elements:
 		indices.append(config.element_index(element_id))
 	var tower := SimTower.new(_new_id(), data, cell, config.map.cell_center(cell), price, indices)
-	tower.recompute(_modifiers)
 	gold -= price
 	towers.append(tower)
 	_tower_at[cell] = tower
+	_recompute_towers()
 	changed.emit()
 	return tower
+
+
+## Hybrids a built tower can turn into: unlocked ones that share one of its elements.
+## Only base towers can change, so a hybrid never turns into another hybrid.
+func hybrid_options(tower: SimTower) -> Array[StringName]:
+	var result: Array[StringName] = []
+	if tower == null or tower.data.is_hybrid() or tower.ascendancy != null:
+		return result
+	for id: StringName in config.towers:
+		var data: TowerData = config.towers[id]
+		if data.is_hybrid() and data.elements.has(tower.data.elements[0]) and is_unlocked(id):
+			result.append(id)
+	result.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
+	return result
+
+
+## Gold to turn a built base tower into a hybrid: the hybrid's price minus what the tower cost.
+func hybrid_upgrade_price(tower: SimTower, hybrid_id: StringName) -> int:
+	return maxi(0, tower_price(hybrid_id) - tower.type_price)
+
+
+## Why a tower cannot become this hybrid, or an empty string if it can.
+func hybrid_upgrade_error(tower: SimTower, hybrid_id: StringName) -> String:
+	if is_over():
+		return "The run is over"
+	if not towers.has(tower):
+		return "Unknown tower"
+	if tower.ascendancy != null:
+		return "Ascended towers cannot change"
+	if not hybrid_options(tower).has(hybrid_id):
+		return "This tower cannot become that hybrid"
+	if gold < hybrid_upgrade_price(tower, hybrid_id):
+		return "Not enough gold"
+	return ""
+
+
+## Turns a base tower into a hybrid in place, paying the difference in price.
+func upgrade_to_hybrid(tower: SimTower, hybrid_id: StringName) -> bool:
+	if not hybrid_upgrade_error(tower, hybrid_id).is_empty():
+		return false
+	var data: TowerData = config.towers[hybrid_id]
+	var price := hybrid_upgrade_price(tower, hybrid_id)
+	gold -= price
+	var indices: Array[int] = []
+	for element_id in data.elements:
+		indices.append(config.element_index(element_id))
+	tower.change_type(data, indices, tower.type_price + price, price)
+	_recompute_towers()
+	changed.emit()
+	return true
+
+
+## Why a tower cannot go up a level, or an empty string if it can.
+func level_up_error(tower: SimTower) -> String:
+	if is_over():
+		return "The run is over"
+	if not towers.has(tower):
+		return "Unknown tower"
+	if tower.level >= SimTower.MAX_LEVEL:
+		return "Already at the top level"
+	if gold < tower.level_up_price():
+		return "Not enough gold"
+	return ""
+
+
+func level_up(tower: SimTower) -> bool:
+	if not level_up_error(tower).is_empty():
+		return false
+	var price := tower.level_up_price()
+	gold -= price
+	tower.price_paid += price
+	tower.level += 1
+	_recompute_towers()
+	changed.emit()
+	return true
+
+
+## Why a tower cannot take this ascendancy, or an empty string if it can.
+func ascend_error(tower: SimTower, ascendancy_id: StringName) -> String:
+	if is_over():
+		return "The run is over"
+	if not towers.has(tower):
+		return "Unknown tower"
+	if tower.ascendancy != null:
+		return "Already ascended"
+	if tower.level < SimTower.MAX_LEVEL:
+		return "Reach level %d first" % SimTower.MAX_LEVEL
+	var option := tower.data.ascendancy(ascendancy_id)
+	if option == null:
+		return "Unknown ascendancy"
+	if gold < tower.ascend_price(option):
+		return "Not enough gold"
+	return ""
+
+
+func ascend(tower: SimTower, ascendancy_id: StringName) -> bool:
+	if not ascend_error(tower, ascendancy_id).is_empty():
+		return false
+	var option := tower.data.ascendancy(ascendancy_id)
+	var price := tower.ascend_price(option)
+	gold -= price
+	tower.price_paid += price
+	tower.ascendancy = option
+	_recompute_towers()
+	changed.emit()
+	return true
 
 
 func sell_value(tower: SimTower) -> int:
@@ -183,6 +297,7 @@ func sell_tower(tower: SimTower) -> int:
 	gold += refund
 	towers.erase(tower)
 	_tower_at.erase(tower.cell)
+	_recompute_towers()
 	changed.emit()
 	return refund
 
@@ -271,8 +386,9 @@ func _move_enemies(delta: float) -> void:
 
 func _tick_statuses(delta: float) -> void:
 	for enemy in enemies:
-		if not enemy.alive or enemy.statuses.is_empty():
+		if not enemy.alive:
 			continue
+		enemy.stun_immunity = maxf(0.0, enemy.stun_immunity - delta)
 		for kind: StringName in enemy.statuses.keys():
 			var status: SimStatus = enemy.statuses[kind]
 			var dps := status.damage_per_second()
@@ -283,6 +399,8 @@ func _tick_statuses(delta: float) -> void:
 			status.time_left -= delta
 			if status.time_left <= 0.0:
 				enemy.statuses.erase(kind)
+				if kind == &"stun":
+					enemy.stun_immunity = SimEnemy.STUN_IMMUNITY
 
 
 func _rebuild_hash() -> void:
@@ -383,10 +501,12 @@ func _hit(tower: SimTower, enemy: SimEnemy, damage: float) -> void:
 	if not enemy.alive:
 		return
 	var multiplier := ElementRules.damage_multiplier(tower.element_indices, _wave_element)
-	_damage(enemy, CombatMath.hit_damage(damage, multiplier, enemy.armour, enemy.damage_taken_bonus()), tower)
+	_damage(enemy, CombatMath.hit_damage(damage, multiplier, enemy.effective_armour(), enemy.damage_taken_bonus()), tower)
 	if enemy.alive:
 		for spec in tower.effects:
 			enemy.apply_status(spec, tower, multiplier)
+		if tower.knockback > 0.0 and enemy.knock_back(tower.knockback) > 0.0:
+			enemy.position = path_curve.sample_baked(enemy.progress)
 
 
 func _damage(enemy: SimEnemy, amount: float, source: SimTower) -> void:
@@ -472,8 +592,29 @@ func _refresh_modifiers() -> void:
 	_modifiers.clear()
 	_modifiers.append_array(config.run_modifiers)
 	_modifiers.append_array(tree.modifiers())
+	_recompute_towers()
+
+
+## Recomputes every tower's stats, then hands out Void auras: each tower gets the strongest aura
+## from another tower in range. Auras never boost the tower giving them.
+func _recompute_towers() -> void:
 	for tower in towers:
+		tower.aura_bonus = 0.0
 		tower.recompute(_modifiers)
+	var givers: Array[SimTower] = []
+	for tower in towers:
+		if tower.aura_radius > 0.0 and tower.aura_damage > 0.0:
+			givers.append(tower)
+	if givers.is_empty():
+		return
+	for tower in towers:
+		var best := 0.0
+		for giver in givers:
+			if giver != tower and giver.position.distance_to(tower.position) <= giver.aura_radius:
+				best = maxf(best, giver.aura_damage)
+		if best > 0.0:
+			tower.aura_bonus = best
+			tower.recompute(_modifiers)
 
 
 func _new_id() -> int:

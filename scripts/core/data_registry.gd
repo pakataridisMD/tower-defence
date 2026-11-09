@@ -159,8 +159,14 @@ func _validate_towers(errors: PackedStringArray) -> void:
 				errors.append("%s: unknown element '%s'" % [label, element_id])
 		if tower.is_hybrid():
 			var indices := tower_element_indices(tower)
-			if indices[0] >= 0 and indices[1] >= 0 and not ElementRules.are_neighbours(indices[0], indices[1]):
-				errors.append("%s: hybrid elements must be neighbours on the ring" % label)
+			if indices[0] >= 0 and indices[0] == indices[1]:
+				errors.append("%s: a hybrid needs two different elements" % label)
+			elif indices[0] >= 0 and indices[1] >= 0 and not ElementRules.are_neighbours(indices[0], indices[1]) \
+					and tower.requires_nodes.is_empty():
+				errors.append("%s: hybrids of elements that are not neighbours need requires_nodes" % label)
+		for node_id in tower.requires_nodes:
+			if not in_run_tree_nodes.any(func(n: TreeNodeData) -> bool: return n.id == node_id):
+				errors.append("%s: requires unknown skill web node '%s'" % [label, node_id])
 		if tower.cost <= 0:
 			errors.append("%s: cost must be above 0" % label)
 		if tower.attacks_per_second <= 0.0 or tower.attack_range <= 0.0:
