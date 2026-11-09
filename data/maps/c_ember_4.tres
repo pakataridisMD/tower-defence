@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MapData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"c_ember_4"
+display_name = "Throne of Cinders"
+order = 103
+grid_size = Vector2i(24, 15)
+cell_size = 64
+waypoints = Array[Vector2i]([Vector2i(12, -1), Vector2i(12, 2), Vector2i(2, 2), Vector2i(2, 12), Vector2i(21, 12), Vector2i(21, 2), Vector2i(16, 2), Vector2i(16, 8), Vector2i(7, 8), Vector2i(7, 15)])
+wave_set = &"c_ember_4"
+biome = &"fire"
+skirmish = false

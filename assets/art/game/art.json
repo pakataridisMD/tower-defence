@@ -612,6 +612,18 @@
   }
  },
  "enemies": {
+  "broodmother": {
+   "size": [
+    42,
+    36
+   ],
+   "anchor": [
+    21,
+    35
+   ],
+   "gear": true,
+   "frames": 4
+  },
   "brute": {
    "size": [
     24,
@@ -620,6 +632,18 @@
    "anchor": [
     12,
     19
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "cinder_tyrant": {
+   "size": [
+    38,
+    36
+   ],
+   "anchor": [
+    19,
+    35
    ],
    "gear": true,
    "frames": 4
@@ -636,6 +660,66 @@
    "gear": true,
    "frames": 4
   },
+  "hollow_king": {
+   "size": [
+    38,
+    36
+   ],
+   "anchor": [
+    19,
+    35
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "hollow_shade": {
+   "size": [
+    26,
+    22
+   ],
+   "anchor": [
+    13,
+    21
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "leviathan": {
+   "size": [
+    46,
+    38
+   ],
+   "anchor": [
+    23,
+    37
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "mender": {
+   "size": [
+    18,
+    18
+   ],
+   "anchor": [
+    9,
+    17
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "mountain_titan": {
+   "size": [
+    44,
+    38
+   ],
+   "anchor": [
+    22,
+    37
+   ],
+   "gear": true,
+   "frames": 4
+  },
   "runner": {
    "size": [
     14,
@@ -644,6 +728,66 @@
    "anchor": [
     7,
     10
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "shardling": {
+   "size": [
+    10,
+    8
+   ],
+   "anchor": [
+    5,
+    7
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "splitter": {
+   "size": [
+    22,
+    16
+   ],
+   "anchor": [
+    11,
+    15
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "sundered_heart": {
+   "size": [
+    50,
+    46
+   ],
+   "anchor": [
+    25,
+    45
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "thunderhead": {
+   "size": [
+    38,
+    38
+   ],
+   "anchor": [
+    19,
+    37
+   ],
+   "gear": true,
+   "frames": 4
+  },
+  "warded": {
+   "size": [
+    22,
+    19
+   ],
+   "anchor": [
+    11,
+    18
    ],
    "gear": true,
    "frames": 4
@@ -726,6 +870,298 @@
     13
    ],
    "sways": true
+  },
+  "ash_tuft_0": {
+   "size": [
+    9,
+    8
+   ],
+   "sways": true
+  },
+  "steppe_tuft_0": {
+   "size": [
+    11,
+    8
+   ],
+   "sways": true
+  },
+  "reed_0": {
+   "size": [
+    7,
+    12
+   ],
+   "sways": true
+  },
+  "dry_tuft_0": {
+   "size": [
+    9,
+    8
+   ],
+   "sways": true
+  },
+  "void_tuft_0": {
+   "size": [
+    9,
+    8
+   ],
+   "sways": true
+  },
+  "pale_tuft_0": {
+   "size": [
+    9,
+    8
+   ],
+   "sways": true
+  },
+  "ash_tuft_1": {
+   "size": [
+    9,
+    8
+   ],
+   "sways": true
+  },
+  "steppe_tuft_1": {
+   "size": [
+    11,
+    8
+   ],
+   "sways": true
+  },
+  "reed_1": {
+   "size": [
+    7,
+    12
+   ],
+   "sways": true
+  },
+  "dry_tuft_1": {
+   "size": [
+    9,
+    8
+   ],
+   "sways": true
+  },
+  "void_tuft_1": {
+   "size": [
+    9,
+    8
+   ],
+   "sways": true
+  },
+  "pale_tuft_1": {
+   "size": [
+    9,
+    8
+   ],
+   "sways": true
+  },
+  "basalt_0": {
+   "size": [
+    9,
+    7
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "basalt_1": {
+   "size": [
+    13,
+    9
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "lava_vent": {
+   "size": [
+    13,
+    7
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "charred_stump": {
+   "size": [
+    9,
+    12
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "ember_crystal": {
+   "size": [
+    11,
+    14
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "slate_0": {
+   "size": [
+    10,
+    6
+   ],
+   "sways": false,
+   "glow": false
+  },
+  "slate_1": {
+   "size": [
+    14,
+    8
+   ],
+   "sways": false,
+   "glow": false
+  },
+  "storm_crystal": {
+   "size": [
+    11,
+    14
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "standing_stone": {
+   "size": [
+    9,
+    18
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "fern_0": {
+   "size": [
+    14,
+    10
+   ],
+   "sways": true
+  },
+  "fern_1": {
+   "size": [
+    14,
+    10
+   ],
+   "sways": true
+  },
+  "ice_0": {
+   "size": [
+    9,
+    11
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "ice_1": {
+   "size": [
+    11,
+    14
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "snow_rock": {
+   "size": [
+    12,
+    9
+   ],
+   "sways": false
+  },
+  "frozen_shrub": {
+   "size": [
+    14,
+    11
+   ],
+   "sways": true
+  },
+  "boulder_0": {
+   "size": [
+    11,
+    8
+   ],
+   "sways": false,
+   "glow": false
+  },
+  "boulder_1": {
+   "size": [
+    16,
+    11
+   ],
+   "sways": false,
+   "glow": false
+  },
+  "cactus_0": {
+   "size": [
+    11,
+    12
+   ],
+   "sways": false
+  },
+  "cactus_1": {
+   "size": [
+    11,
+    16
+   ],
+   "sways": false
+  },
+  "bones": {
+   "size": [
+    12,
+    6
+   ],
+   "sways": false
+  },
+  "void_crystal": {
+   "size": [
+    11,
+    14
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "obsidian_shard": {
+   "size": [
+    9,
+    9
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "rift_stone": {
+   "size": [
+    14,
+    8
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "prism_0": {
+   "size": [
+    11,
+    14
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "prism_1": {
+   "size": [
+    9,
+    12
+   ],
+   "sways": false,
+   "glow": true
+  },
+  "marble_0": {
+   "size": [
+    11,
+    7
+   ],
+   "sways": false,
+   "glow": false
+  },
+  "ruin_pillar": {
+   "size": [
+    10,
+    20
+   ],
+   "sways": false
   }
  }
 }

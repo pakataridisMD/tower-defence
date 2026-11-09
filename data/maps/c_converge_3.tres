@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MapData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_s"]
+[ext_resource type="Script" path="res://scripts/data/map_lane.gd" id="2_s"]
+
+[sub_resource type="Resource" id="r1"]
+script = ExtResource("2_s")
+waypoints = Array[Vector2i]([Vector2i(15, -1), Vector2i(15, 5), Vector2i(12, 5), Vector2i(12, 7), Vector2i(12, 11), Vector2i(19, 11), Vector2i(19, 3), Vector2i(22, 3), Vector2i(22, 15)])
+
+[sub_resource type="Resource" id="r2"]
+script = ExtResource("2_s")
+waypoints = Array[Vector2i]([Vector2i(6, 15), Vector2i(6, 10), Vector2i(9, 10), Vector2i(9, 7), Vector2i(12, 7), Vector2i(12, 11), Vector2i(19, 11), Vector2i(19, 3), Vector2i(22, 3), Vector2i(22, 15)])
+
+[resource]
+script = ExtResource("1_s")
+id = &"c_converge_3"
+display_name = "Heart of the Ring"
+order = 162
+grid_size = Vector2i(24, 15)
+cell_size = 64
+waypoints = Array[Vector2i]([Vector2i(-1, 2), Vector2i(4, 2), Vector2i(4, 7), Vector2i(12, 7), Vector2i(12, 11), Vector2i(19, 11), Vector2i(19, 3), Vector2i(22, 3), Vector2i(22, 15)])
+wave_set = &"c_converge_3"
+extra_lanes = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2")])
+biome = &"heart"
+skirmish = false

@@ -177,17 +177,34 @@ func _has_tower_art(tower_id: StringName) -> bool:
 
 
 func _draw_road_labels() -> void:
-	var points := sim.config.map.path_points()
+	for lane in sim.config.map.lane_count():
+		var ends := _road_ends(lane)
+		if ends.is_empty():
+			continue
+		var exit_label := lane == 0 or ends[1].distance_to(_road_ends(0)[1]) > 1.0
+		_draw_outlined(ends[0], "IN", UiStyle.TEXT)
+		if exit_label:
+			_draw_outlined(ends[1], "OUT", UiStyle.LIFE)
+
+
+## Where to write IN and OUT for a lane: just inside the board where the road enters and leaves.
+## Empty when the lane has fewer than two points.
+func _road_ends(lane: int) -> PackedVector2Array:
+	var points := sim.config.map.path_points(lane)
 	if points.size() < 2:
-		return
-	var board := Rect2(Vector2.ZERO, sim.config.map.size_in_pixels())
+		return PackedVector2Array()
+	var size := sim.config.map.size_in_pixels()
 	var cell_size := float(sim.config.map.cell_size)
-	var entry := Vector2(0, points[0].y)
-	var exit := Vector2(board.size.x, points[points.size() - 1].y)
-	draw_string_outline(_font, entry + Vector2(6, -cell_size * 0.5 - 6), "IN", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, 6, Color(0, 0, 0, 0.6))
-	draw_string(_font, entry + Vector2(6, -cell_size * 0.5 - 6), "IN", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, UiStyle.TEXT)
-	draw_string_outline(_font, exit + Vector2(-40, -cell_size * 0.5 - 6), "OUT", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, 6, Color(0, 0, 0, 0.6))
-	draw_string(_font, exit + Vector2(-40, -cell_size * 0.5 - 6), "OUT", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, UiStyle.LIFE)
+	var result := PackedVector2Array()
+	for point in [points[0], points[points.size() - 1]]:
+		var at := Vector2(clampf(point.x, 6.0, size.x - 44.0), clampf(point.y, cell_size, size.y - 8.0))
+		result.append(at + Vector2(0, -cell_size * 0.5 - 6) if point.y > 0 and point.y < size.y else at + Vector2(cell_size * 0.5 + 4, 0))
+	return result
+
+
+func _draw_outlined(at: Vector2, text: String, color: Color) -> void:
+	draw_string_outline(_font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, 6, Color(0, 0, 0, 0.6))
+	draw_string(_font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, color)
 
 
 func _draw_ground_layer() -> void:
@@ -213,22 +230,22 @@ func _draw_ground_layer() -> void:
 	for cell in cells:
 		var rect := Rect2(Vector2(cell) * cell_size, Vector2(cell_size, cell_size))
 		_ground.draw_rect(rect.intersection(board), PATH_FILL)
-	_draw_path_arrows(board)
-
-	var points := map.path_points()
-	if points.size() >= 2:
-		var entry := Vector2(0, points[0].y)
-		var exit := Vector2(board.size.x, points[points.size() - 1].y)
-		_ground.draw_string(_font, entry + Vector2(6, -cell_size * 0.5 - 8), "IN", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, UiStyle.TEXT_DIM)
-		_ground.draw_string(_font, exit + Vector2(-38, -cell_size * 0.5 - 8), "OUT", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, UiStyle.LIFE)
+	for lane in sim.lane_curves.size():
+		_draw_path_arrows(board, lane)
+	for lane in map.lane_count():
+		var ends := _road_ends(lane)
+		if not ends.is_empty():
+			_ground.draw_string(_font, ends[0], "IN", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, UiStyle.TEXT_DIM)
+			_ground.draw_string(_font, ends[1], "OUT", HORIZONTAL_ALIGNMENT_LEFT, -1, 18, UiStyle.LIFE)
 
 
 ## Chevrons along the path pointing the way enemies walk.
-func _draw_path_arrows(board: Rect2) -> void:
+func _draw_path_arrows(board: Rect2, lane: int) -> void:
+	var curve := sim.lane_curves[lane]
 	var offset := PATH_ARROW_SPACING * 0.5
-	while offset < sim.path_length - 8.0:
-		var at := sim.path_curve.sample_baked(offset)
-		var forward := (sim.path_curve.sample_baked(offset + 8.0) - at).normalized()
+	while offset < sim.lane_lengths[lane] - 8.0:
+		var at := curve.sample_baked(offset)
+		var forward := (curve.sample_baked(offset + 8.0) - at).normalized()
 		offset += PATH_ARROW_SPACING
 		if not board.has_point(at) or forward.is_zero_approx():
 			continue
@@ -294,8 +311,7 @@ func _draw_enemy(enemy: SimEnemy) -> void:
 	var radius := _enemy_radius(enemy)
 	var art_height := BoardArt.enemy_height(enemy.data.id) if art != null else 0.0
 	if art_height <= 0.0:
-		var wave := sim.current_wave()
-		var aura := sim.config.element_color(wave.element) if wave != null else Color.WHITE
+		var aura := sim.config.element_color_at(enemy.element)
 		draw_circle(enemy.position, radius + 3.0, aura)
 		draw_circle(enemy.position, radius, ENEMY_OUTLINE)
 		draw_circle(enemy.position, radius - 2.0, ENEMY_BODY)

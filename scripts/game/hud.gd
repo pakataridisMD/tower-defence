@@ -13,6 +13,8 @@ signal ascend_pressed(ascendancy_id: StringName)
 signal hybrid_pressed(hybrid_id: StringName)
 signal play_again_pressed
 signal menu_pressed
+signal campaign_pressed
+signal next_stage_pressed
 
 const TOP_BAR_HEIGHT := 72.0
 const SIDE_PANEL_X := 1584.0
@@ -41,6 +43,9 @@ var _end_panel: PanelContainer
 var _end_title: Label
 var _end_stats: Label
 var _end_meta: Label
+var _end_stage: RichTextLabel
+var _campaign_button: Button
+var _next_stage_button: Button
 
 
 func setup(p_sim: RunSim) -> void:
@@ -177,8 +182,8 @@ func _build_message() -> void:
 
 func _build_end_panel() -> void:
 	_end_panel = PanelContainer.new()
-	_end_panel.position = Vector2(540, 300)
-	_end_panel.size = Vector2(600, 440)
+	_end_panel.position = Vector2(500, 230)
+	_end_panel.size = Vector2(680, 440)
 	_end_panel.hide()
 	add_child(_end_panel)
 	var column := VBoxContainer.new()
@@ -196,6 +201,15 @@ func _build_end_panel() -> void:
 	_end_meta.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_end_meta.custom_minimum_size = Vector2(500, 0)
 	column.add_child(_end_meta)
+	_end_stage = RichTextLabel.new()
+	_end_stage.bbcode_enabled = true
+	_end_stage.fit_content = true
+	_end_stage.scroll_active = false
+	_end_stage.custom_minimum_size = Vector2(540, 0)
+	_end_stage.add_theme_font_size_override("normal_font_size", 22)
+	_end_stage.add_theme_font_size_override("bold_font_size", 26)
+	_end_stage.hide()
+	column.add_child(_end_stage)
 	var buttons := HBoxContainer.new()
 	buttons.alignment = BoxContainer.ALIGNMENT_CENTER
 	buttons.add_theme_constant_override("separation", 16)
@@ -205,6 +219,14 @@ func _build_end_panel() -> void:
 	var menu := UiStyle.button("Main menu", 22)
 	menu.pressed.connect(func() -> void: menu_pressed.emit())
 	buttons.add_child(again)
+	_next_stage_button = UiStyle.button("Next stage", 22)
+	_next_stage_button.pressed.connect(func() -> void: next_stage_pressed.emit())
+	_next_stage_button.hide()
+	buttons.add_child(_next_stage_button)
+	_campaign_button = UiStyle.button("Campaign map", 22)
+	_campaign_button.pressed.connect(func() -> void: campaign_pressed.emit())
+	_campaign_button.hide()
+	buttons.add_child(_campaign_button)
 	buttons.add_child(menu)
 
 
@@ -238,6 +260,8 @@ func _refresh() -> void:
 	var difficulty := sim.config.difficulty
 	if difficulty != null and difficulty.order > 0:
 		_wave.text += "  ·  " + difficulty.display_name
+	if sim.config.stage != null:
+		_wave.text += "  ·  " + sim.config.stage.display_name
 	_next.text = _wave_text()
 	var points := sim.tree.points
 	_web_button.text = "Skill web (T)" + ("  ·  %d point%s" % [points, "" if points == 1 else "s"] if points > 0 else "")
@@ -261,14 +285,25 @@ func _wave_text() -> String:
 		return ""
 	var element: ElementData = sim.config.elements.get(wave.element)
 	var counts: Dictionary[StringName, int] = {}
+	var mixed := false
 	for group in wave.groups:
 		counts[group.enemy] = counts.get(group.enemy, 0) + group.count
+		mixed = mixed or (not group.element.is_empty() and group.element != wave.element)
 	var parts: PackedStringArray = []
 	for enemy_id in counts:
 		var enemy: EnemyData = sim.config.enemies.get(enemy_id)
-		parts.append("%d %s" % [counts[enemy_id], enemy.display_name if enemy else String(enemy_id)])
+		var part := "%d %s" % [counts[enemy_id], enemy.display_name if enemy else String(enemy_id)]
+		# Wardens keep their own element whatever the wave, and the Sundered Heart changes its own.
+		var own: ElementData = sim.config.elements.get(enemy.element) if enemy != null else null
+		if own != null:
+			part += " ([color=#%s]%s[/color])" % [own.color.to_html(false), own.display_name]
+		elif enemy != null and enemy.prismatic_interval > 0.0:
+			part += " (every element)"
+		parts.append(part)
 	var label := "Now" if sim.state == RunSim.State.WAVE else "Next"
 	var boss := " [b][color=#e8c547]BOSS[/color][/b]" if wave.is_boss else ""
+	if mixed:
+		return "%s: [b]Mixed wave[/b]%s  ·  every group has its own element  ·  %s" % [label, boss, ", ".join(parts)]
 	if element == null:
 		return "%s:%s %s" % [label, boss, ", ".join(parts)]
 	var opposite := _element_at(ElementRules.opposite_index(element.ring_index))
@@ -335,6 +370,7 @@ func _refresh_info() -> void:
 			"Click a tower to level it up. At level %d it can ascend into one of two specialisations, " % SimTower.MAX_LEVEL + \
 			"and a base tower can turn into a hybrid once its bridge is taken.\n\n" + \
 			"Each wave resists its own element and is weak to the opposite one, so mix elements.\n\n" + \
+			_stage_rules() + \
 			"Space: start wave · F: speed · P: pause · 1-6: towers"
 		_sell_button.hide()
 		_set_actions([])
@@ -453,6 +489,40 @@ func _on_wave_cleared(number: int, points: int, gold: int) -> void:
 	if points > 0:
 		text += "  ·  +%d skill point%s" % [points, "" if points == 1 else "s"]
 	show_message(text, UiStyle.GOOD)
+
+
+## The stage's rules, as a paragraph for the help text. Empty outside the campaign.
+func _stage_rules() -> String:
+	var stage := sim.config.stage
+	if stage == null or stage.rule_text.is_empty():
+		return ""
+	return "[b]%s[/b]\n%s\n\n" % [stage.display_name, "\n".join(stage.rule_text)]
+
+
+## Adds a campaign stage's result to the end panel: stars, the first-win bonus and, when this win
+## finished the campaign, its reward. next_stage_open shows the Next stage button.
+func show_stage_result(result: Dictionary, next_stage_open: bool) -> void:
+	var stage := sim.config.stage
+	if stage == null:
+		return
+	var stars: int = result.get("stars", 0)
+	var best: int = result.get("best", 0)
+	var lines: PackedStringArray = []
+	lines.append("[center][color=#%s]%s[/color][color=#5a6275]%s[/color][/center]" % [
+		UiStyle.GOLD.to_html(false), "★ ".repeat(stars).strip_edges(), (" ★".repeat(3 - stars)) if stars < 3 else ""])
+	if stars > 0 and best > stars:
+		lines.append("[center]Your best here is %d stars.[/center]" % best)
+	var first: int = result.get("first_clear_points", 0)
+	if first > 0:
+		lines.append("[center][color=#%s]First win: +%d meta points[/color][/center]" % [UiStyle.GOLD.to_html(false), first])
+	if result.get("campaign_complete", false) and sim.config.campaign != null:
+		var campaign := sim.config.campaign
+		lines.append("[center][b][color=#%s]%s complete![/color][/b]\n%s: %s[/center]" % [
+			UiStyle.GOOD.to_html(false), campaign.display_name, campaign.reward_name, campaign.reward_description])
+	_end_stage.text = "\n".join(lines)
+	_end_stage.show()
+	_campaign_button.show()
+	_next_stage_button.visible = next_stage_open
 
 
 ## The win or lose panel, with the run's numbers and the meta points it paid.

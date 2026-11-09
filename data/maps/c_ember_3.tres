@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MapData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"c_ember_3"
+display_name = "Obsidian Crossing"
+order = 102
+grid_size = Vector2i(24, 15)
+cell_size = 64
+waypoints = Array[Vector2i]([Vector2i(-1, 4), Vector2i(18, 4), Vector2i(18, 11), Vector2i(9, 11), Vector2i(9, -1)])
+wave_set = &"c_ember_3"
+biome = &"fire"
+skirmish = false

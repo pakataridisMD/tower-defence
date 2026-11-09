@@ -13,6 +13,7 @@ const IN_RUN_TREE_DIR := "res://data/trees/in_run"
 const META_TREE_DIR := "res://data/trees/meta"
 const MAPS_DIR := "res://data/maps"
 const DIFFICULTIES_DIR := "res://data/difficulties"
+const CAMPAIGNS_DIR := "res://data/campaigns"
 const RUN_RULES_PATH := "res://data/rules/run_rules.tres"
 
 var elements: Dictionary[StringName, ElementData] = {}
@@ -21,6 +22,9 @@ var enemies: Dictionary[StringName, EnemyData] = {}
 var wave_sets: Dictionary[StringName, WaveSet] = {}
 var maps: Dictionary[StringName, MapData] = {}
 var difficulties: Dictionary[StringName, DifficultyData] = {}
+var campaigns: Dictionary[StringName, CampaignData] = {}
+## Every campaign stage by id.
+var stages: Dictionary[StringName, StageData] = {}
 var in_run_tree_nodes: Array[TreeNodeData] = []
 var meta_tree_nodes: Array[TreeNodeData] = []
 var run_rules: RunRules
@@ -40,6 +44,8 @@ func reload() -> void:
 	wave_sets.clear()
 	maps.clear()
 	difficulties.clear()
+	campaigns.clear()
+	stages.clear()
 	in_run_tree_nodes.clear()
 	meta_tree_nodes.clear()
 
@@ -55,6 +61,12 @@ func reload() -> void:
 		_index(maps, resource as MapData, MAPS_DIR)
 	for resource in load_folder(DIFFICULTIES_DIR):
 		_index(difficulties, resource as DifficultyData, DIFFICULTIES_DIR)
+	for resource in load_folder(CAMPAIGNS_DIR):
+		_index(campaigns, resource as CampaignData, CAMPAIGNS_DIR)
+	for campaign: CampaignData in campaigns.values():
+		for stage in campaign.stages:
+			if stage != null and not stage.id.is_empty() and not stages.has(stage.id):
+				stages[stage.id] = stage
 	_load_tree(IN_RUN_TREE_DIR, in_run_tree_nodes)
 	_load_tree(META_TREE_DIR, meta_tree_nodes)
 
@@ -110,6 +122,7 @@ func validate() -> PackedStringArray:
 	_validate_tree(errors, "in-run tree", in_run_tree_nodes, element_ids)
 	_validate_tree(errors, "meta tree", meta_tree_nodes, MetaProgress.BRANCH_NAMES.keys())
 	_validate_unlocks(errors)
+	_validate_campaigns(errors)
 	if run_rules != null and run_rules.starting_lives <= 0:
 		errors.append("Run rules: starting lives must be above 0")
 	return errors
@@ -201,6 +214,8 @@ func _validate_waves(errors: PackedStringArray) -> void:
 					errors.append("%s: unknown enemy '%s'" % [label, group.enemy if group else &""])
 				elif group.count <= 0:
 					errors.append("%s: group of '%s' has count %d" % [label, group.enemy, group.count])
+				elif not group.element.is_empty() and not elements.has(group.element):
+					errors.append("%s: group of '%s' has unknown element '%s'" % [label, group.enemy, group.element])
 
 
 func _validate_maps(errors: PackedStringArray) -> void:
@@ -244,7 +259,7 @@ func _validate_unlocks(errors: PackedStringArray) -> void:
 			gated_difficulties[id] = true
 			if not difficulties.has(id):
 				errors.append("%s: unlocks unknown difficulty '%s'" % [label, id])
-	if not maps.keys().any(func(id: StringName) -> bool: return not gated_maps.has(id)):
+	if not maps.values().any(func(map: MapData) -> bool: return map.skirmish and not gated_maps.has(map.id)):
 		errors.append("Every map is locked behind the meta tree, so a new player has nowhere to play")
 	if not difficulties.keys().any(func(id: StringName) -> bool: return not gated_difficulties.has(id)):
 		errors.append("Every difficulty level is locked behind the meta tree")
@@ -285,3 +300,63 @@ func _validate_tree(errors: PackedStringArray, tree_name: String, nodes: Array[T
 		for node_data in nodes:
 			if not reachable.has(node_data.id):
 				errors.append("%s node '%s': cannot be reached from the start" % [tree_name, node_data.id])
+
+
+## The campaign a stage belongs to, or null.
+func campaign_of(stage_id: StringName) -> CampaignData:
+	for campaign: CampaignData in campaigns.values():
+		if campaign.stage_index(stage_id) >= 0:
+			return campaign
+	return null
+
+
+func _validate_campaigns(errors: PackedStringArray) -> void:
+	var seen_stages: Dictionary[StringName, StringName] = {}
+	var node_ids: Dictionary[StringName, bool] = {}
+	for node_data in in_run_tree_nodes:
+		node_ids[node_data.id] = true
+	for campaign: CampaignData in campaigns.values():
+		var label := "Campaign '%s'" % campaign.id
+		if not campaign.element.is_empty() and not elements.has(campaign.element):
+			errors.append("%s: unknown element '%s'" % [label, campaign.element])
+		if campaign.stages.is_empty():
+			errors.append("%s: has no stages" % label)
+		for required in campaign.requires_campaigns:
+			if not campaigns.has(required) or required == campaign.id:
+				errors.append("%s: requires unknown campaign '%s'" % [label, required])
+		for modifier in campaign.reward_modifiers:
+			if modifier == null or modifier.stat.is_empty():
+				errors.append("%s: a reward modifier has no stat" % label)
+		for stage in campaign.stages:
+			if stage == null or stage.id.is_empty():
+				errors.append("%s: a stage has no id" % label)
+				continue
+			var stage_label := "Stage '%s'" % stage.id
+			if seen_stages.has(stage.id):
+				errors.append("%s: id is used twice (in '%s' and '%s')" % [stage_label, seen_stages[stage.id], campaign.id])
+			seen_stages[stage.id] = campaign.id
+			var map: MapData = maps.get(stage.map)
+			if map == null:
+				errors.append("%s: unknown map '%s'" % [stage_label, stage.map])
+			var wave_set_id := stage.wave_set if not stage.wave_set.is_empty() else (map.wave_set if map != null else &"")
+			if not wave_sets.has(wave_set_id):
+				errors.append("%s: unknown wave set '%s'" % [stage_label, wave_set_id])
+			for element_id in stage.allowed_elements:
+				if not elements.has(element_id):
+					errors.append("%s: allows unknown element '%s'" % [stage_label, element_id])
+			for node_id in stage.starting_nodes:
+				if not node_ids.has(node_id):
+					errors.append("%s: starts with unknown skill web node '%s'" % [stage_label, node_id])
+			for modifier in stage.modifiers:
+				if modifier == null or modifier.stat.is_empty():
+					errors.append("%s: a modifier has no stat" % stage_label)
+	for enemy: EnemyData in enemies.values():
+		var label := "Enemy '%s'" % enemy.id
+		if not enemy.element.is_empty() and not elements.has(enemy.element):
+			errors.append("%s: unknown element '%s'" % [label, enemy.element])
+		if enemy.split_count > 0 and not enemies.has(enemy.split_into):
+			errors.append("%s: splits into unknown enemy '%s'" % [label, enemy.split_into])
+		if enemy.split_into == enemy.id or enemy.summon == enemy.id:
+			errors.append("%s: cannot split into or summon itself" % label)
+		if enemy.summon_interval > 0.0 and not enemies.has(enemy.summon):
+			errors.append("%s: summons unknown enemy '%s'" % [label, enemy.summon])

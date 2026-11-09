@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MapData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"c_water_1"
+display_name = "Tidepool Shore"
+order = 130
+grid_size = Vector2i(24, 15)
+cell_size = 64
+waypoints = Array[Vector2i]([Vector2i(-1, 2), Vector2i(6, 2), Vector2i(6, 9), Vector2i(14, 9), Vector2i(14, 5), Vector2i(24, 5)])
+wave_set = &"c_water_1"
+biome = &"water"
+skirmish = false

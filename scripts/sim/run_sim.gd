@@ -23,14 +23,19 @@ var config: RunConfig
 var state := State.BUILDING
 var gold := 0
 var lives := 0
+## Lives at the start of the run, for the campaign's stars.
+var starting_lives := 0
 ## Waves cleared so far. The next wave to start is wave_index + 1.
 var wave_index := 0
 var tree: TreeState
 var enemies: Array[SimEnemy] = []
 var towers: Array[SimTower] = []
 var projectiles: Array[SimProjectile] = []
+## The main road (lane 0). Maps with several entrances have one curve per lane in lane_curves.
 var path_curve := Curve2D.new()
 var path_length := 0.0
+var lane_curves: Array[Curve2D] = []
+var lane_lengths: PackedFloat32Array = []
 var time_in_wave := 0.0
 
 var kills := 0
@@ -45,19 +50,35 @@ var _next_id := 1
 var _taken_this_break: Dictionary[StringName, bool] = {}
 var _modifiers: Array[Modifier] = []
 var _wave_element := -1
+## Next lane for groups that share their enemies out over every lane.
+var _lane_turn := 0
+## Enemies split off or summoned during a step, added once the step's loops are done.
+var _arrivals: Array[SimEnemy] = []
 
 
 func _init(p_config: RunConfig) -> void:
 	config = p_config
 	var rules := config.rules
-	gold = roundi(StatCalculator.compute(&"starting_gold", rules.starting_gold, config.run_modifiers))
-	lives = roundi(StatCalculator.compute(&"starting_lives", rules.starting_lives, config.run_modifiers))
+	var base_gold := rules.starting_gold
+	var base_lives := rules.starting_lives
+	if config.stage != null:
+		base_gold = config.stage.starting_gold if config.stage.starting_gold > 0 else base_gold
+		base_lives = config.stage.starting_lives if config.stage.starting_lives > 0 else base_lives
+	gold = roundi(StatCalculator.compute(&"starting_gold", base_gold, config.run_modifiers))
+	lives = roundi(StatCalculator.compute(&"starting_lives", base_lives, config.run_modifiers))
+	starting_lives = lives
 	var start_points := roundi(StatCalculator.compute(&"starting_tree_points", rules.starting_tree_points, config.run_modifiers))
 	tree = TreeState.new(TreeGraph.new(config.tree_nodes), start_points)
 	tree.lock(config.locked_tree_nodes)
-	for point in config.map.path_points():
-		path_curve.add_point(point)
-	path_length = path_curve.get_baked_length()
+	tree.grant(config.granted_tree_nodes)
+	for lane in config.map.lane_count():
+		var curve := Curve2D.new()
+		for point in config.map.path_points(lane):
+			curve.add_point(point)
+		lane_curves.append(curve)
+		lane_lengths.append(curve.get_baked_length())
+	path_curve = lane_curves[0]
+	path_length = lane_lengths[0]
 	_path_cells = config.map.path_cells()
 	_refresh_modifiers()
 
@@ -148,6 +169,11 @@ func can_place(tower_id: StringName, cell: Vector2i) -> bool:
 ## Refunds are allowed for nodes taken since the last wave started, until the next one starts.
 func can_refund_node(id: StringName) -> bool:
 	return state == State.BUILDING and _taken_this_break.has(id) and tree.can_refund(id)
+
+
+## Pixels an enemy still has to walk to leave the map.
+func distance_to_exit(enemy: SimEnemy) -> float:
+	return lane_lengths[enemy.lane] - enemy.progress
 
 
 ## Element index of the wave being fought or about to start, or -1.
@@ -346,23 +372,56 @@ func step(delta: float) -> void:
 	if state != State.WAVE:
 		return
 	_tick_statuses(delta)
+	_tick_traits(delta)
 	_rebuild_hash()
 	_update_towers(delta)
 	_update_projectiles(delta)
 	_remove_dead()
+	if not _arrivals.is_empty():
+		enemies.append_array(_arrivals)
+		_arrivals.clear()
 	if _spawner.is_finished() and enemies.is_empty():
 		_finish_wave()
 
 
 func _spawn(delta: float) -> void:
 	var multiplier := config.wave_set.health_multiplier(wave_number()) * config.enemy_health_multiplier()
-	for enemy_id in _spawner.advance(delta):
-		var data: EnemyData = config.enemies.get(enemy_id)
+	var wave := current_wave()
+	if wave != null:
+		multiplier *= wave.health_multiplier
+	for group in _spawner.advance(delta):
+		var data: EnemyData = config.enemies.get(group.enemy)
 		if data == null:
 			continue
-		var enemy := SimEnemy.new(_new_id(), data, multiplier)
-		enemy.position = path_curve.sample_baked(0.0)
-		enemies.append(enemy)
+		var lane := group.lane
+		if lane < 0:
+			lane = _lane_turn
+			_lane_turn = (_lane_turn + 1) % lane_curves.size()
+		var element := _wave_element
+		if not group.element.is_empty():
+			element = config.element_index(group.element)
+		enemies.append(_make_enemy(data, multiplier, mini(lane, lane_curves.size() - 1), element, 0.0))
+
+
+## A new enemy on a lane. An enemy with its own element keeps it whatever the wave.
+func _make_enemy(data: EnemyData, multiplier: float, lane: int, element: int, progress: float) -> SimEnemy:
+	var enemy := SimEnemy.new(_new_id(), data, multiplier)
+	enemy.lane = lane
+	enemy.element = config.element_index(data.element) if not data.element.is_empty() else element
+	enemy.progress = maxf(0.0, progress)
+	enemy.position = lane_curves[lane].sample_baked(enemy.progress)
+	return enemy
+
+
+## Enemies that come out of another: splitting on death, or summoned by a boss. They appear a little
+## behind it on its lane, with its strength and element.
+func _release_from(parent: SimEnemy, enemy_id: StringName, count: int) -> void:
+	var data: EnemyData = config.enemies.get(enemy_id)
+	if data == null:
+		return
+	for i in count:
+		var child := _make_enemy(data, parent.health_multiplier, parent.lane, parent.element, parent.progress - 14.0 * i)
+		_arrivals.append(child)
 
 
 func _move_enemies(delta: float) -> void:
@@ -370,7 +429,7 @@ func _move_enemies(delta: float) -> void:
 		if not enemy.alive:
 			continue
 		enemy.progress += enemy.speed() * delta
-		if enemy.progress >= path_length:
+		if enemy.progress >= lane_lengths[enemy.lane]:
 			enemy.alive = false
 			enemy.leaked = true
 			leaks += 1
@@ -381,7 +440,27 @@ func _move_enemies(delta: float) -> void:
 				_end_run(false)
 				return
 		else:
-			enemy.position = path_curve.sample_baked(enemy.progress)
+			enemy.position = lane_curves[enemy.lane].sample_baked(enemy.progress)
+
+
+## Healing, summoning and changing element.
+func _tick_traits(delta: float) -> void:
+	for enemy in enemies:
+		if not enemy.alive:
+			continue
+		var data := enemy.data
+		if enemy.is_regenerating() and enemy.health < enemy.max_health:
+			enemy.health = minf(enemy.max_health, enemy.health + enemy.max_health * data.regen_per_second * delta)
+		if data.summon_interval > 0.0 and not data.summon.is_empty():
+			enemy.summon_timer -= delta
+			if enemy.summon_timer <= 0.0:
+				enemy.summon_timer += data.summon_interval
+				_release_from(enemy, data.summon, data.summon_count)
+		if data.prismatic_interval > 0.0:
+			enemy.prism_timer -= delta
+			if enemy.prism_timer <= 0.0:
+				enemy.prism_timer += data.prismatic_interval
+				enemy.element = (maxi(enemy.element, 0) + 1) % ElementData.RING_SIZE
 
 
 func _tick_statuses(delta: float) -> void:
@@ -423,11 +502,14 @@ func _update_towers(delta: float) -> void:
 		tower.cooldown += CombatMath.attack_interval(tower.attacks_per_second)
 
 
-## The enemy in range that is furthest along the path.
+## The enemy in range that is closest to leaving the map.
 func _find_target(tower: SimTower) -> SimEnemy:
 	var best: SimEnemy = null
+	var best_left := INF
 	for enemy in _hash.query(tower.position, tower.attack_range):
-		if best == null or enemy.progress > best.progress:
+		var left := distance_to_exit(enemy)
+		if left < best_left:
+			best_left = left
 			best = enemy
 	return best
 
@@ -500,13 +582,13 @@ func _land(shot: SimProjectile) -> void:
 func _hit(tower: SimTower, enemy: SimEnemy, damage: float) -> void:
 	if not enemy.alive:
 		return
-	var multiplier := ElementRules.damage_multiplier(tower.element_indices, _wave_element)
+	var multiplier := ElementRules.damage_multiplier(tower.element_indices, enemy.element)
 	_damage(enemy, CombatMath.hit_damage(damage, multiplier, enemy.effective_armour(), enemy.damage_taken_bonus()), tower)
 	if enemy.alive:
 		for spec in tower.effects:
 			enemy.apply_status(spec, tower, multiplier)
 		if tower.knockback > 0.0 and enemy.knock_back(tower.knockback) > 0.0:
-			enemy.position = path_curve.sample_baked(enemy.progress)
+			enemy.position = lane_curves[enemy.lane].sample_baked(enemy.progress)
 
 
 func _damage(enemy: SimEnemy, amount: float, source: SimTower) -> void:
@@ -530,6 +612,8 @@ func _kill(enemy: SimEnemy, killer: SimTower) -> void:
 	gold += bounty
 	gold_earned += bounty
 	_spread_statuses(enemy)
+	if enemy.data.split_count > 0 and not enemy.data.split_into.is_empty():
+		_release_from(enemy, enemy.data.split_into, enemy.data.split_count)
 	enemy_killed.emit(enemy, killer, bounty)
 
 

@@ -4,16 +4,16 @@ An elemental tower defence game for Steam. Each run you grow a web of skill node
 element's region unlocks its towers, and the bridge nodes between two neighbouring elements unlock
 hybrid towers. A separate meta tree carries progress between runs.
 
-This repository is at **step 4 of 4**: a playable prototype with two maps, two difficulty levels, ten
-waves, three elements (Fire, Storm and Nature), two hybrid towers, a small in-run skill web, and a meta
-tree that is saved between runs. All art is placeholder shapes.
+It has a campaign of 27 stages across seven lands (one per element, then the Convergence), skirmish runs on
+two maps at two difficulty levels, six elements with a hybrid tower for every pair, tower levels and
+ascendancies, an in-run skill web, and a meta tree that is saved between runs, all in lit pixel art.
 
 ## Getting started
 
 1. Install [Godot 4.7.2](https://godotengine.org/download) (the standard build, not .NET).
 2. Install [Git LFS](https://git-lfs.com) and run `git lfs install` once. Art and audio in `assets/` are stored with it.
 3. Clone this repository and open `project.godot` in Godot.
-4. Press **F5**. Pick a map and a difficulty level on the main menu, then choose **Play**. **Data check**
+4. Press **F5**. Choose **Campaign** on the main menu, or pick a map and a difficulty level and choose **Play skirmish**. **Data check**
    lists the loaded data and any data errors.
 
 ## How to play
@@ -40,6 +40,53 @@ Clear all ten waves to win.
 
 In the skill web, left-click takes a node. Right-click refunds a node you took in the current break between
 waves, until you start the next wave.
+
+## Campaign
+
+**Campaign** on the main menu opens a star chart of the element ring. There is a campaign for each element,
+and a seventh, **the Convergence**, that opens once all six are finished: 27 stages in all.
+
+| Campaign | Land | Horde | Signature enemies | Warden |
+| --- | --- | --- | --- | --- |
+| The Ember Reach | volcanic ash fields | Water, Nature, Earth | Menders, then Splitters | Cinder Tyrant (heals) |
+| The Thunder Steppe | windswept plateau | Earth, Water, Void | Splitters, then Brutes | Thunderhead (fast, immune to effects) |
+| The Verdant Deep | deep jungle | Void, Earth, Fire | Menders, then Warded | Elder Broodmother (sheds Shardlings, bursts into Splitters) |
+| Frostmere | frozen lakeshore | Fire, Void, Storm | Runners, then Warded | Tidal Leviathan (vast, immune to effects) |
+| Sunscar Canyon | red sandstone canyon | Storm, Fire, Nature | Brutes, then Splitters | Mountain Titan (22 armour) |
+| The Hollow Rift | violet rift | Nature, Storm, Water | Warded, then Menders | Hollow King (splits into two Shades) |
+| The Convergence | the heart of the ring | every element | everything | the Sundered Heart (changes element, summons Warded) |
+
+- Each element campaign has four stages played in order (10, 12, 14 and 15 waves). The horde comes from the far
+  side of the ring: the opposite element and its two neighbours. You may only draft the home element and its two
+  neighbours, you start with the home element's first node for free, and home towers deal 20% more damage, so
+  every wave is weak to something you can build.
+- The last stage ends with the element's corrupted **Warden**. It keeps the home element, so it resists your home
+  towers: bring a neighbour. A Warden that gets out costs 20 lives.
+- Most stages have one twist, such as less range, dearer towers or more gold per wave. The rules are listed on the
+  campaign map and in the run's help panel.
+- The Convergence's maps have **several roads** that merge (2, then 3), every wave mixes elements group by group,
+  and the last stage brings back four Wardens before the Sundered Heart.
+- **Stars**: one for a win, two for keeping at least half your lives, three for losing none. The first win of a
+  stage pays extra meta points (3, 6 for a Warden, more in the Convergence). Finishing a campaign earns a
+  **sigil**, a small bonus in every run, skirmish included (for example +10% Fire damage).
+- New enemies: **Mender** heals 4% a second unless burning or poisoned; **Splitter** bursts into three
+  **Shardlings**; **Warded** ignores every status effect.
+
+The campaign is written by `tools/campaign/gen_campaign.py`, which writes `data/campaigns/`, plus a map
+(`data/maps/c_<stage>.tres`) and a wave set (`data/waves/c_<stage>.tres`) for every stage. Edit the tables in that
+script rather than the files, then rerun it with the art generator. `tools/campaign/tuning.py` holds each stage's
+health scale (and its boss waves' health), found by `tools/campaign_balance.gd`, which plays every stage with the
+bot:
+
+```sh
+python3 tools/campaign/gen_campaign.py && python3 tools/art/gen_game_art.py && godot --headless --import
+godot --headless -s tools/campaign_balance.gd                 # how the bot does on every stage
+godot --headless -s tools/campaign_balance.gd -- --tune       # print new tuning.py lines
+godot --headless -- --autoplay --stage=ember_4                # watch the bot play one stage
+```
+
+The bot never levels its towers, so a person should find each stage easier than it does. Tuning aims for the
+bot to keep 70%, 55%, 40% and 25% of its lives across an element campaign's four stages.
 
 ## Meta tree and saves
 
@@ -191,7 +238,11 @@ All balance numbers live in `data/`. Open any `.tres` file in Godot and edit it 
 - **New enemy or wave:** add an `EnemyData` file to `data/enemies/`, then reference its id from a wave in `data/waves/`.
 - **New map:** add a `MapData` file to `data/maps/` with the path's turning points as grid cells and the id of
   its wave set. The path may start and end one cell outside the grid, so enemies walk in and out. `order` sets
-  its place on the main menu.
+  its place on the main menu. `extra_lanes` adds more roads (spawn groups share their enemies out over them, or
+  keep to one with `lane`), `biome` picks the ground art, and `skirmish = false` keeps it out of the skirmish list.
+- **Enemy traits:** `EnemyData` can heal (`regen_per_second`), ignore status effects (`status_immune`), split
+  (`split_into`, `split_count`), summon (`summon`, `summon_interval`, `summon_count`), keep its own `element`,
+  or turn round the ring (`prismatic_interval`).
 - **Starting gold, lives and points, and meta points per run:** `data/rules/run_rules.tres`.
 
 Each tree node and keystone carries `Modifier` entries. Modifiers to the same stat combine in a fixed order:

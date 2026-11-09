@@ -1,0 +1,63 @@
+[gd_resource type="Resource" script_class="CampaignData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/campaign_data.gd" id="1_s"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="2_s"]
+[ext_resource type="Script" path="res://scripts/data/stage_data.gd" id="3_s"]
+
+[sub_resource type="Resource" id="r1"]
+script = ExtResource("3_s")
+id = &"converge_1"
+display_name = "Shattered Crossroads"
+description = "Two roads meet at the edge of the heartland. Two hordes walk them."
+map = &"c_converge_1"
+modifiers = Array[ExtResource("2_s")]([])
+rule_text = PackedStringArray("Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
+first_clear_points = 5
+
+[sub_resource type="Resource" id="r2"]
+script = ExtResource("3_s")
+id = &"converge_2"
+display_name = "Prism Wastes"
+description = "Glass plains where light splits into six colours. Three roads, one gate."
+map = &"c_converge_2"
+is_guardian = true
+modifiers = Array[ExtResource("2_s")]([])
+rule_text = PackedStringArray("Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
+first_clear_points = 5
+
+[sub_resource type="Resource" id="r3"]
+script = ExtResource("3_s")
+id = &"converge_3"
+display_name = "Heart of the Ring"
+description = "Every road ends here. The Sundered Heart beats in the middle, a different colour with every beat."
+map = &"c_converge_3"
+is_guardian = true
+modifiers = Array[ExtResource("2_s")]([])
+rule_text = PackedStringArray("Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
+first_clear_points = 12
+
+[sub_resource type="Resource" id="r4"]
+script = ExtResource("2_s")
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
+
+[sub_resource type="Resource" id="r5"]
+script = ExtResource("2_s")
+stat = &"damage"
+kind = 2
+value = 0.05
+
+[resource]
+script = ExtResource("1_s")
+id = &"convergence"
+display_name = "The Convergence"
+order = 6
+element = &""
+tagline = "Every element, every road"
+description = "With the six Wardens freed, every road on the ring leads to its broken heart. All six elements are yours again, and every horde comes at once."
+requires_campaigns = Array[StringName]([&"ember_reach", &"thunder_steppe", &"verdant_deep", &"frostmere", &"sunscar_canyon", &"hollow_rift"])
+stages = Array[ExtResource("3_s")]([SubResource("r1"), SubResource("r2"), SubResource("r3")])
+reward_name = "Crown of the Ring"
+reward_description = "One more skill point at the start of every run, and every tower deals 5% more damage."
+reward_modifiers = Array[ExtResource("2_s")]([SubResource("r4"), SubResource("r5")])

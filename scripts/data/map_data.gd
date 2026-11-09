@@ -16,6 +16,13 @@ extends Resource
 @export var waypoints: Array[Vector2i] = []
 ## Id of the WaveSet played on this map.
 @export var wave_set: StringName
+## Extra roads for maps with more than one entrance. Lane 0 is `waypoints`; lane n is extra_lanes[n - 1].
+## Lanes may join, so enemies from several entrances converge on one exit.
+@export var extra_lanes: Array[MapLane] = []
+## Look of the ground: meadow, fire, storm, nature, water, earth, void or heart. See tools/art/gen_game_art.py.
+@export var biome: StringName = &"meadow"
+## False keeps the map out of the skirmish map list, for maps only played in the campaign.
+@export var skirmish: bool = true
 
 
 func cell_center(cell: Vector2i) -> Vector2:
@@ -34,39 +41,56 @@ func size_in_pixels() -> Vector2:
 	return Vector2(grid_size * cell_size)
 
 
-## Centres of the waypoints, in pixels.
-func path_points() -> PackedVector2Array:
+func lane_count() -> int:
+	return 1 + extra_lanes.size()
+
+
+## The turning points of one lane. Lane 0 is the main path.
+func lane_waypoints(lane: int) -> Array[Vector2i]:
+	if lane <= 0:
+		return waypoints
+	var extra := extra_lanes[lane - 1]
+	return extra.waypoints if extra != null else ([] as Array[Vector2i])
+
+
+## Centres of a lane's waypoints, in pixels.
+func path_points(lane: int = 0) -> PackedVector2Array:
 	var points := PackedVector2Array()
-	for cell in waypoints:
+	for cell in lane_waypoints(lane):
 		points.append(cell_center(cell))
 	return points
 
 
-## Every cell the path passes through, including cells outside the grid.
+## Every cell any lane passes through, including cells outside the grid.
 func path_cells() -> Dictionary[Vector2i, bool]:
 	var cells: Dictionary[Vector2i, bool] = {}
-	for i in range(1, waypoints.size()):
-		var from := waypoints[i - 1]
-		var to := waypoints[i]
-		var step := Vector2i(signi(to.x - from.x), signi(to.y - from.y))
-		var cell := from
-		cells[cell] = true
-		while cell != to:
-			cell += step
+	for lane in lane_count():
+		var points := lane_waypoints(lane)
+		for i in range(1, points.size()):
+			var from := points[i - 1]
+			var to := points[i]
+			var step := Vector2i(signi(to.x - from.x), signi(to.y - from.y))
+			var cell := from
 			cells[cell] = true
+			while cell != to:
+				cell += step
+				cells[cell] = true
 	return cells
 
 
-## Problems with the waypoints, as readable lines. Empty means the path is valid.
+## Problems with the waypoints, as readable lines. Empty means every lane is valid.
 func path_errors() -> PackedStringArray:
 	var errors: PackedStringArray = []
-	if waypoints.size() < 2:
-		errors.append("needs at least 2 waypoints")
-	for i in range(1, waypoints.size()):
-		var from := waypoints[i - 1]
-		var to := waypoints[i]
-		if from == to:
-			errors.append("waypoints %d and %d are the same cell" % [i - 1, i])
-		elif from.x != to.x and from.y != to.y:
-			errors.append("waypoints %d and %d do not share a row or column" % [i - 1, i])
+	for lane in lane_count():
+		var points := lane_waypoints(lane)
+		var prefix := "" if lane == 0 else "lane %d: " % lane
+		if points.size() < 2:
+			errors.append(prefix + "needs at least 2 waypoints")
+		for i in range(1, points.size()):
+			var from := points[i - 1]
+			var to := points[i]
+			if from == to:
+				errors.append(prefix + "waypoints %d and %d are the same cell" % [i - 1, i])
+			elif from.x != to.x and from.y != to.y:
+				errors.append(prefix + "waypoints %d and %d do not share a row or column" % [i - 1, i])
 	return errors

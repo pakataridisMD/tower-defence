@@ -15,6 +15,11 @@ var run_modifiers: Array[Modifier] = []
 var locked_tree_nodes: Array[StringName] = []
 ## The difficulty level picked for the run. Null plays at normal strength.
 var difficulty: DifficultyData
+## Skill web nodes taken for free at the start, such as a campaign stage's starting nodes.
+var granted_tree_nodes: Array[StringName] = []
+## The campaign stage being played and its campaign, or null in a skirmish.
+var stage: StageData
+var campaign: CampaignData
 
 
 ## Config for a map using the data loaded by a DataRegistry.
@@ -39,6 +44,14 @@ func enemy_health_multiplier() -> float:
 func element_index(id: StringName) -> int:
 	var element: ElementData = elements.get(id)
 	return element.ring_index if element != null else -1
+
+
+## Colour of the element at a ring index, or white for -1.
+func element_color_at(ring_index: int) -> Color:
+	for element: ElementData in elements.values():
+		if element.ring_index == ring_index:
+			return element.color
+	return Color.WHITE
 
 
 func element_color(id: StringName) -> Color:

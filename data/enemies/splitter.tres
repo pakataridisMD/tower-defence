@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"splitter"
+display_name = "Splitter"
+max_health = 90.0
+speed = 62.0
+bounty = 4
+leak_damage = 1
+description = "Bursts into three Shardlings when it dies."
+split_into = &"shardling"
+split_count = 3

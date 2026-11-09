@@ -1,11 +1,13 @@
 extends Control
-## The title screen. Pick a map and a difficulty level, start a run, open the meta tree or the data
-## check, or quit. Starts a run straight away when the game is launched with --autoplay.
+## The title screen. Open the campaign, or pick a map and a difficulty level for a skirmish run; open
+## the meta tree or the data check, or quit. Starts a run straight away when the game is launched
+## with --autoplay (add --stage=<id> to play a campaign stage, open or not).
 
 const GAME_SCENE := "res://scenes/game/game.tscn"
 const META_TREE_SCENE := "res://scenes/meta/meta_tree.tscn"
 const DATA_CHECK_SCENE := "res://scenes/debug/data_check.tscn"
 const ART_TEST_SCENE := "res://scenes/demos/fire_tower_lighting.tscn"
+const CAMPAIGN_SCENE := "res://scenes/campaign/campaign_map.tscn"
 const RING_CENTER := Vector2(1340, 500)
 const RING_RADIUS := 230.0
 const ELEMENT_RADIUS := 44.0
@@ -18,7 +20,10 @@ var _difficulty_text: Label
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	if OS.get_cmdline_user_args().has("--autoplay"):
-		_play.call_deferred()
+		for arg in OS.get_cmdline_user_args():
+			if arg.begins_with("--stage="):
+				Progress.active_stage = StringName(arg.trim_prefix("--stage="))
+		get_tree().change_scene_to_file.call_deferred(GAME_SCENE)
 		return
 	_font = ThemeDB.fallback_font
 	theme = UiStyle.make_theme()
@@ -30,14 +35,15 @@ func _ready() -> void:
 func _build_menu() -> void:
 	var meta := Progress.meta
 	var column := VBoxContainer.new()
-	column.position = Vector2(160, 150)
+	column.position = Vector2(160, 90)
 	column.add_theme_constant_override("separation", 14)
 	add_child(column)
 	column.add_child(UiStyle.label("Tower Defence 2D", 72))
 	column.add_child(UiStyle.label("Prototype build", 26, UiStyle.TEXT_DIM))
-	_add_gap(column, 28)
-	_add_button(column, "Play", 32, _play)
+	_add_gap(column, 12)
+	_add_button(column, _campaign_text(), 32, open_campaign)
 	_add_gap(column, 4)
+	column.add_child(UiStyle.label("Skirmish", 26))
 
 	var anything_locked := false
 	var maps: Array[Array] = []
@@ -59,6 +65,7 @@ func _build_menu() -> void:
 	_show_difficulty()
 	if anything_locked:
 		column.add_child(UiStyle.label("Locked maps and difficulty levels open up in the meta tree.", 18, UiStyle.TEXT_DIM))
+	_add_button(column, "Play skirmish", 24, _play)
 	_add_gap(column, 4)
 
 	var points := meta.points()
@@ -142,7 +149,24 @@ func _records_text() -> String:
 
 
 func _play() -> void:
+	Progress.play_skirmish()
 	get_tree().change_scene_to_file(GAME_SCENE)
+
+
+func open_campaign() -> void:
+	get_tree().change_scene_to_file(CAMPAIGN_SCENE)
+
+
+func _campaign_text() -> String:
+	var meta := Progress.meta
+	var earned := 0
+	var total := 0
+	for campaign in meta.campaigns_in_order():
+		earned += meta.campaign_stars(campaign)
+		total += campaign.stages.size() * 3
+	if earned == 0:
+		return "Campaign"
+	return "Campaign  ·  %d / %d ★" % [earned, total]
 
 
 func _unhandled_input(event: InputEvent) -> void:
