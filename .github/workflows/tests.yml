@@ -28,8 +28,9 @@ jobs:
         run: |
           set -o pipefail
           /tmp/godot/godot --headless -s addons/gut/gut_cmdln.gd 2>&1 | tee gut.log
-          # GUT skips a test script that fails to parse and still passes, so fail the build here.
-          if grep -E "Parse Error|Failed to load script" gut.log; then exit 1; fi
+          # GUT skips a test script that fails to parse and still passes, and a script error in the
+          # game only logs a line, so fail the build here.
+          if grep -E "Parse Error|Failed to load script|SCRIPT ERROR" gut.log; then exit 1; fi
 
       - name: Smoke test (the bot plays a full run in the real game scenes and saves its progress)
         run: |

@@ -1194,65 +1194,17 @@
  "enemies": {
   "broodmother": {
    "size": [
-    42,
-    36
+    44,
+    38
    ],
    "anchor": [
-    21,
-    35
+    22,
+    37
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "brute": {
-   "size": [
-    24,
-    20
-   ],
-   "anchor": [
-    12,
-    19
-   ],
-   "gear": true,
-   "frames": 4
-  },
-  "cinder_tyrant": {
-   "size": [
-    38,
-    36
-   ],
-   "anchor": [
-    19,
-    35
-   ],
-   "gear": true,
-   "frames": 4
-  },
-  "grunt": {
-   "size": [
-    18,
-    15
-   ],
-   "anchor": [
-    9,
-    14
-   ],
-   "gear": true,
-   "frames": 4
-  },
-  "hollow_king": {
-   "size": [
-    38,
-    36
-   ],
-   "anchor": [
-    19,
-    35
-   ],
-   "gear": true,
-   "frames": 4
-  },
-  "hollow_shade": {
    "size": [
     26,
     22
@@ -1262,127 +1214,175 @@
     21
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
+  },
+  "cinder_tyrant": {
+   "size": [
+    42,
+    36
+   ],
+   "anchor": [
+    21,
+    35
+   ],
+   "gear": true,
+   "frames": 6
+  },
+  "grunt": {
+   "size": [
+    20,
+    17
+   ],
+   "anchor": [
+    10,
+    16
+   ],
+   "gear": true,
+   "frames": 6
+  },
+  "hollow_king": {
+   "size": [
+    40,
+    44
+   ],
+   "anchor": [
+    20,
+    43
+   ],
+   "gear": true,
+   "frames": 6
+  },
+  "hollow_shade": {
+   "size": [
+    26,
+    28
+   ],
+   "anchor": [
+    13,
+    27
+   ],
+   "gear": true,
+   "frames": 6
   },
   "leviathan": {
    "size": [
-    46,
+    68,
     38
    ],
    "anchor": [
-    23,
+    34,
     37
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "mender": {
    "size": [
-    18,
-    18
+    20,
+    21
    ],
    "anchor": [
-    9,
-    17
+    10,
+    20
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "mountain_titan": {
    "size": [
-    44,
-    38
+    46,
+    40
    ],
    "anchor": [
-    22,
-    37
+    23,
+    39
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "runner": {
    "size": [
-    14,
-    11
+    22,
+    13
    ],
    "anchor": [
-    7,
-    10
+    11,
+    12
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "shardling": {
    "size": [
-    10,
-    8
+    16,
+    11
    ],
    "anchor": [
-    5,
-    7
+    8,
+    10
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "splitter": {
    "size": [
-    22,
-    16
+    26,
+    17
    ],
    "anchor": [
-    11,
-    15
+    13,
+    16
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "sundered_heart": {
    "size": [
-    50,
+    52,
     46
    ],
    "anchor": [
-    25,
+    26,
     45
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "thunderhead": {
    "size": [
-    38,
-    38
+    40,
+    40
    ],
    "anchor": [
-    19,
-    37
+    20,
+    39
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "warded": {
    "size": [
-    22,
-    19
+    24,
+    20
    ],
    "anchor": [
-    11,
-    18
+    12,
+    19
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   },
   "warden": {
    "size": [
-    36,
-    30
+    42,
+    34
    ],
    "anchor": [
-    18,
-    29
+    21,
+    33
    ],
    "gear": true,
-   "frames": 4
+   "frames": 6
   }
  },
  "props": {

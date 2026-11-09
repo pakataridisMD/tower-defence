@@ -16,9 +16,16 @@ const TOWER_BASE_DROP := 8.0
 ## Shadows fall this way in sunlight (away from a low sun in the lower left).
 const SUN_SHADOW_DIR := Vector2(0.8, -0.6)
 ## Enemies stand this far below the road's centre line (in art pixels), so they look centred on it.
-const ENEMY_DROP := 5.0
+const ENEMY_DROP := 4.0
 ## Short-lived lights (shots, blasts, lightning) allowed at once, to keep lighting cheap.
 const MAX_FLASH_LIGHTS := 10
+## Rings and sprays of sparks allowed at once.
+const MAX_FX := 90
+## The element a tower's shots are made of, from what its crown gives off (its emitter in art.json).
+const SHOT_STYLES := {
+	"fire": &"fire", "sparks": &"storm", "plasma": &"storm", "leaves": &"nature", "bubbles": &"nature",
+	"drips": &"water", "steam": &"water", "dust": &"earth", "void": &"void", "soulfire": &"void",
+}
 
 static var _info: Dictionary = {}
 static var _texture_cache: Dictionary = {}
@@ -55,6 +62,11 @@ var _flash_lights := 0
 var _elapsed := 0.0
 var _noise := FastNoiseLite.new()
 var _tower_count := -1
+## Drawn on the ground under the towers: aura rings and the runes that circle an ascended tower.
+var _ground_fx: Node2D
+## Drawn over everything: what is hurting each enemy, and the rings and sparks of hits.
+var _marks: Node2D
+var _fx: Array[Fx] = []
 
 
 ## Something with a contact shadow and a sun shadow that follows it.
@@ -64,6 +76,19 @@ class Caster:
 	var blob: Sprite2D
 	var sun: Sprite2D
 	var height := 1.0
+
+
+## A short effect drawn straight onto the board: a ring that spreads (or closes in), or a spray of sparks.
+class Fx:
+	var ring := true
+	var at := Vector2.ZERO
+	var color := Color.WHITE
+	var age := 0.0
+	var life := 0.3
+	var from := 2.0
+	var to := 12.0
+	var count := 5
+	var salt := 0
 
 
 class TowerVisual:
@@ -77,6 +102,12 @@ class TowerVisual:
 	var pulse := 0.0
 	var caster: Caster
 	var muzzle := Vector2.ZERO
+	## One colour per element of the tower.
+	var colors: Array[Color] = []
+	var shot_style: StringName
+	## The level and ascension this visual last showed, to mark the moment they change.
+	var level := 1
+	var ascended := false
 
 
 class EnemyVisual:
@@ -94,6 +125,8 @@ class EnemyVisual:
 	var time := 0.0
 	var last_x := 0.0
 	var tint := Color.WHITE
+	## The sprite's size in art pixels.
+	var size := Vector2.ZERO
 
 
 # ------------------------------------------------------------------ setup
@@ -162,6 +195,16 @@ func setup(p_sim: RunSim) -> void:
 				_actors = layer
 				_actors.y_sort_enabled = true
 			4: _air = layer
+	_ground_fx = Node2D.new()
+	_ground_fx.z_index = 1
+	_ground_fx.material = _additive
+	_ground_fx.draw.connect(_draw_ground_fx)
+	_world.add_child(_ground_fx)
+	_marks = Node2D.new()
+	_marks.z_index = 4
+	_marks.material = _unshaded
+	_marks.draw.connect(_draw_marks)
+	_world.add_child(_marks)
 	_build_ground()
 	_build_fireflies()
 	sim.chain_fired.connect(_on_chain_fired)
@@ -379,6 +422,9 @@ func _process(delta: float) -> void:
 	_sync_enemies(delta)
 	_sync_shots()
 	_update_shadows()
+	_advance_fx(delta)
+	_ground_fx.queue_redraw()
+	_marks.queue_redraw()
 
 
 func _update_light(delta: float) -> void:
@@ -407,8 +453,13 @@ func _sync_towers(delta: float) -> void:
 			if current != null:
 				_remove_caster(current.caster)
 				current.root.queue_free()
-			_towers[tower.id] = _make_tower(tower)
+			var made := _make_tower(tower)
+			_towers[tower.id] = made
 			seen[tower.id] = true
+			if current != null:
+				_celebrate(made, false)
+			else:
+				_burst(made.root.position, Color(0.75, 0.68, 0.55), 10, 16.0, false)
 	for id in _towers.keys():
 		if not seen.has(id):
 			var visual: TowerVisual = _towers[id]
@@ -430,6 +481,12 @@ func _sync_towers(delta: float) -> void:
 		var boost := (0.4 + night * 0.6) * (1.0 + 0.12 * (visual.tower.level - 1)) * (1.35 if visual.tower.ascendancy != null else 1.0)
 		visual.light.energy = visual.light_energy * boost * (1.0 + flicker * 0.12 + visual.pulse * 0.6)
 		visual.glow.modulate = Color(1, 1, 1, 0.85 + 0.15 * flicker + visual.pulse * 0.3)
+		var ascended := visual.tower.ascendancy != null
+		if visual.tower.level != visual.level or ascended != visual.ascended:
+			var ascending := ascended and not visual.ascended
+			visual.level = visual.tower.level
+			visual.ascended = ascended
+			_celebrate(visual, ascending)
 
 
 func _make_tower(tower: SimTower) -> TowerVisual:
@@ -437,6 +494,13 @@ func _make_tower(tower: SimTower) -> TowerVisual:
 	var visual := TowerVisual.new()
 	visual.tower = tower
 	visual.data_id = tower.data.id
+	visual.level = tower.level
+	visual.ascended = tower.ascendancy != null
+	visual.shot_style = shot_style(tower.data)
+	for element in tower.data.elements:
+		visual.colors.append(sim.config.element_color(element))
+	if visual.colors.is_empty():
+		visual.colors.append(Color.WHITE)
 	var anchor: Array = meta["anchor"]
 	var offset := -Vector2(anchor[0], anchor[1])
 	visual.root = Node2D.new()
@@ -471,6 +535,41 @@ func _make_tower(tower: SimTower) -> TowerVisual:
 	visual.caster = _add_caster(visual.root, (body.texture as CanvasTexture).diffuse_texture, offset, 1.0)
 	visual.caster.blob.scale = Vector2(1.0, 0.45) * 28.0 / 32.0
 	return visual
+
+
+## The element a tower's shots are made of: the one its crown is built from, else its first.
+static func shot_style(data: TowerData) -> StringName:
+	if data == null or data.elements.is_empty():
+		return &""
+	var kind := String(tower_info(data.id).get("emitter", ""))
+	if SHOT_STYLES.has(kind):
+		var style: StringName = SHOT_STYLES[kind]
+		if data.elements.has(style):
+			return style
+	return data.elements[0]
+
+
+## A tower that gains a level, fuses or ascends: sparks climb it and a ring spreads from its base.
+func _celebrate(visual: TowerVisual, ascending: bool) -> void:
+	var color := visual.colors[0].lerp(Color.WHITE, 0.35)
+	var sparks := _particles(34 if ascending else 16, 0.8, Vector2(9, 3))
+	sparks.one_shot = true
+	sparks.explosiveness = 0.7
+	sparks.direction = Vector2(0, -1)
+	sparks.spread = 12.0
+	sparks.gravity = Vector2(0, -25)
+	sparks.initial_velocity_min = 18.0
+	sparks.initial_velocity_max = 46.0 if ascending else 34.0
+	sparks.color_ramp = _gradient([Color.WHITE, color, Color(color, 0)], [0.0, 0.4, 1.0])
+	sparks.material = _additive
+	sparks.position = visual.root.position + Vector2(0, -4)
+	_air.add_child(sparks)
+	sparks.emitting = true
+	get_tree().create_timer(1.4).timeout.connect(sparks.queue_free)
+	_ring(visual.root.position, color, 4.0, 30.0 if ascending else 20.0, 0.45)
+	if ascending:
+		_ring(visual.root.position, Color.WHITE, 2.0, 44.0, 0.7)
+	visual.pulse = 2.0
 
 
 func _tower_emitter(kind: String) -> CPUParticles2D:
@@ -601,6 +700,8 @@ func _make_enemy(enemy: SimEnemy, tint: Color) -> EnemyVisual:
 			visual.glow_frames.append(load(ART + "enemies/%s_gear_%d_glow.png" % [enemy.data.id, f]))
 	var anchor: Array = meta["anchor"]
 	var offset := -Vector2(anchor[0], anchor[1])
+	var size: Array = meta["size"]
+	visual.size = Vector2(size[0], size[1])
 	visual.root = Node2D.new()
 	visual.root.position = _art_pos(enemy.position) + Vector2(0, ENEMY_DROP)
 	visual.last_x = visual.root.position.x
@@ -630,8 +731,10 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 	var enemy := visual.enemy
 	var pos := _art_pos(enemy.position) + Vector2(0, ENEMY_DROP)
 	var speed_factor := enemy.speed() / maxf(1.0, enemy.base_speed)
-	visual.time += delta * (0.6 + speed_factor * 0.4) * (1.6 if enemy.data.tags.has(&"fast") else 1.0)
-	var frame := int(visual.time * 7.0) % visual.frames.size()
+	# A stunned enemy stops mid-step.
+	if not enemy.has_status(&"stun"):
+		visual.time += delta * (0.6 + speed_factor * 0.4) * (1.6 if enemy.data.tags.has(&"fast") else 1.0)
+	var frame := int(visual.time * 9.0) % visual.frames.size()
 	visual.body.texture = visual.frames[frame]
 	if visual.gear != null:
 		visual.gear.texture = visual.gear_frames[frame]
@@ -648,6 +751,8 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 		visual.flash = 1.0
 	visual.last_health = enemy.health
 	visual.flash = maxf(0.0, visual.flash - delta * 9.0)
+	# A hit squashes it for a moment.
+	visual.root.scale = Vector2(1.0 + visual.flash * 0.14, 1.0 - visual.flash * 0.14)
 	if enemy.data.prismatic_interval > 0.0:
 		visual.tint = visual.tint.lerp(_enemy_tint(enemy), minf(1.0, delta * 4.0))
 	var color := visual.tint
@@ -671,7 +776,7 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 		visual.gear.modulate = Color(1, 1, 1).lerp(Color(1.8, 1.8, 1.8), visual.flash * 0.7)
 
 
-## Slimes take the colour of their element.
+## Enemies take the colour of their element.
 func _enemy_tint(enemy: SimEnemy) -> Color:
 	if enemy.element < 0:
 		return Color.WHITE
@@ -703,38 +808,100 @@ func _make_shot(shot: SimProjectile) -> Node2D:
 	node.position = _art_pos(shot.position)
 	_air.add_child(node)
 	var source: TowerVisual = _towers.get(shot.source.id) if shot.source != null else null
+	var style := shot_style(shot.source.data) if shot.source != null else &""
 	if source != null:
 		source.pulse = 1.0
 		node.position = source.root.position + source.muzzle
-	var elements := shot.source.data.elements if shot.source != null else ([] as Array[StringName])
-	var color := sim.config.element_color(elements[0]) if not elements.is_empty() else Color.WHITE
-	if shot.splash_radius > 0.0:
-		# A fireball: hot core, trail, and its own light if there is room for one.
-		var core := Sprite2D.new()
-		core.texture = _pixel
-		core.scale = Vector2(3, 3)
-		core.modulate = Color(1, 0.95, 0.7)
-		core.material = _additive
-		node.add_child(core)
-		var trail := _particles(18, 0.3, Vector2(1, 1))
-		trail.gravity = Vector2(0, -10)
-		trail.initial_velocity_max = 3.0
-		trail.scale_amount_max = 2.0
-		trail.color_ramp = _gradient([Color(1, 0.9, 0.5), color, Color(color.darkened(0.5), 0)], [0.0, 0.4, 1.0])
-		trail.material = _additive
-		node.add_child(trail)
+		style = source.shot_style
+	var color := sim.config.element_color(style) if style != &"" else Color.WHITE
+	# A mixed tower's shot trails its other element.
+	var second := color
+	if shot.source != null:
+		for element in shot.source.data.elements:
+			if element != style:
+				second = sim.config.element_color(element)
+	var hot := color.lerp(Color.WHITE, 0.6)
+	var heavy := shot.splash_radius > 0.0
+	match style:
+		&"fire":
+			# A fireball: hot core and a trail of flame.
+			_shot_core(node, Color(1, 0.95, 0.7), 3.0 if heavy else 2.0, true)
+			_shot_trail(node, 18 if heavy else 7, 0.3 if heavy else 0.2, Color(1, 0.9, 0.5), second, Vector2(0, -10), true)
+		&"storm":
+			# A crooked bolt; the heavy ones are ball lightning.
+			_shot_streak(node, [Vector2(-5, 0), Vector2(-3, -1.5), Vector2(-1, 1), Vector2(1, 0)], Color(color, 0.7), 2.0, true)
+			_shot_streak(node, [Vector2(-5, 0), Vector2(-3, -1.5), Vector2(-1, 1), Vector2(1, 0)], Color(1, 1, 0.92), 1.0, true)
+			if heavy:
+				_shot_core(node, Color(1, 1, 0.9), 3.0, true)
+				var sparks := _shot_trail(node, 12, 0.25, Color.WHITE, second, Vector2.ZERO, true)
+				sparks.spread = 180.0
+				sparks.initial_velocity_max = 16.0
+		&"nature":
+			# A thorn with a pale tip, or a seed pod that sheds spores.
+			_shot_streak(node, [Vector2(-4, 0), Vector2(0, 0)], color.darkened(0.3), 1.0, false)
+			_shot_streak(node, [Vector2(0, 0), Vector2(2, 0)], hot, 1.0, false)
+			if heavy:
+				_shot_core(node, color, 3.0, false)
+			_shot_trail(node, 10 if heavy else 4, 0.4, hot, second, Vector2(0, 14), false)
+		&"water":
+			# A drop with a tail of spray that falls away behind it.
+			var tail := _shot_streak(node, [Vector2(-5, 0), Vector2(0, 0)], Color.WHITE, 1.0, false)
+			tail.gradient = _gradient([Color(color, 0.0), hot], [0.0, 1.0])
+			_shot_core(node, hot, 3.0 if heavy else 2.0, false)
+			_shot_trail(node, 12 if heavy else 5, 0.35, hot, second, Vector2(0, 34), false)
+		&"earth":
+			# A tumbling rock and its dust.
+			_shot_core(node, color.darkened(0.25), 4.0 if heavy else 3.0, false)
+			var chip := _shot_core(node, color.lerp(Color.WHITE, 0.35), 2.0 if heavy else 1.0, false)
+			chip.position = Vector2(-1, -1)
+			_shot_trail(node, 10 if heavy else 4, 0.45, Color(0.9, 0.8, 0.62, 0.8), second.lerp(Color(0.6, 0.5, 0.4), 0.5), Vector2(0, 6), false)
+		&"void":
+			# A dark heart in a violet halo.
+			var halo := _shot_core(node, Color(color, 0.85), 1.0, true)
+			halo.texture = _light_texture
+			halo.scale = Vector2.ONE * (14.0 if heavy else 9.0) / 128.0
+			_shot_core(node, Color(0.1, 0.04, 0.2), 3.0 if heavy else 2.0, false)
+			_shot_trail(node, 14 if heavy else 6, 0.4, hot, second, Vector2.ZERO, true)
+		_:
+			_shot_streak(node, [Vector2(-3, 0), Vector2(1, 0)], color.lerp(Color.WHITE, 0.25), 1.0, false)
+	if heavy:
+		# A shot that will burst carries its own light, if there is room for one.
 		var light := _flash_light(color.lerp(Color.WHITE, 0.2), 0.9, 34.0, 16.0)
 		if light != null:
 			node.add_child(light)
-	else:
-		# A thorn or bolt: a short streak pointing the way it flies.
-		var streak := Line2D.new()
-		streak.points = PackedVector2Array([Vector2(-3, 0), Vector2(1, 0)])
-		streak.width = 1.0
-		streak.default_color = color.lerp(Color.WHITE, 0.25)
-		streak.material = _unshaded
-		node.add_child(streak)
 	return node
+
+
+func _shot_core(node: Node2D, color: Color, size: float, glowing: bool) -> Sprite2D:
+	var core := Sprite2D.new()
+	core.texture = _pixel
+	core.scale = Vector2(size, size)
+	core.modulate = color
+	core.material = _additive if glowing else _unshaded
+	node.add_child(core)
+	return core
+
+
+func _shot_trail(node: Node2D, amount: int, lifetime: float, from: Color, to: Color, gravity: Vector2, glowing: bool) -> CPUParticles2D:
+	var trail := _particles(amount, lifetime, Vector2(1, 1))
+	trail.gravity = gravity
+	trail.initial_velocity_max = 3.0
+	trail.scale_amount_max = 2.0
+	trail.color_ramp = _gradient([from, to, Color(to.darkened(0.4), 0)], [0.0, 0.4, 1.0])
+	trail.material = _additive if glowing else _unshaded
+	node.add_child(trail)
+	return trail
+
+
+## A short line along the way the shot flies (the shot's node turns to face its travel).
+func _shot_streak(node: Node2D, points: Array, color: Color, width: float, glowing: bool) -> Line2D:
+	var streak := Line2D.new()
+	streak.points = PackedVector2Array(points)
+	streak.width = width
+	streak.default_color = color
+	streak.material = _additive if glowing else _unshaded
+	node.add_child(streak)
+	return streak
 
 
 ## Lets a shot's particles fade out instead of vanishing with it.
@@ -797,6 +964,7 @@ func _on_chain_fired(tower: SimTower, points: PackedVector2Array) -> void:
 				p += Vector2(randf_range(-2.5, 2.5), randf_range(-2.5, 2.5))
 			bolt_points.append(p)
 		previous = target
+		_sparks(target, color.lerp(Color.WHITE, 0.5), 4, 6.0)
 	var glow := Line2D.new()
 	glow.points = bolt_points
 	glow.width = 2.0
@@ -827,14 +995,39 @@ func _on_chain_fired(tower: SimTower, points: PackedVector2Array) -> void:
 
 
 func _on_projectile_landed(shot: SimProjectile) -> void:
-	if shot.splash_radius <= 0.0:
-		return
 	var at := _art_pos(shot.position)
-	var color := Color(1, 0.55, 0.2)
-	if shot.source != null and not shot.source.data.elements.is_empty():
-		color = sim.config.element_color(shot.source.data.elements[0]).lerp(Color(1, 0.8, 0.4), 0.3)
-	_burst(at, color, 22, 30.0)
-	var light := _flash_light(color, 1.8, shot.splash_radius / SCALE * 1.6, 12.0)
+	var style := shot_style(shot.source.data) if shot.source != null else &""
+	var color := sim.config.element_color(style).lerp(Color.WHITE, 0.25) if style != &"" else Color(1, 0.8, 0.5)
+	if shot.splash_radius <= 0.0:
+		# A shot that found its target throws a few sparks off it.
+		if shot.target != null and shot.target.alive:
+			_sparks(at + Vector2(0, ENEMY_DROP - 5), color, 5, 7.0)
+		return
+	var radius := shot.splash_radius / SCALE
+	match style:
+		&"water":
+			# A splash: drops thrown up that fall back, and a ripple.
+			_burst(at, color, 26, 34.0, false)
+			_ring(at, color.lerp(Color.WHITE, 0.4), radius * 0.25, radius, 0.45)
+			_ring(at, color, radius * 0.1, radius * 0.7, 0.6)
+		&"earth":
+			# Rubble and a ring of dust.
+			_burst(at, color.darkened(0.2), 20, 28.0, false)
+			_ring(at, Color(0.95, 0.85, 0.65), radius * 0.3, radius, 0.4)
+		&"void":
+			# It falls inward before it bursts.
+			_ring(at, color, radius, 2.0, 0.3)
+			_burst(at, color, 16, 20.0)
+		&"storm":
+			_burst(at, Color(1, 1, 0.85), 22, 46.0)
+			_ring(at, color, radius * 0.4, radius, 0.22)
+		&"nature":
+			_burst(at, color, 22, 26.0, false)
+			_ring(at, color.lerp(Color.WHITE, 0.3), radius * 0.3, radius, 0.4)
+		_:
+			_burst(at, color.lerp(Color(1, 0.8, 0.4), 0.3), 22, 30.0)
+			_ring(at, color.lerp(Color(1, 0.9, 0.6), 0.5), radius * 0.3, radius, 0.3)
+	var light := _flash_light(color, 1.8, radius * 1.6, 12.0)
 	if light != null:
 		light.position = at
 		_air.add_child(light)
@@ -846,7 +1039,23 @@ func _on_projectile_landed(shot: SimProjectile) -> void:
 func _on_enemy_killed(enemy: SimEnemy, _killer: SimTower, _bounty: int) -> void:
 	var visual: EnemyVisual = _enemies.get(enemy.id)
 	var color := visual.tint if visual != null else Color(0.8, 0.85, 0.9)
-	_burst(_art_pos(enemy.position) + Vector2(0, ENEMY_DROP - 4), color, 14, 22.0, false)
+	var at := _art_pos(enemy.position) + Vector2(0, ENEMY_DROP - 4)
+	if not enemy.data.tags.has(&"boss"):
+		_burst(at, color, 14, 22.0, false)
+		_ring(at, color.lerp(Color.WHITE, 0.4), 2.0, 9.0, 0.25)
+		return
+	# A boss goes out with a blast and a flash of its own colour.
+	_burst(at, color, 48, 50.0, false)
+	_burst(at, color.lerp(Color.WHITE, 0.5), 20, 30.0)
+	_ring(at, color.lerp(Color.WHITE, 0.4), 4.0, 34.0, 0.6)
+	_ring(at, Color.WHITE, 2.0, 22.0, 0.4)
+	var light := _flash_light(color, 2.2, 90.0, 20.0)
+	if light != null:
+		light.position = at
+		_air.add_child(light)
+		var tween := create_tween()
+		tween.tween_property(light, "energy", 0.0, 0.5)
+		tween.tween_callback(func() -> void: _release_light(light))
 
 
 func _burst(at: Vector2, color: Color, amount: int, speed: float, glowing := true) -> void:
@@ -865,6 +1074,153 @@ func _burst(at: Vector2, color: Color, amount: int, speed: float, glowing := tru
 	_air.add_child(burst)
 	burst.emitting = true
 	get_tree().create_timer(0.8).timeout.connect(burst.queue_free)
+
+
+func _ring(at: Vector2, color: Color, from: float, to: float, life: float) -> void:
+	if _fx.size() >= MAX_FX:
+		return
+	var fx := Fx.new()
+	fx.at = at
+	fx.color = color
+	fx.from = from
+	fx.to = to
+	fx.life = life
+	_fx.append(fx)
+
+
+func _sparks(at: Vector2, color: Color, count: int, reach: float) -> void:
+	if _fx.size() >= MAX_FX:
+		return
+	var fx := Fx.new()
+	fx.ring = false
+	fx.at = at
+	fx.color = color
+	fx.count = count
+	fx.to = reach
+	fx.life = 0.22
+	fx.salt = randi() % 1000
+	_fx.append(fx)
+
+
+## True while a ring or a spray of sparks is still playing.
+func has_live_effects() -> bool:
+	return not _fx.is_empty()
+
+
+func _advance_fx(delta: float) -> void:
+	var live: Array[Fx] = []
+	for fx in _fx:
+		fx.age += delta
+		if fx.age < fx.life:
+			live.append(fx)
+	_fx = live
+
+
+## One art pixel.
+func _dot(on: Node2D, at: Vector2, color: Color) -> void:
+	on.draw_rect(Rect2(at.floor(), Vector2.ONE), color)
+
+
+func _draw_ground_fx() -> void:
+	for visual: TowerVisual in _towers.values():
+		var tower := visual.tower
+		if tower.aura_radius > 0.0 and tower.aura_damage > 0.0:
+			# The reach of an aura: a slow ring of lights on the ground.
+			var center := _art_pos(tower.position)
+			var radius := tower.aura_radius / SCALE
+			var aura := visual.colors[visual.colors.size() - 1].lerp(Color.WHITE, 0.2)
+			for i in 40:
+				var angle := TAU * float(i) / 40.0 + _elapsed * 0.12
+				var wave := 0.5 + 0.5 * sin(_elapsed * 2.0 + float(i) * 0.7)
+				_dot(_ground_fx, center + Vector2.from_angle(angle) * radius, Color(aura, 0.15 + 0.3 * wave))
+		if tower.ascendancy != null:
+			# Runes circle the foot of an ascended tower, one colour per element.
+			for i in 8:
+				var angle := TAU * float(i) / 8.0 - _elapsed * 0.9
+				var rune := visual.colors[i % visual.colors.size()].lerp(Color.WHITE, 0.4)
+				var at := visual.root.position + Vector2(cos(angle) * 16.0, sin(angle) * 7.0 - 1.0)
+				_dot(_ground_fx, at, Color(rune, 0.95))
+				_dot(_ground_fx, at + Vector2(-sin(angle), cos(angle) * 0.5) * 1.6, Color(rune, 0.4))
+
+
+func _draw_marks() -> void:
+	for visual: EnemyVisual in _enemies.values():
+		_draw_enemy_marks(visual)
+	for fx in _fx:
+		var fade := 1.0 - fx.age / fx.life
+		var spread := 1.0 - fade * fade
+		if fx.ring:
+			var radius := lerpf(fx.from, fx.to, spread)
+			_marks.draw_arc(fx.at, radius, 0.0, TAU, 28, Color(fx.color, fade), 1.0)
+			if radius > 5.0:
+				_marks.draw_arc(fx.at, radius - 2.0, 0.0, TAU, 28, Color(fx.color, fade * 0.35), 1.0)
+		else:
+			for i in fx.count:
+				var angle := float(fx.salt) + TAU * float(i) / float(fx.count) + sin(float(fx.salt + i * 7))
+				var at := fx.at + Vector2.from_angle(angle) * fx.to * spread
+				_dot(_marks, at, Color(fx.color.lerp(Color.WHITE, fade * 0.6), minf(1.0, fade * 2.0)))
+
+
+## What is hurting an enemy, drawn on it: flames for a burn, bubbles for poison, frost at its feet for
+## a slow, stars round its head for a stun, a violet mark for a curse and falling chips for shattered
+## armour. A healing enemy gives off green crosses.
+func _draw_enemy_marks(visual: EnemyVisual) -> void:
+	var enemy := visual.enemy
+	var healing := enemy.is_regenerating() and enemy.health < enemy.max_health
+	if enemy.statuses.is_empty() and not healing:
+		return
+	var feet := visual.root.position
+	var half := visual.size.x * 0.32
+	var tall := visual.size.y * 0.7
+	var head := feet + Vector2(0, -tall - 3.0)
+	var salt := float(enemy.id) * 1.37
+	if enemy.has_status(&"slow"):
+		for i in 5:
+			var glint := 0.5 + 0.5 * sin(_elapsed * 5.0 + salt + float(i) * 2.1)
+			var at := feet + Vector2((float(i) - 2.0) * half * 0.55, 0.0)
+			_dot(_marks, at, Color(0.7, 0.9, 1.0).lerp(Color.WHITE, glint))
+			if i % 2 == 0:
+				_dot(_marks, at + Vector2(0, -1), Color(0.5, 0.78, 1.0))
+				_dot(_marks, at + Vector2(0, -2), Color(0.85, 0.96, 1.0, glint))
+	if enemy.has_status(&"burn"):
+		for i in 3:
+			var rise := fposmod(_elapsed * 1.7 + salt + float(i) * 0.37, 1.0)
+			var at := feet + Vector2(sin(salt * 3.0 + float(i) * 2.4) * half, -2.0 - rise * tall)
+			var flame := Color(1.0, 0.95, 0.6).lerp(Color(0.95, 0.3, 0.1), rise)
+			_marks.draw_rect(Rect2(at.floor(), Vector2(1.0, 2.0 if rise < 0.5 else 1.0)), Color(flame, 1.0 - rise * 0.6))
+	if enemy.has_status(&"poison"):
+		for i in 2:
+			var rise := fposmod(_elapsed * 0.9 + salt * 0.7 + float(i) * 0.5, 1.0)
+			var sway := sin(salt * 2.0 + float(i) * 3.1) * half + sin(_elapsed * 4.0 + float(i)) * 0.8
+			var at := feet + Vector2(sway, -tall * 0.5 - rise * tall * 0.7)
+			_dot(_marks, at, Color(0.5, 0.92, 0.3, 1.0 - rise * 0.5))
+			_dot(_marks, at + Vector2(0, -1), Color(0.85, 1.0, 0.6, 1.0 - rise))
+	if enemy.has_status(&"shatter"):
+		for i in 2:
+			var fall := fposmod(_elapsed * 1.4 + salt + float(i) * 0.5, 1.0)
+			var side := -1.0 if i == 0 else 1.0
+			var at := feet + Vector2(side * (half + 1.0 + fall * 2.0), -tall * 0.6 + fall * tall * 0.6)
+			_dot(_marks, at, Color(0.86, 0.88, 0.93, 1.0 - fall * 0.7))
+	if enemy.has_status(&"stun"):
+		for i in 3:
+			var angle := _elapsed * 6.0 + TAU * float(i) / 3.0
+			var at := head + Vector2(cos(angle) * (half + 1.0), sin(angle) * 1.5)
+			_dot(_marks, at, Color(1.0, 0.92, 0.45))
+			if sin(angle) > 0.0:
+				_dot(_marks, at + Vector2(0, -1), Color(1.0, 1.0, 0.85))
+	if enemy.has_status(&"curse"):
+		var throb := 0.5 + 0.5 * sin(_elapsed * 5.0 + salt)
+		var mark := Color(0.72, 0.45, 1.0).lerp(Color.WHITE, throb * 0.45)
+		var at := head + Vector2(0, -3)
+		for offset: Vector2 in [Vector2(0, -1), Vector2(-1, 0), Vector2(1, 0), Vector2(0, 1)]:
+			_dot(_marks, at + offset, mark)
+		_dot(_marks, at, Color(0.2, 0.08, 0.35))
+	if healing:
+		var rise := fposmod(_elapsed * 0.8 + salt, 1.0)
+		var at := (head + Vector2(sin(salt) * half, 4.0 - rise * 6.0)).floor()
+		var green := Color(0.5, 1.0, 0.55, 1.0 - rise)
+		_marks.draw_rect(Rect2(at + Vector2(-1, 0), Vector2(3, 1)), green)
+		_marks.draw_rect(Rect2(at + Vector2(0, -1), Vector2(1, 3)), green)
 
 
 ## Height of an enemy's sprite in board pixels, for placing its health bar. 0 if it has no art.

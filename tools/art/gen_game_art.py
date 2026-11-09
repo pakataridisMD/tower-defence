@@ -1143,41 +1143,155 @@ def tower_elements(tower_id: str) -> list[str]:
 
 
 # ---------------------------------------------------------------- enemies
-def slime(name: str, w: int, h: int, rx: float, ry: float, gear=None, seed: int = 0) -> dict:
-    frames = [(1.0, 1.0), (1.07, 0.9), (0.95, 1.08), (1.02, 0.97)]
-    for f, (sx, sy) in enumerate(frames):
-        body = Canvas(w, h, seed)
-        gear_c = Canvas(w, h, seed + 100)
-        erx, ery = rx * sx, ry * sy
-        cy = h - 1 - ery * 0.95
-        cx = (w - 1) / 2
-        for y in range(h):
-            for x in range(w):
-                u = (x - cx) / erx
-                v = (y - cy) / ery
-                v = v * 1.5 if v > 0 else v
+# One step of the walk: (stretch across, stretch up, lift off the ground in pixels).
+# A squash, the push off, the air, and the landing.
+HOP = [(1.10, 0.86, 0), (1.0, 1.0, 0), (0.92, 1.12, 1), (0.95, 1.07, 2), (1.0, 1.0, 1), (1.07, 0.92, 0)]
+SPEC_LIGHT = np.array([-0.45, 0.55, 0.7]) / np.linalg.norm([-0.45, 0.55, 0.7])
+
+
+def lumps(c: Canvas, parts: list[tuple], ramp=SLIME_BODY) -> None:
+    """A body made of rounded lumps, each (cx, cy, rx, ry, flat). `flat` squashes the lower half, so
+    the lump sits on the ground instead of floating as a ball. Where lumps overlap the nearer one wins.
+    Shaded as wet jelly: a soft top light, light bouncing back up into the lower right, a hot glint."""
+    for y in range(c.h):
+        for x in range(c.w):
+            best = None
+            for pcx, pcy, prx, pry, flat in parts:
+                u = (x - pcx) / prx
+                v = (y - pcy) / pry
+                if v > 0:
+                    v *= flat
                 rr = u * u + v * v
                 if rr > 1:
                     continue
-                n = np.array([u, -v, math.sqrt(max(0.04, 1 - rr))])
-                t = float(shade(n[None, None, :])[0, 0]) * 0.85 + 0.1
-                body.put(x, y, SLIME_BODY[int(np.clip(t, 0, 0.999) * 4)], n)
-        hx, hy = cx - erx * 0.42, cy - ery * 0.48
-        body.put(hx, hy, SLIME_BODY[4], (0, 0.5, 0.9))
-        body.put(hx + 1, hy, SLIME_BODY[4], (0, 0.5, 0.9))
+                z = math.sqrt(1 - rr) * min(prx, pry)
+                if best is None or z > best[0]:
+                    best = (z, u, v, rr)
+            if best is None:
+                continue
+            _, u, v, rr = best
+            n = np.array([u, -v, math.sqrt(max(0.04, 1 - rr))])
+            n /= np.linalg.norm(n)
+            lit = float(n @ SPEC_LIGHT)
+            t = max(0.0, lit) * 0.8 + 0.12
+            if rr > 0.62 and u > 0.1 and v > -0.35:
+                t += 0.2 * (rr - 0.62) / 0.38  # light through the jelly, low on the far side
+            idx = int(np.clip(t, 0, 0.999) * 4)
+            if lit > 0.975:
+                idx = 4
+            c.put(x, y, ramp[idx], n)
+
+
+def creature(name: str, w: int, h: int, rx: float, ry: float, gear=None, seed: int = 0, kind: str = "blob") -> dict:
+    """Draws an enemy's walk cycle. The body is drawn in greys, since the game tints it with the
+    enemy's element; `gear` draws the untinted parts (eyes, armour, crowns) around (cx, cy, rx, ry).
+    Enemies face right; the game flips them when they walk left.
+
+    kind: "blob" hops; "twin" is two blobs joined (it splits); "dart" and "serpent" trail a tail behind
+    a head; "beetle" is a shell on little feet; "wisp" floats over the ground with a ragged hem."""
+    ground = h - 2
+    mid = (w - 1) / 2
+    heavy = ry >= 9
+    for f, (sx, sy, lift) in enumerate(HOP):
+        phase = f / len(HOP) * math.tau
+        body = Canvas(w, h, seed)
+        gear_c = Canvas(w, h, seed + 100)
+        if heavy:
+            sx, sy, lift = 1 + (sx - 1) * 0.6, 1 + (sy - 1) * 0.6, lift // 2
+        gcx, grx, gry = mid, rx * sx, ry * sy
+        if kind == "blob":
+            gcy = ground - lift - gry * 0.625
+            parts = [(gcx, gcy, grx, gry, 1.6)]
+            if heavy and lift == 0:  # big ones pool at the base
+                parts.append((gcx, ground - gry * 0.16, grx * 1.1, gry * 0.3, 1.9))
+            lumps(body, parts)
+        elif kind == "twin":
+            lean = math.sin(phase) * 0.07
+            parts = []
+            for side, grow in ((-1, 1 + lean), (1, 1 - lean)):
+                part_ry = ry * grow * (1.0 if side < 0 else 0.92)
+                parts.append((mid + side * rx * 0.37, ground - part_ry * 0.625, rx * 0.66 * (2 - grow), part_ry, 1.6))
+            gcy, grx, gry = ground - ry * 0.625, rx, ry
+            lumps(body, parts)
+        elif kind in ("dart", "serpent"):
+            count, shrink, gap = (3, 0.7, 0.62) if kind == "dart" else (4, 0.8, 0.5)
+            grx, gry = rx * 0.78, ry * (1 + (sy - 1) * 0.5)
+            # Head to the right, tail to the left, and the whole length centred on the canvas.
+            tail = rx * gap * count + grx * shrink ** count
+            gcx = mid + (tail - grx) / 2
+            gcy = ground - (lift if kind == "dart" else 0) - gry * 0.625
+            parts = [(gcx, gcy, grx, gry, 1.6)]
+            for k in range(1, count + 1):
+                seg_rx, seg_ry = grx * shrink ** k, ry * shrink ** k
+                sway = math.sin(phase - k * 1.1) * (0.8 if kind == "dart" else 1.4)
+                parts.append((gcx - rx * gap * k, ground - seg_ry * 0.625 - max(0.0, sway), seg_rx, seg_ry, 1.6))
+            lumps(body, parts)
+        elif kind == "beetle":
+            up = (0, 1, 0, 0, 1, 0)[f]
+            grx, gry = rx, ry
+            gcy = ground - 2 - up - ry * 0.5
+            lumps(body, [(gcx, gcy, rx, ry, 2.0)])
+            # The rim of the shell, and the belly in its shadow.
+            for x in range(w):
+                u = (x - gcx) / rx
+                if abs(u) >= 1:
+                    continue
+                rim = gcy + ry * 0.5 * math.sqrt(1 - u * u) - max(1.0, ry * 0.14)
+                for y in range(int(round(rim)), h):
+                    if body.alpha[y, x]:
+                        body.put(x, y, SLIME_BODY[0 if y == int(round(rim)) else 1], (u * 0.5, -0.6, 0.6))
+            for i, fx in enumerate((-0.7, -0.26, 0.26, 0.7)):
+                stepping = (f + (i % 2) * 3) % 6 < 3
+                foot_y = ground - (1 if stepping else 0)
+                foot_x = gcx + fx * rx + (1 if stepping else 0)
+                for dx in (0, 1):
+                    body.put(foot_x + dx, foot_y, SLIME_BODY[0], (0, 0.4, 0.9))
+                    body.put(foot_x + dx, foot_y - 1, SLIME_BODY[1], (0, 0.4, 0.9))
+        elif kind == "wisp":
+            hover = 2 + (0, 1, 2, 2, 1, 0)[f]
+            grx, gry = rx, ry * 0.8
+            hem = ground - hover
+            gcy = hem - ry * 0.75 - gry * 0.2
+            for x in range(w):
+                u = (x - gcx) / rx
+                if abs(u) > 1:
+                    continue
+                tatter = 1.6 * math.sin(x * 1.5 + phase) + (2.0 if int(x + f) % 4 == 0 else 0.0)
+                bottom = hem - abs(u) * 2.0 - max(0.0, tatter)
+                for y in range(int(gcy), int(round(bottom)) + 1):
+                    fade = (y - gcy) / max(1.0, bottom - gcy)
+                    n = np.array([u, 0.15, math.sqrt(max(0.04, 1 - u * u))])
+                    t = float(shade(n[None, None, :])[0, 0]) * 0.8 + 0.12 - fade * 0.3
+                    body.put(x, y, SLIME_BODY[int(np.clip(t, 0, 0.999) * 4)], n)
+            lumps(body, [(gcx, gcy, grx, gry, 1.0)])
+        else:
+            raise ValueError(kind)
         body.ink()
         body.save(os.path.join(OUT, "enemies"), f"{name}_{f}")
         if gear:
-            gear(gear_c, cx, cy, erx, ery)
+            gear(gear_c, gcx, gcy, grx, gry)
             gear_c.save(os.path.join(OUT, "enemies"), f"{name}_gear_{f}", glow=True)
-    return {"size": [w, h], "anchor": [w // 2, h - 1], "gear": gear is not None, "frames": len(frames)}
+    return {"size": [w, h], "anchor": [w // 2, h - 1], "gear": gear is not None, "frames": len(HOP)}
 
 
 def eyes(c: Canvas, cx, cy, rx, ry, glow=None, gap=2) -> None:
+    """Two eyes looking the way it walks. Big enough bodies get a pupil with a glint."""
+    dark = hexc("0b1220")
     ey = cy - ry * 0.05
-    for ex in (cx - gap, cx + gap):
-        c.put(ex, ey, hexc("0b1220"), glow=glow)
-        c.put(ex, ey - 1, hexc("0b1220") if glow is None else glow * 0.8, glow=glow)
+    look = 1 if rx >= 6 else 0
+    for ex in (cx - gap + look, cx + gap + look):
+        if rx < 7:
+            c.put(ex, ey, dark, glow=glow)
+            c.put(ex, ey - 1, dark if glow is None else glow * 0.8, glow=glow)
+            continue
+        tall = (0, -1, -2) if rx >= 12 else (0, -1)
+        for dx in (0, 1):
+            for dy in tall:
+                c.put(ex + dx, ey + dy, dark if glow is None else glow, glow=glow)
+        if glow is None:
+            c.put(ex, ey + tall[-1], hexc("f4f6f8"))
+        else:
+            c.put(ex + 1, ey + tall[-1], hexc("ffffff"), glow=hexc("ffffff"))
 
 
 def grunt_gear(c, cx, cy, rx, ry):
@@ -1395,22 +1509,22 @@ def sundered_heart_gear(c, cx, cy, rx, ry):
 
 
 ENEMIES = {
-    "grunt": lambda: slime("grunt", 18, 15, 7.5, 6.5, grunt_gear, 1),
-    "runner": lambda: slime("runner", 14, 11, 5.5, 4.5, runner_gear, 2),
-    "brute": lambda: slime("brute", 24, 20, 10.5, 9.0, brute_gear, 3),
-    "warden": lambda: slime("warden", 36, 30, 16.0, 13.5, warden_gear, 4),
-    "mender": lambda: slime("mender", 18, 18, 7.5, 6.5, mender_gear, 5),
-    "splitter": lambda: slime("splitter", 22, 16, 9.5, 6.8, splitter_gear, 6),
-    "shardling": lambda: slime("shardling", 10, 8, 3.8, 3.2, shardling_gear, 7),
-    "warded": lambda: slime("warded", 22, 19, 8.0, 7.0, warded_gear, 8),
-    "cinder_tyrant": lambda: slime("cinder_tyrant", 38, 36, 16.0, 13.5, cinder_tyrant_gear, 9),
-    "thunderhead": lambda: slime("thunderhead", 38, 38, 15.0, 12.5, thunderhead_gear, 10),
-    "broodmother": lambda: slime("broodmother", 42, 36, 17.5, 13.0, broodmother_gear, 11),
-    "leviathan": lambda: slime("leviathan", 46, 38, 18.5, 15.0, leviathan_gear, 12),
-    "mountain_titan": lambda: slime("mountain_titan", 44, 38, 18.0, 15.5, mountain_titan_gear, 13),
-    "hollow_king": lambda: slime("hollow_king", 38, 36, 16.0, 13.5, hollow_king_gear, 14),
-    "hollow_shade": lambda: slime("hollow_shade", 26, 22, 10.5, 8.5, hollow_shade_gear, 15),
-    "sundered_heart": lambda: slime("sundered_heart", 50, 46, 20.0, 16.5, sundered_heart_gear, 16),
+    "grunt": lambda: creature("grunt", 20, 17, 7.5, 6.5, grunt_gear, 1),
+    "runner": lambda: creature("runner", 22, 13, 6.0, 4.5, runner_gear, 2, "dart"),
+    "brute": lambda: creature("brute", 26, 22, 11.0, 9.5, brute_gear, 3, "beetle"),
+    "warden": lambda: creature("warden", 42, 34, 16.0, 13.5, warden_gear, 4),
+    "mender": lambda: creature("mender", 20, 21, 7.5, 6.5, mender_gear, 5),
+    "splitter": lambda: creature("splitter", 26, 17, 10.5, 7.0, splitter_gear, 6, "twin"),
+    "shardling": lambda: creature("shardling", 16, 11, 4.2, 3.2, shardling_gear, 7, "dart"),
+    "warded": lambda: creature("warded", 24, 20, 8.5, 7.0, warded_gear, 8, "beetle"),
+    "cinder_tyrant": lambda: creature("cinder_tyrant", 42, 36, 16.0, 13.5, cinder_tyrant_gear, 9),
+    "thunderhead": lambda: creature("thunderhead", 40, 40, 15.0, 12.5, thunderhead_gear, 10, "wisp"),
+    "broodmother": lambda: creature("broodmother", 44, 38, 17.5, 13.5, broodmother_gear, 11, "beetle"),
+    "leviathan": lambda: creature("leviathan", 68, 38, 19.0, 15.0, leviathan_gear, 12, "serpent"),
+    "mountain_titan": lambda: creature("mountain_titan", 46, 40, 18.5, 16.0, mountain_titan_gear, 13, "beetle"),
+    "hollow_king": lambda: creature("hollow_king", 40, 44, 15.0, 15.0, hollow_king_gear, 14, "wisp"),
+    "hollow_shade": lambda: creature("hollow_shade", 26, 28, 10.0, 10.0, hollow_shade_gear, 15, "wisp"),
+    "sundered_heart": lambda: creature("sundered_heart", 52, 46, 20.0, 16.5, sundered_heart_gear, 16),
 }
 
 
@@ -1914,11 +2028,22 @@ def write_missing_imports() -> int:
 def main() -> None:
     os.makedirs(OUT, exist_ok=True)
     art = {"art_scale": ART_SCALE, "towers": {}, "enemies": {}, "props": {}}
-    # "--towers" redraws only the towers and keeps everything else in art.json as it is.
+    # "--towers" or "--enemies" redraws only those and keeps everything else in art.json as it is.
     towers_only = "--towers" in sys.argv
-    if towers_only:
+    enemies_only = "--enemies" in sys.argv
+    if towers_only or enemies_only:
         with open(os.path.join(OUT, "art.json")) as fh:
             art = json.load(fh)
+    if enemies_only:
+        art["enemies"] = {}
+        for eid in sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("data/enemies/*.tres")):
+            if eid in ENEMIES:
+                art["enemies"][eid] = ENEMIES[eid]()
+        with open(os.path.join(OUT, "art.json"), "w") as fh:
+            json.dump(art, fh, indent=1)
+        print("Wrote the enemies in", OUT, "and", write_missing_imports(), "import files")
+        return
+    if towers_only:
         art["towers"] = {}
     tower_ids = sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("data/towers/*.tres"))
     for tid in tower_ids:
