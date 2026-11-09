@@ -64,6 +64,8 @@ class Caster:
 
 class TowerVisual:
 	var tower: SimTower
+	## The tower type this visual was drawn for; a tower that changes into a hybrid is redrawn.
+	var data_id: StringName
 	var root: Node2D
 	var glow: Sprite2D
 	var light: PointLight2D
@@ -364,9 +366,15 @@ func _update_light(delta: float) -> void:
 func _sync_towers(delta: float) -> void:
 	var seen: Dictionary[int, bool] = {}
 	for tower in sim.towers:
-		seen[tower.id] = true
-		if not _towers.has(tower.id) and not tower_info(tower.data.id).is_empty():
+		var current: TowerVisual = _towers.get(tower.id)
+		if current != null and current.data_id == tower.data.id:
+			seen[tower.id] = true
+		elif not tower_info(tower.data.id).is_empty():
+			if current != null:
+				_remove_caster(current.caster)
+				current.root.queue_free()
 			_towers[tower.id] = _make_tower(tower)
+			seen[tower.id] = true
 	for id in _towers.keys():
 		if not seen.has(id):
 			var visual: TowerVisual = _towers[id]
@@ -385,7 +393,7 @@ func _sync_towers(delta: float) -> void:
 	var flicker := _noise.get_noise_1d(_elapsed * 9.0)
 	for visual: TowerVisual in _towers.values():
 		visual.pulse = maxf(0.0, visual.pulse - delta * 4.0)
-		var boost := 0.4 + night * 0.6
+		var boost := (0.4 + night * 0.6) * (1.0 + 0.12 * (visual.tower.level - 1)) * (1.35 if visual.tower.ascendancy != null else 1.0)
 		visual.light.energy = visual.light_energy * boost * (1.0 + flicker * 0.12 + visual.pulse * 0.6)
 		visual.glow.modulate = Color(1, 1, 1, 0.85 + 0.15 * flicker + visual.pulse * 0.3)
 
@@ -394,6 +402,7 @@ func _make_tower(tower: SimTower) -> TowerVisual:
 	var meta := tower_info(tower.data.id)
 	var visual := TowerVisual.new()
 	visual.tower = tower
+	visual.data_id = tower.data.id
 	var anchor: Array = meta["anchor"]
 	var offset := -Vector2(anchor[0], anchor[1])
 	visual.root = Node2D.new()
@@ -455,6 +464,49 @@ func _tower_emitter(kind: String) -> CPUParticles2D:
 			sparks.color_ramp = _gradient([Color.WHITE, hot, Color(hot, 0)], [0.0, 0.3, 1.0])
 			sparks.material = _additive
 			return sparks
+		"drips":
+			var drips := _particles(6, 0.9, Vector2(5, 2))
+			drips.direction = Vector2(0, 1)
+			drips.spread = 25.0
+			drips.gravity = Vector2(0, 40)
+			drips.initial_velocity_min = 2.0
+			drips.initial_velocity_max = 8.0
+			drips.color_ramp = _gradient([Color(0.85, 0.97, 1.0), Color(0.4, 0.75, 1.0, 0.9), Color(0.2, 0.5, 0.9, 0)], [0.0, 0.4, 1.0])
+			drips.material = _additive
+			return drips
+		"dust":
+			var dust := _particles(4, 1.6, Vector2(5, 1))
+			dust.direction = Vector2(0, 1)
+			dust.spread = 30.0
+			dust.gravity = Vector2(0, 8)
+			dust.initial_velocity_min = 1.0
+			dust.initial_velocity_max = 4.0
+			dust.color_ramp = _gradient([Color(1, 0.8, 0.4, 0), Color(1, 0.75, 0.35, 0.8), Color(0.8, 0.5, 0.2, 0)], [0.0, 0.3, 1.0])
+			dust.material = _additive
+			return dust
+		"void", "soulfire":
+			var soul := kind == "soulfire"
+			var wisps := _particles(14 if soul else 8, 0.8 if soul else 1.4, Vector2(3.5, 1) if soul else Vector2(8, 4))
+			wisps.direction = Vector2(0, -1)
+			wisps.spread = 20.0 if soul else 180.0
+			wisps.gravity = Vector2(0, -20) if soul else Vector2.ZERO
+			wisps.initial_velocity_min = 4.0 if soul else 2.0
+			wisps.initial_velocity_max = 11.0 if soul else 6.0
+			wisps.scale_amount_min = 1.0
+			wisps.scale_amount_max = 2.0 if soul else 1.0
+			wisps.color_ramp = _gradient([Color(0.95, 0.85, 1.0), Color(0.7, 0.4, 1.0, 0.9), Color(0.3, 0.1, 0.6, 0)], [0.0, 0.35, 1.0])
+			wisps.material = _additive
+			return wisps
+		"bubbles":
+			var bubbles := _particles(5, 1.2, Vector2(9, 2))
+			bubbles.direction = Vector2(0, -1)
+			bubbles.spread = 10.0
+			bubbles.gravity = Vector2(0, -4)
+			bubbles.initial_velocity_min = 2.0
+			bubbles.initial_velocity_max = 5.0
+			bubbles.color_ramp = _gradient([Color(0.7, 1, 0.5, 0), Color(0.65, 1, 0.45, 0.85), Color(0.5, 0.9, 0.3, 0)], [0.0, 0.3, 1.0])
+			bubbles.material = _additive
+			return bubbles
 		"leaves":
 			var pollen := _particles(5, 2.5, Vector2(10, 5))
 			pollen.direction = Vector2(0.3, 1)
@@ -561,6 +613,14 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 		color = color.lerp(Color(1.0, 0.5, 0.2), 0.35 * pulse)
 	if enemy.has_status(&"poison"):
 		color = color.lerp(Color(0.5, 1.0, 0.35), 0.35 * (1.0 - pulse))
+	if enemy.has_status(&"slow"):
+		color = color.lerp(Color(0.55, 0.8, 1.0), 0.45)
+	if enemy.has_status(&"curse"):
+		color = color.lerp(Color(0.7, 0.45, 1.0), 0.3 + 0.2 * pulse)
+	if enemy.has_status(&"shatter"):
+		color = color.darkened(0.15)
+	if enemy.has_status(&"stun"):
+		color = color.lerp(Color(1.0, 0.9, 0.5), 0.5)
 	visual.body.modulate = color.lerp(Color(1.8, 1.8, 1.8), visual.flash * 0.7)
 	if visual.gear != null:
 		visual.gear.modulate = Color(1, 1, 1).lerp(Color(1.8, 1.8, 1.8), visual.flash * 0.7)

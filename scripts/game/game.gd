@@ -79,6 +79,9 @@ func _connect_signals() -> void:
 	hud.speed_pressed.connect(_cycle_speed)
 	hud.tower_chosen.connect(_choose_tower)
 	hud.sell_pressed.connect(_sell_selected)
+	hud.level_up_pressed.connect(_level_up_selected)
+	hud.ascend_pressed.connect(_ascend_selected)
+	hud.hybrid_pressed.connect(_hybrid_selected)
 	hud.play_again_pressed.connect(func() -> void: get_tree().reload_current_scene())
 	hud.menu_pressed.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
 	board.selection_changed.connect(func(tower: SimTower) -> void: hud.selected = tower)
@@ -192,6 +195,39 @@ func _sell_selected() -> void:
 	var refund := sim.sell_tower(tower)
 	board.select(null)
 	hud.show_message("Sold for %d gold" % refund, UiStyle.GOLD)
+
+
+func _level_up_selected() -> void:
+	var tower := board.selected
+	if tower == null:
+		return
+	var error := sim.level_up_error(tower)
+	if not error.is_empty():
+		hud.show_message(error, UiStyle.BAD)
+	elif sim.level_up(tower):
+		hud.show_message("%s reached level %d" % [tower.data.display_name, tower.level], UiStyle.GOOD)
+
+
+func _ascend_selected(ascendancy_id: StringName) -> void:
+	var tower := board.selected
+	if tower == null:
+		return
+	var error := sim.ascend_error(tower, ascendancy_id)
+	if not error.is_empty():
+		hud.show_message(error, UiStyle.BAD)
+	elif sim.ascend(tower, ascendancy_id):
+		hud.show_message("%s ascended: %s" % [tower.data.display_name, tower.ascendancy.display_name], UiStyle.GOLD)
+
+
+func _hybrid_selected(hybrid_id: StringName) -> void:
+	var tower := board.selected
+	if tower == null:
+		return
+	var error := sim.hybrid_upgrade_error(tower, hybrid_id)
+	if not error.is_empty():
+		hud.show_message(error, UiStyle.BAD)
+	elif sim.upgrade_to_hybrid(tower, hybrid_id):
+		hud.show_message("Became %s" % tower.data.display_name, UiStyle.GOOD)
 
 
 func _on_run_ended(won: bool) -> void:
