@@ -1028,11 +1028,191 @@ def warden_gear(c, cx, cy, rx, ry):
     c.ink()
 
 
+def mender_gear(c, cx, cy, rx, ry):
+    # A green sprout on its head and a soft glowing heart: it heals.
+    eyes(c, cx, cy, rx, ry)
+    top = cy - ry * 0.95
+    for k in range(3):
+        c.put(cx, top - k, LEAF[2 + (k > 1)], (0, 0.3, 0.9))
+    for side in (-1, 1):
+        c.put(cx + side, top - 3, LEAF[4], (side * 0.5, 0.5, 0.7))
+        c.put(cx + side * 2, top - 3, LEAF[3], (side * 0.5, 0.5, 0.7))
+    heart = hexc("7af08a")
+    for dx, dy in ((0, 0), (-1, -1), (1, -1)):
+        c.put(cx + dx, cy + ry * 0.45 + dy, heart * 0.8, glow=heart)
+    c.ink()
+
+
+def splitter_gear(c, cx, cy, rx, ry):
+    # A dark crack down the middle where it will split.
+    eyes(c, cx, cy - 1, rx, ry, gap=3)
+    x = cx
+    for k, y in enumerate(range(int(cy - ry * 0.85), int(cy + ry * 0.6))):
+        x += (1 if k % 3 == 0 else -1 if k % 3 == 1 else 0) * 0.7
+        c.put(x, y, hexc("2a2030"), (0, 0, 1))
+        if k % 2 == 0:
+            c.put(x + 1, y, hexc("f4e0ff") * 0.6, glow=hexc("f0c0ff"))
+
+
+def shardling_gear(c, cx, cy, rx, ry):
+    c.put(cx - 1, cy, hexc("0b1220"))
+    c.put(cx + 1, cy, hexc("0b1220"))
+
+
+def warded_gear(c, cx, cy, rx, ry):
+    # Runes orbit it: immune to effects.
+    eyes(c, cx, cy, rx, ry)
+    rune = hexc("8af0ff")
+    for k in range(10):
+        a = k / 10 * math.tau
+        x, y = cx + math.cos(a) * (rx + 1.2), cy - ry * 0.2 + math.sin(a) * (ry * 0.75)
+        if k % 2 == 0:
+            c.put(x, y, rune * 0.75, glow=rune)
+    for x in range(int(cx - 2), int(cx + 3)):
+        c.put(x, cy - ry * 0.75, hexc("c8f8ff"), (0, 0.5, 0.8), rune)
+
+
+def flame_crown(c, cx, top, width, cols, glow_col):
+    for i, x in enumerate(range(int(cx - width), int(cx + width) + 1)):
+        tall = 2 + (3 if i % 3 == 1 else 1 if i % 3 == 0 else 0)
+        for k in range(tall):
+            col = cols[min(len(cols) - 1, k + 1)]
+            c.put(x, top - k, col, (0, 0.5, 0.8), col if k else glow_col)
+
+
+def cinder_tyrant_gear(c, cx, cy, rx, ry):
+    flame_crown(c, cx, cy - ry * 0.85, 7, COAL, hexc("ffb040"))
+    for k in range(9):  # glowing cracks across the shell
+        x = cx - rx * 0.6 + k * 1.6
+        y = cy - ry * 0.3 + (k % 3) - 1
+        c.put(x, y, COAL[3], glow=COAL[2])
+    eyes(c, cx, cy, rx, ry, glow=hexc("ffe060"), gap=4)
+    c.ink()
+
+
+def thunderhead_gear(c, cx, cy, rx, ry):
+    # A storm cloud riding its head, with a bolt dropping through it.
+    for k, (ox, r) in enumerate(((-6, 4.5), (0, 6.0), (6, 4.5), (-2, 3.5), (3, 4))):
+        ccx, ccy = cx + ox, cy - ry * 0.9 - (2 if k < 3 else 4)
+        for y in range(int(ccy - r), int(ccy + r) + 1):
+            for x in range(int(ccx - r), int(ccx + r) + 1):
+                d = ((x - ccx) / r) ** 2 + ((y - ccy) / (r * 0.7)) ** 2
+                if d <= 1:
+                    lit = 0.7 - 0.35 * (x - ccx) / r - 0.35 * (y - ccy) / r
+                    c.put(x, y, CLOUD[int(np.clip(lit, 0, 0.999) * 5)], (0, 0.5, 0.8))
+    bolt = SPARK[3]
+    pts = [(cx + 1, cy - ry * 0.9), (cx - 2, cy - ry * 0.55), (cx + 1, cy - ry * 0.5), (cx - 1, cy - ry * 0.2)]
+    for (x0, y0), (x1, y1) in zip(pts[:-1], pts[1:]):
+        c.line(x0, y0, x1, y1, bolt, glow=SPARK[4])
+    eyes(c, cx, cy + 2, rx, ry, glow=hexc("e0f4ff"), gap=4)
+    c.ink()
+
+
+def broodmother_gear(c, cx, cy, rx, ry):
+    # Branching antlers with leaves, and a cluster of small eyes.
+    for side in (-1, 1):
+        x, y = cx + side * rx * 0.45, cy - ry * 0.8
+        for k in range(8):
+            x += side * 0.7
+            y -= 1
+            c.put(x, y, WOOD[3], (side * 0.4, 0.5, 0.8))
+            if k in (3, 6):
+                c.put(x + side, y - 1, WOOD[4])
+                c.put(x + side * 2, y - 1, LEAF[3])
+                c.put(x + side * 2, y - 2, LEAF[4])
+        c.put(x, y - 1, LEAF[4])
+    for dx, dy in ((-4, 0), (4, 0), (-2, -2), (2, -2), (0, 1), (-6, -2), (6, -2)):
+        c.put(cx + dx, cy - ry * 0.1 + dy, hexc("e0ff70") * 0.8, glow=hexc("e0ff70"))
+    c.ink()
+
+
+def leviathan_gear(c, cx, cy, rx, ry):
+    # Fins on each side and a coral crest.
+    for side in (-1, 1):
+        for k in range(7):
+            for j in range(4 - k // 2):
+                c.put(cx + side * (rx - 1 + j), cy - ry * 0.2 - k + j, WATER[3 - (j > 1)], (side * 0.6, 0.4, 0.7))
+    for i, x in enumerate(range(int(cx - 6), int(cx + 7), 2)):
+        h = 3 + (i % 3)
+        for k in range(h):
+            c.put(x, cy - ry * 0.9 - k, hexc("ff8a7a") if k < h - 1 else hexc("ffd0c0"), (0, 0.5, 0.8))
+    eyes(c, cx, cy, rx, ry, glow=hexc("60fff0"), gap=5)
+    c.ink()
+
+
+def mountain_titan_gear(c, cx, cy, rx, ry):
+    # Rock plates over its back.
+    rng = np.random.default_rng(9)
+    for px, py, r in ((-8, -0.6, 4.5), (0, -0.85, 5.5), (8, -0.6, 4.5), (-4, -0.3, 3.5), (5, -0.3, 3.5)):
+        ccx, ccy = cx + px, cy + ry * py
+        for y in range(int(ccy - r), int(ccy + r * 0.6) + 1):
+            for x in range(int(ccx - r), int(ccx + r) + 1):
+                if abs(x - ccx) + abs(y - ccy) * 1.3 <= r:
+                    lit = 0.6 - 0.3 * (x - ccx) / r - 0.3 * (y - ccy) / r + rng.random() * 0.1
+                    c.put(x, y, SANDSTONE[int(np.clip(lit, 0, 0.999) * 6)], ((x - ccx) / r * 0.6, 0.5, 0.7))
+    eyes(c, cx, cy + 3, rx, ry, glow=hexc("ffb030"), gap=5)
+    c.ink()
+
+
+def hollow_king_gear(c, cx, cy, rx, ry):
+    # A crown of black spikes and one great void eye.
+    top = cy - ry * 0.85
+    for i, x in enumerate(range(int(cx - 7), int(cx + 8))):
+        h = 5 if i % 4 == 0 else 2
+        for k in range(h):
+            c.put(x, top - k, OBSIDIAN[2 + (k == h - 1) * 2], (0, 0.5, 0.8))
+        c.put(x, top + 1, OBSIDIAN[1])
+    for i in range(0, 15, 4):
+        c.put(cx - 7 + i, top - 5, VOID[3], glow=VOID[4])
+    for dy in (-1, 0, 1):
+        for dx in (-2, -1, 0, 1, 2):
+            if abs(dx) + abs(dy) <= 2:
+                col = VOID[4] if (dx, dy) == (0, 0) else VOID[2]
+                c.put(cx + dx, cy + dy, col, glow=col)
+    c.ink()
+
+
+def hollow_shade_gear(c, cx, cy, rx, ry):
+    for k in range(4):
+        c.put(cx - rx * 0.5 + k * 2, cy - ry - k % 2, VOID[2], glow=VOID[3])
+    eyes(c, cx, cy, rx, ry, glow=VOID[4], gap=3)
+    c.ink()
+
+
+def sundered_heart_gear(c, cx, cy, rx, ry):
+    # A cracked crystal shell, one shard per element, around a white-hot core.
+    shards = [COAL, SPARK, SEED + [hexc("f0ffc0")], WATER, AMBER, VOID]
+    for k, ramp in enumerate(shards):
+        a = -math.pi / 2 + (k - 2.5) * 0.42
+        x = cx + math.cos(a) * rx * 0.75
+        top = cy + math.sin(a) * ry * 0.9 - 7
+        c.crystal(x, top, 5, 10, ramp[-5:] if len(ramp) >= 5 else ramp, glow=True)
+    for y in range(int(cy - 4), int(cy + 5)):
+        for x in range(int(cx - 4), int(cx + 5)):
+            d = math.hypot(x - cx, (y - cy) * 1.2)
+            if d <= 4:
+                col = hexc("ffffff") if d < 2 else hexc("fff0c0")
+                c.put(x, y, col, glow=col)
+    c.ink()
+
+
 ENEMIES = {
     "grunt": lambda: slime("grunt", 18, 15, 7.5, 6.5, grunt_gear, 1),
     "runner": lambda: slime("runner", 14, 11, 5.5, 4.5, runner_gear, 2),
     "brute": lambda: slime("brute", 24, 20, 10.5, 9.0, brute_gear, 3),
     "warden": lambda: slime("warden", 36, 30, 16.0, 13.5, warden_gear, 4),
+    "mender": lambda: slime("mender", 18, 18, 7.5, 6.5, mender_gear, 5),
+    "splitter": lambda: slime("splitter", 22, 16, 9.5, 6.8, splitter_gear, 6),
+    "shardling": lambda: slime("shardling", 10, 8, 3.8, 3.2, shardling_gear, 7),
+    "warded": lambda: slime("warded", 22, 19, 8.0, 7.0, warded_gear, 8),
+    "cinder_tyrant": lambda: slime("cinder_tyrant", 38, 36, 16.0, 13.5, cinder_tyrant_gear, 9),
+    "thunderhead": lambda: slime("thunderhead", 38, 38, 15.0, 12.5, thunderhead_gear, 10),
+    "broodmother": lambda: slime("broodmother", 42, 36, 17.5, 13.0, broodmother_gear, 11),
+    "leviathan": lambda: slime("leviathan", 46, 38, 18.5, 15.0, leviathan_gear, 12),
+    "mountain_titan": lambda: slime("mountain_titan", 44, 38, 18.0, 15.5, mountain_titan_gear, 13),
+    "hollow_king": lambda: slime("hollow_king", 38, 36, 16.0, 13.5, hollow_king_gear, 14),
+    "hollow_shade": lambda: slime("hollow_shade", 26, 22, 10.5, 8.5, hollow_shade_gear, 15),
+    "sundered_heart": lambda: slime("sundered_heart", 50, 46, 20.0, 16.5, sundered_heart_gear, 16),
 }
 
 
@@ -1089,18 +1269,286 @@ def make_props() -> dict:
         c.ink()
         c.save(folder, f"bush_{i}")
         info[f"bush_{i}"] = {"size": [c.w, c.h], "sways": True}
+    info.update(make_biome_props(folder))
+    return info
+
+
+# ---------------------------------------------------------------- biomes
+def ramp(*cols):
+    return [hexc(c) for c in cols]
+
+
+# The look of each biome: ground and road ramps, the grass tufts painted into the ground, specks
+# and flowers, glowing specks or cracks, and which props are scattered (kind, weight).
+BIOMES = {
+    "meadow": {
+        "ground": GRASS[:4], "tuft": GRASS, "tip": GRASS_TIP, "road": DIRT, "edge": DIRT_EDGE,
+        "flowers": FLOWER, "flower_rate": 1.0, "pebbles": ROCK,
+        "props": [("tuft_0", 6), ("tuft_1", 6), ("tuft_2", 6), ("stone_0", 2), ("stone_1", 1),
+                  ("mushroom_0", 1), ("mushroom_1", 1), ("bush_0", 1), ("bush_1", 1)],
+    },
+    "fire": {  # ash fields over cooling lava
+        "ground": ramp("1e1819", "2a2223", "382d2c", "463833"), "tuft": ramp("2a1c16", "3e2618", "5a321a", "7a4420", "a85a24"),
+        "tip": hexc("ff9a3a"), "road": ramp("3c3332", "4a403c", "5a4d46", "6a5a50", "7a685a"), "edge": hexc("1c1414"),
+        "flowers": [hexc("ff7a2a"), hexc("ffb040")], "flower_rate": 0.8, "pebbles": OBSIDIAN[1:5],
+        "cracks": (COAL, 0.026), "glow_flowers": True,
+        "props": [("ash_tuft_0", 5), ("ash_tuft_1", 5), ("basalt_0", 3), ("basalt_1", 2), ("lava_vent", 2),
+                  ("charred_stump", 2), ("ember_crystal", 1)],
+    },
+    "storm": {  # a windswept plateau of pale grass and slate
+        "ground": ramp("47574a", "566a56", "687d63", "7e9372"), "tuft": ramp("44543f", "5c6e52", "778a66", "93a67c", "b0c294"),
+        "tip": hexc("d0dcb0"), "road": ramp("373d46", "454c56", "545c66", "656e78", "79828c"), "edge": hexc("262b32"),
+        "flowers": [hexc("d8e4f0"), hexc("a8c0e8")], "flower_rate": 1.2, "pebbles": ROCK,
+        "props": [("steppe_tuft_0", 6), ("steppe_tuft_1", 6), ("slate_0", 3), ("slate_1", 2), ("storm_crystal", 2),
+                  ("standing_stone", 1)],
+    },
+    "nature": {  # deep, overgrown jungle floor
+        "ground": ramp("1a3219", "223f20", "2c4e28", "375e30"), "tuft": ramp("1c331a", "284a22", "36622c", "4a7e36", "64a042"),
+        "tip": hexc("8cc850"), "road": ramp("3a2a1c", "4a3624", "5a442c", "6a5234", "7a6040"), "edge": hexc("2a1e14"),
+        "flowers": [hexc("f070a0"), hexc("f0e070"), hexc("ffffff")], "flower_rate": 3.0, "pebbles": MOSS,
+        "props": [("tuft_0", 4), ("tuft_1", 4), ("fern_0", 4), ("fern_1", 3), ("bush_0", 3), ("bush_1", 3),
+                  ("mushroom_0", 2), ("mushroom_1", 3), ("stone_1", 1)],
+    },
+    "water": {  # a frozen lakeshore under snow
+        "ground": ramp("8a9aae", "a4b4c6", "bccad8", "d4e0ea"), "tuft": ramp("6a5a40", "806c48", "9a8456", "b49e68", "ccb880"),
+        "tip": hexc("e8dca8"), "road": ramp("4a6a88", "5a7c9a", "6e92ae", "88aac2", "a8c6d8"), "edge": hexc("33495e"),
+        "flowers": [hexc("ffffff"), hexc("e0f0ff")], "flower_rate": 1.5, "pebbles": ramp("6a7a8a", "8090a0", "98a8b8"),
+        "glints": ([hexc("e8f8ff"), hexc("bfe8ff")], 0.004),
+        "props": [("reed_0", 5), ("reed_1", 4), ("ice_0", 3), ("ice_1", 2), ("snow_rock", 2), ("frozen_shrub", 2)],
+    },
+    "earth": {  # a red sandstone canyon
+        "ground": ramp("6e3622", "82422a", "985232", "ac623c"), "tuft": ramp("5a4424", "74582e", "8e6e3a", "a88648", "c4a060"),
+        "tip": hexc("dcc080"), "road": ramp("9a7a54", "aa8a60", "ba9a6e", "c8aa7c", "d6ba8c"), "edge": hexc("6a4a30"),
+        "flowers": [hexc("f0d070"), hexc("e07040")], "flower_rate": 0.5, "pebbles": SANDSTONE,
+        "props": [("dry_tuft_0", 5), ("dry_tuft_1", 4), ("boulder_0", 3), ("boulder_1", 2), ("cactus_0", 2),
+                  ("cactus_1", 1), ("bones", 1)],
+    },
+    "void": {  # the rift: violet grass under no stars
+        "ground": ramp("17121f", "1f182a", "282036", "322842"), "tuft": ramp("221a34", "34284e", "4a3a6c", "62508c", "8068b0"),
+        "tip": hexc("b49ae8"), "road": ramp("121016", "1a1620", "221e2a", "2c2636", "383044"), "edge": hexc("0a080e"),
+        "flowers": [hexc("c8a0ff"), hexc("80f0ff")], "flower_rate": 1.0, "pebbles": OBSIDIAN[1:5],
+        "glints": ([VOID[3], VOID[4], hexc("80f0ff")], 0.006), "glow_flowers": True,
+        "props": [("void_tuft_0", 5), ("void_tuft_1", 5), ("void_crystal", 3), ("obsidian_shard", 3),
+                  ("rift_stone", 2), ("mushroom_1", 1)],
+    },
+    "heart": {  # the heart of the ring: pale stone, gold roads, prisms
+        "ground": ramp("7c766c", "8e887c", "a29a8c", "b6ae9c"), "tuft": ramp("6a6650", "84805e", "9e986c", "b8b07c", "d0c890"),
+        "tip": hexc("f0e8b0"), "road": ramp("7a6238", "907444", "a88850", "bea060", "d4b874"), "edge": hexc("4e3e22"),
+        "flowers": [hexc("ff8a60"), hexc("f0e060"), hexc("80e070"), hexc("60c0ff"), hexc("d0a0ff")], "flower_rate": 1.0,
+        "pebbles": ramp("8a8478", "a09a8c", "c0b8a8"),
+        "glints": ([hexc("ff9a6a"), hexc("ffe07a"), hexc("9af07a"), hexc("7ad0ff"), hexc("caa0ff"), hexc("ffffff")], 0.004),
+        "glow_flowers": True,
+        "props": [("pale_tuft_0", 5), ("pale_tuft_1", 5), ("prism_0", 2), ("prism_1", 2), ("marble_0", 3),
+                  ("ruin_pillar", 2)],
+    },
+}
+
+
+def tuft(folder, name, cols, tip, seed, w=9, h=8, blades=5, tall=(4, 8)):
+    c = Canvas(w, h, seed=seed)
+    for b in range(blades):
+        x0 = 1 + b * (w - 2) / max(1, blades - 1) + int(c.rng.integers(-1, 1))
+        height = int(c.rng.integers(tall[0], tall[1]))
+        lean = c.rng.uniform(-0.4, 0.4) + (b - blades / 2) * 0.1
+        for k in range(height):
+            col = cols[min(len(cols) - 1, 1 + int(k / height * (len(cols) - 1)))] if k < height - 1 else tip
+            c.put(x0 + lean * k, c.h - 1 - k, col, (lean * 0.5, 0.35, 0.85))
+    c.save(folder, name)
+    return {name: {"size": [c.w, c.h], "sways": True}}
+
+
+def rock(folder, name, w, h, cols, seed, accent=None, glow=None):
+    c = Canvas(w, h, seed=seed)
+    yy, xx = np.mgrid[0:h, 0:w].astype(np.float64)
+    u = (xx - (w - 1) / 2) / (w / 2 - 0.5)
+    v = (yy - (h - 1) * 0.55) / (h * 0.55)
+    rr = u * u + v * v
+    hgt = np.round(np.sqrt(np.clip(1 - rr, 0, 1)) * w * 0.35)
+    nrm = normals_from_height(hgt, 0.9)
+    t = shade(nrm) * 0.75 + c.rng.random((h, w)) * 0.15
+    rgb = ramp_pick(cols, np.clip(t, 0, 0.999))
+    for y in range(h):
+        for x in range(w):
+            if rr[y, x] < 1:
+                col = rgb[y, x]
+                g = None
+                if accent is not None and c.rng.random() < 0.12 and nrm[y, x, 1] > 0.05:
+                    col = accent
+                    g = accent if glow else None
+                c.put(x, y, col, nrm[y, x], g)
+    c.ink()
+    c.save(folder, name, glow=bool(glow))
+    return {name: {"size": [w, h], "sways": False, "glow": bool(glow)}}
+
+
+def crystal_prop(folder, name, ramp_cols, seed, w=11, h=14, count=3):
+    c = Canvas(w, h, seed=seed)
+    spots = [(w / 2, 1, 4, h - 2), (w / 2 - 3, 5, 3, h - 6), (w / 2 + 3, 6, 3, h - 7)][:count]
+    for cx, top, cw, ch in sorted(spots, key=lambda sp: sp[1]):
+        c.crystal(cx, top, cw, ch, ramp_cols, glow=True)
+    c.ink()
+    c.save(folder, name, glow=True)
+    return {name: {"size": [w, h], "sways": False, "glow": True}}
+
+
+def make_biome_props(folder) -> dict:
+    info = {}
+    for i in range(2):
+        info.update(tuft(folder, f"ash_tuft_{i}", BIOMES["fire"]["tuft"], BIOMES["fire"]["tip"], 200 + i, blades=4, tall=(3, 6)))
+        info.update(tuft(folder, f"steppe_tuft_{i}", BIOMES["storm"]["tuft"], BIOMES["storm"]["tip"], 210 + i, w=11, blades=7, tall=(4, 8)))
+        info.update(tuft(folder, f"reed_{i}", BIOMES["water"]["tuft"], BIOMES["water"]["tip"], 220 + i, w=7, h=12, blades=4, tall=(7, 12)))
+        info.update(tuft(folder, f"dry_tuft_{i}", BIOMES["earth"]["tuft"], BIOMES["earth"]["tip"], 230 + i, blades=5, tall=(3, 7)))
+        info.update(tuft(folder, f"void_tuft_{i}", BIOMES["void"]["tuft"], BIOMES["void"]["tip"], 240 + i, blades=6, tall=(4, 8)))
+        info.update(tuft(folder, f"pale_tuft_{i}", BIOMES["heart"]["tuft"], BIOMES["heart"]["tip"], 250 + i, blades=5, tall=(3, 7)))
+    # Fire
+    info.update(rock(folder, "basalt_0", 9, 7, OBSIDIAN[1:6], 300, accent=COAL[3], glow=True))
+    info.update(rock(folder, "basalt_1", 13, 9, OBSIDIAN[1:6], 301, accent=COAL[2], glow=True))
+    c = Canvas(13, 7, seed=302)  # a small pool of lava with a dark rim
+    for y in range(c.h):
+        for x in range(c.w):
+            d = ((x - 6) / 6.2) ** 2 + ((y - 3.5) / 3.2) ** 2
+            if d <= 1:
+                if d > 0.6:
+                    c.put(x, y, OBSIDIAN[2 + (y < 3)], (0, 0.5, 0.8))
+                else:
+                    col = COAL[4] if d < 0.15 else COAL[3] if d < 0.35 else COAL[2]
+                    c.put(x, y, col, (0, 0, 1), col)
+    c.ink()
+    c.save(folder, "lava_vent", glow=True)
+    info["lava_vent"] = {"size": [c.w, c.h], "sways": False, "glow": True}
+    c = Canvas(9, 12, seed=303)  # a charred stump with embers
+    for y in range(4, 12):
+        for x in range(2, 7):
+            u = (x - 4) / 2.5
+            c.put(x, y, WOOD[0] if abs(u) > 0.7 else WOOD[1] if u > 0 else WOOD[2], c.wall_normal(u))
+    for x, y in ((3, 4), (5, 3), (4, 5)):
+        c.put(x, y, COAL[2], glow=COAL[3])
+    c.put(1, 11, WOOD[1])
+    c.put(7, 11, WOOD[1])
+    c.ink()
+    c.save(folder, "charred_stump", glow=True)
+    info["charred_stump"] = {"size": [c.w, c.h], "sways": False, "glow": True}
+    info.update(crystal_prop(folder, "ember_crystal", COAL, 304, count=2))
+    # Storm
+    info.update(rock(folder, "slate_0", 10, 6, ramp("3a4048", "4a525c", "5c6670", "707a86", "8a94a0"), 310))
+    info.update(rock(folder, "slate_1", 14, 8, ramp("3a4048", "4a525c", "5c6670", "707a86", "8a94a0"), 311, accent=hexc("8aa060")))
+    info.update(crystal_prop(folder, "storm_crystal", SPARK[:2] + [hexc("6ab8ff"), hexc("a8dcff"), hexc("e8f8ff")], 312))
+    c = Canvas(9, 18, seed=313)  # a standing stone with a carved bolt
+    for y in range(2, 18):
+        for x in range(1, 8):
+            u = (x - 4) / 3.5
+            if y < 4 and abs(u) > 0.6:
+                continue
+            t = 0.55 - 0.35 * u + c.rng.random() * 0.12
+            c.put(x, y, ROCK[int(np.clip(t, 0, 0.999) * 5)], c.wall_normal(u))
+    for x, y in ((4, 6), (3, 8), (5, 9), (4, 11)):
+        c.put(x, y, hexc("8ad0ff"), glow=hexc("bfe8ff"))
+    c.ink()
+    c.save(folder, "standing_stone", glow=True)
+    info["standing_stone"] = {"size": [c.w, c.h], "sways": False, "glow": True}
+    # Nature
+    for i in range(2):
+        c = Canvas(14, 10, seed=320 + i)
+        for f in range(5):
+            a = math.pi * (0.15 + 0.7 * f / 4)
+            for k in range(7):
+                x = 7 - math.cos(a) * k
+                y = 9 - math.sin(a) * k * 0.9
+                c.put(x, y, LEAF[2 + (k > 3)] if k % 2 else LEAF[1 + (k > 3)], (-math.cos(a) * 0.5, 0.5, 0.7))
+        c.ink()
+        c.save(folder, f"fern_{i}")
+        info[f"fern_{i}"] = {"size": [c.w, c.h], "sways": True}
+    # Water
+    ice = ramp("6a8eb0", "8ab0cc", "a8cce0", "c8e4f0", "eaf8ff")
+    info.update(crystal_prop(folder, "ice_0", ice, 330, w=9, h=11, count=2))
+    info.update(crystal_prop(folder, "ice_1", ice, 331, w=11, h=14, count=3))
+    c = Canvas(12, 9, seed=332)  # a rock with snow on top
+    c.disc(6, 5, 5.5, ROCK, seed=332)
+    for x in range(1, 11):
+        for k in range(2):
+            c.put(x, 3 + k + (x % 3 == 0), hexc("f0f6ff") if k == 0 else hexc("d0dcea"), (0, 0.7, 0.7))
+    c.ink()
+    c.save(folder, "snow_rock")
+    info["snow_rock"] = {"size": [c.w, c.h], "sways": False}
+    c = Canvas(14, 11, seed=333)
+    c.leaves(7, 6, 6.5, 4.5, ramp("3a4a5a", "56687a", "7a8ea0", "a8bccc"), count=6, seed=333)
+    for x in range(2, 12, 2):
+        c.put(x, 2 + (x % 4 == 0), hexc("f4f8ff"))
+    c.ink()
+    c.save(folder, "frozen_shrub")
+    info["frozen_shrub"] = {"size": [c.w, c.h], "sways": True}
+    # Earth
+    info.update(rock(folder, "boulder_0", 11, 8, SANDSTONE, 340))
+    info.update(rock(folder, "boulder_1", 16, 11, SANDSTONE, 341, accent=hexc("c48a5a")))
+    for i, tall in enumerate((12, 16)):
+        c = Canvas(11, tall, seed=342 + i)
+        cactus = ramp("2a4a2a", "3a6236", "4e7c44", "6a9a56")
+        for y in range(2, tall):
+            for x in range(4, 7):
+                u = (x - 5) / 1.5
+                c.put(x, y, cactus[int(np.clip(0.6 - 0.4 * u, 0, 0.999) * 4)], c.wall_normal(u))
+        for side, arm_y in ((-1, tall // 2), (1, tall // 2 - 2 - i)):
+            for k in range(3):
+                c.put(5 + side * (2 + k * 0.4), arm_y, cactus[1 + (side < 0)])
+            for k in range(4):
+                c.put(5 + side * 3, arm_y - k, cactus[2 if side < 0 else 1], (side * 0.5, 0.3, 0.8))
+        c.put(5, 1, hexc("f0a0c0"))
+        c.ink()
+        c.save(folder, f"cactus_{i}")
+        info[f"cactus_{i}"] = {"size": [c.w, c.h], "sways": False}
+    c = Canvas(12, 6, seed=344)
+    bone = ramp("b8ac90", "d8ccb0", "f0e8d0")
+    c.line(1, 4, 10, 3, bone[1], (0, 0.5, 0.8))
+    c.line(2, 2, 9, 5, bone[0], (0, 0.5, 0.8))
+    for x, y in ((1, 3), (10, 2), (2, 1), (9, 5)):
+        c.put(x, y, bone[2])
+    c.ink()
+    c.save(folder, "bones")
+    info["bones"] = {"size": [c.w, c.h], "sways": False}
+    # Void
+    info.update(crystal_prop(folder, "void_crystal", VOID, 350))
+    info.update(rock(folder, "obsidian_shard", 9, 9, OBSIDIAN[1:6], 351, accent=VOID[2], glow=True))
+    info.update(rock(folder, "rift_stone", 14, 8, OBSIDIAN[:5], 352, accent=hexc("80f0ff"), glow=True))
+    # Heart
+    prism = [hexc("6a5a88"), hexc("8a7ab8"), hexc("d0a0ff"), hexc("a0e0ff"), hexc("fff8e0")]
+    info.update(crystal_prop(folder, "prism_0", prism, 360))
+    info.update(crystal_prop(folder, "prism_1", [hexc("885a3a"), hexc("c88a4a"), hexc("ffd070"), hexc("fff0a0"), hexc("ffffff")], 361, w=9, h=12, count=2))
+    info.update(rock(folder, "marble_0", 11, 7, ramp("8a8478", "a8a090", "c4bca8", "dcd6c4", "f0ecdc"), 362))
+    c = Canvas(10, 20, seed=363)  # a broken pillar
+    marble = ramp("7a7468", "989080", "b4ac9a", "ccc4b0", "e4dcc8")
+    for y in range(4, 20):
+        for x in range(1, 9):
+            u = (x - 4.5) / 4
+            if y < 6 and x > 4 + (y - 4):
+                continue
+            t = 0.55 - 0.35 * u + (0.08 if x % 3 == 0 else 0)
+            c.put(x, y, marble[int(np.clip(t, 0, 0.999) * 5)], c.wall_normal(u))
+    for x in range(0, 10):
+        c.put(x, 18, marble[2], (0, 0.5, 0.8))
+    c.ink()
+    c.save(folder, "ruin_pillar")
+    info["ruin_pillar"] = {"size": [c.w, c.h], "sways": False}
     return info
 
 
 # ---------------------------------------------------------------- ground per map
 def read_map(path: str) -> dict:
     text = open(path).read()
-    mid = re.search(r'^id = &"(\w+)"', text, re.M).group(1)
-    grid = re.search(r"grid_size = Vector2i\((\d+), (\d+)\)", text)
-    cell = re.search(r"cell_size = (\d+)", text)
-    wps = re.findall(r"Vector2i\((-?\d+), (-?\d+)\)", re.search(r"waypoints = (.*)", text).group(1))
+    head, _, main = text.partition("[resource]")
+    mid = re.search(r'^id = &"(\w+)"', main, re.M).group(1)
+    grid = re.search(r"grid_size = Vector2i\((\d+), (\d+)\)", main)
+    cell = re.search(r"cell_size = (\d+)", main)
+    biome = re.search(r'^biome = &"(\w+)"', main, re.M)
+
+    def points(line):
+        return [(int(a), int(b)) for a, b in re.findall(r"Vector2i\((-?\d+), (-?\d+)\)", line)]
+
+    # Lane 0 is the map's own waypoints; extra lanes are sub-resources above it.
+    lanes = [points(re.search(r"^waypoints = (.*)", main, re.M).group(1))]
+    lanes += [points(line) for line in re.findall(r"^waypoints = (.*)", head, re.M)]
     return {"id": mid, "grid": (int(grid.group(1)), int(grid.group(2))) if grid else (24, 15),
-            "cell": int(cell.group(1)) if cell else 64, "waypoints": [(int(a), int(b)) for a, b in wps]}
+            "cell": int(cell.group(1)) if cell else 64, "waypoints": lanes[0], "lanes": lanes,
+            "biome": biome.group(1) if biome else "meadow"}
 
 
 def distance_to_segments(px, py, pts) -> np.ndarray:
@@ -1116,18 +1564,21 @@ def distance_to_segments(px, py, pts) -> np.ndarray:
 def make_ground(m: dict, props_info: dict) -> None:
     cell_art = m["cell"] // ART_SCALE
     W, H = m["grid"][0] * cell_art, m["grid"][1] * cell_art
-    rng = np.random.default_rng(abs(hash(m["id"])) % (2 ** 31) if False else sum(map(ord, m["id"])))
-    pts = [((x + 0.5) * cell_art, (y + 0.5) * cell_art) for x, y in m["waypoints"]]
-    # Stretch the ends so the road runs off the edge of the board.
-    if len(pts) >= 2:
-        for i, j in ((0, 1), (-1, -2)):
-            ax, ay = pts[i]
-            bx, by = pts[j]
-            d = math.hypot(ax - bx, ay - by) or 1
-            pts[i] = (ax + (ax - bx) / d * cell_art * 2, ay + (ay - by) / d * cell_art * 2)
-    half = cell_art * 0.46
+    rng = np.random.default_rng(sum(map(ord, m["id"])))
+    b = BIOMES.get(m.get("biome", "meadow"), BIOMES["meadow"])
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float64)
-    dist = distance_to_segments(xx, yy, pts)
+    dist = np.full((H, W), 1e9)
+    for lane in m.get("lanes", [m["waypoints"]]):
+        pts = [((x + 0.5) * cell_art, (y + 0.5) * cell_art) for x, y in lane]
+        # Stretch the ends so the road runs off the edge of the board.
+        if len(pts) >= 2:
+            for i, j in ((0, 1), (-1, -2)):
+                ax, ay = pts[i]
+                bx, by = pts[j]
+                d = math.hypot(ax - bx, ay - by) or 1
+                pts[i] = (ax + (ax - bx) / d * cell_art * 2, ay + (ay - by) / d * cell_art * 2)
+        dist = np.minimum(dist, distance_to_segments(xx, yy, pts))
+    half = cell_art * 0.46
     wobble = (fbm(H, W, [7, 3], rng) - 0.5) * 4.0
     road_d = dist + wobble
     on_road = road_d < half
@@ -1138,46 +1589,72 @@ def make_ground(m: dict, props_info: dict) -> None:
     g = np.clip(patches * 0.85 + fine * 0.25 - 0.08, 0, 0.999)
     g -= np.clip(1.0 - (road_d - half) / 5.0, 0, 1) * 0.25
     g = np.clip(g, 0, 0.999)
-    rgb = ramp_pick(GRASS[:4], g, dither=0.35)
+    rgb = ramp_pick(b["ground"], g, dither=0.35)
     height = g * 0.6
+    glow = np.zeros((H, W, 4), np.uint8)
     for _ in range(int(W * H / 75)):
         x, y = int(rng.integers(0, W)), int(rng.integers(3, H))
         if road_d[y, x] < half + 1:
             continue
         tall = 2 + (rng.random() < 0.4)
         lean = int(rng.choice([-1, 0, 0, 1]))
-        rgb[y, x] = GRASS[0]
+        rgb[y, x] = b["tuft"][0]
         for k in range(1, tall + 1):
             xk = min(max(x + (lean if k == tall else 0), 0), W - 1)
-            rgb[y - k, xk] = GRASS[3] if k < tall else GRASS_TIP
+            rgb[y - k, xk] = b["tuft"][3] if k < tall else b["tip"]
             height[y - k, xk] = 0.9
-    for _ in range(int(W * H / 2600)):
+    for _ in range(int(W * H / 2600 * b.get("flower_rate", 1.0))):
         x, y = int(rng.integers(2, W - 2)), int(rng.integers(2, H - 2))
         if road_d[y, x] < half + 3:
             continue
-        rgb[y, x] = FLOWER[int(rng.integers(0, len(FLOWER)))]
-        rgb[y + 1, x] = GRASS[1]
+        col = b["flowers"][int(rng.integers(0, len(b["flowers"])))]
+        rgb[y, x] = col
+        rgb[y + 1, x] = b["tuft"][1]
         height[y, x] = 1.0
+        if b.get("glow_flowers"):
+            glow[y, x, :3] = np.clip(col, 0, 255).astype(np.uint8)
+            glow[y, x, 3] = 200
+    # Glowing cracks (lava under the ash) and glints (ice, rift light, prisms) off the road.
+    if "cracks" in b:
+        cols, width = b["cracks"]
+        ridge = np.abs(fbm(H, W, [22, 9, 4], rng) - 0.5)
+        crack = (ridge < width) & (road_d > half + 2) & (fbm(H, W, [30, 12], rng) > 0.45)
+        rgb = np.where(crack[..., None], ramp_pick(cols[1:4], np.clip(1 - ridge / width, 0, 0.999)), rgb)
+        height = np.where(crack, -0.4, height)
+        glow[crack, :3] = np.clip(cols[3], 0, 255).astype(np.uint8)
+        glow[crack, 3] = np.clip((1 - ridge[crack] / width) * 255, 90, 255).astype(np.uint8)
+    if "glints" in b:
+        cols, rate = b["glints"]
+        for _ in range(int(W * H * rate)):
+            x, y = int(rng.integers(1, W - 1)), int(rng.integers(1, H - 1))
+            if road_d[y, x] < half + 1:
+                continue
+            col = cols[int(rng.integers(0, len(cols)))]
+            rgb[y, x] = col
+            glow[y, x, :3] = np.clip(col, 0, 255).astype(np.uint8)
+            glow[y, x, 3] = 160
 
     dirt_t = np.clip(fbm(H, W, [12, 5, 3], rng) * 0.9 + 0.08, 0, 0.999)
     rut = np.abs(dist - 6.0) < 1.2
     dirt_t = np.clip(np.where(rut & on_road, dirt_t - 0.22, dirt_t), 0, 0.999)
-    rgb = np.where(on_road[..., None], ramp_pick(DIRT, dirt_t, dither=0.5), rgb)
-    rgb = np.where(edge[..., None], DIRT_EDGE, rgb)
+    rgb = np.where(on_road[..., None], ramp_pick(b["road"], dirt_t, dither=0.5), rgb)
+    rgb = np.where(edge[..., None], b["edge"], rgb)
+    glow[on_road] = 0
     height = np.where(on_road, -0.6 + dirt_t * 0.3 - rut * 0.25, height)
     for _ in range(int(W * H / 1300)):
         x, y = int(rng.integers(1, W - 2)), int(rng.integers(1, H - 2))
         if road_d[y, x] > half - 3:
             continue
-        rgb[y, x] = ROCK[3]
-        rgb[y, x + 1] = ROCK[2]
-        rgb[y + 1, x] = ROCK[1]
+        pebble = b["pebbles"]
+        rgb[y, x] = pebble[min(3, len(pebble) - 1)]
+        rgb[y, x + 1] = pebble[min(2, len(pebble) - 1)]
+        rgb[y + 1, x] = pebble[1]
         height[y, x] += 0.8
     edge_pts = np.argwhere(edge)
     for y, x in edge_pts[rng.random(len(edge_pts)) < 0.35]:
         if y > 2:
-            rgb[y, x] = GRASS[2]
-            rgb[y - 1, x] = GRASS[3]
+            rgb[y, x] = b["tuft"][2]
+            rgb[y - 1, x] = b["tuft"][3]
             height[y, x] = 0.4
 
     folder = os.path.join(OUT, "ground")
@@ -1188,13 +1665,16 @@ def make_ground(m: dict, props_info: dict) -> None:
     Image.fromarray(rgba, "RGBA").save(os.path.join(folder, m["id"] + ".png"))
     Image.fromarray(encode_normals(normals_from_height(height, 1.6), np.full((H, W), 255, np.uint8)), "RGBA").save(
         os.path.join(folder, m["id"] + "_n.png"))
+    glow_path = os.path.join(folder, m["id"] + "_glow.png")
+    if glow[..., 3].any():
+        Image.fromarray(glow, "RGBA").save(glow_path)
+    elif os.path.exists(glow_path):
+        os.remove(glow_path)
 
     # Props: small things in the grass, never on the road. The game hides a cell's props when a
     # tower is built there.
     props = []
-    weights = [("tuft_0", 6), ("tuft_1", 6), ("tuft_2", 6), ("stone_0", 2), ("stone_1", 1),
-               ("mushroom_0", 1), ("mushroom_1", 1), ("bush_0", 1), ("bush_1", 1)]
-    kinds = [k for k, n in weights for _ in range(n)]
+    kinds = [k for k, n in b["props"] for _ in range(n)]
     for _ in range(int(m["grid"][0] * m["grid"][1] * 0.75)):
         x, y = float(rng.uniform(4, W - 4)), float(rng.uniform(8, H - 2))
         kind = kinds[int(rng.integers(0, len(kinds)))]
@@ -1204,7 +1684,7 @@ def make_ground(m: dict, props_info: dict) -> None:
         cell = [int(x // cell_art), int(y // cell_art)]
         props.append({"kind": kind, "pos": [round(x), round(y)], "cell": cell, "flip": bool(rng.random() < 0.5)})
     with open(os.path.join(folder, m["id"] + ".json"), "w") as fh:
-        json.dump({"size": [W, H], "props": props}, fh, indent=0)
+        json.dump({"size": [W, H], "biome": m.get("biome", "meadow"), "props": props}, fh, indent=0)
 
 
 def main() -> None:

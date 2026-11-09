@@ -15,6 +15,8 @@ var save_path := DEFAULT_SAVE_PATH
 ## False keeps progress in memory only.
 var persist := true
 var meta: MetaProgress
+## The campaign stage the next run plays, or empty for a skirmish on the selected map. Not saved.
+var active_stage: StringName = &""
 
 
 func _ready() -> void:
@@ -39,6 +41,7 @@ func load_profile() -> void:
 ## a real save.
 func use_memory_profile(profile: PlayerProfile = null) -> void:
 	persist = false
+	active_stage = &""
 	meta = MetaProgress.new(DataRegistry, profile if profile != null else PlayerProfile.new())
 	changed.emit()
 
@@ -72,7 +75,24 @@ func select_difficulty(id: StringName) -> bool:
 	return _saved(meta.select_difficulty(id))
 
 
+## Makes the next run a campaign stage. Returns false if the stage is still locked.
+func play_stage(id: StringName) -> bool:
+	if not meta.is_stage_unlocked(id):
+		return false
+	active_stage = id
+	return true
+
+
+## Makes the next run a skirmish on the selected map.
+func play_skirmish() -> void:
+	active_stage = &""
+
+
 func run_config() -> RunConfig:
+	if not active_stage.is_empty():
+		var config := meta.stage_config(active_stage)
+		if config != null:
+			return config
 	return meta.run_config()
 
 
@@ -81,6 +101,13 @@ func record_run(sim: RunSim) -> int:
 	var earned := meta.record_run(sim)
 	_saved(true)
 	return earned
+
+
+## Records a finished campaign stage (after record_run) and saves. See MetaProgress.record_stage.
+func record_stage(sim: RunSim) -> Dictionary:
+	var result := meta.record_stage(sim)
+	_saved(true)
+	return result
 
 
 ## True when GUT runs the tests: its runner scene or script is on the command line.

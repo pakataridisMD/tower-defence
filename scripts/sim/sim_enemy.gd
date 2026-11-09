@@ -9,6 +9,12 @@ const MAX_KNOCKBACK := 240.0
 
 var id: int
 var data: EnemyData
+## Health multiplier it spawned with, passed on to anything it splits into or summons.
+var health_multiplier := 1.0
+## Which lane of the map it walks.
+var lane := 0
+## Ring index of its element, or -1 when unaligned. Damage from towers depends on it.
+var element := -1
 var max_health: float
 var health: float
 var armour: float
@@ -21,12 +27,17 @@ var leaked := false
 var statuses: Dictionary[StringName, SimStatus] = {}
 var stun_immunity := 0.0
 var knockback_taken := 0.0
+var summon_timer := 0.0
+var prism_timer := 0.0
 
 
-func _init(p_id: int, p_data: EnemyData, health_multiplier: float) -> void:
+func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
 	id = p_id
 	data = p_data
-	max_health = p_data.max_health * health_multiplier
+	health_multiplier = p_health_multiplier
+	summon_timer = p_data.summon_interval
+	prism_timer = p_data.prismatic_interval
+	max_health = p_data.max_health * p_health_multiplier
 	health = max_health
 	armour = p_data.armour
 	base_speed = p_data.speed
@@ -74,7 +85,14 @@ func has_status(kind: StringName) -> bool:
 	return statuses.has(kind)
 
 
+## True while it heals: it has regeneration and is neither burning nor poisoned.
+func is_regenerating() -> bool:
+	return data.regen_per_second > 0.0 and not statuses.has(&"burn") and not statuses.has(&"poison")
+
+
 func apply_status(spec: StatusEffectData, source: SimTower, element_multiplier: float) -> void:
+	if data.status_immune:
+		return
 	# A stun is never extended or re-applied early, and bosses cannot be stunned at all.
 	if spec.kind == &"stun" and (statuses.has(&"stun") or stun_immunity > 0.0 or data.tags.has(&"boss")):
 		return

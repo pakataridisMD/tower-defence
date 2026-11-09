@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MapData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"c_nature_3"
+display_name = "Bramble Maze"
+order = 122
+grid_size = Vector2i(24, 15)
+cell_size = 64
+waypoints = Array[Vector2i]([Vector2i(-1, 7), Vector2i(4, 7), Vector2i(4, 1), Vector2i(10, 1), Vector2i(10, 13), Vector2i(16, 13), Vector2i(16, 1), Vector2i(21, 1), Vector2i(21, 9), Vector2i(24, 9)])
+wave_set = &"c_nature_3"
+biome = &"nature"
+skirmish = false

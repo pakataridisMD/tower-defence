@@ -34,6 +34,10 @@ var _air: Node2D
 var _ambient: CanvasModulate
 var _sun: DirectionalLight2D
 var _fireflies: CPUParticles2D
+## Glowing cracks and glints in the ground, brighter at night.
+var _ground_glow: Node2D
+## The map's biome tints the light and the motes in the air.
+var _biome: StringName = &"meadow"
 
 var _pixel: ImageTexture
 var _light_texture: GradientTexture2D
@@ -209,10 +213,26 @@ func _radial(size: int, colors: Array, offsets: Array) -> GradientTexture2D:
 	return tex
 
 
+## Each biome's light: a tint over the day and night colours, and the motes that drift in the air
+## (colour, drift up or down).
+const BIOME_TINTS := {
+	&"meadow": Color(1, 1, 1), &"fire": Color(1.08, 0.9, 0.82), &"storm": Color(0.92, 0.96, 1.04),
+	&"nature": Color(0.94, 1.04, 0.92), &"water": Color(0.95, 1.0, 1.1), &"earth": Color(1.08, 0.96, 0.86),
+	&"void": Color(0.9, 0.84, 1.08), &"heart": Color(1.04, 1.02, 0.96),
+}
+const BIOME_MOTES := {
+	&"meadow": [Color(0.85, 1, 0.45), 0.0], &"fire": [Color(1.0, 0.55, 0.2), -8.0],
+	&"storm": [Color(0.75, 0.9, 1.0), 0.0], &"nature": [Color(0.75, 1, 0.4), 0.0],
+	&"water": [Color(0.95, 0.98, 1.0), 6.0], &"earth": [Color(1.0, 0.85, 0.55), 0.0],
+	&"void": [Color(0.75, 0.55, 1.0), -4.0], &"heart": [Color(1.0, 0.95, 0.7), -3.0],
+}
+
+
 ## The ground is cut into 2x2-cell pieces so each piece only takes the lights near it
 ## (the Compatibility renderer caps the lights per drawn item).
 func _build_ground() -> void:
 	var map := sim.config.map
+	_biome = map.biome if BIOME_TINTS.has(map.biome) else &"meadow"
 	var path := ART + "ground/%s" % map.id
 	var tex := lit_texture(path)
 	var cell := float(map.cell_size) / SCALE
@@ -231,6 +251,12 @@ func _build_ground() -> void:
 			_ground.add_child(piece)
 			x += chunk
 		y += chunk
+	if ResourceLoader.exists(path + "_glow.png"):
+		_ground_glow = Sprite2D.new()
+		_ground_glow.texture = load(path + "_glow.png")
+		_ground_glow.centered = false
+		_ground_glow.material = _additive
+		_ground.add_child(_ground_glow)
 	var layout_path := path + ".json"
 	if not FileAccess.file_exists(layout_path):
 		return
@@ -274,10 +300,12 @@ func _build_fireflies() -> void:
 	_fireflies = _particles(30, 5.0, size / 2.0)
 	_fireflies.position = size / 2.0
 	_fireflies.spread = 180.0
-	_fireflies.gravity = Vector2.ZERO
 	_fireflies.initial_velocity_min = 2.0
 	_fireflies.initial_velocity_max = 6.0
-	_fireflies.color_ramp = _gradient([Color(0.8, 1, 0.4, 0), Color(0.85, 1, 0.45, 1), Color(0.8, 1, 0.4, 0)], [0.0, 0.5, 1.0])
+	var mote: Array = BIOME_MOTES[_biome]
+	var mote_color: Color = mote[0]
+	_fireflies.gravity = Vector2(0, mote[1])
+	_fireflies.color_ramp = _gradient([Color(mote_color, 0), mote_color, Color(mote_color, 0)], [0.0, 0.5, 1.0])
 	_fireflies.material = _additive
 	_air.add_child(_fireflies)
 
@@ -357,10 +385,16 @@ func _update_light(delta: float) -> void:
 	var in_wave := sim.state == RunSim.State.WAVE
 	day_night.set_target(DayNight.target_for(sim.wave_index, in_wave, sim.time_in_wave, sim.state == RunSim.State.WON))
 	day_night.advance(delta)
-	_ambient.color = day_night.ambient()
+	_ambient.color = day_night.ambient() * BIOME_TINTS[_biome]
 	_sun.energy = day_night.sun_energy()
 	_sun.color = day_night.sun_color()
-	_fireflies.modulate = Color(1, 1, 1, day_night.night())
+	var motes := day_night.night()
+	if _biome in [&"fire", &"water", &"void", &"heart"]:
+		motes = maxf(motes, 0.45)
+	_fireflies.modulate = Color(1, 1, 1, motes)
+	if _ground_glow != null:
+		var flicker := 0.85 + 0.15 * _noise.get_noise_1d(_elapsed * 3.0)
+		_ground_glow.modulate = Color(1, 1, 1, (0.45 + 0.55 * day_night.night()) * flicker)
 
 
 func _sync_towers(delta: float) -> void:
@@ -533,10 +567,6 @@ func _tower_emitter(kind: String) -> CPUParticles2D:
 
 func _sync_enemies(delta: float) -> void:
 	var seen: Dictionary[int, bool] = {}
-	var wave := sim.current_wave()
-	var tint := Color.WHITE
-	if wave != null:
-		tint = sim.config.element_color(wave.element).lerp(Color.WHITE, 0.3)
 	for enemy in sim.enemies:
 		if not enemy.alive:
 			continue
@@ -545,7 +575,7 @@ func _sync_enemies(delta: float) -> void:
 		if visual == null:
 			if enemy_info(enemy.data.id).is_empty():
 				continue
-			visual = _make_enemy(enemy, tint)
+			visual = _make_enemy(enemy, _enemy_tint(enemy))
 			_enemies[enemy.id] = visual
 		_update_enemy(visual, delta)
 	for id in _enemies.keys():
@@ -618,7 +648,11 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 		visual.flash = 1.0
 	visual.last_health = enemy.health
 	visual.flash = maxf(0.0, visual.flash - delta * 9.0)
+	if enemy.data.prismatic_interval > 0.0:
+		visual.tint = visual.tint.lerp(_enemy_tint(enemy), minf(1.0, delta * 4.0))
 	var color := visual.tint
+	if enemy.is_regenerating() and enemy.health < enemy.max_health:
+		color = color.lerp(Color(0.6, 1.0, 0.6), 0.15 + 0.1 * sin(_elapsed * 6.0))
 	var pulse := 0.5 + 0.5 * sin(_elapsed * 9.0 + float(enemy.id))
 	if enemy.has_status(&"burn"):
 		color = color.lerp(Color(1.0, 0.5, 0.2), 0.35 * pulse)
@@ -635,6 +669,13 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 	visual.body.modulate = color.lerp(Color(1.8, 1.8, 1.8), visual.flash * 0.7)
 	if visual.gear != null:
 		visual.gear.modulate = Color(1, 1, 1).lerp(Color(1.8, 1.8, 1.8), visual.flash * 0.7)
+
+
+## Slimes take the colour of their element.
+func _enemy_tint(enemy: SimEnemy) -> Color:
+	if enemy.element < 0:
+		return Color.WHITE
+	return sim.config.element_color_at(enemy.element).lerp(Color.WHITE, 0.3)
 
 
 func _sync_shots() -> void:

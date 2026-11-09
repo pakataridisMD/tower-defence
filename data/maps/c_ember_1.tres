@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MapData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"c_ember_1"
+display_name = "Ashfall Road"
+order = 100
+grid_size = Vector2i(24, 15)
+cell_size = 64
+waypoints = Array[Vector2i]([Vector2i(-1, 7), Vector2i(7, 7), Vector2i(7, 3), Vector2i(16, 3), Vector2i(16, 11), Vector2i(24, 11)])
+wave_set = &"c_ember_1"
+biome = &"fire"
+skirmish = false

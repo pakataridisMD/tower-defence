@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"hollow_king"
+display_name = "Hollow King"
+max_health = 2300.0
+speed = 42.0
+armour = 6.0
+bounty = 80
+leak_damage = 20
+tags = Array[StringName]([&"boss"])
+description = "Warden of Void, corrupted. A Void enemy in every wave. Splits into two Hollow Shades when it falls."
+element = &"void"
+split_into = &"hollow_shade"
+split_count = 2

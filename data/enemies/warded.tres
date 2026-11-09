@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"warded"
+display_name = "Warded"
+max_health = 110.0
+speed = 68.0
+armour = 2.0
+bounty = 6
+leak_damage = 1
+description = "Rune-shielded: burns, poison, slows, stuns and curses do nothing to it."
+status_immune = true

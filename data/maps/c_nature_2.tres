@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MapData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"c_nature_2"
+display_name = "Rootway"
+order = 121
+grid_size = Vector2i(24, 15)
+cell_size = 64
+waypoints = Array[Vector2i]([Vector2i(-1, 12), Vector2i(4, 12), Vector2i(4, 2), Vector2i(12, 2), Vector2i(12, 12), Vector2i(19, 12), Vector2i(19, 2), Vector2i(24, 2)])
+wave_set = &"c_nature_2"
+biome = &"nature"
+skirmish = false

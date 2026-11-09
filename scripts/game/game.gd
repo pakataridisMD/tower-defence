@@ -13,6 +13,7 @@ const SPEEDS: Array[int] = [1, 2, 3]
 ## frame cannot snowball into a slower one.
 const MAX_STEPS_PER_FRAME := 12
 const MENU_SCENE := "res://scenes/main.tscn"
+const CAMPAIGN_SCENE := "res://scenes/campaign/campaign_map.tscn"
 ## Seconds the autoplayer waits at each point of a break, so footage shows the build phase.
 const BOT_BREAK := 1.5
 const BOT_WEB_OPEN := 0.8
@@ -43,7 +44,7 @@ func _ready() -> void:
 	_build_views()
 	_connect_signals()
 	if autoplay:
-		_bot = AutoPlayer.new(sim)
+		_bot = AutoPlayer.for_sim(sim)
 		_speed_index = SPEEDS.size() - 1
 		_max_steps = 600
 		hud.speed = SPEEDS[_speed_index]
@@ -84,6 +85,8 @@ func _connect_signals() -> void:
 	hud.hybrid_pressed.connect(_hybrid_selected)
 	hud.play_again_pressed.connect(func() -> void: get_tree().reload_current_scene())
 	hud.menu_pressed.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
+	hud.campaign_pressed.connect(func() -> void: get_tree().change_scene_to_file(CAMPAIGN_SCENE))
+	hud.next_stage_pressed.connect(_play_next_stage)
 	board.selection_changed.connect(func(tower: SimTower) -> void: hud.selected = tower)
 	board.placement_failed.connect(func(reason: String) -> void: hud.show_message(reason, UiStyle.BAD))
 	web.close_requested.connect(_close_web)
@@ -235,6 +238,12 @@ func _on_run_ended(won: bool) -> void:
 	_close_web()
 	var meta_points := Progress.record_run(sim)
 	hud.show_end(won, meta_points)
+	if sim.config.stage != null:
+		var result := Progress.record_stage(sim)
+		var next := Progress.meta.stage_after(sim.config.stage.id)
+		hud.show_stage_result(result, next != null and Progress.meta.is_stage_unlocked(next.id))
+		if autoplay:
+			print("Autoplay stage %s: %d stars" % [sim.config.stage.id, result["stars"]])
 	if autoplay:
 		print("Autoplay run ended: %s after %d of %d waves on %s, %d lives left, %d kills, %d towers, +%d meta points" % [
 			"won" if won else "lost", sim.wave_index, sim.total_waves(), sim.config.map.display_name, sim.lives,
@@ -243,6 +252,14 @@ func _on_run_ended(won: bool) -> void:
 			print("Progress saved to %s" % ProjectSettings.globalize_path(Progress.save_path))
 	if quit_at_end:
 		get_tree().create_timer(1.0).timeout.connect(func() -> void: get_tree().quit())
+
+
+func _play_next_stage() -> void:
+	var next := Progress.meta.stage_after(sim.config.stage.id) if sim.config.stage != null else null
+	if next != null and Progress.play_stage(next.id):
+		get_tree().reload_current_scene()
+	else:
+		get_tree().change_scene_to_file(CAMPAIGN_SCENE)
 
 
 # --- Autoplay ------------------------------------------------------------------

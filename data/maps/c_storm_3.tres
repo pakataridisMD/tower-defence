@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MapData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"c_storm_3"
+display_name = "The Long Squall"
+order = 112
+grid_size = Vector2i(24, 15)
+cell_size = 64
+waypoints = Array[Vector2i]([Vector2i(3, -1), Vector2i(3, 12), Vector2i(9, 12), Vector2i(9, 2), Vector2i(15, 2), Vector2i(15, 12), Vector2i(21, 12), Vector2i(21, -1)])
+wave_set = &"c_storm_3"
+biome = &"storm"
+skirmish = false

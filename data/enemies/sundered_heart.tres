@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"sundered_heart"
+display_name = "The Sundered Heart"
+max_health = 8000.0
+speed = 28.0
+armour = 10.0
+bounty = 300
+leak_damage = 99
+tags = Array[StringName]([&"boss"])
+description = "The broken heart of the ring. Its element turns every 5 seconds, and it calls up Warded guards as it walks."
+prismatic_interval = 5.0
+summon = &"warded"
+summon_interval = 6.0
+summon_count = 1

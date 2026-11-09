@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"broodmother"
+display_name = "Elder Broodmother"
+max_health = 2300.0
+speed = 36.0
+armour = 4.0
+bounty = 80
+leak_damage = 20
+tags = Array[StringName]([&"boss"])
+description = "Warden of Nature, corrupted. A Nature enemy in every wave. Sheds Shardlings as it walks and bursts into Splitters."
+element = &"nature"
+summon = &"shardling"
+summon_interval = 2.5
+summon_count = 2
+split_into = &"splitter"
+split_count = 4

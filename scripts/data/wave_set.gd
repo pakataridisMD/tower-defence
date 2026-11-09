@@ -6,9 +6,11 @@ extends Resource
 @export var display_name: String
 ## Enemy health is multiplied by this once for every wave after the first.
 @export var health_growth: float = 1.12
+## Every enemy's health is multiplied by this in every wave, to tune a whole set at once.
+@export var health_scale: float = 1.0
 @export var waves: Array[WaveData] = []
 
 
 ## Health multiplier for a wave. wave_number starts at 1.
 func health_multiplier(wave_number: int) -> float:
-	return pow(health_growth, maxi(wave_number - 1, 0))
+	return health_scale * pow(health_growth, maxi(wave_number - 1, 0))

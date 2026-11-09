@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MapData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"c_void_3"
+display_name = "Mirror Rift"
+order = 152
+grid_size = Vector2i(24, 15)
+cell_size = 64
+waypoints = Array[Vector2i]([Vector2i(11, -1), Vector2i(11, 4), Vector2i(3, 4), Vector2i(3, 11), Vector2i(20, 11), Vector2i(20, 4), Vector2i(13, 4), Vector2i(13, -1)])
+wave_set = &"c_void_3"
+biome = &"void"
+skirmish = false

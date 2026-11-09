@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MapData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_s"]
+
+[resource]
+script = ExtResource("1_s")
+id = &"c_water_2"
+display_name = "Saltmarsh Bends"
+order = 131
+grid_size = Vector2i(24, 15)
+cell_size = 64
+waypoints = Array[Vector2i]([Vector2i(-1, 6), Vector2i(3, 6), Vector2i(3, 12), Vector2i(9, 12), Vector2i(9, 3), Vector2i(15, 3), Vector2i(15, 12), Vector2i(20, 12), Vector2i(20, 6), Vector2i(24, 6)])
+wave_set = &"c_water_2"
+biome = &"water"
+skirmish = false

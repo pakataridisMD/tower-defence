@@ -12,6 +12,7 @@ var graph: TreeGraph
 var points: int = 0
 var _allocated: Dictionary[StringName, bool] = {}
 var _locked: Dictionary[StringName, bool] = {}
+var _granted: Dictionary[StringName, bool] = {}
 
 
 func _init(p_graph: TreeGraph, p_points: int = 0) -> void:
@@ -35,6 +36,22 @@ func allocated_ids() -> Array[StringName]:
 func lock(ids: Array[StringName]) -> void:
 	for id in ids:
 		_locked[id] = true
+
+
+## Takes nodes for free, such as a campaign stage's starting nodes. They cost no points, ignore
+## locks and cannot be refunded. Each must link to a taken node, so list them from the start outward.
+func grant(ids: Array[StringName]) -> void:
+	for id in ids:
+		if not graph.has_node_id(id) or is_allocated(id):
+			continue
+		_allocated[id] = true
+		_granted[id] = true
+	if not ids.is_empty():
+		changed.emit()
+
+
+func is_granted(id: StringName) -> bool:
+	return _granted.has(id)
 
 
 func is_locked(id: StringName) -> bool:
@@ -62,7 +79,7 @@ func allocate(id: StringName) -> bool:
 
 
 func can_refund(id: StringName) -> bool:
-	if id == graph.start_id or not is_allocated(id):
+	if id == graph.start_id or not is_allocated(id) or is_granted(id):
 		return false
 	return _count_connected_without(id) == _allocated.size() - 1
 
@@ -123,11 +140,13 @@ func restore(ids: Array[StringName]) -> void:
 ## Refunds every taken node except the start.
 func reset() -> void:
 	for id in _allocated:
-		if id != graph.start_id:
+		if id != graph.start_id and not is_granted(id):
 			points += graph.node(id).cost
 	_allocated.clear()
 	if not graph.start_id.is_empty():
 		_allocated[graph.start_id] = true
+	for id in _granted:
+		_allocated[id] = true
 	changed.emit()
 
 
