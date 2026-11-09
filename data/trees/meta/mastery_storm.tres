@@ -21,3 +21,4 @@ cost = 2
 position = Vector2(-275, 0)
 links = Array[StringName]([&"mastery_fire", &"mastery_nature"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])
+icon = &"bolt"

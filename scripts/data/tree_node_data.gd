@@ -30,3 +30,8 @@ enum Kind { START, ENTRY, MINOR, NOTABLE, BRIDGE, KEYSTONE }
 @export var unlocks_maps: Array[StringName] = []
 ## Meta tree: ids of difficulty levels this node makes available.
 @export var unlocks_difficulties: Array[StringName] = []
+
+@export_group("Look")
+## Icon on the tree screen, by name (see assets/art/game/tree/icon_*.png). Empty picks one from what the
+## node unlocks or the stat it changes.
+@export var icon: StringName
