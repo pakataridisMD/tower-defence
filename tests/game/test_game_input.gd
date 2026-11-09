@@ -156,6 +156,45 @@ func test_selecting_and_selling_a_tower() -> void:
 	assert_null(game.board.selected)
 
 
+func _action_button(kind: StringName, id: StringName = &"") -> Button:
+	for child in game.hud._actions.get_children():
+		if child.get_meta(&"action") == kind and (id.is_empty() or child.get_meta(&"id") == id):
+			return child as Button
+	return null
+
+
+func test_the_tower_panel_levels_up_and_ascends() -> void:
+	game.sim.allocate_node(&"fire_entry")
+	game.sim.gold = 2000
+	var tower := game.sim.place_tower(&"fire_brazier", GRASS)
+	_click_cell(GRASS)
+	for level in [2, 3]:
+		await wait_process_frames(1)
+		_press(_action_button(&"level"))
+		assert_eq(tower.level, level)
+	await wait_process_frames(1)
+	assert_null(_action_button(&"level"), "no level button at the top level")
+	_press(_action_button(&"ascend", &"hearth"))
+	assert_eq(tower.ascendancy.id, &"hearth")
+	await wait_process_frames(1)
+	assert_eq(game.hud._actions.get_child_count(), 0, "nothing left to buy")
+
+
+func test_the_tower_panel_turns_a_base_tower_into_a_hybrid() -> void:
+	game.sim.tree.points = 10
+	for id: StringName in [&"fire_entry", &"fire_cw", &"storm_entry", &"storm_ccw", &"bridge_plasma"]:
+		game.sim.allocate_node(id)
+	game.sim.gold = 2000
+	var tower := game.sim.place_tower(&"storm_spire", GRASS)
+	_click_cell(GRASS)
+	await wait_process_frames(1)
+	_press(_action_button(&"hybrid", &"hybrid_plasma"))
+	assert_eq(tower.data.id, &"hybrid_plasma")
+	assert_eq(game.sim.tower_at(GRASS), tower)
+	await wait_process_frames(2)
+	assert_eq(game.board.art._towers[tower.id].data_id, &"hybrid_plasma", "the board redraws the tower as its new type")
+
+
 # --- Waves, speed and pause ------------------------------------------------------
 
 func test_space_starts_the_wave_and_time_moves() -> void:

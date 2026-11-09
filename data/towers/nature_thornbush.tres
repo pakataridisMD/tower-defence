@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_ixl53"]
 [ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_cf8x5"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
 
 [sub_resource type="Resource" id="Resource_ukato"]
 script = ExtResource("2_cf8x5")
@@ -9,6 +11,42 @@ kind = &"poison"
 damage_per_second = 5.0
 duration = 4.0
 max_stacks = 5
+
+[sub_resource type="Resource" id="Asc_strangler_m0"]
+script = ExtResource("mod_script")
+stat = &"poison_damage"
+kind = 2
+value = 0.8
+
+[sub_resource type="Resource" id="Asc_strangler_m1"]
+script = ExtResource("mod_script")
+stat = &"poison_stacks"
+value = 3.0
+
+[sub_resource type="Resource" id="Asc_strangler"]
+script = ExtResource("asc_script")
+id = &"strangler"
+display_name = "Strangler"
+description = "Poison deals 80% more damage and stacks 3 more times."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_strangler_m0"), SubResource("Asc_strangler_m1")])
+
+[sub_resource type="Resource" id="Asc_briar_m0"]
+script = ExtResource("mod_script")
+stat = &"attacks_per_second"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_briar_m1"]
+script = ExtResource("mod_script")
+stat = &"poison_spread_count"
+value = 2.0
+
+[sub_resource type="Resource" id="Asc_briar"]
+script = ExtResource("asc_script")
+id = &"briar"
+display_name = "Briar"
+description = "Attacks 50% faster, and poison spreads to 2 enemies on death."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_briar_m0"), SubResource("Asc_briar_m1")])
 
 [resource]
 script = ExtResource("1_ixl53")
@@ -22,3 +60,4 @@ attacks_per_second = 1.2
 projectile_speed = 800.0
 attack_range = 150.0
 status_effects = Array[ExtResource("2_cf8x5")]([SubResource("Resource_ukato")])
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_strangler"), SubResource("Asc_briar")])

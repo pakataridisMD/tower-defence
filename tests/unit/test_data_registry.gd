@@ -24,7 +24,7 @@ func test_all_six_elements_load_in_ring_order() -> void:
 
 
 func test_prototype_content_loads() -> void:
-	assert_eq(registry.towers.size(), 5, "3 base towers and 2 hybrids")
+	assert_eq(registry.towers.size(), 12, "6 base towers and 6 hybrids")
 	assert_eq(registry.enemies.size(), 4)
 	assert_true(registry.wave_sets.has(&"prototype"))
 	assert_eq(registry.wave_sets[&"prototype"].waves.size(), 10)

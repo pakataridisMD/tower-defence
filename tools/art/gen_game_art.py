@@ -50,6 +50,14 @@ SEED = [hexc(c) for c in ("2a5a1a", "5aa02a", "9ae04a", "d8ff8a")]
 SLIME_BODY = [hexc(c) for c in ("3a4250", "6a7484", "a0a8b4", "d2d8de", "f4f6f8")]
 MUSHROOM = [hexc(c) for c in ("6a2a3a", "a8404a", "d86a5a")]
 GLOWCAP = [hexc(c) for c in ("2a6a6a", "4ac0b0", "9af0e0")]
+WATER = [hexc(c) for c in ("12304e", "1d4f7a", "2f7fb0", "54a8d4", "a8e0f0", "eafaff")]
+SANDSTONE = [hexc(c) for c in ("3e2f26", "56423a", "6e5848", "8a725a", "a68e70", "c4ae8c")]
+AMBER = [hexc(c) for c in ("6a3a10", "b06a1a", "e8a030", "ffd070", "fff2c0")]
+OBSIDIAN = [hexc(c) for c in ("120f1a", "1d1828", "2a2338", "3a3050", "4e4268", "6a5a88")]
+VOID = [hexc(c) for c in ("2a1048", "5a2a98", "8e5cd9", "c8a0ff", "f4e8ff")]
+SOUL = [hexc(c) for c in ("3a0f5a", "7a2ab0", "b25af0", "e0a8ff", "fff0ff")]
+MUD = [hexc(c) for c in ("231a14", "33261c", "463426", "5a4632", "6e5a40")]
+BOG = [hexc(c) for c in ("1a3a2a", "2a5a3a", "3f7a48", "6aa85a", "b0e08a")]
 
 
 # ---------------------------------------------------------------- a sprite canvas
@@ -473,6 +481,246 @@ def hybrid_thornstorm() -> dict:
     return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, top - 12 - base],
             "light": {"color": "#d8f070", "offset": [0, top - 10 - base], "energy": 0.85, "range": 95, "height": 44},
             "emitter": "sparks", "emitter_offset": [0, top - 12 - base]}
+
+
+def pool(c: Canvas, cx, cy, rx, ry, ramp, *, glow_ramp=None, ripples=3, seed=0) -> None:
+    """A flat liquid surface seen from the 3/4 view, with a few bright ripples."""
+    rng = np.random.default_rng(seed)
+    for y in range(c.h):
+        for x in range(c.w):
+            u, v = (x - cx) / rx, (y - cy) / ry
+            rr = u * u + v * v
+            if rr > 1:
+                continue
+            t = 0.35 + 0.3 * (1 - rr) - 0.15 * u + rng.random() * 0.1
+            idx = int(np.clip(t, 0, 0.999) * (len(ramp) - 1))
+            g = glow_ramp[min(idx, len(glow_ramp) - 1)] * 0.5 if glow_ramp is not None and rr < 0.5 else None
+            c.put(x, y, ramp[idx], (0.0, 0.3, 0.95), g)
+    for k in range(ripples):
+        r = (k + 1) / (ripples + 1)
+        for a in np.linspace(math.pi * 0.15, math.pi * 0.85, 9):
+            c.put(cx + math.cos(a) * rx * r, cy - math.sin(a) * ry * r, ramp[-1], (0, 0.5, 0.85),
+                  glow_ramp[-1] * 0.6 if glow_ramp is not None else None)
+
+
+def slab(c: Canvas, cx, bottom, w, h, ramp, *, depth=3, seed=0) -> None:
+    """An upright stone block: a lit front face, a shaded right side and a top."""
+    rng = np.random.default_rng(seed)
+    left, right = int(round(cx - w / 2)), int(round(cx + w / 2))
+    top = int(round(bottom - h))
+    for x in range(left, right + 1):
+        for y in range(top, int(bottom) + 1):
+            t = 0.55 - 0.25 * (x - left) / max(w, 1) + rng.random() * 0.12 - 0.15 * (y - top) / max(h, 1)
+            c.put(x, y, ramp[int(np.clip(t, 0, 0.999) * len(ramp))], (0.0, -c.TILT, 0.9))
+        for k in range(depth):  # the top face
+            c.put(x + k * 0.5, top - 1 - k, ramp[-2], (0, 0.6, 0.8))
+    for k in range(depth):  # the right side
+        for y in range(top - k, int(bottom) - k + 1):
+            c.put(right + 1 + k * 0.5, y, ramp[1], (0.8, -0.2, 0.6))
+
+
+@tower
+def water_wellspring() -> dict:
+    c = Canvas(34, 60, seed=21)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 6, 14, STONE[:5], course_h=3, stone_w=6, moss_rows=4, seed=31)
+    basin_cy = base - 6 - 14 * 0.42
+    battlement(c, cx, basin_cy, 14)
+    pool(c, cx, basin_cy, 11.5, 4.3, WATER, ripples=2, seed=32)
+    # A slim pillar rising from the basin, holding a smaller bowl.
+    c.cylinder(cx, basin_cy + 1, 14, 3, STONE[1:], texture="plain", seed=33)
+    bowl_cy = basin_cy - 15
+    c.cylinder(cx, bowl_cy + 4, 3, 7, STONE[2:], texture="plain", seed=34)
+    c.disc(cx, bowl_cy, 7, STONE[3:])
+    pool(c, cx, bowl_cy, 5.5, 2.1, WATER, glow_ramp=WATER, ripples=1, seed=35)
+    # A glowing water orb above, with falling droplets.
+    orb_y = bowl_cy - 9
+    c.sphere(cx, orb_y, 5, [w * 0.8 for w in WATER[1:]], WATER[2:])
+    for k, dx in enumerate((-6, 6, -9, 9)):
+        y = bowl_cy + 2 + k * 2
+        c.put(cx + dx, y, WATER[4], (0, 0.3, 0.9), WATER[4] * 0.8)
+        c.put(cx + dx, y + 1, WATER[3], (0, 0.3, 0.9))
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "water_wellspring", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, orb_y - base],
+            "light": {"color": "#6ac0ff", "offset": [0, orb_y - base + 2], "energy": 0.9, "range": 100, "height": 40},
+            "emitter": "drips", "emitter_offset": [0, orb_y - base]}
+
+
+@tower
+def earth_monolith() -> dict:
+    c = Canvas(36, 66, seed=22)
+    cx = c.w / 2 - 1.5
+    base = c.h - 4
+    # Rubble ring and a low plinth.
+    c.cylinder(cx + 1, base, 4, 15, ROCK, course_h=4, stone_w=8, moss_rows=3, seed=41)
+    c.disc(cx + 1, base - 4 - 15 * 0.42, 14, ROCK[1:], seed=42)
+    # The standing stone, with amber runes.
+    slab(c, cx, base - 7, 13, 36, SANDSTONE, depth=4, seed=43)
+    rune_x = cx - 1
+    for y0, shape in ((base - 38, ((0, 0), (0, 1), (0, 2), (-1, 1), (1, 1))),
+                      (base - 29, ((0, 0), (-1, 1), (1, 1), (0, 2), (0, 3))),
+                      (base - 19, ((-1, 0), (0, 0), (1, 0), (0, 1), (0, 2)))):
+        for dx, dy in shape:
+            c.put(rune_x + dx, y0 + dy, AMBER[2] * 0.7, (0, -0.5, 0.85), AMBER[3])
+    # Cracks.
+    for y in range(base - 33, base - 25):
+        c.put(cx + 3 + (y % 3 == 0), y, SANDSTONE[0], (0.4, -0.4, 0.8))
+    # A floating boulder above, held by amber light.
+    rock_y = base - 7 - 36 - 9
+    c.sphere(cx + 1, rock_y, 6, ROCK)
+    for dx in (-3, 0, 3):
+        c.put(cx + 1 + dx, rock_y + 7, AMBER[3], glow=AMBER[3])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "earth_monolith", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [1, rock_y - base],
+            "light": {"color": "#ffb04a", "offset": [0, -26], "energy": 0.7, "range": 80, "height": 34},
+            "emitter": "dust", "emitter_offset": [1, rock_y - base + 6]}
+
+
+@tower
+def void_obelisk() -> dict:
+    c = Canvas(30, 70, seed=23)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 5, 12, OBSIDIAN[:5], course_h=3, stone_w=5, seed=51)
+    c.disc(cx, base - 5 - 12 * 0.42, 11, OBSIDIAN[1:], seed=52)
+    # A tapering obsidian needle with violet seams.
+    c.cylinder(cx, base - 7, 38, 6.5, OBSIDIAN[1:], top_radius=2.5, texture="metal", seed=53)
+    for hv in (8, 18, 28):
+        r = 6.5 + (2.5 - 6.5) * hv / 38
+        c.ring(cx, base - 7 - hv - r * 0.42, r + 0.4, VOID[2], thickness=1, glow=VOID[2])
+    # Orbiting shards and a void eye on top.
+    top = base - 7 - 38 - 3
+    c.crystal(cx, top - 16, 8, 13, VOID)
+    for ang in (0.4, 2.2, 4.0):
+        x = cx + math.cos(ang) * 9
+        y = top - 9 + math.sin(ang) * 3
+        c.put(x, y, VOID[3] * 0.7, glow=VOID[3])
+        c.put(x, y - 1, VOID[2] * 0.7, glow=VOID[2])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "void_obelisk", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, top - 10 - base],
+            "light": {"color": "#a070ff", "offset": [0, top - 8 - base], "energy": 0.9, "range": 110, "height": 46},
+            "emitter": "void", "emitter_offset": [0, top - 10 - base]}
+
+
+@tower
+def hybrid_bog() -> dict:
+    c = Canvas(38, 56, seed=24)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 5, 16, WOOD, texture="bark", moss_rows=5, seed=61)
+    pool_cy = base - 5 - 16 * 0.42
+    c.disc(cx, pool_cy, 16, WOOD[1:])
+    pool(c, cx, pool_cy, 14, 5.2, BOG, glow_ramp=SEED, ripples=2, seed=62)
+    # Rotting posts and a hanging lantern pod.
+    for px, h in ((-10, 16), (9, 20), (-3, 26)):
+        c.cylinder(cx + px, pool_cy + 2, h, 1.8, WOOD, texture="bark", seed=63 + h)
+    c.line(cx - 3, pool_cy - 26, cx + 6, pool_cy - 22, WOOD[3], (0, 0.4, 0.8))
+    pod_y = pool_cy - 17
+    c.sphere(cx + 6, pod_y, 3.5, [b * 0.8 for b in BOG[1:]], SEED)
+    # Mushrooms and bubbles.
+    for mx in (-12, 12):
+        c.disc(cx + mx, pool_cy + 1, 3, MUSHROOM)
+    for bx, by in ((-5, 1), (3, -1), (7, 2)):
+        c.put(cx + bx, pool_cy + by, BOG[4], (0, 0.5, 0.8), SEED[2] * 0.6)
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_bog", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [6, pod_y - base],
+            "light": {"color": "#8ae07a", "offset": [0, pool_cy - base - 4], "energy": 0.7, "range": 90, "height": 30},
+            "emitter": "bubbles", "emitter_offset": [0, pool_cy - base]}
+
+
+@tower
+def hybrid_quagmire() -> dict:
+    c = Canvas(40, 58, seed=25)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 6, 17, ROCK, course_h=3, stone_w=7, moss_rows=4, seed=71)
+    pool_cy = base - 6 - 17 * 0.42
+    battlement(c, cx, pool_cy, 17, ROCK + [ROCK[-1]])
+    pool(c, cx, pool_cy, 14.5, 5.5, MUD, ripples=3, seed=72)
+    # Standing stones and a water crystal hovering over the mud.
+    for px in (-9, 9):
+        slab(c, cx + px - 1, pool_cy + 1, 4, 11 if px < 0 else 14, SANDSTONE, depth=2, seed=73 + px)
+    c.crystal(cx, pool_cy - 26, 9, 16, WATER[1:])
+    for dx in (-2, 2):
+        c.put(cx + dx, pool_cy - 2, WATER[4], (0, 0.5, 0.8), WATER[3] * 0.7)
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_quagmire", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, pool_cy - 20 - base],
+            "light": {"color": "#7ab8e0", "offset": [0, pool_cy - 18 - base], "energy": 0.8, "range": 95, "height": 40},
+            "emitter": "drips", "emitter_offset": [0, pool_cy - 20 - base]}
+
+
+@tower
+def hybrid_gravity_well() -> dict:
+    c = Canvas(40, 64, seed=26)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 5, 17, OBSIDIAN[:5], course_h=3, stone_w=7, seed=81)
+    ring_cy = base - 5 - 17 * 0.42
+    c.disc(cx, ring_cy, 16, ROCK[:4], seed=82)
+    c.ring(cx, ring_cy - 1, 12, VOID[1], thickness=1, glow=VOID[1])
+    # Four leaning stones around the well.
+    for px, h in ((-13, 18), (13, 18), (-6, 24), (6, 24)):
+        slab(c, cx + px, ring_cy + (1 if abs(px) > 10 else -2), 4, h, ROCK, depth=2, seed=83 + h + px)
+    # The singularity: a black orb with a bright violet rim.
+    orb_y = ring_cy - 33
+    for y in range(c.h):
+        for x in range(c.w):
+            d = math.hypot(x - cx, (y - orb_y) * 1.1)
+            if d <= 5.5:
+                rim = d > 4.2
+                c.put(x, y, VOID[2] * 0.6 if rim else OBSIDIAN[0], (0, 0, 1), VOID[3] if rim else None)
+    for ang in np.linspace(0, math.tau, 10, endpoint=False):
+        c.put(cx + math.cos(ang) * 9, orb_y + math.sin(ang) * 3, VOID[2] * 0.6, glow=VOID[2])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_gravity_well", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, orb_y - base],
+            "light": {"color": "#9a6aff", "offset": [0, orb_y - base + 2], "energy": 1.0, "range": 110, "height": 44},
+            "emitter": "void", "emitter_offset": [0, orb_y - base]}
+
+
+@tower
+def hybrid_soulflame() -> dict:
+    c = Canvas(34, 68, seed=27)
+    cx = c.w / 2 - 0.5
+    base = c.h - 4
+    c.cylinder(cx, base, 5, 13, OBSIDIAN[:5], course_h=3, stone_w=6, seed=91)
+    c.cylinder(cx, base - 4, 22, 10, OBSIDIAN[1:], top_radius=8, course_h=4, stone_w=5, seed=92)
+    for hv in (6, 15):
+        r = 10 + (8 - 10) * hv / 22
+        c.ring(cx, base - 4 - hv - r * 0.42, r + 0.5, SOUL[2], thickness=1, glow=SOUL[2])
+    top_cy = base - 4 - 22 - 3.5
+    battlement(c, cx, top_cy, 11, OBSIDIAN)
+    # A skull-faced bowl of ghostly violet fire.
+    bowl_cy = top_cy - 12
+    for lx in (-3, 0, 3):
+        c.line(cx + lx, bowl_cy + 3, cx + lx * 1.5, top_cy + 1, IRON[2] if lx <= 0 else IRON[1], (0.3 * lx, -0.3, 0.9))
+    for x in range(c.w):
+        u = (x - cx) / 6
+        if abs(u) > 1:
+            continue
+        depth = 4 * math.sqrt(1 - u * u)
+        for y in range(int(bowl_cy), int(bowl_cy + depth) + 1):
+            c.put(x, y, IRON[2] if u < 0 else IRON[1], (u * 0.8, -0.5, 0.7))
+    for y in range(c.h):
+        for x in range(c.w):
+            u, v = (x - cx) / 6, (y - bowl_cy) / 2.5
+            if u * u + v * v <= 1:
+                heat = (1 - (u * u + v * v)) * 0.8 + c.rng.random() * 0.3
+                col = SOUL[int(np.clip(heat, 0, 0.999) * len(SOUL))]
+                c.put(x, y, col * 0.6, (0, 0.6, 0.8), col)
+    for dx in (-2, 2):
+        c.put(cx + dx, bowl_cy + 2, SOUL[4], glow=SOUL[4])
+    c.ink()
+    c.save(os.path.join(OUT, "towers"), "hybrid_soulflame", glow=True)
+    return {"size": [c.w, c.h], "anchor": [c.w // 2, base], "muzzle": [0, bowl_cy - base - 2],
+            "light": {"color": "#c07aff", "offset": [0, bowl_cy - base + 2], "energy": 1.1, "range": 115, "height": 40},
+            "emitter": "soulfire", "emitter_offset": [0, bowl_cy - base - 1]}
 
 
 # ---------------------------------------------------------------- enemies
