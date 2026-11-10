@@ -7,6 +7,7 @@ signal start_wave_pressed
 signal web_pressed
 signal speed_pressed
 signal tower_chosen(tower_id: StringName)
+signal skill_pressed(skill_id: StringName)
 signal sell_pressed
 signal level_up_pressed
 signal ascend_pressed(ascendancy_id: StringName)
@@ -18,27 +19,44 @@ signal next_stage_pressed
 
 const TOP_BAR_HEIGHT := 72.0
 const SIDE_PANEL_X := 1584.0
+const SIDE_PANEL_SIZE := Vector2(324, 960)
 ## Tallest the shop grid gets before it scrolls.
-const SHOP_MAX_HEIGHT := 330.0
+const SHOP_MAX_HEIGHT := 270.0
+const SHOP_COLUMNS := 4
+const SHOP_BUTTON_WIDTH := 68.0
+## Keys for the skills, laid out on the panel as they are on the keyboard: Q W E over A S D.
+const SKILL_KEYS: Array[Key] = [KEY_Q, KEY_W, KEY_E, KEY_A, KEY_S, KEY_D]
+## Keys for the selected tower's upgrade buttons, top to bottom.
+const ACTION_KEYS: Array[Key] = [KEY_Z, KEY_X, KEY_C, KEY_V, KEY_B, KEY_N]
 
 var sim: RunSim
 var speed := 1
 var paused := false
 var selected: SimTower
+## The skill the player is aiming on the board, or empty. Set by the game.
+var aiming: StringName = &""
 
+var _top_bar: PanelContainer
+var _side_panel: PanelContainer
 var _gold: Label
 var _lives: Label
 var _wave: Label
+var _stage: Label
 var _next: RichTextLabel
 var _web_button: Button
 var _speed_button: Button
 var _wave_button: Button
-var _tower_buttons: Dictionary[StringName, Button] = {}
+var _tower_buttons: Dictionary[StringName, KeyButton] = {}
+## Tower ids in the order the shop shows them.
+var _shop_ids: Array[StringName] = []
 ## Which shop tab is open: 1 for base towers, 2 for duals, 3 for triples.
 var _shop_tier := 1
 var _tier_tabs: Dictionary[int, Button] = {}
 var _shop_scroll: ScrollContainer
 var _shop_grid: GridContainer
+var _skill_buttons: Dictionary[StringName, KeyButton] = {}
+## Skill ids in the order of their keys.
+var _skill_ids: Array[StringName] = []
 var _info: RichTextLabel
 var _sell_button: Button
 ## Level, ascendancy and hybrid buttons for the selected tower, rebuilt when the choices change.
@@ -86,58 +104,104 @@ func _process(delta: float) -> void:
 
 func _build_top_bar() -> void:
 	var bar := PanelContainer.new()
+	bar.theme_type_variation = &"SlimPanel"
 	bar.position = Vector2(12, 8)
 	bar.size = Vector2(1896, TOP_BAR_HEIGHT)
 	add_child(bar)
+	_top_bar = bar
 	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 28)
+	row.add_theme_constant_override("separation", 16)
 	bar.add_child(row)
-	_gold = UiStyle.label("", 26, UiStyle.GOLD)
-	_lives = UiStyle.label("", 26, UiStyle.LIFE)
-	_wave = UiStyle.label("", 26)
-	for item: Label in [_gold, _lives, _wave]:
-		item.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		row.add_child(item)
+	# Every item has a set width, so a long wave description can never push the buttons off the screen.
+	_gold = _stat(row, &"coin", UiStyle.GOLD, 78, "Gold")
+	_lives = _stat(row, &"heart", UiStyle.LIFE, 54, "Lives")
+	_wave = _fixed_label(row, 24, UiStyle.TEXT, 168)
+	_stage = _fixed_label(row, 18, UiStyle.TEXT_DIM, 210)
 	_next = RichTextLabel.new()
 	_next.bbcode_enabled = true
-	_next.fit_content = true
 	_next.scroll_active = false
 	_next.autowrap_mode = TextServer.AUTOWRAP_OFF
-	_next.custom_minimum_size = Vector2(620, 0)
+	_next.custom_minimum_size = Vector2(240, 52)
+	_next.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_next.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	_next.add_theme_font_size_override("normal_font_size", 21)
-	_next.add_theme_font_size_override("bold_font_size", 21)
+	_next.add_theme_font_size_override("normal_font_size", 17)
+	_next.add_theme_font_size_override("bold_font_size", 17)
 	row.add_child(_next)
-	var spacer := Control.new()
-	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(spacer)
-	_web_button = UiStyle.button("", 21)
+	_web_button = _bar_button(row, 290)
 	_web_button.pressed.connect(func() -> void: web_pressed.emit())
-	_speed_button = UiStyle.button("", 21)
+	_speed_button = _bar_button(row, 160)
 	_speed_button.pressed.connect(func() -> void: speed_pressed.emit())
-	_wave_button = UiStyle.button("", 21)
+	_wave_button = _bar_button(row, 232)
 	_wave_button.pressed.connect(func() -> void: start_wave_pressed.emit())
-	for item: Button in [_web_button, _speed_button, _wave_button]:
-		row.add_child(item)
+
+
+## A number in the top bar with its icon in front, such as the gold.
+func _stat(row: HBoxContainer, icon_name: StringName, color: Color, width: float, hint: String) -> Label:
+	var pair := HBoxContainer.new()
+	pair.add_theme_constant_override("separation", 6)
+	pair.tooltip_text = hint
+	row.add_child(pair)
+	var icon := TextureRect.new()
+	icon.texture = TreeArt.icon(icon_name)
+	icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.custom_minimum_size = Vector2(28, 28)
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pair.add_child(icon)
+	var label := UiStyle.label("", 26, color)
+	label.custom_minimum_size = Vector2(width, 0)
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.clip_text = true
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pair.add_child(label)
+	return label
+
+
+func _fixed_label(row: HBoxContainer, font_size: int, color: Color, width: float) -> Label:
+	var label := UiStyle.label("", font_size, color)
+	label.custom_minimum_size = Vector2(width, 0)
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.clip_text = true
+	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	label.mouse_filter = Control.MOUSE_FILTER_PASS
+	row.add_child(label)
+	return label
+
+
+func _bar_button(row: HBoxContainer, width: float) -> Button:
+	var button := UiStyle.button("", 19)
+	button.custom_minimum_size = Vector2(width, 0)
+	button.clip_text = true
+	row.add_child(button)
+	return button
 
 
 func _build_side_panel() -> void:
 	var panel := PanelContainer.new()
+	panel.theme_type_variation = &"SlimPanel"
 	panel.position = Vector2(SIDE_PANEL_X, 96)
-	panel.size = Vector2(324, 960)
+	panel.size = SIDE_PANEL_SIZE
+	panel.clip_contents = true
 	add_child(panel)
+	_side_panel = panel
 	var column := VBoxContainer.new()
-	column.add_theme_constant_override("separation", 10)
+	column.add_theme_constant_override("separation", 7)
 	panel.add_child(column)
-	column.add_child(UiStyle.label("Towers", 26))
+	column.add_child(_heading("Towers", "1-9 pick  ·  Tab next page"))
 	# Tabs for base towers, duals and triples; hybrids only show once they are unlocked.
 	var tabs := HBoxContainer.new()
-	tabs.add_theme_constant_override("separation", 6)
+	tabs.add_theme_constant_override("separation", 5)
 	column.add_child(tabs)
 	for tier in [1, 2, 3]:
-		var tab := UiStyle.button("", 16)
+		var tab := UiStyle.key_button("", 15)
 		tab.toggle_mode = true
 		tab.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		tab.custom_minimum_size = Vector2(0, 30)
+		tab.clip_text = true
+		# The open tab wears the gold frame.
+		tab.add_theme_stylebox_override("pressed", UiStyle.button_box("picked", 5, 4))
+		tab.add_theme_stylebox_override("hover_pressed", UiStyle.button_box("picked", 5, 4))
 		tab.pressed.connect(show_shop_tier.bind(tier))
 		tabs.add_child(tab)
 		_tier_tabs[tier] = tab
@@ -146,50 +210,100 @@ func _build_side_panel() -> void:
 	_shop_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	column.add_child(_shop_scroll)
 	var grid := GridContainer.new()
-	grid.columns = 4
-	grid.add_theme_constant_override("h_separation", 6)
-	grid.add_theme_constant_override("v_separation", 6)
+	grid.columns = SHOP_COLUMNS
+	grid.add_theme_constant_override("h_separation", 5)
+	grid.add_theme_constant_override("v_separation", 5)
 	_shop_scroll.add_child(grid)
 	_shop_grid = grid
-	var number := 1
-	for tower_id in _shop_order():
+	_shop_ids = _shop_order()
+	for tower_id in _shop_ids:
 		var data: TowerData = sim.config.towers[tower_id]
 		var colors: Array[Color] = []
 		for element_id in data.elements:
 			colors.append(sim.config.element_color(element_id))
-		var button := UiStyle.button("", 16)
+		var button := UiStyle.key_button("", 15)
 		button.icon = UiStyle.element_icon(colors)
 		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		button.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
-		button.custom_minimum_size = Vector2(72, 64)
+		button.custom_minimum_size = Vector2(SHOP_BUTTON_WIDTH, 60)
 		var picture := BoardArt.tower_picture(tower_id)
 		if picture != null:
 			# The tower's own pixel art, at one screen pixel per art pixel.
 			button.icon = picture
 			button.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-			button.custom_minimum_size = Vector2(72, picture.get_height() + 30)
+			button.custom_minimum_size = Vector2(SHOP_BUTTON_WIDTH, picture.get_height() + 24)
 		button.clip_text = true
-		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		button.pressed.connect(func() -> void: tower_chosen.emit(tower_id))
-		# Number keys pick the six base towers.
-		button.set_meta(&"hotkey", number if not data.is_hybrid() and number <= 9 else 0)
 		grid.add_child(button)
 		_tower_buttons[tower_id] = button
-		number += 1
 	column.add_child(HSeparator.new())
+	_build_skills(column)
+	column.add_child(HSeparator.new())
+	# The selected tower, or the help text. It scrolls when a tower has a lot to say.
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(scroll)
+	var details := VBoxContainer.new()
+	details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	details.add_theme_constant_override("separation", 6)
+	scroll.add_child(details)
 	_info = RichTextLabel.new()
 	_info.bbcode_enabled = true
 	_info.fit_content = true
 	_info.scroll_active = false
-	_info.add_theme_font_size_override("normal_font_size", 18)
-	_info.add_theme_font_size_override("bold_font_size", 22)
-	column.add_child(_info)
+	_info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_info.add_theme_font_size_override("normal_font_size", 16)
+	_info.add_theme_font_size_override("bold_font_size", 19)
+	_info.add_theme_font_size_override("italics_font_size", 16)
+	details.add_child(_info)
 	_actions = VBoxContainer.new()
-	_actions.add_theme_constant_override("separation", 6)
-	column.add_child(_actions)
-	_sell_button = UiStyle.button("", 20)
+	_actions.add_theme_constant_override("separation", 5)
+	details.add_child(_actions)
+	_sell_button = UiStyle.key_button("", 18)
+	_sell_button.custom_minimum_size = Vector2(0, 38)
 	_sell_button.pressed.connect(func() -> void: sell_pressed.emit())
 	column.add_child(_sell_button)
+
+
+## A section title with a dim note beside it, such as the keys that work there.
+func _heading(title: String, note: String) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.add_child(UiStyle.label(title, 22))
+	var hint := UiStyle.label(note, 14, UiStyle.TEXT_DIM)
+	hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	hint.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+	hint.clip_text = true
+	row.add_child(hint)
+	return row
+
+
+## One button per skill, three to a row like their keys.
+func _build_skills(column: VBoxContainer) -> void:
+	var skills := sim.skill_list()
+	if skills.is_empty():
+		return
+	column.add_child(_heading("Skills", "cast during a wave"))
+	var grid := GridContainer.new()
+	grid.columns = 3
+	grid.add_theme_constant_override("h_separation", 5)
+	grid.add_theme_constant_override("v_separation", 5)
+	column.add_child(grid)
+	for skill in skills:
+		var skill_id := skill.id
+		var button := UiStyle.key_button(skill.display_name, 14)
+		button.icon = UiStyle.art("skill_" + String(skill_id))
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		button.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
+		button.custom_minimum_size = Vector2(97, 62)
+		button.clip_text = true
+		if _skill_ids.size() < SKILL_KEYS.size():
+			button.key_text = OS.get_keycode_string(SKILL_KEYS[_skill_ids.size()])
+		button.pressed.connect(func() -> void: skill_pressed.emit(skill_id))
+		grid.add_child(button)
+		_skill_buttons[skill_id] = button
+		_skill_ids.append(skill_id)
 
 
 func _build_message() -> void:
@@ -257,6 +371,21 @@ func show_shop_tier(tier: int) -> void:
 	_shop_scroll.scroll_vertical = 0
 
 
+## Opens the next shop tab that has a tower in it, wrapping round to the base towers.
+func cycle_shop_tier() -> void:
+	for step in [1, 2, 3]:
+		var tier: int = (_shop_tier - 1 + step) % 3 + 1
+		for tower_id in _shop_ids:
+			var data: TowerData = sim.config.towers[tower_id]
+			if data.elements.size() == tier and (tier == 1 or sim.is_unlocked(tower_id)):
+				show_shop_tier(tier)
+				return
+
+
+func shop_tier() -> int:
+	return _shop_tier
+
+
 ## Base towers first in ring order, then duals, then triples.
 func _shop_order() -> Array[StringName]:
 	var ids: Array[StringName] = []
@@ -276,27 +405,59 @@ func _shop_order() -> Array[StringName]:
 	return ids
 
 
+## True for towers on the open shop tab. Hybrids stay out of the shop until they are unlocked, so
+## the panel only grows as the run does.
+func _in_open_tab(tower_id: StringName) -> bool:
+	var data: TowerData = sim.config.towers[tower_id]
+	return data.elements.size() == _shop_tier and (not data.is_hybrid() or sim.is_unlocked(tower_id))
+
+
+## The tower a number key picks: the n-th one on the open tab, counted from 1.
 func tower_for_hotkey(number: int) -> StringName:
-	for tower_id in _tower_buttons:
-		if _tower_buttons[tower_id].get_meta(&"hotkey") == number:
-			return tower_id
+	var count := 0
+	for tower_id in _shop_ids:
+		if _in_open_tab(tower_id):
+			count += 1
+			if count == number:
+				return tower_id
 	return &""
+
+
+## The skill on the n-th skill key, counted from 0, or an empty id.
+func skill_for_hotkey(index: int) -> StringName:
+	return _skill_ids[index] if index >= 0 and index < _skill_ids.size() else &""
+
+
+## Presses the n-th upgrade button of the selected tower, counted from 0, as its key does. A
+## button that cannot be paid for still reports the press, so the game can say why.
+func press_action(index: int) -> bool:
+	if index < 0 or index >= _actions.get_child_count():
+		return false
+	var button := _actions.get_child(index)
+	_on_action_pressed(button.get_meta(&"action"), button.get_meta(&"id"))
+	return true
 
 
 # --- Refresh -------------------------------------------------------------------
 
 func _refresh() -> void:
-	_gold.text = "Gold %d" % sim.gold
-	_lives.text = "Lives %d" % sim.lives
+	_gold.text = "%d" % sim.gold
+	_lives.text = "%d" % sim.lives
 	_wave.text = "Wave %d / %d" % [sim.wave_number(), sim.total_waves()]
+	var where: PackedStringArray = []
 	var difficulty := sim.config.difficulty
 	if difficulty != null and difficulty.order > 0:
-		_wave.text += "  ·  " + difficulty.display_name
+		where.append(difficulty.display_name)
 	if sim.config.stage != null:
-		_wave.text += "  ·  " + sim.config.stage.display_name
+		where.append(sim.config.stage.display_name)
+	_stage.text = "  ·  ".join(where)
+	_stage.tooltip_text = _stage.text
+	_stage.visible = not where.is_empty()
 	_next.text = _wave_text()
+	_next.tooltip_text = _next.get_parsed_text()
 	var points := sim.tree.points
-	_web_button.text = "Skill web (T)" + ("  ·  %d point%s" % [points, "" if points == 1 else "s"] if points > 0 else "")
+	_web_button.text = "Skill web (T)" + ("  ·  %d to spend" % points if points > 0 else "")
+	_web_button.add_theme_color_override("font_color", UiStyle.GOLD if points > 0 else UiStyle.TEXT)
 	_speed_button.text = "Paused (P)" if paused else "Speed %dx (F)" % speed
 	_wave_button.disabled = sim.state != RunSim.State.BUILDING
 	match sim.state:
@@ -306,9 +467,14 @@ func _refresh() -> void:
 			_wave_button.text = "Wave in progress"
 		_:
 			_wave_button.text = "Run over"
-	for tower_id in _tower_buttons:
-		_refresh_tower_button(tower_id, _tower_buttons[tower_id])
+	var number := 0
+	for tower_id in _shop_ids:
+		var shown := _in_open_tab(tower_id)
+		if shown:
+			number += 1
+		_refresh_tower_button(tower_id, _tower_buttons[tower_id], number if shown and number <= 9 else 0)
 	_refresh_shop_tabs()
+	_refresh_skills()
 	_refresh_info()
 
 
@@ -335,12 +501,13 @@ func _wave_text() -> String:
 		parts.append(part)
 	var label := "Now" if sim.state == RunSim.State.WAVE else "Next"
 	var boss := " [b][color=#e8c547]BOSS[/color][/b]" if wave.is_boss else ""
+	# Two lines: what the wave is, then who is in it.
 	if mixed:
-		return "%s: [b]Mixed wave[/b]%s  ·  every group has its own element  ·  %s" % [label, boss, ", ".join(parts)]
+		return "%s: [b]Mixed wave[/b]%s  ·  every group has its own element\n%s" % [label, boss, ", ".join(parts)]
 	if element == null:
-		return "%s:%s %s" % [label, boss, ", ".join(parts)]
+		return "%s:%s\n%s" % [label, boss, ", ".join(parts)]
 	var opposite := _element_at(ElementRules.opposite_index(element.ring_index))
-	return "%s: [color=#%s][b]%s wave[/b][/color]%s  ·  weak to [color=#%s]%s[/color]  ·  %s" % [
+	return "%s: [color=#%s][b]%s wave[/b][/color]%s  ·  weak to [color=#%s]%s[/color]\n%s" % [
 		label, element.color.to_html(false), element.display_name, boss,
 		opposite.color.to_html(false) if opposite else "ffffff", opposite.display_name if opposite else "?",
 		", ".join(parts)]
@@ -371,21 +538,55 @@ func _refresh_shop_tabs() -> void:
 	_shop_scroll.custom_minimum_size.y = minf(_shop_grid.get_combined_minimum_size().y, SHOP_MAX_HEIGHT)
 
 
-func _refresh_tower_button(tower_id: StringName, button: Button) -> void:
+func _refresh_tower_button(tower_id: StringName, button: KeyButton, hotkey: int) -> void:
 	var data: TowerData = sim.config.towers[tower_id]
 	var price := sim.tower_price(tower_id)
-	var hotkey: int = button.get_meta(&"hotkey")
-	var key := "%d · " % hotkey if hotkey > 0 else ""
-	# Hybrids stay out of the shop until they are unlocked, so the panel only grows as the run does.
-	button.visible = data.elements.size() == _shop_tier and (not data.is_hybrid() or sim.is_unlocked(tower_id))
+	button.visible = _in_open_tab(tower_id)
+	button.key_text = "%d" % hotkey if hotkey > 0 else ""
+	var key := "\nKey: %d" % hotkey if hotkey > 0 else ""
 	if not sim.is_unlocked(tower_id):
-		button.text = "Locked"
+		button.text = "Lock"
 		button.tooltip_text = "%s (%s)\n%s\n%s" % [data.display_name, _element_names(data), data.description, _unlock_hint(tower_id)]
 		button.disabled = true
 	else:
-		button.text = "%s%dg" % [key, price]
-		button.tooltip_text = "%s (%s)\n%s" % [data.display_name, _element_names(data), data.description]
+		button.text = "%dg" % price
+		button.tooltip_text = "%s (%s)  ·  %d gold\n%s%s" % [data.display_name, _element_names(data), price, data.description, key]
 		button.disabled = sim.gold < price or sim.is_over()
+
+
+func _refresh_skills() -> void:
+	for skill_id in _skill_ids:
+		var button := _skill_buttons[skill_id]
+		var skill: SkillData = sim.config.skills[skill_id]
+		var unlocked := sim.is_skill_unlocked(skill_id)
+		var left := sim.skill_cooldown_left(skill_id)
+		button.disabled = not unlocked or sim.is_over()
+		button.modulate = Color.WHITE if unlocked else Color(1, 1, 1, 0.45)
+		button.cooldown = left / sim.skill_cooldown(skill_id) if left > 0.0 else 0.0
+		button.cooldown_text = "%d" % ceili(left) if left > 0.0 else ""
+		if aiming == skill_id:
+			button.outline = UiStyle.GOLD
+		elif sim.skill_time_left(skill_id) > 0.0:
+			button.outline = sim.config.element_color(skill.element).lightened(0.3)
+		else:
+			button.outline = Color(0, 0, 0, 0)
+		button.tooltip_text = _skill_tooltip(skill, unlocked, button.key_text)
+
+
+func _skill_tooltip(skill: SkillData, unlocked: bool, key: String) -> String:
+	var element: ElementData = sim.config.elements.get(skill.element)
+	var lines: PackedStringArray = []
+	lines.append("%s (%s)" % [skill.display_name, element.display_name if element else String(skill.element)])
+	lines.append(skill.description)
+	lines.append("Ready again after %d s%s" % [roundi(sim.skill_cooldown(skill.id)), "  ·  Key: " + key if not key.is_empty() else ""])
+	if skill.is_targeted():
+		lines.append("Click it (or press its key), then click the board. Pressing the key again casts where the mouse is.")
+	if not unlocked and sim.tree.is_locked(skill.requires_node):
+		lines.append("Closed in this run.")
+	elif not unlocked:
+		var node_data := sim.tree.graph.node(skill.requires_node)
+		lines.append("Locked: take %s in the skill web." % (node_data.display_name if node_data != null else String(skill.requires_node)))
+	return "\n".join(lines)
 
 
 func _element_names(data: TowerData) -> String:
@@ -415,14 +616,7 @@ func _unlock_hint(tower_id: StringName) -> String:
 
 func _refresh_info() -> void:
 	if selected == null or not sim.towers.has(selected):
-		_info.text = "[b]How to play[/b]\n" + \
-			"Open the skill web (T) and take an element to unlock its tower. " + \
-			"Pick a tower, then click an empty tile to build it. Shift-click builds several; right-click cancels.\n\n" + \
-			"Click a tower to level it up. At level %d it can ascend into one of two specialisations, " % SimTower.MAX_LEVEL + \
-			"and a tower can fuse into an unlocked tower with one more element.\n\n" + \
-			"Each wave resists its own element and is weak to the opposite one, so mix elements.\n\n" + \
-			_stage_rules() + \
-			"Space: start wave · F: speed · P: pause · 1-6: towers"
+		_info.text = _help_text()
 		_sell_button.hide()
 		_set_actions([])
 		return
@@ -452,9 +646,35 @@ func _refresh_info() -> void:
 	lines.append("")
 	lines.append("Kills %d  ·  Damage %d" % [tower.kills, roundi(tower.damage_dealt)])
 	_info.text = "\n".join(lines)
-	_sell_button.text = "Sell for %dg" % sim.sell_value(tower)
+	_sell_button.text = "Sell for %dg (Del)" % sim.sell_value(tower)
 	_sell_button.show()
 	_refresh_actions(tower)
+
+
+## What to do and which keys do it, shown while no tower is selected.
+func _help_text() -> String:
+	var dim := UiStyle.TEXT_DIM.to_html(false)
+	var gold := UiStyle.GOLD.to_html(false)
+	var keys: Array[Array] = [
+		["T", "skill web"], ["1-9", "pick a tower"], ["Tab", "next tower page"], ["Q W E  A S D", "skills"],
+		["Z X C V", "upgrade the tower"], ["Del", "sell the tower"], ["Space", "start the wave"],
+		["F", "speed"], ["P", "pause"], ["Esc", "back"],
+	]
+	var lines: PackedStringArray = []
+	lines.append("[b]How to play[/b]")
+	lines.append("Take an element in the skill web: it opens that element's tower and its skill.")
+	lines.append("Pick a tower and click a free tile. Shift-click builds several.")
+	lines.append("Click a tower to level it up, to ascend it at level %d or to fuse it." % SimTower.MAX_LEVEL)
+	lines.append("A wave resists its own element and is weak to the opposite one.")
+	lines.append("")
+	var rules := _stage_rules()
+	if not rules.is_empty():
+		lines.append(rules.strip_edges())
+		lines.append("")
+	lines.append("[b]Keys[/b]")
+	for pair in keys:
+		lines.append("[color=#%s]%s[/color]  [color=#%s]%s[/color]" % [gold, pair[0], dim, pair[1]])
+	return "\n".join(lines)
 
 
 static func _effect_text(spec: StatusEffectData) -> String:
@@ -509,10 +729,13 @@ func _set_actions(choices: Array) -> void:
 		_actions.remove_child(child)
 		child.queue_free()
 	for choice: Array in choices:
-		var button := UiStyle.button(choice[2], 18)
+		var button := UiStyle.key_button(choice[2], 16)
+		button.custom_minimum_size = Vector2(0, 36)
 		button.tooltip_text = choice[3]
 		button.clip_text = true
 		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		if _actions.get_child_count() < ACTION_KEYS.size():
+			button.key_text = OS.get_keycode_string(ACTION_KEYS[_actions.get_child_count()])
 		var kind: StringName = choice[0]
 		var id: StringName = choice[1]
 		button.set_meta(&"action", kind)

@@ -89,6 +89,7 @@ class Fx:
 	var to := 12.0
 	var count := 5
 	var salt := 0
+	var width := 1.0
 
 
 class TowerVisual:
@@ -210,6 +211,7 @@ func setup(p_sim: RunSim) -> void:
 	sim.chain_fired.connect(_on_chain_fired)
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.enemy_killed.connect(_on_enemy_killed)
+	sim.skill_used.connect(_on_skill_used)
 	_update_light(0.0)
 	day_night.snap()
 	_update_light(0.0)
@@ -1058,6 +1060,50 @@ func _on_enemy_killed(enemy: SimEnemy, _killer: SimTower, _bounty: int) -> void:
 		tween.tween_callback(func() -> void: _release_light(light))
 
 
+## A cast skill: a blast where it lands, or a wave of light across the whole board, and sparks on
+## every enemy it reached.
+func _on_skill_used(skill: SkillData, board_at: Vector2) -> void:
+	var at := _art_pos(board_at)
+	var color := sim.config.element_color(skill.element).lerp(Color.WHITE, 0.25)
+	var bright := color.lerp(Color.WHITE, 0.5)
+	var light_radius := 0.0
+	if skill.is_targeted():
+		var radius := skill.radius / SCALE
+		light_radius = radius * 2.2
+		_ring(at, color, radius, radius * 0.97, 0.9, 2.0)
+		if skill.damage > 0.0:
+			# It lands: a flash, flying sparks and a shock wave out to its edge.
+			_ring(at, bright, radius * 0.1, radius, 0.4, 2.0)
+			_ring(at, color, radius * 0.05, radius * 0.8, 0.7)
+			_burst(at, bright, 60, 80.0)
+			_burst(at, color.darkened(0.25), 36, 46.0, false)
+		else:
+			# It takes hold instead of hitting: the ring closes in.
+			_ring(at, bright, radius, 4.0, 0.5, 2.0)
+			_ring(at, color, radius * 0.8, 2.0, 0.75)
+			_burst(at, color, 34, 30.0, false)
+	else:
+		var reach := sim.config.map.size_in_pixels().length() * 0.5 / SCALE
+		light_radius = reach
+		_ring(at, bright, 8.0, reach, 0.9, 2.0)
+		_ring(at, color, 4.0, reach * 0.85, 1.2, 2.0)
+		if not skill.modifiers.is_empty():
+			# A boon for the towers: every one of them flares.
+			for visual: TowerVisual in _towers.values():
+				_ring(visual.root.position + Vector2(0, -8), bright, 3.0, 18.0, 0.6)
+				_sparks(visual.root.position + Vector2(0, -26), bright, 6, 11.0)
+	for enemy in sim.enemies:
+		if enemy.alive and (not skill.is_targeted() or enemy.position.distance_to(board_at) <= skill.radius):
+			_sparks(_art_pos(enemy.position) + Vector2(0, ENEMY_DROP - 5), bright, 6, 9.0)
+	var light := _flash_light(color, 2.4, light_radius, 30.0)
+	if light != null:
+		light.position = at
+		_air.add_child(light)
+		var tween := create_tween()
+		tween.tween_property(light, "energy", 0.0, 0.6)
+		tween.tween_callback(func() -> void: _release_light(light))
+
+
 func _burst(at: Vector2, color: Color, amount: int, speed: float, glowing := true) -> void:
 	var burst := _particles(amount, 0.45, Vector2(1, 1))
 	burst.one_shot = true
@@ -1076,7 +1122,7 @@ func _burst(at: Vector2, color: Color, amount: int, speed: float, glowing := tru
 	get_tree().create_timer(0.8).timeout.connect(burst.queue_free)
 
 
-func _ring(at: Vector2, color: Color, from: float, to: float, life: float) -> void:
+func _ring(at: Vector2, color: Color, from: float, to: float, life: float, width := 1.0) -> void:
 	if _fx.size() >= MAX_FX:
 		return
 	var fx := Fx.new()
@@ -1085,6 +1131,7 @@ func _ring(at: Vector2, color: Color, from: float, to: float, life: float) -> vo
 	fx.from = from
 	fx.to = to
 	fx.life = life
+	fx.width = width
 	_fx.append(fx)
 
 
@@ -1151,9 +1198,11 @@ func _draw_marks() -> void:
 		var spread := 1.0 - fade * fade
 		if fx.ring:
 			var radius := lerpf(fx.from, fx.to, spread)
-			_marks.draw_arc(fx.at, radius, 0.0, TAU, 28, Color(fx.color, fade), 1.0)
+			# Big rings get more corners, so a skill's shock wave stays round.
+			var corners := clampi(int(radius * 0.8), 28, 120)
+			_marks.draw_arc(fx.at, radius, 0.0, TAU, corners, Color(fx.color, fade), fx.width)
 			if radius > 5.0:
-				_marks.draw_arc(fx.at, radius - 2.0, 0.0, TAU, 28, Color(fx.color, fade * 0.35), 1.0)
+				_marks.draw_arc(fx.at, radius - 1.0 - fx.width, 0.0, TAU, corners, Color(fx.color, fade * 0.35), fx.width)
 		else:
 			for i in fx.count:
 				var angle := float(fx.salt) + TAU * float(i) / float(fx.count) + sin(float(fx.salt + i * 7))

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_skill"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="3_mod"]
+
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_status")
+kind = &"slow"
+slow = 0.3
+duration = 3.0
+
+[resource]
+script = ExtResource("1_skill")
+id = &"tidal_wave"
+display_name = "Tidal Wave"
+description = "A wave sweeps the whole road, pushing every enemy back and slowing it for 3 seconds. Bosses are pushed half as far."
+element = &"water"
+requires_node = &"water_entry"
+cooldown = 40.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0")])
+knockback = 110.0

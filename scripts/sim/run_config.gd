@@ -9,6 +9,8 @@ var towers: Dictionary[StringName, TowerData] = {}
 var enemies: Dictionary[StringName, EnemyData] = {}
 var elements: Dictionary[StringName, ElementData] = {}
 var tree_nodes: Array[TreeNodeData] = []
+## Skills the player can cast during a wave, by id.
+var skills: Dictionary[StringName, SkillData] = {}
 ## Modifiers that last the whole run, such as meta tree bonuses.
 var run_modifiers: Array[Modifier] = []
 ## In-run tree nodes the player has not unlocked yet in the meta tree.
@@ -33,6 +35,7 @@ static func from_registry(registry: Node, map_id: StringName) -> RunConfig:
 	config.enemies = registry.enemies
 	config.elements = registry.elements
 	config.tree_nodes = registry.in_run_tree_nodes
+	config.skills = registry.skills
 	return config
 
 

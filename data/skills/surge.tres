@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_skill"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="3_mod"]
+
+[sub_resource type="Resource" id="Mod_0"]
+script = ExtResource("3_mod")
+stat = &"attacks_per_second"
+kind = 1
+value = 0.5
+
+[resource]
+script = ExtResource("1_skill")
+id = &"surge"
+display_name = "Surge"
+description = "Lightning runs through every tower: all of them attack 50% faster for 6 seconds."
+element = &"storm"
+requires_node = &"storm_entry"
+cooldown = 45.0
+modifiers = Array[ExtResource("3_mod")]([SubResource("Mod_0")])
+duration = 6.0

@@ -2,15 +2,29 @@ extends SceneTree
 ## Plays every campaign stage with the scripted AutoPlayer and prints how each went, for tuning the
 ## campaign (see tools/campaign/gen_campaign.py). No meta tree bonuses, Normal difficulty.
 ##
-##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune]
+##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune] [--skirmish]
 ##
-## --tune searches each stage's health scale so the bot (which never levels its towers, so it plays
-## worse than a person) wins keeping a target share of its lives, and prints lines for
-## tools/campaign/tuning.py.
+## --tune searches each stage's health scale so the bot wins keeping a target share of its lives,
+## and prints lines for tools/campaign/tuning.py. The bot levels its towers and casts its skills,
+## but it never sells, never fuses a tower and follows one fixed plan, so a person still has room
+## to do better. --skirmish does the same for the skirmish waves (data/waves/prototype.tres),
+## against two different plans.
 
 ## Share of lives the bot should keep, by stage position in an element campaign and in the Convergence.
-const TARGETS: Array[float] = [0.7, 0.55, 0.4, 0.25]
-const CONVERGE_TARGETS: Array[float] = [0.45, 0.35, 0.25]
+const TARGETS: Array[float] = [0.6, 0.45, 0.3, 0.2]
+const CONVERGE_TARGETS: Array[float] = [0.35, 0.25, 0.15]
+## Share of lives the weaker of the two skirmish plans should keep on Normal.
+const SKIRMISH_TARGET := 0.4
+const SKIRMISH_MAP := &"switchback"
+## A second skirmish plan, built on Water, Earth and Void. The first is the bot's default plan.
+const OTHER_NODES: Array[StringName] = [
+	&"earth_entry", &"water_entry", &"earth_ccw", &"water_cw", &"bridge_quagmire",
+	&"earth_core", &"earth_notable", &"void_entry", &"earth_cw", &"void_ccw", &"bridge_gravity_well",
+	&"water_core", &"water_notable", &"void_core", &"void_notable", &"void_cw", &"water_ccw",
+]
+const OTHER_TOWERS: Array[StringName] = [
+	&"hybrid_gravity_well", &"hybrid_quagmire", &"earth_monolith", &"void_obelisk", &"water_wellspring",
+]
 
 
 func _initialize() -> void:
@@ -24,6 +38,11 @@ func _initialize() -> void:
 			only = arg.trim_prefix("--stage=")
 	var tune := OS.get_cmdline_user_args().has("--tune")
 	var meta := MetaProgress.new(registry, PlayerProfile.new())
+	if OS.get_cmdline_user_args().has("--skirmish"):
+		_tune_skirmish(registry)
+		registry.free()
+		quit()
+		return
 	for campaign in meta.campaigns_in_order():
 		for i in campaign.stages.size():
 			var stage := campaign.stages[i]
@@ -48,10 +67,41 @@ func _play(meta: MetaProgress, stage: StageData) -> RunSim:
 	var bot := AutoPlayer.for_sim(sim)
 	var elapsed := 0.0
 	while not sim.is_over() and elapsed < 4000.0:
-		bot.play_build_phase()
+		bot.act()
 		sim.step(RunSim.STEP)
 		elapsed += RunSim.STEP
 	return sim
+
+
+## Plays a skirmish run with one plan and returns the share of lives it kept, or -1 if it lost.
+func _play_skirmish(registry: Node, nodes: Array[StringName], towers: Array[StringName]) -> float:
+	var sim := RunSim.new(RunConfig.from_registry(registry, SKIRMISH_MAP))
+	var bot := AutoPlayer.new(sim, nodes, towers)
+	var elapsed := 0.0
+	while not sim.is_over() and elapsed < 4000.0:
+		bot.act()
+		sim.step(RunSim.STEP)
+		elapsed += RunSim.STEP
+	return float(sim.lives) / float(sim.starting_lives) if sim.state == RunSim.State.WON else -1.0
+
+
+## Bisects the skirmish waves' health scale: the highest at which both plans still win with
+## SKIRMISH_TARGET of their lives.
+func _tune_skirmish(registry: Node) -> void:
+	var config := RunConfig.from_registry(registry, SKIRMISH_MAP)
+	var waves := config.wave_set
+	var low := 0.5
+	var high := 5.0
+	for step in 9:
+		waves.health_scale = (low + high) * 0.5
+		var first := _play_skirmish(registry, AutoPlayer.DEFAULT_NODES, AutoPlayer.DEFAULT_TOWERS)
+		var second := _play_skirmish(registry, OTHER_NODES, OTHER_TOWERS)
+		print("skirmish scale %.2f: default plan %.2f, other plan %.2f" % [waves.health_scale, first, second])
+		if minf(first, second) >= SKIRMISH_TARGET:
+			low = waves.health_scale
+		else:
+			high = waves.health_scale
+	print("SKIRMISH %s health_scale = %.2f (growth %.2f)" % [waves.id, snappedf(low, 0.01), waves.health_growth])
 
 
 ## Bisects the stage's health scale: the highest scale at which the bot still wins with `target` of

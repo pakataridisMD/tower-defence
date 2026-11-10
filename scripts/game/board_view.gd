@@ -9,6 +9,8 @@ extends Node2D
 
 signal selection_changed(tower: SimTower)
 signal placement_failed(reason: String)
+## The player clicked the board while aiming a skill.
+signal skill_aimed(skill_id: StringName, at: Vector2)
 
 const GROUND := Color("243042")
 const GROUND_ALT := Color("273447")
@@ -28,8 +30,12 @@ const TOWER_HALF_SIZE := 24.0
 var sim: RunSim
 ## Tower id being placed, or empty.
 var placing: StringName = &""
+## Skill id being aimed, or empty.
+var aiming: StringName = &""
 var selected: SimTower
 var hover_cell := Vector2i(-1, -1)
+## Where the mouse last was, in board pixels.
+var _mouse := Vector2(-1, -1)
 
 var _effects: Array[Effect] = []
 var _font: Font
@@ -73,22 +79,39 @@ func setup(p_sim: RunSim) -> void:
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.enemy_killed.connect(_on_enemy_killed)
 	sim.enemy_leaked.connect(_on_enemy_leaked)
+	sim.skill_used.connect(_on_skill_used)
 
 
 func begin_placing(tower_id: StringName) -> void:
+	aiming = &""
 	placing = tower_id
 	select(null)
 
 
-func cancel_placing() -> void:
+## Starts aiming a skill: the cursor shows its reach and the next click on the board casts it.
+func begin_aiming(skill_id: StringName) -> void:
 	placing = &""
+	aiming = skill_id
 
 
-func select(tower: SimTower) -> void:
-	if selected == tower:
-		return
-	selected = tower
-	selection_changed.emit(tower)
+func cancel_aiming() -> void:
+	aiming = &""
+
+
+## Where the mouse is on the board, kept inside it.
+func mouse_point() -> Vector2:
+	return _mouse.clamp(Vector2.ZERO, sim.config.map.size_in_pixels())
+
+
+## True while the mouse is over the board.
+func mouse_inside() -> bool:
+	return Rect2(Vector2.ZERO, sim.config.map.size_in_pixels()).has_point(_mouse)
+
+
+## Follows the mouse from its events, so the cursor is right however the events arrive.
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouse:
+		_mouse = (make_input_local(event) as InputEventMouse).position
 
 
 func _process(delta: float) -> void:
@@ -100,7 +123,7 @@ func _process(delta: float) -> void:
 	_effects = active
 	if selected != null and not sim.towers.has(selected):
 		select(null)
-	hover_cell = sim.config.map.cell_at(get_local_mouse_position())
+	hover_cell = sim.config.map.cell_at(_mouse)
 	queue_redraw()
 
 
@@ -109,8 +132,16 @@ func _unhandled_input(event: InputEvent) -> void:
 	if click == null or not click.pressed:
 		return
 	var map := sim.config.map
-	var cell := map.cell_at((make_input_local(click) as InputEventMouseButton).position)
+	var at := (make_input_local(click) as InputEventMouseButton).position
+	var cell := map.cell_at(at)
 	if not map.is_inside(cell):
+		return
+	if not aiming.is_empty():
+		if click.button_index == MOUSE_BUTTON_LEFT:
+			skill_aimed.emit(aiming, at)
+		elif click.button_index == MOUSE_BUTTON_RIGHT:
+			cancel_aiming()
+		get_viewport().set_input_as_handled()
 		return
 	if click.button_index == MOUSE_BUTTON_LEFT:
 		if placing.is_empty():
@@ -357,6 +388,9 @@ func _draw_cursor() -> void:
 	var map := sim.config.map
 	if not map.is_inside(hover_cell):
 		return
+	if not aiming.is_empty():
+		_draw_aim()
+		return
 	var cell_size := float(map.cell_size)
 	var rect := Rect2(Vector2(hover_cell) * cell_size, Vector2(cell_size, cell_size))
 	if placing.is_empty():
@@ -381,6 +415,23 @@ func _draw_cursor() -> void:
 	var base := center + Vector2(0, BoardArt.TOWER_BASE_DROP * BoardArt.SCALE)
 	var top_left := base - Vector2(anchor[0], anchor[1]) * BoardArt.SCALE
 	draw_texture_rect(picture, Rect2(top_left, picture.get_size() * BoardArt.SCALE), false, Color(1, 1, 1, 0.7))
+
+
+## The reach of the skill being aimed, around the mouse, with a mark on every enemy it would hit.
+func _draw_aim() -> void:
+	var skill: SkillData = sim.config.skills.get(aiming)
+	if skill == null:
+		return
+	var at := _mouse
+	var color := sim.config.element_color(skill.element).lightened(0.25)
+	draw_circle(at, skill.radius, Color(color, 0.12))
+	draw_arc(at, skill.radius, 0.0, TAU, 72, Color(color, 0.95), 3.0, true)
+	draw_arc(at, skill.radius - 5.0, 0.0, TAU, 72, Color(0, 0, 0, 0.35), 2.0, true)
+	for offset: Vector2 in [Vector2(1, 0), Vector2(0, 1), Vector2(-1, 0), Vector2(0, -1)]:
+		draw_line(at + offset * 6.0, at + offset * 16.0, Color(1, 1, 1, 0.9), 2.0)
+	for enemy in sim.enemies:
+		if enemy.alive and enemy.position.distance_to(at) <= skill.radius:
+			draw_arc(enemy.position, _enemy_radius(enemy) + 5.0, 0.0, TAU, 20, Color(1, 1, 1, 0.8), 2.0, true)
 
 
 ## Faint cell lines over the grass while building, so the grid is clear without cluttering the art.
@@ -420,6 +471,12 @@ func _on_projectile_landed(shot: SimProjectile) -> void:
 func _on_enemy_killed(enemy: SimEnemy, _killer: SimTower, bounty: int) -> void:
 	var effect := _add_effect(&"text", 0.8, enemy.position, UiStyle.GOLD)
 	effect.text = "+%d" % bounty
+
+
+## Without art, a cast skill shows as a plain flash over what it reached.
+func _on_skill_used(skill: SkillData, at: Vector2) -> void:
+	var effect := _add_effect(&"blast", 0.45, at, sim.config.element_color(skill.element))
+	effect.radius = skill.radius if skill.is_targeted() else sim.config.map.size_in_pixels().x * 0.5
 
 
 func _on_enemy_leaked(enemy: SimEnemy) -> void:

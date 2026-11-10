@@ -20,7 +20,7 @@ func _play(bot_nodes: Array[StringName], bot_towers: Array[StringName]) -> RunSi
 	var bot := AutoPlayer.new(sim, bot_nodes, bot_towers)
 	var elapsed := 0.0
 	while not sim.is_over() and elapsed < MAX_SIM_SECONDS:
-		bot.play_build_phase()
+		bot.act()
 		sim.step(STEP)
 		elapsed += STEP
 	gut.p("Run ended %s after %d waves: %d lives, %d kills, %d leaks, %d towers, %d gold left" % [

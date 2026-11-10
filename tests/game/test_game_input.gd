@@ -217,6 +217,145 @@ func test_shop_tabs_show_duals_and_triples_once_unlocked() -> void:
 	assert_true(game.hud._tower_buttons[&"hybrid_wildfire"].visible, "Fire and Nature cores unlock Wildfire")
 
 
+# --- Hotkeys -------------------------------------------------------------------------
+
+func test_tab_turns_the_shop_page_and_numbers_pick_from_it() -> void:
+	game.sim.tree.points = 20
+	game.sim.gold = 2000
+	for id: StringName in [&"fire_entry", &"fire_cw", &"storm_entry", &"storm_ccw", &"bridge_plasma"]:
+		game.sim.allocate_node(id)
+	_key(KEY_TAB)
+	assert_eq(game.hud.shop_tier(), 2)
+	_key(KEY_1)
+	assert_eq(game.board.placing, &"hybrid_plasma", "1 picks the first tower on the open page")
+	_key(KEY_TAB)
+	assert_eq(game.hud.shop_tier(), 1, "no triple is unlocked, so Tab goes back to the base towers")
+	_key(KEY_2)
+	assert_eq(game.board.placing, &"storm_spire")
+
+
+func test_keys_upgrade_and_sell_the_selected_tower() -> void:
+	game.sim.allocate_node(&"fire_entry")
+	game.sim.gold = 2000
+	var tower := game.sim.place_tower(&"fire_brazier", GRASS)
+	_click_cell(GRASS)
+	await wait_process_frames(2)
+	assert_eq((game.hud._actions.get_child(0) as KeyButton).key_text, "Z")
+	_key(KEY_Z)
+	assert_eq(tower.level, 2)
+	_key(KEY_DELETE)
+	assert_null(game.sim.tower_at(GRASS))
+
+
+# --- Skills --------------------------------------------------------------------------
+
+func _move_mouse_to(cell: Vector2i) -> void:
+	var motion := InputEventMouseMotion.new()
+	motion.position = game.board.to_global(game.sim.config.map.cell_center(cell))
+	_push(motion)
+
+
+func test_a_skill_key_aims_and_a_click_casts() -> void:
+	game.sim.allocate_node(&"fire_entry")
+	_key(KEY_Q)
+	assert_eq(game.board.aiming, &"", "skills wait for a wave")
+	_key(KEY_SPACE)
+	_key(KEY_Q)
+	assert_eq(game.board.aiming, &"meteor")
+	_click_cell(PATH)
+	assert_eq(game.board.aiming, &"")
+	assert_gt(game.sim.skill_cooldown_left(&"meteor"), 0.0)
+	_key(KEY_Q)
+	assert_eq(game.board.aiming, &"", "it is cooling down")
+
+
+func test_a_skill_key_pressed_twice_casts_at_the_mouse() -> void:
+	game.sim.allocate_node(&"fire_entry")
+	_key(KEY_SPACE)
+	_move_mouse_to(PATH)
+	_key(KEY_Q)
+	assert_eq(game.board.aiming, &"meteor")
+	_key(KEY_Q)
+	assert_eq(game.board.aiming, &"")
+	assert_gt(game.sim.skill_cooldown_left(&"meteor"), 0.0)
+
+
+func test_a_skill_that_needs_no_aim_is_cast_by_its_key() -> void:
+	game.sim.allocate_node(&"storm_entry")
+	_key(KEY_SPACE)
+	_key(KEY_W)
+	assert_eq(game.board.aiming, &"")
+	assert_gt(game.sim.skill_time_left(&"surge"), 0.0)
+
+
+func test_escape_and_right_click_stop_aiming() -> void:
+	game.sim.allocate_node(&"fire_entry")
+	_key(KEY_SPACE)
+	_key(KEY_Q)
+	_key(KEY_ESCAPE)
+	assert_eq(game.board.aiming, &"")
+	assert_false(game.paused, "Esc stopped the aiming, not the game")
+	_key(KEY_Q)
+	_click_cell(GRASS, MOUSE_BUTTON_RIGHT)
+	assert_eq(game.board.aiming, &"")
+	assert_eq(game.sim.skill_cooldown_left(&"meteor"), 0.0, "nothing was cast")
+
+
+func test_skill_buttons_show_their_key_and_cooldown() -> void:
+	game.sim.allocate_node(&"fire_entry")
+	await wait_process_frames(2)
+	var button: KeyButton = game.hud._skill_buttons[&"meteor"]
+	assert_eq(button.key_text, "Q")
+	assert_false(button.disabled)
+	assert_true(game.hud._skill_buttons[&"surge"].disabled, "locked until Storm is taken")
+	_key(KEY_SPACE)
+	_press(button)
+	assert_eq(game.board.aiming, &"meteor")
+	_press(button)
+	assert_eq(game.board.aiming, &"", "pressing the button again puts the skill away")
+	assert_true(game.sim.use_skill(&"meteor", Vector2(100, 100)))
+	await wait_process_frames(2)
+	assert_gt(button.cooldown, 0.9)
+	assert_eq(button.cooldown_text, "25")
+
+
+# --- Layout --------------------------------------------------------------------------
+
+## The top bar and the side panel used to run off the screen when they had a lot to show.
+func test_the_hud_stays_on_the_screen_at_its_busiest() -> void:
+	game.sim.tree.points = 40
+	game.sim.gold = 99999
+	for element: String in ["fire", "storm", "nature", "water", "earth", "void"]:
+		game.sim.allocate_node(StringName(element + "_entry"))
+		game.sim.allocate_node(StringName(element + "_core"))
+	game.sim.wave_index = game.sim.total_waves() - 1
+	game.sim.place_tower(&"fire_brazier", GRASS)
+	_click_cell(GRASS)
+	var hud := game.hud
+	var screen := Rect2(0, 0, 1920, 1080)
+	for tier in [1, 2, 3]:
+		hud.show_shop_tier(tier)
+		await wait_process_frames(4)
+		assert_eq(hud._top_bar.size.x, 1896.0, "the top bar keeps its width")
+		assert_eq(hud._side_panel.size, Hud.SIDE_PANEL_SIZE, "the side panel keeps its size on page %d" % tier)
+		var bar := hud._top_bar.get_global_rect()
+		for control: Control in [hud._gold, hud._wave, hud._next, hud._web_button, hud._speed_button, hud._wave_button]:
+			assert_true(bar.encloses(control.get_global_rect()), "%s is inside the top bar" % control.name)
+		var side := hud._side_panel.get_global_rect()
+		assert_true(screen.encloses(side))
+		assert_true(side.encloses(hud._sell_button.get_global_rect()), "the sell button is inside the side panel")
+		var shown := 0
+		for button: KeyButton in hud._tower_buttons.values():
+			if button.visible:
+				shown += 1
+				var rect := button.get_global_rect()
+				assert_true(rect.position.x >= side.position.x and rect.end.x <= side.end.x,
+						"a tower button fits the panel's width on page %d" % tier)
+		assert_gt(shown, 5)
+		for button: KeyButton in hud._skill_buttons.values():
+			assert_true(side.encloses(button.get_global_rect()), "%s fits the side panel" % button.text)
+
+
 # --- Waves, speed and pause ------------------------------------------------------
 
 func test_space_starts_the_wave_and_time_moves() -> void:

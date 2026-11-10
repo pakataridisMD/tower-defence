@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_skill"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="3_mod"]
+
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_status")
+kind = &"stun"
+duration = 2.5
+
+[sub_resource type="Resource" id="Effect_1"]
+script = ExtResource("2_status")
+kind = &"slow"
+slow = 0.4
+duration = 5.0
+
+[sub_resource type="Resource" id="Effect_2"]
+script = ExtResource("2_status")
+kind = &"poison"
+damage_per_second = 5.0
+duration = 5.0
+
+[resource]
+script = ExtResource("1_skill")
+id = &"entangle"
+display_name = "Entangle"
+description = "Roots burst from the ground at a point. Enemies there are held for 2.5 seconds, then slowed and poisoned. Bosses are only slowed and poisoned."
+element = &"nature"
+requires_node = &"nature_entry"
+cooldown = 35.0
+radius = 130.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0"), SubResource("Effect_1"), SubResource("Effect_2")])

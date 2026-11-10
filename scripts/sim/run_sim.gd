@@ -11,6 +11,9 @@ signal enemy_leaked(enemy: SimEnemy)
 signal chain_fired(tower: SimTower, points: PackedVector2Array)
 signal projectile_landed(projectile: SimProjectile)
 signal run_ended(won: bool)
+## A skill was cast. `at` is the point picked on the board, or the board's centre for a skill
+## that reaches everything.
+signal skill_used(skill: SkillData, at: Vector2)
 
 enum State { BUILDING, WAVE, WON, LOST }
 
@@ -54,6 +57,10 @@ var _wave_element := -1
 var _lane_turn := 0
 ## Enemies split off or summoned during a step, added once the step's loops are done.
 var _arrivals: Array[SimEnemy] = []
+## Seconds of wave time until each skill can be used again, by skill id.
+var _skill_cooldowns: Dictionary[StringName, float] = {}
+## Seconds left on each skill whose modifiers are still running, by skill id.
+var _skill_time: Dictionary[StringName, float] = {}
 
 
 func _init(p_config: RunConfig) -> void:
@@ -131,6 +138,116 @@ func is_unlocked(tower_id: StringName) -> bool:
 
 func tower_at(cell: Vector2i) -> SimTower:
 	return _tower_at.get(cell)
+
+
+# --- Skills ------------------------------------------------------------------
+
+## Every skill of the run, in ring order of their elements.
+func skill_list() -> Array[SkillData]:
+	var result: Array[SkillData] = []
+	result.assign(config.skills.values())
+	result.sort_custom(func(a: SkillData, b: SkillData) -> bool:
+		var first := config.element_index(a.element)
+		var second := config.element_index(b.element)
+		return first < second if first != second else String(a.id) < String(b.id))
+	return result
+
+
+## A skill opens when its skill web node is taken.
+func is_skill_unlocked(skill_id: StringName) -> bool:
+	var skill: SkillData = config.skills.get(skill_id)
+	if skill == null:
+		return false
+	return skill.requires_node.is_empty() or tree.is_allocated(skill.requires_node)
+
+
+## The skill's full cooldown in seconds, after modifiers.
+func skill_cooldown(skill_id: StringName) -> float:
+	var skill: SkillData = config.skills.get(skill_id)
+	if skill == null:
+		return 0.0
+	return maxf(1.0, StatCalculator.compute(&"skill_cooldown", skill.cooldown, _modifiers, skill.all_tags()))
+
+
+## Seconds of wave time until the skill is ready again. 0 when it is ready.
+func skill_cooldown_left(skill_id: StringName) -> float:
+	return _skill_cooldowns.get(skill_id, 0.0)
+
+
+## Seconds left on a skill's lasting effect, such as faster attacks. 0 when it is not running.
+func skill_time_left(skill_id: StringName) -> float:
+	return _skill_time.get(skill_id, 0.0)
+
+
+## Why a skill cannot be cast now, or an empty string if it can.
+func skill_error(skill_id: StringName) -> String:
+	var skill: SkillData = config.skills.get(skill_id)
+	if skill == null:
+		return "Unknown skill"
+	if is_over():
+		return "The run is over"
+	if not is_skill_unlocked(skill_id):
+		var node_data := tree.graph.node(skill.requires_node)
+		if tree.is_locked(skill.requires_node):
+			return "%s is closed in this run" % skill.display_name
+		return "Take %s in the skill web to open %s" % [node_data.display_name if node_data != null else String(skill.requires_node), skill.display_name]
+	if state != State.WAVE:
+		return "Skills can only be used during a wave"
+	var left := skill_cooldown_left(skill_id)
+	if left > 0.0:
+		return "%s is ready in %d s" % [skill.display_name, ceili(left)]
+	return ""
+
+
+## Casts a skill at a point on the board (ignored by skills that reach everything). Returns false
+## and does nothing if it cannot be cast now.
+func use_skill(skill_id: StringName, at: Vector2 = Vector2.ZERO) -> bool:
+	if not skill_error(skill_id).is_empty():
+		return false
+	var skill: SkillData = config.skills[skill_id]
+	_skill_cooldowns[skill_id] = skill_cooldown(skill_id)
+	var elements: Array[int] = []
+	if config.element_index(skill.element) >= 0:
+		elements.append(config.element_index(skill.element))
+	# Skill damage keeps pace with enemy health, wave by wave.
+	var growth := config.wave_set.health_multiplier(wave_number()) * config.enemy_health_multiplier()
+	var damage := StatCalculator.compute(&"skill_damage", skill.damage, _modifiers, skill.all_tags()) * growth
+	var effects: Array[StatusEffectData] = []
+	for spec in skill.status_effects:
+		var scaled := spec.duplicate() as StatusEffectData
+		scaled.damage_per_second *= growth
+		effects.append(scaled)
+	for enemy in enemies:
+		if not enemy.alive or (skill.is_targeted() and enemy.position.distance_to(at) > skill.radius):
+			continue
+		var multiplier := ElementRules.damage_multiplier(elements, enemy.element)
+		if damage > 0.0:
+			_damage(enemy, CombatMath.hit_damage(damage, multiplier, enemy.effective_armour(), enemy.damage_taken_bonus()), null)
+		if not enemy.alive:
+			continue
+		for spec in effects:
+			enemy.apply_status(spec, null, multiplier)
+		if skill.knockback > 0.0 and enemy.knock_back(skill.knockback) > 0.0:
+			enemy.position = lane_curves[enemy.lane].sample_baked(enemy.progress)
+	if skill.duration > 0.0 and not skill.modifiers.is_empty():
+		_skill_time[skill_id] = skill.duration
+		_refresh_modifiers()
+	skill_used.emit(skill, at if skill.is_targeted() else config.map.size_in_pixels() * 0.5)
+	changed.emit()
+	return true
+
+
+func _tick_skills(delta: float) -> void:
+	for skill_id: StringName in _skill_cooldowns.keys():
+		_skill_cooldowns[skill_id] = maxf(0.0, _skill_cooldowns[skill_id] - delta)
+	var ended := false
+	for skill_id: StringName in _skill_time.keys():
+		_skill_time[skill_id] -= delta
+		if _skill_time[skill_id] <= 0.0:
+			_skill_time.erase(skill_id)
+			ended = true
+	if ended:
+		_refresh_modifiers()
 
 
 func is_path(cell: Vector2i) -> bool:
@@ -370,6 +487,7 @@ func step(delta: float) -> void:
 	if state != State.WAVE:
 		return
 	time_in_wave += delta
+	_tick_skills(delta)
 	_spawn(delta)
 	_move_enemies(delta)
 	if state != State.WAVE:
@@ -679,6 +797,10 @@ func _refresh_modifiers() -> void:
 	_modifiers.clear()
 	_modifiers.append_array(config.run_modifiers)
 	_modifiers.append_array(tree.modifiers())
+	for skill_id: StringName in _skill_time:
+		var skill: SkillData = config.skills.get(skill_id)
+		if skill != null:
+			_modifiers.append_array(skill.modifiers)
 	_recompute_towers()
 
 

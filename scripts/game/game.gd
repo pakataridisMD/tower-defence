@@ -80,6 +80,7 @@ func _connect_signals() -> void:
 	hud.web_pressed.connect(_toggle_web)
 	hud.speed_pressed.connect(_cycle_speed)
 	hud.tower_chosen.connect(_choose_tower)
+	hud.skill_pressed.connect(_skill_button)
 	hud.sell_pressed.connect(_sell_selected)
 	hud.level_up_pressed.connect(_level_up_selected)
 	hud.ascend_pressed.connect(_ascend_selected)
@@ -90,6 +91,7 @@ func _connect_signals() -> void:
 	hud.next_stage_pressed.connect(_play_next_stage)
 	board.selection_changed.connect(func(tower: SimTower) -> void: hud.selected = tower)
 	board.placement_failed.connect(func(reason: String) -> void: hud.show_message(reason, UiStyle.BAD))
+	board.skill_aimed.connect(_cast_skill)
 	web.close_requested.connect(_close_web)
 	web.node_clicked.connect(func(id: StringName) -> void: sim.allocate_node(id))
 	web.node_refund_requested.connect(func(id: StringName) -> void: sim.refund_node(id))
@@ -99,6 +101,10 @@ func _connect_signals() -> void:
 func _process(delta: float) -> void:
 	if _bot != null:
 		_drive_bot(delta)
+	# A skill can only be aimed while there is a wave to cast it on.
+	if not board.aiming.is_empty() and sim.state != RunSim.State.WAVE:
+		board.cancel_aiming()
+	hud.aiming = board.aiming
 	if paused or web.visible or sim.state != RunSim.State.WAVE:
 		_accumulator = 0.0
 		return
@@ -113,6 +119,17 @@ func _process(delta: float) -> void:
 		steps += 1
 
 
+## Tab is handled before the interface sees it, or it would move the keyboard focus instead.
+func _input(event: InputEvent) -> void:
+	var key := event as InputEventKey
+	if key != null and key.pressed and not key.echo and key.keycode == KEY_TAB and not web.visible:
+		hud.cycle_shop_tier()
+		get_viewport().set_input_as_handled()
+
+
+## Keys: Space starts the wave, T opens the skill web, F changes speed, P pauses, Esc backs out,
+## 1-9 pick a tower from the open shop page (Tab turns the page), Q W E A S D cast the skills,
+## Z X C V B N press the selected tower's upgrade buttons, and Delete sells it.
 func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
 	if key == null or not key.pressed or key.echo:
@@ -131,8 +148,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9:
 			if not web.visible:
 				_choose_tower(hud.tower_for_hotkey(key.keycode - KEY_0))
+		KEY_DELETE, KEY_BACKSPACE:
+			if not web.visible:
+				_sell_selected()
 		_:
-			return
+			var skill := Hud.SKILL_KEYS.find(key.keycode)
+			var action := Hud.ACTION_KEYS.find(key.keycode)
+			if web.visible or (skill < 0 and action < 0):
+				return
+			if skill >= 0:
+				_skill_key(hud.skill_for_hotkey(skill))
+			elif board.selected != null:
+				hud.press_action(action)
 	get_viewport().set_input_as_handled()
 
 
@@ -150,6 +177,7 @@ func _toggle_web() -> void:
 		_close_web()
 	elif not sim.is_over():
 		board.cancel_placing()
+		board.cancel_aiming()
 		web.show_tree(sim.tree, SkillWebView.element_regions(sim.config.elements))
 
 
@@ -169,10 +197,12 @@ func _toggle_pause() -> void:
 	hud.paused = paused
 
 
-## Esc backs out of whatever is open: the web, then placing, then the selection, then pause.
+## Esc backs out of whatever is open: the web, then aiming, placing, the selection, then pause.
 func _escape() -> void:
 	if web.visible:
 		_close_web()
+	elif not board.aiming.is_empty():
+		board.cancel_aiming()
 	elif not board.placing.is_empty():
 		board.cancel_placing()
 	elif board.selected != null:
@@ -190,6 +220,48 @@ func _choose_tower(tower_id: StringName) -> void:
 		hud.show_message("Not enough gold", UiStyle.BAD)
 	else:
 		board.begin_placing(tower_id)
+
+
+## A skill's button: starts aiming it, or stops if it is already being aimed. A skill that needs
+## no aiming is cast straight away.
+func _skill_button(skill_id: StringName) -> void:
+	if board.aiming == skill_id:
+		board.cancel_aiming()
+	else:
+		_begin_skill(skill_id)
+
+
+## A skill's key: like its button, but pressing it again while aiming casts where the mouse is.
+func _skill_key(skill_id: StringName) -> void:
+	if skill_id.is_empty():
+		return
+	if board.aiming == skill_id and board.mouse_inside():
+		_cast_skill(skill_id, board.mouse_point())
+	else:
+		_begin_skill(skill_id)
+
+
+func _begin_skill(skill_id: StringName) -> void:
+	var error := sim.skill_error(skill_id)
+	if not error.is_empty():
+		hud.show_message(error, UiStyle.BAD)
+		return
+	var skill: SkillData = sim.config.skills[skill_id]
+	if skill.is_targeted():
+		board.begin_aiming(skill_id)
+		hud.show_message("%s: click where it should land" % skill.display_name)
+	else:
+		_cast_skill(skill_id, Vector2.ZERO)
+
+
+func _cast_skill(skill_id: StringName, at: Vector2) -> void:
+	var error := sim.skill_error(skill_id)
+	board.cancel_aiming()
+	if not error.is_empty():
+		hud.show_message(error, UiStyle.BAD)
+	elif sim.use_skill(skill_id, at):
+		var skill: SkillData = sim.config.skills[skill_id]
+		hud.show_message(skill.display_name, sim.config.element_color(skill.element).lightened(0.35))
 
 
 func _sell_selected() -> void:
@@ -236,6 +308,7 @@ func _hybrid_selected(hybrid_id: StringName) -> void:
 
 func _on_run_ended(won: bool) -> void:
 	board.cancel_placing()
+	board.cancel_aiming()
 	_close_web()
 	var meta_points := Progress.record_run(sim)
 	hud.show_end(won, meta_points)
@@ -265,10 +338,13 @@ func _play_next_stage() -> void:
 
 # --- Autoplay ------------------------------------------------------------------
 
-## Plays each break like a person would: open the web, take nodes, close it, build, start.
+## Plays each break like a person would: open the web, take nodes, close it, build, start. During
+## a wave it casts the skills.
 func _drive_bot(delta: float) -> void:
 	if sim.state != RunSim.State.BUILDING:
 		_bot_wait = BOT_BREAK
+		if not paused and not web.visible:
+			_bot.use_skills()
 		return
 	_bot_wait -= delta
 	if _bot_wait > 0.0:
