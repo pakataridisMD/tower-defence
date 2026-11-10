@@ -21,7 +21,7 @@ const TOP_BAR_HEIGHT := 72.0
 const SIDE_PANEL_X := 1584.0
 const SIDE_PANEL_SIZE := Vector2(324, 960)
 ## Tallest the shop grid gets before it scrolls.
-const SHOP_MAX_HEIGHT := 270.0
+const SHOP_MAX_HEIGHT := 292.0
 const SHOP_COLUMNS := 4
 const SHOP_BUTTON_WIDTH := 68.0
 ## Keys for the skills, laid out on the panel as they are on the keyboard: Q W E over A S D.
