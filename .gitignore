@@ -11,3 +11,6 @@ Thumbs.db
 
 # Python bytecode from the art tools
 __pycache__/
+
+# Blender render output (regenerate with art/blender/render_tower.py)
+art/blender/out/

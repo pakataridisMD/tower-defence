@@ -1,0 +1,24 @@
+{
+  "id": "fire_brazier",
+  "sheet": "fire_brazier.png",
+  "normal_sheet": "fire_brazier_n.png",
+  "style": "pixel",
+  "frame_size": [
+    64,
+    64
+  ],
+  "directions": 16,
+  "frames": 8,
+  "fps": 10.0,
+  "anchor": [
+    32,
+    42
+  ],
+  "display_scale": 2.0,
+  "filter": "nearest",
+  "layout": "rows are directions (row d aims at screen angle d * TAU / directions, 0 = right, clockwise); columns are animation frames",
+  "camera": {
+    "elevation_degrees": 50.0,
+    "frame_cells": 2.0
+  }
+}

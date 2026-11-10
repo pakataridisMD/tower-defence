@@ -135,6 +135,12 @@ to `save.json.corrupt` and the backup is loaded instead. To start over, delete t
 The save is versioned JSON. When its shape changes, bump `PlayerProfile.VERSION` and teach
 `PlayerProfile.migrate()` to upgrade older saves.
 
+## Blender art pipeline
+
+`art/blender/` models towers in Blender from Python and renders them to pixel-art sprite sheets with
+16 aim directions, an idle loop and normal maps. It is a second route to tower art next to
+`tools/art/gen_game_art.py` and is not used by the game yet. See [docs/art-pipeline.md](docs/art-pipeline.md).
+
 ## Art test: lit Fire tower
 
 **Art test: lit Fire tower** on the main menu (or `scenes/demos/fire_tower_lighting.tscn`) opens a
