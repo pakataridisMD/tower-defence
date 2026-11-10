@@ -1200,14 +1200,33 @@ func _draw_marks() -> void:
 			var radius := lerpf(fx.from, fx.to, spread)
 			# Big rings get more corners, so a skill's shock wave stays round.
 			var corners := clampi(int(radius * 0.8), 28, 120)
-			_marks.draw_arc(fx.at, radius, 0.0, TAU, corners, Color(fx.color, fade), fx.width)
+			_draw_ring(fx.at, radius, corners, Color(fx.color, fade), fx.width)
 			if radius > 5.0:
-				_marks.draw_arc(fx.at, radius - 1.0 - fx.width, 0.0, TAU, corners, Color(fx.color, fade * 0.35), fx.width)
+				_draw_ring(fx.at, radius - 1.0 - fx.width, corners, Color(fx.color, fade * 0.35), fx.width)
 		else:
 			for i in fx.count:
 				var angle := float(fx.salt) + TAU * float(i) / float(fx.count) + sin(float(fx.salt + i * 7))
 				var at := fx.at + Vector2.from_angle(angle) * fx.to * spread
 				_dot(_marks, at, Color(fx.color.lerp(Color.WHITE, fade * 0.6), minf(1.0, fade * 2.0)))
+
+
+## A ring that stops at the edge of the board, so a wide skill never draws over the HUD.
+func _draw_ring(at: Vector2, radius: float, corners: int, color: Color, width: float) -> void:
+	var board := Rect2(Vector2.ZERO, sim.config.map.size_in_pixels() / SCALE)
+	if board.encloses(Rect2(at - Vector2(radius, radius), Vector2(radius, radius) * 2.0)):
+		_marks.draw_arc(at, radius, 0.0, TAU, corners, color, width)
+		return
+	var run := PackedVector2Array()
+	for i in corners + 1:
+		var point := at + Vector2.from_angle(TAU * float(i) / float(corners)) * radius
+		if board.has_point(point):
+			run.append(point)
+			continue
+		if run.size() > 1:
+			_marks.draw_polyline(run, color, width)
+		run.clear()
+	if run.size() > 1:
+		_marks.draw_polyline(run, color, width)
 
 
 ## What is hurting an enemy, drawn on it: flames for a burn, bubbles for poison, frost at its feet for

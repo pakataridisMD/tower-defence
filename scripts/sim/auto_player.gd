@@ -41,7 +41,7 @@ var skills := true
 var ascends := true
 ## How far the bot trusts an upgrade against a new tower. At 1 it takes its own sums at face value;
 ## lower leans toward building more towers.
-var upgrade_bias := 1.0
+var upgrade_bias := 0.6
 
 var _path_samples := PackedVector2Array()
 var _coverage_cache: Dictionary[Vector3i, int] = {}

@@ -216,6 +216,12 @@ func _build_side_panel() -> void:
 	_shop_scroll.add_child(grid)
 	_shop_grid = grid
 	_shop_ids = _shop_order()
+	# Every button is as tall as the tallest tower, so the towers stand on one line.
+	var tallest := 0
+	for tower_id in _shop_ids:
+		var art := BoardArt.tower_picture(tower_id)
+		if art != null:
+			tallest = maxi(tallest, art.get_height())
 	for tower_id in _shop_ids:
 		var data: TowerData = sim.config.towers[tower_id]
 		var colors: Array[Color] = []
@@ -229,9 +235,14 @@ func _build_side_panel() -> void:
 		var picture := BoardArt.tower_picture(tower_id)
 		if picture != null:
 			# The tower's own pixel art, at one screen pixel per art pixel.
-			button.icon = picture
+			var gap := float(tallest - picture.get_height())
+			var padded := AtlasTexture.new()
+			padded.atlas = picture
+			padded.region = Rect2(Vector2.ZERO, picture.get_size())
+			padded.margin = Rect2(0, gap, 0, gap)
+			button.icon = padded
 			button.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-			button.custom_minimum_size = Vector2(SHOP_BUTTON_WIDTH, picture.get_height() + 24)
+			button.custom_minimum_size = Vector2(SHOP_BUTTON_WIDTH, tallest + 24)
 		button.clip_text = true
 		button.pressed.connect(func() -> void: tower_chosen.emit(tower_id))
 		grid.add_child(button)
@@ -632,7 +643,8 @@ func _refresh_info() -> void:
 	if tower.splash_radius > 0.0:
 		lines.append("Splash radius %d" % roundi(tower.splash_radius))
 	if tower.chains():
-		lines.append("Chains to %d more (−%d%% per jump)" % [tower.chain_count, roundi(tower.chain_falloff * 100.0)])
+		var falloff := roundi(tower.chain_falloff * 100.0)
+		lines.append("Chains to %d more" % tower.chain_count + (" (−%d%% per jump)" % falloff if falloff > 0 else ""))
 	if tower.knockback > 0.0:
 		lines.append("Pushes enemies back %d" % roundi(tower.knockback))
 	if tower.aura_radius > 0.0 and tower.aura_damage > 0.0:

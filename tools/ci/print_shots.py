@@ -27,7 +27,8 @@ def write(folder: str, width: int, quality: int) -> None:
         data = io.BytesIO()
         image.save(data, "JPEG", quality=quality)
         text = base64.b64encode(data.getvalue()).decode()
-        print("@@SHOT " + os.path.splitext(os.path.basename(path))[0])
+        # The folder goes in the name, so two folders can each hold a "menu".
+        print("@@SHOT %s_%s" % (os.path.basename(os.path.normpath(folder)), os.path.splitext(os.path.basename(path))[0]))
         for start in range(0, len(text), 2000):
             print(text[start:start + 2000])
         print("@@END")

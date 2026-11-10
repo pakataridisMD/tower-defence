@@ -157,8 +157,8 @@ func _play_skirmish(registry: Node, nodes: Array[StringName], towers: Array[Stri
 	return float(sim.lives) / float(sim.starting_lives) if sim.state == RunSim.State.WON else -1.0
 
 
-## Bisects the skirmish waves' health scale: the highest at which both plans still win with
-## SKIRMISH_TARGET of their lives.
+## Bisects the skirmish waves' health scale: the highest at which both plans still win and keep
+## SKIRMISH_TARGET of their lives between them.
 func _tune_skirmish(registry: Node) -> void:
 	var config := RunConfig.from_registry(registry, SKIRMISH_MAP)
 	var waves := config.wave_set
@@ -169,7 +169,7 @@ func _tune_skirmish(registry: Node) -> void:
 		var first := _play_skirmish(registry, AutoPlayer.DEFAULT_NODES, AutoPlayer.DEFAULT_TOWERS)
 		var second := _play_skirmish(registry, OTHER_NODES, OTHER_TOWERS)
 		print("skirmish scale %.2f: default plan %.2f, other plan %.2f" % [waves.health_scale, first, second])
-		if minf(first, second) >= SKIRMISH_TARGET:
+		if minf(first, second) > 0.0 and (first + second) * 0.5 >= SKIRMISH_TARGET:
 			low = waves.health_scale
 		else:
 			high = waves.health_scale
@@ -191,7 +191,7 @@ func _tune(meta: MetaProgress, stage: StageData, target: float) -> void:
 		for wave in bosses:
 			wave.health_multiplier = value
 	set_boss.call(0.02)
-	var health := _bisect(meta, stage, target + (0.1 if not bosses.is_empty() else 0.0), 0.3, 2.5,
+	var health := _bisect(meta, stage, target + (0.1 if not bosses.is_empty() else 0.0), 0.3, 4.0,
 			func(value: float) -> void: waves.health_scale = value)
 	waves.health_scale = health
 	var boss := 0.0

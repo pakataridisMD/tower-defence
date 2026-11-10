@@ -32,6 +32,7 @@ jobs:
         run: /tmp/godot/godot --headless --import
 
       - name: How each kind of bot does
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[compare]')
         run: /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --compare 2>&1 | grep -E "COMPARE|ERROR"
 
       - name: Tune the skirmish waves
