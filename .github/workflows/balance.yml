@@ -1,8 +1,9 @@
 name: Balance
 
-# Retunes the campaign and the skirmish waves against the scripted player, and prints the numbers
-# for tools/campaign/tuning.py and data/waves/prototype.tres. It takes a while, so it only runs when
-# asked: by hand, or by a commit on a branch whose message contains [tune].
+# Plays the campaign and the skirmish with the scripted player and prints how it did. It takes a
+# while, so it only runs when asked: by hand, or by a commit on a branch whose message contains
+# [compare] (how several kinds of bot do, a minute or two) or [tune] (new numbers for
+# tools/campaign/tuning.py and data/waves/prototype.tres, ten minutes or more).
 on:
   workflow_dispatch:
   push:
@@ -10,7 +11,9 @@ on:
 
 jobs:
   tune:
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
+    if: >-
+      github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
+      || contains(github.event.head_commit.message, '[compare]')
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
@@ -28,11 +31,13 @@ jobs:
       - name: Import the project
         run: /tmp/godot/godot --headless --import
 
-      - name: How the scripted player does now
-        run: /tmp/godot/godot --headless -s tools/campaign_balance.gd 2>&1 | grep -v "^$"
+      - name: How each kind of bot does
+        run: /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --compare 2>&1 | grep -E "COMPARE|ERROR"
 
       - name: Tune the skirmish waves
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
         run: /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --skirmish 2>&1 | grep -E "skirmish|SKIRMISH|ERROR"
 
       - name: Tune the campaign
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
         run: /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --tune 2>&1 | grep -E "TUNING|ERROR"

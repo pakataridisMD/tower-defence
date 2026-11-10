@@ -2,13 +2,14 @@ extends SceneTree
 ## Plays every campaign stage with the scripted AutoPlayer and prints how each went, for tuning the
 ## campaign (see tools/campaign/gen_campaign.py). No meta tree bonuses, Normal difficulty.
 ##
-##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune] [--skirmish]
+##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune] [--skirmish] [--compare]
 ##
 ## --tune searches each stage's health scale so the bot wins keeping a target share of its lives,
 ## and prints lines for tools/campaign/tuning.py. The bot levels its towers and casts its skills,
 ## but it never sells, never fuses a tower and follows one fixed plan, so a person still has room
 ## to do better. --skirmish does the same for the skirmish waves (data/waves/prototype.tres),
-## against two different plans.
+## against two different plans. --compare plays everything with several kinds of bot (with and
+## without skills and upgrades), to see what each habit is worth.
 
 ## Share of lives the bot should keep, by stage position in an element campaign and in the Convergence.
 const TARGETS: Array[float] = [0.6, 0.45, 0.3, 0.2]
@@ -38,6 +39,11 @@ func _initialize() -> void:
 			only = arg.trim_prefix("--stage=")
 	var tune := OS.get_cmdline_user_args().has("--tune")
 	var meta := MetaProgress.new(registry, PlayerProfile.new())
+	if OS.get_cmdline_user_args().has("--compare"):
+		_compare(registry, meta)
+		registry.free()
+		quit()
+		return
 	if OS.get_cmdline_user_args().has("--skirmish"):
 		_tune_skirmish(registry)
 		registry.free()
@@ -71,6 +77,72 @@ func _play(meta: MetaProgress, stage: StageData) -> RunSim:
 		sim.step(RunSim.STEP)
 		elapsed += RunSim.STEP
 	return sim
+
+
+## Kinds of bot to compare: name, upgrades, skills, ascends, upgrade bias.
+const BOTS := [
+	["plain", false, false, false, 1.0], ["skills", false, true, false, 1.0], ["up 1.0", true, true, true, 1.0],
+	["up 0.6", true, true, true, 0.6], ["up 0.35", true, true, true, 0.35], ["lvl 0.6", true, true, false, 0.6],
+	["up 0.6 quiet", true, false, true, 0.6],
+]
+
+
+func _set_up(bot: AutoPlayer, kind: Array) -> void:
+	bot.upgrades = kind[1]
+	bot.skills = kind[2]
+	bot.ascends = kind[3]
+	bot.upgrade_bias = kind[4]
+
+
+func _run_bot(sim: RunSim, bot: AutoPlayer) -> String:
+	var elapsed := 0.0
+	while not sim.is_over() and elapsed < 4000.0:
+		bot.act()
+		sim.step(RunSim.STEP)
+		elapsed += RunSim.STEP
+	if sim.state == RunSim.State.WON:
+		return "%3d%%" % roundi(100.0 * sim.lives / sim.starting_lives)
+	return " w%-2d" % sim.wave_index
+
+
+## A table: one row per stage (and per skirmish plan), one column per kind of bot. A cell is the
+## share of lives kept, or the wave the bot fell on.
+func _compare(registry: Node, meta: MetaProgress) -> void:
+	var header := "%-12s" % "COMPARE"
+	for kind: Array in BOTS:
+		header += " %12s" % kind[0]
+	print(header)
+	var wins: Array[int] = []
+	var kept: Array[int] = []
+	wins.resize(BOTS.size())
+	kept.resize(BOTS.size())
+	var rows: Array[Array] = [["skirmish A", &"", AutoPlayer.DEFAULT_NODES, AutoPlayer.DEFAULT_TOWERS],
+			["skirmish B", &"", OTHER_NODES, OTHER_TOWERS]]
+	for campaign in meta.campaigns_in_order():
+		for stage in campaign.stages:
+			rows.append([String(stage.id), stage.id])
+	for row: Array in rows:
+		var line := "%-12s" % row[0]
+		for i in BOTS.size():
+			var sim: RunSim
+			var bot: AutoPlayer
+			if row.size() > 2:
+				sim = RunSim.new(RunConfig.from_registry(registry, SKIRMISH_MAP))
+				bot = AutoPlayer.new(sim, row[2], row[3])
+			else:
+				sim = RunSim.new(meta.stage_config(row[1]))
+				bot = AutoPlayer.for_sim(sim)
+			_set_up(bot, BOTS[i])
+			var cell := _run_bot(sim, bot)
+			line += " %12s" % cell
+			if sim.state == RunSim.State.WON:
+				wins[i] += 1
+				kept[i] += roundi(100.0 * sim.lives / sim.starting_lives)
+		print("COMPARE " + line)
+	var total := "%-12s" % "wins/lives"
+	for i in BOTS.size():
+		total += " %12s" % ("%d/%d" % [wins[i], kept[i]])
+	print("COMPARE " + total)
 
 
 ## Plays a skirmish run with one plan and returns the share of lives it kept, or -1 if it lost.

@@ -37,6 +37,11 @@ var max_towers := 40
 ## Turn off to make the bot play like a beginner: no levels, no skills.
 var upgrades := true
 var skills := true
+## Turn off to stop the bot at the top level instead of ascending.
+var ascends := true
+## How far the bot trusts an upgrade against a new tower. At 1 it takes its own sums at face value;
+## lower leans toward building more towers.
+var upgrade_bias := 1.0
 
 var _path_samples := PackedVector2Array()
 var _coverage_cache: Dictionary[Vector3i, int] = {}
@@ -237,6 +242,7 @@ class Upgrade:
 
 
 ## The upgrade that adds the most damage over the road per gold, or null if none can be paid for.
+## A level adds to the tower's own hits (not to its burn or poison) and to its range.
 func _best_upgrade() -> Upgrade:
 	if not upgrades:
 		return null
@@ -245,24 +251,35 @@ func _best_upgrade() -> Upgrade:
 		var gain := 0.0
 		var price := 0
 		var ascendancy: StringName = &""
-		var now := power(tower.data) * pow(1.0 + SimTower.DAMAGE_PER_LEVEL, tower.level - 1)
+		var direct := direct_power(tower.data)
+		var lasting := power(tower.data) - direct
+		var now := (direct * (1.0 + SimTower.DAMAGE_PER_LEVEL * (tower.level - 1)) + lasting) \
+				* coverage(tower.cell, tower.attack_range)
 		if tower.level < SimTower.MAX_LEVEL:
-			gain = now * SimTower.DAMAGE_PER_LEVEL
+			var reach := tower.attack_range * (1.0 + SimTower.RANGE_PER_LEVEL * tower.level) \
+					/ (1.0 + SimTower.RANGE_PER_LEVEL * (tower.level - 1))
+			gain = (direct * (1.0 + SimTower.DAMAGE_PER_LEVEL * tower.level) + lasting) * coverage(tower.cell, reach) - now
 			price = tower.level_up_price()
-		elif tower.can_ascend() and not tower.data.ascendancies.is_empty():
+		elif ascends and tower.can_ascend() and not tower.data.ascendancies.is_empty():
 			var option := tower.data.ascendancies[0]
 			gain = now * ASCEND_GAIN
 			price = tower.ascend_price(option)
 			ascendancy = option.id
 		if price <= 0 or sim.gold < price:
 			continue
-		var value := gain * coverage(tower.cell, tower.attack_range) / float(price)
+		var value := gain * upgrade_bias / float(price)
 		if best == null or value > best.value:
 			best = Upgrade.new()
 			best.tower = tower
 			best.ascendancy = ascendancy
 			best.value = value
 	return best
+
+
+## A tower type's rough damage per second from its own hits, before levels: no burn or poison.
+static func direct_power(tower: TowerData) -> float:
+	var hits := 1.0 + tower.chain_count + (1.5 if tower.splash_radius > 0.0 else 0.0)
+	return tower.damage * tower.attacks_per_second * hits
 
 
 ## A tower type's rough damage per second, before levels.

@@ -88,6 +88,17 @@ func begin_placing(tower_id: StringName) -> void:
 	select(null)
 
 
+func cancel_placing() -> void:
+	placing = &""
+
+
+func select(tower: SimTower) -> void:
+	if selected == tower:
+		return
+	selected = tower
+	selection_changed.emit(tower)
+
+
 ## Starts aiming a skill: the cursor shows its reach and the next click on the board casts it.
 func begin_aiming(skill_id: StringName) -> void:
 	placing = &""
