@@ -181,6 +181,7 @@ func _tune_skirmish(registry: Node) -> void:
 ##
 ## Two passes: first the ordinary waves (with the boss waves made harmless) for the target plus a
 ## tenth, then the boss waves' own health multiplier, where the bot only needs to keep half the target.
+## The numbers it prints already have a margin taken off.
 func _tune(meta: MetaProgress, stage: StageData, target: float) -> void:
 	var waves := meta.stage_config(stage.id).wave_set
 	var bosses: Array[WaveData] = []
@@ -205,9 +206,18 @@ func _tune(meta: MetaProgress, stage: StageData, target: float) -> void:
 			break
 		health = snappedf(health * 0.8, 0.01)
 		waves.health_scale = health
-	var line := 'TUNING["%s"] = {"health": %.2f' % [stage.id, health]
+	# The bot's result does not fall evenly as health rises, so take a margin and check that it
+	# still wins there: 5% off, and another 5% for as long as it loses.
+	var margin := 0.95
+	for attempt in 6:
+		waves.health_scale = health * margin
+		set_boss.call(boss * margin)
+		if _play(meta, stage).state == RunSim.State.WON:
+			break
+		margin *= 0.95
+	var line := 'TUNING["%s"] = {"health": %.2f' % [stage.id, health * margin]
 	if not bosses.is_empty():
-		line += ', "boss": %.2f' % boss
+		line += ', "boss": %.2f' % (boss * margin)
 	print(line + "}")
 
 

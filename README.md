@@ -107,8 +107,9 @@ godot --headless -s tools/campaign_balance.gd -- --tune       # print new tuning
 godot --headless -- --autoplay --stage=ember_4                # watch the bot play one stage
 ```
 
-The bot never levels its towers, so a person should find each stage easier than it does. Tuning aims for the
-bot to keep 70%, 55%, 40% and 25% of its lives across an element campaign's four stages.
+The bot levels and ascends its towers and casts skills, but follows one fixed plan. Tuning aims for it to keep
+60%, 45%, 30% and 20% of its lives across an element campaign's four stages, and the printed numbers already
+have a safety margin taken off.
 
 ## Meta tree and saves
 

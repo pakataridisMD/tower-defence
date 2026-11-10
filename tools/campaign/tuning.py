@@ -1,6 +1,7 @@
 # Each stage's health scale, and its boss waves' health, found by
 #   godot --headless -s tools/campaign_balance.gd -- --tune
-# (the Balance workflow runs it for a commit message with [tune]), then rounded down 5% for a margin.
+# (the Balance workflow runs it for a commit message with [tune]). Each has a margin taken off: 5%,
+# and 5% more for as long as the bot still lost (Void 4).
 TUNING["ember_1"] = {"health": 2.53}
 TUNING["ember_2"] = {"health": 1.74}
 TUNING["ember_3"] = {"health": 2.7, "boss": 0.81}
@@ -26,7 +27,7 @@ TUNING["earth_4"] = {"health": 1.61, "boss": 0.24}
 TUNING["void_1"] = {"health": 1.22}
 TUNING["void_2"] = {"health": 1.14}
 TUNING["void_3"] = {"health": 2.54, "boss": 1.25}
-TUNING["void_4"] = {"health": 1.95, "boss": 0.76}
+TUNING["void_4"] = {"health": 1.85, "boss": 0.72}
 TUNING["converge_1"] = {"health": 1.77}
 TUNING["converge_2"] = {"health": 1.04, "boss": 0.31}
 TUNING["converge_3"] = {"health": 1.23, "boss": 0.31}
