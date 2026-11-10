@@ -260,5 +260,5 @@ script = ExtResource("1_s")
 id = &"c_nature_2"
 display_name = "Rootway"
 health_growth = 1.1
-health_scale = 1.58
+health_scale = 2.93
 waves = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r6"), SubResource("r10"), SubResource("r13"), SubResource("r16"), SubResource("r20"), SubResource("r24"), SubResource("r27"), SubResource("r30"), SubResource("r34"), SubResource("r38"), SubResource("r41")])

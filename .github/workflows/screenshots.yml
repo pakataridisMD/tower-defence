@@ -1,0 +1,68 @@
+name: Screenshots
+
+# Plays the game under a virtual display and keeps the screenshots, so a pull request that changes
+# how the game looks can be checked by eye. It never fails the build.
+on:
+  pull_request:
+    paths:
+      - "scripts/**"
+      - "scenes/**"
+      - "assets/**"
+      - "data/**"
+      - "tools/capture.*"
+      - "tools/ci/**"
+      - ".github/workflows/screenshots.yml"
+  workflow_dispatch:
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GODOT_VERSION: 4.7.2
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install a virtual display and software OpenGL
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq xvfb libgl1-mesa-dri libglx-mesa0
+
+      - name: Download Godot ${{ env.GODOT_VERSION }}
+        run: |
+          curl -sSL --fail -o /tmp/godot.zip \
+            "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q /tmp/godot.zip -d /tmp/godot
+          mv "/tmp/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64" /tmp/godot/godot
+
+      - name: Import the project
+        run: /tmp/godot/godot --headless --import
+
+      - name: Take the menu and the HUD
+        run: |
+          mkdir -p shots/ui
+          xvfb-run -a -s "-screen 0 1920x1080x24" timeout 600 /tmp/godot/godot --rendering-driver opengl3 \
+            --resolution 1920x1080 --fixed-fps 30 res://tools/capture.tscn -- --ui --out="$PWD/shots/ui" 2>&1 | tail -n 60 || true
+          ls -la shots/ui
+
+      - name: Take a whole run
+        run: |
+          mkdir -p shots/run
+          xvfb-run -a -s "-screen 0 1920x1080x24" timeout 900 /tmp/godot/godot --rendering-driver opengl3 \
+            --resolution 1920x1080 --fixed-fps 30 res://tools/capture.tscn -- --out="$PWD/shots/run" 2>&1 | tail -n 40 || true
+          ls -la shots/run
+
+      - name: Keep the screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: shots/**/*.png
+          if-no-files-found: warn
+          retention-days: 14
+
+      # The pictures again, as text in this log, for tools that can read a log but not a build's files.
+      - name: Print the screenshots into the log
+        run: |
+          python3 -m pip install -q pillow || true
+          python3 tools/ci/print_shots.py shots/ui --quality=74 || true
+          python3 tools/ci/print_shots.py shots/run --width=1280 --quality=66 || true

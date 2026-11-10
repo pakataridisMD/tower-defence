@@ -1,0 +1,44 @@
+name: Balance
+
+# Plays the campaign and the skirmish with the scripted player and prints how it did. It takes a
+# while, so it only runs when asked: by hand, or by a commit on a branch whose message contains
+# [compare] (how several kinds of bot do, a minute or two) or [tune] (new numbers for
+# tools/campaign/tuning.py and data/waves/prototype.tres, ten minutes or more).
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [main]
+
+jobs:
+  tune:
+    if: >-
+      github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
+      || contains(github.event.head_commit.message, '[compare]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GODOT_VERSION: 4.7.2
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Download Godot ${{ env.GODOT_VERSION }}
+        run: |
+          curl -sSL --fail -o /tmp/godot.zip \
+            "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q /tmp/godot.zip -d /tmp/godot
+          mv "/tmp/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64" /tmp/godot/godot
+
+      - name: Import the project
+        run: /tmp/godot/godot --headless --import
+
+      - name: How each kind of bot does
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[compare]')
+        run: /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --compare 2>&1 | grep -E "COMPARE|ERROR"
+
+      - name: Tune the skirmish waves
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
+        run: /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --skirmish 2>&1 | grep -E "skirmish|SKIRMISH|ERROR"
+
+      - name: Tune the campaign
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
+        run: /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --tune 2>&1 | grep -E "TUNING|ERROR"

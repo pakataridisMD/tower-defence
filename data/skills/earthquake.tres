@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="SkillData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_skill"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="3_mod"]
+
+[sub_resource type="Resource" id="Effect_0"]
+script = ExtResource("2_status")
+kind = &"shatter"
+armour_reduction = 8.0
+duration = 8.0
+
+[resource]
+script = ExtResource("1_skill")
+id = &"earthquake"
+display_name = "Earthquake"
+description = "The ground shakes under every enemy: all of them take damage and lose 8 armour for 8 seconds."
+element = &"earth"
+requires_node = &"earth_entry"
+cooldown = 45.0
+damage = 25.0
+status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0")])

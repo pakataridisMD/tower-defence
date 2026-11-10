@@ -14,6 +14,7 @@ const META_TREE_DIR := "res://data/trees/meta"
 const MAPS_DIR := "res://data/maps"
 const DIFFICULTIES_DIR := "res://data/difficulties"
 const CAMPAIGNS_DIR := "res://data/campaigns"
+const SKILLS_DIR := "res://data/skills"
 const RUN_RULES_PATH := "res://data/rules/run_rules.tres"
 
 var elements: Dictionary[StringName, ElementData] = {}
@@ -23,6 +24,7 @@ var wave_sets: Dictionary[StringName, WaveSet] = {}
 var maps: Dictionary[StringName, MapData] = {}
 var difficulties: Dictionary[StringName, DifficultyData] = {}
 var campaigns: Dictionary[StringName, CampaignData] = {}
+var skills: Dictionary[StringName, SkillData] = {}
 ## Every campaign stage by id.
 var stages: Dictionary[StringName, StageData] = {}
 var in_run_tree_nodes: Array[TreeNodeData] = []
@@ -45,6 +47,7 @@ func reload() -> void:
 	maps.clear()
 	difficulties.clear()
 	campaigns.clear()
+	skills.clear()
 	stages.clear()
 	in_run_tree_nodes.clear()
 	meta_tree_nodes.clear()
@@ -63,6 +66,8 @@ func reload() -> void:
 		_index(difficulties, resource as DifficultyData, DIFFICULTIES_DIR)
 	for resource in load_folder(CAMPAIGNS_DIR):
 		_index(campaigns, resource as CampaignData, CAMPAIGNS_DIR)
+	for resource in load_folder(SKILLS_DIR):
+		_index(skills, resource as SkillData, SKILLS_DIR)
 	for campaign: CampaignData in campaigns.values():
 		for stage in campaign.stages:
 			if stage != null and not stage.id.is_empty() and not stages.has(stage.id):
@@ -123,6 +128,7 @@ func validate() -> PackedStringArray:
 	_validate_tree(errors, "meta tree", meta_tree_nodes, MetaProgress.BRANCH_NAMES.keys())
 	_validate_unlocks(errors)
 	_validate_campaigns(errors)
+	_validate_skills(errors)
 	if run_rules != null and run_rules.starting_lives <= 0:
 		errors.append("Run rules: starting lives must be above 0")
 	return errors
@@ -302,6 +308,30 @@ func _validate_tree(errors: PackedStringArray, tree_name: String, nodes: Array[T
 		for node_data in nodes:
 			if not reachable.has(node_data.id):
 				errors.append("%s node '%s': cannot be reached from the start" % [tree_name, node_data.id])
+
+
+func _validate_skills(errors: PackedStringArray) -> void:
+	for skill: SkillData in skills.values():
+		var label := "Skill '%s'" % skill.id
+		if not elements.has(skill.element):
+			errors.append("%s: unknown element '%s'" % [label, skill.element])
+		if not skill.requires_node.is_empty() \
+				and not in_run_tree_nodes.any(func(n: TreeNodeData) -> bool: return n.id == skill.requires_node):
+			errors.append("%s: requires unknown skill web node '%s'" % [label, skill.requires_node])
+		if skill.cooldown <= 0.0:
+			errors.append("%s: cooldown must be above 0" % label)
+		if skill.radius < 0.0:
+			errors.append("%s: radius cannot be negative" % label)
+		for effect in skill.status_effects:
+			if effect == null or effect.kind.is_empty():
+				errors.append("%s: a status effect has no kind" % label)
+		for modifier in skill.modifiers:
+			if modifier == null or modifier.stat.is_empty():
+				errors.append("%s: a modifier has no stat" % label)
+		if not skill.modifiers.is_empty() and skill.duration <= 0.0:
+			errors.append("%s: its modifiers need a duration" % label)
+		if skill.damage <= 0.0 and skill.status_effects.is_empty() and skill.knockback <= 0.0 and skill.modifiers.is_empty():
+			errors.append("%s: does nothing" % label)
 
 
 ## The campaign a stage belongs to, or null.

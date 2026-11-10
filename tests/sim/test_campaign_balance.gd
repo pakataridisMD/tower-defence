@@ -1,6 +1,7 @@
 extends GutTest
-## The scripted bot plays every campaign stage, with no meta tree bonuses. It never levels its towers,
-## so if it can win, a person can. tools/campaign_balance.gd prints the details.
+## The scripted bot plays every campaign stage, with no meta tree bonuses. It levels towers and casts
+## skills but follows one fixed plan, so if it can win, a person can. tools/campaign_balance.gd prints
+## the details.
 
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
 const MAX_SIM_SECONDS := 4000.0
@@ -25,7 +26,7 @@ func test_the_bot_wins_every_stage() -> void:
 			var bot := AutoPlayer.for_sim(sim)
 			var elapsed := 0.0
 			while not sim.is_over() and elapsed < MAX_SIM_SECONDS:
-				bot.play_build_phase()
+				bot.act()
 				sim.step(RunSim.STEP)
 				elapsed += RunSim.STEP
 			gut.p("%s: %s after %d waves, %d of %d lives" % [stage.id, RunSim.State.keys()[sim.state],

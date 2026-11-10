@@ -1,7 +1,10 @@
 class_name AutoPlayer
 extends RefCounted
-## A simple scripted player. Tests use it to check that a full run can be won, and the game
-## runs it with the --autoplay flag to record footage without a human.
+## A scripted player that plays the way a careful person would: it takes nodes in a set order,
+## builds where a tower covers the most road, levels a well-placed tower when that buys more than
+## another tower would, and casts every skill it has when there is a crowd to hit. Tests use it to
+## check that a full run can be won, the campaign is tuned against it, and the game runs it with
+## the --autoplay flag to record footage without a human.
 
 const DEFAULT_NODES: Array[StringName] = [
 	&"fire_entry", &"storm_entry", &"fire_cw", &"storm_ccw", &"bridge_plasma",
@@ -14,6 +17,16 @@ const DEFAULT_TOWERS: Array[StringName] = [
 ]
 ## Spacing of the points used to measure how much path a cell covers.
 const PATH_SAMPLE_SPACING := 32.0
+## Simulation steps between looks at the skills, so the bot costs little during a wave.
+const SKILL_CHECK_STEPS := 12
+## Enemies an aimed skill should reach, and enemies on the board before a skill for the whole
+## board is worth casting. A boss is always worth it.
+const SKILL_CROWD := 4
+const SKILL_BOARD_CROWD := 6
+## A skill that pushes enemies back is kept for when one is this far along its road.
+const SKILL_PUSH_PROGRESS := 0.65
+## What the bot expects an ascension to add to a tower's damage, as a share.
+const ASCEND_GAIN := 0.35
 
 var sim: RunSim
 ## Tree nodes to take, in order. A node that cannot be taken yet is retried next time.
@@ -21,9 +34,18 @@ var node_priority: Array[StringName] = []
 ## Towers to build, best first. The bot builds the first unlocked one it can afford.
 var tower_priority: Array[StringName] = []
 var max_towers := 40
+## Turn off to make the bot play like a beginner: no levels, no skills.
+var upgrades := true
+var skills := true
+## Turn off to stop the bot at the top level instead of ascending.
+var ascends := true
+## How far the bot trusts an upgrade against a new tower. At 1 it takes its own sums at face value;
+## lower leans toward building more towers.
+var upgrade_bias := 0.6
 
 var _path_samples := PackedVector2Array()
 var _coverage_cache: Dictionary[Vector3i, int] = {}
+var _skill_wait := 0
 
 
 func _init(
@@ -111,6 +133,15 @@ static func _hybrid(config: RunConfig, a: StringName, b: StringName) -> StringNa
 	return &""
 
 
+## One step of play: builds and starts the wave in a break, casts skills during a wave. Call it
+## before every simulation step.
+func act() -> void:
+	if sim.state == RunSim.State.BUILDING:
+		play_build_phase()
+	elif sim.state == RunSim.State.WAVE:
+		use_skills()
+
+
 ## Spend points and gold, then start the next wave. Does nothing unless the sim is building.
 func play_build_phase() -> void:
 	if sim.state != RunSim.State.BUILDING:
@@ -118,6 +149,57 @@ func play_build_phase() -> void:
 	spend_points()
 	build_towers()
 	sim.start_next_wave()
+
+
+## Casts every skill that is ready and has something worth hitting. Cheap to call every step.
+func use_skills() -> void:
+	if not skills or sim.state != RunSim.State.WAVE:
+		return
+	_skill_wait -= 1
+	if _skill_wait > 0:
+		return
+	_skill_wait = SKILL_CHECK_STEPS
+	var alive: Array[SimEnemy] = []
+	var boss := false
+	var furthest := 0.0
+	for enemy in sim.enemies:
+		if not enemy.alive:
+			continue
+		alive.append(enemy)
+		boss = boss or enemy.data.tags.has(&"boss")
+		furthest = maxf(furthest, enemy.progress / maxf(1.0, sim.lane_lengths[enemy.lane]))
+	if alive.is_empty():
+		return
+	for skill in sim.skill_list():
+		if not sim.skill_error(skill.id).is_empty():
+			continue
+		if skill.is_targeted():
+			var aim := _best_aim(skill, alive)
+			if aim.z >= SKILL_CROWD or aim.z < 0.0:
+				sim.use_skill(skill.id, Vector2(aim.x, aim.y))
+		elif skill.knockback > 0.0:
+			if furthest >= SKILL_PUSH_PROGRESS:
+				sim.use_skill(skill.id)
+		elif boss or alive.size() >= SKILL_BOARD_CROWD:
+			sim.use_skill(skill.id)
+
+
+## Where an aimed skill reaches the most enemies: (x, y, how many). A boss in reach makes the
+## count -1, which always casts.
+func _best_aim(skill: SkillData, alive: Array[SimEnemy]) -> Vector3:
+	var best := Vector3.ZERO
+	for center in alive:
+		var count := 0
+		var boss := false
+		for other in alive:
+			if other.position.distance_squared_to(center.position) <= skill.radius * skill.radius:
+				count += 1
+				boss = boss or other.data.tags.has(&"boss")
+		if boss:
+			return Vector3(center.position.x, center.position.y, -1.0)
+		if count > best.z:
+			best = Vector3(center.position.x, center.position.y, count)
+	return best
 
 
 func spend_points() -> void:
@@ -130,14 +212,79 @@ func spend_points() -> void:
 				break
 
 
+## Spends the gold, best buy first: another tower where it covers the most road, or a level (or
+## an ascension) for a tower that already stands in a good spot.
 func build_towers() -> void:
-	while sim.towers.size() < max_towers:
-		var tower_id := _affordable_tower()
-		if tower_id.is_empty():
+	for purchase in 400:
+		var tower_id := _affordable_tower() if sim.towers.size() < max_towers else &""
+		var cell := best_cell(tower_id) if not tower_id.is_empty() else Vector2i(-1, -1)
+		var build_value := 0.0
+		if cell.x >= 0:
+			var data: TowerData = sim.config.towers[tower_id]
+			var reach := data.stat_with(&"attack_range", sim.modifiers())
+			build_value = power(data) * coverage(cell, reach) / float(sim.tower_price(tower_id))
+		var upgrade := _best_upgrade()
+		if upgrade != null and upgrade.value > build_value:
+			if upgrade.ascendancy.is_empty():
+				sim.level_up(upgrade.tower)
+			else:
+				sim.ascend(upgrade.tower, upgrade.ascendancy)
+		elif build_value <= 0.0 or sim.place_tower(tower_id, cell) == null:
 			return
-		var cell := best_cell(tower_id)
-		if cell.x < 0 or sim.place_tower(tower_id, cell) == null:
-			return
+
+
+## A level or an ascension the bot can pay for, and what it buys per gold.
+class Upgrade:
+	var tower: SimTower
+	## Empty for a level.
+	var ascendancy: StringName
+	var value := 0.0
+
+
+## The upgrade that adds the most damage over the road per gold, or null if none can be paid for.
+## A level adds to the tower's own hits (not to its burn or poison) and to its range.
+func _best_upgrade() -> Upgrade:
+	if not upgrades:
+		return null
+	var best: Upgrade = null
+	for tower in sim.towers:
+		var gain := 0.0
+		var price := 0
+		var ascendancy: StringName = &""
+		var direct := direct_power(tower.data)
+		var lasting := power(tower.data) - direct
+		var now := (direct * (1.0 + SimTower.DAMAGE_PER_LEVEL * (tower.level - 1)) + lasting) \
+				* coverage(tower.cell, tower.attack_range)
+		if tower.level < SimTower.MAX_LEVEL:
+			var reach := tower.attack_range * (1.0 + SimTower.RANGE_PER_LEVEL * tower.level) \
+					/ (1.0 + SimTower.RANGE_PER_LEVEL * (tower.level - 1))
+			gain = (direct * (1.0 + SimTower.DAMAGE_PER_LEVEL * tower.level) + lasting) * coverage(tower.cell, reach) - now
+			price = tower.level_up_price()
+		elif ascends and tower.can_ascend() and not tower.data.ascendancies.is_empty():
+			var option := tower.data.ascendancies[0]
+			gain = now * ASCEND_GAIN
+			price = tower.ascend_price(option)
+			ascendancy = option.id
+		if price <= 0 or sim.gold < price:
+			continue
+		var value := gain * upgrade_bias / float(price)
+		if best == null or value > best.value:
+			best = Upgrade.new()
+			best.tower = tower
+			best.ascendancy = ascendancy
+			best.value = value
+	return best
+
+
+## A tower type's rough damage per second from its own hits, before levels: no burn or poison.
+static func direct_power(tower: TowerData) -> float:
+	var hits := 1.0 + tower.chain_count + (1.5 if tower.splash_radius > 0.0 else 0.0)
+	return tower.damage * tower.attacks_per_second * hits
+
+
+## A tower type's rough damage per second, before levels.
+static func power(tower: TowerData) -> float:
+	return value_for_gold(tower) * float(tower.cost)
 
 
 ## The free cell where this tower covers the most path, or (-1, -1) if none is free.

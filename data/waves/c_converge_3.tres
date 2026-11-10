@@ -323,7 +323,7 @@ element = &"nature"
 script = ExtResource("3_s")
 element = &"void"
 is_boss = true
-health_multiplier = 0.2
+health_multiplier = 0.31
 groups = Array[ExtResource("2_s")]([SubResource("r42"), SubResource("r43"), SubResource("r44")])
 
 [sub_resource type="Resource" id="r46"]
@@ -497,7 +497,7 @@ element = &"storm"
 script = ExtResource("3_s")
 element = &"earth"
 is_boss = true
-health_multiplier = 0.2
+health_multiplier = 0.31
 groups = Array[ExtResource("2_s")]([SubResource("r66"), SubResource("r67"), SubResource("r68")])
 
 [sub_resource type="Resource" id="r70"]
@@ -671,7 +671,7 @@ element = &"fire"
 script = ExtResource("3_s")
 element = &"water"
 is_boss = true
-health_multiplier = 0.2
+health_multiplier = 0.31
 groups = Array[ExtResource("2_s")]([SubResource("r90"), SubResource("r91"), SubResource("r92")])
 
 [resource]
@@ -679,5 +679,5 @@ script = ExtResource("1_s")
 id = &"c_converge_3"
 display_name = "Heart of the Ring"
 health_growth = 1.1
-health_scale = 0.77
+health_scale = 1.23
 waves = Array[ExtResource("3_s")]([SubResource("r3"), SubResource("r7"), SubResource("r11"), SubResource("r16"), SubResource("r21"), SubResource("r27"), SubResource("r31"), SubResource("r36"), SubResource("r41"), SubResource("r45"), SubResource("r49"), SubResource("r54"), SubResource("r59"), SubResource("r65"), SubResource("r69"), SubResource("r74"), SubResource("r79"), SubResource("r85"), SubResource("r89"), SubResource("r93")])

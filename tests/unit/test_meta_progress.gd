@@ -22,6 +22,7 @@ class FakeRegistry:
 	var elements: Dictionary[StringName, ElementData] = {}
 	var campaigns: Dictionary[StringName, CampaignData] = {}
 	var stages: Dictionary[StringName, StageData] = {}
+	var skills: Dictionary[StringName, SkillData] = {}
 	var run_rules := RunRules.new()
 
 

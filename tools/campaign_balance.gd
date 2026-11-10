@@ -2,15 +2,30 @@ extends SceneTree
 ## Plays every campaign stage with the scripted AutoPlayer and prints how each went, for tuning the
 ## campaign (see tools/campaign/gen_campaign.py). No meta tree bonuses, Normal difficulty.
 ##
-##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune]
+##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune] [--skirmish] [--compare]
 ##
-## --tune searches each stage's health scale so the bot (which never levels its towers, so it plays
-## worse than a person) wins keeping a target share of its lives, and prints lines for
-## tools/campaign/tuning.py.
+## --tune searches each stage's health scale so the bot wins keeping a target share of its lives,
+## and prints lines for tools/campaign/tuning.py. The bot levels its towers and casts its skills,
+## but it never sells, never fuses a tower and follows one fixed plan, so a person still has room
+## to do better. --skirmish does the same for the skirmish waves (data/waves/prototype.tres),
+## against two different plans. --compare plays everything with several kinds of bot (with and
+## without skills and upgrades), to see what each habit is worth.
 
 ## Share of lives the bot should keep, by stage position in an element campaign and in the Convergence.
-const TARGETS: Array[float] = [0.7, 0.55, 0.4, 0.25]
-const CONVERGE_TARGETS: Array[float] = [0.45, 0.35, 0.25]
+const TARGETS: Array[float] = [0.6, 0.45, 0.3, 0.2]
+const CONVERGE_TARGETS: Array[float] = [0.35, 0.25, 0.15]
+## Share of lives the weaker of the two skirmish plans should keep on Normal.
+const SKIRMISH_TARGET := 0.4
+const SKIRMISH_MAP := &"switchback"
+## A second skirmish plan, built on Water, Earth and Void. The first is the bot's default plan.
+const OTHER_NODES: Array[StringName] = [
+	&"earth_entry", &"water_entry", &"earth_ccw", &"water_cw", &"bridge_quagmire",
+	&"earth_core", &"earth_notable", &"void_entry", &"earth_cw", &"void_ccw", &"bridge_gravity_well",
+	&"water_core", &"water_notable", &"void_core", &"void_notable", &"void_cw", &"water_ccw",
+]
+const OTHER_TOWERS: Array[StringName] = [
+	&"hybrid_gravity_well", &"hybrid_quagmire", &"earth_monolith", &"void_obelisk", &"water_wellspring",
+]
 
 
 func _initialize() -> void:
@@ -24,6 +39,16 @@ func _initialize() -> void:
 			only = arg.trim_prefix("--stage=")
 	var tune := OS.get_cmdline_user_args().has("--tune")
 	var meta := MetaProgress.new(registry, PlayerProfile.new())
+	if OS.get_cmdline_user_args().has("--compare"):
+		_compare(registry, meta)
+		registry.free()
+		quit()
+		return
+	if OS.get_cmdline_user_args().has("--skirmish"):
+		_tune_skirmish(registry)
+		registry.free()
+		quit()
+		return
 	for campaign in meta.campaigns_in_order():
 		for i in campaign.stages.size():
 			var stage := campaign.stages[i]
@@ -48,10 +73,107 @@ func _play(meta: MetaProgress, stage: StageData) -> RunSim:
 	var bot := AutoPlayer.for_sim(sim)
 	var elapsed := 0.0
 	while not sim.is_over() and elapsed < 4000.0:
-		bot.play_build_phase()
+		bot.act()
 		sim.step(RunSim.STEP)
 		elapsed += RunSim.STEP
 	return sim
+
+
+## Kinds of bot to compare: name, upgrades, skills, ascends, upgrade bias.
+const BOTS := [
+	["plain", false, false, false, 1.0], ["skills", false, true, false, 1.0], ["up 1.0", true, true, true, 1.0],
+	["up 0.6", true, true, true, 0.6], ["up 0.35", true, true, true, 0.35], ["lvl 0.6", true, true, false, 0.6],
+	["up 0.6 quiet", true, false, true, 0.6],
+]
+
+
+func _set_up(bot: AutoPlayer, kind: Array) -> void:
+	bot.upgrades = kind[1]
+	bot.skills = kind[2]
+	bot.ascends = kind[3]
+	bot.upgrade_bias = kind[4]
+
+
+func _run_bot(sim: RunSim, bot: AutoPlayer) -> String:
+	var elapsed := 0.0
+	while not sim.is_over() and elapsed < 4000.0:
+		bot.act()
+		sim.step(RunSim.STEP)
+		elapsed += RunSim.STEP
+	if sim.state == RunSim.State.WON:
+		return "%3d%%" % roundi(100.0 * sim.lives / sim.starting_lives)
+	return " w%-2d" % sim.wave_index
+
+
+## A table: one row per stage (and per skirmish plan), one column per kind of bot. A cell is the
+## share of lives kept, or the wave the bot fell on.
+func _compare(registry: Node, meta: MetaProgress) -> void:
+	var header := "%-12s" % "COMPARE"
+	for kind: Array in BOTS:
+		header += " %12s" % kind[0]
+	print(header)
+	var wins: Array[int] = []
+	var kept: Array[int] = []
+	wins.resize(BOTS.size())
+	kept.resize(BOTS.size())
+	var rows: Array[Array] = [["skirmish A", &"", AutoPlayer.DEFAULT_NODES, AutoPlayer.DEFAULT_TOWERS],
+			["skirmish B", &"", OTHER_NODES, OTHER_TOWERS]]
+	for campaign in meta.campaigns_in_order():
+		for stage in campaign.stages:
+			rows.append([String(stage.id), stage.id])
+	for row: Array in rows:
+		var line := "%-12s" % row[0]
+		for i in BOTS.size():
+			var sim: RunSim
+			var bot: AutoPlayer
+			if row.size() > 2:
+				sim = RunSim.new(RunConfig.from_registry(registry, SKIRMISH_MAP))
+				bot = AutoPlayer.new(sim, row[2], row[3])
+			else:
+				sim = RunSim.new(meta.stage_config(row[1]))
+				bot = AutoPlayer.for_sim(sim)
+			_set_up(bot, BOTS[i])
+			var cell := _run_bot(sim, bot)
+			line += " %12s" % cell
+			if sim.state == RunSim.State.WON:
+				wins[i] += 1
+				kept[i] += roundi(100.0 * sim.lives / sim.starting_lives)
+		print("COMPARE " + line)
+	var total := "%-12s" % "wins/lives"
+	for i in BOTS.size():
+		total += " %12s" % ("%d/%d" % [wins[i], kept[i]])
+	print("COMPARE " + total)
+
+
+## Plays a skirmish run with one plan and returns the share of lives it kept, or -1 if it lost.
+func _play_skirmish(registry: Node, nodes: Array[StringName], towers: Array[StringName]) -> float:
+	var sim := RunSim.new(RunConfig.from_registry(registry, SKIRMISH_MAP))
+	var bot := AutoPlayer.new(sim, nodes, towers)
+	var elapsed := 0.0
+	while not sim.is_over() and elapsed < 4000.0:
+		bot.act()
+		sim.step(RunSim.STEP)
+		elapsed += RunSim.STEP
+	return float(sim.lives) / float(sim.starting_lives) if sim.state == RunSim.State.WON else -1.0
+
+
+## Bisects the skirmish waves' health scale: the highest at which both plans still win and keep
+## SKIRMISH_TARGET of their lives between them.
+func _tune_skirmish(registry: Node) -> void:
+	var config := RunConfig.from_registry(registry, SKIRMISH_MAP)
+	var waves := config.wave_set
+	var low := 0.5
+	var high := 5.0
+	for step in 9:
+		waves.health_scale = (low + high) * 0.5
+		var first := _play_skirmish(registry, AutoPlayer.DEFAULT_NODES, AutoPlayer.DEFAULT_TOWERS)
+		var second := _play_skirmish(registry, OTHER_NODES, OTHER_TOWERS)
+		print("skirmish scale %.2f: default plan %.2f, other plan %.2f" % [waves.health_scale, first, second])
+		if minf(first, second) > 0.0 and (first + second) * 0.5 >= SKIRMISH_TARGET:
+			low = waves.health_scale
+		else:
+			high = waves.health_scale
+	print("SKIRMISH %s health_scale = %.2f (growth %.2f)" % [waves.id, snappedf(low, 0.01), waves.health_growth])
 
 
 ## Bisects the stage's health scale: the highest scale at which the bot still wins with `target` of
@@ -59,6 +181,7 @@ func _play(meta: MetaProgress, stage: StageData) -> RunSim:
 ##
 ## Two passes: first the ordinary waves (with the boss waves made harmless) for the target plus a
 ## tenth, then the boss waves' own health multiplier, where the bot only needs to keep half the target.
+## The numbers it prints already have a margin taken off.
 func _tune(meta: MetaProgress, stage: StageData, target: float) -> void:
 	var waves := meta.stage_config(stage.id).wave_set
 	var bosses: Array[WaveData] = []
@@ -69,7 +192,7 @@ func _tune(meta: MetaProgress, stage: StageData, target: float) -> void:
 		for wave in bosses:
 			wave.health_multiplier = value
 	set_boss.call(0.02)
-	var health := _bisect(meta, stage, target + (0.1 if not bosses.is_empty() else 0.0), 0.3, 2.5,
+	var health := _bisect(meta, stage, target + (0.1 if not bosses.is_empty() else 0.0), 0.3, 4.0,
 			func(value: float) -> void: waves.health_scale = value)
 	waves.health_scale = health
 	var boss := 0.0
@@ -83,9 +206,18 @@ func _tune(meta: MetaProgress, stage: StageData, target: float) -> void:
 			break
 		health = snappedf(health * 0.8, 0.01)
 		waves.health_scale = health
-	var line := 'TUNING["%s"] = {"health": %.2f' % [stage.id, health]
+	# The bot's result does not fall evenly as health rises, so take a margin and check that it
+	# still wins there: 5% off, and another 5% for as long as it loses.
+	var margin := 0.95
+	for attempt in 6:
+		waves.health_scale = health * margin
+		set_boss.call(boss * margin)
+		if _play(meta, stage).state == RunSim.State.WON:
+			break
+		margin *= 0.95
+	var line := 'TUNING["%s"] = {"health": %.2f' % [stage.id, health * margin]
 	if not bosses.is_empty():
-		line += ', "boss": %.2f' % boss
+		line += ', "boss": %.2f' % (boss * margin)
 	print(line + "}")
 
 

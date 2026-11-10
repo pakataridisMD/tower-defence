@@ -4,6 +4,8 @@ extends Node
 ##   godot --path . --resolution 1920x1080 --fixed-fps 30 res://tools/capture.tscn -- --out=<folder>
 ## It plays with a made-up profile kept in memory, so it never touches a real save.
 ## Add --quick after `--` to skip the run and only take the menu, the meta tree and the skill web.
+## Add --ui to take the menu and the HUD at its busiest instead: a tower selected, skills cast, one
+## being aimed.
 ## Add --campaign to take the campaign map and a battle in each biome instead (each battle jumps
 ## straight to a late wave with plenty of gold, so the board is busy).
 
@@ -22,6 +24,7 @@ const MAX_WAIT_FRAMES := 40000
 var _out := ""
 var _quick := false
 var _campaign := false
+var _ui := false
 
 
 func _ready() -> void:
@@ -33,12 +36,81 @@ func _ready() -> void:
 			_quick = true
 		elif arg == "--campaign":
 			_campaign = true
+		elif arg == "--ui":
+			_ui = true
 	DirAccess.make_dir_recursive_absolute(_out)
 	Progress.use_memory_profile(_demo_profile())
-	if _campaign:
+	if _ui:
+		_run_ui()
+	elif _campaign:
 		_run_campaign()
 	else:
 		_run()
+
+
+## The menu, then a run set up by hand so the HUD has everything to show.
+func _run_ui() -> void:
+	var menu := MENU_SCENE.instantiate()
+	add_child(menu)
+	await _wait(0.6)
+	await _shot("menu")
+	menu.free()
+
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.3)
+	var sim := game.sim
+	sim.tree.points = 30
+	for id: StringName in AutoPlayer.DEFAULT_NODES:
+		sim.allocate_node(id)
+	for id: StringName in [&"water_entry", &"earth_entry", &"void_entry"]:
+		sim.allocate_node(id)
+	sim.gold = 2500
+	var bot := AutoPlayer.for_sim(sim)
+	bot.build_towers()
+	sim.gold = 900
+	await _wait(0.3)
+	await _shot("hud_help")
+	# A tower selected: its numbers and its upgrade buttons.
+	game.board.select(sim.towers[0])
+	game.hud.show_shop_tier(2)
+	await _wait(0.3)
+	await _shot("hud_tower")
+	sim.wave_index = 6
+	game._start_wave()
+	await _until(func() -> bool: return sim.time_in_wave > 9.0 or sim.is_over())
+	game._begin_skill(&"surge")
+	game._begin_skill(&"tidal_wave")
+	var target := _crowd(sim)
+	game._begin_skill(&"meteor")
+	Input.warp_mouse(game.board.to_global(target))
+	_hover(game.board.to_global(target))
+	await _wait(0.2)
+	await _shot("hud_aiming")
+	game._cast_skill(&"meteor", target)
+	await _wait(0.12)
+	await _shot("skill_meteor")
+	game._begin_skill(&"earthquake")
+	game._cast_skill(&"entangle", _crowd(sim))
+	await _wait(0.15)
+	await _shot("skill_cast")
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+## Where the most enemies stand close together, or the middle of the board if there are none.
+static func _crowd(sim: RunSim) -> Vector2:
+	var best := sim.config.map.size_in_pixels() * 0.5
+	var most := 0
+	for center in sim.enemies:
+		var count := 0
+		for other in sim.enemies:
+			if other.alive and other.position.distance_to(center.position) < 110.0:
+				count += 1
+		if center.alive and count > most:
+			most = count
+			best = center.position
+	return best
 
 
 ## Ember Reach and the Thunder Steppe done, two more under way.
