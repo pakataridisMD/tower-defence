@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import os
 import subprocess
 import sys
@@ -41,24 +42,29 @@ CINEMATICS = ROOT / "data" / "story" / "cinematics"
 VOICE_OUT = ROOT / "assets" / "story" / "voice"
 
 # Voice = weighted blend of Kokoro voice styles + delivery + mastering.
+# Optional keys: "semitones" (pitch shift; sounds robotic, avoid), "room" (hall wetness, default 0.16).
 PRESETS = {
     # Low, calm, storybook-ancient. Kore is the lowest Kokoro female voice;
     # a little Nicole adds breath and intimacy.
     "elder": {
         "voices": {"af_kore": 0.7, "af_nicole": 0.3},
-        "lang": "en-us", "speed": 0.82, "semitones": -1.5,
+        "lang": "en-us", "speed": 0.88,
     },
     # Breathier, closer to the mic: for quiet or sad beats.
     "whisper": {
         "voices": {"af_nicole": 1.0},
-        "lang": "en-us", "speed": 0.85, "semitones": -2.0,
+        "lang": "en-us", "speed": 0.9, "room": 0.1,
     },
     # The narrator (chosen by Doctor Paris, 2026-11-11): British, crisp, regal.
     "regal": {
         "voices": {"bf_emma": 0.6, "af_kore": 0.4},
-        "lang": "en-gb", "speed": 0.84, "semitones": -2.0,
+        "lang": "en-gb", "speed": 0.9,
     },
 }
+
+# Speaker ids voiced by the narrator. Queen Ysolde is the narrator, so her
+# in-scene lines use the same voice.
+NARRATOR_SPEAKERS = {"narrator", "ysolde"}
 
 _kokoro = None
 
@@ -83,38 +89,78 @@ def style(preset: dict):
     return mix
 
 
+SENTENCE_GAP = 0.32   # seconds between sentences
+PARAGRAPH_GAP = 0.9   # seconds for a blank line in the text
+
+
+def _trim(x: np.ndarray, sr: int, floor: float = 0.004) -> np.ndarray:
+    """Cut the model's own leading/trailing silence so our pauses are exact."""
+    loud = np.flatnonzero(np.abs(x) > floor)
+    if loud.size == 0:
+        return x[:0]
+    pad = int(sr * 0.03)
+    return x[max(0, loud[0] - pad): loud[-1] + pad]
+
+
 def speak(text: str, preset: dict) -> tuple[np.ndarray, int]:
-    """Raw speech. Blank lines in the text become longer, dramatic pauses."""
+    """Raw speech, one sentence at a time with natural breaths between them.
+    A blank line in the text becomes a longer, dramatic pause."""
     k, voice = kokoro(), style(preset)
     out, sr = [], 24000
     paras = [p.strip() for p in text.split("\n\n") if p.strip()]
-    for i, para in enumerate(paras):
-        samples, sr = k.create(" ".join(para.split()), voice=voice,
-                               speed=preset["speed"], lang=preset["lang"])
-        out.append(samples)
-        if i < len(paras) - 1:
-            out.append(np.zeros(int(sr * 0.9), dtype=samples.dtype))
-    return np.concatenate(out), sr
+    for pi, para in enumerate(paras):
+        sentences = [x for x in re.split(r"(?<=[.!?])\s+", " ".join(para.split())) if x]
+        for si, sentence in enumerate(sentences):
+            samples, sr = k.create(sentence, voice=voice, speed=preset["speed"], lang=preset["lang"])
+            out.append(_trim(samples, sr))
+            last_in_para = si == len(sentences) - 1
+            if not (last_in_para and pi == len(paras) - 1):
+                gap = PARAGRAPH_GAP if last_in_para else SENTENCE_GAP
+                out.append(np.zeros(int(sr * gap), dtype=np.float32))
+    return np.concatenate(out).astype(np.float32), sr
+
+
+def _room(x: np.ndarray, sr: int, rt60: float = 1.1, wet: float = 0.16) -> np.ndarray:
+    """A soft, dark hall: convolution with decaying filtered noise. Unlike a
+    few discrete echoes, this has no metallic ring."""
+    rng = np.random.default_rng(7)
+    n = int(sr * rt60 * 1.2)
+    t = np.arange(n) / sr
+    ir = rng.standard_normal(n) * np.exp(-6.91 * t / rt60)
+    ir = np.convolve(ir, np.ones(12) / 12, mode="same")    # darken the tail
+    ir = np.concatenate([np.zeros(int(sr * 0.025)), ir])   # 25 ms pre-delay
+    ir /= np.sqrt(np.sum(ir ** 2))
+    size = len(x) + len(ir) - 1
+    nfft = 1 << (size - 1).bit_length()
+    tail = np.fft.irfft(np.fft.rfft(x, nfft) * np.fft.rfft(ir, nfft), nfft)[:size]
+    dry = np.concatenate([x, np.zeros(len(ir) - 1)])
+    y = dry + wet * tail * (np.max(np.abs(x)) / (np.max(np.abs(tail)) + 1e-9))
+    # Faint, dark room tone so pauses aren't digital dead air.
+    tone = np.convolve(rng.standard_normal(len(y)), np.ones(40) / 40, mode="same")
+    return y + tone * np.max(np.abs(x)) * 10 ** (-58 / 20) / (np.std(tone) + 1e-9)
 
 
 def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
-    pitch = 2 ** (preset["semitones"] / 12)
-    chain = ",".join([
-        f"rubberband=pitch={pitch:.4f}:formant=preserved",
-        "highpass=f=60",
-        "lowshelf=f=180:g=3",              # chest
-        "equalizer=f=3200:t=q:w=1.2:g=-2",  # soften synthetic edge
-        "equalizer=f=8000:t=q:w=1:g=1.5",   # air
-        "acompressor=threshold=-20dB:ratio=3:attack=10:release=200",
-        "aecho=0.8:0.5:60|110|170:0.22|0.15|0.09",  # small stone hall
+    filters = []
+    if preset.get("semitones"):  # pitch shifting adds a robotic edge; avoid if possible
+        filters.append(f"rubberband=pitch={2 ** (preset['semitones'] / 12):.4f}:formant=preserved")
+    filters += [
+        "highpass=f=70",
+        "lowshelf=f=200:g=2",                # warmth
+        "equalizer=f=5500:t=q:w=2:g=-2.5",    # tame the synthetic fizz/sibilance
+        "lowpass=f=12500",                    # remove vocoder hiss above the voice
+        "acompressor=threshold=-22dB:ratio=2:attack=20:release=250",
         "apad=pad_dur=0.6",
-        "loudnorm=I=-16:TP=-1.5:LRA=9",
+        "loudnorm=I=-16:TP=-1.5:LRA=11",
         "aresample=44100",
-    ])
+    ]
     with tempfile.TemporaryDirectory() as tmp:
+        x, sr = sf.read(wav_in)
+        roomy = Path(tmp) / "room.wav"
+        sf.write(roomy, _room(x, sr, wet=preset.get("room", 0.16)), sr, subtype="FLOAT")
         mastered = Path(tmp) / "m.wav"
-        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(wav_in),
-                        "-af", chain, "-ac", "1", str(mastered)], check=True)
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(roomy),
+                        "-af", ",".join(filters), "-ac", "1", str(mastered)], check=True)
         data, sr = sf.read(mastered)
         ogg_out.parent.mkdir(parents=True, exist_ok=True)
         # libsndfile's Vorbis encoder can crash on one huge write: feed it in blocks.
@@ -141,18 +187,20 @@ def shots_of(doc) -> list[dict]:
     return []
 
 
-def narrate_cinematic(path: Path, preset_name: str) -> None:
+def narrate_cinematic(path: Path, preset_name: str, out_root: Path = VOICE_OUT) -> None:
     doc = json.loads(path.read_text(encoding="utf-8"))
     cid = doc.get("id", path.stem) if isinstance(doc, dict) else path.stem
-    out_dir = VOICE_OUT / cid
+    out_dir = out_root / cid
     for n, shot in enumerate(shots_of(doc), start=1):
         text = (shot.get("text") or "").strip()
         if not text or shot.get("voice") is False:
             continue
+        if shot.get("speaker", "narrator") not in NARRATOR_SPEAKERS:
+            continue  # other characters stay as subtitles until they get voices
         preset = PRESETS[shot.get("voice_preset", preset_name)]
         out = out_dir / f"{n:02d}.ogg"
         secs = render(text, out, preset)
-        print(f"{out.relative_to(ROOT)}  {secs:5.1f}s")
+        print(f"{out}  {secs:5.1f}s")
 
 
 def main() -> None:
@@ -160,20 +208,21 @@ def main() -> None:
     ap.add_argument("cinematics", nargs="*", help="cinematic ids (default: all)")
     ap.add_argument("--preset", default="regal", choices=sorted(PRESETS))
     ap.add_argument("--text", help="speak this text instead of cinematics")
-    ap.add_argument("--out", type=Path, help="output .ogg for --text")
+    ap.add_argument("--out", type=Path, help="output .ogg for --text, or output root for cinematics")
+    ap.add_argument("--scripts", type=Path, default=CINEMATICS, help="folder of cinematic .json files")
     args = ap.parse_args()
 
     if args.text:
         out = args.out or Path("narration.ogg")
         print(f"{out}  {render(args.text.replace('\\n', '\n'), out, PRESETS[args.preset]):.1f}s")
         return
-    files = sorted(CINEMATICS.glob("*.json"))
+    files = sorted(args.scripts.glob("*.json"))
     if args.cinematics:
-        files = [CINEMATICS / f"{c}.json" for c in args.cinematics]
+        files = [args.scripts / f"{c}.json" for c in args.cinematics]
     if not files:
-        sys.exit(f"No cinematics found in {CINEMATICS}")
+        sys.exit(f"No cinematics found in {args.scripts}")
     for f in files:
-        narrate_cinematic(f, args.preset)
+        narrate_cinematic(f, args.preset, args.out or VOICE_OUT)
 
 
 if __name__ == "__main__":

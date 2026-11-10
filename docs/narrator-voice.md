@@ -13,13 +13,19 @@ is what the cinematic player loads. Setup and commands are in the script's heade
 - **Model:** Kokoro-82M, Apache-2.0 weights. Commercial use is allowed with no fee,
   no account and no attribution requirement, so the audio can ship in a paid game.
 - **Voice:** the `regal` preset, chosen by Doctor Paris: a British blend of Kokoro's
-  `bf_emma` (60%) and its lowest female voice `af_kore` (40%), slowed to 0.84x,
-  pitched down 2 semitones, warmed in the low mids, given a small stone-hall echo
-  and normalised to -16 LUFS.
+  `bf_emma` (60%) and its lowest female voice `af_kore` (40%) at 0.9x speed.
+- **Keeping it natural:** no pitch shifting (it made the voice sound electronic),
+  one sentence at a time with 0.32 s breaths between them, a soft convolution hall
+  instead of discrete echoes, faint room tone under the pauses, the synthetic fizz
+  around 5.5 kHz tamed, normalised to -16 LUFS.
+- **Who is voiced:** shots whose `speaker` is `narrator` or `ysolde` (Queen Ysolde
+  is the narrator). Other characters stay as subtitles until they get voices.
 - **Presets:** `regal` (default narrator), `elder` (lower, American, storybook),
   `whisper` (quiet or sad beats). A shot can pick one with `"voice_preset"`,
   or opt out of narration with `"voice": false`.
 - **Pauses:** a blank line inside a shot's text becomes a 0.9 s dramatic pause.
+- `--scripts DIR` reads cinematics from another folder (for example a branch
+  checkout) and `--out DIR` writes the voice files somewhere else.
 - Regenerating every cinematic takes seconds per line on a CPU, so the script can
   change freely until the end of development.
 
