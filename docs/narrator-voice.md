@@ -12,11 +12,12 @@ is what the cinematic player loads. Setup and commands are in the script's heade
 
 - **Model:** Kokoro-82M, Apache-2.0 weights. Commercial use is allowed with no fee,
   no account and no attribution requirement, so the audio can ship in a paid game.
-- **Voice:** a blend of Kokoro's lowest female voice (`af_kore`) with a little
-  breathy `af_nicole`, slowed to 0.82x, pitched down 1.5 semitones, warmed in the
-  low mids, given a small stone-hall echo and normalised to -16 LUFS.
-- **Presets:** `elder` (default narrator), `whisper` (quiet or sad beats), `regal`
-  (British, for royal and city scenes). A shot can pick one with `"voice_preset"`,
+- **Voice:** the `regal` preset, chosen by Doctor Paris: a British blend of Kokoro's
+  `bf_emma` (60%) and its lowest female voice `af_kore` (40%), slowed to 0.84x,
+  pitched down 2 semitones, warmed in the low mids, given a small stone-hall echo
+  and normalised to -16 LUFS.
+- **Presets:** `regal` (default narrator), `elder` (lower, American, storybook),
+  `whisper` (quiet or sad beats). A shot can pick one with `"voice_preset"`,
   or opt out of narration with `"voice": false`.
 - **Pauses:** a blank line inside a shot's text becomes a 0.9 s dramatic pause.
 - Regenerating every cinematic takes seconds per line on a CPU, so the script can

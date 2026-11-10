@@ -18,7 +18,7 @@ Use:
     .venv-voice/bin/python tools/voice/narrate.py                 # every cinematic
     .venv-voice/bin/python tools/voice/narrate.py opening         # one cinematic
     .venv-voice/bin/python tools/voice/narrate.py --text "Line" --out line.ogg
-    .venv-voice/bin/python tools/voice/narrate.py --preset whisper opening
+    .venv-voice/bin/python tools/voice/narrate.py --preset elder opening
 
 Needs ffmpeg with the rubberband filter on PATH.
 """
@@ -42,8 +42,8 @@ VOICE_OUT = ROOT / "assets" / "story" / "voice"
 
 # Voice = weighted blend of Kokoro voice styles + delivery + mastering.
 PRESETS = {
-    # Default narrator: low, calm, storybook-ancient. Kore is the lowest Kokoro
-    # female voice; a little Nicole adds breath and intimacy.
+    # Low, calm, storybook-ancient. Kore is the lowest Kokoro female voice;
+    # a little Nicole adds breath and intimacy.
     "elder": {
         "voices": {"af_kore": 0.7, "af_nicole": 0.3},
         "lang": "en-us", "speed": 0.82, "semitones": -1.5,
@@ -53,7 +53,7 @@ PRESETS = {
         "voices": {"af_nicole": 1.0},
         "lang": "en-us", "speed": 0.85, "semitones": -2.0,
     },
-    # British, crisper and more regal: for royal or city scenes.
+    # The narrator (chosen by Doctor Paris, 2026-11-11): British, crisp, regal.
     "regal": {
         "voices": {"bf_emma": 0.6, "af_kore": 0.4},
         "lang": "en-gb", "speed": 0.84, "semitones": -2.0,
@@ -158,7 +158,7 @@ def narrate_cinematic(path: Path, preset_name: str) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("cinematics", nargs="*", help="cinematic ids (default: all)")
-    ap.add_argument("--preset", default="elder", choices=sorted(PRESETS))
+    ap.add_argument("--preset", default="regal", choices=sorted(PRESETS))
     ap.add_argument("--text", help="speak this text instead of cinematics")
     ap.add_argument("--out", type=Path, help="output .ogg for --text")
     args = ap.parse_args()
