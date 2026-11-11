@@ -20,7 +20,7 @@ def build():
 
     # 1. Solenne at dusk, still bright
     a = s.section("1 still bright", bars=5, meter=3, seconds=SLOTS["1 still bright"])
-    a.part("celesta", "F5:1 G5:.5 A5:1 C6:.5 | D6:1.5 C6:1 A5:.5 | G5:1 A5:.5 F5:1 D5:.5 | C5:1.5 F5:1 G5:.5 | "
+    a.part("solo_vln", "F5:1 G5:.5 A5:1 C6:.5 | D6:1.5 C6:1 A5:.5 | G5:1 A5:.5 F5:1 D5:.5 | C5:1.5 F5:1 G5:.5 | "
                       "A5:3", vel="mp")
     a.part("fl", "r:3 | r:3 | r:3 | r:3 | A5:3", vel="p")
     a.part("harp", "F2+C3+A3:3 | Bb1+F2+D3:3 | G2+D3+Bb3:3 | C2+G2+E3:3 | F2+C3+A3:3", vel="mp")
@@ -139,7 +139,7 @@ def build():
 
     # 11. One shard drifts east, and does not land
     n = s.section("11 one shard", bars=4, meter=4, seconds=SLOTS["11 one shard"])
-    n.part("celesta", "D6:2 A6:2 | G6:1.5 F#6:.5 E6 D6 | r:4 | r:4", vel="mp")
+    n.part("fl", "D6:2 A6:2 | G6:1.5 F#6:.5 E6 D6 | r:4 | r:4", vel="mp")
     n.part("solo_vln", "r:4 | r:4 | D6:2 A6:2 | A6:4", vel="pp")
     n.part("vln2", "F#5+A5:4 | G5+B5:4 | F#5+A5:4 | F#5+A5:4", vel="ppp")
     n.part("vla", "D5:4 | D5:4 | D5:4 | D5:4", vel="ppp")

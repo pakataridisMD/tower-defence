@@ -31,9 +31,12 @@ def seat(s: Score) -> Score:
     t("tbn", pan=0.3, attack=0.05, legato=1.03, gain_db=-5)
     t("tuba", pan=0.45, attack=0.05, legato=1.03, gain_db=-5)
     t("harp", pan=-0.55, gain_db=-10)
-    t("celesta", pan=-0.35, gain_db=-6)
-    t("bells", pan=0.3, gain_db=-10)
-    t("glock", pan=-0.4, gain_db=-12)
+    # Doctor Paris (2026-11-11): no celesta, glockenspiel or bells, they sound like a toy xylophone in a
+    # game for adults. Celesta lines are played by a soft high string tremolo instead (a cold shimmer);
+    # glockenspiel and bell parts stay in the score but are not rendered.
+    t("celesta", inst="vln_trem", pan=-0.35, attack=0.25, release=1.2, gain_db=-16)
+    t("bells", pan=0.3, gain_db=-10, mute=True)
+    t("glock", pan=-0.4, gain_db=-12, mute=True)
     t("choir", pan=0.0, legato=1.05, gain_db=-11)
     t("choir_hi", inst="choir", pan=-0.1, gain_db=-12)
     t("oohs", pan=0.05, gain_db=-7)
