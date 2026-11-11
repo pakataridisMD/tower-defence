@@ -26,6 +26,8 @@ var web: SkillWebView
 var audio: GameAudio
 var music: BattleMusic
 var paused := false
+var audio_panel: AudioPanel
+var _paused_before_audio := false
 ## Set before the node enters the tree, or with --autoplay.
 var autoplay := false
 var quit_at_end := false
@@ -83,11 +85,20 @@ func _build_views() -> void:
 	web.hide()
 	web_layer.add_child(web)
 
+	var audio_layer := CanvasLayer.new()
+	audio_layer.layer = 3
+	add_child(audio_layer)
+	audio_panel = AudioPanel.new()
+	audio_panel.hide()
+	audio_panel.closed.connect(_close_audio)
+	audio_layer.add_child(audio_panel)
+
 
 func _connect_signals() -> void:
 	hud.start_wave_pressed.connect(_start_wave)
 	hud.web_pressed.connect(_toggle_web)
 	hud.speed_pressed.connect(_cycle_speed)
+	hud.audio_pressed.connect(_open_audio)
 	hud.tower_chosen.connect(_choose_tower)
 	hud.skill_pressed.connect(_skill_button)
 	hud.sell_pressed.connect(_sell_selected)
@@ -136,16 +147,21 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
-## Keys: Space starts the wave, T opens the skill web, F changes speed, P pauses, Esc backs out,
+## Keys: Space starts the wave, T opens the skill web, F changes speed, P pauses, O opens the audio
+## settings, M mutes everything, Esc backs out,
 ## 1-9 pick a tower from the open shop page (Tab turns the page), Q W E A S D cast the skills,
 ## Z X C V B N press the selected tower's upgrade buttons, and Delete sells it.
 func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
-	if key == null or not key.pressed or key.echo:
+	if key == null or not key.pressed or key.echo or audio_panel.visible:
 		return
 	match key.keycode:
 		KEY_SPACE:
 			_start_wave()
+		KEY_O:
+			_open_audio()
+		KEY_M:
+			_toggle_mute()
 		KEY_T:
 			_toggle_web()
 		KEY_F:
@@ -201,6 +217,27 @@ func _cycle_speed() -> void:
 	_speed_index = (_speed_index + 1) % SPEEDS.size()
 	hud.speed = SPEEDS[_speed_index]
 	SoundPlayer.sfx(&"ui_toggle")
+
+
+## The audio settings pause the run while they are open.
+func _open_audio() -> void:
+	if audio_panel.visible:
+		return
+	_paused_before_audio = paused
+	paused = true
+	hud.paused = true
+	audio_panel.refresh()
+	audio_panel.show()
+
+
+func _close_audio() -> void:
+	paused = _paused_before_audio and not sim.is_over()
+	hud.paused = paused
+
+
+func _toggle_mute() -> void:
+	var muted := AudioSettings.toggle_mute_all()
+	hud.show_message("Sound off (M)" if muted else "Sound on", UiStyle.TEXT_DIM if muted else UiStyle.TEXT)
 
 
 func _toggle_pause() -> void:

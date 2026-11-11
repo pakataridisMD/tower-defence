@@ -45,6 +45,7 @@ var _last_start: Dictionary[StringName, float] = {}
 var _last_variant: Dictionary[StringName, int] = {}
 var _warned: Dictionary[StringName, bool] = {}
 var _duck_db := 0.0
+var _duck_now := 0.0
 var _duck_hold := 0.0
 var _duck_tween: Tween
 ## With no sound card (headless runs, CI) nothing is really played: the dummy audio driver never
@@ -70,6 +71,7 @@ func _exit_tree() -> void:
 
 func _ready() -> void:
 	_silent = AudioServer.get_driver_name() == "Dummy" or DisplayServer.get_name() == "headless"
+	AudioSettings.load_saved()
 	load_catalogue()
 	for i in FLAT_PLAYERS:
 		var player := AudioStreamPlayer.new()
@@ -226,24 +228,21 @@ func duck_music(db: float, seconds: float) -> void:
 	if _duck_tween != null:
 		_duck_tween.kill()
 	_duck_tween = create_tween()
-	_duck_tween.tween_method(_set_duck, AudioServer.get_bus_volume_db(bus), db, DUCK_IN)
+	_duck_tween.tween_method(_set_duck, _duck_now, db, DUCK_IN)
 	_duck_tween.tween_interval(seconds)
 	_duck_tween.tween_method(_set_duck, db, 0.0, DUCK_OUT)
 	_duck_tween.tween_callback(func() -> void: _duck_db = 0.0)
 
 
-## Volume of a bus as a share from 0 to 1, for an options screen.
-func set_volume(bus_name: StringName, share: float) -> void:
-	var bus := AudioServer.get_bus_index(bus_name)
-	if bus >= 0:
-		AudioServer.set_bus_volume_db(bus, linear_to_db(maxf(share, 0.0001)))
-		AudioServer.set_bus_mute(bus, share <= 0.0)
+## How far the music is ducked right now, in dB (0 when it is not). AudioSettings adds it on top of
+## the player's music volume.
+func music_duck_db() -> float:
+	return _duck_now
 
 
 func _set_duck(db: float) -> void:
-	var bus := AudioServer.get_bus_index(MUSIC_BUS)
-	if bus >= 0:
-		AudioServer.set_bus_volume_db(bus, db)
+	_duck_now = db
+	AudioSettings.apply_bus(MUSIC_BUS, db)
 
 
 func _all_players() -> Array[Node]:
