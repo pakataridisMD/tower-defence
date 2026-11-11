@@ -6,6 +6,7 @@ extends Control
 signal start_wave_pressed
 signal web_pressed
 signal speed_pressed
+signal audio_pressed
 signal tower_chosen(tower_id: StringName)
 signal skill_pressed(skill_id: StringName)
 signal sell_pressed
@@ -152,6 +153,10 @@ func _build_top_bar() -> void:
 	_web_button.pressed.connect(func() -> void: web_pressed.emit())
 	_speed_button = _bar_button(row, 160)
 	_speed_button.pressed.connect(func() -> void: speed_pressed.emit())
+	var audio_button := _bar_button(row, 120)
+	audio_button.text = "Audio (O)"
+	audio_button.tooltip_text = "Volume and mute for music, effects, interface and voices. M mutes everything."
+	audio_button.pressed.connect(func() -> void: audio_pressed.emit())
 	_wave_button = _bar_button(row, 232)
 	_wave_button.pressed.connect(func() -> void: start_wave_pressed.emit())
 
@@ -790,7 +795,7 @@ func _help_text() -> String:
 	var keys: Array[Array] = [
 		["T", "skill web"], ["F1 F2 F3", "heroes"], ["1-9", "pick a tower"], ["Tab", "next tower page"], ["Q W E  A S D", "skills"],
 		["Z X C V", "upgrade the tower"], ["Del", "sell the tower"], ["Space", "start the wave"],
-		["F", "speed"], ["P", "pause"], ["Esc", "back"],
+		["F", "speed"], ["P", "pause"], ["O", "audio"], ["M", "mute"], ["Esc", "back"],
 	]
 	var lines: PackedStringArray = []
 	lines.append("[b]How to play[/b]")
