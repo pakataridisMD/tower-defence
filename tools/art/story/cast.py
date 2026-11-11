@@ -1368,3 +1368,34 @@ character(
     frame=(150, 120), frame_cy=1.2, sprite_scale=26.0,
     rim=(210, 210, 230),
 )
+
+
+# ---------------------------------------------------------------- boss sizes on the board
+# Doctor Paris (2026-11-11): "major boss should be huge". A hero sprite stands about 60 px tall (about 1.5 board
+# cells). Bosses get their own tiers, in sprite pixels: (height px, frame width / height, model height in metres).
+HERO_PX = 60
+BOSS_SIZE = {
+    # Heralds: twice a hero
+    "herald_ourra": (120, 0.85, None), "herald_gorrath": (130, 0.85, None), "herald_vesper": (125, 0.8, None),
+    "herald_ashwick": (110, 0.85, None), "herald_vholt": (125, 1.25, None), "herald_briar": (120, 0.85, None),
+    # corrupted Wardens: three and a half times a hero
+    "cinder_tyrant": (215, 0.8, None), "thunderhead": (215, 0.95, None), "elder_broodmother": (210, 0.85, None),
+    "tidal_leviathan": (230, 1.35, 2.4), "mountain_titan": (230, 0.8, None), "hollow_king": (215, 0.8, None),
+    # Convergence and the final assault
+    "cassivane_ashen": (130, 0.85, None), "sundered_heart": (260, 1.0, 2.6), "gatemaw": (270, 1.55, 2.9),
+    "vael_orrun": (400, 0.7, None),
+}
+
+
+def _apply_boss_sizes():
+    for cid, (px, aspect, h_m) in BOSS_SIZE.items():
+        c = CAST[cid]
+        h = h_m or c["body"].get("height", 1.8)
+        c["sprite_scale"] = px / (h * 1.05)
+        fh = int(px * 1.3) // 2 * 2
+        c["frame"] = (int(fh * aspect) // 2 * 2, fh)
+        c["frame_cy"] = h * 0.58
+        c["sprite_fit"] = False
+
+
+_apply_boss_sizes()
