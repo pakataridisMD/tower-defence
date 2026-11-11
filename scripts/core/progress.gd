@@ -17,6 +17,11 @@ var persist := true
 var meta: MetaProgress
 ## The campaign stage the next run plays, or empty for a skirmish on the selected map. Not saved.
 var active_stage: StringName = &""
+## Cinematics waiting to play, and the scene to open once they are done. Set by play_story().
+var cinematic_queue: Array[StringName] = []
+var cinematic_next_scene := ""
+
+const CINEMATIC_SCENE := "res://scenes/story/cinematic.tscn"
 
 
 func _ready() -> void:
@@ -88,12 +93,18 @@ func play_skirmish() -> void:
 	active_stage = &""
 
 
+## The next run's config, with the hero party.
 func run_config() -> RunConfig:
 	if not active_stage.is_empty():
 		var config := meta.stage_config(active_stage)
 		if config != null:
-			return config
-	return meta.run_config()
+			return meta.add_heroes(config)
+	return meta.add_heroes(meta.run_config())
+
+
+## Adds a hero to the party or takes them out, and saves.
+func toggle_party_hero(hero_id: StringName) -> bool:
+	return _saved(meta.toggle_party_hero(hero_id))
 
 
 ## Pays a finished run's meta points, updates the records and saves. Returns the points earned.
@@ -108,6 +119,22 @@ func record_stage(sim: RunSim) -> Dictionary:
 	var result := meta.record_stage(sim)
 	_saved(true)
 	return result
+
+
+## Marks a cinematic as seen and saves.
+func mark_seen(cinematic_id: StringName) -> bool:
+	return _saved(meta.mark_seen(cinematic_id))
+
+
+## Opens a scene, first playing these cinematics if there are any. Use it for every scene change
+## the story can sit in front of.
+func play_story(tree: SceneTree, cinematics: Array[StringName], next_scene: String) -> void:
+	if cinematics.is_empty():
+		tree.change_scene_to_file(next_scene)
+		return
+	cinematic_queue = cinematics.duplicate()
+	cinematic_next_scene = next_scene
+	tree.change_scene_to_file(CINEMATIC_SCENE)
 
 
 ## True when GUT runs the tests: its runner scene or script is on the command line.

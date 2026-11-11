@@ -47,9 +47,17 @@ func test_every_enemy_has_art() -> void:
 		assert_gt(BoardArt.enemy_height(enemy_id), 0.0)
 
 
+## Code-drawn enemies walk in six frames and stand on the bottom row. Hand-drawn ones bring their
+## own frame count and a padded frame, so their feet only have to be inside it.
 func test_enemies_walk_in_six_frames() -> void:
 	for enemy_id: StringName in registry.enemies:
 		var meta := BoardArt.enemy_info(enemy_id)
+		if meta.get("drawn", false):
+			var frame: Array = meta["size"]
+			var feet: Array = meta["anchor"]
+			assert_gt(int(meta["frames"]), 1, "enemy %s walk cycle" % enemy_id)
+			assert_true(int(feet[0]) < int(frame[0]) and int(feet[1]) < int(frame[1]), "enemy %s feet in its frame" % enemy_id)
+			continue
 		assert_eq(int(meta.get("frames", 0)), 6, "enemy %s walk cycle" % enemy_id)
 		var size: Array = meta.get("size", [0, 0])
 		var anchor: Array = meta.get("anchor", [0, 0])

@@ -1,0 +1,2959 @@
+{
+ "boss_sets": {
+  "ashen_regent": "ashen_regent",
+  "ashwick": "ashwick",
+  "broodmother": "nature",
+  "cinder_tyrant": "fire",
+  "gorrath": "gorrath",
+  "hollow_king": "void",
+  "leviathan": "water",
+  "mother_briar": "mother_briar",
+  "mountain_titan": "earth",
+  "pale_vesper": "pale_vesper",
+  "saltmother": "saltmother",
+  "sundered_heart": "sundered_heart",
+  "thunderhead": "storm",
+  "vael_orrun": "vael_orrun",
+  "vholt": "vholt",
+  "warden": "warden"
+ },
+ "enemy_deaths": {
+  "brute": "death_brute",
+  "grunt": "death_grunt",
+  "hollow_shade": "death_shade",
+  "mender": "death_mender",
+  "runner": "death_runner",
+  "shardling": "death_shardling",
+  "splitter": "death_splitter",
+  "warded": "death_warded"
+ },
+ "sounds": {
+  "assault_phase": {
+   "bus": "Sfx",
+   "duck_db": -8.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/assault_phase.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "base_hit": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "base/base_hit_1.ogg",
+    "base/base_hit_2.ogg",
+    "base/base_hit_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.25,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 4,
+   "volume_db": 0.0
+  },
+  "base_hit_boss": {
+   "bus": "Sfx",
+   "duck_db": -10.0,
+   "duck_time": 3.0,
+   "files": [
+    "base/base_hit_boss.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_ashen_regent_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/ashen_regent/boss_ashen_regent_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_ashen_regent_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/ashen_regent/boss_ashen_regent_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_ashen_regent_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/ashen_regent/boss_ashen_regent_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_ashen_regent_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/ashen_regent/boss_ashen_regent_step_1.ogg",
+    "bosses/ashen_regent/boss_ashen_regent_step_2.ogg",
+    "bosses/ashen_regent/boss_ashen_regent_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_ashen_regent_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/ashen_regent/boss_ashen_regent_voice_1.ogg",
+    "bosses/ashen_regent/boss_ashen_regent_voice_2.ogg",
+    "bosses/ashen_regent/boss_ashen_regent_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_ashwick_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/ashwick/boss_ashwick_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_ashwick_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/ashwick/boss_ashwick_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_ashwick_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/ashwick/boss_ashwick_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_ashwick_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/ashwick/boss_ashwick_step_1.ogg",
+    "bosses/ashwick/boss_ashwick_step_2.ogg",
+    "bosses/ashwick/boss_ashwick_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_ashwick_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/ashwick/boss_ashwick_voice_1.ogg",
+    "bosses/ashwick/boss_ashwick_voice_2.ogg",
+    "bosses/ashwick/boss_ashwick_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_blink": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/boss_blink.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.5,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "boss_earth_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/earth/boss_earth_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_earth_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/earth/boss_earth_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_earth_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/earth/boss_earth_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_earth_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/earth/boss_earth_step_1.ogg",
+    "bosses/earth/boss_earth_step_2.ogg",
+    "bosses/earth/boss_earth_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_earth_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/earth/boss_earth_voice_1.ogg",
+    "bosses/earth/boss_earth_voice_2.ogg",
+    "bosses/earth/boss_earth_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_escape": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/boss_escape.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_fire_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/fire/boss_fire_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_fire_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/fire/boss_fire_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_fire_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/fire/boss_fire_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_fire_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/fire/boss_fire_step_1.ogg",
+    "bosses/fire/boss_fire_step_2.ogg",
+    "bosses/fire/boss_fire_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_fire_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/fire/boss_fire_voice_1.ogg",
+    "bosses/fire/boss_fire_voice_2.ogg",
+    "bosses/fire/boss_fire_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_gorrath_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/gorrath/boss_gorrath_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_gorrath_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/gorrath/boss_gorrath_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_gorrath_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/gorrath/boss_gorrath_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_gorrath_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/gorrath/boss_gorrath_step_1.ogg",
+    "bosses/gorrath/boss_gorrath_step_2.ogg",
+    "bosses/gorrath/boss_gorrath_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_gorrath_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/gorrath/boss_gorrath_voice_1.ogg",
+    "bosses/gorrath/boss_gorrath_voice_2.ogg",
+    "bosses/gorrath/boss_gorrath_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_mother_briar_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/mother_briar/boss_mother_briar_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_mother_briar_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/mother_briar/boss_mother_briar_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_mother_briar_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/mother_briar/boss_mother_briar_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_mother_briar_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/mother_briar/boss_mother_briar_step_1.ogg",
+    "bosses/mother_briar/boss_mother_briar_step_2.ogg",
+    "bosses/mother_briar/boss_mother_briar_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_mother_briar_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/mother_briar/boss_mother_briar_voice_1.ogg",
+    "bosses/mother_briar/boss_mother_briar_voice_2.ogg",
+    "bosses/mother_briar/boss_mother_briar_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_nature_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/nature/boss_nature_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_nature_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/nature/boss_nature_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_nature_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/nature/boss_nature_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_nature_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/nature/boss_nature_step_1.ogg",
+    "bosses/nature/boss_nature_step_2.ogg",
+    "bosses/nature/boss_nature_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_nature_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/nature/boss_nature_voice_1.ogg",
+    "bosses/nature/boss_nature_voice_2.ogg",
+    "bosses/nature/boss_nature_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_pale_vesper_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/pale_vesper/boss_pale_vesper_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_pale_vesper_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/pale_vesper/boss_pale_vesper_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_pale_vesper_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/pale_vesper/boss_pale_vesper_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_pale_vesper_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/pale_vesper/boss_pale_vesper_step_1.ogg",
+    "bosses/pale_vesper/boss_pale_vesper_step_2.ogg",
+    "bosses/pale_vesper/boss_pale_vesper_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_pale_vesper_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/pale_vesper/boss_pale_vesper_voice_1.ogg",
+    "bosses/pale_vesper/boss_pale_vesper_voice_2.ogg",
+    "bosses/pale_vesper/boss_pale_vesper_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_saltmother_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/saltmother/boss_saltmother_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_saltmother_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/saltmother/boss_saltmother_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_saltmother_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/saltmother/boss_saltmother_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_saltmother_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/saltmother/boss_saltmother_step_1.ogg",
+    "bosses/saltmother/boss_saltmother_step_2.ogg",
+    "bosses/saltmother/boss_saltmother_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_saltmother_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/saltmother/boss_saltmother_voice_1.ogg",
+    "bosses/saltmother/boss_saltmother_voice_2.ogg",
+    "bosses/saltmother/boss_saltmother_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_silence": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/boss_silence.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_storm_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/storm/boss_storm_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_storm_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/storm/boss_storm_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_storm_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/storm/boss_storm_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_storm_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/storm/boss_storm_step_1.ogg",
+    "bosses/storm/boss_storm_step_2.ogg",
+    "bosses/storm/boss_storm_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_storm_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/storm/boss_storm_voice_1.ogg",
+    "bosses/storm/boss_storm_voice_2.ogg",
+    "bosses/storm/boss_storm_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_sundered_heart_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/sundered_heart/boss_sundered_heart_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_sundered_heart_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/sundered_heart/boss_sundered_heart_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_sundered_heart_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/sundered_heart/boss_sundered_heart_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_sundered_heart_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/sundered_heart/boss_sundered_heart_step_1.ogg",
+    "bosses/sundered_heart/boss_sundered_heart_step_2.ogg",
+    "bosses/sundered_heart/boss_sundered_heart_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_sundered_heart_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/sundered_heart/boss_sundered_heart_voice_1.ogg",
+    "bosses/sundered_heart/boss_sundered_heart_voice_2.ogg",
+    "bosses/sundered_heart/boss_sundered_heart_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_vael_orrun_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/vael_orrun/boss_vael_orrun_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_vael_orrun_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/vael_orrun/boss_vael_orrun_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_vael_orrun_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/vael_orrun/boss_vael_orrun_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_vael_orrun_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/vael_orrun/boss_vael_orrun_step_1.ogg",
+    "bosses/vael_orrun/boss_vael_orrun_step_2.ogg",
+    "bosses/vael_orrun/boss_vael_orrun_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_vael_orrun_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/vael_orrun/boss_vael_orrun_voice_1.ogg",
+    "bosses/vael_orrun/boss_vael_orrun_voice_2.ogg",
+    "bosses/vael_orrun/boss_vael_orrun_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_vholt_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/vholt/boss_vholt_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_vholt_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/vholt/boss_vholt_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_vholt_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/vholt/boss_vholt_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_vholt_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/vholt/boss_vholt_step_1.ogg",
+    "bosses/vholt/boss_vholt_step_2.ogg",
+    "bosses/vholt/boss_vholt_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_vholt_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/vholt/boss_vholt_voice_1.ogg",
+    "bosses/vholt/boss_vholt_voice_2.ogg",
+    "bosses/vholt/boss_vholt_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_void_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/void/boss_void_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_void_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/void/boss_void_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_void_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/void/boss_void_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_void_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/void/boss_void_step_1.ogg",
+    "bosses/void/boss_void_step_2.ogg",
+    "bosses/void/boss_void_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_void_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/void/boss_void_voice_1.ogg",
+    "bosses/void/boss_void_voice_2.ogg",
+    "bosses/void/boss_void_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_warden_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/warden/boss_warden_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_warden_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/warden/boss_warden_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_warden_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/warden/boss_warden_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_warden_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/warden/boss_warden_step_1.ogg",
+    "bosses/warden/boss_warden_step_2.ogg",
+    "bosses/warden/boss_warden_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_warden_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/warden/boss_warden_voice_1.ogg",
+    "bosses/warden/boss_warden_voice_2.ogg",
+    "bosses/warden/boss_warden_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "boss_water_death": {
+   "bus": "Sfx",
+   "duck_db": -12.0,
+   "duck_time": 4.0,
+   "files": [
+    "bosses/water/boss_water_death.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_water_enrage": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "bosses/water/boss_water_enrage.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "boss_water_reveal": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/water/boss_water_reveal.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 8,
+   "volume_db": 0.0
+  },
+  "boss_water_step": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "bosses/water/boss_water_step_1.ogg",
+    "bosses/water/boss_water_step_2.ogg",
+    "bosses/water/boss_water_step_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 3,
+   "volume_db": 0.0
+  },
+  "boss_water_voice": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "bosses/water/boss_water_voice_1.ogg",
+    "bosses/water/boss_water_voice_2.ogg",
+    "bosses/water/boss_water_voice_3.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 1.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 6,
+   "volume_db": 0.0
+  },
+  "coin": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/coin_1.ogg",
+    "ui/coin_2.ogg",
+    "ui/coin_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.07,
+   "pitch_jitter": 0.05,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -6.0
+  },
+  "death_brute": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/death_brute_1.ogg",
+    "enemies/death_brute_2.ogg",
+    "enemies/death_brute_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.08,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -3.0
+  },
+  "death_grunt": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/death_grunt_1.ogg",
+    "enemies/death_grunt_2.ogg",
+    "enemies/death_grunt_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.05,
+   "pitch_jitter": 0.08,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -4.0
+  },
+  "death_mender": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/death_mender_1.ogg",
+    "enemies/death_mender_2.ogg",
+    "enemies/death_mender_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.08,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -4.0
+  },
+  "death_runner": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/death_runner_1.ogg",
+    "enemies/death_runner_2.ogg",
+    "enemies/death_runner_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.05,
+   "pitch_jitter": 0.1,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -4.0
+  },
+  "death_shade": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/death_shade_1.ogg",
+    "enemies/death_shade_2.ogg",
+    "enemies/death_shade_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.08,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -3.0
+  },
+  "death_shardling": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/death_shardling_1.ogg",
+    "enemies/death_shardling_2.ogg",
+    "enemies/death_shardling_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.04,
+   "pitch_jitter": 0.12,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -4.0
+  },
+  "death_splitter": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/death_splitter_1.ogg",
+    "enemies/death_splitter_2.ogg",
+    "enemies/death_splitter_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.08,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -3.0
+  },
+  "death_warded": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/death_warded_1.ogg",
+    "enemies/death_warded_2.ogg",
+    "enemies/death_warded_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -3.0
+  },
+  "defeat": {
+   "bus": "Sfx",
+   "duck_db": -14.0,
+   "duck_time": 5.0,
+   "files": [
+    "waves/defeat.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "enemy_split": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/enemy_split_1.ogg",
+    "enemies/enemy_split_2.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.1,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -3.0
+  },
+  "enemy_summon": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/enemy_summon_1.ogg",
+    "enemies/enemy_summon_2.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.4,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 2,
+   "volume_db": -2.0
+  },
+  "explosion_large": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "impacts/explosion_large_1.ogg",
+    "impacts/explosion_large_2.ogg",
+    "impacts/explosion_large_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.08,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 2,
+   "volume_db": -5.0
+  },
+  "explosion_medium": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "impacts/explosion_medium_1.ogg",
+    "impacts/explosion_medium_2.ogg",
+    "impacts/explosion_medium_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.08,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 2,
+   "volume_db": -5.0
+  },
+  "explosion_small": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "impacts/explosion_small_1.ogg",
+    "impacts/explosion_small_2.ogg",
+    "impacts/explosion_small_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.08,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 2,
+   "volume_db": -5.0
+  },
+  "gold_bonus": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/gold_bonus.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "hit_armour": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "impacts/hit_armour_1.ogg",
+    "impacts/hit_armour_2.ogg",
+    "impacts/hit_armour_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.07,
+   "pitch_jitter": 0.1,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -6.0
+  },
+  "impact_earth": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "impacts/impact_earth_1.ogg",
+    "impacts/impact_earth_2.ogg",
+    "impacts/impact_earth_3.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.04,
+   "pitch_jitter": 0.08,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -6.0
+  },
+  "impact_fire": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "impacts/impact_fire_1.ogg",
+    "impacts/impact_fire_2.ogg",
+    "impacts/impact_fire_3.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.04,
+   "pitch_jitter": 0.08,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -6.0
+  },
+  "impact_nature": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "impacts/impact_nature_1.ogg",
+    "impacts/impact_nature_2.ogg",
+    "impacts/impact_nature_3.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.04,
+   "pitch_jitter": 0.08,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -6.0
+  },
+  "impact_storm": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "impacts/impact_storm_1.ogg",
+    "impacts/impact_storm_2.ogg",
+    "impacts/impact_storm_3.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.04,
+   "pitch_jitter": 0.08,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -6.0
+  },
+  "impact_void": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "impacts/impact_void_1.ogg",
+    "impacts/impact_void_2.ogg",
+    "impacts/impact_void_3.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.04,
+   "pitch_jitter": 0.08,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -6.0
+  },
+  "impact_water": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "impacts/impact_water_1.ogg",
+    "impacts/impact_water_2.ogg",
+    "impacts/impact_water_3.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.04,
+   "pitch_jitter": 0.08,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -6.0
+  },
+  "lives_low": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "base/lives_low.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "node_refund": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/node_refund.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.08,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "node_take": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/node_take_1.ogg",
+    "ui/node_take_2.ogg",
+    "ui/node_take_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "skill_aim": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/skill_aim.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.1,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "skill_doom": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.5,
+   "files": [
+    "skills/skill_doom.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "skill_earthquake": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 3.0,
+   "files": [
+    "skills/skill_earthquake.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "skill_entangle": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "skills/skill_entangle.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "skill_meteor": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "skills/skill_meteor.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "skill_ready": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/skill_ready.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.25,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "skill_surge": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.0,
+   "files": [
+    "skills/skill_surge.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "skill_tidal_wave": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 3.0,
+   "files": [
+    "skills/skill_tidal_wave.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "star_1": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/star_1.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "star_2": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/star_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "star_3": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/star_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "status_burn": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/status_burn_1.ogg",
+    "enemies/status_burn_2.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.35,
+   "pitch_jitter": 0.1,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -8.0
+  },
+  "status_curse": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/status_curse_1.ogg",
+    "enemies/status_curse_2.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.35,
+   "pitch_jitter": 0.1,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -8.0
+  },
+  "status_freeze": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/status_freeze_1.ogg",
+    "enemies/status_freeze_2.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.35,
+   "pitch_jitter": 0.1,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -8.0
+  },
+  "status_poison": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/status_poison_1.ogg",
+    "enemies/status_poison_2.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.35,
+   "pitch_jitter": 0.1,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -8.0
+  },
+  "status_shatter": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/status_shatter_1.ogg",
+    "enemies/status_shatter_2.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.35,
+   "pitch_jitter": 0.1,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -8.0
+  },
+  "status_stun": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "enemies/status_stun_1.ogg",
+    "enemies/status_stun_2.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.35,
+   "pitch_jitter": 0.1,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -8.0
+  },
+  "structure_collapse": {
+   "bus": "Sfx",
+   "duck_db": -8.0,
+   "duck_time": 3.0,
+   "files": [
+    "bosses/structure_collapse_1.ogg",
+    "bosses/structure_collapse_2.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 7,
+   "volume_db": 0.0
+  },
+  "tower_ascend": {
+   "bus": "Sfx",
+   "duck_db": -6.0,
+   "duck_time": 2.0,
+   "files": [
+    "build/tower_ascend.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 4,
+   "volume_db": 0.0
+  },
+  "tower_earth_monolith": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_earth_monolith_1.ogg",
+    "towers/tower_earth_monolith_2.ogg",
+    "towers/tower_earth_monolith_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_fire_brazier": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_fire_brazier_1.ogg",
+    "towers/tower_fire_brazier_2.ogg",
+    "towers/tower_fire_brazier_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid": {
+   "bus": "Sfx",
+   "duck_db": -4.0,
+   "duck_time": 1.5,
+   "files": [
+    "build/tower_hybrid.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 4,
+   "volume_db": 0.0
+  },
+  "tower_hybrid_abyss": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_abyss_1.ogg",
+    "towers/tower_hybrid_abyss_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_blightroot": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_blightroot_1.ogg",
+    "towers/tower_hybrid_blightroot_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_bog": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_bog_1.ogg",
+    "towers/tower_hybrid_bog_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_gravity_well": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_gravity_well_1.ogg",
+    "towers/tower_hybrid_gravity_well_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_ironbark": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_ironbark_1.ogg",
+    "towers/tower_hybrid_ironbark_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_lodestone": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_lodestone_1.ogg",
+    "towers/tower_hybrid_lodestone_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_magma": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_magma_1.ogg",
+    "towers/tower_hybrid_magma_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_plasma": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_plasma_1.ogg",
+    "towers/tower_hybrid_plasma_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_quagmire": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_quagmire_1.ogg",
+    "towers/tower_hybrid_quagmire_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_riftstorm": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_riftstorm_1.ogg",
+    "towers/tower_hybrid_riftstorm_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_soulflame": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_soulflame_1.ogg",
+    "towers/tower_hybrid_soulflame_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_squall": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_squall_1.ogg",
+    "towers/tower_hybrid_squall_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_steam": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_steam_1.ogg",
+    "towers/tower_hybrid_steam_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_thornstorm": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_thornstorm_1.ogg",
+    "towers/tower_hybrid_thornstorm_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_hybrid_wildfire": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_hybrid_wildfire_1.ogg",
+    "towers/tower_hybrid_wildfire_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_level_up": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "build/tower_level_up.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.1,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "tower_nature_thornbush": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_nature_thornbush_1.ogg",
+    "towers/tower_nature_thornbush_2.ogg",
+    "towers/tower_nature_thornbush_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_place_earth": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "build/tower_place_earth_1.ogg",
+    "build/tower_place_earth_2.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.05,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "tower_place_fire": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "build/tower_place_fire_1.ogg",
+    "build/tower_place_fire_2.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.05,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "tower_place_nature": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "build/tower_place_nature_1.ogg",
+    "build/tower_place_nature_2.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.05,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "tower_place_storm": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "build/tower_place_storm_1.ogg",
+    "build/tower_place_storm_2.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.05,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "tower_place_void": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "build/tower_place_void_1.ogg",
+    "build/tower_place_void_2.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.05,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "tower_place_water": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "build/tower_place_water_1.ogg",
+    "build/tower_place_water_2.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.05,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "tower_sell": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "build/tower_sell.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.1,
+   "pitch_jitter": 0.0,
+   "positional": true,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "tower_storm_spire": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_storm_spire_1.ogg",
+    "towers/tower_storm_spire_2.ogg",
+    "towers/tower_storm_spire_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_abyssal_trench": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_abyssal_trench_1.ogg",
+    "towers/tower_triple_abyssal_trench_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_amber_spire": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_amber_spire_1.ogg",
+    "towers/tower_triple_amber_spire_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_boiling_marsh": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_boiling_marsh_1.ogg",
+    "towers/tower_triple_boiling_marsh_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_cinderstorm": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_cinderstorm_1.ogg",
+    "towers/tower_triple_cinderstorm_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_drowned_garden": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_drowned_garden_1.ogg",
+    "towers/tower_triple_drowned_garden_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_hellforge": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_hellforge_1.ogg",
+    "towers/tower_triple_hellforge_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_mire_colossus": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_mire_colossus_1.ogg",
+    "towers/tower_triple_mire_colossus_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_mistwraith": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_mistwraith_1.ogg",
+    "towers/tower_triple_mistwraith_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_obsidian_geyser": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_obsidian_geyser_1.ogg",
+    "towers/tower_triple_obsidian_geyser_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_plague_storm": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_plague_storm_1.ogg",
+    "towers/tower_triple_plague_storm_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_polar_rift": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_polar_rift_1.ogg",
+    "towers/tower_triple_polar_rift_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_rainwild": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_rainwild_1.ogg",
+    "towers/tower_triple_rainwild_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_starfall": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_starfall_1.ogg",
+    "towers/tower_triple_starfall_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_storm_eye": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_storm_eye_1.ogg",
+    "towers/tower_triple_storm_eye_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_thunder_geyser": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_thunder_geyser_1.ogg",
+    "towers/tower_triple_thunder_geyser_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_thunderforge": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_thunderforge_1.ogg",
+    "towers/tower_triple_thunderforge_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_tidal_dynamo": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_tidal_dynamo_1.ogg",
+    "towers/tower_triple_tidal_dynamo_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_tombroot": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_tombroot_1.ogg",
+    "towers/tower_triple_tombroot_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_witchfire": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_witchfire_1.ogg",
+    "towers/tower_triple_witchfire_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_triple_worldforge": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_triple_worldforge_1.ogg",
+    "towers/tower_triple_worldforge_2.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_void_obelisk": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_void_obelisk_1.ogg",
+    "towers/tower_void_obelisk_2.ogg",
+    "towers/tower_void_obelisk_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "tower_water_wellspring": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_water_wellspring_1.ogg",
+    "towers/tower_water_wellspring_2.ogg",
+    "towers/tower_water_wellspring_3.ogg"
+   ],
+   "max_voices": 3,
+   "min_gap": 0.06,
+   "pitch_jitter": 0.06,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -5.0
+  },
+  "ui_back": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/ui_back.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.05,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "ui_click": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/ui_click_1.ogg",
+    "ui/ui_click_2.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.03,
+   "pitch_jitter": 0.03,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "ui_close": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/ui_close.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.1,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "ui_confirm": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/ui_confirm.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.2,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "ui_error": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/ui_error.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.15,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "ui_hover": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/ui_hover.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.03,
+   "pitch_jitter": 0.04,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "ui_open": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/ui_open.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.1,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "ui_pause": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/ui_pause.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.1,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "ui_resume": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/ui_resume.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.1,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "ui_tab": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/ui_tab.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.05,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "ui_toggle": {
+   "bus": "Ui",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "ui/ui_toggle.ogg"
+   ],
+   "max_voices": 1,
+   "min_gap": 0.05,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 1,
+   "volume_db": 0.0
+  },
+  "victory": {
+   "bus": "Sfx",
+   "duck_db": -14.0,
+   "duck_time": 5.0,
+   "files": [
+    "waves/victory.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "wave_cleared": {
+   "bus": "Sfx",
+   "duck_db": -4.0,
+   "duck_time": 1.5,
+   "files": [
+    "waves/wave_cleared.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "wave_start": {
+   "bus": "Sfx",
+   "duck_db": -5.0,
+   "duck_time": 2.5,
+   "files": [
+    "waves/wave_start.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "wave_start_boss": {
+   "bus": "Sfx",
+   "duck_db": -3.0,
+   "duck_time": 3.0,
+   "files": [
+    "waves/wave_start_boss.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 5,
+   "volume_db": 0.0
+  },
+  "wave_start_final": {
+   "bus": "Sfx",
+   "duck_db": -8.0,
+   "duck_time": 3.5,
+   "files": [
+    "waves/wave_start_final.ogg"
+   ],
+   "max_voices": 4,
+   "min_gap": 0.0,
+   "pitch_jitter": 0.0,
+   "positional": false,
+   "priority": 5,
+   "volume_db": 0.0
+  }
+ }
+}

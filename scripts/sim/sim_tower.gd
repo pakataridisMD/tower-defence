@@ -22,9 +22,25 @@ var type_price: int
 var level := 1
 ## The ascendancy taken at the top level, or null.
 var ascendancy: AscendancyData
+## Set for a hero: then this "tower" is the hero, and never levels, fuses, ascends or sells.
+var hero: HeroData
+## The hero's level from waves fought, 1 to HeroData.MAX_LEVEL. See hero_level() for the level it fights at.
+var hero_level := 1
+## Levels added by auras such as Ilyra's.
+var hero_level_bonus := 0
+## Seconds of wave time until the hero's ability is ready again.
+var ability_cooldown := 0.0
+## True once the hero has moved during this break.
+var moved_this_break := false
+## Modifiers from heroes' auras on this tower, set by the run.
+var hero_aura: Array[Modifier] = []
 var element_indices: Array[int] = []
 var tags: Array[StringName] = []
 var cooldown := 0.0
+## Seconds left in which a boss has silenced this tower: it does not attack.
+var silenced := 0.0
+## Attacks made so far, for the siege shots of an assault (see RunSim.SIEGE_EVERY).
+var shots := 0
 
 var damage := 0.0
 var attacks_per_second := 1.0
@@ -42,6 +58,8 @@ var aura_radius := 0.0
 var aura_damage := 0.0
 ## Increased damage this tower gets from the strongest nearby aura (a Void tower).
 var aura_bonus := 0.0
+## Share of the target's armour this tower's hits ignore.
+var armour_ignore := 0.0
 var effects: Array[StatusEffectData] = []
 
 var kills := 0
@@ -85,8 +103,30 @@ func can_ascend() -> bool:
 
 
 ## Modifiers that belong to this tower alone: its level, its ascendancy and auras on it.
+func is_hero() -> bool:
+	return hero != null
+
+
+## The level a hero fights at: its own plus any aura bonus, never above HeroData.MAX_LEVEL.
+func hero_level_now() -> int:
+	return mini(hero_level + hero_level_bonus, HeroData.MAX_LEVEL)
+
+
+## The hero's ability at its current level, or null for a tower.
+func hero_ability() -> HeroAbility:
+	return hero.ability_at(hero_level_now()) if hero != null else null
+
+
 func own_modifiers() -> Array[Modifier]:
 	var result: Array[Modifier] = []
+	if hero != null:
+		var levels := hero_level_now() - 1
+		if levels > 0:
+			result.append(Modifier.create(&"damage", Modifier.Kind.INCREASED, HeroData.DAMAGE_PER_LEVEL * levels))
+			result.append(Modifier.create(&"attack_range", Modifier.Kind.INCREASED, HeroData.RANGE_PER_LEVEL * levels))
+		if hero_level_now() >= HeroData.ULTIMATE_LEVEL:
+			result.append_array(hero.ultimate_modifiers)
+	result.append_array(hero_aura)
 	if level > 1:
 		result.append(Modifier.create(&"damage", Modifier.Kind.MORE, DAMAGE_PER_LEVEL * (level - 1)))
 		result.append(Modifier.create(&"attack_range", Modifier.Kind.INCREASED, RANGE_PER_LEVEL * (level - 1)))
@@ -118,6 +158,7 @@ func recompute(modifiers: Array[Modifier]) -> void:
 	knockback = data.stat_with(&"knockback", modifiers)
 	aura_radius = data.stat_with(&"aura_radius", modifiers)
 	aura_damage = data.stat_with(&"aura_damage", modifiers)
+	armour_ignore = clampf(data.stat_with(&"armour_ignore", modifiers), 0.0, 1.0)
 	effects.clear()
 	for effect in data.status_effects:
 		var spec := effect.duplicate() as StatusEffectData

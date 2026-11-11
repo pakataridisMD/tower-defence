@@ -25,6 +25,12 @@ var cooldown_text := "":
 		if cooldown_text != value:
 			cooldown_text = value
 			queue_redraw()
+## Written small in the bottom right corner, such as a hero's level. Empty shows nothing.
+var badge_text := "":
+	set(value):
+		if badge_text != value:
+			badge_text = value
+			queue_redraw()
 ## A border drawn around the button, for a skill that is running or being aimed. Clear for none.
 var outline := Color(0, 0, 0, 0):
 	set(value):
@@ -44,6 +50,11 @@ func _draw() -> void:
 			draw_string(font, at, cooldown_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color.WHITE)
 	if outline.a > 0.0:
 		draw_rect(Rect2(Vector2.ONE, size - Vector2(2, 2)), outline, false, 2.0)
+	if not badge_text.is_empty():
+		var badge_width := font.get_string_size(badge_text, HORIZONTAL_ALIGNMENT_LEFT, -1, KEY_FONT_SIZE).x
+		var badge := Rect2(Vector2(size.x - badge_width - 11.0, size.y - 20.0), Vector2(badge_width + 8.0, 17.0))
+		draw_rect(badge, KEY_BOX)
+		draw_string(font, badge.position + Vector2(4.0, 13.0), badge_text, HORIZONTAL_ALIGNMENT_LEFT, -1, KEY_FONT_SIZE, Color.WHITE)
 	if not key_text.is_empty():
 		var width := font.get_string_size(key_text, HORIZONTAL_ALIGNMENT_LEFT, -1, KEY_FONT_SIZE).x
 		var box := Rect2(Vector2(3, 3), Vector2(maxf(17.0, width + 8.0), 17.0))

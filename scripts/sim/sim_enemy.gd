@@ -29,6 +29,21 @@ var stun_immunity := 0.0
 var knockback_taken := 0.0
 var summon_timer := 0.0
 var prism_timer := 0.0
+var blink_timer := 0.0
+var silence_timer := 0.0
+## Share of damage a nearby shielding boss takes off this enemy's hits, recomputed every step.
+var ward := 0.0
+## True once it has dropped below its enrage threshold. It stays enraged.
+var enraged := false
+## A building of the enemy base (see StageData.structures): it stands still and never leaks.
+var structure := false
+## Assault phase a building belongs to, and what happens when it falls.
+var phase := 0
+var closes_lanes: PackedInt32Array = []
+var releases: Array[StringName] = []
+var release_health := 1.0
+## True when it left the board by escaping (see EnemyData.escape_below).
+var escaped := false
 
 
 func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
@@ -37,6 +52,9 @@ func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
 	health_multiplier = p_health_multiplier
 	summon_timer = p_data.summon_interval
 	prism_timer = p_data.prismatic_interval
+	blink_timer = p_data.blink_interval
+	silence_timer = p_data.silence_interval
+	structure = p_data.structure
 	max_health = p_data.max_health * p_health_multiplier
 	health = max_health
 	armour = p_data.armour
@@ -44,12 +62,13 @@ func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
 
 
 func speed() -> float:
-	if statuses.has(&"stun"):
+	if structure or statuses.has(&"stun") or statuses.has(&"root"):
 		return 0.0
 	var slow := 0.0
 	for status: SimStatus in statuses.values():
 		slow = maxf(slow, status.slow)
-	return base_speed * (1.0 - clampf(slow, 0.0, 0.9))
+	var rage := data.enrage_speed if enraged else 1.0
+	return base_speed * rage * (1.0 - clampf(slow, 0.0, 0.9))
 
 
 ## Extra damage taken from curses, as a fraction.
@@ -92,6 +111,9 @@ func is_regenerating() -> bool:
 
 func apply_status(spec: StatusEffectData, source: SimTower, element_multiplier: float) -> void:
 	if data.status_immune:
+		return
+	# A root (from a hero) holds anything but a boss, whatever stuns came before.
+	if spec.kind == &"root" and data.tags.has(&"boss"):
 		return
 	# A stun is never extended or re-applied early, and bosses cannot be stunned at all.
 	if spec.kind == &"stun" and (statuses.has(&"stun") or stun_immunity > 0.0 or data.tags.has(&"boss")):

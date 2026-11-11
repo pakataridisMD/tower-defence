@@ -14,6 +14,7 @@ const OUTER := 395.0
 const INNER := 160.0
 ## The Convergence's first stages sit this far from the centre; its last stage is the centre.
 const CONVERGE_RADIUS := 82.0
+const ASSAULT_SPOT := Vector2(1150, 120)
 const PANEL_LEFT := 1290.0
 const GROUND_ART := "res://assets/art/game/ground/%s.png"
 
@@ -33,6 +34,9 @@ var _story: Label
 var _preview: TextureRect
 var _details: RichTextLabel
 var _begin: Button
+var _party_title: Label
+var _party_grid: GridContainer
+var _party_buttons: Dictionary[StringName, KeyButton] = {}
 
 
 func _ready() -> void:
@@ -59,6 +63,11 @@ func _process(delta: float) -> void:
 func _layout() -> void:
 	for campaign in Progress.meta.campaigns_in_order():
 		var count := campaign.stages.size()
+		if _is_assault(campaign):
+			# The assault on the enemy citadel sits apart, in the top right corner.
+			for i in count:
+				_positions[campaign.stages[i].id] = ASSAULT_SPOT + Vector2(0, 90 * i)
+			continue
 		if campaign.element.is_empty():
 			for i in count:
 				var at := CENTER
@@ -115,7 +124,7 @@ func _build_panel() -> void:
 	_preview.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_preview.custom_minimum_size = Vector2(540, 270)
+	_preview.custom_minimum_size = Vector2(540, 230)
 	column.add_child(_preview)
 	_details = RichTextLabel.new()
 	_details.bbcode_enabled = true
@@ -125,6 +134,7 @@ func _build_panel() -> void:
 	_details.add_theme_font_size_override("normal_font_size", 17)
 	_details.add_theme_font_size_override("bold_font_size", 17)
 	column.add_child(_details)
+	_build_party(column)
 	var buttons := HBoxContainer.new()
 	buttons.add_theme_constant_override("separation", 12)
 	column.add_child(buttons)
@@ -136,6 +146,49 @@ func _build_panel() -> void:
 	back.custom_minimum_size = Vector2(200, 60)
 	back.pressed.connect(back_to_menu)
 	buttons.add_child(back)
+
+
+## The heroes who have joined, to pick the party from. Gold frames mark the ones going.
+func _build_party(column: VBoxContainer) -> void:
+	_party_title = UiStyle.label("", 20)
+	column.add_child(_party_title)
+	_party_grid = GridContainer.new()
+	_party_grid.columns = 8
+	_party_grid.add_theme_constant_override("h_separation", 6)
+	_party_grid.add_theme_constant_override("v_separation", 6)
+	column.add_child(_party_grid)
+	for hero in Progress.meta.heroes_in_order():
+		var hero_id := hero.id
+		var button := UiStyle.key_button("", 14)
+		button.icon = Hud.hero_portrait(hero_id)
+		button.expand_icon = true
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		button.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		button.custom_minimum_size = Vector2(60, 60)
+		button.pressed.connect(func() -> void:
+			Progress.toggle_party_hero(hero_id)
+			SoundPlayer.sfx(&"ui_toggle")
+			_refresh_party())
+		_party_grid.add_child(button)
+		_party_buttons[hero_id] = button
+	_refresh_party()
+
+
+func _refresh_party() -> void:
+	var meta := Progress.meta
+	var party := meta.party()
+	var joined := meta.joined_heroes()
+	_party_title.text = "Heroes  ·  pick up to %d  ·  F1-F3 in a run" % HeroData.MAX_PARTY
+	for hero in meta.heroes_in_order():
+		var button := _party_buttons[hero.id]
+		var has_joined := joined.has(hero)
+		button.visible = has_joined
+		var slot := party.find(hero)
+		button.outline = UiStyle.GOLD if slot >= 0 else Color(0, 0, 0, 0)
+		button.key_text = "F%d" % (slot + 1) if slot >= 0 else ""
+		button.modulate = Color.WHITE if slot >= 0 else Color(1, 1, 1, 0.6)
+		button.tooltip_text = "%s, %s\n%s\n%s" % [hero.display_name, hero.title, hero.blurb,
+				"In the party. Click to leave behind." if slot >= 0 else "Click to bring."]
 
 
 func select(stage_id: StringName) -> void:
@@ -225,7 +278,7 @@ func _enemy_names(wave_set: WaveSet) -> PackedStringArray:
 
 func begin() -> void:
 	if Progress.play_stage(selected):
-		get_tree().change_scene_to_file(GAME_SCENE)
+		Progress.play_story(get_tree(), Progress.meta.story_before_stage(Story.shared(), selected), GAME_SCENE)
 
 
 func back_to_menu() -> void:
@@ -275,7 +328,14 @@ func stage_position(stage_id: StringName) -> Vector2:
 
 # --- Drawing ---------------------------------------------------------------------
 
+## The march on the enemy citadel, unlocked by the Convergence.
+func _is_assault(campaign: CampaignData) -> bool:
+	return campaign != null and campaign.element.is_empty() and campaign.requires_campaigns.has(&"convergence")
+
+
 func _campaign_color(campaign: CampaignData) -> Color:
+	if _is_assault(campaign):
+		return Color("e0524a")
 	if campaign == null or campaign.element.is_empty():
 		return Color("f4e7c0")
 	var element: ElementData = _elements.get(campaign.element)
@@ -283,6 +343,8 @@ func _campaign_color(campaign: CampaignData) -> Color:
 
 
 func _style(stage: StageData, campaign: CampaignData) -> String:
+	if _is_assault(campaign):
+		return "keystone"
 	if campaign.element.is_empty() and campaign.stage_index(stage.id) == campaign.stages.size() - 1:
 		return "start"
 	return "keystone" if stage.is_guardian else "notable"
@@ -344,8 +406,14 @@ func _draw_trail(campaign: CampaignData) -> void:
 	var points: Array[Vector2] = []
 	for stage in campaign.stages:
 		points.append(_positions[stage.id])
+	if _is_assault(campaign):
+		# A dark road from the heart of the Convergence to the citadel.
+		var source: CampaignData = DataRegistry.campaigns.get(&"convergence")
+		if source != null and not source.stages.is_empty():
+			var lit := meta.is_campaign_complete(source.id)
+			draw_line(_positions[source.stages[-1].id], points[0], Color(color, 0.6 if lit else 0.14), 4.0 if lit else 2.0, true)
 	# The Convergence's first stages hang off the six Wardens.
-	if campaign.element.is_empty():
+	elif campaign.element.is_empty():
 		for other in meta.campaigns_in_order():
 			if other.element.is_empty() or other.stages.is_empty():
 				continue
@@ -364,6 +432,12 @@ func _draw_trail(campaign: CampaignData) -> void:
 func _draw_campaign_label(campaign: CampaignData) -> void:
 	var meta := Progress.meta
 	var color := _campaign_color(campaign)
+	if _is_assault(campaign):
+		var title_width := _font.get_string_size(campaign.display_name, HORIZONTAL_ALIGNMENT_LEFT, -1, 22).x
+		var at: Vector2 = _positions[campaign.stages[0].id] + Vector2(-title_width * 0.5, -48)
+		draw_string_outline(_font, at, campaign.display_name, HORIZONTAL_ALIGNMENT_LEFT, -1, 22, 6, Color(0, 0, 0, 0.6))
+		draw_string(_font, at, campaign.display_name, HORIZONTAL_ALIGNMENT_LEFT, -1, 22, color.lightened(0.25))
+		return
 	if campaign.element.is_empty():
 		return
 	var direction := _spoke(campaign.element)
@@ -405,7 +479,7 @@ func _draw_stage(stage: StageData, campaign: CampaignData) -> void:
 	elif stage.id == _hovered:
 		_draw_art_centered(TreeArt.texture("halo_" + style), at, Color(1, 1, 1, 0.5))
 	var gem := color.lerp(Color(0.2, 0.22, 0.28), 1.0 - lit)
-	if campaign.element.is_empty() and lit > 0.5:
+	if campaign.element.is_empty() and not _is_assault(campaign) and lit > 0.5:
 		# The Convergence's gems shimmer through every element's colour.
 		var colors: Array[Color] = []
 		for element: ElementData in _elements.values():

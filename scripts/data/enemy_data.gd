@@ -35,6 +35,30 @@ extends Resource
 ## Above 0, the enemy's element moves one step round the ring every this many seconds.
 @export var prismatic_interval: float = 0.0
 
+@export_group("Boss tricks")
+## Allies within ward_radius pixels take this share less damage (0 to 0.9). Not the enemy itself.
+@export var ward_radius: float = 0.0
+@export var ward_reduction: float = 0.0
+## Every silence_interval seconds, towers within silence_radius pixels stop attacking for
+## silence_duration seconds.
+@export var silence_interval: float = 0.0
+@export var silence_radius: float = 0.0
+@export var silence_duration: float = 0.0
+## Every blink_interval seconds, the enemy jumps blink_distance pixels forward along its road.
+@export var blink_interval: float = 0.0
+@export var blink_distance: float = 0.0
+## Below this share of its health, the enemy moves enrage_speed times as fast. 0 never enrages.
+@export var enrage_below: float = 0.0
+@export var enrage_speed: float = 1.0
+## Below this share of its health, the enemy escapes: it leaves the board, costing no lives and
+## paying no bounty. 0 never escapes.
+@export var escape_below: float = 0.0
+
+@export_group("Structure")
+## A building of the enemy base in an assault: it never moves and never leaks. Towers shoot it
+## once nothing that walks is in range. See StageData.structures.
+@export var structure: bool = false
+
 
 ## Short words for the traits, for tooltips and the campaign screen.
 func trait_words() -> PackedStringArray:
@@ -49,6 +73,16 @@ func trait_words() -> PackedStringArray:
 		words.append("summons")
 	if prismatic_interval > 0.0:
 		words.append("changes element")
+	if ward_radius > 0.0 and ward_reduction > 0.0:
+		words.append("shields allies")
+	if silence_interval > 0.0 and silence_radius > 0.0:
+		words.append("silences towers")
+	if blink_interval > 0.0 and blink_distance > 0.0:
+		words.append("blinks forward")
+	if enrage_below > 0.0 and enrage_speed > 1.0:
+		words.append("enrages")
+	if escape_below > 0.0:
+		words.append("escapes when beaten")
 	if armour >= 10.0:
 		words.append("heavily armoured")
 	return words

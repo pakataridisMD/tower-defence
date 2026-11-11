@@ -17,6 +17,17 @@ const TOWER_BASE_DROP := 8.0
 const SUN_SHADOW_DIR := Vector2(0.8, -0.6)
 ## Enemies stand this far below the road's centre line (in art pixels), so they look centred on it.
 const ENEMY_DROP := 4.0
+## Art pixels across one board cell (64 screen pixels at SCALE 2).
+const CELL_ART := 32.0
+## How tall the major bosses stand, in board cells, as the story art draws them (a hero is about
+## 1.5 cells). They are centred on their road and drawn over the cells around it.
+const BOSS_CELLS := {
+	&"saltmother": 3.25, &"gorrath": 3.25, &"pale_vesper": 3.25, &"ashwick": 3.25, &"vholt": 3.5,
+	&"mother_briar": 3.25, &"ashen_regent": 3.4,
+	&"cinder_tyrant": 5.0, &"thunderhead": 5.0, &"broodmother": 5.0, &"mountain_titan": 5.0,
+	&"hollow_king": 5.0, &"leviathan": 6.3, &"sundered_heart": 5.0,
+	&"gatemaw": 8.0, &"vael_orrun": 9.0,
+}
 ## Short-lived lights (shots, blasts, lightning) allowed at once, to keep lighting cheap.
 const MAX_FLASH_LIGHTS := 10
 ## Rings and sprays of sparks allowed at once.
@@ -27,11 +38,17 @@ const SHOT_STYLES := {
 	"drips": &"water", "steam": &"water", "dust": &"earth", "void": &"void", "soulfire": &"void",
 }
 
+## The colour of lantern light and of the Sunstone, for heroes with no element of their own.
+const HERO_LIGHT := Color(1.0, 0.9, 0.62)
+
 static var _info: Dictionary = {}
 static var _texture_cache: Dictionary = {}
 
 var sim: RunSim
 var day_night := DayNight.new()
+## Above 0, holds the light at this time of day whatever the waves, such as DayNight.NIGHT for the
+## Long Night or DayNight.DAWN once the dawn comes in the siege of Solenne.
+var light_override := -1.0
 
 var _world: Node2D
 var _ground: Node2D
@@ -76,6 +93,8 @@ class Caster:
 	var blob: Sprite2D
 	var sun: Sprite2D
 	var height := 1.0
+	## How much larger than its art the thing is drawn (big bosses).
+	var size_scale := 1.0
 
 
 ## A short effect drawn straight onto the board: a ring that spreads (or closes in), or a spray of sparks.
@@ -126,8 +145,9 @@ class EnemyVisual:
 	var time := 0.0
 	var last_x := 0.0
 	var tint := Color.WHITE
-	## The sprite's size in art pixels.
+	## The sprite's size in art pixels, as drawn.
 	var size := Vector2.ZERO
+	var size_scale := 1.0
 
 
 # ------------------------------------------------------------------ setup
@@ -431,7 +451,13 @@ func _process(delta: float) -> void:
 
 func _update_light(delta: float) -> void:
 	var in_wave := sim.state == RunSim.State.WAVE
-	day_night.set_target(DayNight.target_for(sim.wave_index, in_wave, sim.time_in_wave, sim.state == RunSim.State.WON))
+	var target := DayNight.target_for(sim.wave_index, in_wave, sim.time_in_wave, sim.state == RunSim.State.WON)
+	if light_override >= 0.0:
+		# The clock only runs forward, so the held time is today's, or tomorrow's if today's has passed.
+		target = floorf(day_night.clock) + light_override
+		if target < day_night.clock - 0.001:
+			target += 1.0
+	day_night.set_target(target)
 	day_night.advance(delta)
 	_ambient.color = day_night.ambient() * BIOME_TINTS[_biome]
 	_sun.energy = day_night.sun_energy()
@@ -451,6 +477,13 @@ func _sync_towers(delta: float) -> void:
 		var current: TowerVisual = _towers.get(tower.id)
 		if current != null and current.data_id == tower.data.id:
 			seen[tower.id] = true
+			if tower.is_hero():
+				# A hero can march to another tile.
+				current.root.position = _art_pos(tower.position) + Vector2(0, TOWER_BASE_DROP)
+		elif tower.is_hero():
+			_towers[tower.id] = _make_hero(tower)
+			seen[tower.id] = true
+			_celebrate(_towers[tower.id], true)
 		elif not tower_info(tower.data.id).is_empty():
 			if current != null:
 				_remove_caster(current.caster)
@@ -484,9 +517,10 @@ func _sync_towers(delta: float) -> void:
 		visual.light.energy = visual.light_energy * boost * (1.0 + flicker * 0.12 + visual.pulse * 0.6)
 		visual.glow.modulate = Color(1, 1, 1, 0.85 + 0.15 * flicker + visual.pulse * 0.3)
 		var ascended := visual.tower.ascendancy != null
-		if visual.tower.level != visual.level or ascended != visual.ascended:
+		var level_now := visual.tower.hero_level if visual.tower.is_hero() else visual.tower.level
+		if level_now != visual.level or ascended != visual.ascended:
 			var ascending := ascended and not visual.ascended
-			visual.level = visual.tower.level
+			visual.level = level_now
 			visual.ascended = ascended
 			_celebrate(visual, ascending)
 
@@ -536,6 +570,39 @@ func _make_tower(tower: SimTower) -> TowerVisual:
 		visual.root.tree_exiting.connect(emitter.queue_free)
 	visual.caster = _add_caster(visual.root, (body.texture as CanvasTexture).diffuse_texture, offset, 1.0)
 	visual.caster.blob.scale = Vector2(1.0, 0.45) * 28.0 / 32.0
+	return visual
+
+
+## A hero standing on its tile: its sprite, a light in its colour and a shadow.
+func _make_hero(tower: SimTower) -> TowerVisual:
+	var visual := TowerVisual.new()
+	visual.tower = tower
+	visual.data_id = tower.data.id
+	var element := tower.hero.element
+	var color := HERO_LIGHT if element.is_empty() else sim.config.element_color(element)
+	visual.colors.append(color)
+	visual.shot_style = shot_style(tower.data)
+	visual.root = Node2D.new()
+	visual.root.position = _art_pos(tower.position) + Vector2(0, TOWER_BASE_DROP)
+	_actors.add_child(visual.root)
+	var path := "res://assets/art/heroes/board/%s.png" % tower.hero.id
+	var texture: Texture2D = load(path) if ResourceLoader.exists(path) else _pixel
+	var size := texture.get_size()
+	var offset := Vector2(-size.x * 0.5, -size.y + 2.0)
+	var body := Sprite2D.new()
+	body.texture = texture
+	body.centered = false
+	body.offset = offset
+	visual.root.add_child(body)
+	visual.glow = Sprite2D.new()
+	visual.root.add_child(visual.glow)
+	visual.light_energy = 0.8
+	visual.light = _point_light(color.lerp(Color.WHITE, 0.3), visual.light_energy, 90.0, 40.0)
+	visual.light.position = Vector2(0, -size.y * 0.6)
+	visual.root.add_child(visual.light)
+	visual.muzzle = Vector2(0, -size.y * 0.6)
+	visual.caster = _add_caster(visual.root, texture, offset, 1.0)
+	visual.caster.blob.scale = Vector2(1.0, 0.45) * 24.0 / 32.0
 	return visual
 
 
@@ -668,7 +735,9 @@ func _tower_emitter(kind: String) -> CPUParticles2D:
 
 func _sync_enemies(delta: float) -> void:
 	var seen: Dictionary[int, bool] = {}
-	for enemy in sim.enemies:
+	var shown: Array[SimEnemy] = sim.enemies.duplicate()
+	shown.append_array(sim.structures)
+	for enemy in shown:
 		if not enemy.alive:
 			continue
 		seen[enemy.id] = true
@@ -703,7 +772,8 @@ func _make_enemy(enemy: SimEnemy, tint: Color) -> EnemyVisual:
 	var anchor: Array = meta["anchor"]
 	var offset := -Vector2(anchor[0], anchor[1])
 	var size: Array = meta["size"]
-	visual.size = Vector2(size[0], size[1])
+	visual.size_scale = enemy_scale(enemy.data.id)
+	visual.size = Vector2(size[0], size[1]) * visual.size_scale
 	visual.root = Node2D.new()
 	visual.root.position = _art_pos(enemy.position) + Vector2(0, ENEMY_DROP)
 	visual.last_x = visual.root.position.x
@@ -726,6 +796,9 @@ func _make_enemy(enemy: SimEnemy, tint: Color) -> EnemyVisual:
 		visual.gear_glow.material = _additive
 		visual.root.add_child(visual.gear_glow)
 	visual.caster = _add_caster(visual.root, visual.frames[0].diffuse_texture, offset, 0.7, visual.body)
+	visual.caster.size_scale = visual.size_scale
+	visual.caster.blob.scale *= visual.size_scale
+	visual.root.scale = Vector2.ONE * visual.size_scale
 	return visual
 
 
@@ -754,7 +827,7 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 	visual.last_health = enemy.health
 	visual.flash = maxf(0.0, visual.flash - delta * 9.0)
 	# A hit squashes it for a moment.
-	visual.root.scale = Vector2(1.0 + visual.flash * 0.14, 1.0 - visual.flash * 0.14)
+	visual.root.scale = Vector2(1.0 + visual.flash * 0.14, 1.0 - visual.flash * 0.14) * visual.size_scale
 	if enemy.data.prismatic_interval > 0.0:
 		visual.tint = visual.tint.lerp(_enemy_tint(enemy), minf(1.0, delta * 4.0))
 	var color := visual.tint
@@ -938,7 +1011,7 @@ func _update_shadows() -> void:
 		caster.blob.position = pos
 		caster.sun.position = pos
 		caster.sun.rotation = angle
-		caster.sun.scale = Vector2(1.0, 0.6 * caster.height)
+		caster.sun.scale = Vector2(1.0, 0.6 * caster.height) * caster.size_scale
 		caster.sun.modulate = Color(0, 0, 0, 0.3 * day)
 		if caster.flip_from != null:
 			caster.sun.flip_h = caster.flip_from.flip_h
@@ -948,7 +1021,7 @@ func _update_shadows() -> void:
 
 func _on_chain_fired(tower: SimTower, points: PackedVector2Array) -> void:
 	var visual: TowerVisual = _towers.get(tower.id)
-	var color := sim.config.element_color(tower.data.elements[tower.data.elements.size() - 1])
+	var color := HERO_LIGHT if tower.data.elements.is_empty() else sim.config.element_color(tower.data.elements[tower.data.elements.size() - 1])
 	var bolt_points := PackedVector2Array()
 	var start := _art_pos(points[0])
 	if visual != null:
@@ -1297,4 +1370,16 @@ static func enemy_height(enemy_id: StringName) -> float:
 	if meta.is_empty():
 		return 0.0
 	var size: Array = meta["size"]
-	return float(size[1]) * SCALE
+	return float(size[1]) * SCALE * enemy_scale(enemy_id)
+
+
+## How many times larger than its art a boss is drawn, so it stands BOSS_CELLS[id] cells tall. Whole
+## numbers keep the pixel art crisp. 1 for everything else.
+static func enemy_scale(enemy_id: StringName) -> float:
+	var cells: float = BOSS_CELLS.get(enemy_id, 0.0)
+	var meta := enemy_info(enemy_id)
+	# Hand-drawn sprites are already drawn at their full size.
+	if cells <= 0.0 or meta.is_empty() or meta.get("drawn", false):
+		return 1.0
+	var size: Array = meta["size"]
+	return maxf(1.0, roundf(cells * CELL_ART / float(size[1])))
