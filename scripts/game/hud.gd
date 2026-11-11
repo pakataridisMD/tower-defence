@@ -7,6 +7,8 @@ signal start_wave_pressed
 signal web_pressed
 signal speed_pressed
 signal audio_pressed
+## The Menu button: opens the pause menu (also Esc).
+signal pause_menu_pressed
 signal tower_chosen(tower_id: StringName)
 signal skill_pressed(skill_id: StringName)
 signal sell_pressed
@@ -78,6 +80,7 @@ var _actions: VBoxContainer
 var _actions_key := ""
 var _message: Label
 var _message_time := 0.0
+var _menu_button: Button
 var _end_panel: PanelContainer
 var _end_title: Label
 var _end_stats: Label
@@ -159,6 +162,10 @@ func _build_top_bar() -> void:
 	audio_button.pressed.connect(func() -> void: audio_pressed.emit())
 	_wave_button = _bar_button(row, 232)
 	_wave_button.pressed.connect(func() -> void: start_wave_pressed.emit())
+	_menu_button = _bar_button(row, 128)
+	_menu_button.text = "Menu (Esc)"
+	_menu_button.tooltip_text = "Pause, audio settings, back to the main menu, or quit the game."
+	_menu_button.pressed.connect(func() -> void: pause_menu_pressed.emit())
 
 
 ## A number in the top bar with its icon in front, such as the gold.
