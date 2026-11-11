@@ -1,4 +1,4 @@
-"""The Night of Falling Stars: the midpoint (`night_of_falling_stars`), about 2:05 (fitted to the voiced lines).
+"""The Night of Falling Stars: the midpoint (`night_of_falling_stars`), about 2:25 (fitted to the narrator's Elariel take).
 One section per shot of the script. The darkest cue: Solenne's tune, betrayal, Fennick's
 stand, the sun broken, and one shard of hope drifting east.
 """
@@ -6,7 +6,13 @@ from cues._kit import DEFEAT_A, HOLLOW, HOLLOW_OST, new, rep, film
 
 # Shot lengths in seconds: each voiced line + 0.4 s lead-in + ~2 s of music before the next shot.
 # Shots 5 and 10 are character lines shown as subtitles.
-SLOTS = {'1 still bright': 11.8, '2 the gate opens': 7.6, '3 the streets': 11.5, '4 fennick holds': 10.8, "5 fennick's words": 7.0, '6 the gatehouse falls': 10.1, '7 the spire': 10.8, '8 the sun breaks': 5.7, '9 the queen': 9.4, "10 the regent's promise": 9.0, '11 one shard': 15.5, '12 no dawn': 9.0}
+# Narrated line lengths (seconds, with a 0.6 s tail) from the narrator's Elariel take of 2026-11-11.
+LINES = {1: 10.95, 2: 8.98, 3: 11.72, 4: 9.62, 6: 11.74, 7: 10.46, 8: 4.93, 9: 9.77, 11: 16.0, 12: 10.14}
+NAMES = ["1 still bright", "2 the gate opens", "3 the streets", "4 fennick holds", "5 fennick's words",
+         "6 the gatehouse falls", "7 the spire", "8 the sun breaks", "9 the queen", "10 the regent's promise",
+         "11 one shard", "12 no dawn"]
+SUBTITLED = {"5 fennick's words": 7.0, "10 the regent's promise": 9.0}
+SLOTS = {n: SUBTITLED.get(n) or round(0.4 + LINES[i + 1] + 2.0, 2) for i, n in enumerate(NAMES)}
 
 
 def build():
@@ -23,28 +29,28 @@ def build():
     a.part("vc", "F3:3 | Bb2:3 | G2:3 | C3:3 | F2:3", vel="pp")
 
     # 2. The Dawn Gate opens from the inside
-    b = s.section("2 the gate opens", bars=2, meter=5, seconds=SLOTS["2 the gate opens"])
-    b.part("hn", "D3+Ab3+D4:2> r:3 | r:5", vel="ff")
-    b.part("tbn", "D2+Ab2:2> r:3 | r:5", vel="ff")
-    b.part("tuba", "D1:2 r:3 | r:5", vel="ff")
-    b.part("vc_spic", "r:5 | " + HOLLOW_OST, vel="mp")
-    b.part("cb_spic", "r:5 | " + HOLLOW_OST, vel="mp", transpose=-12)
-    b.part("vln_trem", "D5+Eb5:10", vel="p")
+    b = s.section("2 the gate opens", bars=3, meter=5, seconds=SLOTS["2 the gate opens"])
+    b.part("hn", "D3+Ab3+D4:2> r:3 | r:5 | r:5", vel="ff")
+    b.part("tbn", "D2+Ab2:2> r:3 | r:5 | r:5", vel="ff")
+    b.part("tuba", "D1:2 r:3 | r:5 | r:5", vel="ff")
+    b.part("vc_spic", "r:5 | " + rep(HOLLOW_OST, 2), vel="mp")
+    b.part("cb_spic", "r:5 | " + rep(HOLLOW_OST, 2), vel="mp", transpose=-12)
+    b.part("vln_trem", "D5+Eb5:15", vel="p")
     b.hits("gong", "1", bar=1, vel="f")
     b.hits("timp:D2", "1", bar=1, vel="ff")
-    b.hits("timp:D2", "1 2.5 4 4.5", bar=2, vel="mf")
+    b.hits("timp:D2", "1 2.5 4 4.5", bar=2, vel="mf", bars=2)
 
     # 3. Fighting in the streets
-    c = s.section("3 the streets", bars=3, meter=5, seconds=SLOTS["3 the streets"])
-    c.part("vc_spic", rep(HOLLOW_OST, 3), vel="f")
-    c.part("cb_spic", rep(HOLLOW_OST, 3), vel="f", transpose=-12)
-    c.part("vla_spic", rep(HOLLOW_OST, 3), vel="mf", transpose=12)
-    c.part("hn_solo", " | ".join(HOLLOW.split(" | ")[:3]), vel="f")
-    c.part("tbn", " | ".join(HOLLOW.split(" | ")[:3]), vel="f", transpose=-12)
-    c.part("choir", "D3+A3:3 D3+Ab3:2 | D3+G3:3 Eb3+G3:2 | D3+A3:5", vel="mf")
-    c.hits("timp:D2", "1 2.5 4 4.5", bar=1, vel="f", bars=3)
-    c.hits("bd", "1 4", bar=1, vel="mf", bars=3)
-    c.hits("anvil", "4.5", bar=1, vel="mf", bars=3)
+    c = s.section("3 the streets", bars=4, meter=5, seconds=SLOTS["3 the streets"])
+    c.part("vc_spic", rep(HOLLOW_OST, 4), vel="f")
+    c.part("cb_spic", rep(HOLLOW_OST, 4), vel="f", transpose=-12)
+    c.part("vla_spic", rep(HOLLOW_OST, 4), vel="mf", transpose=12)
+    c.part("hn_solo", HOLLOW, vel="f")
+    c.part("tbn", HOLLOW, vel="f", transpose=-12)
+    c.part("choir", "D3+A3:3 D3+Ab3:2 | D3+G3:3 Eb3+G3:2 | D3+A3:3 D3+Bb3:2 | C#3+A3:3 D3+Ab3:2", vel="mf")
+    c.hits("timp:D2", "1 2.5 4 4.5", bar=1, vel="f", bars=4)
+    c.hits("bd", "1 4", bar=1, vel="mf", bars=4)
+    c.hits("anvil", "4.5", bar=1, vel="mf", bars=4)
 
     # 4. Fennick holds the gate
     d = s.section("4 fennick holds", bars=4, meter=4, seconds=SLOTS["4 fennick holds"])
@@ -152,8 +158,8 @@ def build():
     q.hits("gong", "1", bar=2, vel="p")
     # film-trailer layer
     film(s, a, "F2:3 | Bb1:3 | G1:3 | C2:3 | F2:3", "calm")
-    film(s, b, "D2:2 r:3 | r:5", "hit")
-    film(s, c, "D2:15", "drive", melody=" | ".join(HOLLOW.split(" | ")[:3]))
+    film(s, b, "D2:2 r:3 | r:5 | r:5", "hit")
+    film(s, c, "D2:20", "drive", melody=HOLLOW)
     film(s, d, "D2:4 | G1:2 A1:2 | Bb1:2 C2:2 | A1:4", "drive", melody=DEFEAT_A)
     film(s, e, "D2:4 | G1:4 | A1:4", "calm")
     film(s, f, "D2:1 r:4 | r:5", "hit")

@@ -25,8 +25,8 @@ for Versilian Studios is a courtesy, not a requirement.
 
 | Theme | What it means | Shape | First heard |
 |---|---|---|---|
-| **The Lantern** | hope, the Order of the Spire, Oswin | rising fifth, then a stepwise fall: `D A | G F# E D | B E F# | E` | horn, prologue shot 4 |
-| **The Long Defeat** | the Lantern in the minor: losing ground, saving people | `D A | G F E D | Bb E F | E` | prologue shot 11 |
+| **The Lantern** | hope, the Order of the Spire, Oswin | rising fifth, then a stepwise fall: `D A | G F# E D | B E F# | E` | horns, prologue shots 4 and 12 |
+| **The Long Defeat** | the Lantern in the minor: losing ground, saving people | `D A | G F E D | Bb E F | E` | prologue shot 8 |
 | **Solenne** | home, the Crowned Heart | a 6/8 folk tune for flute and harp, in F | prologue shot 5 |
 | **The Hollow** | Vael-Orrun and his Heralds | a falling tritone in low brass (`D Ab | G Bb A Eb`) over a 5/4 string ostinato | prologue shot 3 |
 | **The Seventh Colour** | the mystery after the end | D major with a raised fourth (G#) and a major seventh | epilogue, last chord |
@@ -37,12 +37,12 @@ for Versilian Studios is a courtesy, not a requirement.
 
 | Cue | Title | Length | Plays under |
 |---|---|---|---|
-| `prologue` | The Last Lantern | 3:14 | `prologue`, scored shot by shot to the narration, with a trailer layer (sung chant, gang shouts in the gaps between lines, braams, risers, taiko) |
+| `prologue` | The Last Lantern | 4:04 | `prologue`, scored shot by shot to the narrator's Elariel take. The war in the middle (Vael-Orrun's march, the Ring, the Black Comet, Oswin's stand, the Wardens) runs at 136 to 150 bpm with war drums, a grinding ostinato, stacked horns and a chanting choir. Sung chant, gang shouts in the gaps between lines, braams and risers |
 | `hold_the_road` | Hold the Road | 0:52 | the six land intros, `convergence_intro` |
 | `herald` | The Heralds of the Hollow | 0:57 | the six Herald scenes, `crossroads` |
 | `warden_freed` | Freed | 0:54 | the six Warden scenes, `lumen_gate` |
 | `solenne` | The Crowned Heart | 1:22 | `regents_counsel`, `capital_prelude` |
-| `falling_stars` | The Night of Falling Stars | 2:05 | `night_of_falling_stars`, shot by shot |
+| `falling_stars` | The Night of Falling Stars | 2:31 | `night_of_falling_stars`, shot by shot |
 | `long_night` | There Was No Dawn | 0:57 | `long_night`, `solenne_falls` |
 | `white_lantern` | The White Lantern | 1:20 | `dawn`, `heart_falls` |
 | `citadel` | The Crownless Citadel | 1:11 | `assault_intro`, `mirror_spire`, `crownless_throne` |

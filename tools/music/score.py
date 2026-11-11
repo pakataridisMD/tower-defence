@@ -202,6 +202,7 @@ class Score:
         self.expr: dict[str, list[tuple[float, float]]] = {}
         self.markers: list[tuple[float, str]] = []
         self.end_pad = 6.0
+        self.perc_db = 0.0  # gain on all unpitched percussion
 
     # ----- structure -----
     def section(self, name: str, bars: float, meter: float = 4, bpm: float = 72, end_bpm: float | None = None,
@@ -347,7 +348,7 @@ class Score:
                 y = hybrid.drum(kind, vel, seed=i)
             else:
                 y = orc.render_perc(kind, vel, seed=i)
-            y = y * 10 ** (PERC_DB.get(kind.split(":")[0], -10) / 20)
+            y = y * 10 ** ((PERC_DB.get(kind.split(":")[0], -10) + self.perc_db) / 20)
             off = int(self.time_of(beat) * SR)
             if kind in SWELLS:
                 # swells are placed so that their peak lands on the beat
