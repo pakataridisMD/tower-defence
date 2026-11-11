@@ -48,6 +48,8 @@ var _font: Font
 var _bold: Font
 var _done := false
 var _skipping := false
+## Shot start times in the music, when the music was written shot by shot.
+var _markers := PackedFloat32Array()
 
 
 func _ready() -> void:
@@ -83,7 +85,7 @@ func _process(delta: float) -> void:
 		if _fade_out >= FADE:
 			_fade_out = -1.0
 			_advance()
-	elif _time >= _length:
+	elif _shot_over():
 		_fade_out = 0.0
 	queue_redraw()
 
@@ -141,6 +143,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
+## A shot ends after its length, or, when the music was written shot by shot, so that the next
+## shot fades in right on its marker.
+func _shot_over() -> bool:
+	var next := _shot + 1
+	if not _markers.is_empty() and _shot >= 0 and next < _markers.size() and _music.playing:
+		return _music.get_playback_position() >= _markers[next] - FADE
+	return _time >= _length
+
+
 func _shots() -> Array:
 	return _cinematic.get("shots", [])
 
@@ -156,6 +167,7 @@ func _next_cinematic() -> void:
 	if mark_seen and is_inside_tree() and get_node_or_null("/root/Progress") != null:
 		Progress.mark_seen(_cinematic["id"])
 	var path := story.music_for(_cinematic["id"])
+	_markers = story.shot_markers(_cinematic["id"])
 	var stream: AudioStream = load(path) if not path.is_empty() else null
 	# Cinematics that share a cue (several in a row) keep it playing instead of starting it over.
 	if stream == null or stream != _music.stream or not _music.playing:

@@ -269,3 +269,12 @@ func test_the_player_walks_through_shots_and_finishes() -> void:
 	player._process(1.0)
 	assert_true(player.is_done())
 	assert_signal_emitted(player, "finished")
+
+
+func test_shots_keep_their_own_timing_without_music_markers() -> void:
+	var story := Story.load_from("res://data/story")
+	if story.music_for(&"ember_herald").is_empty():
+		assert_eq(story.shot_markers(&"ember_herald").size(), 0)
+	else:
+		# Herald music is not written shot by shot, so its markers are not used for timing.
+		assert_ne(story.shot_markers(&"ember_herald").size(), 3)

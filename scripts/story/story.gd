@@ -170,6 +170,23 @@ func music_for(id: StringName) -> String:
 	return path if ResourceLoader.exists(path) else ""
 
 
+## The start times of each shot in seconds from the start of the music, when the cinematic's cue
+## has one marker per shot (its <cue>.json, from the music thread); otherwise empty.
+func shot_markers(id: StringName) -> PackedFloat32Array:
+	var result := PackedFloat32Array()
+	var path := music_for(id)
+	if path.is_empty():
+		return result
+	var info: Variant = _read_json(path.get_basename() + ".json") if FileAccess.file_exists(path.get_basename() + ".json") else null
+	if not info is Dictionary or not (info as Dictionary).get("markers") is Array:
+		return result
+	for marker: Variant in info["markers"]:
+		if marker is Dictionary and marker.has("time"):
+			result.append(float(marker["time"]))
+	var shots: Array = cinematic(id).get("shots", [])
+	return result if result.size() == shots.size() else PackedFloat32Array()
+
+
 ## Every cinematic id the story files ask to play, for checking that each exists.
 func all_triggered_cinematics() -> Array[StringName]:
 	var result: Array[StringName] = []
