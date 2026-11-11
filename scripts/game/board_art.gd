@@ -17,6 +17,17 @@ const TOWER_BASE_DROP := 8.0
 const SUN_SHADOW_DIR := Vector2(0.8, -0.6)
 ## Enemies stand this far below the road's centre line (in art pixels), so they look centred on it.
 const ENEMY_DROP := 4.0
+## Art pixels across one board cell (64 screen pixels at SCALE 2).
+const CELL_ART := 32.0
+## How tall the major bosses stand, in board cells, as the story art draws them (a hero is about
+## 1.5 cells). They are centred on their road and drawn over the cells around it.
+const BOSS_CELLS := {
+	&"saltmother": 3.25, &"gorrath": 3.25, &"pale_vesper": 3.25, &"ashwick": 3.25, &"vholt": 3.5,
+	&"mother_briar": 3.25, &"ashen_regent": 3.4,
+	&"cinder_tyrant": 5.0, &"thunderhead": 5.0, &"broodmother": 5.0, &"mountain_titan": 5.0,
+	&"hollow_king": 5.0, &"leviathan": 6.3, &"sundered_heart": 5.0,
+	&"gatemaw": 8.0, &"vael_orrun": 9.0,
+}
 ## Short-lived lights (shots, blasts, lightning) allowed at once, to keep lighting cheap.
 const MAX_FLASH_LIGHTS := 10
 ## Rings and sprays of sparks allowed at once.
@@ -79,6 +90,8 @@ class Caster:
 	var blob: Sprite2D
 	var sun: Sprite2D
 	var height := 1.0
+	## How much larger than its art the thing is drawn (big bosses).
+	var size_scale := 1.0
 
 
 ## A short effect drawn straight onto the board: a ring that spreads (or closes in), or a spray of sparks.
@@ -129,8 +142,9 @@ class EnemyVisual:
 	var time := 0.0
 	var last_x := 0.0
 	var tint := Color.WHITE
-	## The sprite's size in art pixels.
+	## The sprite's size in art pixels, as drawn.
 	var size := Vector2.ZERO
+	var size_scale := 1.0
 
 
 # ------------------------------------------------------------------ setup
@@ -714,7 +728,8 @@ func _make_enemy(enemy: SimEnemy, tint: Color) -> EnemyVisual:
 	var anchor: Array = meta["anchor"]
 	var offset := -Vector2(anchor[0], anchor[1])
 	var size: Array = meta["size"]
-	visual.size = Vector2(size[0], size[1])
+	visual.size_scale = enemy_scale(enemy.data.id)
+	visual.size = Vector2(size[0], size[1]) * visual.size_scale
 	visual.root = Node2D.new()
 	visual.root.position = _art_pos(enemy.position) + Vector2(0, ENEMY_DROP)
 	visual.last_x = visual.root.position.x
@@ -737,6 +752,9 @@ func _make_enemy(enemy: SimEnemy, tint: Color) -> EnemyVisual:
 		visual.gear_glow.material = _additive
 		visual.root.add_child(visual.gear_glow)
 	visual.caster = _add_caster(visual.root, visual.frames[0].diffuse_texture, offset, 0.7, visual.body)
+	visual.caster.size_scale = visual.size_scale
+	visual.caster.blob.scale *= visual.size_scale
+	visual.root.scale = Vector2.ONE * visual.size_scale
 	return visual
 
 
@@ -765,7 +783,7 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 	visual.last_health = enemy.health
 	visual.flash = maxf(0.0, visual.flash - delta * 9.0)
 	# A hit squashes it for a moment.
-	visual.root.scale = Vector2(1.0 + visual.flash * 0.14, 1.0 - visual.flash * 0.14)
+	visual.root.scale = Vector2(1.0 + visual.flash * 0.14, 1.0 - visual.flash * 0.14) * visual.size_scale
 	if enemy.data.prismatic_interval > 0.0:
 		visual.tint = visual.tint.lerp(_enemy_tint(enemy), minf(1.0, delta * 4.0))
 	var color := visual.tint
@@ -949,7 +967,7 @@ func _update_shadows() -> void:
 		caster.blob.position = pos
 		caster.sun.position = pos
 		caster.sun.rotation = angle
-		caster.sun.scale = Vector2(1.0, 0.6 * caster.height)
+		caster.sun.scale = Vector2(1.0, 0.6 * caster.height) * caster.size_scale
 		caster.sun.modulate = Color(0, 0, 0, 0.3 * day)
 		if caster.flip_from != null:
 			caster.sun.flip_h = caster.flip_from.flip_h
@@ -1308,4 +1326,15 @@ static func enemy_height(enemy_id: StringName) -> float:
 	if meta.is_empty():
 		return 0.0
 	var size: Array = meta["size"]
-	return float(size[1]) * SCALE
+	return float(size[1]) * SCALE * enemy_scale(enemy_id)
+
+
+## How many times larger than its art a boss is drawn, so it stands BOSS_CELLS[id] cells tall. Whole
+## numbers keep the pixel art crisp. 1 for everything else.
+static func enemy_scale(enemy_id: StringName) -> float:
+	var cells: float = BOSS_CELLS.get(enemy_id, 0.0)
+	var meta := enemy_info(enemy_id)
+	if cells <= 0.0 or meta.is_empty():
+		return 1.0
+	var size: Array = meta["size"]
+	return maxf(1.0, roundf(cells * CELL_ART / float(size[1])))
