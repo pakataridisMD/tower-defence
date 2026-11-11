@@ -8,18 +8,34 @@ extends RefCounted
 ## unlocks_* list stays locked until one of those meta nodes is taken. Anything no meta node lists
 ## is open from the start.
 
-## Display names and colours of the meta tree branches, keyed by the nodes' region.
+## Display names and colours of the meta tree branches, keyed by the nodes' region: four inner
+## wings, the Starpath ring road between them and one constellation per element on the outer ring
+## (in the element's own colour). The tree itself is written by tools/meta/gen_meta_tree.py.
 const BRANCH_NAMES: Dictionary[StringName, String] = {
 	&"arsenal": "Arsenal",
 	&"command": "Command",
 	&"expeditions": "Expeditions",
 	&"mastery": "Mastery",
+	&"starpath": "Starpath",
+	&"fire": "Fire",
+	&"storm": "Storm",
+	&"nature": "Nature",
+	&"water": "Water",
+	&"earth": "Earth",
+	&"void": "Void",
 }
 const BRANCH_COLORS: Dictionary[StringName, Color] = {
 	&"arsenal": Color("ef6f6c"),
 	&"command": Color("f4c95d"),
 	&"expeditions": Color("4cc9f0"),
 	&"mastery": Color("b388eb"),
+	&"starpath": Color("c9d3ee"),
+	&"fire": Color("e4572e"),
+	&"storm": Color("f2c14e"),
+	&"nature": Color("5bb450"),
+	&"water": Color("2e86de"),
+	&"earth": Color("a0785a"),
+	&"void": Color("8e5cd9"),
 }
 
 ## A DataRegistry, or a node with the same fields in tests.

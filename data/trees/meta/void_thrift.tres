@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"cost"
+kind = 1
+value = -0.02
+required_tags = Array[StringName]([&"void"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"void_thrift"
+display_name = "Void Thrift"
+description = "Void towers cost 2% less."
+kind = 2
+region = &"void"
+cost = 3
+position = Vector2(-224, -898)
+links = Array[StringName]([&"void_haste"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

@@ -58,8 +58,20 @@ func is_locked(id: StringName) -> bool:
 	return _locked.has(id)
 
 
+## The taken node that closes this one, when they are a pick-one choice. Empty if none does.
+func excluded_by(id: StringName) -> StringName:
+	for other in graph.exclusions(id):
+		if is_allocated(other):
+			return other
+	return &""
+
+
+func is_excluded(id: StringName) -> bool:
+	return not excluded_by(id).is_empty()
+
+
 func can_allocate(id: StringName) -> bool:
-	if not graph.has_node_id(id) or is_allocated(id) or is_locked(id):
+	if not graph.has_node_id(id) or is_allocated(id) or is_locked(id) or is_excluded(id):
 		return false
 	if graph.node(id).cost > points:
 		return false
@@ -98,7 +110,7 @@ func refund(id: StringName) -> bool:
 ## be reached. The tree screen uses it to show what a far node costs.
 func path_to(id: StringName) -> Array[StringName]:
 	var path: Array[StringName] = []
-	if not graph.has_node_id(id) or is_allocated(id) or is_locked(id):
+	if not graph.has_node_id(id) or is_allocated(id) or is_locked(id) or is_excluded(id):
 		return path
 	# Breadth-first from the target outwards; toward[n] is the next step from n back to the target.
 	var toward: Dictionary[StringName, StringName] = {id: &""}
@@ -117,7 +129,7 @@ func path_to(id: StringName) -> Array[StringName]:
 					path.append(step)
 					step = toward[step]
 				return path
-			if is_locked(next):
+			if is_locked(next) or is_excluded(next):
 				continue
 			toward[next] = current
 			queue.append(next)

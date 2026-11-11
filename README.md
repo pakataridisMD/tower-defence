@@ -158,13 +158,24 @@ screenshots of the cinematic player, two Herald fights, the assault and the camp
 ## Meta tree and saves
 
 Every run pays **meta points**, won or lost: one for each wave cleared and two more for a win, times the
-difficulty level's multiplier (Hard pays 1.5x). Spend them in the **meta tree** from the main menu. It has four
-branches:
+difficulty level's multiplier (Hard pays 1.5x, Nightmare 2x), plus a bonus the first time a campaign stage is
+won. Spend them in the **meta tree** (Talents on the main menu). It is a wheel of 172 talents, built to fill
+across the whole campaign: it costs about 760 points, and a clean first pass through the campaign pays about 550.
 
-- **Arsenal** opens advanced skill web nodes: the Thornstorm bridge and the three keystones.
-- **Command** gives run-wide bonuses: starting gold and lives, gold per wave, sell refunds, a starting skill point.
-- **Expeditions** unlocks the Serpentine map and the Hard difficulty level, and pays extra skill points for bosses.
-- **Mastery** makes towers stronger in every run: range, Fire damage, Nature poison, Storm attack speed.
+- Four inner wings: **Arsenal** (tower damage and speed, armour piercing, the Thornstorm bridge and the skill
+  web keystones), **Command** (starting gold and lives, gold per wave, cheaper towers, a starting skill point),
+  **Expeditions** (the Serpentine map, Hard and Nightmare, skill points) and **Mastery** (skills and range).
+- The **Starpath**, a ring road of small travel nodes joining the wings to the outer ring.
+- Six element constellations on the outer ring, one per element, each with a status arm, a speed and cost
+  arm, and a keystone with a real downside at its tip (Pyre Covenant, Ball Lightning, Overgrowth, Glacial
+  Heart, Fault Line, Hollow Pact). Confluence bridges between neighbours boost the dual towers of both.
+- Ten **pick-one choices**: taking one side closes the other until it is refunded (`TreeNodeData.excludes`).
+
+The screen is bigger than the window: drag or use WASD to move, the mouse wheel or + / - to zoom (the pixel
+art steps between 1x, 2x and 3x), F to see the whole tree and Home to go back to the Origin. The tree is
+written by `python3 tools/meta/gen_meta_tree.py` (edit its tables, not the .tres files; `--preview out.png`
+draws the layout). `godot --headless -s tools/meta_pacing.gd` plays the campaign with the bot, spending its
+points after every stage, and prints how full the tree is after each one (also in CI on a `[pacing]` commit).
 
 Refunds in the meta tree are always free: right-click a node at the tip of a branch, or use **Refund all**
 (it asks for a second click). A map, difficulty level or skill web node named in a meta node's `unlocks_*`
