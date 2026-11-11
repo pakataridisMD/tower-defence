@@ -41,4 +41,8 @@ jobs:
 
       - name: Tune the campaign
         if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
-        run: /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --tune 2>&1 | grep -E "TUNING|ERROR"
+        # One stage per process, four at a time, so the bigger maps and longer waves fit the time cap.
+        run: |
+          grep -o '^TUNING\["[a-z_0-9]*"\]' tools/campaign/tuning.py | cut -d'"' -f2 | grep -v '^prototype$' \
+            | xargs -P 4 -I{} sh -c '/tmp/godot/godot --headless -s tools/campaign_balance.gd -- --tune --stage={} 2>&1 | grep -E "TUNING|ERROR"' \
+            | sort
