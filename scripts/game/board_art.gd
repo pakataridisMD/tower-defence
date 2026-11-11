@@ -1334,7 +1334,8 @@ static func enemy_height(enemy_id: StringName) -> float:
 static func enemy_scale(enemy_id: StringName) -> float:
 	var cells: float = BOSS_CELLS.get(enemy_id, 0.0)
 	var meta := enemy_info(enemy_id)
-	if cells <= 0.0 or meta.is_empty():
+	# Hand-drawn sprites are already drawn at their full size.
+	if cells <= 0.0 or meta.is_empty() or meta.get("drawn", false):
 		return 1.0
 	var size: Array = meta["size"]
 	return maxf(1.0, roundf(cells * CELL_ART / float(size[1])))

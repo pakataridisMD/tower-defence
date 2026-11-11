@@ -2278,6 +2278,38 @@ def write_missing_imports() -> int:
     return written
 
 
+DRAWN = os.path.join(OUT, "drawn")
+
+
+def drawn_enemy(eid: str) -> dict | None:
+    """Hand-drawn sprites (tools/art/pix2d on the story art branch) replace the code-drawn ones.
+
+    assets/art/game/drawn/ holds each one's walk strip and normal-map strip, with drawn.json giving
+    the frame size, the feet point (the anchor) and the frame count. The strip is cut into the
+    <id>_<n>.png frames the game reads. They are drawn at 32 px per cell, so the game shows them at
+    their own size.
+    """
+    try:
+        with open(os.path.join(DRAWN, "drawn.json")) as fh:
+            info = json.load(fh).get(eid)
+    except FileNotFoundError:
+        return None
+    if info is None:
+        return None
+    w, h = info["frame"]
+    count = info["anims"]["walk"]["frames"]
+    for suffix in ("", "_n"):
+        strip = Image.open(os.path.join(DRAWN, f"{eid}_walk{suffix}.png")).convert("RGBA")
+        for f in range(count):
+            strip.crop((f * w, 0, f * w + w, h)).save(os.path.join(OUT, "enemies", f"{eid}_{f}{suffix}.png"))
+    return {"size": [w, h], "anchor": list(info["feet"]), "frames": count, "drawn": True}
+
+
+def enemy_art(eid: str) -> dict:
+    drawn = drawn_enemy(eid)
+    return drawn if drawn is not None else ENEMIES[eid]()
+
+
 def main() -> None:
     os.makedirs(OUT, exist_ok=True)
     art = {"art_scale": ART_SCALE, "towers": {}, "enemies": {}, "props": {}}
@@ -2291,7 +2323,7 @@ def main() -> None:
         art["enemies"] = {}
         for eid in sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("data/enemies/*.tres")):
             if eid in ENEMIES:
-                art["enemies"][eid] = ENEMIES[eid]()
+                art["enemies"][eid] = enemy_art(eid)
         with open(os.path.join(OUT, "art.json"), "w") as fh:
             json.dump(art, fh, indent=1)
         print("Wrote the enemies in", OUT, "and", write_missing_imports(), "import files")
@@ -2313,7 +2345,7 @@ def main() -> None:
         return
     for eid in sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("data/enemies/*.tres")):
         if eid in ENEMIES:
-            art["enemies"][eid] = ENEMIES[eid]()
+            art["enemies"][eid] = enemy_art(eid)
         else:
             print("No art recipe for enemy", eid, "- the game draws a placeholder")
     art["props"] = make_props()

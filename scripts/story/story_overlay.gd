@@ -19,6 +19,9 @@ var _font: Font
 var _banners: Array[SimEnemy] = []
 var _banner: SimEnemy
 var _banner_time := 0.0
+## The banner's picture, loaded when it appears (a texture first loaded inside _draw shows blank).
+var _banner_picture: Texture2D
+var _banner_is_portrait := false
 ## Boss enemy ids already announced in this run: a boss is announced once.
 var _announced: Dictionary[StringName, bool] = {}
 ## A big line of text across the board, such as the city being defended or a building falling.
@@ -90,6 +93,7 @@ func _process(delta: float) -> void:
 			_banner = null
 	if _banner == null and not _banners.is_empty():
 		_banner = _banners.pop_front()
+		_load_banner_picture()
 		_banner_time = BANNER_TIME
 	queue_redraw()
 
@@ -180,18 +184,15 @@ func _draw_banner() -> void:
 	draw_rect(rect, Color(0.06, 0.05, 0.09, 0.92))
 	draw_rect(rect, Color(color, 0.9), false, 3.0)
 	draw_rect(Rect2(rect.position + Vector2(0, rect.size.y - 6), Vector2(rect.size.x, 6)), Color(color, 0.6))
-	var portrait := Story.portrait(StringName(str(person.get("id", "")))) if not person.is_empty() else null
 	var picture_rect := Rect2(rect.position + Vector2(14, 14), Vector2(104, 104))
 	draw_rect(picture_rect, Color(0, 0, 0, 0.6))
-	if portrait != null:
-		draw_texture_rect(portrait, picture_rect, false)
-	else:
-		var frame: Texture2D = load(BoardArt.ART + "enemies/%s_0.png" % _banner.data.id) \
-				if ResourceLoader.exists(BoardArt.ART + "enemies/%s_0.png" % _banner.data.id) else null
-		if frame != null:
-			var fit := minf(picture_rect.size.x / frame.get_width(), picture_rect.size.y / frame.get_height())
-			var drawn := frame.get_size() * floorf(maxf(1.0, fit))
-			draw_texture_rect(frame, Rect2(picture_rect.get_center() - drawn * 0.5, drawn), false, color.lerp(Color.WHITE, 0.3))
+	if _banner_picture != null and _banner_is_portrait:
+		draw_texture_rect(_banner_picture, picture_rect, false)
+	elif _banner_picture != null:
+		var frame := _banner_picture
+		var fit := minf(picture_rect.size.x / frame.get_width(), picture_rect.size.y / frame.get_height())
+		var drawn := frame.get_size() * (floorf(fit) if fit >= 1.0 else fit)
+		draw_texture_rect(frame, Rect2(picture_rect.get_center() - drawn * 0.5, drawn), false, color.lerp(Color.WHITE, 0.3))
 	var name := str(person.get("name", _banner.data.display_name))
 	var title := str(person.get("title", ""))
 	var x := rect.position.x + 136
@@ -202,6 +203,20 @@ func _draw_banner() -> void:
 		draw_string(_font, Vector2(x + name_width + 14, rect.position.y + 72), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 20, UiStyle.TEXT_DIM)
 	var words := _banner.data.trait_words()
 	draw_string(_font, Vector2(x, rect.position.y + 104), _sentence(", ".join(words)), HORIZONTAL_ALIGNMENT_LEFT, BANNER_SIZE.x - 150, 18, UiStyle.TEXT)
+
+
+func _load_banner_picture() -> void:
+	_banner_picture = null
+	_banner_is_portrait = false
+	if _banner == null:
+		return
+	var person := _character(_banner)
+	if not person.is_empty():
+		_banner_picture = Story.portrait(StringName(str(person.get("id", ""))))
+		_banner_is_portrait = _banner_picture != null
+	if _banner_picture == null:
+		var path := BoardArt.ART + "enemies/%s_0.png" % _banner.data.id
+		_banner_picture = load(path) if ResourceLoader.exists(path) else null
 
 
 static func _sentence(text: String) -> String:
