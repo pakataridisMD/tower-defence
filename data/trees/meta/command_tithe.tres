@@ -7,16 +7,16 @@
 script = ExtResource("1_mod")
 stat = &"gold_per_wave"
 kind = 0
-value = 10.0
+value = 4.0
 
 [resource]
 script = ExtResource("2_node")
 id = &"command_tithe"
 display_name = "Tithe"
-description = "Clearing a wave pays 10 more gold."
-kind = 2
+description = "Clearing a wave pays 4 more gold."
+kind = 3
 region = &"command"
-cost = 2
-position = Vector2(275, 65)
-links = Array[StringName]([&"command_salvage"])
+cost = 5
+position = Vector2(413, 229)
+links = Array[StringName]([&"command_salvage", &"starpath_30"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

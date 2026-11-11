@@ -364,7 +364,7 @@ start_delay = 6.0
 script = ExtResource("3_s")
 element = &"earth"
 is_boss = true
-health_multiplier = 0.32
+health_multiplier = 0.21
 groups = Array[ExtResource("2_s")]([SubResource("r55"), SubResource("r56"), SubResource("r57")])
 
 [resource]
@@ -372,5 +372,5 @@ script = ExtResource("1_s")
 id = &"c_ember_4"
 display_name = "Throne of Cinders"
 health_growth = 1.1
-health_scale = 3.52
+health_scale = 2.22
 waves = Array[ExtResource("3_s")]([SubResource("r3"), SubResource("r6"), SubResource("r9"), SubResource("r14"), SubResource("r18"), SubResource("r22"), SubResource("r25"), SubResource("r30"), SubResource("r34"), SubResource("r38"), SubResource("r41"), SubResource("r46"), SubResource("r50"), SubResource("r54"), SubResource("r58")])

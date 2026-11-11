@@ -547,7 +547,7 @@ element = &"earth"
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.34
+health_multiplier = 0.24
 groups = Array[ExtResource("2_s")]([SubResource("r74"), SubResource("r75"), SubResource("r76")])
 
 [resource]
@@ -555,5 +555,5 @@ script = ExtResource("1_s")
 id = &"c_converge_2"
 display_name = "Prism Wastes"
 health_growth = 1.1
-health_scale = 0.94
+health_scale = 0.93
 waves = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r6"), SubResource("r11"), SubResource("r15"), SubResource("r19"), SubResource("r24"), SubResource("r29"), SubResource("r33"), SubResource("r37"), SubResource("r42"), SubResource("r47"), SubResource("r51"), SubResource("r55"), SubResource("r60"), SubResource("r65"), SubResource("r69"), SubResource("r73"), SubResource("r77")])

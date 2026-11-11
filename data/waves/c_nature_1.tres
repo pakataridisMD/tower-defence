@@ -175,5 +175,5 @@ script = ExtResource("1_s")
 id = &"c_nature_1"
 display_name = "Mossy Trail"
 health_growth = 1.1
-health_scale = 1.98
+health_scale = 1.77
 waves = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r4"), SubResource("r7"), SubResource("r10"), SubResource("r12"), SubResource("r14"), SubResource("r18"), SubResource("r22"), SubResource("r25"), SubResource("r28")])

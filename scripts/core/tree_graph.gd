@@ -5,6 +5,7 @@ extends RefCounted
 var start_id: StringName
 var _nodes: Dictionary[StringName, TreeNodeData] = {}
 var _links: Dictionary[StringName, Array] = {}
+var _excludes: Dictionary[StringName, Array] = {}
 
 
 func _init(nodes: Array[TreeNodeData]) -> void:
@@ -18,6 +19,10 @@ func _init(nodes: Array[TreeNodeData]) -> void:
 			# Links to unknown ids are skipped here and reported by DataRegistry.validate().
 			if _nodes.has(other) and other != data.id:
 				_connect(data.id, other)
+		for other in data.excludes:
+			if _nodes.has(other) and other != data.id:
+				_add_unique(_excludes, data.id, other)
+				_add_unique(_excludes, other, data.id)
 
 
 func has_node_id(id: StringName) -> bool:
@@ -36,6 +41,20 @@ func ids() -> Array[StringName]:
 
 func size() -> int:
 	return _nodes.size()
+
+
+## Nodes that cannot be taken together with this one (pick-one choices), in both directions.
+func exclusions(id: StringName) -> Array[StringName]:
+	var result: Array[StringName] = []
+	result.assign(_excludes.get(id, []))
+	return result
+
+
+static func _add_unique(map: Dictionary[StringName, Array], key: StringName, value: StringName) -> void:
+	if not map.has(key):
+		map[key] = []
+	if not map[key].has(value):
+		map[key].append(value)
 
 
 func neighbours(id: StringName) -> Array[StringName]:

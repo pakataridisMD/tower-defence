@@ -2,14 +2,16 @@ extends SceneTree
 ## Plays every campaign stage with the scripted AutoPlayer and prints how each went, for tuning the
 ## campaign (see tools/campaign/gen_campaign.py). No meta tree bonuses, Normal difficulty.
 ##
-##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune] [--skirmish] [--compare]
+##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune] [--skirmish] [--compare] [--heroes]
 ##
 ## --tune searches each stage's health scale so the bot wins keeping a target share of its lives,
 ## and prints lines for tools/campaign/tuning.py. The bot levels its towers and casts its skills,
 ## but it never sells, never fuses a tower and follows one fixed plan, so a person still has room
 ## to do better. --skirmish does the same for the skirmish waves (data/waves/prototype.tres),
 ## against two different plans. --compare plays everything with several kinds of bot (with and
-## without skills and upgrades), to see what each habit is worth.
+## without skills and upgrades), to see what each habit is worth. --heroes plays every stage with a
+## party of the three heroes who would have joined by then, with and without heroes and skills, to
+## see how much of a run they carry next to the towers.
 
 ## Share of lives the bot should keep, by stage position in an element campaign and in the Convergence.
 const TARGETS: Array[float] = [0.6, 0.45, 0.3, 0.2]
@@ -47,6 +49,11 @@ func _initialize() -> void:
 	var meta := MetaProgress.new(registry, PlayerProfile.new())
 	if OS.get_cmdline_user_args().has("--compare"):
 		_compare(registry, meta)
+		registry.free()
+		quit()
+		return
+	if OS.get_cmdline_user_args().has("--heroes"):
+		_compare_heroes(meta, only)
 		registry.free()
 		quit()
 		return
@@ -149,6 +156,65 @@ func _compare(registry: Node, meta: MetaProgress) -> void:
 	for i in BOTS.size():
 		total += " %12s" % ("%d/%d" % [wins[i], kept[i]])
 	print("COMPARE " + total)
+
+
+## Kinds of play for --heroes: name, skills, heroes. All of them level and ascend towers.
+const HERO_BOTS := [["build", false, false], ["skills", true, false], ["heroes", false, true], ["all", true, true]]
+
+
+## A table: one row per stage, one column per kind of play. A cell is the share of lives kept (or
+## the wave the bot fell on); "heroes" and "all" also show the share of tower damage the heroes
+## dealt. The party is the three heroes who joined last before the stage, as a player going through
+## the campaigns in order would bring.
+func _compare_heroes(meta: MetaProgress, only: String) -> void:
+	var header := "%-12s %-28s" % ["HEROES", "party"]
+	for kind: Array in HERO_BOTS:
+		header += " %12s" % kind[0]
+	print(header)
+	var joined: Array[HeroData] = []
+	for hero in meta.heroes_in_order():
+		if hero.joins_after.is_empty() and hero.arrives_in.is_empty():
+			joined.append(hero)
+	var wins: Array[int] = []
+	var kept: Array[int] = []
+	wins.resize(HERO_BOTS.size())
+	kept.resize(HERO_BOTS.size())
+	for campaign in meta.campaigns_in_order():
+		for stage in campaign.stages:
+			var party: Array[HeroData] = joined.slice(maxi(0, joined.size() - HeroData.MAX_PARTY))
+			if only.is_empty() or stage.id == only:
+				var names: PackedStringArray = []
+				for hero in party:
+					names.append(String(hero.id))
+				var line := "%-12s %-28s" % [stage.id, ",".join(names)]
+				for i in HERO_BOTS.size():
+					var config := meta.stage_config(stage.id)
+					config.heroes = party.duplicate()
+					var sim := RunSim.new(config)
+					var bot := AutoPlayer.for_sim(sim)
+					bot.skills = HERO_BOTS[i][1]
+					bot.heroes = HERO_BOTS[i][2]
+					var cell := _run_bot(sim, bot)
+					if HERO_BOTS[i][2]:
+						var hero_damage := 0.0
+						var all_damage := 0.0
+						for tower in sim.towers:
+							all_damage += tower.damage_dealt
+							if tower.is_hero():
+								hero_damage += tower.damage_dealt
+						cell += " h%2d%%" % roundi(100.0 * hero_damage / maxf(1.0, all_damage))
+					line += " %12s" % cell
+					if sim.state == RunSim.State.WON:
+						wins[i] += 1
+						kept[i] += roundi(100.0 * sim.lives / sim.starting_lives)
+				print("HEROES " + line)
+			for hero in meta.heroes_in_order():
+				if hero.joins_after == stage.id:
+					joined.append(hero)
+	var total := "%-12s %-28s" % ["wins/lives", ""]
+	for i in HERO_BOTS.size():
+		total += " %12s" % ("%d/%d" % [wins[i], kept[i]])
+	print("HEROES " + total)
 
 
 ## Plays a skirmish run with one plan and returns the share of lives it kept, or -1 if it lost.

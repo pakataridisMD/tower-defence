@@ -261,7 +261,7 @@ start_delay = 4.0
 script = ExtResource("3_s")
 element = &"earth"
 is_boss = true
-health_multiplier = 0.5
+health_multiplier = 0.37
 groups = Array[ExtResource("2_s")]([SubResource("r39"), SubResource("r40"), SubResource("r41")])
 
 [resource]
@@ -269,5 +269,5 @@ script = ExtResource("1_s")
 id = &"c_storm_2"
 display_name = "Galeback Ridge"
 health_growth = 1.1
-health_scale = 2.78
+health_scale = 2.35
 waves = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r6"), SubResource("r10"), SubResource("r13"), SubResource("r16"), SubResource("r20"), SubResource("r24"), SubResource("r27"), SubResource("r30"), SubResource("r34"), SubResource("r38"), SubResource("r42")])
