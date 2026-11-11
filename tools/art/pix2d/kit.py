@@ -60,20 +60,22 @@ class Sprite:
     pose: None for the rest pose, or {group: (rot, dx, dy)} plus optional "_all" for the whole creature. The drawing
     code names the group it is about to draw with g(name, pivot_x, pivot_y, parent); every shape after that is moved
     by the pose. Groups chain through their parents (thigh > shin, upper arm > forearm > weapon, neck > head > jaw). pad adds empty space on all sides so swings
-    and falls are not clipped; drawing coordinates stay those of the rest pose.
+    and falls are not clipped; drawing coordinates stay those of the rest pose. origin shifts the drawing on the
+    canvas, for adding headroom to a tall design without renumbering it.
     """
 
-    def __init__(self, w, h, pose=None, pad=0):
+    def __init__(self, w, h, pose=None, pad=0, origin=(0, 0)):
         self.bw, self.bh, self.pad = w, h, pad
+        self.ox, self.oy = origin      # where drawing coordinate (0, 0) sits on the unpadded canvas
         w, h = w + 2 * pad, h + 2 * pad
         self.w, self.h = w, h
         self.pose = pose or {}
         r, dx, dy = self.pose.get("_all", (0, 0, 0))
-        self._base = _mul(_tf(r, self.bw / 2 + pad, self.bh - 5 + pad, dx, dy), _tf(0, 0, 0, pad, pad))
+        self._base = _mul(_tf(r, self.bw / 2 + pad, self.bh - 5 + pad, dx, dy), _tf(0, 0, 0, pad + self.ox, pad + self.oy))
         r, dx, dy = self.pose.get("body", (0, 0, 0))
         self._body = _tf(r, self.bw / 2, self.bh * 0.65, dx, dy)
-        self.M = self._base if not self.pose and not pad else _mul(self._base, self._body)
-        self._ident = not self.pose and not pad
+        self._ident = not self.pose and not pad and tuple(origin) == (0, 0)
+        self.M = self._base if self._ident else _mul(self._base, self._body)
         self._world = {"body": self._body}
         self.rgb = np.zeros((h, w, 3), np.uint8)
         self.a = np.zeros((h, w), bool)
@@ -249,7 +251,7 @@ class Sprite:
     def shadow(self, cx, cy, rx, ry):
         """Soft ground shadow drawn under everything (call last)."""
         ident, self._ident = self._ident, True
-        m = self.ellipse(cx + self.pad, cy + self.pad, rx, ry) & ~self.a
+        m = self.ellipse(cx + self.pad + self.ox, cy + self.pad + self.oy, rx, ry) & ~self.a
         self._ident = ident
         self.rgb[m] = (18, 16, 26)
         self._shadow = m

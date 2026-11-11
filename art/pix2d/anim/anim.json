@@ -1,4 +1,36 @@
 {
+ "cinder_tyrant": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   141,
+   274
+  ],
+  "frame": [
+   282,
+   344
+  ]
+ },
  "dragon": {
   "anims": {
    "attack": {
@@ -157,6 +189,38 @@
   "frame": [
    128,
    128
+  ]
+ },
+ "gorrath": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   96,
+   164
+  ],
+  "frame": [
+   192,
+   212
   ]
  },
  "orb_earth": {
@@ -445,6 +509,38 @@
   "frame": [
    106,
    112
+  ]
+ },
+ "vael_orrun": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   116,
+   360
+  ],
+  "frame": [
+   232,
+   392
   ]
  }
 }
