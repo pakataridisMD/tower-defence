@@ -58,7 +58,9 @@ vmix = "".join(f"[v{i}]" for i in range(len(lines)))
 parts.append(f"{vmix}amix=inputs={len(lines)}:normalize=0,apad,asplit=2[voice][key]")
 # Music stays big (trailer style): it only dips ~5 dB under the voice, and a notch
 # around 2-4 kHz leaves room for the words instead of turning the music down more.
-parts.append(f"[0:a]aresample=44100,aformat=channel_layouts=stereo,volume={args.music_db}dB,"
+voice_end = starts[-1] + durs[-1] + 1.5  # if the voice outlasts the music, pad the music with silence
+parts.append(f"[0:a]aresample=44100,aformat=channel_layouts=stereo,apad=whole_dur={voice_end:.2f},"
+             f"volume={args.music_db}dB,"
              "acompressor=threshold=-16dB:ratio=3:attack=30:release=300,"   # trailer-loud music
              "equalizer=f=2800:t=q:w=1:g=-4[mus]")
 parts.append("[mus][key]sidechaincompress=threshold=0.06:ratio=2.5:attack=60:release=700:makeup=1[ducked]")
