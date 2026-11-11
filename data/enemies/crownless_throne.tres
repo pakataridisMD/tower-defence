@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"crownless_throne"
+display_name = "The Crownless Throne"
+max_health = 14000.0
+speed = 0.0
+armour = 8.0
+bounty = 400
+leak_damage = 0
+tags = Array[StringName]([&"structure"])
+description = "The seat of the Sunderer. It shields the horde around it (30% less damage) and calls up brutes. When it breaks, Vael-Orrun takes a shape and comes out to fight."
+element = &"void"
+status_immune = true
+structure = true
+summon = &"brute"
+summon_interval = 6.0
+summon_count = 1
+ward_radius = 220.0
+ward_reduction = 0.3

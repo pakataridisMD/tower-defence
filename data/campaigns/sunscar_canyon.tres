@@ -20,7 +20,7 @@ map = &"c_earth_1"
 allowed_elements = Array[StringName]([&"earth", &"void", &"water"])
 starting_nodes = Array[StringName]([&"earth_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r1")])
-rule_text = PackedStringArray("Home ground: Earth towers deal 20% more damage.", "Only Earth, Void and Water can be drafted. You start with Earth.")
+rule_text = PackedStringArray("Home ground: Earth towers deal 20% more damage.", "Only Earth, Void and Water can be drafted. You start with Earth.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r3"]
@@ -46,7 +46,7 @@ map = &"c_earth_2"
 allowed_elements = Array[StringName]([&"earth", &"void", &"water"])
 starting_nodes = Array[StringName]([&"earth_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r3"), SubResource("r4")])
-rule_text = PackedStringArray("Home ground: Earth towers deal 20% more damage.", "Only Earth, Void and Water can be drafted. You start with Earth.", "Bedrock: Earth towers deal a further 10% more damage.")
+rule_text = PackedStringArray("Home ground: Earth towers deal 20% more damage.", "Only Earth, Void and Water can be drafted. You start with Earth.", "The last wave is led by Vholt Stormcrown, the Sky Herald (blinks, silences towers).", "Bedrock: Earth towers deal a further 10% more damage.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r6"]
@@ -71,7 +71,7 @@ map = &"c_earth_3"
 allowed_elements = Array[StringName]([&"earth", &"void", &"water"])
 starting_nodes = Array[StringName]([&"earth_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r6"), SubResource("r7")])
-rule_text = PackedStringArray("Home ground: Earth towers deal 20% more damage.", "Only Earth, Void and Water can be drafted. You start with Earth.", "Rockfall: 25% fewer lives.")
+rule_text = PackedStringArray("Home ground: Earth towers deal 20% more damage.", "Only Earth, Void and Water can be drafted. You start with Earth.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.", "Rockfall: 25% fewer lives.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r9"]
@@ -91,7 +91,7 @@ is_guardian = true
 allowed_elements = Array[StringName]([&"earth", &"void", &"water"])
 starting_nodes = Array[StringName]([&"earth_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r9")])
-rule_text = PackedStringArray("Home ground: Earth towers deal 20% more damage.", "Only Earth, Void and Water can be drafted. You start with Earth.", "The Warden resists Earth: bring a neighbour.")
+rule_text = PackedStringArray("Home ground: Earth towers deal 20% more damage.", "Only Earth, Void and Water can be drafted. You start with Earth.", "The Warden resists Earth: bring a neighbour.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
 first_clear_points = 6
 
 [sub_resource type="Resource" id="r11"]

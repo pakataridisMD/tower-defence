@@ -16,6 +16,19 @@ signal run_ended(won: bool)
 ## A skill was cast. `at` is the point picked on the board, or the board's centre for a skill
 ## that reaches everything.
 signal skill_used(skill: SkillData, at: Vector2)
+## A boss came onto the board, walking in or released by another enemy.
+signal boss_arrived(enemy: SimEnemy)
+## A boss silenced these towers.
+signal towers_silenced(boss: SimEnemy, silenced: Array[SimTower])
+## An enemy jumped forward along its road, from one point to another.
+signal enemy_blinked(enemy: SimEnemy, from: Vector2)
+## A boss escaped the board when badly hurt (see EnemyData.escape_below).
+signal enemy_escaped(enemy: SimEnemy)
+## A building of the enemy base fell in an assault.
+signal structure_destroyed(structure: SimEnemy)
+## Every building of an assault phase fell. `phase` is the new phase; above the stage's last phase
+## once the whole base is down.
+signal phase_changed(phase: int)
 ## A hero was placed on the board, or marched to a new cell.
 signal hero_summoned(tower: SimTower)
 signal hero_moved(tower: SimTower)
@@ -30,6 +43,9 @@ enum State { BUILDING, WAVE, WON, LOST }
 
 ## Simulation step used by the game scene. Tests may use bigger steps.
 const STEP := 1.0 / 60.0
+## In an assault, every this many attacks a tower in reach of a building it can hurt shoots the
+## building, even with enemies in range, so the siege moves on during a crowded wave.
+const SIEGE_EVERY := 3
 ## How far a dying enemy's poison can jump.
 const POISON_SPREAD_RANGE := 160.0
 
@@ -51,6 +67,14 @@ var path_length := 0.0
 var lane_curves: Array[Curve2D] = []
 var lane_lengths: PackedFloat32Array = []
 var time_in_wave := 0.0
+## Buildings of the enemy base in an assault, standing or fallen. Empty in any other run.
+var structures: Array[SimEnemy] = []
+## The assault phase being fought, from 1. Buildings of later phases cannot be hurt yet.
+var structure_phase := 1
+## True once every building of the enemy base has fallen.
+var citadel_fallen := false
+## Seconds until the next wave starts on its own, or below 0 when nothing is counting down.
+var break_time_left := -1.0
 
 var kills := 0
 var leaks := 0
@@ -72,6 +96,9 @@ var _arrivals: Array[SimEnemy] = []
 var _skill_cooldowns: Dictionary[StringName, float] = {}
 ## Seconds left on each skill whose modifiers are still running, by skill id.
 var _skill_time: Dictionary[StringName, float] = {}
+## Roads whose gate has fallen in an assault: nothing more comes down them.
+var _closed_lanes: Dictionary[int, bool] = {}
+var _structure_cells: Dictionary[Vector2i, SimEnemy] = {}
 ## The heroes the player can summon in this run, in key order.
 var party: Array[HeroData] = []
 ## Summoned heroes by hero id.
@@ -108,6 +135,7 @@ func _init(p_config: RunConfig) -> void:
 	path_curve = lane_curves[0]
 	path_length = lane_lengths[0]
 	_path_cells = config.map.path_cells()
+	_place_structures()
 	for hero in config.heroes:
 		if hero != null and not party.has(hero) and party.size() < HeroData.MAX_PARTY:
 			party.append(hero)
@@ -120,17 +148,73 @@ func total_waves() -> int:
 	return config.wave_set.waves.size()
 
 
-## The wave being fought, or the next one while building. Null once the run is over.
+## The wave being fought, or the next one while building. Null once the run is over. In an assault
+## the last wave repeats until the enemy base falls.
 func current_wave() -> WaveData:
 	var index := wave_index
 	if index >= total_waves():
+		if is_assault() and not is_over() and total_waves() > 0:
+			return config.wave_set.waves[total_waves() - 1]
 		return null
 	return config.wave_set.waves[index]
 
 
-## 1-based number of the current or next wave.
+## 1-based number of the current or next wave. In an assault it keeps counting past the wave set,
+## and enemy health keeps growing with it.
 func wave_number() -> int:
+	if is_assault():
+		return wave_index + 1
 	return mini(wave_index + 1, total_waves())
+
+
+## True when the run is an assault on the enemy base: it is won by bringing down its buildings.
+func is_assault() -> bool:
+	return not structures.is_empty()
+
+
+func total_phases() -> int:
+	var count := 0
+	for structure in structures:
+		count = maxi(count, structure.phase)
+	return count
+
+
+## Buildings of a phase still standing.
+func structures_left(phase: int) -> Array[SimEnemy]:
+	var result: Array[SimEnemy] = []
+	for structure in structures:
+		if structure.alive and structure.phase == phase:
+			result.append(structure)
+	return result
+
+
+## A building can be hurt once every building of the phases before its own has fallen.
+func is_vulnerable(structure: SimEnemy) -> bool:
+	return structure.alive and structure.phase <= structure_phase
+
+
+## True when nothing more comes down this road, because its gate has fallen.
+func is_lane_closed(lane: int) -> bool:
+	return _closed_lanes.has(lane)
+
+
+## The rightmost column towers may be built in now, or -1 for the whole map.
+func build_limit() -> int:
+	if config.stage == null or config.stage.build_columns.is_empty():
+		return -1
+	var index := structure_phase - 1
+	if index >= config.stage.build_columns.size():
+		return -1
+	return config.stage.build_columns[index]
+
+
+## The living boss with the most health left, for the boss health bar. Buildings are not counted.
+func strongest_boss() -> SimEnemy:
+	var best: SimEnemy = null
+	for enemy in enemies:
+		if enemy.alive and enemy.data.tags.has(&"boss") and (best == null or enemy.max_health > best.max_health):
+			best = enemy
+	return best
 
 
 func is_over() -> bool:
@@ -241,7 +325,11 @@ func use_skill(skill_id: StringName, at: Vector2 = Vector2.ZERO) -> bool:
 		var scaled := spec.duplicate() as StatusEffectData
 		scaled.damage_per_second *= growth
 		effects.append(scaled)
-	for enemy in enemies:
+	var targets: Array[SimEnemy] = enemies.duplicate()
+	for structure in structures:
+		if is_vulnerable(structure):
+			targets.append(structure)
+	for enemy in targets:
 		if not enemy.alive or (skill.is_targeted() and enemy.position.distance_to(at) > skill.radius):
 			continue
 		var multiplier := ElementRules.damage_multiplier(elements, enemy.element)
@@ -296,6 +384,11 @@ func placement_error(tower_id: StringName, cell: Vector2i) -> String:
 		return "Outside the map"
 	if is_path(cell):
 		return "Towers cannot go on the path"
+	if _structure_cells.has(cell):
+		return "The enemy's building stands here"
+	var limit := build_limit()
+	if limit >= 0 and cell.x > limit:
+		return "The enemy still holds this ground: bring down its buildings first"
 	if _tower_at.has(cell):
 		return "There is already a tower here"
 	if gold < tower_price(tower_id):
@@ -479,11 +572,12 @@ func sell_tower(tower: SimTower) -> int:
 
 
 func start_next_wave() -> bool:
-	if state != State.BUILDING or wave_index >= total_waves():
+	if state != State.BUILDING or current_wave() == null:
 		return false
 	var wave := current_wave()
 	state = State.WAVE
 	time_in_wave = 0.0
+	break_time_left = -1.0
 	_wave_element = config.element_index(wave.element)
 	_spawner.start(wave)
 	_taken_this_break.clear()
@@ -538,8 +632,24 @@ func step(delta: float) -> void:
 	if not _arrivals.is_empty():
 		enemies.append_array(_arrivals)
 		_arrivals.clear()
+	if state != State.WAVE:
+		return
+	if citadel_fallen and not _overlord_alive():
+		_end_run(true)
+		return
 	if _spawner.is_finished() and enemies.is_empty():
 		_finish_wave()
+
+
+## Counts down the break before a wave that starts on its own. Call it while building; the game
+## does so every frame. Returns true when it started the wave.
+func tick_break(delta: float) -> bool:
+	if state != State.BUILDING or break_time_left < 0.0:
+		return false
+	break_time_left -= delta
+	if break_time_left <= 0.0:
+		return start_next_wave()
+	return false
 
 
 func _spawn(delta: float) -> void:
@@ -555,10 +665,26 @@ func _spawn(delta: float) -> void:
 		if lane < 0:
 			lane = _lane_turn
 			_lane_turn = (_lane_turn + 1) % lane_curves.size()
+		lane = _open_lane(mini(lane, lane_curves.size() - 1))
 		var element := _wave_element
 		if not group.element.is_empty():
 			element = config.element_index(group.element)
-		enemies.append(_make_enemy(data, multiplier, mini(lane, lane_curves.size() - 1), element, 0.0))
+		var enemy := _make_enemy(data, multiplier, lane, element, 0.0)
+		enemies.append(enemy)
+		if data.tags.has(&"boss"):
+			boss_arrived.emit(enemy)
+
+
+## The lane itself if its gate still stands, otherwise the next open one. If every road is closed
+## the enemies still come down the first one.
+func _open_lane(lane: int) -> int:
+	if _closed_lanes.is_empty():
+		return lane
+	for offset in lane_curves.size():
+		var candidate := (lane + offset) % lane_curves.size()
+		if not _closed_lanes.has(candidate):
+			return candidate
+	return lane
 
 
 ## A new enemy on a lane. An enemy with its own element keeps it whatever the wave.
@@ -580,6 +706,8 @@ func _release_from(parent: SimEnemy, enemy_id: StringName, count: int) -> void:
 	for i in count:
 		var child := _make_enemy(data, parent.health_multiplier, parent.lane, parent.element, parent.progress - 14.0 * i)
 		_arrivals.append(child)
+		if data.tags.has(&"boss"):
+			boss_arrived.emit(child)
 
 
 func _move_enemies(delta: float) -> void:
@@ -605,24 +733,90 @@ func _move_enemies(delta: float) -> void:
 			enemy.position = lane_curves[enemy.lane].sample_baked(enemy.progress)
 
 
-## Healing, summoning and changing element.
+## Healing, summoning and changing element, and the bosses' tricks.
 func _tick_traits(delta: float) -> void:
+	_tick_boss_tricks(delta)
+	# Buildings only call up the horde while the wave is still marching in, so a wave can end.
+	if not _spawner.is_finished():
+		for structure in structures:
+			if structure.alive and is_vulnerable(structure):
+				_tick_summons(structure, delta)
 	for enemy in enemies:
 		if not enemy.alive:
 			continue
 		var data := enemy.data
 		if enemy.is_regenerating() and enemy.health < enemy.max_health:
 			enemy.health = minf(enemy.max_health, enemy.health + enemy.max_health * data.regen_per_second * delta)
-		if data.summon_interval > 0.0 and not data.summon.is_empty():
-			enemy.summon_timer -= delta
-			if enemy.summon_timer <= 0.0:
-				enemy.summon_timer += data.summon_interval
-				_release_from(enemy, data.summon, data.summon_count)
+		_tick_summons(enemy, delta)
 		if data.prismatic_interval > 0.0:
 			enemy.prism_timer -= delta
 			if enemy.prism_timer <= 0.0:
 				enemy.prism_timer += data.prismatic_interval
 				enemy.element = (maxi(enemy.element, 0) + 1) % ElementData.RING_SIZE
+
+
+func _tick_summons(enemy: SimEnemy, delta: float) -> void:
+	var data := enemy.data
+	if data.summon_interval > 0.0 and not data.summon.is_empty():
+		enemy.summon_timer -= delta
+		if enemy.summon_timer <= 0.0:
+			enemy.summon_timer += data.summon_interval
+			_release_from(enemy, data.summon, data.summon_count)
+
+
+## Shields, silences, blinks and rage. Buildings of the enemy base use them too, once they can be hurt.
+func _tick_boss_tricks(delta: float) -> void:
+	var casters: Array[SimEnemy] = []
+	for enemy in enemies:
+		if enemy.alive:
+			enemy.ward = 0.0
+			casters.append(enemy)
+	for structure in structures:
+		if is_vulnerable(structure):
+			casters.append(structure)
+	for caster in casters:
+		var data := caster.data
+		if data.escape_below > 0.0 and caster.health < caster.max_health * data.escape_below:
+			caster.alive = false
+			caster.escaped = true
+			enemy_escaped.emit(caster)
+			continue
+		if data.enrage_below > 0.0 and not caster.enraged and caster.health < caster.max_health * data.enrage_below:
+			caster.enraged = true
+		if data.ward_radius > 0.0 and data.ward_reduction > 0.0:
+			var reach := data.ward_radius * data.ward_radius
+			for other in enemies:
+				if other != caster and other.alive and other.position.distance_squared_to(caster.position) <= reach:
+					other.ward = maxf(other.ward, clampf(data.ward_reduction, 0.0, 0.9))
+		if data.silence_interval > 0.0 and data.silence_radius > 0.0:
+			caster.silence_timer -= delta
+			if caster.silence_timer <= 0.0:
+				caster.silence_timer += data.silence_interval
+				_silence_towers(caster)
+		if data.blink_interval > 0.0 and data.blink_distance > 0.0 and not caster.structure \
+				and not caster.has_status(&"stun"):
+			caster.blink_timer -= delta
+			if caster.blink_timer <= 0.0:
+				caster.blink_timer += data.blink_interval
+				var from := caster.position
+				# A blink never carries it out of the map: it stops a little short of the exit.
+				var room := lane_lengths[caster.lane] - 64.0 - caster.progress
+				var jump := minf(data.blink_distance, room)
+				if jump > 0.0:
+					caster.progress += jump
+					caster.position = lane_curves[caster.lane].sample_baked(caster.progress)
+					enemy_blinked.emit(caster, from)
+
+
+func _silence_towers(caster: SimEnemy) -> void:
+	var hit: Array[SimTower] = []
+	var reach := caster.data.silence_radius * caster.data.silence_radius
+	for tower in towers:
+		if tower.position.distance_squared_to(caster.position) <= reach:
+			tower.silenced = maxf(tower.silenced, caster.data.silence_duration)
+			hit.append(tower)
+	if not hit.is_empty():
+		towers_silenced.emit(caster, hit)
 
 
 func _tick_statuses(delta: float) -> void:
@@ -649,10 +843,16 @@ func _rebuild_hash() -> void:
 	for enemy in enemies:
 		if enemy.alive:
 			_hash.insert(enemy)
+	for structure in structures:
+		if is_vulnerable(structure):
+			_hash.insert(structure)
 
 
 func _update_towers(delta: float) -> void:
 	for tower in towers:
+		if tower.silenced > 0.0:
+			tower.silenced = maxf(0.0, tower.silenced - delta)
+			continue
 		tower.cooldown -= delta
 		if tower.cooldown > 0.0:
 			continue
@@ -664,12 +864,18 @@ func _update_towers(delta: float) -> void:
 		tower.cooldown += CombatMath.attack_interval(tower.attacks_per_second)
 
 
-## The enemy in range that is closest to leaving the map.
+## The enemy in range that is closest to leaving the map. Buildings of the enemy base come last,
+## except for a siege shot now and then.
 func _find_target(tower: SimTower) -> SimEnemy:
+	tower.shots += 1
+	if not structures.is_empty() and tower.shots % SIEGE_EVERY == 0:
+		for structure in structures:
+			if is_vulnerable(structure) and structure.position.distance_to(tower.position) <= tower.attack_range:
+				return structure
 	var best: SimEnemy = null
 	var best_left := INF
 	for enemy in _hash.query(tower.position, tower.attack_range):
-		var left := distance_to_exit(enemy)
+		var left := distance_to_exit(enemy) if not enemy.structure else 1.0e9 + enemy.health
 		if left < best_left:
 			best_left = left
 			best = enemy
@@ -758,6 +964,8 @@ func _hit(tower: SimTower, enemy: SimEnemy, damage: float) -> void:
 func _damage(enemy: SimEnemy, amount: float, source: SimTower) -> void:
 	if not enemy.alive or amount <= 0.0:
 		return
+	if enemy.ward > 0.0:
+		amount *= 1.0 - enemy.ward
 	var dealt := minf(amount, enemy.health)
 	enemy.health -= amount
 	if source != null:
@@ -781,6 +989,8 @@ func _kill(enemy: SimEnemy, killer: SimTower) -> void:
 	if enemy.data.split_count > 0 and not enemy.data.split_into.is_empty():
 		_release_from(enemy, enemy.data.split_into, enemy.data.split_count)
 	enemy_killed.emit(enemy, killer, bounty)
+	if enemy.structure:
+		_on_structure_fallen(enemy)
 
 
 ## Notables such as Inferno and Blight pass a dying enemy's burn or poison to its neighbours.
@@ -825,10 +1035,12 @@ func _finish_wave() -> void:
 	projectiles.clear()
 	_bursts.clear()
 	_level_heroes()
-	if wave_index >= total_waves():
+	if wave_index >= total_waves() and not is_assault():
 		_end_run(true)
 	else:
 		state = State.BUILDING
+		if config.stage != null and config.stage.auto_wave_delay > 0.0:
+			break_time_left = config.stage.auto_wave_delay
 	wave_cleared.emit(wave_index, points, bonus)
 	changed.emit()
 
@@ -874,6 +1086,74 @@ func _recompute_towers() -> void:
 		if best > 0.0:
 			tower.aura_bonus = best
 			tower.recompute(_modifiers)
+
+
+# --- Assault -------------------------------------------------------------------
+
+## Raises the buildings of an assault stage's enemy base. They stand on their road's first point
+## (so whatever they release walks that road), but are drawn and targeted on their own cell.
+func _place_structures() -> void:
+	if config.stage == null:
+		return
+	var multiplier := config.wave_set.health_multiplier(1) * config.enemy_health_multiplier()
+	for spec in config.stage.structures:
+		var data: EnemyData = config.enemies.get(spec.enemy) if spec != null else null
+		if data == null:
+			continue
+		var lane := clampi(spec.lane, 0, lane_curves.size() - 1)
+		var structure := _make_enemy(data, multiplier, lane, config.element_index(data.element), 0.0)
+		structure.structure = true
+		structure.phase = maxi(1, spec.phase)
+		structure.closes_lanes = spec.closes_lanes
+		structure.releases = spec.releases
+		structure.release_health = spec.release_health
+		structure.position = config.map.cell_center(spec.cell)
+		structures.append(structure)
+		_structure_cells[spec.cell] = structure
+
+
+func _on_structure_fallen(structure: SimEnemy) -> void:
+	for lane in structure.closes_lanes:
+		_closed_lanes[lane] = true
+	# What comes out of a fallen building is as strong as the wave being fought.
+	var multiplier := config.wave_set.health_multiplier(wave_number()) * config.enemy_health_multiplier()
+	for i in structure.releases.size():
+		var data: EnemyData = config.enemies.get(structure.releases[i])
+		if data == null:
+			continue
+		var released := _make_enemy(data, multiplier * structure.release_health, structure.lane, structure.element, 0.0)
+		# They come out one after another: each waits a little behind the one before.
+		released.progress = -90.0 * i
+		_arrivals.append(released)
+		if data.tags.has(&"boss"):
+			boss_arrived.emit(released)
+	for cell: Vector2i in _structure_cells.keys():
+		if _structure_cells[cell] == structure:
+			_structure_cells.erase(cell)
+	structure_destroyed.emit(structure)
+	var advanced := false
+	while structure_phase <= total_phases() and structures_left(structure_phase).is_empty():
+		structure_phase += 1
+		advanced = true
+	if structure_phase > total_phases():
+		citadel_fallen = true
+		# The horde breaks when its citadel falls: nothing more marches in, and whatever the last
+		# building released is the final fight.
+		_spawner.stop()
+	if advanced:
+		_recompute_towers()
+		phase_changed.emit(structure_phase)
+
+
+## True while anything released by the last building (the overlord) still walks.
+func _overlord_alive() -> bool:
+	for enemy in enemies:
+		if enemy.alive and enemy.data.tags.has(&"overlord"):
+			return true
+	for enemy in _arrivals:
+		if enemy.alive and enemy.data.tags.has(&"overlord"):
+			return true
+	return false
 
 
 func _new_id() -> int:

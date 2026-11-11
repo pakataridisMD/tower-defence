@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"saltmother"
+display_name = "Saltmother Ourra"
+max_health = 1500.0
+speed = 44.0
+armour = 4.0
+bounty = 60
+leak_damage = 15
+tags = Array[StringName]([&"boss"])
+description = "The Drowned Herald. Walks inside a column of black seawater that shields the horde around her (35% less damage), and heals 1% a second unless burning or poisoned."
+element = &"water"
+regen_per_second = 0.01
+ward_radius = 150.0
+ward_reduction = 0.35

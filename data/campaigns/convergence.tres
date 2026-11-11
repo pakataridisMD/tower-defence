@@ -11,7 +11,7 @@ display_name = "Shattered Crossroads"
 description = "Two roads meet at the edge of the heartland. Two hordes walk them."
 map = &"c_converge_1"
 modifiers = Array[ExtResource("2_s")]([])
-rule_text = PackedStringArray("Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
+rule_text = PackedStringArray("The last wave is led by Cassivane, the Ashen Regent (shields his guard, silences towers, escapes when beaten).")
 first_clear_points = 5
 
 [sub_resource type="Resource" id="r2"]

@@ -20,7 +20,7 @@ map = &"c_storm_1"
 allowed_elements = Array[StringName]([&"storm", &"nature", &"fire"])
 starting_nodes = Array[StringName]([&"storm_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r1")])
-rule_text = PackedStringArray("Home ground: Storm towers deal 20% more damage.", "Only Storm, Nature and Fire can be drafted. You start with Storm.")
+rule_text = PackedStringArray("Home ground: Storm towers deal 20% more damage.", "Only Storm, Nature and Fire can be drafted. You start with Storm.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r3"]
@@ -45,7 +45,7 @@ map = &"c_storm_2"
 allowed_elements = Array[StringName]([&"storm", &"nature", &"fire"])
 starting_nodes = Array[StringName]([&"storm_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r3"), SubResource("r4")])
-rule_text = PackedStringArray("Home ground: Storm towers deal 20% more damage.", "Only Storm, Nature and Fire can be drafted. You start with Storm.", "Tailwind: towers attack 10% faster.")
+rule_text = PackedStringArray("Home ground: Storm towers deal 20% more damage.", "Only Storm, Nature and Fire can be drafted. You start with Storm.", "The last wave is led by Gorrath the Quarried, the Stone Herald (armoured, charges when wounded, breaks into boulders).", "Tailwind: towers attack 10% faster.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r6"]
@@ -70,7 +70,7 @@ map = &"c_storm_3"
 allowed_elements = Array[StringName]([&"storm", &"nature", &"fire"])
 starting_nodes = Array[StringName]([&"storm_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r6"), SubResource("r7")])
-rule_text = PackedStringArray("Home ground: Storm towers deal 20% more damage.", "Only Storm, Nature and Fire can be drafted. You start with Storm.", "Thin air: towers cost 15% more.")
+rule_text = PackedStringArray("Home ground: Storm towers deal 20% more damage.", "Only Storm, Nature and Fire can be drafted. You start with Storm.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.", "Thin air: towers cost 15% more.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r9"]
@@ -90,7 +90,7 @@ is_guardian = true
 allowed_elements = Array[StringName]([&"storm", &"nature", &"fire"])
 starting_nodes = Array[StringName]([&"storm_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r9")])
-rule_text = PackedStringArray("Home ground: Storm towers deal 20% more damage.", "Only Storm, Nature and Fire can be drafted. You start with Storm.", "The Warden resists Storm: bring a neighbour.")
+rule_text = PackedStringArray("Home ground: Storm towers deal 20% more damage.", "Only Storm, Nature and Fire can be drafted. You start with Storm.", "The Warden resists Storm: bring a neighbour.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
 first_clear_points = 6
 
 [sub_resource type="Resource" id="r11"]

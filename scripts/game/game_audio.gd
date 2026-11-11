@@ -348,8 +348,10 @@ func _tick_bosses(step: float) -> void:
 		if state["talk"] <= 0.0:
 			state["talk"] = randf_range(TALK_EVERY.x, TALK_EVERY.y)
 			play(StringName("boss_%s_voice" % set_name), enemy.position)
+		# A boss that enrages in the simulation roars when it does; any other roars when badly hurt.
 		var enraged: Variant = enemy.get(&"enraged")
-		var wounded: bool = enraged if enraged is bool else enemy.health < enemy.max_health * WOUNDED_SHARE
+		var wounded: bool = enraged if enraged is bool and enemy.data.enrage_below > 0.0 \
+				else enemy.health < enemy.max_health * WOUNDED_SHARE
 		if wounded and not state["wounded"]:
 			state["wounded"] = true
 			play(StringName("boss_%s_enrage" % set_name), enemy.position)

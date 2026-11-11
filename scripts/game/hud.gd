@@ -960,6 +960,15 @@ func show_stage_result(result: Dictionary, next_stage_open: bool) -> void:
 	_next_stage_button.visible = next_stage_open
 
 
+## Adds a line of story under the stage result, such as the city lost or saved.
+func show_story_note(text: String) -> void:
+	if text.is_empty():
+		return
+	var line := "[center][i]%s[/i][/center]" % text
+	_end_stage.text = line if _end_stage.text.is_empty() else _end_stage.text + "\n" + line
+	_end_stage.show()
+
+
 ## The win or lose panel, with the run's numbers and the meta points it paid.
 func show_end(won: bool, meta_points: int) -> void:
 	_end_title.text = "Victory" if won else "Defeat"
