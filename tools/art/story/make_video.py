@@ -58,6 +58,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--audio", default="")
     ap.add_argument("--speed", type=float, default=1.0)
+    ap.add_argument("--cues", default="", help="music cue sheet: shot k starts at markers[k], ends at the next")
     args = ap.parse_args()
     data = json.load(open(args.json))
     folder = os.path.join("art", "story", "cinematics", args.cid)
@@ -66,16 +67,21 @@ def main():
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{OW}x{OH}", "-r", str(FPS),
            "-i", "-"]
     if args.audio:
-        cmd += ["-i", args.audio, "-shortest"]
+        cmd += ["-i", args.audio, "-c:a", "aac", "-b:a", "160k"]
     cmd += ["-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "24", args.out]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     fade = int(0.7 * FPS)
     shots = data["shots"]
+    if args.cues:
+        cues = json.load(open(args.cues))
+        times = [m["time"] for m in cues["markers"]] + [cues["duration"]]
+        for k, shot in enumerate(shots):
+            shot["duration"] = times[k + 1] - times[k]
     prev_tail = None
     for k, shot in enumerate(shots):
         path = os.path.join(folder, f"{k + 1:02d}.png")
         img = Image.open(path).convert("RGB")
-        n = int(max(3.0, shot.get("duration", 6.0) / args.speed) * FPS)
+        n = int(round(max(3.0, shot.get("duration", 6.0) / args.speed) * FPS))
         for f in range(n):
             t = f / max(1, n - 1)
             fr = ken_burns(img, t, k)
