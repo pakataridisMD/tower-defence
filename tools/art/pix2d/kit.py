@@ -38,9 +38,42 @@ def ramp(base, n=5, spread=0.5, shift=0.035):
     return out
 
 
+IDENT = np.array([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])
+
+
+def _tf(rot, px, py, dx, dy):
+    """2x3 matrix: rotate by rot (clockwise on screen) about (px, py), then move by (dx, dy)."""
+    c, s = math.cos(rot), math.sin(rot)
+    return np.array([[c, -s, px - c * px + s * py + dx], [s, c, py - s * px - c * py + dy]])
+
+
+def _mul(a, b):
+    """a after b."""
+    A = np.vstack([a, [0, 0, 1]])
+    B = np.vstack([b, [0, 0, 1]])
+    return (A @ B)[:2]
+
+
 class Sprite:
-    def __init__(self, w, h):
+    """Canvas for one creature frame.
+
+    pose: None for the rest pose, or {group: (rot, dx, dy)} plus optional "_all" for the whole creature. The drawing
+    code names the group it is about to draw with g(name, pivot_x, pivot_y); every shape after that is moved by the
+    pose. Legs move on their own; every other group also follows "body". pad adds empty space on all sides so swings
+    and falls are not clipped; drawing coordinates stay those of the rest pose.
+    """
+
+    def __init__(self, w, h, pose=None, pad=0):
+        self.bw, self.bh, self.pad = w, h, pad
+        w, h = w + 2 * pad, h + 2 * pad
         self.w, self.h = w, h
+        self.pose = pose or {}
+        r, dx, dy = self.pose.get("_all", (0, 0, 0))
+        self._base = _mul(_tf(r, self.bw / 2 + pad, self.bh - 5 + pad, dx, dy), _tf(0, 0, 0, pad, pad))
+        r, dx, dy = self.pose.get("body", (0, 0, 0))
+        self._body = _tf(r, self.bw / 2, self.bh * 0.65, dx, dy)
+        self.M = self._base if not self.pose and not pad else _mul(self._base, self._body)
+        self._ident = not self.pose and not pad
         self.rgb = np.zeros((h, w, 3), np.uint8)
         self.a = np.zeros((h, w), bool)
         self.nrm = np.zeros((h, w, 3), np.float32)
@@ -50,6 +83,31 @@ class Sprite:
         self._n = 0
         self.ys, self.xs = np.mgrid[0:h, 0:w]
 
+    # ---- pose groups ----------------------------------------------------------------------------
+    def g(self, name="body", px=0.0, py=0.0):
+        """Everything drawn after this belongs to group `name`, which turns about the joint (px, py)."""
+        if self._ident:
+            return
+        r, dx, dy = self.pose.get(name, (0, 0, 0)) if name != "body" else (0, 0, 0)
+        m = _tf(r, px, py, dx, dy)
+        legs = name.startswith("leg")
+        self.M = _mul(self._base, m) if legs else _mul(self._base, _mul(self._body, m))
+
+    def fw(self, x, y):
+        """Where a rest-pose point lands on the canvas."""
+        if self._ident:
+            return x, y
+        return (self.M[0, 0] * x + self.M[0, 1] * y + self.M[0, 2], self.M[1, 0] * x + self.M[1, 1] * y + self.M[1, 2])
+
+    def _inv(self):
+        """Canvas pixel centres mapped back into rest-pose coordinates."""
+        ys, xs = np.mgrid[0:self.h, 0:self.w]
+        px, py = xs + 0.5, ys + 0.5
+        if self._ident:
+            return px, py
+        A = np.linalg.inv(np.vstack([self.M, [0, 0, 1]]))
+        return A[0, 0] * px + A[0, 1] * py + A[0, 2], A[1, 0] * px + A[1, 1] * py + A[1, 2]
+
     # ---- shapes (boolean masks) -----------------------------------------------------------------
     def _mask(self, draw_fn):
         im = Image.new("1", (self.w, self.h), 0)
@@ -57,19 +115,19 @@ class Sprite:
         return np.asarray(im, bool)
 
     def ellipse(self, cx, cy, rx, ry, rot=0.0):
-        ys, xs = np.mgrid[0:self.h, 0:self.w]
-        dx, dy = xs + 0.5 - cx, ys + 0.5 - cy
+        px, py = self._inv()
+        dx, dy = px - cx, py - cy
         c, s = math.cos(rot), math.sin(rot)
         u, v = dx * c + dy * s, -dx * s + dy * c
         return (u / rx) ** 2 + (v / ry) ** 2 <= 1.0
 
     def poly(self, pts):
+        pts = [self.fw(x, y) for x, y in pts]
         return self._mask(lambda d: d.polygon([(round(x), round(y)) for x, y in pts], fill=1))
 
     def capsule(self, x0, y0, x1, y1, r0, r1=None):
         r1 = r0 if r1 is None else r1
-        ys, xs = np.mgrid[0:self.h, 0:self.w]
-        px, py = xs + 0.5, ys + 0.5
+        px, py = self._inv()
         dx, dy = x1 - x0, y1 - y0
         L2 = dx * dx + dy * dy or 1e-6
         t = np.clip(((px - x0) * dx + (py - y0) * dy) / L2, 0, 1)
@@ -77,6 +135,8 @@ class Sprite:
         return d <= r0 + (r1 - r0) * t
 
     def rect(self, x0, y0, x1, y1):
+        if not self._ident:
+            return self.poly([(x0, y0), (x1 - 1, y0), (x1 - 1, y1 - 1), (x0, y1 - 1)])
         m = np.zeros((self.h, self.w), bool)
         m[int(y0):int(y1), int(x0):int(x1)] = True
         return m
@@ -129,6 +189,9 @@ class Sprite:
         return mask
 
     def px(self, x, y, col, glow=False):
+        if not self._ident:
+            x, y = self.fw(x, y)
+            x, y = round(x), round(y)
         if 0 <= x < self.w and 0 <= y < self.h:
             self.rgb[int(y), int(x)] = col
             self.a[int(y), int(x)] = True
@@ -139,10 +202,14 @@ class Sprite:
             self.px(x, y, col, glow)
 
     def line(self, x0, y0, x1, y1, col, glow=False):
+        if not self._ident:
+            (x0, y0), (x1, y1) = self.fw(x0, y0), self.fw(x1, y1)
         n = int(max(abs(x1 - x0), abs(y1 - y0))) + 1
+        ident, self._ident = self._ident, True
         for i in range(n + 1):
             t = i / max(n, 1)
             self.px(round(x0 + (x1 - x0) * t), round(y0 + (y1 - y0) * t), col, glow)
+        self._ident = ident
 
     def fill(self, mask, col, glow=False):
         self.rgb[mask] = col
@@ -169,7 +236,9 @@ class Sprite:
 
     def shadow(self, cx, cy, rx, ry):
         """Soft ground shadow drawn under everything (call last)."""
-        m = self.ellipse(cx, cy, rx, ry) & ~self.a
+        ident, self._ident = self._ident, True
+        m = self.ellipse(cx + self.pad, cy + self.pad, rx, ry) & ~self.a
+        self._ident = ident
         self.rgb[m] = (18, 16, 26)
         self._shadow = m
 
