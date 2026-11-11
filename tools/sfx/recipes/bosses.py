@@ -285,7 +285,7 @@ def voice_line(bs: BossSet, rng, v: int) -> np.ndarray:
 
 def _register_set(key: str, bs: BossSet) -> None:
     folder = f"bosses/{key}"
-    register(f"boss_{key}_reveal", folder, lambda rng, v: reveal(bs, rng), loud=-11.0, duck_db=-12.0, duck_time=4.0,
+    register(f"boss_{key}_reveal", folder, lambda rng, v: reveal(bs, rng), loud=-11.0, duck_db=-3.0, duck_time=3.0,
              **REVEAL, description=f"{bs.title} appears")
     register(f"boss_{key}_step", folder, lambda rng, v: step(bs.step, rng), variants=3, loud=-19.0, max_voices=2,
              min_gap=0.15, pitch_jitter=0.05, priority=3, description=f"{bs.title} walks")

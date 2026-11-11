@@ -234,7 +234,7 @@ def wave_start(rng, v):
     return reverb(stereo(out, 0.5, rng=rng), 2.2, 0.3, rng=rng)
 
 
-@sound("wave_start_boss", "waves", loud=-13.0, duck_db=-8.0, duck_time=3.5, **STING,
+@sound("wave_start_boss", "waves", loud=-13.0, duck_db=-3.0, duck_time=3.0, **STING,
        description="a boss wave starts: deep horns, gong and drums")
 def wave_start_boss(rng, v):
     horn = horn_call([(73.4, 0.0, 1.0), (69.3, 1.1, 1.8)], rng, layers=(1.0, 0.8), bright=0.6)

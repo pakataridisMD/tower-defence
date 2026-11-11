@@ -129,9 +129,18 @@ func _on_wave_started(number: int) -> void:
 	if number >= sim.total_waves():
 		play(&"wave_start_final")
 	elif wave != null and wave.is_boss:
-		play(&"wave_start_boss")
+		# The battle music plays its own boss entrance; two stingers at once would be mush.
+		if not _has_battle_music():
+			play(&"wave_start_boss")
 	else:
 		play(&"wave_start")
+
+
+static func _has_battle_music() -> bool:
+	for entry: Dictionary in ProjectSettings.get_global_class_list():
+		if entry.get("class", &"") == &"BattleMusic":
+			return true
+	return false
 
 
 func _on_wave_cleared(_number: int, _points: int, gold: int) -> void:
