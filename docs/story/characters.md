@@ -93,6 +93,15 @@ green/gold, Water = teal/ice-white, Earth = ochre/rust, Void = violet/black/star
 - **Signature:** The star-glass blade; hooded silhouette.
 - **Key scenes:** void_herald (freed from thorns: "I told them it was the Marshal"), void_warden, crossroads (cuts open Ilyra's cage), heart_falls.
 
+**The Wardens as monarchs.** The six Wardens were the founding kings and queens of the six kingdoms
+before they bound themselves to the Ring. The prologue shows them once as mortal monarchs, crowned and
+lit by their element, so each needs a "monarch" look as well as a Warden look: Ignar the Forge-King
+(huge, bearded, crown of black iron with ember gems), Aurath the Horse-King (lean rider, crown of
+lightning-bent silver, always mounted), Elowen the Green Queen (young, crown of living branches),
+Thalassa the Sea-Queen (tall, pearl-and-coral crown, sea-green robes), Orrok the Mountain-King (vast,
+stone crown carved from the mountain, beard like a landslide) and Nyxara the Star-Queen (veiled, crown of
+black iron set with real stars, the only one whose face is hidden even then).
+
 ### 8. Ignar, the Cinder Warden
 - **Element:** Fire.
 - **Corrupted boss:** Cinder Tyrant (Ember 4).
@@ -183,8 +192,12 @@ green/gold, Water = teal/ice-white, Earth = ochre/rust, Void = violet/black/star
 
 ## Villains
 
-### Vael-Orrun, the Sunderer (overlord)
+### Vael-Orrun, the High King, the Sunderer (overlord)
+- **Who:** The last king of Orrun, the seventh kingdom, banished beyond the stars by the other six at the
+  dawn of history. Back to reclaim his crown and throne.
 - **Element:** None. He is the absence that makes elements stop.
+- **Look in the prologue's history shots:** A tall, lean king in black with a long pale face, very calm,
+  wearing a tall black crown with six empty sockets. His capital Vael is black stone at a crossroads.
 - **Look in cinematics (before Act V):** Never seen whole. A black sun with a crown-shaped gap in its
   corona, through which there is nothing. When he speaks, every colour on screen drains toward grey.
 - **Look in Act V (boss):** A tall figure of black glass, very still, with a crown-shaped gap where his

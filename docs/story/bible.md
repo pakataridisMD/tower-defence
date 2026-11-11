@@ -14,9 +14,10 @@ Companion files:
 
 ## 1. The story in one breath
 
-The world of **Orrhen** is a ring of six elemental lands around a single shining city. A thousand years
-ago, six primordial powers locked a seventh out of the world, and they built the ring itself as the wall.
-Now someone inside has opened the door.
+The world of **Orrhen** is a ring of six elemental lands around a single shining city. At the dawn of
+history there were seven kingdoms. The lord of the seventh, the High King Vael-Orrun, tried to rule them
+all; the other six beat him, banished him beyond the stars and locked the door with his own crown. Now
+someone inside has opened the door, and the High King has come back to reclaim what was his.
 
 We are the **Order of the Spire**, the tower-binders who turn raw elements into stone and light. We cannot
 win back the lands that are falling. We can only hold each road long enough for its people to escape,
@@ -28,55 +29,89 @@ city. When there are no cities left but one, we stop retreating.
 
 ---
 
-## 2. Cosmology: the Seven and the Ring
+## 2. Origins: the War of Seven Crowns
 
-### The Unshaped Sea
+Known history begins with seven kingdoms. Everything before them is song.
 
-Before the world there was only the **Unshaped Sea**, a churning of every element at once, hot and cold,
-light and dark, with nothing to tell one from another. Out of it stepped seven **Primordials**, the first
-things that knew what they were.
+### The Seven Kingdoms
 
-Six of them were content to be one thing each:
+Six kingdoms lay in a ring around the middle of the world. Each was ruled by a monarch bound by blood to the
+element of their land, and each hated the kingdom across the ring from it, because that kingdom's element
+was the one that most opposed its own.
 
-| Primordial | Element | Nature | Becomes the Warden |
+| Kingdom | Element | Founding monarch (later the Warden) | Seat |
 |---|---|---|---|
-| **Ignar** | Fire | The hunger that warms. Forge and hearth. | Warden of the Ember Reach |
-| **Aurath** | Storm | The breath that carries. Wind, lightning, the voice of the sky. | Warden of the Thunder Steppe |
-| **Elowen** | Nature | The patience that grows. Seed, root, rot and return. | Warden of the Verdant Deep |
-| **Thalassa** | Water | The memory that flows. Tide, ice, the deep. | Warden of Frostmere |
-| **Orrok** | Earth | The weight that holds. Stone, bone, mountain. | Warden of Sunscar Canyon |
-| **Nyxara** | Void | The quiet that keeps. Night, stars, the road the dead walk. | Warden of the Hollow Rift |
+| **The Ember Throne** | Fire | **Ignar**, the Forge-King | Pyrrhenhall, in the caldera |
+| **The Wind Crown** | Storm | **Aurath**, the Horse-King, who ruled from the saddle | Aurvanis, the Sky-Moot |
+| **The Green Realm** | Nature | **Elowen**, the Green Queen | Sylvanmere, the Tree-City |
+| **The Tide Throne** | Water | **Thalassa**, the Sea-Queen | Pearlhaven |
+| **The Stone Kingdom of Kharum** | Earth | **Orrok**, the Mountain-King | Grundhallow, the Deep Halls |
+| **The Star Kingdom** | Void | **Nyxara**, the Star-Queen, keeper of the road of the dead | Umbrael |
 
-The seventh was **Vael-Orrun**, who would not be one thing. He wanted to be the middle of everything, the
-place every element flows to and none flows out of. Where he walked, the elements did not mix. They
-*stopped*. He is the Unmaking, the hunger that is not fire, the dark that is not Void.
+The seventh kingdom was **Orrun**, the Middle Kingdom, and its capital was **Vael**, a city of black stone at
+the crossroads where every road of the world met. Orrun had no element of its own. Its people were
+traders and go-betweens, and its kings called themselves the Keepers of the Crossroads: they settled the
+quarrels between the six, and they grew rich on them.
 
-### The Sundering War and the making of the Ring
+### The High King
 
-The Six fought Vael-Orrun for an age and could not kill him, because he was made of the same sea they
-were. So they did something stranger. They joined hands in a ring, each one standing across from the
-element that most opposes it (Fire across from Water, Storm across from Earth, Nature across from Void),
-and they pushed. Opposites balanced, and balance became a wall. Vael-Orrun was driven out past the edge of
-the world into the **Outer Hollow**, the cold nothing beyond the stars.
+The last king of Orrun was **Vael-Orrun**, who took the name of both his city and his kingdom, because he
+said they were the same thing as himself. He was brilliant, patient and very lonely. He looked at a world
+of six quarrelling crowns and decided it would be kinder, and quieter, with one.
 
-To lock the door, each of the Six tore away a piece of itself. The six pieces were fused into the
-**Heartstone**, a crystal that shines in all six colours at once, set at the exact centre of the Ring.
-As long as the Heartstone is whole and the six opposites stay in balance, the Ring holds and the door
-stays shut.
+He found the art the Veilwalkers later called **the Unmaking**: not to command an element, but to make it
+*stop*. Fire that will not burn. Wind that lies down. Water that hangs in the air mid-fall. He had a crown
+made with six empty sockets, one for each of the six crowns he meant to take, and he named himself the
+**High King**.
 
-What each gave shaped it ever after. Ignar gave his **appetite**, so the fire of the Reach warms instead
+### The War of Seven Crowns
+
+For forty years his armies marched out of the middle of the world, and where they marched the land went
+still and grey. One by one the six kingdoms fell back. None of them would stand beside its opposite, and
+that was exactly what he counted on.
+
+In the end there was nothing left to fall back to. At the **Siege of Vael**, the six monarchs did what they
+had never done: each stood beside its oldest enemy. Ignar with Thalassa. Aurath with Orrok. Elowen with
+Nyxara. Opposites in balance turned out to be the one thing the Unmaking could not stop. They broke the
+black walls of Vael and came for the High King in his throne room.
+
+They could not kill him. He had unmade his own death long before. So they did something stranger. They
+joined hands in a ring around him, each across from its opposite, and *pushed*, and balance became a wall.
+Vael-Orrun was driven out past the edge of the world into the **Outer Hollow**, the cold nothing beyond the
+stars. That ring of six is the **Ring** the world is named for.
+
+### The Heartstone and the sleep of the Six
+
+A wall needs a lock. The six monarchs took the High King's crown, set a piece of themselves into each of
+its six empty sockets, and fused it into a single stone that shines in all six colours: the
+**Heartstone**. It sits at the exact centre of the world, where his throne stood. As long as it is whole and
+the six opposites stay in balance, the door stays shut.
+
+What each gave shaped them ever after. Ignar gave his **appetite**, so the fire of the Reach warms instead
 of devouring. Aurath gave his **stillness**, so the sky of the Steppe can never rest. Elowen gave her
 **seasons**, so the Deep is always green and she is always slowly ageing. Thalassa gave her
 **forgetting**, so Frostmere remembers everything. Orrok gave his **voice**, so he barely speaks. Nyxara
 gave her **face**, so where her face should be there are only stars.
 
-Weakened by what they had given, the Six took bodies of their own land (a volcano, a stormcloud, a tree,
-a sea, a mountain, a starless sky) and went to sleep in them. Mortals call them the **Wardens**.
+The binding cost them their mortal lives. The six monarchs gave themselves into their lands (a volcano, a
+stormcloud, a tree, a sea, a mountain, a starless sky) and went to sleep there, holding the Ring. Their
+kingdoms, crownless now, became the six peoples. Mortals call the sleepers the **Wardens**, and most have
+forgotten they were ever kings and queens.
+
+Vael was left in ruins at the centre of the world, and its name was cursed and then forgotten.
+
+### Why he comes back
+
+Vael-Orrun has spent two thousand years in the Outer Hollow. It has emptied him out: what comes back is
+less a man than a will, a black glass shape with a hole where his crown used to sit. But he remembers. The
+Heartstone is his crown. The city at the middle of the world stands on his city. The Ring is the six
+crowns he meant to take, still holding hands against him. He has come back to reclaim what he believes is
+his: his crown, his throne at the centre and the six kingdoms that cast him out.
 
 **The rule the whole game rests on:** the Ring holds because opposites hold each other. If one element
 devours its opposite, the balance tips and the wall cracks. *That* is why the hordes come from the far
-side of the Ring. Vael-Orrun does not need to break the door. He only needs the elements to destroy each
-other.
+side of the Ring. Vael-Orrun does not need to break the door. He only needs the six to go back to hating
+each other, the way they did before the Siege of Vael.
 
 ---
 
@@ -84,7 +119,7 @@ other.
 
 ### The Six Peoples
 
-Mortals arose in each land, shaped by its Warden:
+The six kingdoms, without their monarchs, became six peoples, each still shaped by its sleeping Warden:
 
 | People | Land | Character |
 |---|---|---|
@@ -97,15 +132,16 @@ Mortals arose in each land, shaped by its Warden:
 
 ### The Opposites War (Year -300 to 0)
 
-For three hundred years the Six Peoples fought, always against their opposites: Emberfolk against
-Tidefolk, Galeborn against Stoneborn, Deepwood against Veilwalker. No one remembered that this was exactly
-what the thing beyond the stars wanted.
+The Six Peoples kept the peace for a long age after the Siege of Vael, and then forgot why. For three
+hundred years they fought, always against their opposites: Emberfolk against Tidefolk, Galeborn against
+Stoneborn, Deepwood against Veilwalker. No one remembered that this was exactly what the High King had
+counted on.
 
 ### Aurel and the First Spire (Year 0)
 
 A Galeborn shepherd named **Aurel** learned that an element could be *bound*: poured into worked stone and
 held there, still and useful, the way the Wardens held their lands. She built the first **Spire** on the
-plain at the centre of the world, where the Heartstone glowed, and showed all six peoples that a tower of
+ruins of Vael at the centre of the world, where the Heartstone glowed, and showed all six peoples that a tower of
 fire stood strongest when a tower of water stood beside it.
 
 Aurel united the peoples in the **Concord of the Ring**, founded the **Order of the Spire** to train
@@ -357,8 +393,10 @@ The full hero stories are in the heroes doc, "Heroes of the Ring: hero stories"
 
 ### 7.5 Villains
 
-**Vael-Orrun, the Sunderer** (the overlord, super-evil). The seventh Primordial, locked out of the world.
-He does not hate anyone; he simply cannot bear that there are six of anything instead of one. He speaks
+**Vael-Orrun, the Sunderer** (the overlord, super-evil). The last king of Orrun, the seventh kingdom, who
+named himself High King and tried to rule all seven. Banished beyond the stars by the six monarchs at the
+dawn of history, he has come back for his crown (the Heartstone) and his throne (the ground Solenne stands
+on). He does not hate anyone; he simply cannot bear that there are six crowns instead of one. He speaks
 rarely, and when he does, every element in the room goes still. In cinematics he is never fully seen until
 the final assault: a black sun with a crown-shaped gap in its corona, a voice like the silence after a
 bell. Final boss of the final assault.
@@ -519,9 +557,10 @@ the Crack. The story frames the level in three movements; the gameplay thread de
 3. **The Crownless Throne** (about 10 minutes). Vael-Orrun takes a shape for the first time: a figure of
    black glass with a crown-shaped gap where a face should be, and the Heartstone's stolen light caught in
    its chest. He cycles through all six elements and every hero's death is a shard of his corona. At the
-   end, the six Wardens join hands around him in a ring, as they did at the beginning of the world, and
-   Oswin's lantern is set into the gap in his crown. He is not killed. He is *finished*: given a single
-   element at last (light) and made one thing, like the others.
+   end, the six Wardens join hands around him in a ring, as they did at the Siege of Vael, and Oswin's
+   lantern is set into the gap where his crown used to be. He is not killed. He is *finished*: he gets the
+   middle of the world he always wanted, not as its king but as its light, the seventh colour in the
+   Heartstone.
 
 Story beats inside the level (for the gameplay thread to hook to timers or phases): Ilyra faces her
 father's last shadow in the Mirror Spire; Seraphel dies holding the Spire's top gate open (the Sunstone
@@ -559,4 +598,6 @@ but the Sunderer's; Oswin's lantern is set into the crown.
 - The six elements are always written Fire, Storm, Nature, Water, Earth, Void (capitalised, ring order).
 - Say "the Unbound" for the enemy hordes as a whole, "the Tide", "the Stone", "the Hollow", "the
   Flame", "the Sky" and "the Grove" for each land's invaders.
-- Never call Vael-Orrun "the Dark Lord". He is the Sunderer, the Seventh, the Crownless.
+- Never call Vael-Orrun "the Dark Lord". He is the High King, the Sunderer, the Seventh, the Crownless.
+- The six Wardens are the founding monarchs of the six kingdoms. Their people mostly call them by their
+  Warden titles; the Wardens themselves sometimes slip and speak like the kings and queens they were.

@@ -48,41 +48,37 @@ Beats keyed to stages won (any campaign order): `regents_counsel` after 6, `nigh
 
 ## The Last Lantern (`prologue`)
 
-*Before the first stage. The opening story video, 1 to 2 minutes.* About 2:13.
+*Before the first stage. The opening story video, 1 to 2 minutes.* About 2:26.
 
-**1. [Black. Slowly, a churning sea of every colour at once, no horizon, colours bleeding into each other.]**
+**1. [An old painted map coming out of darkness: six kingdoms in a ring, each under its own crown and colour (red, blue-white, green, teal, ochre, violet), and a seventh, colourless, in the middle.]**
 
-> **NARRATOR (YSOLDE):** Before the world, there was only the sea. Fire and water. Stone and storm. Root, and starless dark.  
+> **NARRATOR (YSOLDE):** Before the Concord, before the Spire, before anyone kept count of the years... there were seven kingdoms.
+
+**2. [Six crowned monarchs, each lit by their element: a forge-king, a horse-king, a green queen, a sea-queen, a mountain-king, a star-queen. Then the middle kingdom's black-walled capital, and on its throne a king in black with a tall crown of six empty sockets.]**
+
+> **NARRATOR (YSOLDE):** Six were bound to the elements of their lands. The seventh ruled the middle of the world.  
 *(pause)*  
-All of it one. And nothing.
+And he wanted all of it.
 
-**2. [Seven tall silhouettes rise from the sea in a line, each glowing one colour (red, blue-white, green, teal, ochre, violet). The seventh is a black outline with no colour at all.]**
+**3. [The High King's armies crossing a burning land; behind them the flames freeze into grey glass, the grass stops moving, a river hangs still in mid-fall.]**
 
-> **NARRATOR (YSOLDE):** Seven stepped out of it. Six were content to be one thing each.  
-*(pause)*  
-The seventh wanted to be everything.
+> **NARRATOR (YSOLDE):** His name was Vael-Orrun, the High King. Where his armies marched, fire would not burn, and the wind lay down and died.
 
-**3. [The black figure walks forward. Around his feet the colours of the sea freeze into grey glass. Behind him the sky shows a black sun with a crown-shaped gap in its corona.]**
+**4. [The six monarchs in a ring around the burning black city, hands joined, Fire across from Water, Storm across from Earth, Nature across from Void. The High King is flung out through the edge of a starfield into darkness.]**
 
-> **NARRATOR (YSOLDE):** His name was Vael-Orrun. Where he walked, the elements did not mix.  
-*(pause)*  
-They stopped.
-
-**4. [Top-down: the six coloured figures in a ring, Fire across from Water, Storm across from Earth, Nature across from Void, hands joined. The black figure is flung out through the edge of a starfield. The six lights settle into six lands around a centre.]**
-
-> **NARRATOR (YSOLDE):** The Six could not kill him. So they joined hands, each across from its opposite, and drove him out past the edge of the stars.  
+> **NARRATOR (YSOLDE):** The six hated one another. They stood together anyway, each beside its oldest enemy, and drove him out past the edge of the stars.  
 *(pause)*  
 We call it the Ring.
 
-**5. [Dawn over Solenne: six concentric white walls each faced with a different stone, the Heartstone glowing in the open hall at the centre, the golden Sunstone lens hanging in the sky above.]**
+**5. [The crown shattering into a six-coloured crystal, the Heartstone. The six monarchs fading into a volcano, a storm, a tree, a sea, a mountain, a starless sky. Then dawn over Solenne: six white walls rising on black ruins, the Heartstone glowing at the centre, the golden Sunstone above.]**
 
-> **NARRATOR (YSOLDE):** At its heart, six peoples built Solenne. The Crowned Heart.  
+> **NARRATOR (YSOLDE):** They could not kill him. So they locked the door with his own crown, and gave their lives to hold it. On the ruins of his city, we built Solenne.  
 *(pause)*  
 My city.
 
 **6. [Night. Cassivane Dral, the Lord Marshal, alone on a balcony, holding a gold locket. Over his shoulder, in the stars, the faint crown-shaped gap. His face is in shadow.]**
 
-> **NARRATOR (YSOLDE):** Six years ago, a man I loved like a father lost his daughter to the dark. Something beyond the stars made him a promise.
+> **NARRATOR (YSOLDE):** Six years ago, a man I loved like a father lost his daughter to the dark. The exiled king made him a promise.
 
 **7. [The Hollow Rift: violet grass, a ring of black pillars singing with stolen light. A black comet crosses the sky. The ground at the centre tears open into a crack full of nothing.]**
 
@@ -100,7 +96,9 @@ And Oswin fell. His lantern went out.
 
 **10. [Six quick cuts: a volcano burning grey, a stormcloud gone solid black, a giant tree rotting, a frozen sea heaving, a mountain opening grey eyes, a starless sky with a crown. Then hordes of grey-eyed elemental spirits pouring across the land toward each other.]**
 
-> **NARRATOR (YSOLDE):** But a voice can pass through a hairline. It drove the six sleeping Wardens mad, and now each land marches on the one across from it.
+> **NARRATOR (YSOLDE):** But a voice can pass through a hairline. It drove the six sleeping monarchs mad, and set each land against the one across from it.  
+*(pause)*  
+The High King has come back for what was his.
 
 **11. [A long line of refugees with carts on an ash road. Tamsin Reed with her lantern-pole waving them on. A gloved hand sets a glowing keystone into the foundation of a stone tower.]**
 
@@ -710,7 +708,7 @@ Not like this. Not yet. Again.
 
 ## The Crownless Citadel (`assault_intro`)
 
-*Before the final assault (about 30 minutes).* About 0:44.
+*Before the final assault (about 30 minutes).* About 0:46.
 
 **1. [Through the Crack: the Outer Hollow, a black sky with a black sun and a crown-shaped gap. Hanging upside down beneath it, a vast fortress.]**
 
@@ -722,7 +720,7 @@ Not like this. Not yet. Again.
 
 **3. [The black sun's corona flaring; every colour on screen drains to grey for a moment.]**
 
-> **VAEL-ORRUN:** This is my world. You are standing in it. That is a mistake you will not make twice.
+> **VAEL-ORRUN:** You built your city on my city. You hang my crown over it like a lamp. I have come home for both.
 
 **4. [Tamsin, lantern-pole raised, at the head of the army, the Gatemaw ahead.]**
 
@@ -772,7 +770,7 @@ It was the Seventh's.
 
 ## The Seventh Colour (`epilogue`)
 
-*After the final assault is won. Then the credits.* About 1:04.
+*After the final assault is won. Then the credits.* About 1:06.
 
 **1. [The six Wardens in a ring around Vael-Orrun, hands joined, their light rising.]**
 
@@ -784,9 +782,9 @@ It was the Seventh's.
 
 **3. [Vael-Orrun cracking apart into pure white light, which rises, and the black sun above the citadel turns gold.]**
 
-> **NARRATOR (YSOLDE):** We did not kill him. I do not think he could be killed. We finished him. We gave him one thing to be, at last.  
+> **NARRATOR (YSOLDE):** We did not kill him. I do not think he could be killed. He wanted the middle of the world, so we gave it to him. Not as its king.  
 *(pause)*  
-He became the light.
+As its light.
 
 **4. [Montage: Emberfolk relighting the forges of Kethra from their iron pots; Galeborn raising tents at Aurvanis; Sylvaine planting Elowen's seed; Pearlhaven's fleet coming home; Stoneborn unsealing Grundhallow through a door that is part of Orrok; Veilwalkers raising the telescope at Umbrael; Seraphel's glass sword set into the rebuilt Sunstone; Nyxara walking slowly beside Elowen through the ash of Sylvanmere. Tamsin, alive, sitting on the Lantern Walk with Fennick's spectacles, and Oswin, grey and old again, beside her, pointing at the sunset for the Queen.]**
 
