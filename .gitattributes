@@ -37,3 +37,5 @@ assets/story/images/** -filter -diff -merge -text
 assets/story/portraits/** -filter -diff -merge -text
 # Menu art (backdrop) is painted by tools/art/menu/pages.py and is small; fonts are OFL pixel fonts.
 assets/art/menu/** -filter -diff -merge -text
+# OFL pixel fonts for the interface are small; plain Git.
+assets/fonts/** -filter -diff -merge -text

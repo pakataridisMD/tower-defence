@@ -124,7 +124,8 @@ class UI:
                 r(cx + 1, cy + 1, cx + 3, cy + 2, GOLD_HI)
                 r(cx + 3, cy + 3, cx + 4, cy + 4, GOLD_LO)
 
-    def button(self, x0, y0, x1, y1, label, state="normal", key=None, icon=None, size=20, sub=None, align="left"):
+    def button(self, x0, y0, x1, y1, label, state="normal", key=None, icon=None, size=20, sub=None, align="left",
+               marker=True):
         """state: normal, hover (gold frame, warm fill, marker), selected, disabled."""
         r = self.rect
         hot = state in ("hover", "selected")
@@ -145,7 +146,7 @@ class UI:
         fill = TEXT if state == "normal" else (hx("fff6d8") if hot else hx("5e566a"))
         tx = x0 + 14
         cy = (y0 + y1) // 2
-        if hot:
+        if hot and marker:
             # gem marker on the left edge
             gx = x0 - 4
             for i in range(5):
