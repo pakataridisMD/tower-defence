@@ -1,8 +1,8 @@
 class_name HeroData
 extends Resource
 ## A playable hero: a champion who joins over the campaign. A run takes a party of up to
-## MAX_PARTY heroes. Each is summoned once onto a free build cell, fights like a tower that is far
-## stronger than one, grows a level for every wave it fights, lifts the towers around it with its
+## MAX_PARTY heroes. Each is summoned once onto a free build cell, fights like a strong tower (about as
+## much as two good towers, so the towers the player builds still carry the run), grows a level for every wave it fights, lifts the towers around it with its
 ## aura and has one signature ability on its own key.
 
 const MAX_PARTY := 3
@@ -10,10 +10,10 @@ const MAX_LEVEL := 10
 ## The ability becomes `ultimate` from this level on.
 const ULTIMATE_LEVEL := 6
 ## Each level above the first adds this much damage and range.
-const DAMAGE_PER_LEVEL := 0.2
-const RANGE_PER_LEVEL := 0.04
+const DAMAGE_PER_LEVEL := 0.06
+const RANGE_PER_LEVEL := 0.02
 ## Towers this many cells from a hero get its aura.
-const AURA_CELLS := 3.0
+const AURA_CELLS := 2.0
 
 @export var id: StringName
 @export var display_name: String

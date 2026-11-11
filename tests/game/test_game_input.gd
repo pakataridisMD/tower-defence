@@ -333,7 +333,7 @@ func test_skill_buttons_show_their_key_and_cooldown() -> void:
 	assert_true(game.sim.use_skill(&"meteor", Vector2(100, 100)))
 	await wait_process_frames(2)
 	assert_gt(button.cooldown, 0.9)
-	assert_eq(button.cooldown_text, "25")
+	assert_eq(button.cooldown_text, str(roundi(game.sim.skill_cooldown(&"meteor"))))
 
 
 # --- Layout --------------------------------------------------------------------------

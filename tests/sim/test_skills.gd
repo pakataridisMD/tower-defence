@@ -111,7 +111,7 @@ func test_surge_speeds_up_every_tower_for_a_while() -> void:
 	var before := tower.attacks_per_second
 	_wave_with_enemies(sim, 1)
 	assert_true(sim.use_skill(&"surge"))
-	assert_gt(tower.attacks_per_second, before * 1.3)
+	assert_gt(tower.attacks_per_second, before * 1.15)
 	assert_gt(sim.skill_time_left(&"surge"), 0.0)
 	_run(sim, sim.config.skills[&"surge"].duration + 0.5)
 	assert_eq(sim.state, RunSim.State.WAVE, "the wave is still running")

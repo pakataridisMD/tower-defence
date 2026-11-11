@@ -7,27 +7,27 @@
 [sub_resource type="Resource" id="Effect_0"]
 script = ExtResource("2_status")
 kind = &"stun"
-duration = 2.5
+duration = 1.0
 
 [sub_resource type="Resource" id="Effect_1"]
 script = ExtResource("2_status")
 kind = &"slow"
-slow = 0.4
-duration = 5.0
+slow = 0.25
+duration = 3.0
 
 [sub_resource type="Resource" id="Effect_2"]
 script = ExtResource("2_status")
 kind = &"poison"
-damage_per_second = 5.0
-duration = 5.0
+damage_per_second = 2.0
+duration = 4.0
 
 [resource]
 script = ExtResource("1_skill")
 id = &"entangle"
 display_name = "Entangle"
-description = "Roots burst from the ground at a point. Enemies there are held for 2.5 seconds, then slowed and poisoned. Bosses are only slowed and poisoned."
+description = "Roots burst from the ground at a point. Enemies there are held for 1 second, then slowed and poisoned. Bosses are only slowed and poisoned."
 element = &"nature"
 requires_node = &"nature_entry"
-cooldown = 35.0
-radius = 130.0
+cooldown = 60.0
+radius = 100.0
 status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0"), SubResource("Effect_1"), SubResource("Effect_2")])

@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Effect_0"]
 script = ExtResource("2_status")
 kind = &"burn"
-damage_per_second = 6.0
+damage_per_second = 3.0
 duration = 4.0
 
 [resource]
@@ -17,7 +17,7 @@ display_name = "Meteor"
 description = "Calls a burning rock down on a point. It hurts everything nearby and sets it alight."
 element = &"fire"
 requires_node = &"fire_entry"
-cooldown = 25.0
-radius = 110.0
-damage = 55.0
+cooldown = 45.0
+radius = 90.0
+damage = 28.0
 status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0")])

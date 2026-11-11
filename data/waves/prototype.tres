@@ -164,4 +164,5 @@ groups = Array[ExtResource("3_p4gg6")]([SubResource("Resource_pvl5j"), SubResour
 script = ExtResource("1_cielc")
 id = &"prototype"
 display_name = "Prototype waves"
+health_scale = 0.85
 waves = Array[ExtResource("2_05gok")]([SubResource("Resource_t4b7l"), SubResource("Resource_7j8wx"), SubResource("Resource_the7f"), SubResource("Resource_nnx33"), SubResource("Resource_xjayx"), SubResource("Resource_ybo8l"), SubResource("Resource_20vdg"), SubResource("Resource_2va0a"), SubResource("Resource_svhgk"), SubResource("Resource_atvi1")])

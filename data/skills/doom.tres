@@ -7,16 +7,16 @@
 [sub_resource type="Resource" id="Effect_0"]
 script = ExtResource("2_status")
 kind = &"curse"
-damage_taken = 0.5
-duration = 6.0
+damage_taken = 0.2
+duration = 4.0
 
 [resource]
 script = ExtResource("1_skill")
 id = &"doom"
 display_name = "Doom"
-description = "Opens a rift at a point. Enemies near it take 50% more damage from everything for 6 seconds."
+description = "Opens a rift at a point. Enemies near it take 20% more damage from everything for 4 seconds."
 element = &"void"
 requires_node = &"void_entry"
-cooldown = 35.0
-radius = 120.0
+cooldown = 60.0
+radius = 100.0
 status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0")])

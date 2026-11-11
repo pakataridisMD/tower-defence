@@ -9,49 +9,49 @@
 script = ExtResource("tower")
 id = &"tamsin"
 display_name = "Tamsin Reed"
-description = "Lantern-pole thrusts that run through three enemies."
+description = "Lantern-pole thrusts that run through two enemies."
 elements = Array[StringName]([])
 tags = Array[StringName]([&"hero"])
 cost = 1
-damage = 22.0
+damage = 10.0
 attacks_per_second = 1.2
-attack_range = 170.0
+attack_range = 160.0
 chain_range = 70.0
-chain_count = 2
+chain_count = 1
 
 [sub_resource type="Resource" id="S2"]
 script = ExtResource("ability")
 display_name = "Lanternguard's Stand"
-description = "Every enemy within 4 cells of her is held for 3 seconds and takes a heavy blow."
-cooldown = 60.0
+description = "Every enemy within 2.5 cells of her is held for 1.5 seconds and takes a blow."
+cooldown = 100.0
 target = 1
-radius_cells = 4.0
-damage = 120.0
-hold_seconds = 3.0
+radius_cells = 2.5
+damage = 50.0
+hold_seconds = 1.5
 
 [sub_resource type="Resource" id="S3"]
 script = ExtResource("mod")
 stat = &"attacks_per_second"
 kind = 1
-value = 0.3
+value = 0.12
 
 [sub_resource type="Resource" id="S4"]
 script = ExtResource("ability")
 display_name = "Lanternguard's Stand"
-description = "Holds every enemy within 4 cells for 5 seconds, and every tower attacks 30% faster for 6 seconds."
-cooldown = 60.0
+description = "Holds every enemy within 2.5 cells for 2.5 seconds, and every tower attacks 12% faster for 5 seconds."
+cooldown = 100.0
 target = 1
-radius_cells = 4.0
-damage = 160.0
-hold_seconds = 5.0
-duration = 6.0
+radius_cells = 2.5
+damage = 70.0
+hold_seconds = 2.5
+duration = 5.0
 modifiers = Array[ExtResource("mod")]([SubResource("S3")])
 
 [sub_resource type="Resource" id="S5"]
 script = ExtResource("mod")
 stat = &"damage"
 kind = 1
-value = 0.15
+value = 0.08
 
 [resource]
 script = ExtResource("hero")
@@ -62,8 +62,8 @@ blurb = "Solenne's toughest soldier, always the last one through the gate."
 order = 0
 attack = SubResource("S1")
 aura = Array[ExtResource("mod")]([SubResource("S5")])
-aura_text = "+15% damage"
+aura_text = "+8% damage"
 ability = SubResource("S2")
 ultimate = SubResource("S4")
-ultimate_text = "Holds for 5 s, and towers attack 30% faster for 6 s"
+ultimate_text = "Holds for 2.5 s, and towers attack 12% faster for 5 s"
 barks = PackedStringArray("Last one through the gate. As always.", "Lanterns up!", "Hold the line.")
