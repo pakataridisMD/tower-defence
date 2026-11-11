@@ -64,6 +64,12 @@ To lock the door, each of the Six tore away a piece of itself. The six pieces we
 As long as the Heartstone is whole and the six opposites stay in balance, the Ring holds and the door
 stays shut.
 
+What each gave shaped it ever after. Ignar gave his **appetite**, so the fire of the Reach warms instead
+of devouring. Aurath gave his **stillness**, so the sky of the Steppe can never rest. Elowen gave her
+**seasons**, so the Deep is always green and she is always slowly ageing. Thalassa gave her
+**forgetting**, so Frostmere remembers everything. Orrok gave his **voice**, so he barely speaks. Nyxara
+gave her **face**, so where her face should be there are only stars.
+
 Weakened by what they had given, the Six took bodies of their own land (a volcano, a stormcloud, a tree,
 a sea, a mountain, a starless sky) and went to sleep in them. Mortals call them the **Wardens**.
 
@@ -304,6 +310,38 @@ who comes back at the capital.
 
 Heroes thread note: this roster keeps the names already drafted there, with two changes. The starting
 hero is Tamsin Reed (Oswin cannot be fielded until he comes back). Oswin returns as hero 16.
+
+### 7.3a Hero backstory details (canon)
+
+The full hero stories are in the heroes doc, "Heroes of the Ring: hero stories"
+(https://claude.ai/artifact/G1tjkeYAfvc4UBZz5oda6p). These details from it are canon:
+
+- **Tamsin** was born on the Lantern Walk and joined the Guard unable to read; she learned from the
+  Order's tower manuals.
+- **Brannoc** forged the Dawn Gate and signed his name inside it. When he sees it set as a tooth in the
+  Gatemaw, he asks to be the one who breaks it.
+- **Kaela** was born in a storm on the road to Aurvanis and won the Long Race on Thunderclap. In the
+  Mirror Spire she faces Vholt's Echo-Herald.
+- **Sylvaine** killed a Veilwalker astronomer three hundred years ago, in an old feud; that man's line
+  kept the lamps at Lamplight. She tells Corvin in the Hollow Rift.
+- **Mirelle** was born blind in Reedhaven and became a seer by drowning under the ice; the fish in her
+  staff swam beside her. After the war she tells Ysolde what she saw.
+- **Gorrim** held the Kharum Pass beside Gorrath. He had nineteen rings before the war, swears "no more
+  rings", and braids Gorrath's ring in last, after the Mirror Spire.
+- **Corvin**'s mother was Lady Iseult of Umbrael; he taught Ysolde and Ilyra the stars. He was framed for
+  the murder of **Archon Saevin**, the Veilwalker who built the black pillars at the Rift for the Regent and
+  was silenced by him.
+- **Ilyra** spent six years alone in the Outer Hollow measuring the stars with her astrolabe. She is the
+  first to notice the seventh colour in the Heartstone (post-credits).
+- **Seraphel** was the last of the twelve **Knights of the Sunstone**, and taught Ysolde. On the Night of
+  Falling Stars she was thrown from the Spire of Aurel trying to stop the Regent. After the war her sword
+  is set into the rebuilt Sunstone.
+- **Oswin** came to Solenne as a tinker's boy from nowhere. The lantern burning at Lamplight was lit by
+  him as he passed on the road of the dead. Giving up the lantern leaves him grey and old again; he lives
+  to see Solenne rebuilt and describes the sunsets to the Queen.
+- **Elowen** lies down in the ash of Sylvanmere after the war, and Nyxara walks her home.
+- **Orrok** leaves a piece of himself as the new door of Grundhallow, and opens it in the epilogue.
+- **Nyxara** lays her broken crown beside Oswin's lantern at the end.
 
 ### 7.4 Major allies (non-playable)
 

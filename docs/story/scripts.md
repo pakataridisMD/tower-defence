@@ -788,7 +788,7 @@ It was the Seventh's.
 *(pause)*  
 He became the light.
 
-**4. [Montage: Emberfolk relighting the forges of Kethra from their iron pots; Galeborn raising tents at Aurvanis; Sylvaine planting Elowen's seed; Pearlhaven's fleet coming home; Stoneborn unsealing Grundhallow; Veilwalkers raising the telescope at Umbrael. Tamsin, alive, sitting on a wall with Fennick's spectacles.]**
+**4. [Montage: Emberfolk relighting the forges of Kethra from their iron pots; Galeborn raising tents at Aurvanis; Sylvaine planting Elowen's seed; Pearlhaven's fleet coming home; Stoneborn unsealing Grundhallow through a door that is part of Orrok; Veilwalkers raising the telescope at Umbrael; Seraphel's glass sword set into the rebuilt Sunstone; Nyxara walking slowly beside Elowen through the ash of Sylvanmere. Tamsin, alive, sitting on the Lantern Walk with Fennick's spectacles, and Oswin, grey and old again, beside her, pointing at the sunset for the Queen.]**
 
 > **NARRATOR (YSOLDE):** We went home to twenty-six cities of ash. Every one of their people walked back to rebuild them.  
 *(pause)*  

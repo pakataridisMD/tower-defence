@@ -556,8 +556,10 @@ cin("epilogue", "The Seventh Colour", "After the final assault is won. Then the 
          "That is what we fought for. Not the land. Them.",
          "Montage: Emberfolk relighting the forges of Kethra from their iron pots; Galeborn raising tents at "
          "Aurvanis; Sylvaine planting Elowen's seed; Pearlhaven's fleet coming home; Stoneborn unsealing "
-         "Grundhallow; Veilwalkers raising the telescope at Umbrael. Tamsin, alive, sitting on a wall with "
-         "Fennick's spectacles."),
+         "Grundhallow through a door that is part of Orrok; Veilwalkers raising the telescope at Umbrael; "
+         "Seraphel's glass sword set into the rebuilt Sunstone; Nyxara walking slowly beside Elowen through "
+         "the ash of Sylvanmere. Tamsin, alive, sitting on the Lantern Walk with Fennick's spectacles, and "
+         "Oswin, grey and old again, beside her, pointing at the sunset for the Queen."),
     shot("I am Ysolde, Queen of Solenne. I am old now, and I have never seen a dawn since.\n\nBut I have "
          "felt every one of them.",
          "Ysolde, older, grey hair, still blindfolded, on the walls of a rebuilt Solenne, sun on her face. "
