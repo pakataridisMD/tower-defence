@@ -37,7 +37,7 @@ def render(name: str, stems: bool = False) -> dict:
     mod = importlib.import_module(f"cues.{name}")
     score = mod.build()
     raw = sc.mix(score, OUT, stems=stems)
-    files = sc.master(raw, os.path.join(OUT, name), LUFS)
+    files = sc.master(raw, os.path.join(OUT, name), getattr(mod, "LUFS", LUFS))
     os.remove(raw)
     os.makedirs(ASSETS, exist_ok=True)
     shutil.copy(files["ogg"], os.path.join(ASSETS, f"{name}.ogg"))
