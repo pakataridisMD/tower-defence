@@ -111,6 +111,8 @@ def shard_knot(sc, cx, cy, r, col=(250, 200, 110), core=(255, 250, 230), n=22, s
 
 def kneel_pose(name="cassivane"):
     """Down on his knees, head bowed, the sword lowered to the ground."""
+    if name in people.SPECS:
+        anim.LEGS.setdefault(name, 18)                              # a person's legs are shorter than a boss's
     p = anim.death(5, 8, "titan", name)
     p["_t"] = 5
     p["weapon"], p["hand_w"] = (1.6, 0, 0), (0.6, 0, 0)
@@ -711,8 +713,8 @@ def convergence_intro_02():
     return sc
 
 
-def convergence_intro_03():
-    """The six Wardens standing in a ring around the outer walls of Solenne, the Heartstone pulsing."""
+def _convergence_intro_03_v1():
+    """(Superseded) The six Wardens standing in a ring around the outer walls of Solenne, the Heartstone pulsing."""
     sc = Scene(243)
     sky(sc, "night")
     sc.ridge(130, 3, "2a2434", 32)
@@ -728,7 +730,7 @@ def convergence_intro_03():
     return sc
 
 
-def convergence_intro_04():
+def convergence_intro_04_crossmere():
     """Crossmere, a crossroads town at night, ringed by a grey war camp. Cassivane's standard: a red field, burned black."""
     sc = Scene(244)
     sky(sc, "night")
@@ -1409,13 +1411,245 @@ def epilogue_06():
     sc.vignette(0.8)
     return sc
 
+# ---- the truth about Vael-Orrun (convergence_intro) and the end (epilogue), lore of 2026-11-11 ----------------------
+def fresco(sc, x0, y0, x1, y1, seed=0, burn=0.0):
+    """Turn a region into an old wall painting: ochre plaster tones, a crackle of fine lines, flaked spots, a border.
+    burn > 0 eats the painting from its edges inward with fire."""
+    rng = np.random.default_rng(seed)
+    m = (sc.xs >= x0) & (sc.xs < x1) & (sc.ys >= y0) & (sc.ys < y1)
+    tones = np.array([(64, 40, 32), (120, 72, 48), (176, 120, 76), (214, 172, 120), (236, 214, 170)], np.float32)
+    lum = sc.c[..., :3].mean(-1)
+    idx = np.clip((lum / 200 * len(tones)).astype(int), 0, len(tones) - 1)
+    painted = tones[idx] * 0.6 + sc.c * 0.4
+    sc.c[m] = painted[m]
+    for _ in range(26):                                               # crackle
+        x, y = rng.uniform(x0, x1), rng.uniform(y0, y1)
+        for _ in range(int(rng.integers(6, 16))):
+            nx, ny = x + rng.uniform(-5, 5), y + rng.uniform(-5, 5)
+            if x0 <= nx < x1 and y0 <= ny < y1:
+                sc.line(x, y, nx, ny, (70, 50, 40))
+            x, y = nx, ny
+    for _ in range(18):                                               # flaked plaster
+        x, y, r = rng.uniform(x0, x1), rng.uniform(y0, y1), rng.uniform(1.5, 4)
+        sc.c[(np.hypot(sc.xs - x, sc.ys - y) < r) & m] = (200, 186, 160)
+    for k in range(3):
+        panel(sc, x0 - k, y0 - k, x1 + k, y1 + k, (90, 60, 40) if k == 1 else (40, 26, 20))
+    if burn:
+        d = np.minimum.reduce([sc.xs - x0, x1 - sc.xs, sc.ys - y0, y1 - sc.ys]).astype(np.float32)
+        d += rng.normal(0, 3, d.shape)
+        edge = burn * min(x1 - x0, y1 - y0) / 2
+        gone = m & (d < edge)
+        sc.c[gone] = (10, 6, 6)
+        rim = m & (d >= edge) & (d < edge + 3)
+        sc.c[rim] = (255, 140, 40)
+        sc.blend(m & (d >= edge + 3) & (d < edge + 8), (60, 30, 20), 0.6)
+        for _ in range(30):
+            ys, xs = np.nonzero(rim)
+            if len(xs):
+                j = int(rng.integers(len(xs)))
+                flame(sc, int(xs[j]), int(ys[j]), rng.uniform(4, 10))
+
+
+def convergence_intro_03():
+    """The six Wardens standing in a ring around the outer walls of Solenne, the Heartstone pulsing.
+    Ignar kneels to the blind Queen."""
+    sc = Scene(243)
+    sky(sc, "night")
+    sc.ridge(130, 3, "2a2434", 32)
+    sc.bands("2a2434", "100c14", 130, H, n=4)
+    for i, x, f in ((5, 52, 112), (1, 104, 104), (2, 216, 104), (3, 268, 112)):
+        warden(sc, i, x, f, glow=0.35, flip=x > 160)
+    solenne(sc, 160, 140, 0.8, glow=False)
+    heartstone(sc, 160, 92, 0.5)
+    warden(sc, 4, 30, 176, glow=0.5)
+    sc.glow(196, 150, 34, RINGC[0], 0.5)
+    im, fx, fy = arr_of("ignar_king", pose=kneel_pose("ignar_king"), flip=True, light=(1.1, 0.85, 0.7))
+    paste(sc, im, 200, 176, fx, fy)
+    sc.put("ysolde_blind", 150, 176, rim=(255, 200, 140))
+    sc.vignette(0.45)
+    return sc
+
+
+def convergence_intro_04():
+    """Flashback, painted like an old fresco: a young, kind-faced king in grey at a long feast table between six crowned
+    monarchs, his Tidefolk queen and small son beside him. Everyone is smiling."""
+    sc = Scene(245)
+    x0, y0, x1, y1 = 16, 14, 304, 166
+    sc.c[:] = (24, 18, 16)
+    sc.bands("4a3a5a", "8a6a5a", y0, 110, n=4)
+    for x in range(30, 300, 34):                                      # the hall's arches behind
+        sc.rect(x, 30, x + 6, 110, (150, 120, 96))
+        sc.disc(x + 20, 46, 12, (110, 86, 80))
+    seats = [("ignar_king", 0), ("aurath_king", 1), ("elowen_queen", 2), ("vael_orrun_young", None), ("ysmera", None),
+             ("caelan", None), ("thalassa_queen", 3), ("orrok_king", 4), ("nyxara_queen", 5)]
+    for k, (name, i) in enumerate(seats):
+        x = 34 + k * 31
+        if i is not None:
+            sc.glow(x, 92, 16, RINGC[i], 0.35)
+        sc.put(name, x, 146 if name != "caelan" else 140, flip=k > 4)
+    sc.rect(20, 118, 300, 128, (120, 70, 44))                         # the long table
+    sc.rect(20, 118, 300, 120, (170, 110, 70))
+    sc.rect(20, 128, 300, 150, (90, 52, 34))
+    for k in range(9):                                                # cups, bread, candles
+        x = 30 + k * 31
+        sc.rect(x, 114, x + 3, 118, (210, 180, 90))
+        sc.disc(x + 10, 116, 3, (200, 150, 90), squash=0.6)
+    for x in (80, 160, 240):
+        sc.rect(x, 108, x + 2, 118, (236, 226, 200))
+        flame(sc, x + 1, 108, 5)
+    sc.bands("6a4a3a", "3a2a20", 150, y1, n=3)
+    fresco(sc, x0, y0, x1, y1, seed=4)
+    sc.vignette(0.5)
+    return sc
+
+
+def convergence_intro_05():
+    """The fresco catches fire: the black city of Vael burning at night, soldiers of six colours in the gates; the king on
+    his knees in the ashes of the feast hall, holding a ring."""
+    sc = Scene(246)
+    x0, y0, x1, y1 = 16, 14, 304, 166
+    sc.c[:] = (14, 8, 8)
+    sc.bands("1a1018", "5a2418", y0, 120, n=5)
+    for k, x in enumerate(range(20, 300, 22)):                        # the black city, burning
+        h = 30 + (k * 13) % 34
+        sc.rect(x, 120 - h, x + 16, 120, (24, 20, 26))
+        sc.rect(x + 6, 120 - h - 8, x + 10, 120 - h, (24, 20, 26))
+        flame(sc, x + 8, 120 - h, 10 + (k % 3) * 4)
+        sc.glow(x + 8, 120 - h, 14, (255, 120, 40), 0.5)
+    sc.rect(120, 88, 200, 120, (10, 6, 8))                            # the gates, and soldiers of six colours in them
+    for k in range(12):
+        x = 126 + k * 6
+        c = RINGC[k % 6]
+        sc.rect(x, 108, x + 3, 118, tuple(int(v * 0.8) for v in c))
+        sc.rect(x + 1, 105, x + 3, 108, (60, 50, 50))
+        sc.line(x + 3, 110, x + 5, 100, (180, 180, 190))
+    sc.bands("3a2a24", "1a1210", 120, y1, n=3)
+    sc.particles(140, [(90, 80, 76), (60, 50, 46), (255, 140, 50)], 120, y1, x0, x1)
+    im, fx, fy = arr_of("vael_orrun_young", pose=kneel_pose("vael_orrun_young"), light=(1.0, 0.8, 0.7))
+    sc.glow(160, 130, 30, (255, 140, 60), 0.4)
+    paste(sc, im, 160, 152, fx, fy)
+    sc.glow(176, 126, 6, GOLD, 0.8)
+    sc.c[125:128, 175:178] = (255, 220, 120)
+    fresco(sc, x0, y0, x1, y1, seed=5, burn=0.14)
+    sc.vignette(0.5)
+    return sc
+
+
+def convergence_intro_06():
+    """Nyxara, the stars in her face dim, turning away. Behind her, deep in the stars, a patch of sky with no stars in it."""
+    sc = Scene(247)
+    sc.bands("0a0814", "1c1630", 0, H, n=5)
+    hole = np.hypot(sc.xs - 240, (sc.ys - 54) * 1.3) < 30
+    rng = np.random.default_rng(47)
+    for _ in range(420):
+        x, y = int(rng.integers(0, W)), int(rng.integers(0, H))
+        if not hole[y, x]:
+            sc.c[y, x] = [(230, 230, 255), (170, 170, 210), (110, 110, 150)][int(rng.integers(3))]
+    sc.blend(hole, (4, 4, 8), 0.25)
+    sc.bands("141020", "08060c", 150, H, n=3)
+    sc.glow(130, 120, 40, RINGC[5], 0.35)
+    im, fx, fy = arr_of("nyxara_queen", flip=True, light=(0.7, 0.68, 0.8))
+    paste(sc, im, 130, 172, fx, fy)
+    sc.vignette(0.55)
+    return sc
+
+
+def convergence_intro_07():
+    """Ysolde alone in the Hall of the Ring, her hand on the Heartstone, which is warm, like a crown just taken off."""
+    sc = Scene(248)
+    hall(sc, dim=0.55, throne=False)
+    sc.blend(np.ones((H, W), bool), (6, 4, 8), 0.35)
+    sc.rect(146, 130, 196, 160, (70, 64, 72))                          # the plinth
+    sc.rect(146, 130, 196, 132, (120, 112, 120))
+    heartstone(sc, 171, 104, 1.2)
+    sc.glow(171, 110, 50, (255, 180, 100), 0.35)
+    sc.put("ysolde_blind", 138, 166, light=(1.0, 0.9, 0.85), rim=(255, 200, 140))
+    sc.vignette(0.6)
+    return sc
+
+
+def convergence_intro_08():
+    return convergence_intro_04_crossmere()
+
+
+def epilogue_03_young():
+    """Inside the light: Vael-Orrun as he was, the kind-faced king in grey, holding his wife's ring. His eyes are not grey.
+    They are only tired."""
+    sc = Scene(347)
+    sc.c[:] = (250, 250, 244)
+    sc.glow(160, 90, 160, (255, 236, 200), 0.5)
+    im = np.asarray(_portrait("vael_orrun_young")).astype(np.float32)
+    sc._paste(im[..., :3], im[..., 3] / 255, 112, 30)
+    sc.glow(192, 142, 8, GOLD, 0.9)
+    sc.disc(192, 142, 3, (230, 180, 70))
+    sc.disc(192, 142, 1.5, (250, 250, 244))
+    m = np.hypot(sc.xs - 160, sc.ys - 78) > 70
+    sc.blend(m, (255, 255, 250), np.clip((np.hypot(sc.xs - 160, sc.ys - 78) - 70) / 60, 0, 1), steps=4)
+    return sc
+
+
+def epilogue_04_past():
+    """Vael-Orrun looking past the Wardens, past the heroes, at something behind the camera."""
+    sc = Scene(348)
+    sc.c[:] = (230, 230, 226)
+    sc.bands("e8e8e0", "8a8a90", 0, H, n=5)
+    im = np.asarray(_portrait("vael_orrun_young")).astype(np.float32)[:, ::-1]   # turned to us, eyes on the camera
+    sc._paste(im[..., :3], im[..., 3] / 255, 112, 40)
+    sc.blend(np.ones((H, W), bool), (40, 40, 60), 0.12)
+    sc.vignette(0.7, col=(20, 20, 30))
+    return sc
+
+
+def epilogue_05_thalassa():
+    """Thalassa, bells silent in her hair, the only Warden who can meet his eyes."""
+    sc = Scene(349)
+    _void_hall(sc)
+    sc.glow(160, 88, 80, RINGC[3], 0.4)
+    _face_close(sc, "thalassa", 112, 40)
+    sc.vignette(0.5)
+    return sc
+
+
+def epilogue_09():
+    """After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six colours... then, faintly,
+    a seventh. Ilyra, alone, leans in to look. Deep inside the seventh colour, something with no colour at all opens, like an eye."""
+    sc = Scene(346)
+    hall(sc, dim=0.5, throne=False)
+    sc.blend(np.ones((H, W), bool), (4, 4, 6), 0.55)
+    heartstone(sc, 170, 92, 2.4, seventh=True)
+    cx, cy = 170, 92                                                   # the eye, no colour at all
+    eye = (np.abs(sc.xs - cx) / 9) ** 2 + (np.abs(sc.ys - cy) / 3.2) ** 2 < 1
+    sc.c[eye] = (176, 176, 176)
+    sc.c[(np.hypot(sc.xs - cx, sc.ys - cy) < 2.2) & eye] = (12, 12, 12)
+    sc.put("ilyra", 116, 170, light=(0.8, 0.8, 0.9), rim=(220, 220, 220))
+    sc.vignette(0.8)
+    return sc
+
+
+def epilogue_10():
+    """Black. No sound at all for a moment before the voice, and none after. Title card: TO BE CONTINUED."""
+    from PIL import Image as _I, ImageDraw as _D, ImageFont as _F
+    sc = Scene(350)
+    sc.c[:] = (0, 0, 0)
+    card = _I.new("L", (W, H), 0)
+    _D.Draw(card).text((W // 2, H // 2), "TO BE CONTINUED", fill=255, font=_F.load_default(), anchor="mm")
+    m = np.asarray(card) > 100
+    sc.c[m] = (200, 196, 188)
+    return sc
+
+
+def _portrait(cid):
+    import portraits
+    return portraits.portrait(cid) if cid in portraits.PEOPLE or cid in portraits.HEADS else people.portrait(cid).image()
+
 
 CINEMATICS.update({
     "regents_counsel": [regents_counsel_01, regents_counsel_02, regents_counsel_03, regents_counsel_04],
     "night_of_falling_stars": [nofs_01, nofs_02, nofs_03, nofs_04, nofs_05, nofs_06, nofs_07, nofs_08, nofs_09, nofs_10,
                                nofs_11, nofs_12],
     "long_night": [long_night_01, long_night_02, long_night_03, long_night_04],
-    "convergence_intro": [convergence_intro_01, convergence_intro_02, convergence_intro_03, convergence_intro_04],
+    "convergence_intro": [convergence_intro_01, convergence_intro_02, convergence_intro_03, convergence_intro_04,
+                          convergence_intro_05, convergence_intro_06, convergence_intro_07, convergence_intro_08],
     "crossroads": [crossroads_01, crossroads_02, crossroads_03, crossroads_04],
     "lumen_gate": [lumen_gate_01, lumen_gate_02, lumen_gate_03],
     "capital_prelude": [capital_prelude_01, capital_prelude_02, capital_prelude_03, capital_prelude_04],
@@ -1425,5 +1659,6 @@ CINEMATICS.update({
     "assault_intro": [assault_intro_01, assault_intro_02, assault_intro_03, assault_intro_04],
     "mirror_spire": [mirror_spire_01, mirror_spire_02, mirror_spire_03],
     "crownless_throne": [crownless_throne_01, crownless_throne_02, crownless_throne_03],
-    "epilogue": [epilogue_01, epilogue_02, epilogue_03, epilogue_04, epilogue_05, epilogue_06],
+    "epilogue": [epilogue_01, epilogue_02, epilogue_03_young, epilogue_04_past, epilogue_05_thalassa, epilogue_03, epilogue_04,
+                 epilogue_05, epilogue_09, epilogue_10],
 })

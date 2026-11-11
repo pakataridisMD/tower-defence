@@ -131,7 +131,8 @@ ITEMS = {k[5:]: v for k, v in dict(globals()).items() if k.startswith("item_")}
 
 # ---- the standing figure --------------------------------------------------------------------------------------------
 BUILDS = {"normal": (1.0, 1.0), "tall": (0.95, 1.1), "lean": (0.9, 1.06), "wide": (1.25, 0.92), "short": (1.2, 0.82),
-          "huge": (1.35, 1.12), "slight": (0.88, 0.98)}
+          "huge": (1.35, 1.12), "slight": (0.88, 0.98),
+          "child": (0.8, 0.62)}
 
 
 def figure(sp, pose=None, pad=0):
@@ -394,6 +395,13 @@ SPECS = {
                           hair_style="long", skin="8a6a48", eye=(150, 230, 120), eye_glow=True),
     "thalassa_warden": dict(name="Thalassa of the Deep", build="tall", top="2a8a8a", body="gown", trim="c09040", hair="1a4a5a",
                             hair_style="long", skin="8ad0d0", eye=(220, 255, 255), eye_glow=True),
+    # the High King as he was before the Night of Six Knives, his queen and his son (flashbacks and the epilogue)
+    "vael_orrun_young": dict(name="Vael-Orrun, Keeper of the Crossroads", build="tall", top="8a8a90", top_d="6a6a72", body="robe",
+                             trim="c8c8d0", hair="2a2428", headgear="circlet", skin="d8b898", item="locket",
+                             beard="short", beard_col="2a2428"),
+    "ysmera": dict(name="Queen Ysmera of Vael", build="slight", top="3a8a8a", body="gown", trim="e0e0d0", hair="1a1418",
+                   hair_style="long", headgear="circlet", skin="9a6a4a"),
+    "caelan": dict(name="Prince Caelan", build="child", top="6a7a90", legs="4a4a5a", hair="1a1418", skin="b88a6a"),
 }
 SPECS["gorrim"]["chest"] = _door_shield
 SPECS["orrok_king"]["chest"] = _door_shield
@@ -405,7 +413,8 @@ ACCENT = {"tamsin": "d8a040", "brannoc": "e0602a", "kaela": "8aa0e0", "sylvaine"
           "gorrim": "b07030", "corvin": "8a60d0", "ilyra": "7a70e0", "seraphel": "f0d070", "oswin_grey": "d8a040",
           "oswin_white": "f0f0ff", "ysolde": "e0c060", "ysolde_blind": "a0a0a8", "fennick": "c09040",
           "cassivane_marshal": "b03030", "elowen_warden": "60a040", "thalassa_warden": "40b0b0", "vael_orrun_king": "605a70", "ignar_king": "e0602a", "aurath_king": "8aa0e0",
-          "elowen_queen": "60a040", "thalassa_queen": "40b0b0", "orrok_king": "b07030", "nyxara_queen": "8a60d0"}
+          "elowen_queen": "60a040", "thalassa_queen": "40b0b0", "orrok_king": "b07030", "nyxara_queen": "8a60d0",
+          "vael_orrun_young": "a0a0b0", "ysmera": "40b0b0", "caelan": "a0a0b0"}
 
 
 def _p_hair_back(s, sp, hair):
