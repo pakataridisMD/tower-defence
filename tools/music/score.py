@@ -195,6 +195,8 @@ class Score:
         self.sections: list[Section] = []
         self.tracks: dict[str, Track] = {}
         self.perc: list[tuple[float, str, int]] = []
+        # rendered audio placed at a beat: (beat, stereo array, gain_db, align, send, group)
+        self.fx: list[tuple] = []
         self.expr: dict[str, list[tuple[float, float]]] = {}
         self.markers: list[tuple[float, str]] = []
         self.end_pad = 6.0
@@ -230,6 +232,12 @@ class Score:
 
     def _hits(self, hits):
         self.perc.extend(hits)
+
+    def place(self, beat: float, audio, gain_db: float = 0.0, align: str = "onset", send: float = 0.35,
+              group: str = "fx"):
+        """Drop pre-rendered audio (vocals, braams, risers) at a beat. align="end" makes the audio
+        finish on the beat, for risers."""
+        self.fx.append((beat, audio, gain_db, align, send, group))
 
     def swell(self, key: str, points: list[tuple[float, float]]):
         """Expression curve for a track: (global beat, dB). Linear in dB between points."""
@@ -403,6 +411,23 @@ def mix(score: Score, out_dir: str, stems: bool = False) -> str:
             sf.write(os.path.join(out_dir, f"{score.name}__perc.wav"), p, SR)
         dry += p
         send += p * 0.3
+    groups: dict[str, np.ndarray] = {}
+    for beat, audio, gain_db, align, snd, group in score.fx:
+        t = score.time_of(beat)
+        start = int(round(t * SR)) - (len(audio) if align == "end" else 0)
+        a = np.asarray(audio, np.float32) * 10 ** (gain_db / 20)
+        if start < 0:
+            a, start = a[-start:], 0
+        end = min(total, start + len(a))
+        if end <= start:
+            continue
+        g = groups.setdefault(group, np.zeros((total, 2), np.float32))
+        g[start:end] += a[: end - start]
+        dry[start:end] += a[: end - start]
+        send[start:end] += a[: end - start] * snd
+    if stems:
+        for group, g in groups.items():
+            sf.write(os.path.join(out_dir, f"{score.name}__{group}.wav"), g, SR)
     ir = hall_ir()
     wet = np.stack([signal.oaconvolve(send[:, c], ir[:, c])[:total] for c in range(2)], axis=1)
     out = dry * 0.85 + wet * 0.55

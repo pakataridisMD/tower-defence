@@ -1,5 +1,9 @@
 """The Last Lantern: score for the opening story video (`prologue`), about 3:00.
 
+v4 adds a trailer layer (`trailer_layer`): a chanting choir that sings words on the written notes,
+gang shouts in the gaps between narrated lines, braams, risers, impacts, sub drops and taiko.
+Words are original: "Te-ne-te vi-am" (Latin, "hold the road"), "Lu-men", "Vael-Orrun".
+
 One section per shot of the script (docs/story/scripts.md), each fitted to the length of the
 narrator's line for that shot (SLOTS, in seconds, from the voice thread's previews).
 Themes introduced here and reused by the other cues (see tools/music/README.md):
@@ -7,7 +11,9 @@ Themes introduced here and reused by the other cues (see tools/music/README.md):
   - Solenne (home): a 6/8 folk tune for flute and harp
   - the Hollow (Vael-Orrun): a falling tritone in low brass over a 5/4 ostinato
 """
+import vocals as V
 from cues._kit import HOLLOW, HOLLOW_OST, SOLENNE, new, rep
+from score import midi
 from cues.solenne import TUNE_BASS, TUNE_CL, TUNE_HARP, TUNE_VLA
 
 # Shot lengths (seconds) for the narration at 0.8x speed with long pauses.
@@ -248,4 +254,114 @@ def build():
     q.hits("gong", "1", bar=5, vel="ff")
     q.hits("bd", "1", bar=5, vel="fff")
     s.end_pad = FINAL_TAIL
+    trailer_layer(s)
     return s
+
+
+# ------------------------------------------------------------------------------- trailer layer
+# Narrated lines start 0.4 s into each slot, so shouts go in the ~2 s gap at the end of a slot
+# (or on a hit that the line leads into). Sung chant can sit under the speech: it is ducked there.
+SHOUT_DB, CHANT_DB = 9.0, -3.0
+
+
+def chant(s, sec, bar, text, men=10, women=0, gain=0.0, seed=0, transpose=0):
+    """Sing words on notes: "Syl:PITCH:beats ...", bars separated by |, r:beats for rests."""
+    b = sec.at(bar)
+    for tok in text.replace("|", " ").split():
+        parts = tok.split(":")
+        beats = float(parts[-1])
+        if parts[0] != "r":
+            t0, t1 = s.time_of(b), s.time_of(b + beats * 0.96)
+            m = midi(parts[1]) + transpose
+            if men:
+                s.place(b, V.sung(parts[0], m, t1 - t0, n=men, seed=seed), CHANT_DB + gain, group="chant",
+                        send=0.45)
+            if women:
+                s.place(b, V.sung(parts[0], m + 12, t1 - t0, n=women, women=women, seed=seed + 7),
+                        CHANT_DB + gain - 2, group="chant", send=0.45)
+        b += beats
+        seed += 1
+
+
+def shout(s, beat, text, gain=0.0, seed=0, n=16, women=4):
+    s.place(beat, V.crowd(text, n=n, women=women, seed=seed), SHOUT_DB + gain, group="shout", send=0.3)
+
+
+def hit(s, beat, note="D2", gain=0.0, seed=0):
+    """Braam + impact + sub drop on a downbeat."""
+    s.place(beat, V.braam(midi(note), 3.5, seed=seed), -6 + gain, group="sfx", send=0.25)
+    s.place(beat, V.impact(seed=seed), -5 + gain, group="sfx", send=0.2)
+    s.place(beat, V.sub_drop(2.5), -7 + gain, group="sfx", send=0.0)
+
+
+def rise(s, beat, seconds=2.0, gain=0.0, seed=0):
+    s.place(beat, V.riser(seconds, seed=seed), -9 + gain, align="end", group="sfx", send=0.4)
+
+
+def trailer_layer(s):
+    sec = {x.name.split(" ", 1)[0]: x for x in s.sections}
+
+    # 2. the seventh: a low braam on the colourless Ab
+    hit(s, sec["2"].at(3), "Ab1", gain=-6)
+
+    # 3. Vael-Orrun: low men chant his name on the Hollow figure; "HA!" + hit on "They stopped."
+    c = sec["3"]
+    chant(s, c, 1, "Vail:D3:3 Or:Ab2:2 | Run:G2:2 Vail:A2:1 Or:Eb3:2 | Run:D3:3 r:2", men=12, gain=-2, seed=3)
+    c.hits("taiko", "1 3.5", bar=1, vel="ff", bars=3)
+    shout(s, c.at(3, 4), "Ha!", seed=1)
+    hit(s, c.at(3, 4), "Eb2", seed=1)
+
+    # 4. the Ring: the choir sings "Lu-men" on the arrival
+    d = sec["4"]
+    chant(s, d, 4, "Loo:A3:2 Men:A3:2 | Loo:A3:2 Men:A3:2", men=10, women=6, gain=0, seed=11)
+    chant(s, d, 4, "Loo:D3:2 Men:D3:2 | Loo:D3:2 Men:D3:2", men=10, gain=-2, seed=13)
+    rise(s, d.at(4), 2.5, gain=-4)
+
+    # 7. the Black Comet: taiko, riser into Oswin's stand
+    g = sec["7"]
+    g.hits("taiko", "1 2.5 4 4.5", bar=1, vel="ff", bars=2)
+    rise(s, sec["8"].at(1), 2.2, seed=2)
+
+    # 8. Oswin holds: driving chant "Te-ne-te vi-am" on the ostinato, "HA!" in the gap
+    h = sec["8"]
+    roots = ["D3", "C3", "Bb2", "A2"]
+    for i, r in enumerate(roots):
+        chant(s, h, i + 1, f"Teh:{r}:.5 Neh:{r}:.5 Teh:{r}:1 Vee:{r}:1 Ahm:{r}:2", men=14, gain=-1, seed=20 + i * 5)
+    h.hits("taiko", "1 2.5 4 4.5", bar=1, vel="fff", bars=4)
+    shout(s, h.at(4, 4.5), "Ha!", seed=2)
+    rise(s, sec["9"].at(1), 2.0, gain=2, seed=3)
+
+    # 9. the blast of light: the whole choir cries out, then nothing
+    k = sec["9"]
+    for note, women in [("D3", 0), ("A3", 0), ("F#4", 8), ("D4", 8)]:
+        dur = s.time_of(k.at(1, 3.5)) - s.time_of(k.at(1))
+        s.place(k.at(1), V.sung("Ah", midi(note), dur, n=8 if not women else 0, women=women, seed=midi(note)),
+                CHANT_DB + 2, group="chant", send=0.5)
+    hit(s, k.at(1), "D2", gain=3, seed=4)
+
+    # 10. the Wardens: men chant "Vael-Orrun" on the Hollow theme, taiko throughout
+    m = sec["10"]
+    chant(s, m, 1, "Vail:D3:3 Or:Ab2:2 | Run:G2:2 Vail:A2:1 Or:Eb3:2 | Run:D3:3 Vail:C3:1 Or:Bb2:1 | Run:A2:3 r:2",
+          men=14, gain=0, seed=40)
+    m.hits("taiko", "1 2 2.5 4 4.5 5", bar=1, vel="fff", bars=4)
+    shout(s, m.at(4, 4.5), "Ha!", seed=3)
+
+    # 11. the road: riser into the Queen
+    rise(s, sec["12"].at(1), 2.0, gain=-2, seed=5)
+
+    # 12. "Hold the road." The choir sings it in Latin under her; the army answers her; final hit
+    q = sec["12"]
+    words = "Teh:D4:2 Neh:A4:2 | Teh:B4:1.5 Vee:A4:.5 Ah:G4:1 Ahm:F#4:1 | Teh:G4:1.5 Neh:F#4:.5 Teh:E4:1 Vee:C#4:1 | Ahm:D4:4"
+    chant(s, q, 1, words, men=0, women=8, gain=-1, seed=60)
+    chant(s, q, 1, words, men=14, gain=0, seed=70, transpose=-12)
+    q.hits("taiko", "1 2.5 3 4", bar=1, vel="fff", bars=3)
+    line_end = 149.7 + 0.4 + 13.34
+    call = s._beat_at(line_end + 0.5)
+    shout(s, call, "Hold the road!", gain=1, seed=4, n=20, women=6)
+    rise(s, q.at(5), 2.0, gain=0, seed=6)
+    shout(s, q.at(5), "Hey!", gain=-1, seed=5, n=20, women=6)
+    for note, women in [("D3", 0), ("A3", 0), ("D4", 8), ("F#4", 8)]:
+        dur = 4.0
+        s.place(q.at(5), V.sung("Ah", midi(note), dur, n=10 if not women else 0, women=women, seed=midi(note) + 1),
+                CHANT_DB + 2, group="chant", send=0.5)
+    hit(s, q.at(5), "D2", gain=4, seed=7)

@@ -10,8 +10,12 @@ text scores in `cues/` and rendered with a small sampler. Everything here is des
 | Melodies, harmony, orchestration | written for this game in `cues/*.py` | ours |
 | Strings, brass, woodwinds, harp, timpani, percussion | Versilian Studios Chamber Orchestra 2, Community Edition (`fetch_samples.sh`) | CC0 1.0 (public domain), no attribution needed |
 | Choir, celesta, tubular bells | FluidR3_GM soundfont (Debian `fluid-soundfont-gm`), played by FluidSynth | MIT |
+| Sung chant words and gang shouts (prologue) | Kokoro-82M text-to-speech voices, put on pitch by `vocals.py` | Apache-2.0 (commercial use allowed) |
+| Braams, risers, impacts, sub drops | synthesised in `vocals.py` | ours |
 
-No AI music model and no existing score was used. The themes are written to evoke the
+No AI music model and no existing score was used. The chant and shout voices come from a
+text-to-speech model (Kokoro), so they count as AI-generated audio for Steam's AI content
+disclosure, the same as the narrator. The themes are written to evoke the
 epic-fantasy film tradition (folk tunes for home, horn calls for hope, low brass in odd metres for
 the enemy) without borrowing any melody. The rendered `.ogg` files are ours to sell; a credits line
 for Versilian Studios is a courtesy, not a requirement.
@@ -32,7 +36,7 @@ for Versilian Studios is a courtesy, not a requirement.
 
 | Cue | Title | Length | Plays under |
 |---|---|---|---|
-| `prologue` | The Last Lantern | 2:59 | `prologue`, scored shot by shot to the narration |
+| `prologue` | The Last Lantern | 2:59 | `prologue`, scored shot by shot to the narration, with a trailer layer (sung chant, gang shouts in the gaps between lines, braams, risers, taiko) |
 | `hold_the_road` | Hold the Road | 0:52 | the six land intros, `convergence_intro` |
 | `herald` | The Heralds of the Hollow | 0:57 | the six Herald scenes, `crossroads` |
 | `warden_freed` | Freed | 0:54 | the six Warden scenes, `lumen_gate` |
@@ -60,6 +64,17 @@ and duck it 6 to 8 dB under narration.
     python3 tools/music/levels.py prologue       # per-section stem levels (after --stems)
 
 MP3 previews land in `tools/music/out/` (ignored). A cue renders in 10 to 45 seconds.
+
+## Trailer layer: voices and sound design
+
+`vocals.py` makes the trailer-style layer. `crowd("Hold the road!")` is a gang shout from 16 to 20
+voices. `sung("Teh", midi, seconds)` is a choir voice: each voice speaks the syllable, then TD-PSOLA
+puts it on the written note and holds the vowel. `braam`, `riser`, `impact` and `sub_drop` are
+synthesised. In a cue, `Score.place(beat, audio, gain_db, align="end")` drops rendered audio on a
+beat (`align="end"` makes a riser finish on it). Shouts go in the gaps between narrated lines, while
+the chant can sit under the speech. The chant words are original: "Te-ne-te vi-am" (Latin, "hold the
+road"), "Lu-men" and "Vael-Orrun". Rendering the voices needs `pip install kokoro-onnx` and the
+model from `tools/voice/fetch_model.sh` (or `KOKORO_DIR=<folder>`).
 
 ## Writing music
 
