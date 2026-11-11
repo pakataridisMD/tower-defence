@@ -612,6 +612,7 @@ def main():
     a = ap.parse_args()
     import stills as mod  # the shot modules register into the imported module, not __main__
     import shots_lands  # noqa: F401
+    import shots_story  # noqa: F401
     cin = mod.CINEMATICS
     ims = []
     for cid in a.ids or list(cin):

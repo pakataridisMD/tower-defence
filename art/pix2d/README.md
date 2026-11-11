@@ -28,3 +28,13 @@ beast goes down), `maw` (structures: the jaw or glyphs flare, then they crumble)
 sheets with the footman for scale.
 
 Rebuild a boss: `python3 tools/art/pix2d/gen.py gatemaw && python3 tools/art/pix2d/anim.py gatemaw`.
+
+## Cinematic stills (design only)
+
+127 stills for all 33 story cinematics, one per shot, 640x360 (painted at 320x180 and doubled with whole pixels):
+`stills/<cinematic id>/<NN>.png`, in the shot order of `data/story/cinematics/<id>.json`.
+
+- `tools/art/pix2d/stills.py [ids] --out art/pix2d/stills [--sheet sheet.png]` renders them.
+- `stills.py` holds the `Scene` painter, shared pieces (Solenne, flames, armies) and the prologue.
+- `shots_lands.py` holds the six land campaigns; `shots_story.py` the main line from the Regent to the epilogue.
+- Each shot function's docstring is its art note. Sprites are pasted at 1x, never scaled.
