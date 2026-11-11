@@ -21,6 +21,8 @@ ap.add_argument("out", type=Path)
 ap.add_argument("--cues", type=Path)
 ap.add_argument("--intro", type=float, default=4.0, help="music before the first line (no cues)")
 ap.add_argument("--gap", type=float, default=1.2, help="pause between lines (no cues)")
+ap.add_argument("--first-start", type=float, default=0.0,
+                help="earliest start for line 1 (e.g. to clear a title card)")
 ap.add_argument("--music-db", type=float, default=5.0, help="music gain in dB before ducking")
 args = ap.parse_args()
 
@@ -39,6 +41,9 @@ else:
     for d in durs:
         starts.append(t)
         t += d + args.gap
+
+if starts:
+    starts[0] = max(starts[0], args.first_start)
 
 inputs = ["-i", str(args.music)]
 for f in lines:
