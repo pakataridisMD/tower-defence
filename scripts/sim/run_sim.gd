@@ -88,8 +88,6 @@ var _next_id := 1
 var _taken_this_break: Dictionary[StringName, bool] = {}
 var _modifiers: Array[Modifier] = []
 var _wave_element := -1
-## Next lane for groups that share their enemies out over every lane.
-var _lane_turn := 0
 ## Enemies split off or summoned during a step, added once the step's loops are done.
 var _arrivals: Array[SimEnemy] = []
 ## Seconds of wave time until each skill can be used again, by skill id.
@@ -579,7 +577,7 @@ func start_next_wave() -> bool:
 	time_in_wave = 0.0
 	break_time_left = -1.0
 	_wave_element = config.element_index(wave.element)
-	_spawner.start(wave)
+	_spawner.start(wave, lane_curves.size())
 	_taken_this_break.clear()
 	for tower in _heroes_on_board.values():
 		tower.moved_this_break = false
@@ -657,15 +655,12 @@ func _spawn(delta: float) -> void:
 	var wave := current_wave()
 	if wave != null:
 		multiplier *= wave.health_multiplier
-	for group in _spawner.advance(delta):
+	for spawn in _spawner.advance(delta):
+		var group := spawn.group
 		var data: EnemyData = config.enemies.get(group.enemy)
 		if data == null:
 			continue
-		var lane := group.lane
-		if lane < 0:
-			lane = _lane_turn
-			_lane_turn = (_lane_turn + 1) % lane_curves.size()
-		lane = _open_lane(mini(lane, lane_curves.size() - 1))
+		var lane := _open_lane(spawn.lane)
 		var element := _wave_element
 		if not group.element.is_empty():
 			element = config.element_index(group.element)

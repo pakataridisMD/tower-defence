@@ -7,677 +7,2816 @@
 [sub_resource type="Resource" id="r1"]
 script = ExtResource("2_s")
 enemy = &"grunt"
-count = 9
-spawn_interval = 0.7
+count = 7
+spawn_interval = 0.8
 element = &"storm"
 
 [sub_resource type="Resource" id="r2"]
 script = ExtResource("2_s")
-enemy = &"brute"
-count = 1
-spawn_interval = 1.6
-start_delay = 4.0
+enemy = &"grunt"
+count = 4
+spawn_interval = 1.0
+start_delay = 5.1
 element = &"water"
+pattern = 3
 
 [sub_resource type="Resource" id="r3"]
-script = ExtResource("3_s")
-element = &"nature"
-groups = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2")])
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 3
+spawn_interval = 1.3
+start_delay = 6.6
+element = &"void"
+pattern = 3
 
 [sub_resource type="Resource" id="r4"]
 script = ExtResource("2_s")
-enemy = &"grunt"
-count = 11
+enemy = &"runner"
+count = 10
 spawn_interval = 0.6
-element = &"nature"
+start_delay = 9.68
+element = &"storm"
+pattern = 1
+pack_size = 5
+pack_gap = 3.5
 
 [sub_resource type="Resource" id="r5"]
 script = ExtResource("2_s")
-enemy = &"runner"
-count = 7
-spawn_interval = 0.45
-start_delay = 3.0
-element = &"earth"
+enemy = &"grunt"
+count = 4
+spawn_interval = 1.0
+start_delay = 17.85
+element = &"water"
+pattern = 3
 
 [sub_resource type="Resource" id="r6"]
 script = ExtResource("2_s")
-enemy = &"warded"
-count = 5
-spawn_interval = 1.1
-start_delay = 2.0
-element = &"fire"
+enemy = &"runner"
+count = 3
+spawn_interval = 1.3
+start_delay = 19.35
+element = &"void"
+pattern = 3
 
 [sub_resource type="Resource" id="r7"]
-script = ExtResource("3_s")
-element = &"water"
-groups = Array[ExtResource("2_s")]([SubResource("r4"), SubResource("r5"), SubResource("r6")])
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 7
+spawn_interval = 0.7
+start_delay = 22.43
+element = &"storm"
+pattern = 2
 
 [sub_resource type="Resource" id="r8"]
 script = ExtResource("2_s")
-enemy = &"grunt"
-count = 15
-spawn_interval = 0.8
+enemy = &"runner"
+count = 3
+spawn_interval = 0.55
+start_delay = 24.43
 element = &"water"
+pattern = 2
 
 [sub_resource type="Resource" id="r9"]
-script = ExtResource("2_s")
-enemy = &"warded"
-count = 5
-spawn_interval = 1.1
-start_delay = 2.0
-element = &"void"
+script = ExtResource("3_s")
+element = &"nature"
+description = "A marching column, stragglers, runner packs and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2"), SubResource("r3"), SubResource("r4"), SubResource("r5"), SubResource("r6"), SubResource("r7"), SubResource("r8")])
 
 [sub_resource type="Resource" id="r10"]
 script = ExtResource("2_s")
-enemy = &"splitter"
-count = 3
-spawn_interval = 1.0
-start_delay = 3.0
-element = &"storm"
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.8
+element = &"nature"
 
 [sub_resource type="Resource" id="r11"]
-script = ExtResource("3_s")
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 5
+spawn_interval = 1.0
+start_delay = 5.7
 element = &"earth"
-groups = Array[ExtResource("2_s")]([SubResource("r8"), SubResource("r9"), SubResource("r10")])
+pattern = 3
 
 [sub_resource type="Resource" id="r12"]
 script = ExtResource("2_s")
 enemy = &"runner"
-count = 19
-spawn_interval = 0.5
-element = &"earth"
+count = 4
+spawn_interval = 1.3
+start_delay = 7.2
+element = &"fire"
+pattern = 3
 
 [sub_resource type="Resource" id="r13"]
 script = ExtResource("2_s")
 enemy = &"warded"
-count = 6
-spawn_interval = 1.1
-start_delay = 2.0
-element = &"fire"
+count = 5
+spawn_interval = 0.55
+start_delay = 11.25
+element = &"nature"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r14"]
 script = ExtResource("2_s")
-enemy = &"splitter"
-count = 3
-spawn_interval = 1.2
-start_delay = 5.0
-element = &"nature"
+enemy = &"grunt"
+count = 4
+spawn_interval = 0.9
+start_delay = 12.25
+element = &"earth"
 
 [sub_resource type="Resource" id="r15"]
 script = ExtResource("2_s")
-enemy = &"mender"
-count = 3
-spawn_interval = 1.0
-start_delay = 3.0
-element = &"earth"
+enemy = &"runner"
+count = 15
+spawn_interval = 0.52
+start_delay = 16.65
+element = &"fire"
+pattern = 1
+pack_size = 5
+pack_gap = 3.5
 
 [sub_resource type="Resource" id="r16"]
-script = ExtResource("3_s")
-element = &"void"
-groups = Array[ExtResource("2_s")]([SubResource("r12"), SubResource("r13"), SubResource("r14"), SubResource("r15")])
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.7
+start_delay = 28.86
+element = &"nature"
+pattern = 2
 
 [sub_resource type="Resource" id="r17"]
 script = ExtResource("2_s")
-enemy = &"grunt"
-count = 11
-spawn_interval = 0.7
-element = &"void"
+enemy = &"runner"
+count = 4
+spawn_interval = 0.55
+start_delay = 30.86
+element = &"earth"
+pattern = 2
 
 [sub_resource type="Resource" id="r18"]
-script = ExtResource("2_s")
-enemy = &"brute"
-count = 2
-spawn_interval = 1.6
-start_delay = 4.0
-element = &"storm"
+script = ExtResource("3_s")
+element = &"water"
+description = "A marching column, stragglers, Warded packs, runner packs and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r10"), SubResource("r11"), SubResource("r12"), SubResource("r13"), SubResource("r14"), SubResource("r15"), SubResource("r16"), SubResource("r17")])
 
 [sub_resource type="Resource" id="r19"]
 script = ExtResource("2_s")
-enemy = &"warded"
+enemy = &"grunt"
 count = 6
-spawn_interval = 1.1
-start_delay = 2.0
+spawn_interval = 1.0
 element = &"water"
+pattern = 3
 
 [sub_resource type="Resource" id="r20"]
 script = ExtResource("2_s")
-enemy = &"splitter"
-count = 3
-spawn_interval = 1.0
-start_delay = 3.0
+enemy = &"runner"
+count = 4
+spawn_interval = 1.3
+start_delay = 1.5
 element = &"void"
+pattern = 3
 
 [sub_resource type="Resource" id="r21"]
-script = ExtResource("3_s")
-element = &"fire"
-groups = Array[ExtResource("2_s")]([SubResource("r17"), SubResource("r18"), SubResource("r19"), SubResource("r20")])
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 2
+spawn_interval = 3.0
+start_delay = 6.15
+element = &"storm"
 
 [sub_resource type="Resource" id="r22"]
 script = ExtResource("2_s")
 enemy = &"grunt"
-count = 14
-spawn_interval = 0.6
-element = &"fire"
+count = 6
+spawn_interval = 0.35
+start_delay = 5.55
+element = &"water"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
 
 [sub_resource type="Resource" id="r23"]
 script = ExtResource("2_s")
-enemy = &"runner"
-count = 9
-spawn_interval = 0.45
-start_delay = 3.0
-element = &"nature"
+enemy = &"warded"
+count = 5
+spawn_interval = 0.55
+start_delay = 9.82
+element = &"void"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r24"]
 script = ExtResource("2_s")
-enemy = &"warded"
-count = 7
-spawn_interval = 1.1
-start_delay = 2.0
-element = &"earth"
+enemy = &"grunt"
+count = 4
+spawn_interval = 0.9
+start_delay = 10.82
+element = &"storm"
 
 [sub_resource type="Resource" id="r25"]
 script = ExtResource("2_s")
-enemy = &"splitter"
-count = 4
-spawn_interval = 1.2
-start_delay = 5.0
-element = &"fire"
+enemy = &"runner"
+count = 15
+spawn_interval = 0.44
+start_delay = 15.22
+element = &"water"
+pattern = 1
+pack_size = 5
+pack_gap = 3.5
 
 [sub_resource type="Resource" id="r26"]
 script = ExtResource("2_s")
-enemy = &"mender"
-count = 4
+enemy = &"splitter"
+count = 3
 spawn_interval = 1.0
-start_delay = 3.0
-element = &"nature"
+start_delay = 26.59
+element = &"void"
+pattern = 3
 
 [sub_resource type="Resource" id="r27"]
-script = ExtResource("3_s")
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 4
+spawn_interval = 0.7
+start_delay = 27.59
 element = &"storm"
-groups = Array[ExtResource("2_s")]([SubResource("r22"), SubResource("r23"), SubResource("r24"), SubResource("r25"), SubResource("r26")])
+pattern = 3
 
 [sub_resource type="Resource" id="r28"]
 script = ExtResource("2_s")
 enemy = &"grunt"
-count = 19
-spawn_interval = 0.8
-element = &"storm"
+count = 9
+spawn_interval = 0.7
+start_delay = 30.42
+element = &"water"
+pattern = 2
 
 [sub_resource type="Resource" id="r29"]
 script = ExtResource("2_s")
-enemy = &"warded"
-count = 7
-spawn_interval = 1.1
-start_delay = 2.0
-element = &"water"
+enemy = &"runner"
+count = 4
+spawn_interval = 0.55
+start_delay = 32.42
+element = &"void"
+pattern = 2
 
 [sub_resource type="Resource" id="r30"]
-script = ExtResource("2_s")
-enemy = &"splitter"
-count = 4
-spawn_interval = 1.0
-start_delay = 3.0
-element = &"void"
+script = ExtResource("3_s")
+element = &"earth"
+description = "Stragglers, brutes under escort, Warded packs, runner packs, a mixed swarm and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r19"), SubResource("r20"), SubResource("r21"), SubResource("r22"), SubResource("r23"), SubResource("r24"), SubResource("r25"), SubResource("r26"), SubResource("r27"), SubResource("r28"), SubResource("r29")])
 
 [sub_resource type="Resource" id="r31"]
-script = ExtResource("3_s")
-element = &"nature"
-groups = Array[ExtResource("2_s")]([SubResource("r28"), SubResource("r29"), SubResource("r30")])
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 10
+spawn_interval = 0.8
+element = &"earth"
 
 [sub_resource type="Resource" id="r32"]
 script = ExtResource("2_s")
-enemy = &"runner"
-count = 24
-spawn_interval = 0.5
-element = &"nature"
+enemy = &"brute"
+count = 2
+spawn_interval = 3.0
+start_delay = 7.5
+element = &"fire"
 
 [sub_resource type="Resource" id="r33"]
 script = ExtResource("2_s")
-enemy = &"warded"
-count = 8
-spawn_interval = 1.1
-start_delay = 2.0
-element = &"earth"
+enemy = &"grunt"
+count = 6
+spawn_interval = 0.35
+start_delay = 6.9
+element = &"nature"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
 
 [sub_resource type="Resource" id="r34"]
 script = ExtResource("2_s")
-enemy = &"splitter"
-count = 4
-spawn_interval = 1.2
-start_delay = 5.0
-element = &"fire"
+enemy = &"warded"
+count = 6
+spawn_interval = 0.55
+start_delay = 11.18
+element = &"earth"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r35"]
 script = ExtResource("2_s")
-enemy = &"mender"
-count = 4
-spawn_interval = 1.0
-start_delay = 3.0
-element = &"nature"
+enemy = &"grunt"
+count = 5
+spawn_interval = 0.9
+start_delay = 12.18
+element = &"fire"
 
 [sub_resource type="Resource" id="r36"]
-script = ExtResource("3_s")
-element = &"water"
-groups = Array[ExtResource("2_s")]([SubResource("r32"), SubResource("r33"), SubResource("r34"), SubResource("r35")])
+script = ExtResource("2_s")
+enemy = &"splitter"
+count = 3
+spawn_interval = 1.2
+start_delay = 16.99
+element = &"nature"
 
 [sub_resource type="Resource" id="r37"]
 script = ExtResource("2_s")
-enemy = &"grunt"
-count = 14
-spawn_interval = 0.7
-element = &"water"
+enemy = &"runner"
+count = 3
+spawn_interval = 0.6
+start_delay = 18.99
+element = &"earth"
+pattern = 3
 
 [sub_resource type="Resource" id="r38"]
 script = ExtResource("2_s")
-enemy = &"brute"
-count = 4
-spawn_interval = 1.6
-start_delay = 4.0
-element = &"void"
+enemy = &"mender"
+count = 3
+spawn_interval = 1.0
+start_delay = 20.89
+element = &"fire"
+pattern = 3
 
 [sub_resource type="Resource" id="r39"]
 script = ExtResource("2_s")
-enemy = &"warded"
-count = 8
-spawn_interval = 1.1
-start_delay = 2.0
-element = &"storm"
+enemy = &"grunt"
+count = 5
+spawn_interval = 0.7
+start_delay = 21.89
+element = &"nature"
+pattern = 3
 
 [sub_resource type="Resource" id="r40"]
 script = ExtResource("2_s")
-enemy = &"splitter"
-count = 5
-spawn_interval = 1.0
-start_delay = 3.0
-element = &"water"
+enemy = &"grunt"
+count = 10
+spawn_interval = 0.7
+start_delay = 25.24
+element = &"earth"
+pattern = 2
 
 [sub_resource type="Resource" id="r41"]
-script = ExtResource("3_s")
-element = &"earth"
-groups = Array[ExtResource("2_s")]([SubResource("r37"), SubResource("r38"), SubResource("r39"), SubResource("r40")])
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 5
+spawn_interval = 0.55
+start_delay = 27.24
+element = &"fire"
+pattern = 2
 
 [sub_resource type="Resource" id="r42"]
-script = ExtResource("2_s")
-enemy = &"cinder_tyrant"
-count = 1
-spawn_interval = 1.0
-element = &"earth"
+script = ExtResource("3_s")
+element = &"void"
+description = "A marching column, brutes under escort, Warded packs, Splitters in a line, a mixed swarm and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r31"), SubResource("r32"), SubResource("r33"), SubResource("r34"), SubResource("r35"), SubResource("r36"), SubResource("r37"), SubResource("r38"), SubResource("r39"), SubResource("r40"), SubResource("r41")])
 
 [sub_resource type="Resource" id="r43"]
 script = ExtResource("2_s")
-enemy = &"leviathan"
-count = 1
-spawn_interval = 1.0
-start_delay = 8.0
-element = &"fire"
+enemy = &"grunt"
+count = 11
+spawn_interval = 0.8
+element = &"void"
 
 [sub_resource type="Resource" id="r44"]
 script = ExtResource("2_s")
 enemy = &"runner"
-count = 13
-spawn_interval = 0.5
-start_delay = 2.0
-element = &"nature"
+count = 15
+spawn_interval = 0.28
+start_delay = 7.5
+element = &"storm"
+pattern = 1
+pack_size = 5
+pack_gap = 3.5
 
 [sub_resource type="Resource" id="r45"]
-script = ExtResource("3_s")
-element = &"void"
-is_boss = true
-health_multiplier = 0.26
-groups = Array[ExtResource("2_s")]([SubResource("r42"), SubResource("r43"), SubResource("r44")])
+script = ExtResource("2_s")
+enemy = &"warded"
+count = 6
+spawn_interval = 0.55
+start_delay = 17.19
+element = &"water"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r46"]
 script = ExtResource("2_s")
 enemy = &"grunt"
-count = 23
-spawn_interval = 0.8
+count = 6
+spawn_interval = 0.9
+start_delay = 18.19
 element = &"void"
 
 [sub_resource type="Resource" id="r47"]
 script = ExtResource("2_s")
-enemy = &"warded"
-count = 9
-spawn_interval = 1.1
-start_delay = 2.0
+enemy = &"grunt"
+count = 7
+spawn_interval = 0.9
+start_delay = 23.0
 element = &"storm"
+lane = 0
 
 [sub_resource type="Resource" id="r48"]
 script = ExtResource("2_s")
-enemy = &"splitter"
-count = 5
-spawn_interval = 1.0
-start_delay = 3.0
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 25.0
 element = &"water"
+lane = 2
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r49"]
-script = ExtResource("3_s")
-element = &"fire"
-groups = Array[ExtResource("2_s")]([SubResource("r46"), SubResource("r47"), SubResource("r48")])
+script = ExtResource("2_s")
+enemy = &"splitter"
+count = 3
+spawn_interval = 1.0
+start_delay = 30.28
+element = &"void"
+pattern = 3
 
 [sub_resource type="Resource" id="r50"]
 script = ExtResource("2_s")
-enemy = &"runner"
-count = 28
-spawn_interval = 0.5
-element = &"fire"
+enemy = &"grunt"
+count = 6
+spawn_interval = 0.7
+start_delay = 31.28
+element = &"storm"
+pattern = 3
 
 [sub_resource type="Resource" id="r51"]
 script = ExtResource("2_s")
-enemy = &"warded"
-count = 10
-spawn_interval = 1.1
-start_delay = 2.0
-element = &"nature"
+enemy = &"grunt"
+count = 11
+spawn_interval = 0.7
+start_delay = 35.15
+element = &"water"
+pattern = 2
 
 [sub_resource type="Resource" id="r52"]
 script = ExtResource("2_s")
-enemy = &"splitter"
+enemy = &"runner"
 count = 6
-spawn_interval = 1.2
-start_delay = 5.0
-element = &"earth"
+spawn_interval = 0.55
+start_delay = 37.15
+element = &"void"
+pattern = 2
 
 [sub_resource type="Resource" id="r53"]
-script = ExtResource("2_s")
-enemy = &"mender"
-count = 6
-spawn_interval = 1.0
-start_delay = 3.0
+script = ExtResource("3_s")
 element = &"fire"
+description = "A marching column, runner packs, Warded packs, a flank attack, a mixed swarm and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r43"), SubResource("r44"), SubResource("r45"), SubResource("r46"), SubResource("r47"), SubResource("r48"), SubResource("r49"), SubResource("r50"), SubResource("r51"), SubResource("r52")])
 
 [sub_resource type="Resource" id="r54"]
-script = ExtResource("3_s")
-element = &"storm"
-groups = Array[ExtResource("2_s")]([SubResource("r50"), SubResource("r51"), SubResource("r52"), SubResource("r53")])
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 1.0
+element = &"fire"
+pattern = 3
 
 [sub_resource type="Resource" id="r55"]
 script = ExtResource("2_s")
-enemy = &"grunt"
-count = 17
-spawn_interval = 0.7
-element = &"storm"
+enemy = &"runner"
+count = 6
+spawn_interval = 1.3
+start_delay = 1.5
+element = &"nature"
+pattern = 3
 
 [sub_resource type="Resource" id="r56"]
 script = ExtResource("2_s")
 enemy = &"brute"
-count = 5
-spawn_interval = 1.6
-start_delay = 4.0
-element = &"water"
+count = 2
+spawn_interval = 3.0
+start_delay = 8.1
+element = &"earth"
 
 [sub_resource type="Resource" id="r57"]
 script = ExtResource("2_s")
-enemy = &"warded"
-count = 10
-spawn_interval = 1.1
-start_delay = 2.0
-element = &"void"
+enemy = &"grunt"
+count = 6
+spawn_interval = 0.35
+start_delay = 7.5
+element = &"fire"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
 
 [sub_resource type="Resource" id="r58"]
 script = ExtResource("2_s")
-enemy = &"splitter"
-count = 6
-spawn_interval = 1.0
-start_delay = 3.0
-element = &"storm"
+enemy = &"warded"
+count = 7
+spawn_interval = 0.55
+start_delay = 11.78
+element = &"nature"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r59"]
-script = ExtResource("3_s")
-element = &"nature"
-groups = Array[ExtResource("2_s")]([SubResource("r55"), SubResource("r56"), SubResource("r57"), SubResource("r58")])
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 6
+spawn_interval = 0.9
+start_delay = 12.78
+element = &"earth"
 
 [sub_resource type="Resource" id="r60"]
 script = ExtResource("2_s")
 enemy = &"grunt"
-count = 20
-spawn_interval = 0.6
-element = &"nature"
+count = 7
+spawn_interval = 0.3
+start_delay = 20.25
+element = &"fire"
+lane = 0
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r61"]
 script = ExtResource("2_s")
-enemy = &"runner"
-count = 13
-spawn_interval = 0.45
-start_delay = 3.0
-element = &"earth"
+enemy = &"grunt"
+count = 7
+spawn_interval = 0.3
+start_delay = 20.25
+element = &"nature"
+lane = 1
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r62"]
 script = ExtResource("2_s")
-enemy = &"warded"
-count = 11
-spawn_interval = 1.1
-start_delay = 2.0
-element = &"fire"
+enemy = &"runner"
+count = 6
+spawn_interval = 0.4
+start_delay = 22.25
+element = &"earth"
 
 [sub_resource type="Resource" id="r63"]
 script = ExtResource("2_s")
 enemy = &"splitter"
-count = 6
+count = 4
 spawn_interval = 1.2
-start_delay = 5.0
-element = &"nature"
+start_delay = 25.35
+element = &"fire"
 
 [sub_resource type="Resource" id="r64"]
 script = ExtResource("2_s")
-enemy = &"mender"
-count = 6
-spawn_interval = 1.0
-start_delay = 3.0
-element = &"earth"
+enemy = &"runner"
+count = 4
+spawn_interval = 0.6
+start_delay = 27.35
+element = &"nature"
+pattern = 3
 
 [sub_resource type="Resource" id="r65"]
-script = ExtResource("3_s")
-element = &"water"
-groups = Array[ExtResource("2_s")]([SubResource("r60"), SubResource("r61"), SubResource("r62"), SubResource("r63"), SubResource("r64")])
+script = ExtResource("2_s")
+enemy = &"mender"
+count = 4
+spawn_interval = 1.0
+start_delay = 29.7
+element = &"earth"
+pattern = 3
 
 [sub_resource type="Resource" id="r66"]
 script = ExtResource("2_s")
-enemy = &"thunderhead"
-count = 1
-spawn_interval = 1.0
-element = &"water"
+enemy = &"grunt"
+count = 6
+spawn_interval = 0.7
+start_delay = 30.7
+element = &"fire"
+pattern = 3
 
 [sub_resource type="Resource" id="r67"]
 script = ExtResource("2_s")
-enemy = &"mountain_titan"
-count = 1
-spawn_interval = 1.0
-start_delay = 8.0
-element = &"void"
+enemy = &"grunt"
+count = 12
+spawn_interval = 0.7
+start_delay = 34.58
+element = &"nature"
+pattern = 2
 
 [sub_resource type="Resource" id="r68"]
 script = ExtResource("2_s")
 enemy = &"runner"
-count = 16
-spawn_interval = 0.5
-start_delay = 2.0
-element = &"storm"
+count = 6
+spawn_interval = 0.55
+start_delay = 36.58
+element = &"earth"
+pattern = 2
 
 [sub_resource type="Resource" id="r69"]
 script = ExtResource("3_s")
-element = &"earth"
-is_boss = true
-health_multiplier = 0.26
-groups = Array[ExtResource("2_s")]([SubResource("r66"), SubResource("r67"), SubResource("r68")])
+element = &"storm"
+description = "Stragglers, brutes under escort, Warded packs, a pincer, Splitters in a line, a mixed swarm and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r54"), SubResource("r55"), SubResource("r56"), SubResource("r57"), SubResource("r58"), SubResource("r59"), SubResource("r60"), SubResource("r61"), SubResource("r62"), SubResource("r63"), SubResource("r64"), SubResource("r65"), SubResource("r66"), SubResource("r67"), SubResource("r68")])
 
 [sub_resource type="Resource" id="r70"]
 script = ExtResource("2_s")
-enemy = &"runner"
-count = 33
-spawn_interval = 0.5
-element = &"earth"
+enemy = &"grunt"
+count = 12
+spawn_interval = 0.8
+element = &"storm"
 
 [sub_resource type="Resource" id="r71"]
 script = ExtResource("2_s")
-enemy = &"warded"
-count = 12
-spawn_interval = 1.1
-start_delay = 2.0
-element = &"fire"
+enemy = &"runner"
+count = 18
+spawn_interval = 0.28
+start_delay = 8.1
+element = &"water"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
 
 [sub_resource type="Resource" id="r72"]
 script = ExtResource("2_s")
-enemy = &"splitter"
+enemy = &"warded"
 count = 7
-spawn_interval = 1.2
-start_delay = 5.0
-element = &"nature"
+spawn_interval = 0.55
+start_delay = 18.42
+element = &"void"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r73"]
 script = ExtResource("2_s")
-enemy = &"mender"
-count = 7
-spawn_interval = 1.0
-start_delay = 3.0
-element = &"earth"
+enemy = &"grunt"
+count = 6
+spawn_interval = 0.9
+start_delay = 19.42
+element = &"storm"
 
 [sub_resource type="Resource" id="r74"]
-script = ExtResource("3_s")
-element = &"void"
-groups = Array[ExtResource("2_s")]([SubResource("r70"), SubResource("r71"), SubResource("r72"), SubResource("r73")])
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.9
+start_delay = 26.9
+element = &"water"
+lane = 0
 
 [sub_resource type="Resource" id="r75"]
 script = ExtResource("2_s")
-enemy = &"grunt"
-count = 20
-spawn_interval = 0.7
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 28.9
 element = &"void"
+lane = 2
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r76"]
 script = ExtResource("2_s")
-enemy = &"brute"
-count = 6
-spawn_interval = 1.6
-start_delay = 4.0
+enemy = &"splitter"
+count = 4
+spawn_interval = 1.0
+start_delay = 34.17
 element = &"storm"
+pattern = 3
 
 [sub_resource type="Resource" id="r77"]
 script = ExtResource("2_s")
-enemy = &"warded"
-count = 12
-spawn_interval = 1.1
-start_delay = 2.0
+enemy = &"grunt"
+count = 6
+spawn_interval = 0.7
+start_delay = 35.17
 element = &"water"
+pattern = 3
 
 [sub_resource type="Resource" id="r78"]
 script = ExtResource("2_s")
-enemy = &"splitter"
-count = 7
-spawn_interval = 1.0
-start_delay = 3.0
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 39.65
 element = &"void"
 
 [sub_resource type="Resource" id="r79"]
-script = ExtResource("3_s")
-element = &"fire"
-groups = Array[ExtResource("2_s")]([SubResource("r75"), SubResource("r76"), SubResource("r77"), SubResource("r78")])
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 39.05
+element = &"storm"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
 
 [sub_resource type="Resource" id="r80"]
 script = ExtResource("2_s")
 enemy = &"grunt"
-count = 24
-spawn_interval = 0.6
-element = &"fire"
+count = 12
+spawn_interval = 0.7
+start_delay = 45.57
+element = &"water"
+pattern = 2
 
 [sub_resource type="Resource" id="r81"]
 script = ExtResource("2_s")
 enemy = &"runner"
-count = 15
-spawn_interval = 0.45
-start_delay = 3.0
-element = &"nature"
+count = 6
+spawn_interval = 0.55
+start_delay = 47.57
+element = &"void"
+pattern = 2
 
 [sub_resource type="Resource" id="r82"]
+script = ExtResource("3_s")
+element = &"nature"
+description = "A marching column, runner packs, Warded packs, a flank attack, a mixed swarm, brutes under escort and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r70"), SubResource("r71"), SubResource("r72"), SubResource("r73"), SubResource("r74"), SubResource("r75"), SubResource("r76"), SubResource("r77"), SubResource("r78"), SubResource("r79"), SubResource("r80"), SubResource("r81")])
+
+[sub_resource type="Resource" id="r83"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 13
+spawn_interval = 0.8
+element = &"nature"
+
+[sub_resource type="Resource" id="r84"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 9.3
+element = &"earth"
+
+[sub_resource type="Resource" id="r85"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 8.7
+element = &"fire"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r86"]
+script = ExtResource("2_s")
+enemy = &"warded"
+count = 8
+spawn_interval = 0.55
+start_delay = 15.22
+element = &"nature"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r87"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 6
+spawn_interval = 0.9
+start_delay = 16.23
+element = &"earth"
+
+[sub_resource type="Resource" id="r88"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.3
+start_delay = 24.11
+element = &"fire"
+lane = 2
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r89"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.3
+start_delay = 24.11
+element = &"nature"
+lane = 0
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r90"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 6
+spawn_interval = 0.4
+start_delay = 26.11
+element = &"earth"
+
+[sub_resource type="Resource" id="r91"]
+script = ExtResource("2_s")
+enemy = &"splitter"
+count = 4
+spawn_interval = 1.2
+start_delay = 29.43
+element = &"fire"
+
+[sub_resource type="Resource" id="r92"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 4
+spawn_interval = 0.6
+start_delay = 31.43
+element = &"nature"
+pattern = 3
+
+[sub_resource type="Resource" id="r93"]
+script = ExtResource("2_s")
+enemy = &"mender"
+count = 4
+spawn_interval = 1.0
+start_delay = 33.78
+element = &"earth"
+pattern = 3
+
+[sub_resource type="Resource" id="r94"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 6
+spawn_interval = 0.7
+start_delay = 34.78
+element = &"fire"
+pattern = 3
+
+[sub_resource type="Resource" id="r95"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 13
+spawn_interval = 0.7
+start_delay = 38.66
+element = &"nature"
+pattern = 2
+
+[sub_resource type="Resource" id="r96"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 6
+spawn_interval = 0.55
+start_delay = 40.66
+element = &"earth"
+pattern = 2
+
+[sub_resource type="Resource" id="r97"]
+script = ExtResource("3_s")
+element = &"water"
+description = "A marching column, brutes under escort, Warded packs, a pincer, Splitters in a line, a mixed swarm and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r83"), SubResource("r84"), SubResource("r85"), SubResource("r86"), SubResource("r87"), SubResource("r88"), SubResource("r89"), SubResource("r90"), SubResource("r91"), SubResource("r92"), SubResource("r93"), SubResource("r94"), SubResource("r95"), SubResource("r96")])
+
+[sub_resource type="Resource" id="r98"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 1.0
+element = &"water"
+pattern = 3
+
+[sub_resource type="Resource" id="r99"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 7
+spawn_interval = 1.3
+start_delay = 1.5
+element = &"void"
+pattern = 3
+
+[sub_resource type="Resource" id="r100"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 18
+spawn_interval = 0.28
+start_delay = 8.48
+element = &"storm"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r101"]
+script = ExtResource("2_s")
+enemy = &"warded"
+count = 8
+spawn_interval = 0.55
+start_delay = 18.8
+element = &"water"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r102"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 7
+spawn_interval = 0.9
+start_delay = 19.8
+element = &"void"
+
+[sub_resource type="Resource" id="r103"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.9
+start_delay = 27.69
+element = &"storm"
+lane = 0
+
+[sub_resource type="Resource" id="r104"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 29.69
+element = &"water"
+lane = 2
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r105"]
+script = ExtResource("2_s")
+enemy = &"splitter"
+count = 5
+spawn_interval = 1.0
+start_delay = 34.96
+element = &"void"
+pattern = 3
+
+[sub_resource type="Resource" id="r106"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 7
+spawn_interval = 0.7
+start_delay = 35.96
+element = &"storm"
+pattern = 3
+
+[sub_resource type="Resource" id="r107"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 40.96
+element = &"water"
+
+[sub_resource type="Resource" id="r108"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 40.36
+element = &"void"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r109"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.3
+start_delay = 46.89
+element = &"storm"
+lane = 0
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r110"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.3
+start_delay = 46.89
+element = &"water"
+lane = 1
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r111"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 6
+spawn_interval = 0.4
+start_delay = 48.89
+element = &"void"
+
+[sub_resource type="Resource" id="r112"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 13
+spawn_interval = 0.7
+start_delay = 52.21
+element = &"storm"
+pattern = 2
+
+[sub_resource type="Resource" id="r113"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 7
+spawn_interval = 0.55
+start_delay = 54.21
+element = &"water"
+pattern = 2
+
+[sub_resource type="Resource" id="r114"]
+script = ExtResource("3_s")
+element = &"earth"
+description = "Stragglers, runner packs, Warded packs, a flank attack, a mixed swarm, brutes under escort, a pincer and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r98"), SubResource("r99"), SubResource("r100"), SubResource("r101"), SubResource("r102"), SubResource("r103"), SubResource("r104"), SubResource("r105"), SubResource("r106"), SubResource("r107"), SubResource("r108"), SubResource("r109"), SubResource("r110"), SubResource("r111"), SubResource("r112"), SubResource("r113")])
+
+[sub_resource type="Resource" id="r115"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 1.0
+element = &"earth"
+pattern = 3
+
+[sub_resource type="Resource" id="r116"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 7
+spawn_interval = 1.3
+start_delay = 1.5
+element = &"fire"
+pattern = 3
+
+[sub_resource type="Resource" id="r117"]
+script = ExtResource("2_s")
+enemy = &"cinder_tyrant"
+count = 1
+spawn_interval = 1.0
+start_delay = 8.48
+element = &"nature"
+
+[sub_resource type="Resource" id="r118"]
+script = ExtResource("2_s")
+enemy = &"leviathan"
+count = 1
+spawn_interval = 1.0
+start_delay = 16.48
+element = &"earth"
+
+[sub_resource type="Resource" id="r119"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 18
+spawn_interval = 0.28
+start_delay = 12.48
+element = &"fire"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r120"]
+script = ExtResource("2_s")
+enemy = &"mender"
+count = 5
+spawn_interval = 1.0
+start_delay = 22.8
+element = &"nature"
+pattern = 3
+
+[sub_resource type="Resource" id="r121"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 7
+spawn_interval = 0.7
+start_delay = 23.8
+element = &"earth"
+pattern = 3
+
+[sub_resource type="Resource" id="r122"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.9
+start_delay = 28.2
+element = &"fire"
+lane = 0
+
+[sub_resource type="Resource" id="r123"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 30.2
+element = &"nature"
+lane = 1
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r124"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 14
+spawn_interval = 0.7
+start_delay = 35.47
+element = &"earth"
+pattern = 2
+
+[sub_resource type="Resource" id="r125"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 7
+spawn_interval = 0.55
+start_delay = 37.47
+element = &"fire"
+pattern = 2
+
+[sub_resource type="Resource" id="r126"]
+script = ExtResource("3_s")
+element = &"void"
+is_boss = true
+health_multiplier = 0.26
+description = "Stragglers, runner packs, a mixed swarm, a flank attack and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r115"), SubResource("r116"), SubResource("r117"), SubResource("r118"), SubResource("r119"), SubResource("r120"), SubResource("r121"), SubResource("r122"), SubResource("r123"), SubResource("r124"), SubResource("r125")])
+
+[sub_resource type="Resource" id="r127"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 14
+spawn_interval = 0.8
+element = &"void"
+
+[sub_resource type="Resource" id="r128"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 18
+spawn_interval = 0.28
+start_delay = 9.3
+element = &"storm"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r129"]
+script = ExtResource("2_s")
+enemy = &"warded"
+count = 9
+spawn_interval = 0.55
+start_delay = 19.62
+element = &"water"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r130"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 7
+spawn_interval = 0.9
+start_delay = 20.62
+element = &"void"
+
+[sub_resource type="Resource" id="r131"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.9
+start_delay = 28.92
+element = &"storm"
+lane = 0
+
+[sub_resource type="Resource" id="r132"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 30.92
+element = &"water"
+lane = 2
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r133"]
+script = ExtResource("2_s")
+enemy = &"splitter"
+count = 5
+spawn_interval = 1.0
+start_delay = 36.2
+element = &"void"
+pattern = 3
+
+[sub_resource type="Resource" id="r134"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 7
+spawn_interval = 0.7
+start_delay = 37.2
+element = &"storm"
+pattern = 3
+
+[sub_resource type="Resource" id="r135"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 42.2
+element = &"water"
+
+[sub_resource type="Resource" id="r136"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 41.6
+element = &"void"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r137"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.3
+start_delay = 48.12
+element = &"storm"
+lane = 2
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r138"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.3
+start_delay = 48.12
+element = &"water"
+lane = 0
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r139"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 7
+spawn_interval = 0.4
+start_delay = 50.12
+element = &"void"
+
+[sub_resource type="Resource" id="r140"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 14
+spawn_interval = 0.7
+start_delay = 53.45
+element = &"storm"
+pattern = 2
+
+[sub_resource type="Resource" id="r141"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 7
+spawn_interval = 0.55
+start_delay = 55.45
+element = &"water"
+pattern = 2
+
+[sub_resource type="Resource" id="r142"]
+script = ExtResource("3_s")
+element = &"fire"
+description = "A marching column, runner packs, Warded packs, a flank attack, a mixed swarm, brutes under escort, a pincer and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r127"), SubResource("r128"), SubResource("r129"), SubResource("r130"), SubResource("r131"), SubResource("r132"), SubResource("r133"), SubResource("r134"), SubResource("r135"), SubResource("r136"), SubResource("r137"), SubResource("r138"), SubResource("r139"), SubResource("r140"), SubResource("r141")])
+
+[sub_resource type="Resource" id="r143"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 10
+spawn_interval = 1.0
+element = &"fire"
+pattern = 3
+
+[sub_resource type="Resource" id="r144"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 7
+spawn_interval = 1.3
+start_delay = 1.5
+element = &"nature"
+pattern = 3
+
+[sub_resource type="Resource" id="r145"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 9.08
+element = &"earth"
+
+[sub_resource type="Resource" id="r146"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 8.48
+element = &"fire"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r147"]
+script = ExtResource("2_s")
+enemy = &"warded"
+count = 10
+spawn_interval = 0.55
+start_delay = 15.0
+element = &"nature"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r148"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 7
+spawn_interval = 0.9
+start_delay = 16.0
+element = &"earth"
+
+[sub_resource type="Resource" id="r149"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.3
+start_delay = 26.96
+element = &"fire"
+lane = 0
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r150"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.3
+start_delay = 26.96
+element = &"nature"
+lane = 1
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r151"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 7
+spawn_interval = 0.4
+start_delay = 28.96
+element = &"earth"
+
+[sub_resource type="Resource" id="r152"]
+script = ExtResource("2_s")
+enemy = &"splitter"
+count = 6
+spawn_interval = 1.2
+start_delay = 32.29
+element = &"fire"
+
+[sub_resource type="Resource" id="r153"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 5
+spawn_interval = 0.6
+start_delay = 34.29
+element = &"nature"
+pattern = 3
+
+[sub_resource type="Resource" id="r154"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 18
+spawn_interval = 0.28
+start_delay = 38.29
+element = &"earth"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r155"]
+script = ExtResource("2_s")
+enemy = &"mender"
+count = 6
+spawn_interval = 1.0
+start_delay = 48.61
+element = &"fire"
+pattern = 3
+
+[sub_resource type="Resource" id="r156"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 7
+spawn_interval = 0.7
+start_delay = 49.61
+element = &"nature"
+pattern = 3
+
+[sub_resource type="Resource" id="r157"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 10
+spawn_interval = 0.9
+start_delay = 54.01
+element = &"earth"
+lane = 0
+
+[sub_resource type="Resource" id="r158"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 56.01
+element = &"fire"
+lane = 1
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r159"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 15
+spawn_interval = 0.7
+start_delay = 61.58
+element = &"nature"
+pattern = 2
+
+[sub_resource type="Resource" id="r160"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 7
+spawn_interval = 0.55
+start_delay = 63.58
+element = &"earth"
+pattern = 2
+
+[sub_resource type="Resource" id="r161"]
+script = ExtResource("3_s")
+element = &"storm"
+description = "Stragglers, brutes under escort, Warded packs, a pincer, Splitters in a line, runner packs, a mixed swarm, a flank attack and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r143"), SubResource("r144"), SubResource("r145"), SubResource("r146"), SubResource("r147"), SubResource("r148"), SubResource("r149"), SubResource("r150"), SubResource("r151"), SubResource("r152"), SubResource("r153"), SubResource("r154"), SubResource("r155"), SubResource("r156"), SubResource("r157"), SubResource("r158"), SubResource("r159"), SubResource("r160")])
+
+[sub_resource type="Resource" id="r162"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 15
+spawn_interval = 0.8
+element = &"storm"
+
+[sub_resource type="Resource" id="r163"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 24
+spawn_interval = 0.28
+start_delay = 9.9
+element = &"water"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r164"]
+script = ExtResource("2_s")
+enemy = &"warded"
+count = 10
+spawn_interval = 0.55
+start_delay = 24.11
+element = &"void"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r165"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.9
+start_delay = 25.11
+element = &"storm"
+
+[sub_resource type="Resource" id="r166"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 10
+spawn_interval = 0.9
+start_delay = 36.07
+element = &"water"
+lane = 0
+
+[sub_resource type="Resource" id="r167"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 38.07
+element = &"void"
+lane = 2
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r168"]
+script = ExtResource("2_s")
+enemy = &"splitter"
+count = 6
+spawn_interval = 1.0
+start_delay = 43.65
+element = &"storm"
+pattern = 3
+
+[sub_resource type="Resource" id="r169"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.7
+start_delay = 44.65
+element = &"water"
+pattern = 3
+
+[sub_resource type="Resource" id="r170"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 50.17
+element = &"void"
+
+[sub_resource type="Resource" id="r171"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 49.57
+element = &"storm"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r172"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 56.1
+element = &"water"
+lane = 1
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r173"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 56.1
+element = &"void"
+lane = 2
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r174"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 7
+spawn_interval = 0.4
+start_delay = 58.1
+element = &"storm"
+
+[sub_resource type="Resource" id="r175"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 24
+spawn_interval = 0.28
+start_delay = 63.9
+element = &"water"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r176"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 15
+spawn_interval = 0.7
+start_delay = 78.1
+element = &"void"
+pattern = 2
+
+[sub_resource type="Resource" id="r177"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 8
+spawn_interval = 0.55
+start_delay = 80.1
+element = &"storm"
+pattern = 2
+
+[sub_resource type="Resource" id="r178"]
+script = ExtResource("3_s")
+element = &"nature"
+description = "A marching column, runner packs, Warded packs, a flank attack, a mixed swarm, brutes under escort, a pincer and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r162"), SubResource("r163"), SubResource("r164"), SubResource("r165"), SubResource("r166"), SubResource("r167"), SubResource("r168"), SubResource("r169"), SubResource("r170"), SubResource("r171"), SubResource("r172"), SubResource("r173"), SubResource("r174"), SubResource("r175"), SubResource("r176"), SubResource("r177")])
+
+[sub_resource type="Resource" id="r179"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 16
+spawn_interval = 0.8
+element = &"nature"
+
+[sub_resource type="Resource" id="r180"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 11.1
+element = &"earth"
+
+[sub_resource type="Resource" id="r181"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 10.5
+element = &"fire"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r182"]
+script = ExtResource("2_s")
+enemy = &"warded"
+count = 11
+spawn_interval = 0.55
+start_delay = 17.02
+element = &"nature"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r183"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.9
+start_delay = 18.02
+element = &"earth"
+
+[sub_resource type="Resource" id="r184"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 29.4
+element = &"fire"
+lane = 2
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r185"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 29.4
+element = &"nature"
+lane = 0
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r186"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 7
+spawn_interval = 0.4
+start_delay = 31.4
+element = &"earth"
+
+[sub_resource type="Resource" id="r187"]
+script = ExtResource("2_s")
+enemy = &"splitter"
+count = 6
+spawn_interval = 1.2
+start_delay = 37.2
+element = &"fire"
+
+[sub_resource type="Resource" id="r188"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 5
+spawn_interval = 0.6
+start_delay = 39.2
+element = &"nature"
+pattern = 3
+
+[sub_resource type="Resource" id="r189"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 24
+spawn_interval = 0.28
+start_delay = 43.2
+element = &"earth"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r190"]
+script = ExtResource("2_s")
+enemy = &"mender"
+count = 6
+spawn_interval = 1.0
+start_delay = 57.4
+element = &"fire"
+pattern = 3
+
+[sub_resource type="Resource" id="r191"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.7
+start_delay = 58.4
+element = &"nature"
+pattern = 3
+
+[sub_resource type="Resource" id="r192"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 10
+spawn_interval = 0.9
+start_delay = 63.33
+element = &"earth"
+lane = 0
+
+[sub_resource type="Resource" id="r193"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 65.33
+element = &"fire"
+lane = 1
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r194"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 16
+spawn_interval = 0.7
+start_delay = 70.9
+element = &"nature"
+pattern = 2
+
+[sub_resource type="Resource" id="r195"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 8
+spawn_interval = 0.55
+start_delay = 72.9
+element = &"earth"
+pattern = 2
+
+[sub_resource type="Resource" id="r196"]
+script = ExtResource("3_s")
+element = &"water"
+description = "A marching column, brutes under escort, Warded packs, a pincer, Splitters in a line, runner packs, a mixed swarm, a flank attack and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r179"), SubResource("r180"), SubResource("r181"), SubResource("r182"), SubResource("r183"), SubResource("r184"), SubResource("r185"), SubResource("r186"), SubResource("r187"), SubResource("r188"), SubResource("r189"), SubResource("r190"), SubResource("r191"), SubResource("r192"), SubResource("r193"), SubResource("r194"), SubResource("r195")])
+
+[sub_resource type="Resource" id="r197"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 11
+spawn_interval = 1.0
+element = &"water"
+pattern = 3
+
+[sub_resource type="Resource" id="r198"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 8
+spawn_interval = 1.3
+start_delay = 1.5
+element = &"void"
+pattern = 3
+
+[sub_resource type="Resource" id="r199"]
+script = ExtResource("2_s")
+enemy = &"thunderhead"
+count = 1
+spawn_interval = 1.0
+start_delay = 9.45
+element = &"storm"
+
+[sub_resource type="Resource" id="r200"]
+script = ExtResource("2_s")
+enemy = &"mountain_titan"
+count = 1
+spawn_interval = 1.0
+start_delay = 17.45
+element = &"water"
+
+[sub_resource type="Resource" id="r201"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 24
+spawn_interval = 0.28
+start_delay = 13.45
+element = &"void"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r202"]
+script = ExtResource("2_s")
+enemy = &"splitter"
+count = 7
+spawn_interval = 1.0
+start_delay = 27.66
+element = &"storm"
+pattern = 3
+
+[sub_resource type="Resource" id="r203"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.7
+start_delay = 28.66
+element = &"water"
+pattern = 3
+
+[sub_resource type="Resource" id="r204"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 11
+spawn_interval = 0.9
+start_delay = 33.66
+element = &"void"
+lane = 0
+
+[sub_resource type="Resource" id="r205"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 35.66
+element = &"storm"
+lane = 2
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r206"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 16
+spawn_interval = 0.7
+start_delay = 41.91
+element = &"water"
+pattern = 2
+
+[sub_resource type="Resource" id="r207"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 8
+spawn_interval = 0.55
+start_delay = 43.91
+element = &"void"
+pattern = 2
+
+[sub_resource type="Resource" id="r208"]
+script = ExtResource("3_s")
+element = &"earth"
+is_boss = true
+health_multiplier = 0.26
+description = "Stragglers, runner packs, a mixed swarm, a flank attack and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r197"), SubResource("r198"), SubResource("r199"), SubResource("r200"), SubResource("r201"), SubResource("r202"), SubResource("r203"), SubResource("r204"), SubResource("r205"), SubResource("r206"), SubResource("r207")])
+
+[sub_resource type="Resource" id="r209"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 16
+spawn_interval = 0.8
+element = &"earth"
+
+[sub_resource type="Resource" id="r210"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 11.1
+element = &"fire"
+
+[sub_resource type="Resource" id="r211"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 10.5
+element = &"nature"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r212"]
+script = ExtResource("2_s")
+enemy = &"warded"
+count = 12
+spawn_interval = 0.55
+start_delay = 17.02
+element = &"earth"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r213"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.9
+start_delay = 18.02
+element = &"fire"
+
+[sub_resource type="Resource" id="r214"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 29.81
+element = &"nature"
+lane = 1
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r215"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 29.81
+element = &"earth"
+lane = 2
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r216"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 8
+spawn_interval = 0.4
+start_delay = 31.81
+element = &"fire"
+
+[sub_resource type="Resource" id="r217"]
+script = ExtResource("2_s")
+enemy = &"splitter"
+count = 7
+spawn_interval = 1.2
+start_delay = 37.61
+element = &"nature"
+
+[sub_resource type="Resource" id="r218"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 6
+spawn_interval = 0.6
+start_delay = 39.61
+element = &"earth"
+pattern = 3
+
+[sub_resource type="Resource" id="r219"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 24
+spawn_interval = 0.28
+start_delay = 44.51
+element = &"fire"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r220"]
+script = ExtResource("2_s")
+enemy = &"mender"
+count = 7
+spawn_interval = 1.0
+start_delay = 58.71
+element = &"nature"
+pattern = 3
+
+[sub_resource type="Resource" id="r221"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.7
+start_delay = 59.71
+element = &"earth"
+pattern = 3
+
+[sub_resource type="Resource" id="r222"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 11
+spawn_interval = 0.9
+start_delay = 64.71
+element = &"fire"
+lane = 0
+
+[sub_resource type="Resource" id="r223"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 66.71
+element = &"nature"
+lane = 1
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r224"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 73.56
+element = &"earth"
+
+[sub_resource type="Resource" id="r225"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 72.96
+element = &"fire"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r226"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 16
+spawn_interval = 0.7
+start_delay = 79.49
+element = &"nature"
+pattern = 2
+
+[sub_resource type="Resource" id="r227"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 8
+spawn_interval = 0.55
+start_delay = 81.49
+element = &"earth"
+pattern = 2
+
+[sub_resource type="Resource" id="r228"]
+script = ExtResource("3_s")
+element = &"void"
+description = "A marching column, brutes under escort, Warded packs, a pincer, Splitters in a line, runner packs, a mixed swarm, a flank attack and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r209"), SubResource("r210"), SubResource("r211"), SubResource("r212"), SubResource("r213"), SubResource("r214"), SubResource("r215"), SubResource("r216"), SubResource("r217"), SubResource("r218"), SubResource("r219"), SubResource("r220"), SubResource("r221"), SubResource("r222"), SubResource("r223"), SubResource("r224"), SubResource("r225"), SubResource("r226"), SubResource("r227")])
+
+[sub_resource type="Resource" id="r229"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 17
+spawn_interval = 0.8
+element = &"void"
+
+[sub_resource type="Resource" id="r230"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 24
+spawn_interval = 0.28
+start_delay = 11.1
+element = &"storm"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r231"]
+script = ExtResource("2_s")
+enemy = &"warded"
+count = 12
+spawn_interval = 0.55
+start_delay = 25.3
+element = &"water"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r232"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.9
+start_delay = 26.3
+element = &"void"
+
+[sub_resource type="Resource" id="r233"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 11
+spawn_interval = 0.9
+start_delay = 38.09
+element = &"storm"
+lane = 0
+
+[sub_resource type="Resource" id="r234"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 40.09
+element = &"water"
+lane = 2
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r235"]
+script = ExtResource("2_s")
+enemy = &"splitter"
+count = 7
+spawn_interval = 1.0
+start_delay = 46.34
+element = &"void"
+pattern = 3
+
+[sub_resource type="Resource" id="r236"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 8
+spawn_interval = 0.7
+start_delay = 47.34
+element = &"storm"
+pattern = 3
+
+[sub_resource type="Resource" id="r237"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 52.94
+element = &"water"
+
+[sub_resource type="Resource" id="r238"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 52.34
+element = &"void"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r239"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 58.86
+element = &"storm"
+lane = 2
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r240"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 58.86
+element = &"water"
+lane = 0
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r241"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 8
+spawn_interval = 0.4
+start_delay = 60.86
+element = &"void"
+
+[sub_resource type="Resource" id="r242"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 24
+spawn_interval = 0.28
+start_delay = 66.66
+element = &"storm"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r243"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 11
+spawn_interval = 0.9
+start_delay = 80.87
+element = &"water"
+lane = 0
+
+[sub_resource type="Resource" id="r244"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 82.87
+element = &"void"
+lane = 2
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r245"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 17
+spawn_interval = 0.7
+start_delay = 89.12
+element = &"storm"
+pattern = 2
+
+[sub_resource type="Resource" id="r246"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 8
+spawn_interval = 0.55
+start_delay = 91.12
+element = &"water"
+pattern = 2
+
+[sub_resource type="Resource" id="r247"]
+script = ExtResource("3_s")
+element = &"fire"
+description = "A marching column, runner packs, Warded packs, a flank attack, a mixed swarm, brutes under escort, a pincer and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r229"), SubResource("r230"), SubResource("r231"), SubResource("r232"), SubResource("r233"), SubResource("r234"), SubResource("r235"), SubResource("r236"), SubResource("r237"), SubResource("r238"), SubResource("r239"), SubResource("r240"), SubResource("r241"), SubResource("r242"), SubResource("r243"), SubResource("r244"), SubResource("r245"), SubResource("r246")])
+
+[sub_resource type="Resource" id="r248"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 12
+spawn_interval = 1.0
+element = &"fire"
+pattern = 3
+
+[sub_resource type="Resource" id="r249"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 9
+spawn_interval = 1.3
+start_delay = 1.5
+element = &"nature"
+pattern = 3
+
+[sub_resource type="Resource" id="r250"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 11.03
+element = &"earth"
+
+[sub_resource type="Resource" id="r251"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 10.43
+element = &"fire"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r252"]
 script = ExtResource("2_s")
 enemy = &"warded"
 count = 13
-spawn_interval = 1.1
-start_delay = 2.0
+spawn_interval = 0.55
+start_delay = 16.95
+element = &"nature"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r253"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.9
+start_delay = 17.95
 element = &"earth"
 
-[sub_resource type="Resource" id="r83"]
+[sub_resource type="Resource" id="r254"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 32.4
+element = &"fire"
+lane = 0
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r255"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 32.4
+element = &"nature"
+lane = 1
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r256"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 8
+spawn_interval = 0.4
+start_delay = 34.4
+element = &"earth"
+
+[sub_resource type="Resource" id="r257"]
 script = ExtResource("2_s")
 enemy = &"splitter"
 count = 8
 spawn_interval = 1.2
-start_delay = 5.0
+start_delay = 40.2
 element = &"fire"
 
-[sub_resource type="Resource" id="r84"]
+[sub_resource type="Resource" id="r258"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 6
+spawn_interval = 0.6
+start_delay = 42.2
+element = &"nature"
+pattern = 3
+
+[sub_resource type="Resource" id="r259"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 24
+spawn_interval = 0.28
+start_delay = 48.0
+element = &"earth"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r260"]
 script = ExtResource("2_s")
 enemy = &"mender"
 count = 8
 spawn_interval = 1.0
-start_delay = 3.0
-element = &"nature"
+start_delay = 62.21
+element = &"fire"
+pattern = 3
 
-[sub_resource type="Resource" id="r85"]
-script = ExtResource("3_s")
-element = &"storm"
-groups = Array[ExtResource("2_s")]([SubResource("r80"), SubResource("r81"), SubResource("r82"), SubResource("r83"), SubResource("r84")])
-
-[sub_resource type="Resource" id="r86"]
+[sub_resource type="Resource" id="r261"]
 script = ExtResource("2_s")
 enemy = &"grunt"
-count = 31
+count = 9
+spawn_interval = 0.7
+start_delay = 63.21
+element = &"nature"
+pattern = 3
+
+[sub_resource type="Resource" id="r262"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 12
+spawn_interval = 0.9
+start_delay = 68.96
+element = &"earth"
+lane = 0
+
+[sub_resource type="Resource" id="r263"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 70.96
+element = &"fire"
+lane = 1
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r264"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 78.48
+element = &"nature"
+
+[sub_resource type="Resource" id="r265"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 77.88
+element = &"earth"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r266"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 84.41
+element = &"fire"
+lane = 0
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r267"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 84.41
+element = &"nature"
+lane = 1
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r268"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 8
+spawn_interval = 0.4
+start_delay = 86.41
+element = &"earth"
+
+[sub_resource type="Resource" id="r269"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 17
+spawn_interval = 0.7
+start_delay = 92.21
+element = &"fire"
+pattern = 2
+
+[sub_resource type="Resource" id="r270"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 9
+spawn_interval = 0.55
+start_delay = 94.21
+element = &"nature"
+pattern = 2
+
+[sub_resource type="Resource" id="r271"]
+script = ExtResource("3_s")
+element = &"storm"
+description = "Stragglers, brutes under escort, Warded packs, a pincer, Splitters in a line, runner packs, a mixed swarm, a flank attack and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r248"), SubResource("r249"), SubResource("r250"), SubResource("r251"), SubResource("r252"), SubResource("r253"), SubResource("r254"), SubResource("r255"), SubResource("r256"), SubResource("r257"), SubResource("r258"), SubResource("r259"), SubResource("r260"), SubResource("r261"), SubResource("r262"), SubResource("r263"), SubResource("r264"), SubResource("r265"), SubResource("r266"), SubResource("r267"), SubResource("r268"), SubResource("r269"), SubResource("r270")])
+
+[sub_resource type="Resource" id="r272"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 18
 spawn_interval = 0.8
 element = &"storm"
 
-[sub_resource type="Resource" id="r87"]
+[sub_resource type="Resource" id="r273"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 24
+spawn_interval = 0.28
+start_delay = 11.7
+element = &"water"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r274"]
 script = ExtResource("2_s")
 enemy = &"warded"
 count = 13
-spawn_interval = 1.1
-start_delay = 2.0
-element = &"water"
+spawn_interval = 0.55
+start_delay = 25.91
+element = &"void"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
 
-[sub_resource type="Resource" id="r88"]
+[sub_resource type="Resource" id="r275"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.9
+start_delay = 26.91
+element = &"storm"
+
+[sub_resource type="Resource" id="r276"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 12
+spawn_interval = 0.9
+start_delay = 41.36
+element = &"water"
+lane = 0
+
+[sub_resource type="Resource" id="r277"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 43.36
+element = &"void"
+lane = 2
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r278"]
 script = ExtResource("2_s")
 enemy = &"splitter"
 count = 8
 spawn_interval = 1.0
-start_delay = 3.0
+start_delay = 50.28
+element = &"storm"
+pattern = 3
+
+[sub_resource type="Resource" id="r279"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.7
+start_delay = 51.28
+element = &"water"
+pattern = 3
+
+[sub_resource type="Resource" id="r280"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 57.63
 element = &"void"
 
-[sub_resource type="Resource" id="r89"]
+[sub_resource type="Resource" id="r281"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 57.03
+element = &"storm"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r282"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 63.56
+element = &"water"
+lane = 1
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r283"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.3
+start_delay = 63.56
+element = &"void"
+lane = 2
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r284"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 8
+spawn_interval = 0.4
+start_delay = 65.56
+element = &"storm"
+
+[sub_resource type="Resource" id="r285"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 24
+spawn_interval = 0.28
+start_delay = 71.36
+element = &"water"
+pattern = 1
+pack_size = 6
+pack_gap = 3.5
+
+[sub_resource type="Resource" id="r286"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 12
+spawn_interval = 0.9
+start_delay = 85.56
+element = &"void"
+lane = 0
+
+[sub_resource type="Resource" id="r287"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 87.56
+element = &"storm"
+lane = 2
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r288"]
+script = ExtResource("2_s")
+enemy = &"brute"
+count = 3
+spawn_interval = 3.0
+start_delay = 95.09
+element = &"water"
+
+[sub_resource type="Resource" id="r289"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.35
+start_delay = 94.49
+element = &"void"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r290"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 18
+spawn_interval = 0.7
+start_delay = 101.01
+element = &"storm"
+pattern = 2
+
+[sub_resource type="Resource" id="r291"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 9
+spawn_interval = 0.55
+start_delay = 103.01
+element = &"water"
+pattern = 2
+
+[sub_resource type="Resource" id="r292"]
 script = ExtResource("3_s")
 element = &"nature"
-groups = Array[ExtResource("2_s")]([SubResource("r86"), SubResource("r87"), SubResource("r88")])
+description = "A marching column, runner packs, Warded packs, a flank attack, a mixed swarm, brutes under escort, a pincer and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r272"), SubResource("r273"), SubResource("r274"), SubResource("r275"), SubResource("r276"), SubResource("r277"), SubResource("r278"), SubResource("r279"), SubResource("r280"), SubResource("r281"), SubResource("r282"), SubResource("r283"), SubResource("r284"), SubResource("r285"), SubResource("r286"), SubResource("r287"), SubResource("r288"), SubResource("r289"), SubResource("r290"), SubResource("r291")])
 
-[sub_resource type="Resource" id="r90"]
+[sub_resource type="Resource" id="r293"]
 script = ExtResource("2_s")
 enemy = &"sundered_heart"
 count = 1
 spawn_interval = 1.0
+start_delay = 11.7
 element = &"nature"
 
-[sub_resource type="Resource" id="r91"]
+[sub_resource type="Resource" id="r294"]
 script = ExtResource("2_s")
 enemy = &"grunt"
-count = 19
-spawn_interval = 0.7
-start_delay = 3.0
+count = 18
+spawn_interval = 0.8
 element = &"earth"
 
-[sub_resource type="Resource" id="r92"]
+[sub_resource type="Resource" id="r295"]
 script = ExtResource("2_s")
-enemy = &"warded"
-count = 5
-spawn_interval = 1.0
-start_delay = 6.0
+enemy = &"brute"
+count = 4
+spawn_interval = 3.0
+start_delay = 16.3
 element = &"fire"
 
-[sub_resource type="Resource" id="r93"]
+[sub_resource type="Resource" id="r296"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 12
+spawn_interval = 0.35
+start_delay = 15.7
+element = &"nature"
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
+
+[sub_resource type="Resource" id="r297"]
+script = ExtResource("2_s")
+enemy = &"warded"
+count = 14
+spawn_interval = 0.55
+start_delay = 24.48
+element = &"earth"
+pattern = 1
+pack_size = 3
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r298"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 9
+spawn_interval = 0.9
+start_delay = 25.48
+element = &"fire"
+
+[sub_resource type="Resource" id="r299"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 12
+spawn_interval = 0.9
+start_delay = 40.34
+element = &"nature"
+lane = 0
+
+[sub_resource type="Resource" id="r300"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 10
+spawn_interval = 0.3
+start_delay = 42.34
+element = &"earth"
+lane = 1
+pattern = 1
+pack_size = 5
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r301"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 18
+spawn_interval = 0.7
+start_delay = 49.27
+element = &"fire"
+pattern = 2
+
+[sub_resource type="Resource" id="r302"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 9
+spawn_interval = 0.55
+start_delay = 51.27
+element = &"nature"
+pattern = 2
+
+[sub_resource type="Resource" id="r303"]
 script = ExtResource("3_s")
 element = &"water"
 is_boss = true
 health_multiplier = 0.26
-groups = Array[ExtResource("2_s")]([SubResource("r90"), SubResource("r91"), SubResource("r92")])
+description = "A marching column, brutes under escort, Warded packs, a flank attack and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r293"), SubResource("r294"), SubResource("r295"), SubResource("r296"), SubResource("r297"), SubResource("r298"), SubResource("r299"), SubResource("r300"), SubResource("r301"), SubResource("r302")])
 
 [resource]
 script = ExtResource("1_s")
 id = &"c_converge_3"
 display_name = "Heart of the Ring"
 health_growth = 1.1
-health_scale = 0.96
-waves = Array[ExtResource("3_s")]([SubResource("r3"), SubResource("r7"), SubResource("r11"), SubResource("r16"), SubResource("r21"), SubResource("r27"), SubResource("r31"), SubResource("r36"), SubResource("r41"), SubResource("r45"), SubResource("r49"), SubResource("r54"), SubResource("r59"), SubResource("r65"), SubResource("r69"), SubResource("r74"), SubResource("r79"), SubResource("r85"), SubResource("r89"), SubResource("r93")])
+health_scale = 1.62
+waves = Array[ExtResource("3_s")]([SubResource("r9"), SubResource("r18"), SubResource("r30"), SubResource("r42"), SubResource("r53"), SubResource("r69"), SubResource("r82"), SubResource("r97"), SubResource("r114"), SubResource("r126"), SubResource("r142"), SubResource("r161"), SubResource("r178"), SubResource("r196"), SubResource("r208"), SubResource("r228"), SubResource("r247"), SubResource("r271"), SubResource("r292"), SubResource("r303")])

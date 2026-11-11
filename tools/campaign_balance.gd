@@ -2,7 +2,8 @@ extends SceneTree
 ## Plays every campaign stage with the scripted AutoPlayer and prints how each went, for tuning the
 ## campaign (see tools/campaign/gen_campaign.py). No meta tree bonuses, Normal difficulty.
 ##
-##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune] [--skirmish] [--compare] [--heroes]
+##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune] [--skirmish] [--compare]
+##       [--heroes] [--list]
 ##
 ## --tune searches each stage's health scale so the bot wins keeping a target share of its lives,
 ## and prints lines for tools/campaign/tuning.py. The bot levels its towers and casts its skills,
@@ -11,7 +12,8 @@ extends SceneTree
 ## against two different plans. --compare plays everything with several kinds of bot (with and
 ## without skills and upgrades), to see what each habit is worth. --heroes plays every stage with a
 ## party of the three heroes who would have joined by then, with and without heroes and skills, to
-## see how much of a run they carry next to the towers.
+## see how much of a run they carry next to the towers. --list prints the stage ids, so CI can tune
+## them one stage per process, side by side.
 
 ## Share of lives the bot should keep, by stage position in an element campaign and in the Convergence.
 const TARGETS: Array[float] = [0.6, 0.45, 0.3, 0.2]
@@ -41,6 +43,13 @@ func _initialize() -> void:
 			only = arg.trim_prefix("--stage=")
 	var tune := OS.get_cmdline_user_args().has("--tune")
 	var meta := MetaProgress.new(registry, PlayerProfile.new())
+	if OS.get_cmdline_user_args().has("--list"):
+		for campaign in meta.campaigns_in_order():
+			for stage in campaign.stages:
+				print("STAGE ", stage.id)
+		registry.free()
+		quit()
+		return
 	if OS.get_cmdline_user_args().has("--compare"):
 		_compare(registry, meta)
 		registry.free()
@@ -67,23 +76,41 @@ func _initialize() -> void:
 				continue
 			var started := Time.get_ticks_msec()
 			var sim := _play(meta, stage)
-			print("%-11s %-26s %s wave %2d/%2d  lives %3d/%3d  stars %d  towers %2d  gold %5d  (%d ms)" % [
+			print("%-11s %-26s %s wave %2d/%2d  lives %3d/%3d  stars %d  towers %2d  gold %5d  %s  (%d ms)" % [
 				stage.id, stage.display_name, "WON " if sim.state == RunSim.State.WON else "LOST",
 				sim.wave_index, sim.total_waves(), sim.lives, sim.starting_lives, MetaProgress.stars_for(sim),
-				sim.towers.size(), sim.gold, Time.get_ticks_msec() - started])
+				sim.towers.size(), sim.gold, _wave_summary(), Time.get_ticks_msec() - started])
 	registry.free()
 	quit()
+
+
+## How long each wave of the last _play took, in seconds from its start until its last enemy fell.
+var _wave_seconds: PackedFloat32Array = []
 
 
 func _play(meta: MetaProgress, stage: StageData) -> RunSim:
 	var sim := RunSim.new(meta.stage_config(stage.id))
 	var bot := AutoPlayer.for_sim(sim)
+	_wave_seconds.clear()
+	sim.wave_cleared.connect(func(_n: int, _p: int, _g: int) -> void: _wave_seconds.append(sim.time_in_wave))
 	var elapsed := 0.0
-	while not sim.is_over() and elapsed < 4000.0:
+	while not sim.is_over() and elapsed < 8000.0:
 		bot.act()
 		sim.step(RunSim.STEP)
 		elapsed += RunSim.STEP
 	return sim
+
+
+## Average and longest wave of the last _play, and the whole time spent in waves.
+func _wave_summary() -> String:
+	if _wave_seconds.is_empty():
+		return "waves -"
+	var total := 0.0
+	var longest := 0.0
+	for seconds in _wave_seconds:
+		total += seconds
+		longest = maxf(longest, seconds)
+	return "wave avg %3ds max %3ds  fighting %4.1f min" % [roundi(total / _wave_seconds.size()), roundi(longest), total / 60.0]
 
 
 ## Kinds of bot to compare: name, upgrades, skills, ascends, upgrade bias.
@@ -228,7 +255,7 @@ func _play_skirmish(registry: Node, nodes: Array[StringName], towers: Array[Stri
 func _tune_skirmish(registry: Node) -> void:
 	var config := RunConfig.from_registry(registry, SKIRMISH_MAP)
 	var waves := config.wave_set
-	var low := 0.5
+	var low := 0.1
 	var high := 5.0
 	for step in 9:
 		waves.health_scale = (low + high) * 0.5
@@ -258,7 +285,7 @@ func _tune(meta: MetaProgress, stage: StageData, target: float) -> void:
 		for wave in bosses:
 			wave.health_multiplier = value
 	set_boss.call(0.02)
-	var health := _bisect(meta, stage, target + (0.1 if not bosses.is_empty() else 0.0), 0.3, 4.0,
+	var health := _bisect(meta, stage, target + (0.1 if not bosses.is_empty() else 0.0), 0.1, 5.0,
 			func(value: float) -> void: waves.health_scale = value)
 	waves.health_scale = health
 	var boss := 0.0
