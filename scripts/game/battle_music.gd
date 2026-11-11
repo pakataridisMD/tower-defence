@@ -81,3 +81,16 @@ func _process(delta: float) -> void:
 			continue
 		volumes[i] = move_toward(volumes[i], t[i], fade_rate(volumes[i], t[i]) * delta)
 		_sync.set_sync_stream_volume(i, volumes[i])
+
+
+## Stop and let go of the streams when the run's scene closes, or the audio server still holds
+## their playbacks when the game quits.
+func _exit_tree() -> void:
+	if player != null:
+		player.stop()
+		player.stream = null
+	if _sync != null:
+		for i in _sync.stream_count:
+			_sync.set_sync_stream(i, null)
+	_sync = null
+	_sim = null
