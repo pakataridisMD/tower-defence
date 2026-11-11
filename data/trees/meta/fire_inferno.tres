@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"splash_radius"
+kind = 1
+value = 0.08
+required_tags = Array[StringName]([&"fire"])
+
+[sub_resource type="Resource" id="Resource_m1"]
+script = ExtResource("1_mod")
+stat = &"damage"
+kind = 1
+value = 0.03
+required_tags = Array[StringName]([&"fire"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"fire_inferno"
+display_name = "Inferno"
+description = "Fire towers hit 8% wider areas. Fire towers deal 3% more damage. Pick one: closes Searing."
+kind = 3
+region = &"fire"
+cost = 7
+position = Vector2(428, -1008)
+links = Array[StringName]([&"fire_heart"])
+excludes = Array[StringName]([&"fire_searing"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0"), SubResource("Resource_m1")])

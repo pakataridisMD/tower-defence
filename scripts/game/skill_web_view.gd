@@ -27,12 +27,27 @@ const FIT_BOTTOM := 100.0
 const LABEL_FONT_SIZE := 22
 ## Room for a region's emblem left of its name.
 const EMBLEM_GAP := 32.0
+## Navigable trees (see `navigable`): how far one wheel notch zooms, the closest zoom, how far the
+## mouse must move with the button held before a click becomes a drag, and the keyboard pan speed.
+const ZOOM_STEP := 1.15
+const ZOOM_MAX := 1.6
+const ZOOM_MIN_CAP := 0.5
+const DRAG_THRESHOLD := 6.0
+const PAN_SPEED := 900.0
+## Height of the band behind the title on a navigable tree, so nodes scroll under it cleanly.
+const HEADER_BAND := 182.0
+const HINT_TEXT := "Drag or WASD to move   |   Mouse wheel or + / - to zoom   |   F shows the whole tree"
 
 
 ## A named, coloured part of a tree: an element in the in-run web, a branch in the meta tree.
 class Region:
 	var display_name: String
 	var color: Color
+	## Draws a soft glow behind the region's nodes. Off for regions spread around a ring, whose
+	## middle is somewhere else's.
+	var aura := true
+	## Shows the region's name beside its far end.
+	var label := true
 
 	func _init(p_display_name: String, p_color: Color) -> void:
 		display_name = p_display_name
@@ -52,12 +67,32 @@ var close_text := "Close (T)"
 var can_refund: Callable = func(_id: StringName) -> bool: return false
 ## Tooltip status of a taken node that cannot be refunded right now.
 var taken_text := "Taken."
+## A big tree that does not fit the screen: the player pans it by dragging or with WASD and zooms
+## with the mouse wheel. Nodes are taken on release, so a drag never takes one. Off for the in-run
+## web, which is fitted to the screen.
+var navigable := false
+## Dotted circles drawn around the start, in tree units.
+var ring_radii: Array[float] = [130.0, 255.0, 380.0]
+## Words for the nodes in the "12 of 170 talents taken" count. Empty hides the count.
+var count_noun := ""
 
 var _hovered: StringName = &""
 var _font: Font
 var _time := 0.0
 var _origin := Vector2.ZERO
 var _scale := 1.0
+## Screen pixels per art pixel. Fixed at TreeArt.SCALE unless the tree is navigable, where it steps
+## from 1 to 3 with the zoom so the pixel art stays crisp.
+var _art := TreeArt.SCALE
+## The tree's bounding box in tree units, and the fitted zoom.
+var _bounds := Rect2()
+var _fit_scale := 1.0
+## Mouse state for drag-to-pan on navigable trees.
+var _press_at := Vector2.ZERO
+var _pressing := false
+var _dragging := false
+## Where the mouse was last seen, so the hovered node follows the tree as it pans and zooms.
+var _mouse_at := Vector2(-1000, -1000)
 var _close: Button
 ## Where each region's name is drawn (the start of the text's baseline), worked out in _layout().
 var _label_spots: Dictionary[StringName, Vector2] = {}
@@ -117,6 +152,8 @@ func show_tree(p_tree: TreeState, p_regions: Dictionary[StringName, Region]) -> 
 	_taken_before = _taken_now()
 	show()
 	_layout()
+	if navigable:
+		reset_view()
 	queue_redraw()
 
 
@@ -128,26 +165,136 @@ func add_header_button(button: Button) -> void:
 	_layout()
 
 
+
+
 ## Where a node is drawn, in this view's coordinates.
 func screen_position(id: StringName) -> Vector2:
 	return _to_screen(tree.graph.node(id).position)
+
+
+## The zoom of a navigable tree: screen pixels per tree unit.
+func zoom() -> float:
+	return _scale
+
+
+## Navigable trees: zooms by a factor, keeping the tree point under `pivot` where it is.
+func zoom_by(factor: float, pivot: Vector2) -> void:
+	if not navigable or tree == null:
+		return
+	var target := clampf(_scale * factor, _min_zoom(), ZOOM_MAX)
+	if is_equal_approx(target, _scale):
+		return
+	var under := (pivot - _origin) / _scale
+	_scale = target
+	_origin = pivot - under * _scale
+	_art = _art_for(_scale)
+	_clamp_origin()
+	_place_region_labels()
+	queue_redraw()
+
+
+## Navigable trees: moves the view by a screen offset.
+func pan_by(offset: Vector2) -> void:
+	if not navigable or tree == null:
+		return
+	_origin += offset
+	_clamp_origin()
+	queue_redraw()
+
+
+## Navigable trees: the opening view, at normal zoom with the start in the middle of the free space.
+func reset_view() -> void:
+	if tree == null:
+		return
+	_scale = clampf(1.0, _min_zoom(), ZOOM_MAX)
+	_art = _art_for(_scale)
+	_origin = _view_area().get_center()
+	_clamp_origin()
+	_place_region_labels()
+	queue_redraw()
+
+
+## Navigable trees: zooms out to show the whole tree.
+func show_whole_tree() -> void:
+	if tree == null:
+		return
+	_scale = _min_zoom()
+	_art = _art_for(_scale)
+	_origin = _view_area().get_center() - _bounds.get_center() * _scale
+	_clamp_origin()
+	_place_region_labels()
+	queue_redraw()
+
+
+## Art pixels step 1, 2, 3 with the zoom, so sprites stay on whole pixels.
+static func _art_for(p_scale: float) -> float:
+	if p_scale < 0.8:
+		return 1.0
+	if p_scale < 1.4:
+		return 2.0
+	return 3.0
+
+
+func _min_zoom() -> float:
+	return minf(_fit_scale, ZOOM_MIN_CAP)
+
+
+## The space below the title where the tree is shown.
+func _view_area() -> Rect2:
+	return Rect2(Vector2(FIT_SIDE, FIT_TOP), size - Vector2(FIT_SIDE * 2.0, FIT_TOP + FIT_BOTTOM))
+
+
+## Keeps some of the tree on screen however far it is dragged.
+func _clamp_origin() -> void:
+	var area := _view_area()
+	var drawn := Rect2(_origin + _bounds.position * _scale, _bounds.size * _scale)
+	var margin := 160.0
+	if drawn.end.x < area.position.x + margin:
+		_origin.x += area.position.x + margin - drawn.end.x
+	if drawn.position.x > area.end.x - margin:
+		_origin.x -= drawn.position.x - (area.end.x - margin)
+	if drawn.end.y < area.position.y + margin:
+		_origin.y += area.position.y + margin - drawn.end.y
+	if drawn.position.y > area.end.y - margin:
+		_origin.y -= drawn.position.y - (area.end.y - margin)
 
 
 func _process(delta: float) -> void:
 	if not visible:
 		return
 	_time += delta
+	if navigable and tree != null:
+		_keyboard_pan(delta)
+		if not _dragging:
+			_hovered = _node_at(_mouse_at)
 	if tree != null:
 		var taken := _taken_now()
 		for id in taken:
 			if not _taken_before.has(id):
 				var data := tree.graph.node(id)
-				_bursts.append({"at": screen_position(id), "color": _node_color(data), "age": 0.0, "radius": _radius(data)})
+				_bursts.append({"id": id, "color": _node_color(data), "age": 0.0})
 		_taken_before = taken
 	for burst in _bursts:
 		burst["age"] += delta
 	_bursts = _bursts.filter(func(burst: Dictionary) -> bool: return burst["age"] < BURST_SECONDS)
 	queue_redraw()
+
+
+## WASD and the arrow keys pan a navigable tree while held.
+func _keyboard_pan(delta: float) -> void:
+	if get_viewport() == null or get_viewport().gui_get_focus_owner() is LineEdit:
+		return
+	var direction := Vector2.ZERO
+	if Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
+		direction.x += 1.0
+	if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
+		direction.x -= 1.0
+	if Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP):
+		direction.y += 1.0
+	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN):
+		direction.y -= 1.0
+	if direction != Vector2.ZERO:
+		pan_by(direction.normalized() * PAN_SPEED * delta)
 
 
 func _taken_now() -> Dictionary[StringName, bool]:
@@ -161,6 +308,11 @@ func _taken_now() -> Dictionary[StringName, bool]:
 func _gui_input(event: InputEvent) -> void:
 	if tree == null:
 		return
+	if event is InputEventMouse:
+		_mouse_at = event.position
+	if navigable:
+		_navigable_input(event)
+		return
 	if event is InputEventMouseMotion:
 		_hovered = _node_at(event.position)
 	elif event is InputEventMouseButton and event.pressed and not _hovered.is_empty():
@@ -171,9 +323,77 @@ func _gui_input(event: InputEvent) -> void:
 		accept_event()
 
 
+## Drag to pan, wheel to zoom, click (press and release without moving) to take, right-click to refund.
+func _navigable_input(event: InputEvent) -> void:
+	var motion := event as InputEventMouseMotion
+	if motion != null:
+		_mouse_at = motion.position
+		if _pressing and not _dragging and motion.position.distance_to(_press_at) > DRAG_THRESHOLD:
+			_dragging = true
+			_hovered = &""
+		if _dragging:
+			pan_by(motion.relative)
+		else:
+			_hovered = _node_at(motion.position)
+		accept_event()
+		return
+	var button := event as InputEventMouseButton
+	if button == null:
+		return
+	_mouse_at = button.position
+	match button.button_index:
+		MOUSE_BUTTON_WHEEL_UP:
+			if button.pressed:
+				zoom_by(ZOOM_STEP * button.factor if button.factor > 1.0 else ZOOM_STEP, button.position)
+		MOUSE_BUTTON_WHEEL_DOWN:
+			if button.pressed:
+				zoom_by(1.0 / (ZOOM_STEP * button.factor if button.factor > 1.0 else ZOOM_STEP), button.position)
+		MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE:
+			if button.pressed:
+				_pressing = true
+				_dragging = false
+				_press_at = button.position
+			else:
+				var was_drag := _dragging
+				_pressing = false
+				_dragging = false
+				_hovered = _node_at(button.position)
+				if not was_drag and button.button_index == MOUSE_BUTTON_LEFT and not _hovered.is_empty():
+					node_clicked.emit(_hovered)
+		MOUSE_BUTTON_RIGHT:
+			if button.pressed:
+				_hovered = _node_at(button.position)
+				if not _hovered.is_empty():
+					node_refund_requested.emit(_hovered)
+	accept_event()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not navigable or not visible or tree == null:
+		return
+	var key := event as InputEventKey
+	if key == null or not key.pressed:
+		return
+	match key.keycode:
+		KEY_EQUAL, KEY_PLUS, KEY_KP_ADD:
+			zoom_by(ZOOM_STEP, _view_area().get_center())
+		KEY_MINUS, KEY_KP_SUBTRACT:
+			zoom_by(1.0 / ZOOM_STEP, _view_area().get_center())
+		KEY_F:
+			if not key.echo:
+				show_whole_tree()
+		KEY_HOME:
+			if not key.echo:
+				reset_view()
+		_:
+			return
+	get_viewport().set_input_as_handled()
+
+
 # --- Layout ----------------------------------------------------------------------
 
-## Scales and centres the tree so it fills the space below the title.
+## Places the header buttons, and scales and centres the tree so it fills the space below the
+## title. A navigable tree keeps its zoom and only works out how far it may zoom out.
 func _layout() -> void:
 	if _close == null:
 		return
@@ -187,24 +407,34 @@ func _layout() -> void:
 	if tree == null or tree.graph.size() == 0:
 		return
 	var ids := tree.graph.ids()
-	var bounds := Rect2(tree.graph.node(ids[0]).position, Vector2.ZERO)
+	_bounds = Rect2(tree.graph.node(ids[0]).position, Vector2.ZERO)
 	for id in ids:
-		bounds = bounds.expand(tree.graph.node(id).position)
-	var area := Rect2(Vector2(FIT_SIDE, FIT_TOP), size - Vector2(FIT_SIDE * 2.0, FIT_TOP + FIT_BOTTOM))
-	var span := bounds.size.max(Vector2.ONE)
-	_scale = minf(MAX_SCALE, minf(area.size.x / span.x, area.size.y / span.y))
-	_origin = area.get_center() - bounds.get_center() * _scale
+		_bounds = _bounds.expand(tree.graph.node(id).position)
+	var area := _view_area()
+	var span := _bounds.size.max(Vector2.ONE)
+	_fit_scale = minf(MAX_SCALE, minf(area.size.x / span.x, area.size.y / span.y))
+	if navigable:
+		_scale = clampf(_scale, _min_zoom(), ZOOM_MAX)
+		_art = _art_for(_scale)
+		_clamp_origin()
+	else:
+		_scale = _fit_scale
+		_art = TreeArt.SCALE
+		_origin = area.get_center() - _bounds.get_center() * _scale
 	_place_region_labels()
 
 
 ## Puts each region's name beside its node farthest from the start, on the side that covers the
-## fewest nodes and links, preferring the side facing away from the start.
+## fewest nodes and links, preferring the side facing away from the start. Spots are kept in tree
+## units, so panning moves them with the tree.
 func _place_region_labels() -> void:
 	_label_spots.clear()
+	if tree == null:
+		return
 	var farthest: Dictionary[StringName, TreeNodeData] = {}
 	for id in tree.graph.ids():
 		var data := tree.graph.node(id)
-		if not regions.has(data.region):
+		if not regions.has(data.region) or not regions[data.region].label:
 			continue
 		var best: TreeNodeData = farthest.get(data.region)
 		if best == null or data.position.length() > best.position.length():
@@ -222,28 +452,33 @@ func _place_region_labels() -> void:
 			var direction := Vector2.from_angle(TAU * step / 16.0)
 			var reach := _radius(data) + 10.0 + absf(direction.x) * box_size.x * 0.5 + absf(direction.y) * box_size.y * 0.5
 			var box := Rect2(at + direction * reach - box_size * 0.5, box_size)
-			var score := _label_clutter(box) * 10.0 + 1.0 - direction.dot(outward)
+			var score := _label_clutter(box, data.position) * 10.0 + 1.0 - direction.dot(outward)
 			if score < best_score:
 				best_score = score
 				best_box = box
-		_label_spots[region_id] = Vector2(best_box.position.x, best_box.end.y - 5.0)
+		_label_spots[region_id] = (Vector2(best_box.position.x, best_box.end.y - 5.0) - _origin) / _scale
 
 
 ## How badly a label box would cover nodes and links, or stick out of the space below the title.
-func _label_clutter(box: Rect2) -> float:
+## Only nodes near the label's own node are checked, which keeps this quick on a big tree.
+func _label_clutter(box: Rect2, near: Vector2) -> float:
 	var grown := box.grow(6.0)
 	var clutter := 0.0
+	var reach := (box.size.length() + 120.0) / _scale
 	for id in tree.graph.ids():
 		var data := tree.graph.node(id)
+		if data.position.distance_to(near) > reach:
+			continue
 		var center := _to_screen(data.position)
 		if center.clamp(grown.position, grown.end).distance_to(center) < _radius(data) + 4.0:
 			clutter += 3.0
 		for other in tree.graph.neighbours(id):
 			if String(other) > String(id) and _segment_hits_rect(center, _to_screen(tree.graph.node(other).position), grown):
 				clutter += 1.0
-	var free_area := Rect2(Vector2(0.0, FIT_TOP - 60.0), size - Vector2(0.0, FIT_TOP - 60.0))
-	if not free_area.encloses(box):
-		clutter += 5.0
+	if not navigable:
+		var free_area := Rect2(Vector2(0.0, FIT_TOP - 60.0), size - Vector2(0.0, FIT_TOP - 60.0))
+		if not free_area.encloses(box):
+			clutter += 5.0
 	return clutter
 
 
@@ -262,6 +497,8 @@ func _to_screen(tree_position: Vector2) -> Vector2:
 
 
 func _node_at(point: Vector2) -> StringName:
+	if navigable and point.y < HEADER_BAND:
+		return &""
 	for id in tree.graph.ids():
 		var data := tree.graph.node(id)
 		if point.distance_to(_to_screen(data.position)) <= _radius(data) + 6.0:
@@ -270,7 +507,7 @@ func _node_at(point: Vector2) -> StringName:
 
 
 func _radius(data: TreeNodeData) -> float:
-	return TreeArt.radius(data)
+	return TreeArt.SIZES[TreeArt.style(data)] * _art * 0.5
 
 
 func _colors(data: TreeNodeData) -> Array[Color]:
@@ -293,8 +530,8 @@ func _colors(data: TreeNodeData) -> Array[Color]:
 
 
 # --- Drawing ---------------------------------------------------------------------
-# Pixel art from TreeArt, one art pixel to 2x2 screen pixels. Sprites are placed on even screen
-# pixels so the art pixels stay square.
+# Pixel art from TreeArt, one art pixel to `_art` x `_art` screen pixels. Sprites are placed on
+# whole art pixels so the art pixels stay square.
 
 func _draw() -> void:
 	_draw_backdrop()
@@ -303,39 +540,70 @@ func _draw() -> void:
 	_draw_auras()
 	_draw_rings()
 	_draw_stars()
-	draw_string(_font, Vector2(48, 64), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 40, UiStyle.TEXT)
-	var points_text := "%d %s%s to spend" % [tree.points, points_noun, "" if tree.points == 1 else "s"]
-	_draw_art(TreeArt.icon(&"star"), Vector2(46, 78))
-	draw_string(_font, Vector2(80, 104), points_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 24, UiStyle.GOLD)
-	if not subtitle.is_empty():
-		draw_multiline_string(_font, Vector2(48, 138), subtitle, HORIZONTAL_ALIGNMENT_LEFT, size.x - 96.0, 18, -1,
-				UiStyle.TEXT_DIM)
 	var path: Array[StringName] = []
 	if not _hovered.is_empty():
 		path = tree.path_to(_hovered)
-	_draw_links(path)
+	var view := Rect2(Vector2.ZERO, size).grow(80.0)
+	_draw_links(path, view)
 	_draw_region_labels()
 	for id in tree.graph.ids():
-		_draw_node(tree.graph.node(id))
+		var data := tree.graph.node(id)
+		if view.has_point(_to_screen(data.position)):
+			_draw_node(data)
 	_draw_bursts()
+	_draw_header()
 	if not _hovered.is_empty():
 		_draw_tooltip(tree.graph.node(_hovered), path)
 
 
-static func _snap(point: Vector2) -> Vector2:
-	return (point * 0.5).round() * 2.0
+## Title, points to spend and the subtitle. On a navigable tree they sit on a band the tree slides
+## under, with the controls and the count of nodes taken along the bottom.
+func _draw_header() -> void:
+	if navigable:
+		draw_rect(Rect2(0, 0, size.x, HEADER_BAND), Color(BACKDROP, 0.92))
+		draw_rect(Rect2(0, HEADER_BAND, size.x, 2), Color(UiStyle.GOLD, 0.35))
+		var footer := Rect2(0, size.y - 48.0, size.x, 48.0)
+		draw_rect(footer, Color(BACKDROP, 0.88))
+		draw_string(_font, Vector2(48, size.y - 17.0), HINT_TEXT, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, UiStyle.TEXT_DIM)
+		if not count_noun.is_empty():
+			var count_text := _count_text()
+			var width := _font.get_string_size(count_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 20).x
+			draw_string(_font, Vector2(size.x - 48.0 - width, size.y - 16.0), count_text, HORIZONTAL_ALIGNMENT_LEFT, -1,
+					20, UiStyle.GOLD)
+	draw_string(_font, Vector2(48, 64), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 40, UiStyle.TEXT)
+	var points_text := "%d %s%s to spend" % [tree.points, points_noun, "" if tree.points == 1 else "s"]
+	_draw_art(TreeArt.icon(&"star"), Vector2(46, 78), Color.WHITE, TreeArt.SCALE)
+	draw_string(_font, Vector2(80, 104), points_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 24, UiStyle.GOLD)
+	if not subtitle.is_empty():
+		draw_multiline_string(_font, Vector2(48, 138), subtitle, HORIZONTAL_ALIGNMENT_LEFT, size.x - 96.0, 18, -1,
+				UiStyle.TEXT_DIM)
 
 
-## Draws a texture at art scale with its top left corner at the given point.
-func _draw_art(texture: Texture2D, top_left: Vector2, tint := Color.WHITE) -> void:
+## "12 of 173 talents taken", not counting the start.
+func _count_text() -> String:
+	var total := tree.graph.size() - (0 if tree.graph.start_id.is_empty() else 1)
+	var taken := tree.allocated_ids().size() - (0 if tree.graph.start_id.is_empty() else 1)
+	return "%d of %d %s taken" % [taken, total, count_noun]
+
+
+func _snap(point: Vector2, art := -1.0) -> Vector2:
+	var step := _art if art <= 0.0 else art
+	return (point / step).round() * step
+
+
+## Draws a texture at art scale with its top left corner at the given point. The tree's sprites
+## follow the zoom; pass TreeArt.SCALE for interface art that keeps its size.
+func _draw_art(texture: Texture2D, top_left: Vector2, tint := Color.WHITE, art := -1.0) -> void:
 	if texture != null:
-		draw_texture_rect(texture, Rect2(_snap(top_left), texture.get_size() * TreeArt.SCALE), false, tint)
+		var step := _art if art <= 0.0 else art
+		draw_texture_rect(texture, Rect2(_snap(top_left, step), texture.get_size() * step), false, tint)
 
 
 ## Draws a texture at art scale centred on a point.
-func _draw_art_centered(texture: Texture2D, center: Vector2, tint := Color.WHITE) -> void:
+func _draw_art_centered(texture: Texture2D, center: Vector2, tint := Color.WHITE, art := -1.0) -> void:
 	if texture != null:
-		_draw_art(texture, center - texture.get_size() * TreeArt.SCALE * 0.5, tint)
+		var step := _art if art <= 0.0 else art
+		_draw_art(texture, center - texture.get_size() * step * 0.5, tint, step)
 
 
 func _draw_backdrop() -> void:
@@ -346,7 +614,7 @@ func _draw_backdrop() -> void:
 	var fit := maxf(size.x / backdrop.get_width(), size.y / backdrop.get_height())
 	var art_scale := maxf(TreeArt.SCALE, ceilf(fit))
 	var drawn := backdrop.get_size() * art_scale
-	draw_texture_rect(backdrop, Rect2(_snap((size - drawn) * 0.5), drawn), false)
+	draw_texture_rect(backdrop, Rect2(_snap((size - drawn) * 0.5, TreeArt.SCALE), drawn), false)
 
 
 ## A soft glow in each region's colour behind its nodes.
@@ -356,30 +624,32 @@ func _draw_auras() -> void:
 		return
 	var sums: Dictionary[StringName, Vector2] = {}
 	var counts: Dictionary[StringName, int] = {}
+	var taken: Dictionary[StringName, int] = {}
 	for id in tree.graph.ids():
 		var data := tree.graph.node(id)
-		if regions.has(data.region):
-			sums[data.region] = sums.get(data.region, Vector2.ZERO) + _to_screen(data.position)
+		if regions.has(data.region) and regions[data.region].aura:
+			sums[data.region] = sums.get(data.region, Vector2.ZERO) + data.position
 			counts[data.region] = counts.get(data.region, 0) + 1
+			if tree.is_allocated(id):
+				taken[data.region] = taken.get(data.region, 0) + 1
+	# On a big tree each region's glow is drawn larger, to cover its spread-out nodes.
+	var glow_art := _art * (2.0 if navigable else 1.0)
 	for region_id in sums:
-		var center: Vector2 = sums[region_id] / counts[region_id]
-		var taken := 0
-		for id in tree.graph.ids():
-			var data := tree.graph.node(id)
-			if data.region == region_id and tree.is_allocated(id):
-				taken += 1
-		var strength := 0.07 + 0.1 * minf(1.0, taken / 3.0)
-		_draw_art_centered(aura, center, Color(regions[region_id].color, strength))
+		var center := _to_screen(sums[region_id] / counts[region_id])
+		var strength := 0.07 + 0.1 * minf(1.0, taken.get(region_id, 0) / 3.0)
+		_draw_art_centered(aura, center, Color(regions[region_id].color, strength), glow_art)
 
 
 ## Faint dotted circles around the start, like an astrolabe.
 func _draw_rings() -> void:
 	var center := _to_screen(Vector2.ZERO)
-	for ring in 3:
-		var radius := (130.0 + ring * 125.0) * _scale
+	for ring in ring_radii.size():
+		var radius := ring_radii[ring] * _scale
 		var dots := int(TAU * radius / 14.0)
 		for i in dots:
-			var at := _snap(center + Vector2.from_angle(TAU * i / dots + ring * 0.3) * radius)
+			var at := _snap(center + Vector2.from_angle(TAU * i / dots + ring * 0.3) * radius, 2.0)
+			if at.x < -4.0 or at.y < -4.0 or at.x > size.x or at.y > size.y:
+				continue
 			draw_rect(Rect2(at, Vector2(2, 2)), Color(0.6, 0.66, 0.9, 0.09 if i % 4 else 0.16))
 
 
@@ -388,7 +658,7 @@ func _draw_stars() -> void:
 	for star in _stars:
 		var shine := pow(maxf(0.0, sin(_time * (0.6 + star.z * 0.2) + star.z * 7.0)), 8.0)
 		if shine > 0.03:
-			_draw_art_centered(sparkle, Vector2(star.x, star.y) * size, Color(0.8, 0.86, 1.0, shine * 0.7))
+			_draw_art_centered(sparkle, Vector2(star.x, star.y) * size, Color(0.8, 0.86, 1.0, shine * 0.7), TreeArt.SCALE)
 
 
 ## The colour a node shows: its region's, warm white for the start, gold for keystones.
@@ -398,7 +668,8 @@ func _node_color(data: TreeNodeData) -> Color:
 	return _colors(data)[0]
 
 
-func _draw_links(path: Array[StringName]) -> void:
+func _draw_links(path: Array[StringName], view: Rect2) -> void:
+	var width := maxf(1.0, _art)
 	for id in tree.graph.ids():
 		for other in tree.graph.neighbours(id):
 			if String(other) < String(id):
@@ -411,18 +682,21 @@ func _draw_links(path: Array[StringName]) -> void:
 				far = swap
 			var a := _snap(_to_screen(near.position))
 			var b := _snap(_to_screen(far.position))
-			draw_line(a, b, LINK_GROOVE, 8.0)
+			if not view.intersects(Rect2(a, Vector2.ZERO).expand(b)):
+				continue
+			draw_line(a, b, LINK_GROOVE, width * 4.0)
 			var near_taken := tree.is_allocated(near.id)
 			var far_taken := tree.is_allocated(far.id)
 			if near_taken and far_taken:
 				var color := _node_color(near).lerp(_node_color(far), 0.5)
-				draw_line(a, b, color.darkened(0.45), 4.0)
-				draw_line(a, b, color.lightened(0.1), 2.0)
+				draw_line(a, b, color.darkened(0.45), width * 2.0)
+				draw_line(a, b, color.lightened(0.1), width)
 				_draw_motes(a, b, color)
 			else:
-				draw_line(a, b, LINK_NEAR if near_taken or far_taken else LINK_OPEN, 2.0)
+				draw_line(a, b, LINK_NEAR if near_taken or far_taken else LINK_OPEN, width)
 	for i in range(1, path.size()):
-		draw_dashed_line(_snap(screen_position(path[i - 1])), _snap(screen_position(path[i])), LINK_PATH, 4.0, 10.0)
+		draw_dashed_line(_snap(screen_position(path[i - 1])), _snap(screen_position(path[i])), LINK_PATH, width * 2.0,
+				10.0)
 
 
 ## Specks of light running outward along a taken link.
@@ -431,17 +705,19 @@ func _draw_motes(a: Vector2, b: Vector2, color: Color) -> void:
 	if length < 1.0:
 		return
 	var count := maxi(1, int(length / 70.0))
+	var side := _art * 2.0
 	for i in count:
 		var t := fposmod(_time * 45.0 / length + float(i) / count, 1.0)
 		var at := _snap(a.lerp(b, t))
-		draw_rect(Rect2(at - Vector2(2, 2), Vector2(4, 4)), Color(color.lightened(0.55), sin(t * PI) * 0.9))
+		draw_rect(Rect2(at - Vector2(side, side) * 0.5, Vector2(side, side)), Color(color.lightened(0.55), sin(t * PI) * 0.9))
 
 
 func _draw_region_labels() -> void:
 	for region_id in _label_spots:
 		var region := regions[region_id]
-		var at := _label_spots[region_id]
-		_draw_art(TreeArt.emblem(region_id), Vector2(at.x, at.y - 21.0), Color(region.color.lightened(0.35), 1.0))
+		var at := _to_screen(_label_spots[region_id])
+		_draw_art(TreeArt.emblem(region_id), Vector2(at.x, at.y - 21.0), Color(region.color.lightened(0.35), 1.0),
+				TreeArt.SCALE)
 		var text_at := Vector2(at.x + EMBLEM_GAP, at.y)
 		draw_string_outline(_font, text_at, region.display_name, HORIZONTAL_ALIGNMENT_LEFT, -1, LABEL_FONT_SIZE, 8,
 				BACKDROP)
@@ -452,11 +728,12 @@ func _draw_region_labels() -> void:
 func _draw_node(data: TreeNodeData) -> void:
 	var at := _snap(_to_screen(data.position))
 	var style := TreeArt.style(data)
-	var half: float = TreeArt.SIZES[style] * TreeArt.SCALE * 0.5
+	var half: float = TreeArt.SIZES[style] * _art * 0.5
 	var top_left := at - Vector2(half, half)
 	var taken := tree.is_allocated(data.id)
 	var open := tree.can_allocate(data.id)
 	var locked := tree.is_locked(data.id)
+	var closed := not taken and tree.is_excluded(data.id)
 	var colors := _colors(data)
 	if data.kind == TreeNodeData.Kind.START:
 		colors = [START_COLOR]
@@ -464,7 +741,7 @@ func _draw_node(data: TreeNodeData) -> void:
 	var lit := 0.5
 	var frame := 0.68
 	var mark := 0.6
-	if locked:
+	if locked or closed:
 		lit = 0.2
 		frame = 0.4
 		mark = 0.35
@@ -493,15 +770,15 @@ func _draw_node(data: TreeNodeData) -> void:
 	else:
 		_draw_art(TreeArt.texture("gem_" + style), top_left, _gem_tint(colors[0], lit))
 	if style == &"portrait":
-		var ring: float = TreeArt.RINGS[style] * TreeArt.SCALE
+		var ring: float = TreeArt.RINGS[style] * _art
 		_draw_art(TreeArt.portrait(data.unlocks_towers[0]), top_left + Vector2(ring, ring), Color(frame, frame, frame))
 	elif lit >= 0.7:
 		_draw_art(TreeArt.texture("shine_" + style), top_left, Color(1, 1, 1, lit * 0.9))
 	_draw_art(TreeArt.texture("frame_" + style), top_left, Color(frame, frame, frame))
 	if style != &"portrait":
 		_draw_art_centered(TreeArt.icon(TreeArt.node_icon(data)), at, Color(mark, mark, mark))
-	if locked:
-		_draw_art(TreeArt.icon(&"lock"), at + Vector2(half - 18.0, half - 20.0))
+	if locked or closed:
+		_draw_art(TreeArt.icon(&"lock"), at + Vector2(half - 9.0 * _art, half - 10.0 * _art))
 	if taken:
 		var glint := pow(maxf(0.0, sin(_time * 1.3 + seed * 40.0)), 14.0)
 		if glint > 0.05:
@@ -522,7 +799,7 @@ static func _gem_tint(color: Color, lit: float) -> Color:
 func _draw_brackets(center: Vector2, reach: float, color: Color) -> void:
 	var length := 10.0
 	for corner: Vector2 in [Vector2(-1, -1), Vector2(1, -1), Vector2(1, 1), Vector2(-1, 1)]:
-		var tip := _snap(center + corner * reach)
+		var tip := _snap(center + corner * reach, 2.0)
 		var across := Rect2(Vector2(tip.x - (length if corner.x > 0 else 0.0), tip.y - (2.0 if corner.y > 0 else 0.0)),
 				Vector2(length, 2))
 		var down := Rect2(Vector2(tip.x - (2.0 if corner.x > 0 else 0.0), tip.y - (length if corner.y > 0 else 0.0)),
@@ -533,16 +810,19 @@ func _draw_brackets(center: Vector2, reach: float, color: Color) -> void:
 
 func _draw_bursts() -> void:
 	for burst in _bursts:
+		if not tree.graph.has_node_id(burst["id"]):
+			continue
+		var data := tree.graph.node(burst["id"])
 		var t: float = burst["age"] / BURST_SECONDS
-		var at: Vector2 = burst["at"]
+		var at := screen_position(data.id)
 		var color: Color = burst["color"]
-		var radius: float = burst["radius"]
+		var radius := _radius(data)
 		var fade := 1.0 - t
 		draw_arc(at, radius + 6.0 + t * 46.0, 0.0, TAU, 48, Color(color.lightened(0.5), fade * 0.9), 4.0 * fade + 1.0)
 		for i in 12:
 			var direction := Vector2.from_angle(TAU * i / 12.0 + 0.26)
 			var reach := radius + t * (50.0 + (i % 3) * 18.0)
-			var spark := _snap(at + direction * reach)
+			var spark := _snap(at + direction * reach, 2.0)
 			var side := 6.0 if t < 0.4 else 4.0
 			draw_rect(Rect2(spark - Vector2(side, side) * 0.5, Vector2(side, side)), Color(color.lightened(0.6), fade))
 
@@ -566,9 +846,10 @@ func _draw_tooltip(data: TreeNodeData, path: Array[StringName]) -> void:
 	if picture != null:
 		height = maxf(height, picture.get_height() * TreeArt.SCALE + 36.0)
 	at.y = clampf(at.y, 16.0, size.y - height - 16.0)
-	at = _snap(at)
+	at = _snap(at, 2.0)
 	draw_style_box(_panel, Rect2(at, Vector2(width, height)))
-	_draw_art(TreeArt.icon(TreeArt.node_icon(data)), at + Vector2(16, 14), Color(_node_color(data).lightened(0.3), 1.0))
+	_draw_art(TreeArt.icon(TreeArt.node_icon(data)), at + Vector2(16, 14), Color(_node_color(data).lightened(0.3), 1.0),
+			TreeArt.SCALE)
 	draw_string(_font, at + Vector2(48, 34), data.display_name, HORIZONTAL_ALIGNMENT_LEFT, text_width - 64.0, 24,
 			UiStyle.TEXT)
 	var y := at.y + 64.0
@@ -580,8 +861,9 @@ func _draw_tooltip(data: TreeNodeData, path: Array[StringName]) -> void:
 	if picture != null:
 		var picture_size := picture.get_size() * TreeArt.SCALE
 		var spot := Vector2(at.x + text_width, at.y + (height - picture_size.y) * 0.5)
-		_draw_art_centered(TreeArt.texture("glow"), spot + picture_size * 0.5, Color(_node_color(data), 0.35))
-		_draw_art(picture, spot)
+		_draw_art_centered(TreeArt.texture("glow"), spot + picture_size * 0.5, Color(_node_color(data), 0.35),
+				TreeArt.SCALE)
+		_draw_art(picture, spot, Color.WHITE, TreeArt.SCALE)
 
 
 ## What clicking the node would do, or what stands in the way.
@@ -592,6 +874,9 @@ func _status(data: TreeNodeData, path: Array[StringName]) -> String:
 		return "Taken. Right-click to refund." if can_refund.call(data.id) else taken_text
 	if tree.is_locked(data.id):
 		return "Locked. Unlock it in the meta tree."
+	var closer := tree.excluded_by(data.id)
+	if not closer.is_empty():
+		return "Closed: you took %s instead. Refund it to choose this." % tree.graph.node(closer).display_name
 	if tree.can_allocate(data.id):
 		return "Click to take (%s)." % _points(data.cost)
 	if path.size() > 2:

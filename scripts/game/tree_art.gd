@@ -22,14 +22,14 @@ const ICON_SIZE := 12
 const EMBLEMS := {
 	&"fire": &"flame", &"storm": &"bolt", &"nature": &"leaf", &"water": &"drop", &"earth": &"rock",
 	&"void": &"spiral", &"arsenal": &"swords", &"command": &"crown", &"expeditions": &"flag",
-	&"mastery": &"book",
+	&"mastery": &"book", &"starpath": &"star",
 }
 ## Icons for stats, matched by the stat name. Whole names first, then words inside the name.
 const STAT_ICONS := {
 	&"damage": &"sword", &"attacks_per_second": &"speed", &"attack_range": &"range", &"cost": &"coin",
 	&"bounty_bonus": &"coin", &"gold_per_wave": &"coin", &"starting_gold": &"coin", &"sell_refund": &"coin",
 	&"starting_lives": &"heart", &"starting_tree_points": &"star", &"tree_points_per_boss": &"star",
-	&"knockback": &"push",
+	&"knockback": &"push", &"skill_cooldown": &"speed", &"skill_damage": &"burst",
 }
 const STAT_WORDS := {
 	"burn": &"flame", "poison": &"bubbles", "chain": &"bolt", "slow": &"snowflake", "freeze": &"snowflake",
