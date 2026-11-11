@@ -42,7 +42,8 @@ CINEMATICS = ROOT / "data" / "story" / "cinematics"
 VOICE_OUT = ROOT / "assets" / "story" / "voice"
 
 # Voice = weighted blend of Kokoro voice styles + delivery + mastering.
-# Optional keys: "semitones" (pitch shift; sounds robotic, avoid), "room" (hall wetness, default 0.16).
+# Optional keys: "semitones" (pitch shift; sounds robotic, avoid), "room" (hall wetness, default 0.16),
+# "rt60" (hall length in seconds, default 1.1).
 PRESETS = {
     # Low, calm, storybook-ancient. Kore is the lowest Kokoro female voice;
     # a little Nicole adds breath and intimacy.
@@ -58,7 +59,12 @@ PRESETS = {
     # The narrator (chosen by Doctor Paris, 2026-11-11): British, crisp, regal.
     "regal": {
         "voices": {"bf_emma": 0.6, "af_kore": 0.4},
-        "lang": "en-gb", "speed": 0.9,
+        "lang": "en-gb", "speed": 0.88, "room": 0.2, "rt60": 1.6,
+    },
+    # Warmer and more British, same cinematic hall: the other finalist.
+    "warm": {
+        "voices": {"bf_emma": 0.8, "af_kore": 0.2},
+        "lang": "en-gb", "speed": 0.9, "room": 0.2, "rt60": 1.6,
     },
 }
 
@@ -157,7 +163,8 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
     with tempfile.TemporaryDirectory() as tmp:
         x, sr = sf.read(wav_in)
         roomy = Path(tmp) / "room.wav"
-        sf.write(roomy, _room(x, sr, wet=preset.get("room", 0.16)), sr, subtype="FLOAT")
+        sf.write(roomy, _room(x, sr, rt60=preset.get("rt60", 1.1), wet=preset.get("room", 0.16)),
+                 sr, subtype="FLOAT")
         mastered = Path(tmp) / "m.wav"
         subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(roomy),
                         "-af", ",".join(filters), "-ac", "1", str(mastered)], check=True)
