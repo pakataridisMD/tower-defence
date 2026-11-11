@@ -14,6 +14,7 @@ import creatures  # noqa: E402
 import bosses  # noqa: E402,F401
 import wardens  # noqa: E402,F401
 import final_bosses  # noqa: E402,F401
+import people  # noqa: E402,F401
 
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf"
 GRASS = (58, 76, 52, 255)

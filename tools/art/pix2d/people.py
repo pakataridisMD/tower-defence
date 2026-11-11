@@ -137,9 +137,9 @@ BUILDS = {"normal": (1.0, 1.0), "tall": (0.95, 1.1), "lean": (0.9, 1.06), "wide"
 def figure(sp, pose=None, pad=0):
     """Draw one story character standing, facing right. Coordinates are written for a 52x60 canvas and scaled by build."""
     bx, by = BUILDS[sp.get("build", "normal")]
-    W, H = 60, 66
+    W, H = 60, 76
     s = Sprite(W, H, pose, pad)
-    cx, foot = 30, 61
+    cx, foot = 30, 71
 
     def X(x):
         return cx + (x - 26) * bx
@@ -231,7 +231,7 @@ def figure(sp, pose=None, pad=0):
         bd = R(sp.get("beard_col", sp.get("hair", "888888")))
         s.g("beard", X(28), Y(17), "head")
         ln = {"short": 3, "long": 12, "belt": 18}[sp["beard"]]
-        s.part(s.poly([(X(24), Y(15)), (X(31.5), Y(16)), (X(31), Y(19)), (X(29), Y(17 + ln)), (X(26), Y(17 + ln - 2)), (X(24), Y(19))]), bd)
+        s.part(s.poly([(X(24.5), Y(16)), (X(28), Y(16.5)), (X(31.5), Y(16.5)), (X(31), Y(19)), (X(29), Y(17 + ln)), (X(26), Y(17 + ln - 2)), (X(24), Y(19))]), bd)
         if sp.get("beard_rings"):
             for k in range(2, ln, 4):
                 s.px(X(28), Y(18 + k), R(sp["beard_rings"])[3])
@@ -265,11 +265,14 @@ def _hat(s, X, Y, rr, sp):
 
 def _crown(s, X, Y, rr, sp):
     c = R(sp.get("crown", "e0aa36"))
-    s.part(s.rect(X(22), Y(6), X(32), Y(9)), c, flat=True)
-    for x in (22, 25, 28, 31):
-        s.fill(s.poly([(X(x), Y(6)), (X(x + 1.5), Y(6)), (X(x + 0.7), Y(3))]), c[3])
+    s.part(s.rect(X(21.5), Y(6), X(32.5), Y(9.5)), c, flat=True)
+    for i, x in enumerate((21.5, 24.5, 27.5, 30.5)):
+        s.part(s.poly([(X(x), Y(6.5)), (X(x + 2), Y(6.5)), (X(x + 1), Y(0 if i in (1, 2) else 2))]), c, flat=True, edge=False)
     if sp.get("crown_gem"):
-        s.px(X(27), Y(7), sp["crown_gem"], glow=True)
+        s.px(X(27), Y(8), sp["crown_gem"], glow=True)
+    if sp.get("sockets"):
+        for x in (23, 25, 27, 29, 31):
+            s.px(X(x), Y(8), (8, 6, 12))
 
 
 def _circlet(s, X, Y, rr, sp):
@@ -300,8 +303,8 @@ HEADGEAR = {"hat": _hat, "crown": _crown, "circlet": _circlet, "hood": _hood, "h
 
 # ---- signature extras -----------------------------------------------------------------------------------------------
 def _war_paint(s, X, Y, rr):
-    s.line(X(28), Y(11), X(31), Y(14), (250, 250, 255))
-    s.line(X(26), Y(13), X(28), Y(16), (250, 250, 255))
+    s.line(X(27), Y(15), X(29), Y(15.5), (250, 250, 255))
+    s.px(X(31), Y(13), (250, 250, 255))
 
 
 def _door_shield(s, X, Y, rr):
@@ -354,6 +357,7 @@ SPECS = {
     "ilyra": dict(name="Ilyra the Unbroken", build="slight", top="2a3458", body="robe", hair="f0f0f4", hair_style="long",
                   item="astrolabe", chest=_black_veins, eye=(150, 140, 230), eye_glow=True, skin="dcc4b8"),
     "seraphel": dict(name="Seraphel the Dawnblade", build="tall", top="e8dcb0", top_d="b8a880", body="armour", hair="9a9a9a",
+                     legs="c8b888", boots="a89060",
                      item="greatsword", eye=(255, 210, 90), eye_glow=True, skin="d8a884"),
     "oswin_grey": dict(name="Oswin, the Grey Lantern", build="tall", top="7a7a80", body="robe", trim="5a5a60", hair="e0e0e0",
                        hair_style="long", beard="long", beard_col="e8e8e8", headgear="hat", item="lantern_staff", skin="dcb494"),
@@ -369,7 +373,8 @@ SPECS = {
     "cassivane_marshal": dict(name="Cassivane Dral, Lord Marshal", build="huge", top="a8a8b0", body="armour", tabard="9a2424",
                               cloak="8a1f26", hair="5a5050", beard="short", beard_col="c0c0c4", item="locket", skin="d8a888"),
     "vael_orrun_king": dict(name="Vael-Orrun, the High King", build="tall", top="1c1a24", body="robe", trim="3a3648", hair="1c1a24",
-                            hair_style="long", headgear="crown", crown="2a2832", skin="d8d0c8", eye=(20, 20, 24)),
+                            hair_style="long", headgear="crown", crown="4a4656", sockets=True, skin="d8d0c8",
+                            eye=(20, 20, 24)),
     # the Wardens as mortal monarchs, for the prologue's history shots
     "ignar_king": dict(name="Ignar the Forge-King", build="huge", top="6a3a28", body="armour", hair="2a1a14", beard="long",
                        beard_col="2a1a14", headgear="crown", crown="3a3638", crown_gem=(255, 120, 40), item="hammer", skin="c88a64"),
@@ -384,10 +389,275 @@ SPECS = {
     "nyxara_queen": dict(name="Nyxara the Star-Queen", build="tall", top="2a2240", body="gown", trim="8a6ad0", hair="1a1424",
                          hair_style="long", headgear="hood", hood="1a1424", crown_gem=(230, 230, 255), skin="1a1424",
                          eye=(230, 230, 255), eye_glow=True),
+    # Wardens that read as people in a portrait
+    "elowen_warden": dict(name="Elowen the Evergreen", build="slight", top="5a4632", body="gown", trim="80a050", hair="f4f0ec",
+                          hair_style="long", skin="8a6a48", eye=(150, 230, 120), eye_glow=True),
+    "thalassa_warden": dict(name="Thalassa of the Deep", build="tall", top="2a8a8a", body="gown", trim="c09040", hair="1a4a5a",
+                            hair_style="long", skin="8ad0d0", eye=(220, 255, 255), eye_glow=True),
 }
 SPECS["gorrim"]["chest"] = _door_shield
 SPECS["orrok_king"]["chest"] = _door_shield
 SPECS["brannoc"]["after"] = _ember_arm
+
+
+# ---- portraits ------------------------------------------------------------------------------------------------------
+ACCENT = {"tamsin": "d8a040", "brannoc": "e0602a", "kaela": "8aa0e0", "sylvaine": "60a040", "mirelle": "40b0b0",
+          "gorrim": "b07030", "corvin": "8a60d0", "ilyra": "7a70e0", "seraphel": "f0d070", "oswin_grey": "d8a040",
+          "oswin_white": "f0f0ff", "ysolde": "e0c060", "ysolde_blind": "a0a0a8", "fennick": "c09040",
+          "cassivane_marshal": "b03030", "elowen_warden": "60a040", "thalassa_warden": "40b0b0", "vael_orrun_king": "605a70", "ignar_king": "e0602a", "aurath_king": "8aa0e0",
+          "elowen_queen": "60a040", "thalassa_queen": "40b0b0", "orrok_king": "b07030", "nyxara_queen": "8a60d0"}
+
+
+def _p_hair_back(s, sp, hair):
+    hs = sp.get("hair_style", "short")
+    if hs == "long":
+        s.part(s.poly([(34, 30), (44, 20), (58, 20), (60, 34), (54, 60), (46, 80), (32, 82), (30, 56)]), hair)
+        s.line(38, 40, 36, 78, hair[1])
+        s.line(44, 44, 42, 78, hair[3])
+    elif hs == "braid":
+        for k in range(5):
+            s.part(s.ellipse(37 - k * 1.2, 56 + k * 7, 4.2, 4.6), hair)
+        s.part(s.ellipse(32, 92, 2, 3), GOLD)
+
+
+def _p_hair_front(s, sp, hair):
+    hs = sp.get("hair_style", "short")
+    if hs == "bald":
+        s.pxs([(44, 26), (45, 25), (46, 25)], (255, 240, 220))
+        return
+    s.part(s.poly([(30, 44), (30, 30), (38, 20), (50, 16), (62, 19), (67, 28), (60, 26), (52, 26), (44, 30), (38, 38), (37, 50)]), hair)
+    s.line(42, 22, 36, 36, hair[3])
+    s.line(52, 19, 46, 27, hair[3])
+
+
+def _p_beard(s, sp):
+    bd = R(sp.get("beard_col", sp.get("hair", "888888")))
+    ln = {"short": 6, "long": 26, "belt": 30}[sp["beard"]]
+    s.part(s.poly([(38, 48), (44, 52), (54, 54), (62, 52), (65, 52), (64, 58), (60, 63 + ln * 0.3), (52, 63 + ln), (42, 60 + ln * 0.6), (37, 54)]), bd)
+    s.fill(s.rect(55, 55, 61, 57), (60, 40, 40))                                                     # mouth in the beard
+    s.line(46, 56, 48, 56 + ln * 0.6, bd[1])
+    s.line(56, 56, 54, 56 + ln * 0.8, bd[3])
+    if sp.get("beard_rings"):
+        rc = R(sp["beard_rings"])
+        for k in range(10, int(ln) + 6, 8):
+            s.fill(s.rect(50, 52 + k, 56, 54 + k), rc[3])
+            s.line(50, 54 + k, 56, 54 + k, rc[1])
+
+
+def _p_headgear(s, sp):
+    hd = sp.get("headgear")
+    if hd == "hat":
+        c = R(sp.get("hat", "7a7a80"))
+        s.part(s.ellipse(50, 24, 30, 5), c, flat=True)
+        s.part(s.poly([(36, 24), (64, 24), (60, 6), (52, 0), (42, 4)]), c)
+        s.line(37, 21, 63, 21, c[0])
+    elif hd == "crown":
+        c = R(sp.get("crown", "e0aa36"))
+        s.part(s.poly([(34, 22), (66, 20), (66, 26), (34, 28)]), c, flat=True)
+        for x in (34, 41, 48, 55, 62):
+            s.part(s.poly([(x, 23), (x + 4, 23), (x + 2, 12)]), c, flat=True, edge=False)
+        if sp.get("crown_gem"):
+            s.fill(s.ellipse(50, 24, 2, 2), sp["crown_gem"], glow=True)
+    elif hd in ("circlet", "blindfold"):
+        s.line(36, 24, 66, 22, (220, 220, 232))
+        for i, x in enumerate((40, 45, 50, 55, 60, 64)):
+            s.px(x, 22 - (1 if i % 2 else 0), RING[i], glow=True)
+        if hd == "blindfold":
+            s.part(s.poly([(34, 33), (68, 32), (68, 40), (34, 41)]), R("1e1a20"), flat=True)
+            s.line(40, 36, 64, 35, GOLD[2])
+            s.pxs([(44, 36), (52, 35), (60, 35)], GOLD[3])
+    elif hd == "hood":
+        c = R(sp.get("hood", sp.get("cloak", sp["top"])), spread=0.42)
+        s.part(s.poly([(28, 64), (28, 30), (38, 14), (54, 10), (68, 18), (72, 34), (66, 26), (54, 22), (42, 28), (38, 44), (40, 64)]), c)
+        s.line(66, 26, 70, 40, c[0])
+
+
+FEMALE = {"elowen_warden", "thalassa_warden", "tamsin", "kaela", "sylvaine", "mirelle", "ilyra", "seraphel", "ysolde", "ysolde_blind", "elowen_queen",
+          "thalassa_queen", "nyxara_queen"}
+OLD = {"elowen_warden", "oswin_grey", "oswin_white", "fennick", "gorrim", "brannoc", "cassivane_marshal", "orrok_king"}
+
+
+def portrait(cid, pose=None, pad=0):
+    """A 96x96 bust, facing three-quarters right, on a dark vignette of the character's colour."""
+    sp = SPECS[cid]
+    s = Sprite(96, 96, pose, pad)
+    acc = R(ACCENT.get(cid, "8a8a8a"), spread=0.4)
+    # backdrop: a dark disc in the character's colour, ringed
+    bg = s.ellipse(48, 48, 46, 46)
+    s.fill(bg, tuple(int(c * 0.28) for c in acc[1]))
+    s.fill(s.ellipse(40, 36, 30, 30) & bg, tuple(int(c * 0.4) for c in acc[2]))
+    s.fill(bg & ~s.ellipse(48, 48, 44.5, 44.5), acc[2])
+    base_a = s.a.copy()
+    s.a[:] = False
+    skin = R(sp.get("skin", "e2b08a"), shift=0.02)
+    top, trim = R(sp["top"]), R(sp.get("trim", "e0aa36"))
+    hair = R(sp["hair"]) if sp.get("hair") else None
+    if sp.get("cloak"):
+        c = R(sp["cloak"], spread=0.42)
+        s.part(s.poly([(4, 96), (10, 74), (26, 66), (70, 66), (88, 74), (94, 96)]), c, bias=-0.1)
+    if hair is not None:
+        _p_hair_back(s, sp, hair)
+    s.part(s.capsule(45, 78, 46, 60, 9.5, 8.5), skin, bias=-0.4)                                     # neck
+    # shoulders and chest
+    s.part(s.poly([(8, 96), (14, 82), (30, 72), (62, 72), (82, 80), (90, 96)]), top)
+    body = sp.get("body")
+    if body == "armour":
+        s.part(s.ellipse(22, 80, 16, 11), top)
+        s.part(s.ellipse(78, 82, 12, 9), top, bias=-0.1)
+        s.line(10, 86, 34, 88, trim[3])
+        s.line(48, 76, 50, 96, top[4])
+    else:
+        s.part(s.poly([(36, 70), (60, 70), (50, 90)]), top, bulge=0.4, bias=-0.1)
+        s.line(36, 70, 50, 90, trim[3])
+        s.line(60, 70, 50, 90, trim[2])
+    s.part(s.poly([(30, 72), (40, 70), (46, 76), (54, 70), (64, 72), (60, 78), (46, 82), (34, 78)]), top, bias=0.05)
+    s.line(40, 71, 46, 77, trim[3])
+    s.line(46, 77, 54, 71, trim[2])
+    if sp.get("tabard"):
+        tb = R(sp["tabard"])
+        s.part(s.poly([(38, 80), (62, 80), (64, 96), (36, 96)]), tb, bulge=0.4)
+        s.fill(s.rect(47, 84, 53, 92), trim[3])
+        s.fill(s.rect(48, 85, 52, 91), trim[1])
+    if sp.get("portrait_chest"):
+        sp["portrait_chest"](s, sp)
+    # neck, ear, head: one rounded profile shape, three-quarters right, with brow, nose and chin
+    fem = cid in FEMALE
+    if fem:       # a softer, narrower jaw and a smaller nose
+        head = [(31, 34), (36, 24), (46, 19), (58, 20), (63, 27), (65, 36), (68, 45), (65, 48), (64, 52), (62, 56), (57, 61),
+                (49, 64), (39, 59), (32, 50)]
+    else:
+        head = [(31, 34), (36, 24), (46, 19), (58, 20), (64, 27), (66, 36), (70, 46), (66, 49), (65, 53), (64, 58), (60, 64),
+                (48, 66), (37, 61), (32, 50)]
+    s.part(s.poly(head), skin, bulge=0.75, bias=0.1)
+    s.part(s.ellipse(35, 44, 3.6, 5.4), skin, bias=-0.05)
+    s.line(35, 42, 35, 47, skin[1])
+    s.line(66, 37, 69, 45, skin[4])                                                                   # light on the nose
+    s.pxs([(65, 48), (66, 48), (64, 47)], skin[0])
+    # face: brows, eyes, mouth
+    eye = sp.get("eye", (52, 40, 40))
+    glow = bool(sp.get("eye_glow"))
+    for ex, w in ((49, 5), (60, 3)):
+        s.line(ex - 1, 32, ex + w, 31, hair[1] if hair is not None else skin[1])
+        s.fill(s.rect(ex, 35, ex + w, 38), (240, 236, 228))
+        s.fill(s.rect(ex + w - 2, 35, ex + w, 38), eye, glow=glow)
+        s.px(ex + w - 2, 35, (255, 255, 255), glow=True)
+        s.line(ex, 34, ex + w, 34, (40, 28, 30))
+    if fem:
+        s.line(56, 55, 61, 54, (170, 70, 70))
+        s.line(57, 56, 60, 56, (200, 110, 100))
+        for ex, w in ((49, 5), (60, 3)):
+            s.px(ex + w + 1, 34, (40, 28, 30))                                                       # lashes
+    else:
+        s.line(56, 56, 62, 55, (150, 80, 70))
+        s.px(58, 57, skin[1])
+    if cid in OLD:
+        s.line(66, 40, 63, 42, skin[1])
+        s.line(52, 41, 56, 42, skin[1])
+        s.line(60, 50, 58, 54, skin[1])
+        s.line(40, 28, 46, 27, skin[1])
+    s.line(50, 63, 56, 62, skin[1])                                                                   # under the chin
+    if sp.get("portrait_face"):
+        sp["portrait_face"](s, sp)
+    if sp.get("beard"):
+        _p_beard(s, sp)
+    if hair is not None and sp.get("headgear") != "hood":
+        _p_hair_front(s, sp, hair)
+    elif sp.get("hair_style") == "bald":
+        _p_hair_front(s, sp, skin)
+    _p_headgear(s, sp)
+    s.ink(INKP)
+    # put the backdrop back under the figure
+    fig = s.a.copy()
+    keep = base_a & ~fig
+    s.a |= base_a
+    s.rgb[keep] = s.rgb[keep]
+    return _composite_bg(s, base_a, fig, acc)
+
+
+def _composite_bg(s, base_a, fig, acc):
+    # redraw the backdrop where the figure is not, and clip the figure to the disc
+    rgb = s.rgb.copy()
+    bg = Sprite(96, 96)
+    m = bg.ellipse(48, 48, 46, 46)
+    bg.fill(m, tuple(int(c * 0.28) for c in acc[1]))
+    bg.fill(bg.ellipse(40, 36, 30, 30) & m, tuple(int(c * 0.4) for c in acc[2]))
+    out = bg.rgb.copy()
+    out[fig & m] = rgb[fig & m]
+    ring = m & ~bg.ellipse(48, 48, 44.5, 44.5)
+    out[ring] = acc[2]
+    s.rgb = out
+    s.a = m.copy()
+    s.glow &= m
+    return s
+
+
+def _pf_paint(s, sp):
+    s.line(56, 44, 62, 45, (250, 250, 255))
+    s.line(64, 42, 66, 45, (250, 250, 255))
+    s.line(46, 42, 50, 47, (250, 250, 255))
+
+
+def _pf_freckles(s, sp):
+    for x, y in ((56, 44), (59, 45), (62, 43), (46, 44), (49, 45)):
+        s.px(x, y, (255, 210, 110), glow=True)
+
+
+def _pf_broken_nose(s, sp):
+    s.pxs([(65, 41), (66, 43), (64, 44)], R(sp["skin"])[0])
+    s.line(46, 30, 52, 40, (200, 120, 110))                                                        # scar
+
+
+def _pf_scar_brow(s, sp):
+    s.line(60, 29, 63, 36, (220, 200, 200))
+
+
+def _pf_spectacles(s, sp):
+    for x in (44, 56):
+        ring = s.ellipse(x, 22, 4, 3) & ~s.ellipse(x, 22, 2.6, 1.8)
+        s.fill(ring, (200, 170, 90))
+        s.fill(s.ellipse(x, 22, 2.4, 1.6), (200, 230, 240))
+    for side in ((30, 40, 36, 58), (64, 40, 66, 52)):
+        s.part(s.poly([(side[0], side[1]), (side[2], side[1] - 2), (side[2] + 2, side[3]), (side[0] + 2, side[3])]), R("f0f0f0"))
+
+
+def _pf_ember_runes(s, sp):
+    for x, y in ((18, 86), (24, 90), (14, 92)):
+        s.px(x, y, (255, 150, 50), glow=True)
+
+
+def _pf_veins(s, sp):
+    for x0, y0, x1, y1 in ((40, 62, 44, 74), (56, 64, 54, 72)):
+        s.line(x0, y0, x1, y1, (50, 40, 80))
+    s.px(42, 68, (200, 200, 255), glow=True)
+
+
+def _pf_starface(s, sp):
+    s.fill(s.ellipse(52, 42, 14, 17), (16, 12, 26))
+    rng = np.random.default_rng(1)
+    for _ in range(18):
+        s.px(int(rng.integers(42, 64)), int(rng.integers(28, 56)), (230, 228, 255), glow=True)
+
+
+def _pf_grey(s, sp):
+    pass
+
+
+def _pf_blossoms(s, sp):
+    for x, y in ((34, 24), (42, 18), (52, 16), (60, 20), (30, 34), (32, 50), (28, 62)):
+        s.pxs([(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)], (255, 255, 255))
+        s.px(x, y, (240, 220, 120))
+
+
+def _pf_bells(s, sp):
+    for x, y in ((32, 50), (36, 64), (30, 72), (40, 76)):
+        s.fill(s.poly([(x - 1, y), (x + 1, y), (x + 3, y + 4), (x - 3, y + 4)]), (196, 150, 70))
+        s.px(x, y + 5, (110, 80, 40))
+
+
+PORTRAIT_EXTRAS = {"elowen_warden": _pf_blossoms, "thalassa_warden": _pf_bells, "kaela": _pf_paint, "sylvaine": _pf_freckles, "tamsin": _pf_broken_nose, "corvin": _pf_scar_brow,
+                   "fennick": _pf_spectacles, "brannoc": _pf_ember_runes, "ilyra": _pf_veins, "nyxara_queen": _pf_starface}
+for _k, _f in PORTRAIT_EXTRAS.items():
+    SPECS[_k]["portrait_face"] = _f
 
 
 def _make(cid):
