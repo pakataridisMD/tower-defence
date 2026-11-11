@@ -9,38 +9,38 @@
 script = ExtResource("tower")
 id = &"aurath"
 display_name = "Aurath"
-description = "Lightning that leaps to every enemy nearby."
+description = "Lightning that leaps through three enemies."
 elements = Array[StringName]([&"storm"])
 tags = Array[StringName]([&"hero"])
 cost = 1
-damage = 30.0
-attacks_per_second = 1.2
-attack_range = 200.0
-chain_range = 200.0
-chain_falloff = 0.05
-chain_count = 8
+damage = 6.0
+attacks_per_second = 0.9
+attack_range = 170.0
+chain_range = 140.0
+chain_falloff = 0.15
+chain_count = 2
 
 [sub_resource type="Resource" id="S2"]
 script = ExtResource("ability")
 display_name = "Skyfall"
 description = "A season of held-back storm let go at once: lightning strikes every enemy on the board."
-cooldown = 75.0
+cooldown = 130.0
 target = 2
-damage = 140.0
+damage = 15.0
 
 [sub_resource type="Resource" id="S3"]
 script = ExtResource("ability")
 display_name = "Skyfall"
 description = "Lightning strikes every enemy on the board, twice."
-cooldown = 75.0
+cooldown = 130.0
 target = 2
 strikes = 2
-damage = 140.0
+damage = 15.0
 
 [sub_resource type="Resource" id="S4"]
 script = ExtResource("mod")
 stat = &"chain_count"
-value = 2.0
+value = 1.0
 required_tags = Array[StringName]([&"storm"])
 
 [resource]
@@ -54,7 +54,7 @@ element = &"storm"
 joins_after = &"storm_4"
 attack = SubResource("S1")
 aura = Array[ExtResource("mod")]([SubResource("S4")])
-aura_text = "Storm towers jump to 2 more enemies"
+aura_text = "Storm towers jump to 1 more enemy"
 ability = SubResource("S2")
 ultimate = SubResource("S3")
 ultimate_text = "Strikes twice"
