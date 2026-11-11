@@ -67,7 +67,7 @@ cin("prologue", "The Last Lantern", "Before the first stage. The opening story v
          "across from Earth, Nature across from Void. The High King is flung out through the edge of a "
          "starfield into darkness."),
     shot("They could not kill him. So they locked the door with his own crown, and gave their lives to hold "
-         "it. On the ruins of his city, we built Solenne.\n\nMy city.",
+         "it. On the ruins of his city, we built Solenne.\n\nMy city. That is how the songs tell it.",
          "The crown shattering into a six-coloured crystal, the Heartstone. The six monarchs fading into a "
          "volcano, a storm, a tree, a sea, a mountain, a starless sky. Then dawn over Solenne: six white "
          "walls rising on black ruins, the Heartstone glowing at the centre, the golden Sunstone above."),
@@ -402,9 +402,27 @@ cin("convergence_intro", "The Convergence", "Before Shattered Crossroads (Conver
     shot("So the Wardens walked to Solenne.",
          "Six vast figures walking across the plains toward the city, each glowing its own colour: Ignar, "
          "Aurath, Elowen, Thalassa, Orrok, Nyxara. Refugees stop to watch them pass."),
-    shot("We held each other once, little Queen. We will hold your walls.",
-         "The six Wardens standing in a ring around the outer walls of Solenne, the Heartstone pulsing.",
-         speaker="ignar"),
+    shot("We will hold your walls, little Queen. But before we do, you should know whose walls they are.",
+         "The six Wardens standing in a ring around the outer walls of Solenne, the Heartstone pulsing. Ignar "
+         "kneels to the blind Queen.", speaker="ignar"),
+    shot("I gave away my forgetting. So I remember. Vael-Orrun kept the peace between us for forty years. We "
+         "feared his alchemy, and we wanted his gold.",
+         "Flashback, painted like an old fresco: a young, kind-faced king in grey at a long feast table "
+         "between six crowned monarchs, his Tidefolk queen and small son beside him. Everyone is smiling.",
+         speaker="thalassa"),
+    shot("They came to his feast as friends. At midnight they opened his gates. His city burned, and his "
+         "wife and his son burned with it.\n\nThe songs call it the Siege of Vael. The Wardens call it the "
+         "Night of Six Knives.",
+         "The fresco catches fire: the black city of Vael burning at night, soldiers of six colours in the "
+         "gates; the king on his knees in the ashes of the feast hall, holding a ring."),
+    shot("He did not begin as a tyrant. We made him one. And something was waiting in the dark to finish "
+         "the work.",
+         "Nyxara, the stars in her face dim, turning away. Behind her, deep in the stars, a patch of sky with "
+         "no stars in it at all.", speaker="nyxara"),
+    shot("The songs had lied for two thousand years. It did not change what we had to do.\n\nIt only "
+         "changed how it felt.",
+         "Ysolde alone in the Hall of the Ring, her hand on the Heartstone, which is warm, like a crown just "
+         "taken off."),
     shot("The Lord Marshal's army was camped at Crossmere, where every road on the Ring meets. That was "
          "where we went to meet him.",
          "Crossmere, a crossroads town at night, ringed by a grey war camp. Cassivane's standard: a red field, "
@@ -540,9 +558,9 @@ cin("crownless_throne", "The Crownless Throne",
     shot("He had no throne. He would not sit on anything that was not the centre of the world.",
          "A vast empty hall with no floor. In the middle, standing on nothing: a figure of black glass with a "
          "crown-shaped gap for a face, the Heartstone's stolen light caught in its chest."),
-    shot("Six of you. Always six. Do you know how tired I am of six?",
-         "Vael-Orrun turning toward the army; cracks in its glass bleeding red, then blue, then green.",
-         speaker="vael_orrun"),
+    shot("Six of you. Always six. You wear their crowns, little Queen. Ask them what they did at my table.",
+         "Vael-Orrun turning toward the army and the six Wardens; cracks in its glass bleeding red, then "
+         "blue, then green.", speaker="vael_orrun"),
     shot("Mirelle had seen a death at the end of the war. She told me later what it was.\n\nIt was the "
          "Seventh's.",
          "Mirelle at the edge of the hall, blind eyes glowing teal, a small smile."),
@@ -555,6 +573,13 @@ cin("epilogue", "The Seventh Colour", "After the final assault is won. Then the 
     shot("And Oswin set his lantern in the empty crown.",
          "Oswin stepping into the ring and placing the white lantern into the crown-shaped gap. Light floods "
          "the black glass from the inside."),
+    shot("For a moment, in the light, he was a man again. Grey, and tired, and much younger than I had "
+         "imagined.",
+         "Inside the light: Vael-Orrun as he was, the kind-faced king in grey, holding his wife's ring. His "
+         "eyes are not grey. They are only tired."),
+    shot("It was never my voice in the dark. It spoke to me too.\n\nIt is still listening.",
+         "Vael-Orrun looking past the Wardens, past the heroes, at something behind the camera.",
+         speaker="vael_orrun"),
     shot("We did not kill him. I do not think he could be killed. He wanted the middle of the world, so we "
          "gave it to him. Not as its king.\n\nAs its light.",
          "Vael-Orrun cracking apart into pure white light, which rises, and the black sun above the citadel "
@@ -571,8 +596,12 @@ cin("epilogue", "The Seventh Colour", "After the final assault is won. Then the 
          "felt every one of them.",
          "Ysolde, older, grey hair, still blindfolded, on the walls of a rebuilt Solenne, sun on her face. "
          "Credits roll."),
-    shot("", "After the credits: the Hall of the Ring, rebuilt. The Heartstone glows in six colours... then, "
-         "faintly, a seventh. A colour nobody has a name for yet. Cut to black.", duration=6.0),
+    shot("", "After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six "
+         "colours... then, faintly, a seventh. Ilyra, alone, leans in to look. Deep inside the seventh colour, "
+         "something with no colour at all opens, like an eye.", duration=6.0),
+    shot("Seven crowns. One door.\n\nThank you.",
+         "Black. No sound at all for a moment before the voice, and none after. Title card: TO BE CONTINUED.",
+         speaker="the_hush"),
     )
 
 # ------------------------------------------------------------------------------- when they play
@@ -703,9 +732,12 @@ CHARACTERS = [
      "Kaela's old teacher, riding a thunderbird of black cloud. Boss of Canyon Switchbacks."),
     ("mother_briar", "Mother Briar", "the Thorn Herald", "herald", "nature", "",
      "The Deepwood's wisest healer, grown through with thorns. Boss of Fractured Steps."),
+    ("the_hush", "???", "", "secret", "", "",
+     "Revealed only in the post-credits scene. The villain of Part 2. Keep hidden from every codex and menu."),
     ("vael_orrun", "Vael-Orrun", "the Sunderer", "overlord", "", "",
-     "The High King of the seventh kingdom, banished beyond the stars at the dawn of history, come back to "
-     "reclaim his crown and his throne at the centre of the world."),
+     "Once the good king who kept the peace between the seven kingdoms, betrayed and burned out by the other "
+     "six. He turned to the Unmaking for justice and became a tyrant, and has come back to reclaim his crown "
+     "and his throne."),
 ]
 
 # Existing boss enemies (data/enemies) per character, and the ones the gameplay thread will add.
@@ -740,7 +772,8 @@ def characters_json():
     out = []
     for cid, name, title, side, element, joins, blurb in CHARACTERS:
         out.append({"id": cid, "name": name, "title": title, "side": side, "element": element,
-                    "joins": joins, "blurb": blurb, "boss_enemy": BOSS_ENEMY.get(cid, "")})
+                    "joins": joins, "blurb": blurb, "boss_enemy": BOSS_ENEMY.get(cid, ""),
+                    "hidden": side == "secret"})
     return out
 
 

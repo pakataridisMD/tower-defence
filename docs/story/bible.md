@@ -15,9 +15,11 @@ Companion files:
 ## 1. The story in one breath
 
 The world of **Orrhen** is a ring of six elemental lands around a single shining city. At the dawn of
-history there were seven kingdoms. The lord of the seventh, the High King Vael-Orrun, tried to rule them
-all; the other six beat him, banished him beyond the stars and locked the door with his own crown. Now
-someone inside has opened the door, and the High King has come back to reclaim what was his.
+history there were seven kingdoms. The songs say the lord of the seventh, the High King Vael-Orrun, tried
+to rule them all, and the other six beat him, banished him beyond the stars and locked the door with his
+own crown. The songs leave out that the six betrayed him first, and burned his wife and son, and that
+something else was whispering to him the whole time. Now someone inside has opened the door, and the High
+King has come back to reclaim what was his.
 
 We are the **Order of the Spire**, the tower-binders who turn raw elements into stone and light. We cannot
 win back the lands that are falling. We can only hold each road long enough for its people to escape,
@@ -81,32 +83,66 @@ kingdom's art into worked stone, and a tower holding two or three arts at once (
 triple towers) is stronger than any of them alone. Few in the Order know where their art first came from.
 Oswin did.
 
-### The High King
+### The Keeper of the Crossroads (the truth the songs bury)
 
-The last king of Orrun was **Vael-Orrun**, who took the name of both his city and his kingdom, because he
-said they were the same thing as himself. He was brilliant, patient and very lonely. He looked at a world
-of six quarrelling crowns and decided it would be kinder, and quieter, with one.
+What follows is what really happened. The songs of the Concord, and the prologue (which Ysolde narrates
+as the songs tell it), give only the winners' version: a greedy tyrant and six brave kingdoms. The truth
+comes out in pieces over the campaign, and all of it only in the Convergence.
 
-Out of his kingdom's Grand Alchemy he found the art the Veilwalkers later called **the Unmaking**: not to
-command an element, but to unpick the magic that moves it until it *stops*. Fire that will not burn. Wind that lies down. Water that hangs in the air mid-fall. He had a crown
-made with six empty sockets, one for each of the six crowns he meant to take, and he named himself the
-**High King**.
+The last king of Orrun was **Vael-Orrun**, and for forty years he was the best king the world had. Orrun
+had no element and no army worth the name; what it had was the crossroads and the Grand Alchemy, and Vael-
+Orrun used both to keep the peace. He sat between Ember and Tide, Wind and Stone, Green and Star, and
+talked them out of a hundred wars. He opened Orrun's schools to all six peoples. He married **Ysmera**, a
+Tidefolk healer, and they had a son, **Caelan**. Vael, his city, was the only place in the world where a
+Kindler and a Tidelore seer would sit at the same table. He took the name of his city and his kingdom
+because he believed a king should belong to his people, not the other way round.
+
+The six monarchs loved him in public and feared him in private. Orrun's alchemists understood every one of
+their arts better than they did. Orrun grew rich on their quarrels. And a king who can end any war can,
+in principle, start one.
+
+### The Night of Six Knives
+
+In the forty-first year of his reign, Vael-Orrun called the six monarchs to Vael for the **Feast of the
+Crossroads**, to sign a peace that would last forever. They came as friends. Each had already agreed,
+secretly, with the others: Orrun would be broken that night and its alchemy divided six ways. It was the
+first time in history the six had ever agreed on anything.
+
+At midnight their soldiers opened the gates. Vael burned. **Ysmera and Caelan died in the fire**, in the
+hall where the peace was to be signed. Vael-Orrun lived, because his alchemists dragged him out through
+the vaults beneath the city.
+
+> *Six hold the door. Six hold each other. When the Six hold knives, the door will open.*
+> The Veilwalker warning is not a prophecy. It is a memory of that night, cut into stone by Nyxara's
+> people, who were the only ones ashamed enough to keep it.
+
+### The Voice in the Vault
+
+In the deepest vault of the Grand Alchemy, under his burning city, with his wife's ring in his hand,
+Vael-Orrun heard a voice for the first time. It was very quiet. It said it was sorry. It said there was a
+way to make sure nobody ever burned a city again: take the magic out of the world, all of it, and keep it
+in one place, where it could be watched. It taught him **the Unmaking**.
+
+He believed the voice was his own grief, talking him through the dark. It was not. (See section 7.6.)
 
 ### The War of Seven Crowns
 
-For forty years his armies marched out of the middle of the world, and where they marched the land went
-still and grey. One by one the six kingdoms fell back. None of them would stand beside its opposite, and
-that was exactly what he counted on.
+What the songs call a tyrant's conquest began as a widower's justice. Vael-Orrun had a crown made with six
+empty sockets, one for each crown that had come to his feast, and named himself the **High King**. For
+forty years his armies marched out of the ruins of Vael, and where they marched, magic stopped: fire that
+would not burn, wind that lay down, water hanging mid-fall. Each year the voice asked a little more of him,
+and each year he gave it, and each year there was a little less of the king who had kept the peace.
 
-In the end there was nothing left to fall back to. At the **Siege of Vael**, the six monarchs did what they
-had never done: each stood beside its oldest enemy. Ignar with Thalassa. Aurath with Orrok. Elowen with
-Nyxara. Opposites in balance turned out to be the one thing the Unmaking could not stop. They broke the
-black walls of Vael and came for the High King in his throne room.
+At the **Siege of Vael**, the six monarchs stood together a second time, each beside its oldest enemy.
+Ignar with Thalassa. Aurath with Orrok. Elowen with Nyxara. Opposites in balance were the one thing the
+Unmaking could not unpick. They broke what was left of Vael and came for him in his throne room.
 
-They could not kill him. He had unmade his own death long before. So they did something stranger. They
-joined hands in a ring around him, each across from its opposite, and *pushed*, and balance became a wall.
-Vael-Orrun was driven out past the edge of the world into the **Outer Hollow**, the cold nothing beyond the
-stars. That ring of six is the **Ring** the world is named for.
+They could not kill him. He had unmade his own death long before. So they joined hands in a ring around
+him, each across from its opposite, and *pushed*, and balance became a wall. Vael-Orrun was driven out past
+the edge of the world into the **Outer Hollow**. That ring of six is the **Ring** the world is named for.
+
+His last words before the dark took him are kept only in Thalassa's memory: *"You did this. Remember that
+you did this."*
 
 ### The Heartstone and the sleep of the Six
 
@@ -130,11 +166,14 @@ Vael was left in ruins at the centre of the world, and its name was cursed and t
 
 ### Why he comes back
 
-Vael-Orrun has spent two thousand years in the Outer Hollow. It has emptied him out: what comes back is
-less a man than a will, a black glass shape with a hole where his crown used to sit. But he remembers. The
-Heartstone is his crown. The city at the middle of the world stands on his city. The Ring is the six
-crowns he meant to take, still holding hands against him. He has come back to reclaim what he believes is
-his: his crown, his throne at the centre and the six kingdoms that cast him out.
+Vael-Orrun has spent two thousand years in the Outer Hollow, alone with the voice. It has emptied him
+out: what comes back is less a man than a will, a black glass shape with a hole where his crown used to
+sit. But he remembers. The Heartstone is his crown. The city at the middle of the world stands on the ruins
+of his city, on the hall where his wife and son burned. The Ring is the six who betrayed him, still holding
+hands against him, and nobody alive even remembers what they did. He has come back to reclaim what is his,
+and to make the six kingdoms answer for the Night of Six Knives.
+
+He is wrong about one thing. He thinks the war is his.
 
 **The rule the whole game rests on:** the Ring holds because opposites hold each other. If one element
 devours its opposite, the balance tips and the wall cracks. *That* is why the hordes come from the far
@@ -439,21 +478,59 @@ The full hero stories are in the heroes doc, "Heroes of the Ring: hero stories"
 
 ### 7.5 Villains
 
-**Vael-Orrun, the Sunderer** (the overlord, super-evil). The last king of Orrun, the seventh kingdom, who
-named himself High King and tried to rule all seven. Banished beyond the stars by the six monarchs at the
-dawn of history, he has come back for his crown (the Heartstone) and his throne (the ground Solenne stands
-on). He does not hate anyone; he simply cannot bear that there are six crowns instead of one. He speaks
+**Vael-Orrun, the Sunderer** (the overlord, the face of evil). Once the good king of Orrun and the keeper
+of the world's peace, betrayed by the six monarchs on the Night of Six Knives, his wife Ysmera and son
+Caelan burned. He took up the Unmaking for justice and became the tyrant of the War of Seven Crowns,
+without knowing the voice that taught him was not his own. Banished beyond the stars, he has come back for
+his crown (the Heartstone), his throne (the ground Solenne stands on) and his vengeance. He is a tragic
+villain, not a monster, and the game should let the player pity him by the end. He speaks
 rarely, and when he does, every element in the room goes still. In cinematics he is never fully seen until
 the final assault: a black sun with a crown-shaped gap in its corona, a voice like the silence after a
 bell. Final boss of the final assault.
 
 **Cassivane Dral, the Ashen Regent** (main villain). Lord Marshal of the Concord, former regent to Ysolde,
 hero of the Border Wars. Opened the Crack to bring his daughter back from the dead. He is not cruel; he
-is certain. He believes the world can be remade by Vael-Orrun without death in it, and that every city
+is certain. He believes he is bargaining with Vael-Orrun, but the voice that promised him his daughter was the Hush
+(section 7.6) wearing the High King's voice. He believes the world can be remade by Vael-Orrun without death in it, and that every city
 lost is a price worth paying for that. He appears as an ally in briefings until the midpoint, where he
 betrays Solenne. Boss of the Shattered Crossroads (stage 25), where he escapes; final form at the capital
 as **the Sundered Heart** (stage 27), when he fuses himself with the stolen shards of the Sunstone and the
 Heartstone's light.
+
+### 7.6 The secret villain: the Hush (revealed only at the very end, for Part 2)
+
+**Never named, never shown, never explained in Part 1.** Only the post-credits scene reveals that it
+exists. Everything else is clues a player will only understand on a second play.
+
+**What it is.** Before the Unshaped Sea there was silence, and the silence was something. The world, with
+its seven kingdoms and six arts and noise, is an interruption of it. It wants the interruption to end. Its
+working name in our docs is **the Hush**; its true name is saved for Part 2. It is god-like: older than the
+Wardens, beyond the Outer Hollow, and unable to touch the world directly. It needs a door and a hand.
+
+**What it has done.** It found Vael-Orrun in the vault under burning Vael and taught him the Unmaking,
+which is its own breath: magic stopping is the world going quiet. Vael-Orrun was its first hand. For two
+thousand years in the Outer Hollow it kept him company and hollowed him out. Six years ago, the voice that
+answered Cassivane's grief and promised him his daughter was not Vael-Orrun's. It was the Hush, *wearing*
+Vael-Orrun's voice. Cassivane was its second hand, and Vael-Orrun never knew.
+
+**What it wants from Part 1.** Not Vael-Orrun's victory. His defeat was always acceptable, because the war
+woke all six Wardens, cracked the Ring, and led the Concord through the Crack to the Outer Hollow, the one
+thing the Hush could never do itself: open the way from *our* side. In the post-credits, the door is still
+ajar.
+
+**Clues to plant (all subtle, none named):**
+1. **The Veilwalker warning** in section 3 ("When the Six hold knives, the door will open") uses *the
+   door*, not *his door*.
+2. **Starcraft:** the Veilwalkers' charts have a patch of sky no astronomer will chart, the Unwritten
+   Star. Corvin's star-glass blade shows every star but that one.
+3. **Ilyra** says that in the Outer Hollow she heard two voices: one that wept, and one that never did.
+   (For the heroes thread to use in her lines.)
+4. **Mirelle**, after the war, admits there was something else in the ice that she has never been able to
+   look at.
+5. **The Unbound** have grey empty eyes, and so does everything the Unmaking touches, including the Heralds
+   and the Regent. Vael-Orrun's own eyes, in his last moment, are not grey. They are just tired.
+6. **Vael-Orrun's last words** (epilogue): "It was never my voice in the dark. It spoke to me too."
+7. **The post-credits scene** (see scripts: epilogue).
 
 **The Six Heralds** (generals, mid-campaign bosses). Six of the Concord's greatest champions, who went with
 the Regent "to study the Crack" and came back hollow: still themselves, still wearing their faces, but
@@ -606,7 +683,8 @@ the Crack. The story frames the level in three movements; the gameplay thread de
    end, the six Wardens join hands around him in a ring, as they did at the Siege of Vael, and Oswin's
    lantern is set into the gap where his crown used to be. He is not killed. He is *finished*: he gets the
    middle of the world he always wanted, not as its king but as its light, the seventh colour in the
-   Heartstone.
+   Heartstone. For one moment before that, in the light, he is the Keeper of the Crossroads again, and he
+   tells them the voice was never his.
 
 Story beats inside the level (for the gameplay thread to hook to timers or phases): Ilyra faces her
 father's last shadow in the Mirror Spire; Seraphel dies holding the Spire's top gate open (the Sunstone
@@ -618,7 +696,9 @@ but the Sunderer's; Oswin's lantern is set into the crown.
 - **Losing the capital:** a short "Solenne Falls" scene, then retry. There is no bad canon ending; the
   story always assumes the player holds.
 - **Victory:** the Epilogue (see scripts.md), with a post-credits tease: in the rebuilt Hall of the Ring,
-  the Heartstone now shines with seven colours. The seventh is not one anybody has a name for yet.
+  the Heartstone now shines with seven colours. Deep inside the seventh, something with no colour
+  at all opens, like an eye. A voice with no sound: *"Seven crowns. One door. Thank you."* To be continued
+  in Part 2.
 
 ---
 
@@ -628,7 +708,7 @@ but the Sunderer's; Oswin's lantern is set into the crown.
   is measured in people saved, not ground held.
 - **Balance, not purity.** Fire is not good and Water evil. Every element is needed, especially the one
   across from you. This is the game's tower mechanic and its moral.
-- **Grief can be a door.** Cassivane is a good man who could not let go. The game should never make him a
+- **Grief can be a door.** Vael-Orrun and Cassivane are the same story two thousand years apart: good men broken by loss, who took the help of a voice in the dark. Cassivane is a good man who could not let go. The game should never make him a
   cackling villain. His last scene is with Ilyra.
 - **Light is carried.** The Lanternguard, Oswin's lantern, the Long Night, the dawn. Light is the visual
   motif for hope, and it is literal in the lighting system.
