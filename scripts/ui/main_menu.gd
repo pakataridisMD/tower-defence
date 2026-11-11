@@ -22,6 +22,7 @@ var _difficulty_text: Label
 var _time := 0.0
 ## Soft lights that breathe over the towers in the backdrop.
 var _glows: Control
+var _audio: AudioPanel
 
 
 func _ready() -> void:
@@ -138,6 +139,10 @@ func _build_menu() -> void:
 		small.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		small.pressed.connect(func() -> void: get_tree().change_scene_to_file(scene))
 		row.add_child(small)
+	var audio := UiStyle.button("Audio (O)", 18)
+	audio.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	audio.pressed.connect(open_audio)
+	row.add_child(audio)
 	var quit := UiStyle.button("Quit", 18)
 	quit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	quit.pressed.connect(func() -> void: get_tree().quit())
@@ -235,6 +240,15 @@ func open_campaign() -> void:
 	get_tree().change_scene_to_file(CAMPAIGN_SCENE)
 
 
+## The audio settings, over the menu.
+func open_audio() -> void:
+	if _audio == null:
+		_audio = AudioPanel.new()
+		add_child(_audio)
+	_audio.refresh()
+	_audio.show()
+
+
 func open_meta_tree() -> void:
 	get_tree().change_scene_to_file(META_TREE_SCENE)
 
@@ -254,7 +268,7 @@ func _campaign_text() -> String:
 ## Enter or Space plays a skirmish, C opens the campaign and M the meta tree.
 func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
-	if key == null or not key.pressed or key.echo:
+	if key == null or not key.pressed or key.echo or (_audio != null and _audio.visible):
 		return
 	match key.keycode:
 		KEY_ENTER, KEY_KP_ENTER, KEY_SPACE:
@@ -263,6 +277,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			open_campaign()
 		KEY_M:
 			open_meta_tree()
+		KEY_O:
+			open_audio()
 		_:
 			return
 	get_viewport().set_input_as_handled()

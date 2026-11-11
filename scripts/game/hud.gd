@@ -6,6 +6,7 @@ extends Control
 signal start_wave_pressed
 signal web_pressed
 signal speed_pressed
+signal audio_pressed
 signal tower_chosen(tower_id: StringName)
 signal skill_pressed(skill_id: StringName)
 signal sell_pressed
@@ -87,6 +88,8 @@ func setup(p_sim: RunSim) -> void:
 
 
 func show_message(text: String, color: Color = UiStyle.TEXT) -> void:
+	if color == UiStyle.BAD:
+		SoundPlayer.sfx(&"ui_error")
 	_message.text = text
 	_message.add_theme_color_override("font_color", color)
 	_message_time = 2.2
@@ -131,6 +134,10 @@ func _build_top_bar() -> void:
 	_web_button.pressed.connect(func() -> void: web_pressed.emit())
 	_speed_button = _bar_button(row, 160)
 	_speed_button.pressed.connect(func() -> void: speed_pressed.emit())
+	var audio_button := _bar_button(row, 120)
+	audio_button.text = "Audio (O)"
+	audio_button.tooltip_text = "Volume and mute for music, effects, interface and voices. M mutes everything."
+	audio_button.pressed.connect(func() -> void: audio_pressed.emit())
 	_wave_button = _bar_button(row, 232)
 	_wave_button.pressed.connect(func() -> void: start_wave_pressed.emit())
 
@@ -384,6 +391,7 @@ func show_shop_tier(tier: int) -> void:
 
 ## Opens the next shop tab that has a tower in it, wrapping round to the base towers.
 func cycle_shop_tier() -> void:
+	SoundPlayer.sfx(&"ui_tab")
 	for step in [1, 2, 3]:
 		var tier: int = (_shop_tier - 1 + step) % 3 + 1
 		for tower_id in _shop_ids:
@@ -670,7 +678,7 @@ func _help_text() -> String:
 	var keys: Array[Array] = [
 		["T", "skill web"], ["1-9", "pick a tower"], ["Tab", "next tower page"], ["Q W E  A S D", "skills"],
 		["Z X C V", "upgrade the tower"], ["Del", "sell the tower"], ["Space", "start the wave"],
-		["F", "speed"], ["P", "pause"], ["Esc", "back"],
+		["F", "speed"], ["P", "pause"], ["O", "audio"], ["M", "mute"], ["Esc", "back"],
 	]
 	var lines: PackedStringArray = []
 	lines.append("[b]How to play[/b]")
