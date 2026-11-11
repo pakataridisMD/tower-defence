@@ -51,13 +51,14 @@ cin("prologue", "The Last Lantern", "Before the first stage. The opening story v
          "kingdoms.",
          "An old painted map coming out of darkness: six kingdoms in a ring, each under its own crown and "
          "colour (red, blue-white, green, teal, ochre, violet), and a seventh, colourless, in the middle."),
-    shot("Six were bound to the elements of their lands. The seventh ruled the middle of the world.\n\nAnd he "
-         "wanted all of it.",
-         "Six crowned monarchs, each lit by their element: a forge-king, a horse-king, a green queen, a "
-         "sea-queen, a mountain-king, a star-queen. Then the middle kingdom's black-walled capital, and on its "
+    shot("Each had its own magic. Forge-runes and storm-songs. Root-craft and tide-memory. Stone-oaths and "
+         "star-charts. The seventh kingdom studied them all.\n\nAnd its king wanted all of it.",
+         "Six crowned monarchs, each working their art: a forge-king hammering glowing runes, a horse-king "
+         "singing lightning down, a green queen with a sprouting seed, a sea-queen reading ice, a "
+         "mountain-king carving a rune into rock, a star-queen tracing a star-chart in the air. Then the middle kingdom's black-walled capital, and on its "
          "throne a king in black with a tall crown of six empty sockets."),
-    shot("His name was Vael-Orrun, the High King. Where his armies marched, fire would not burn, and the wind "
-         "lay down and died.",
+    shot("His name was Vael-Orrun, the High King. He learned to unmake magic. Where his armies marched, fire "
+         "would not burn, and the wind lay down and died.",
          "The High King's armies crossing a burning land; behind them the flames freeze into grey glass, the "
          "grass stops moving, a river hangs still in mid-fall."),
     shot("The six hated one another. They stood together anyway, each beside its oldest enemy, and drove him "

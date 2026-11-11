@@ -10,6 +10,20 @@ read in a 32 px battle sprite.
 Element colours used below: Fire = red/brass/orange, Storm = slate blue/white-violet, Nature =
 green/gold, Water = teal/ice-white, Earth = ochre/rust, Void = violet/black/star-white.
 
+**How each art looks** (for spell effects, tower effects and hero abilities; the canon is bible.md, "The
+Seven Arts"):
+
+| Art | Element | Visual language |
+|---|---|---|
+| Kindling | Fire | Glowing orange runes written in the air or on metal, sparks that shape into letters, molten glass |
+| Stormsong | Storm | Visible sound: rings and staves of white-violet light rippling from the singer's mouth, lightning on the beat |
+| Rootcraft | Nature | Seeds that burst into growth, thorn spirals, green-gold spores, drips of venom |
+| Tidelore | Water | Frost spreading in fractal patterns, frozen moments (droplets hanging mid-air), ghostly reflections in ice |
+| Runecarving | Earth | Square ochre runes cut into stone that glow and crack, falling grit, heavy shockwaves |
+| Starcraft | Void | Lines of a star-chart drawn between points of light, then everything inside them going dark; violet gravity wells |
+| Grand Alchemy / Unmaking | None | Colour draining to grey, effects that freeze and crumble like ash, a crown-shaped hole |
+| Spirecraft | All | Two or three arts' effects braided together, bound inside carved stone with six-colour keystone glyphs |
+
 ---
 
 ## Narrator
