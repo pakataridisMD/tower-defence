@@ -156,13 +156,13 @@ def rift_and_king(cv):
     for i in range(n + 1):
         t = i / n
         y = 4 + t * 236
-        wdt = (math.sin(t * math.pi) ** 0.7) * 96 * (0.85 + 0.15 * math.sin(t * 7))
+        wdt = (math.sin(t * math.pi) ** 0.7) * 128 * (0.85 + 0.15 * math.sin(t * 7))
         z = (8 if i % 2 else -6) * (0.4 + rng.random())
         pts_l.append((cx - wdt + z - (t - 0.5) * 16, y))
         pts_r.append((cx + wdt - z * 0.8 - (t - 0.5) * 16 + rng.uniform(-4, 4), y))
     rift = cv.mask_poly(pts_l + pts_r[::-1])
     ctr = cx - (cv.ys / 236.0 - 0.5) * 16
-    d = np.sqrt(((cv.xs - ctr) / 96.0) ** 2 + ((cv.ys - 110) / 150.0) ** 2)
+    d = np.sqrt(((cv.xs - ctr) / 120.0) ** 2 + ((cv.ys - 100) / 130.0) ** 2)
     band = np.clip(np.floor((1 - d) * 6 + bayer(H, W) * 0.8), 0, 5).astype(int)
     vr = np.array(ramp("6a2cc8", n=6, spread=0.95, shift=0.02), np.float32) / 255
     vr[5] = col("f4e2ff")
@@ -188,81 +188,224 @@ def rift_and_king(cv):
                 cv.emit[int(y), int(x)] += col("b070ff") * 0.6
     cv.outline(rift, col("2a0f44"))
 
-    # ---- Vael-Orrun: colossal armoured silhouette, shoulders through the tear, six-socket crown ---------
-    S, AX, AY, DY = 1.3, cx, 240, 20
+    return king(cv, rift)
 
-    def T(pts):
-        return [(AX + (x - cx) * S, AY + (y + DY - AY) * S) for x, y in pts]
 
-    def P(x, y):
-        return T([(x, y)])[0]
-    k = col("0c0714"); k2 = col("1e1132"); k3 = col("2c1a46"); rim = col("d2a8ff")
-    mantle = [(cx - 72, 240), (cx - 64, 150), (cx - 34, 128), (cx - 14, 124), (cx + 18, 124), (cx + 38, 128),
-              (cx + 64, 150), (cx + 70, 240)]
-    head = [(cx - 16, 128), (cx - 18, 96), (cx - 12, 82), (cx, 78), (cx + 12, 82), (cx + 18, 96), (cx + 16, 128),
-            (cx + 6, 138), (cx - 6, 138)]
-    crown = [(cx - 20, 90), (cx - 23, 64), (cx - 15, 78), (cx - 11, 58), (cx - 5, 76), (cx, 50), (cx + 5, 76),
-             (cx + 11, 58), (cx + 15, 78), (cx + 23, 64), (cx + 20, 90)]
-    pl = [(cx - 66, 158), (cx - 86, 140), (cx - 80, 130), (cx - 56, 132), (cx - 34, 128), (cx - 40, 152)]
-    pr = [(cx + 62, 158), (cx + 84, 140), (cx + 78, 130), (cx + 54, 132), (cx + 34, 128), (cx + 38, 152)]
-    sp = [[(cx - 78, 134), (cx - 96, 104), (cx - 66, 130)], [(cx + 74, 134), (cx + 94, 104), (cx + 62, 130)],
-          [(cx - 60, 132), (cx - 68, 112), (cx - 50, 130)], [(cx + 56, 132), (cx + 64, 112), (cx + 46, 130)]]
-    hl = [(cx - 76, 178), (cx - 94, 170), (cx - 102, 158), (cx - 92, 155), (cx - 84, 162), (cx - 70, 166)]
-    hr = [(cx + 72, 184), (cx + 92, 176), (cx + 100, 164), (cx + 90, 161), (cx + 80, 168), (cx + 66, 172)]
-    parts = [mantle, head, crown, pl, pr, hl, hr] + sp
-    sil = np.zeros((H, W), bool)
-    for p in parts:
-        sil |= cv.mask_poly(T(p))
-    cv.fill(sil, k)
-    cv.emit[sil] = 0
-    # forms: lit upper-left plane on each plate, so the shape reads as armour, not a cut-out
-    for p in (pl, pr, head):
-        m = cv.mask_poly(T(p))
-        inner = m & np.roll(np.roll(m, 3, 0), 3, 1)
-        cv.rgb[m & ~inner] = k3
-        cv.rgb[inner] = k2
-    chest = cv.mask_poly(T([(cx - 30, 150), (cx + 30, 150), (cx + 22, 200), (cx, 214), (cx - 22, 200)]))
-    cv.rgb[chest] = k2
-    cv.outline(chest, k)
-    # veins of the Unmaking glowing through the chest plate
-    x, y = P(cx, 170)
-    for b in range(5):
-        a = -math.pi / 2 + (b - 2) * 0.7
-        xx, yy = x, y
-        for _ in range(16):
-            a += rng.uniform(-0.5, 0.5)
-            xx += math.cos(a) * 1.6; yy -= abs(math.sin(a)) * 1.2 - 0.8
-            if sil[int(yy), int(xx)]:
-                cv.rgb[int(yy), int(xx)] = col("9a5cff")
-                cv.emit[int(yy), int(xx)] += col("9a5cff") * 0.9
-    cv.rgb[int(y) - 2:int(y) + 3, int(x) - 2:int(x) + 3] = col("f0d8ff")
-    cv.emit[int(y) - 3:int(y) + 4, int(x) - 3:int(x) + 4] += col("c080ff") * 1.5
-    # violet rim light from the tear behind
-    edge = sil & ~(np.roll(sil, 1, 1) & np.roll(sil, -1, 1) & np.roll(sil, 1, 0) & np.roll(sil, -1, 0))
-    cv.rgb[edge] = rim
-    cv.emit[edge] += rim * 0.4
-    # crown: dull gold edges, six empty sockets each holding a faint ember of its kingdom's colour
-    cm = cv.mask_poly(T(crown))
-    cv.rgb[cm] = col("2a1e2a")
-    cv.rgb[cm & ~np.roll(cm, 1, 0)] = col("b08a4a")
-    cv.rgb[cm & ~np.roll(cm, 1, 1)] = col("8a6a3a")
+PARTS = []
+
+
+def plate(cv, pts, tones, clip=None, violet=None, gold=None, split=0.45, lines=()):
+    """One armour plate: flat cel tones lit from the upper left, violet rim from the Rift behind on the top and
+    left edges, a gold rim from the Sunstone on the right edges, ink outline."""
+    m = cv.mask_poly(pts)
+    if clip is not None:
+        m &= clip
+    if not m.any():
+        return m
+    ys, xs = np.nonzero(m)
+    x0, x1, y0, y1 = xs.min(), xs.max(), ys.min(), ys.max()
+    u = (cv.xs - x0) / max(1, x1 - x0) + (cv.ys - y0) / max(1, y1 - y0)
+    tone = np.where(u < split * 2 * 0.55, 2, np.where(u < split * 2 * 1.25, 1, 0))
+    cv.rgb[m] = np.array(tones)[tone[m]]
+    inner = m & np.roll(m, 1, 0) & np.roll(m, -1, 0) & np.roll(m, 1, 1) & np.roll(m, -1, 1)
+    top = m & ~np.roll(m, 1, 0)
+    left = m & ~np.roll(m, 1, 1)
+    right = m & ~np.roll(m, -1, 1)
+    cv.rgb[m & ~inner] = tones[0] * 0.55
+    cv.rgb[(top | left) & m] = tones[3]
+    PARTS.append(m)
+    for (ax, ay), (bx, by) in lines:
+        n = int(max(abs(bx - ax), abs(by - ay))) + 1
+        for i in range(n):
+            xx, yy = int(ax + (bx - ax) * i / n), int(ay + (by - ay) * i / n)
+            if m[yy, xx]:
+                cv.rgb[yy, xx] = tones[0] * 0.7
+    return m
+
+
+def king(cv, rift):
+    """The High King Vael-Orrun: a colossus in black plate leaning out of the Rift, one gauntlet reaching for
+    Solenne. The Sunstone's lance strikes his palm and holds it back."""
+    A = [col("0e0918"), col("1c1230"), col("2c1d48"), col("3e2a5e")]      # armour tones (shadow..light), edge
+    C = [col("12070e"), col("220c1a"), col("34142a"), col("4a1c3a")]      # cloak
+    V, G = col("d6aaff"), col("ffcf70")
+    cx = 168
+    # ---- cloak: torn mantle billowing to the left out of the Rift -----------------------------------
+    cl = [(cx - 40, 96), (cx - 90, 108), (cx - 132, 132), (cx - 150, 170), (cx - 160, 214), (cx - 138, 200),
+          (cx - 132, 228), (cx - 112, 206), (cx - 100, 236), (cx - 80, 210), (cx - 60, 240), (cx + 70, 240),
+          (cx + 60, 110)]
+    plate(cv, cl, C, violet=V * 0.8, split=0.6)
+    for i in range(7):  # tears in the hem
+        x = cx - 150 + i * 13
+        cv.rgb[200 + i % 3 * 6:214 + i % 2 * 8, x:x + 2] = C[0]
+    # ---- torso and chest plate -----------------------------------------------------------------------
+    plate(cv, [(cx - 44, 104), (cx + 46, 104), (cx + 54, 240), (cx - 52, 240)], A, violet=V)
+    chest = plate(cv, [(cx - 34, 112), (cx + 36, 112), (cx + 30, 160), (cx + 2, 184), (cx - 28, 160)], A,
+                  violet=V, gold=G, lines=[((cx + 1, 114), (cx + 1, 182)), ((cx - 30, 140), (cx + 32, 140))])
+    # the Unmaking burns through a wound in the chest
+    hx, hy = cx + 1, 150
+    for b in range(9):
+        a = b * math.tau / 9 + rng.uniform(-0.2, 0.2)
+        xx, yy = float(hx), float(hy)
+        for _ in range(rng.randint(8, 18)):
+            a += rng.uniform(-0.45, 0.45)
+            xx += math.cos(a) * 1.4; yy += math.sin(a) * 1.4
+            if 0 <= int(yy) < H and chest[int(yy), int(xx)]:
+                cv.rgb[int(yy), int(xx)] = col("b070ff")
+                cv.emit[int(yy), int(xx)] += col("a060ff") * 1.0
+    d = np.hypot(cv.xs - hx, (cv.ys - hy) * 1.2)
+    cv.rgb[d < 4] = col("c890ff"); cv.rgb[d < 2.5] = col("ffffff")
+    cv.emit[d < 6] += col("c080ff") * 1.6
+    # belt of skulls of the old kings would be too much: a plain heavy belt with a gold buckle
+    plate(cv, [(cx - 50, 196), (cx + 52, 196), (cx + 53, 206), (cx - 51, 206)], A, violet=V, gold=G)
+    cv.rgb[197:206, cx - 4:cx + 6] = col("8a6a3a"); cv.rgb[199:204, cx - 2:cx + 4] = col("2a1e2a")
+    # ---- far (viewer-left) pauldron: three stacked plates and a swept horn ---------------------------
+    for i, dy in enumerate((0, 12, 22)):
+        plate(cv, [(cx - 30, 98 + dy), (cx - 74 - i * 6, 92 + dy + i * 4), (cx - 96 - i * 4, 108 + dy + i * 3),
+                   (cx - 84 - i * 4, 126 + dy), (cx - 40, 120 + dy)], A, violet=V)
+    plate(cv, [(cx - 76, 94), (cx - 112, 52), (cx - 100, 50), (cx - 62, 92)], A, violet=V, gold=None)
+    # far arm gripping the Rift edge
+    plate(cv, [(cx - 92, 140), (cx - 112, 168), (cx - 122, 190), (cx - 106, 196), (cx - 94, 172), (cx - 78, 150)],
+          A, violet=V)
+    for f in range(4):
+        plate(cv, [(cx - 124 + f * 5, 188), (cx - 130 + f * 5, 200), (cx - 126 + f * 5, 204), (cx - 118 + f * 5, 194)],
+              A, violet=V)
+    # ---- reaching arm (viewer right): upper arm, vambrace, open gauntlet toward the city --------------
+    plate(cv, [(cx + 40, 110), (cx + 96, 120), (cx + 106, 142), (cx + 50, 148)], A, violet=V, gold=G,
+          lines=[((cx + 70, 114), (cx + 76, 146))])
+    plate(cv, [(cx + 92, 118), (cx + 140, 116), (cx + 150, 134), (cx + 100, 144)], A, violet=V, gold=G,
+          lines=[((cx + 118, 117), (cx + 122, 140))])
+    # gauntlet: palm toward Solenne, fingers splayed like claws
+    palm = (cx + 160, 124)
+    plate(cv, [(cx + 140, 112), (cx + 160, 108), (cx + 166, 136), (cx + 146, 142)], A, violet=V, gold=G)
+    for (fx, fy), (tx, ty) in (((cx + 156, 110), (cx + 176, 92)), ((cx + 162, 116), (cx + 186, 104)),
+                               ((cx + 164, 124), (cx + 188, 120)), ((cx + 162, 132), (cx + 182, 138)),
+                               ((cx + 146, 140), (cx + 160, 154))):
+        mx, my = (fx + tx) / 2, (fy + ty) / 2
+        plate(cv, [(fx - 3, fy - 2), (mx, my - 3), (tx, ty), (mx + 1, my + 3), (fx + 2, fy + 3)], A, violet=V, gold=G)
+        cv.rgb[int(ty), int(tx)] = col("e8d8ff")
+    # ---- near pauldron (viewer right), over the arm -----------------------------------------------------
+    for i, dy in enumerate((0, 11, 20)):
+        plate(cv, [(cx + 30, 98 + dy), (cx + 76 + i * 5, 90 + dy + i * 4), (cx + 98 + i * 3, 104 + dy + i * 3),
+                   (cx + 88 + i * 3, 122 + dy), (cx + 40, 118 + dy)], A, violet=V, gold=G)
+    plate(cv, [(cx + 70, 92), (cx + 104, 46), (cx + 114, 50), (cx + 86, 96)], A, violet=V, gold=G)
+    # ---- helm: tall great-helm with brow ridge, cheek guards, swept horns, glowing T visor --------------
+    plate(cv, [(cx - 22, 52), (cx - 34, 38), (cx - 56, 30), (cx - 40, 46), (cx - 26, 64)], A, violet=V)
+    plate(cv, [(cx + 22, 52), (cx + 34, 38), (cx + 58, 28), (cx + 42, 46), (cx + 26, 64)], A, violet=V, gold=G)
+    plate(cv, [(cx - 22, 96), (cx - 26, 60), (cx - 18, 42), (cx, 36), (cx + 18, 42), (cx + 26, 60), (cx + 22, 96),
+               (cx + 8, 108), (cx - 8, 108)], A, violet=V, gold=G,
+          lines=[((cx, 38), (cx, 66)), ((cx - 22, 84), (cx - 8, 96)), ((cx + 22, 84), (cx + 8, 96))])
+    plate(cv, [(cx - 24, 62), (cx + 24, 62), (cx + 22, 68), (cx - 22, 68)], A, violet=V, gold=G)  # brow
+    # visor: T-slit with burning eyes
+    cv.rgb[70:73, cx - 17:cx + 18] = col("0a040e")
+    cv.rgb[70:100, cx - 1:cx + 2] = col("0a040e")
+    for ex in (cx - 15, cx + 4):
+        cv.rgb[71, ex:ex + 11] = col("ffffff")
+        cv.rgb[70, ex + 2:ex + 9] = col("e8c4ff")
+        cv.emit[69:74, ex - 2:ex + 13] += col("d090ff") * 2.2
+    for y in range(74, 98, 2):
+        cv.rgb[y, cx] = col("c880ff"); cv.emit[y, cx] += col("a060ff") * 0.8
+    # ---- crown: six tall spikes, each socket empty but for an ember of its kingdom ---------------------
+    crown = [(cx - 24, 48), (cx - 28, 16), (cx - 19, 34), (cx - 15, 6), (cx - 7, 30), (cx, 0), (cx + 7, 30),
+             (cx + 15, 6), (cx + 19, 34), (cx + 28, 16), (cx + 24, 48)]
+    cm = plate(cv, crown, [col("3a2616"), col("624422"), col("8e6634"), col("d8ac60")], violet=None, gold=G, split=0.35)
+    cv.rgb[47:50, cx - 24:cx + 25] = col("8e6634"); cv.rgb[47, cx - 24:cx + 25] = col("f0c878")
+    for tx, ty in ((cx - 28, 16), (cx - 15, 6), (cx, 0), (cx + 15, 6), (cx + 28, 16)):
+        for k in range(1, 12):  # lit left flank of each spike
+            yy = ty + k * 2; xx = int(tx + (k * 0.55 if tx <= cx else k * 0.45)) - (1 if tx > cx else 0)
+            if cm[yy, xx]:
+                cv.rgb[yy, xx] = col("f0c878")
     for i, e in enumerate(ELEM):
-        x, y = P(cx - 15 + i * 6, 84)
-        x, y = int(x), int(y)
-        cv.rgb[y - 1:y + 2, x - 1:x + 2] = col("140a14")
-        cv.rgb[y, x] = col(ELEM[e]) * 0.8
-        cv.emit[y, x] += col(ELEM[e]) * 0.7
-    # eyes: burning slits under the brow
-    for ex in (cx - 11, cx + 3):
-        x, y = P(ex, 104)
-        x, y = int(x), int(y)
-        cv.rgb[y, x:x + 9] = col("ffffff")
-        cv.rgb[y + 1, x + 1:x + 8] = col("e0b0ff")
-        cv.emit[y - 1:y + 3, x - 1:x + 10] += col("d090ff") * 1.8
-    x, y = P(cx, 112)
-    cv.rgb[int(y):int(y) + 20, int(x)] = k3
+        x, y = cx - 16 + i * 6 + (1 if i > 2 else 0), 41
+        cv.rgb[y - 2:y + 2, x - 1:x + 2] = col("140a14")
+        cv.rgb[y - 1:y + 1, x] = col(ELEM[e]) * 0.9
+        cv.emit[y - 1:y + 1, x] += col(ELEM[e]) * 0.9
+    sil = np.zeros((H, W), bool)
+    for m in PARTS:
+        sil |= m
+    PARTS.clear()
+    glow_keep = cv.emit.copy()
+    cv.emit[sil] = 0
+    hot = sil & (cv.rgb.max(-1) > 0.6)            # eyes, wound, sockets keep their glow
+    cv.emit[hot] = glow_keep[hot]
+    out_t = sil & ~np.roll(sil, 1, 0)
+    out_l = sil & ~np.roll(sil, 1, 1)
+    out_r = sil & ~np.roll(sil, -1, 1)
+    vio = (out_t | out_l) & (cv.xs < cx + 120)
+    cv.rgb[vio] = V; cv.emit[vio] += V * 0.5
+    cv.rgb[np.roll(vio, 1, 1) & sil & ~out_r] = V * 0.55
+    gld = (out_r | out_t) & (cv.xs > cx + 20)
+    cv.rgb[gld] = G; cv.emit[gld] += G * 0.5
+    cv.rgb[np.roll(gld, -1, 1) & sil] = G * 0.6
     cv.outline(sil, col("05030a"))
-    return P(cx, 170)
+    return palm
+
+
+def clouds(cv):
+    """Storm clouds wheeling round the Rift: puffs built from overlapping circles, lit from the Rift side."""
+    tones = [col("1c1232"), col("2a1a44"), col("3e2660"), col("6a3e94"), col("a070d0")]
+    for i in range(34):
+        a = rng.uniform(0, math.tau)
+        r = rng.uniform(130, 240)
+        x = 168 + math.cos(a) * r * 1.3
+        y = 96 + math.sin(a) * r * 0.36
+        if y > 190 or y < 0 or x > 470 or x < -40:
+            continue
+        m = np.zeros((H, W), bool)
+        n = rng.randint(3, 6)
+        span = rng.uniform(30, 70)
+        for k in range(n):
+            px = x - span / 2 + span * k / max(1, n - 1)
+            rr = rng.uniform(5, 11) * (1.3 if 0 < k < n - 1 else 0.9)
+            m |= np.hypot(cv.xs - px, (cv.ys - y) * 1.25) < rr
+        m &= cv.ys < y + 4
+        near = max(0.0, 1 - math.hypot(x - 168, (y - 100) * 2) / 320)
+        cv.rgb[m] = tones[1] if near < 0.35 else tones[2]
+        lit = m & ~np.roll(m, 2, 0)
+        cv.rgb[lit] = tones[3] if near > 0.3 else tones[2]
+        cv.rgb[m & ~np.roll(m, 1, 0)] = tones[4] if near > 0.45 else tones[3]
+        side = m & ~np.roll(m, 2, 1) if x > 168 else m & ~np.roll(m, -2, 1)
+        cv.rgb[side & ~lit] = tones[2]
+        cv.rgb[m & ~np.roll(m, -1, 0)] = tones[0]
+
+
+def road(cv):
+    """The far plain and the road winding down from the Rift to the battle, packed with the horde."""
+    plain = cv.ys >= 232
+    b = bayer(H, W)
+    pt = [col("1a1228"), col("221630"), col("2c1c38")]
+    band = np.clip(np.floor((cv.ys - 232) / 14 + b * 0.7), 0, 2).astype(int)
+    cv.rgb[plain] = np.array(pt)[band[plain]]
+    def path(t):  # rift foot, swings left across the plain, then back right to the battle
+        return 160 - math.sin(t * math.pi) * 120 + t * 90, 233 + t * 44
+    pts_a, pts_b = [], []
+    for i in range(61):
+        t = i / 60
+        x, y = path(t)
+        w = 2 + t * 6
+        pts_a.append((x - w, y - 1 - t * 2)); pts_b.append((x + w, y + 1 + t * 2))
+    rd = cv.mask_poly(pts_a + pts_b[::-1])
+    cv.rgb[rd] = col("4a3448")
+    cv.rgb[rd & ~np.roll(rd, 1, 0)] = col("624a5c")
+    for i in range(520):
+        t = rng.random()
+        x, y = path(t)
+        x += rng.uniform(-1, 1) * (3 + t * 7); y += rng.uniform(-1, 1) * (1 + t * 2)
+        x, y = int(x), int(y)
+        h = 3 + int(t * 4)
+        if y >= H - 1 or x < 1 or x >= W - 3:
+            continue
+        cv.rgb[y - h:y, x:x + 1 + (t > 0.5)] = col("0c0610")
+        cv.rgb[y - h - 1, x] = col("0c0610")
+        if rng.random() < 0.25:
+            cv.rgb[y - h + 1, x] = col("ff6a3a"); cv.emit[y - h + 1, x] += col("ff5030") * 0.7
+        if rng.random() < 0.07:
+            cv.rgb[y - h - 4:y - h, x + 1] = col("2a1a14")
+            cv.rgb[y - h - 5, x + 1] = col("ffb040"); cv.emit[y - h - 5, x + 1] += col("ff9030") * 1.6
+        if rng.random() < 0.035:
+            cv.rgb[y - h - 8:y - h, x + 1] = col("1a1018")
+            cv.rgb[y - h - 8:y - h - 4, x + 2:x + 5] = col("6a2c9a")
+    cv.light(190, 250, col("ff7a3a"), 70, 0.06, 0.05)
 
 
 def mountains(cv):
@@ -497,6 +640,9 @@ def battle(cv, top):
     violet, gold, fire = col("b07cff"), col("ffc860"), col("ff7a3a")
     # ---- horde, left, facing right (light from rift behind them: violet rim on their backs, x = -1) ------
     E = dict(rim=(violet, -1.0), tint=(0.78, 0.74, 0.92))
+    B = dict(rim=(violet, -1.0), tint=(0.52, 0.48, 0.66))
+    for nm, an, fr, x in (("orc", "walk", 1, 96), ("skeleton", "walk", 3, 168), ("orc", "walk", 6, 196)):
+        cv.creature(nm, an, fr, x, gy(x) - 4, **B)
     cv.creature("ghost", "idle", 2, 40, gy(40) - 26, **E, shadow=False)
     cv.creature("skeleton", "walk", 1, 24, gy(24) + 18, **E)
     cv.creature("orc", "walk", 3, 74, gy(74) + 10, **E)
@@ -506,6 +652,10 @@ def battle(cv, top):
     cv.creature("skeleton", "attack", 4, 214, gy(214) + 44, **E)
     # ---- defenders, right, facing left (flipped; warm city light from the right edge, x = +1) -------
     D = dict(flip=True, rim=(gold, 1.0), tint=(0.95, 0.88, 0.86))
+    DB = dict(flip=True, rim=(gold, 1.0), tint=(0.62, 0.56, 0.62))
+    for nm, an, fr, x in (("soldier", "idle", 0, 356), ("soldier", "idle", 4, 392), ("dwarf", "idle", 2, 540),
+                          ("soldier", "idle", 2, 572)):
+        cv.creature(nm, an, fr, x, gy(x) + 2, **DB)
     cv.creature("golem", "attack", 4, 300, gy(300) + 12, **D)
     cv.creature("soldier", "attack", 3, 262, gy(262) + 40, **D)
     cv.creature("soldier", "idle", 1, 350, gy(350) + 30, **D)
@@ -521,7 +671,7 @@ def battle(cv, top):
         cv.creature(f"orb_{e}", "idle", 1, x, y, flip=True, shadow=False)
         cv.light(x, y - 14, col(ELEM[e]), 26, 0.22, 0.12)
     # ---- dragon diving over the clash, breathing fire at the line --------------------------------
-    cv.creature("dragon", "attack", 4, 352, 214, rim=(violet, -1.0), tint=(0.82, 0.76, 0.9), shadow=False)
+    cv.creature("dragon", "attack", 4, 262, 226, rim=(violet, -1.0), tint=(0.82, 0.76, 0.9), shadow=False)
     # ---- clash sparks and arrows ------------------------------------------------------------------
     for _ in range(40):
         x, y = rng.uniform(220, 290), rng.uniform(250, 320)
@@ -532,6 +682,44 @@ def battle(cv, top):
             cv.rgb[int(y0 - i * 0.3), int(x0 - 40 - i)] = col("e8dcc0")
         cv.emit[int(y0 - 3), int(x0 - 50)] += gold
     cv.light(255, 292, fire, 60, 0.16, 0.1)
+    # dragon fire: a widening cone of flame tongues from the mouth down onto the golem
+    mx, my = 316, 184
+    for i in range(260):
+        t = rng.random() ** 0.7
+        x = mx + t * 22 + rng.gauss(0, 1) * t * 7
+        y = my + t * 58 + rng.gauss(0, 1) * t * 5
+        r = 0.8 + t * 2.6 * rng.random()
+        m = np.hypot(cv.xs - x, cv.ys - y) < r
+        c = col("fff4c8") if t < 0.25 else (col("ffc040") if t < 0.55 else (col("f06a24") if t < 0.85 else col("a8301a")))
+        cv.rgb[m] = c; cv.emit[m] += c * (1.0 - 0.5 * t)
+    cv.light(338, 256, fire, 40, 0.25, 0.2)
+    # arrow volley arcing from the elves into the horde
+    for k in range(14):
+        x0, y0 = rng.uniform(410, 500), rng.uniform(236, 270)
+        x1, y1 = rng.uniform(40, 200), rng.uniform(250, 300)
+        for i in range(0, 28):
+            t = 0.55 + i / 100
+            x = x0 + (x1 - x0) * t; y = y0 + (y1 - y0) * t - math.sin(t * math.pi) * 60
+            if i < 6:
+                cv.rgb[int(y), int(x)] = col("e8dcc0")
+        cv.rgb[int(y), int(x)] = col("ffffff")
+    # orb bolts: each element orb fires a small bolt at the horde
+    for e, (x0, y0), (x1, y1) in (("storm", (404, 214), (150, 262)), ("water", (460, 230), (210, 280)),
+                                  ("void", (256, 224), (120, 250)), ("fire", (560, 228), (230, 300))):
+        c = col(ELEM[e])
+        n = 40
+        for i in range(n):
+            t = 0.25 + i / n * 0.35
+            x = x0 + (x1 - x0) * t; y = y0 + (y1 - y0) * t - math.sin(t * math.pi) * 18
+            cv.rgb[int(y), int(x)] = np.minimum(c + 0.3 * (i > n - 6), 1)
+            cv.emit[int(y), int(x)] += c * (0.4 + 0.08 * i / 4)
+        m = np.hypot(cv.xs - x, cv.ys - y) < 2.5
+        cv.rgb[m] = np.minimum(c + 0.5, 1); cv.emit[m] += c * 1.4
+    # embers drifting up from the clash
+    for _ in range(90):
+        x, y = rng.uniform(180, 560), rng.uniform(120, 300)
+        c = fire if rng.random() < 0.6 else gold
+        cv.rgb[int(y), int(x)] = c; cv.emit[int(y), int(x)] += c * 0.9
 
 
 def foreground(cv):
@@ -540,7 +728,7 @@ def foreground(cv):
     for x0, flip in ((0, False), (W, True)):
         x = 0
         while x < 120:
-            w = rng.randint(14, 30); h = rng.randint(18, 46) - x // 4
+            w = rng.randint(14, 30); h = max(6, rng.randint(18, 46) - x // 4)
             xa = x0 + (-x - w if flip else x)
             top = H - h
             face = cv.mask_poly([(xa, H), (xa, top + 3), (xa + w * 0.6, top), (xa + w * 0.6, H)])
@@ -576,11 +764,13 @@ def finish(cv, scale=3):
 def build():
     cv = Canvas()
     sky(cv)
+    clouds(cv)
     king = rift_and_king(cv)
     mountains(cv)
     towers, sun = solenne(cv)
     beams(cv, towers, sun, king)
-    horde(cv, None)
+    cv.light(sun[0], 150, col("ffc860"), 170, 0.10, 0.0)
+    road(cv)
     top = ground(cv)
     battle(cv, top)
     foreground(cv)
