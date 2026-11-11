@@ -5,6 +5,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from PIL import Image
 import creatures
 import bosses  # noqa: F401  (adds the bosses to creatures.CREATURES)
+import wardens  # noqa: F401
+import final_bosses  # noqa: F401
 
 ap = argparse.ArgumentParser()
 ap.add_argument("names", nargs="*")

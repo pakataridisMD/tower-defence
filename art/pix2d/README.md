@@ -16,3 +16,15 @@ directly as pixel art by `tools/art/pix2d/`:
   redrawn from the shapes, never rotated from finished pixels.
 
 Rebuild: `python3 tools/art/pix2d/gen.py && python3 tools/art/pix2d/anim.py`.
+
+## Story bosses (design only)
+
+`tools/art/pix2d/bosses.py` (the six Heralds, Cinder Tyrant, Vael-Orrun), `wardens.py` (Mountain Titan, Thunderhead,
+Elder Broodmother, Tidal Leviathan, Hollow King and its Hollow Shade) and `final_bosses.py` (Cassivane the Ashen
+Regent, the Sundered Heart, the Gatemaw, the Mirror Spire, the Crownless Throne and the six Echo-Heralds, which are
+the Heralds redrawn as glassy grey reflections that flicker between the elements). All at 32 art px per board cell,
+so they can go on the board without rescaling. Extra animation styles: `titan` (kneels and crumbles), `sink` (sea
+beast goes down), `maw` (structures: the jaw or glyphs flare, then they crumble). `sheet.py` makes labelled review
+sheets with the footman for scale.
+
+Rebuild a boss: `python3 tools/art/pix2d/gen.py gatemaw && python3 tools/art/pix2d/anim.py gatemaw`.

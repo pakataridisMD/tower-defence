@@ -258,6 +258,8 @@ class Sprite:
 
     def image(self):
         al = self.a.astype(np.uint8) * 255
+        if getattr(self, "opacity", 255) < 255:          # glassy or ghostly bodies let the ground show through a little
+            al[self.a] = self.opacity
         if hasattr(self, "_shadow"):
             al[self._shadow & ~self.a] = 90
         return Image.fromarray(np.dstack([self.rgb, al]), "RGBA")

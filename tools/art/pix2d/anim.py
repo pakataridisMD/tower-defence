@@ -20,6 +20,8 @@ from PIL import Image  # noqa: E402
 
 import creatures  # noqa: E402
 import bosses  # noqa: E402,F401  (adds the bosses to creatures.CREATURES)
+import wardens  # noqa: E402,F401
+import final_bosses  # noqa: E402,F401
 
 PAD = 28
 FPS = {"idle": 6, "walk": 10, "attack": 14, "death": 10}
@@ -27,9 +29,18 @@ STYLE = {"elf": "shoot", "dragon": "lunge", "ghost": "float", "golem": "heavy"}
 STYLE.update({k: "float" for k in creatures.CREATURES if k.startswith("orb_")})
 STYLE.update({"gorrath": "titan", "cinder_tyrant": "titan", "vael_orrun": "float", "ourra": "float", "vesper": "float",
               "vholt": "lunge"})
-DEATH = {"ashwick": "float", "mother_briar": "titan", "vholt": "float"}   # how it dies, when not like its style
+DEATH = {"ashwick": "float", "mother_briar": "titan", "vholt": "float", "tidal_leviathan": "sink"}   # how it dies, when not like its style
 PADS = {"gorrath": 44, "cinder_tyrant": 66}          # room for the long arms of the big ones
 LEGS = {"gorrath": 32, "cinder_tyrant": 48, "mother_briar": 18}          # thigh + shin length, for kneeling
+STYLE.update({"mountain_titan": "titan", "thunderhead": "float", "elder_broodmother": "titan", "tidal_leviathan": "lunge",
+              "hollow_king": "float", "hollow_shade": "float", "sundered_heart": "float", "gatemaw": "maw",
+              "mirror_spire": "maw", "crownless_throne": "maw"})
+PADS.update({"mountain_titan": 64, "elder_broodmother": 40, "tidal_leviathan": 40, "cassivane": 36})
+LEGS.update({"mountain_titan": 56, "elder_broodmother": 18})
+for _h in ("ourra", "gorrath", "vesper", "ashwick", "vholt", "mother_briar"):      # echoes move like the Heralds they copy
+    for _t in (STYLE, DEATH, PADS, LEGS):
+        if _h in _t:
+            _t["echo_" + _h] = _t[_h]
 
 
 ORBIT = {"orb_earth": math.pi / 3, "orb_nature": math.pi / 4}   # aura turns by one symmetry step per loop
@@ -44,6 +55,8 @@ def _sway(k, v):
 def idle(i, n, style, name):
     b = math.sin(2 * math.pi * i / n)
     lag = math.sin(2 * math.pi * i / n - 1.0)
+    if style == "maw":         # the gate breathes: the lower jaw sags and lifts, the brow settles
+        return {"jaw": (0, 0, 1.0 + 1.0 * b), "body": (0, 0, 0.5 * lag)}
     if style == "float":
         return {"_all": (0, 0, 1.2 * b), "tail": (0.08 * lag, 0, 0), "weapon": (0.06 * b, 0, 0), "arm_f": (-0.06 * b, 0, 0),
                 "aura": (0.12 * lag, 0, -0.6 * max(0, b)), **_sway(0.12, lag)}
@@ -57,6 +70,8 @@ def walk(i, n, style, name):
     ph = 2 * math.pi * i / n
     a, c = math.sin(ph), math.cos(ph)
     lag = math.sin(ph - 0.9)
+    if style == "maw":         # a structure does not walk: it keeps breathing
+        return idle(i % 6, 6, style, name)
     if style == "float":
         orbit = ORBIT.get(name)
         aura = (orbit * i / n, 0, 0) if orbit else (0.15 * lag, 0, -0.8 * max(0, c))
@@ -97,6 +112,11 @@ def attack(i, n, style, name):
         if i in (4, 5, 6):
             p["_fire"] = True
         return p
+    if style == "maw":         # the jaw drops wide and the gullet blazes, then it slams shut
+        p = {"jaw": (0, 0, k(0, 3, 7, 12, 14, 14, 6, 1)), "body": (0, 0, k(0, -1, -2, -3, -3, -2, 1, 0))}
+        if i in (3, 4, 5):
+            p["_spit"] = True
+        return p
     if style == "float":
         return {"_all": (0, k(0, -1, -2, -2, 3, 3, 2, 0), 0), "weapon": (k(0, -0.2, -0.4, -0.5, 0.4, 0.5, 0.3, 0), 0, 0),
                 "arm_f": (k(0, -0.15, -0.3, -0.4, 0.3, 0.35, 0.2, 0), 0, 0), "tail": (k(0, 0.1, 0.15, 0.2, -0.2, -0.15, -0.05, 0), 0, 0),
@@ -120,6 +140,12 @@ def attack(i, n, style, name):
 
 def death(i, n, style, name):
     k = lambda *v: v[i]  # noqa: E731
+    if style == "sink":        # a sea beast: the neck sags, the jaw falls open and it goes down into the water as ice-dust
+        q = k(0, 0.15, 0.35, 0.55, 0.75, 0.9, 1.0, 1.0)
+        return {"body": (0.08 * q, 0, 26 * q), "neck": (0.45 * q, 0, 0), "head": (0.35 * q, 0, 0), "jaw": (0.4 * q, 0, 0),
+                "tail": (0.2 * q, 0, 14 * q), "wing": (-0.4 * q, 0, 0)}
+    if style == "maw":         # the jaw falls open for good and the stone sinks as it crumbles
+        return {"jaw": (0, 0, 2 * i), "body": (0, 0, 1.2 * i)}
     if style == "float":       # drifts up and comes apart
         return {"_all": (0, 0, -1.0 * i), "weapon": (0.12 * i, 0, 0), "arm_f": (-0.08 * i, 0, 0), "tail": (0.04 * i, 0, 0),
                 "aura": (0.15 * i, 0, -0.5 * i), **_sway(0.1, i)}
@@ -164,9 +190,10 @@ def frames(name, anim):
         if anim == "death":
             style = DEATH.get(name, style)
         pose = fn(i, n, style, name)
+        pose["_t"] = i
         pad = PADS.get(name, PAD)
         s = creatures.CREATURES[name](pose, pad)
-        if anim == "death" and style not in ("float", "titan"):   # a falling body must land on the ground, not sink through it
+        if anim == "death" and style not in ("float", "titan", "maw", "sink"):   # a falling body must land on the ground, not sink through it
             low = int(np.where(s.a.any(1))[0].max()) - (s.bh - 3 + pad)
             if low > 0:
                 r, dx, dy = pose.get("_all", (0, 0, 0))
@@ -174,7 +201,7 @@ def frames(name, anim):
                 s = creatures.CREATURES[name](pose, pad)
         im, nm = np.asarray(s.image()).copy(), np.asarray(s.normal_image()).copy()
         if anim == "death":
-            if style in ("float", "titan"):   # dissolve
+            if style in ("float", "titan", "maw", "sink"):   # dissolve
                 rng = np.random.default_rng(7)
                 keep = rng.random(im.shape[:2]) >= (DISSOLVE if style == "float" else DISSOLVE_TITAN)[i]
                 im[~keep, 3] = 0
