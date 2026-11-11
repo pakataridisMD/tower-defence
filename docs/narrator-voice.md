@@ -13,8 +13,9 @@ is what the cinematic player loads. Setup and commands are in the script's heade
 - **Model:** Kokoro-82M, Apache-2.0 weights. Commercial use is allowed with no fee,
   no account and no attribution requirement, so the audio can ship in a paid game.
 - **Voice:** the `regal` preset, chosen by Doctor Paris: a British blend of Kokoro's
-  `bf_emma` (60%) and its lowest female voice `af_kore` (40%) at 0.88x speed, in a
-  1.6 s cinematic hall. `warm` (80/20, slightly lighter) is the other finalist.
+  `bf_emma` (60%) and its lowest female voice `af_kore` (40%) at 0.88x speed, with
+  movie-trailer mastering (Doctor Paris asked for a clearer, trailer-like voice): close
+  and dry, chest boost, presence at 3 kHz, de-essed, tightly compressed. `warm` (80/20, slightly lighter) is the other finalist.
 - **Keeping it natural:** no pitch shifting (it made the voice sound electronic),
   one sentence at a time with 0.32 s breaths between them, a soft convolution hall
   instead of discrete echoes, faint room tone under the pauses, the synthetic fizz
@@ -26,7 +27,9 @@ is what the cinematic player loads. Setup and commands are in the script's heade
   or opt out of narration with `"voice": false`.
 - **Pauses:** a blank line inside a shot's text becomes a 0.9 s dramatic pause.
 - `tools/voice/mix_preview.py` lays a cinematic's lines over its music, starting each
-  line at its shot marker from the music cue sheet and ducking the music under the voice.
+  line at its shot marker from the music cue sheet. Trailer style: the music is boosted
+  and compressed, dips only about 5 dB under the voice and is notched at 2-4 kHz so the
+  words cut through; the mix ends at -12 LUFS.
 - `--scripts DIR` reads cinematics from another folder (for example a branch
   checkout) and `--out DIR` writes the voice files somewhere else.
 - Regenerating every cinematic takes seconds per line on a CPU, so the script can

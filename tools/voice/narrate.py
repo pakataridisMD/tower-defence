@@ -43,7 +43,7 @@ VOICE_OUT = ROOT / "assets" / "story" / "voice"
 
 # Voice = weighted blend of Kokoro voice styles + delivery + mastering.
 # Optional keys: "semitones" (pitch shift; sounds robotic, avoid), "room" (hall wetness, default 0.16),
-# "rt60" (hall length in seconds, default 1.1).
+# "rt60" (hall length in seconds, default 1.1), "master": "trailer" (close, dry, punchy).
 PRESETS = {
     # Low, calm, storybook-ancient. Kore is the lowest Kokoro female voice;
     # a little Nicole adds breath and intimacy.
@@ -59,12 +59,12 @@ PRESETS = {
     # The narrator (chosen by Doctor Paris, 2026-11-11): British, crisp, regal.
     "regal": {
         "voices": {"bf_emma": 0.6, "af_kore": 0.4},
-        "lang": "en-gb", "speed": 0.88, "room": 0.2, "rt60": 1.6,
+        "lang": "en-gb", "speed": 0.88, "room": 0.07, "rt60": 0.9, "master": "trailer",
     },
     # Warmer and more British, same cinematic hall: the other finalist.
     "warm": {
         "voices": {"bf_emma": 0.8, "af_kore": 0.2},
-        "lang": "en-gb", "speed": 0.9, "room": 0.2, "rt60": 1.6,
+        "lang": "en-gb", "speed": 0.9, "room": 0.07, "rt60": 0.9, "master": "trailer",
     },
 }
 
@@ -150,16 +150,33 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
     filters = []
     if preset.get("semitones"):  # pitch shifting adds a robotic edge; avoid if possible
         filters.append(f"rubberband=pitch={2 ** (preset['semitones'] / 12):.4f}:formant=preserved")
-    filters += [
-        "highpass=f=70",
-        "lowshelf=f=200:g=2",                # warmth
-        "equalizer=f=5500:t=q:w=2:g=-2.5",    # tame the synthetic fizz/sibilance
-        "lowpass=f=12500",                    # remove vocoder hiss above the voice
-        "acompressor=threshold=-22dB:ratio=2:attack=20:release=250",
-        "apad=pad_dur=0.6",
-        "loudnorm=I=-16:TP=-1.5:LRA=11",
-        "aresample=44100",
-    ]
+    if preset.get("master") == "trailer":
+        # Movie-trailer narrator: close and dry, big chest, forward and clear,
+        # tightly compressed so every word cuts through loud music.
+        filters += [
+            "highpass=f=75",
+            "lowshelf=f=140:g=3.5",               # chest
+            "equalizer=f=350:t=q:w=1.2:g=-2",     # less boxiness/mud
+            "equalizer=f=3000:t=q:w=1.4:g=3",     # presence: intelligibility
+            "highshelf=f=9000:g=2",               # air
+            "deesser=i=0.4",
+            "acompressor=threshold=-26dB:ratio=4:attack=8:release=160:makeup=2",
+            "alimiter=limit=0.89:attack=2:release=50",
+            "apad=pad_dur=0.6",
+            "loudnorm=I=-15:TP=-1:LRA=7",
+            "aresample=44100",
+        ]
+    else:
+        filters += [
+            "highpass=f=70",
+            "lowshelf=f=200:g=2",                # warmth
+            "equalizer=f=5500:t=q:w=2:g=-2.5",    # tame the synthetic fizz/sibilance
+            "lowpass=f=12500",                    # remove vocoder hiss above the voice
+            "acompressor=threshold=-22dB:ratio=2:attack=20:release=250",
+            "apad=pad_dur=0.6",
+            "loudnorm=I=-16:TP=-1.5:LRA=11",
+            "aresample=44100",
+        ]
     with tempfile.TemporaryDirectory() as tmp:
         x, sr = sf.read(wav_in)
         roomy = Path(tmp) / "room.wav"

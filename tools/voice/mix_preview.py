@@ -21,7 +21,7 @@ ap.add_argument("out", type=Path)
 ap.add_argument("--cues", type=Path)
 ap.add_argument("--intro", type=float, default=4.0, help="music before the first line (no cues)")
 ap.add_argument("--gap", type=float, default=1.2, help="pause between lines (no cues)")
-ap.add_argument("--music-db", type=float, default=-4.0, help="music level before ducking")
+ap.add_argument("--music-db", type=float, default=5.0, help="music gain in dB before ducking")
 args = ap.parse_args()
 
 lines = sorted(args.voice_dir.glob("*.ogg"))
@@ -47,9 +47,14 @@ parts = [f"[{i + 1}:a]aresample=44100,aformat=channel_layouts=stereo,adelay={int
          for i, s in enumerate(starts)]
 vmix = "".join(f"[v{i}]" for i in range(len(lines)))
 parts.append(f"{vmix}amix=inputs={len(lines)}:normalize=0,apad,asplit=2[voice][key]")
-parts.append(f"[0:a]aresample=44100,aformat=channel_layouts=stereo,volume={args.music_db}dB[mus]")
-parts.append("[mus][key]sidechaincompress=threshold=0.03:ratio=6:attack=80:release=900:makeup=1[ducked]")
-parts.append("[ducked][voice]amix=inputs=2:normalize=0:duration=first,loudnorm=I=-14:TP=-1[out]")
+# Music stays big (trailer style): it only dips ~5 dB under the voice, and a notch
+# around 2-4 kHz leaves room for the words instead of turning the music down more.
+parts.append(f"[0:a]aresample=44100,aformat=channel_layouts=stereo,volume={args.music_db}dB,"
+             "acompressor=threshold=-16dB:ratio=3:attack=30:release=300,"   # trailer-loud music
+             "equalizer=f=2800:t=q:w=1:g=-4[mus]")
+parts.append("[mus][key]sidechaincompress=threshold=0.06:ratio=2.5:attack=60:release=700:makeup=1[ducked]")
+parts.append("[voice]volume=2dB[vox];[ducked][vox]amix=inputs=2:normalize=0:duration=first,"
+             "alimiter=limit=0.9:attack=3:release=80,loudnorm=I=-12:TP=-1:LRA=10[out]")
 args.out.parent.mkdir(parents=True, exist_ok=True)
 subprocess.run(["ffmpeg", "-loglevel", "error", "-y", *inputs, "-filter_complex", ";".join(parts),
                 "-map", "[out]", "-b:a", "192k", str(args.out)], check=True)
