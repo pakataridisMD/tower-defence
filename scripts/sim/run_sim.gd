@@ -99,6 +99,10 @@ var _skill_time: Dictionary[StringName, float] = {}
 ## Roads whose gate has fallen in an assault: nothing more comes down them.
 var _closed_lanes: Dictionary[int, bool] = {}
 var _structure_cells: Dictionary[Vector2i, SimEnemy] = {}
+## The enemy's war camps and the defended city (see Landmarks).
+var landmarks: Array[Landmarks.Site] = []
+## Cells the camps and the city stand on, to the site on each.
+var _landmark_cells: Dictionary[Vector2i, Landmarks.Site] = {}
 ## The heroes the player can summon in this run, in key order.
 var party: Array[HeroData] = []
 ## Summoned heroes by hero id.
@@ -136,6 +140,7 @@ func _init(p_config: RunConfig) -> void:
 	path_length = lane_lengths[0]
 	_path_cells = config.map.path_cells()
 	_place_structures()
+	_place_landmarks()
 	for hero in config.heroes:
 		if hero != null and not party.has(hero) and party.size() < HeroData.MAX_PARTY:
 			party.append(hero)
@@ -362,6 +367,18 @@ func _tick_skills(delta: float) -> void:
 		_refresh_modifiers()
 
 
+func _place_landmarks() -> void:
+	landmarks = Landmarks.find(config.map, is_path, func(cell: Vector2i) -> bool: return _structure_cells.has(cell))
+	for site in landmarks:
+		for cell in site.cells:
+			_landmark_cells[cell] = site
+
+
+## The camp or city standing on a cell, or null.
+func landmark_at(cell: Vector2i) -> Landmarks.Site:
+	return _landmark_cells.get(cell)
+
+
 func is_path(cell: Vector2i) -> bool:
 	return _path_cells.has(cell)
 
@@ -386,6 +403,8 @@ func placement_error(tower_id: StringName, cell: Vector2i) -> String:
 		return "Towers cannot go on the path"
 	if _structure_cells.has(cell):
 		return "The enemy's building stands here"
+	if _landmark_cells.has(cell):
+		return "The enemy's war camp stands here" if _landmark_cells[cell].kind == &"camp" else "The city stands here"
 	var limit := build_limit()
 	if limit >= 0 and cell.x > limit:
 		return "The enemy still holds this ground: bring down its buildings first"
@@ -1201,6 +1220,8 @@ func _cell_error(cell: Vector2i) -> String:
 		return "Outside the map"
 	if is_path(cell):
 		return "Heroes stand beside the road, not on it"
+	if _landmark_cells.has(cell):
+		return "The enemy's war camp stands here" if _landmark_cells[cell].kind == &"camp" else "The city stands here"
 	if _tower_at.has(cell):
 		return "There is already a tower here"
 	return ""

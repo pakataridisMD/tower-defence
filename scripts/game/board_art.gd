@@ -84,6 +84,8 @@ var _ground_fx: Node2D
 ## Drawn over everything: what is hurting each enemy, and the rings and sparks of hits.
 var _marks: Node2D
 var _fx: Array[Fx] = []
+## The war camps and the city at the road ends, or null when there is no art for them.
+var landmarks: LandmarkArt
 
 
 ## Something with a contact shadow and a sun shadow that follows it.
@@ -227,6 +229,9 @@ func setup(p_sim: RunSim) -> void:
 	_marks.draw.connect(_draw_marks)
 	_world.add_child(_marks)
 	_build_ground()
+	if LandmarkArt.has_art():
+		landmarks = LandmarkArt.new()
+		landmarks.build(self)
 	_build_fireflies()
 	sim.chain_fired.connect(_on_chain_fired)
 	sim.projectile_landed.connect(_on_projectile_landed)
@@ -333,6 +338,8 @@ func _build_ground() -> void:
 		var kind: String = prop["kind"]
 		var p: Array = prop["pos"]
 		var c: Array = prop["cell"]
+		if sim.landmark_at(Vector2i(c[0], c[1])) != null:
+			continue
 		var meta: Dictionary = prop_info.get(kind, {})
 		var sprite := Sprite2D.new()
 		sprite.texture = lit_texture(ART + "props/" + kind)
@@ -443,6 +450,8 @@ func _process(delta: float) -> void:
 	_sync_towers(delta)
 	_sync_enemies(delta)
 	_sync_shots()
+	if landmarks != null:
+		landmarks.update(delta)
 	_update_shadows()
 	_advance_fx(delta)
 	_ground_fx.queue_redraw()

@@ -76,6 +76,13 @@ func setup(p_sim: RunSim) -> void:
 		art.show_behind_parent = true
 		add_child(art)
 		art.setup(sim)
+		if art.landmarks != null:
+			# The city's name sits over its gate, above the art (which draws over this node).
+			var names := Node2D.new()
+			names.z_index = 8
+			names.material = overlay
+			names.draw.connect(_draw_city_names.bind(names))
+			add_child(names)
 	else:
 		_ground = Node2D.new()
 		_ground.show_behind_parent = true
@@ -307,6 +314,8 @@ func _has_tower_art(tower_id: StringName) -> bool:
 
 
 func _draw_road_labels() -> void:
+	if art.landmarks != null and not sim.landmarks.is_empty():
+		return
 	for lane in sim.config.map.lane_count():
 		var ends := _road_ends(lane)
 		if ends.is_empty():
@@ -315,6 +324,25 @@ func _draw_road_labels() -> void:
 		_draw_outlined(ends[0], "IN", UiStyle.TEXT)
 		if exit_label:
 			_draw_outlined(ends[1], "OUT", UiStyle.LIFE)
+
+
+## The defended city's name over its gate. The camps and the city show where the roads start and end.
+func _draw_city_names(on: Node2D) -> void:
+	var size := sim.config.map.size_in_pixels()
+	var cell_size := float(sim.config.map.cell_size)
+	for site in sim.landmarks:
+		if site.kind != &"city":
+			continue
+		var top := sim.config.map.cell_center(site.anchor)
+		for cell in site.cells:
+			top.y = minf(top.y, sim.config.map.cell_center(cell).y)
+		var text := art.landmarks.city_name
+		var width := _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
+		var at := Vector2(top.x - width * 0.5, top.y - cell_size * 0.95)
+		at.x = clampf(at.x, 6.0, size.x - width - 6.0)
+		at.y = clampf(at.y, 20.0, size.y - 8.0)
+		on.draw_string_outline(_font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, 6, Color(0, 0, 0, 0.7))
+		on.draw_string(_font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color(1.0, 0.9, 0.7))
 
 
 ## Where to write IN and OUT for a lane: just inside the board where the road enters and leaves.
