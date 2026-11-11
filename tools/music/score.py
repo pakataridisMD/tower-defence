@@ -204,6 +204,8 @@ class Score:
         self.markers: list[tuple[float, str]] = []
         self.end_pad = 6.0
         self.perc_db = 0.0  # gain on all unpitched percussion
+        # whole-mix drop-outs before big hits: (start s, end s, dB), reverb included
+        self.ducks: list[tuple[float, float, float]] = []
 
     # ----- structure -----
     def section(self, name: str, bars: float, meter: float = 4, bpm: float = 72, end_bpm: float | None = None,
@@ -399,6 +401,18 @@ def pan_stereo(x: np.ndarray, pan: float) -> np.ndarray:
     return x * np.array([l, r], np.float32)
 
 
+def duck_env(n: int, t0: float, t1: float, db: float, fall: float = 0.08, back: float = 0.004) -> np.ndarray:
+    """Gain curve that falls to `db` from t0 over `fall` s and snaps back at t1 (the hit)."""
+    g = np.ones(n, np.float32)
+    lo = 10 ** (db / 20)
+    a, b, c = int(t0 * SR), int((t0 + fall) * SR), int(t1 * SR)
+    d = c + int(back * SR)
+    g[a:b] = np.linspace(1, lo, b - a)
+    g[b:c] = lo
+    g[c:d] = np.linspace(lo, 1, d - c)
+    return g
+
+
 def mix(score: Score, out_dir: str, stems: bool = False) -> str:
     """Render a cue, normalise it to a 0.5 peak, fade the last 1.5 s and write a float WAV."""
     out = mix_array(score, out_dir, stems)
@@ -456,6 +470,8 @@ def mix_array(score: Score, out_dir: str, stems: bool = False) -> np.ndarray:
     ir = hall_ir()
     wet = np.stack([signal.oaconvolve(send[:, c], ir[:, c])[:total] for c in range(2)], axis=1)
     out = dry * 0.85 + wet * 0.55
+    for t0, t1, db in score.ducks:
+        out *= duck_env(total, t0, t1, db)[:, None]
     # tidy the low end and master
     sos = signal.butter(4, 34 / (SR / 2), "high", output="sos")
     return signal.sosfilt(sos, out, axis=0).astype(np.float32)

@@ -48,6 +48,7 @@ for Versilian Studios is a courtesy, not a requirement.
 | `citadel` | The Crownless Citadel | 1:11 | `assault_intro`, `mirror_spire`, `crownless_throne` |
 | `epilogue` | The Seventh Colour | 1:28 | `epilogue` |
 | `trailer`, `trailer_short` | Hold the Road (trailer) | 0:48, 0:23 | promo teaser and vertical short (hit at 0:42 and 0:19) |
+| `trailer2`, `trailer2_short` | The Last Lantern (story trailer) | 1:18, 0:30 | dark 18+ story trailer and vertical short, 160 bpm battle, drop-out then hit at 1:10 and 0:24; `LUFS = -16`, `s.ducks` for the drop-outs |
 
 Each cue ships as `<cue>.ogg` (44.1 kHz stereo, -18 LUFS integrated, true peak at most -1 dBFS, so the
 narrator sits on top), `<cue>.json` (length and section markers, so shots can be timed to the music)
