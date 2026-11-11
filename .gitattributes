@@ -21,3 +21,5 @@ assets/art/game/** -filter -diff -merge -text
 assets/art/ui/** -filter -diff -merge -text
 # The sound effects are rendered by tools/sfx/build.py and are small too.
 assets/audio/sfx/** -filter -diff -merge -text
+# The game music is rendered by tools/music/render_loop.py (on the music branch) and is small too.
+assets/game/music/** -filter -diff -merge -text

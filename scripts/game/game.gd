@@ -24,6 +24,7 @@ var board: BoardView
 var hud: Hud
 var web: SkillWebView
 var audio: GameAudio
+var music: BattleMusic
 var paused := false
 ## Set before the node enters the tree, or with --autoplay.
 var autoplay := false
@@ -60,6 +61,9 @@ func _build_views() -> void:
 	audio = GameAudio.new()
 	add_child(audio)
 	audio.setup(sim, BOARD_OFFSET)
+	music = BattleMusic.new()
+	add_child(music)
+	music.setup(sim)
 
 	var hud_layer := CanvasLayer.new()
 	add_child(hud_layer)

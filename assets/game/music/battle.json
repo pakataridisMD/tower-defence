@@ -1,0 +1,42 @@
+{
+  "id": "battle_calm",
+  "title": "Hold the Line",
+  "duration": 96.0,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 19.2,
+      "name": "B"
+    },
+    {
+      "time": 38.4,
+      "name": "C"
+    },
+    {
+      "time": 57.6,
+      "name": "D"
+    },
+    {
+      "time": 76.8,
+      "name": "E"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 96.0,
+  "loop_samples": 4233600,
+  "handover_seconds": 96.0,
+  "bpm": 100,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "battle_calm.ogg",
+    "wave": "battle_wave.ogg",
+    "boss": "battle_boss.ogg"
+  }
+}

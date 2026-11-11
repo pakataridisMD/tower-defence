@@ -1,0 +1,34 @@
+{
+  "id": "boss_fight",
+  "title": "The Hollow Comes",
+  "duration": 54.8571,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 13.71,
+      "name": "B"
+    },
+    {
+      "time": 27.43,
+      "name": "C"
+    },
+    {
+      "time": 41.14,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 54.8571,
+  "loop_samples": 2419200,
+  "handover_seconds": 54.8571,
+  "bpm": 140,
+  "layers": [
+    "fight"
+  ],
+  "files": {
+    "fight": "boss_fight.ogg"
+  }
+}
