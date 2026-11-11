@@ -2,14 +2,19 @@
  "dragon": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -29,14 +34,19 @@
  "dwarf": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -56,14 +66,19 @@
  "elf": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -83,14 +98,19 @@
  "ghost": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -110,14 +130,19 @@
  "golem": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -137,14 +162,19 @@
  "orb_earth": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -164,14 +194,19 @@
  "orb_fire": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -191,14 +226,19 @@
  "orb_nature": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -218,14 +258,19 @@
  "orb_storm": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -245,14 +290,19 @@
  "orb_void": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -272,14 +322,19 @@
  "orb_water": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -299,14 +354,19 @@
  "orc": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -326,14 +386,19 @@
  "skeleton": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -353,14 +418,19 @@
  "soldier": {
   "anims": {
    "attack": {
-    "fps": 12,
-    "frames": 6,
+    "fps": 14,
+    "frames": 8,
     "loop": false
    },
    "death": {
-    "fps": 8,
-    "frames": 6,
+    "fps": 10,
+    "frames": 8,
     "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,

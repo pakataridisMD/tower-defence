@@ -23,16 +23,21 @@ def soldier(pose=None, pad=0):
     s = Sprite(50, 56, pose, pad)
     s.g("leg_f", 21, 38)
     # far leg (steel greave, sabaton)
-    s.part(s.capsule(21, 39, 20.5, 47, 2.4), STEEL, bias=-0.3)
+    s.part(s.capsule(21, 39, 20.8, 43, 2.4), STEEL, bias=-0.3)
+    s.g("shin_f", 20.8, 43, "leg_f")
+    s.part(s.capsule(20.8, 43, 20.5, 47, 2.4), STEEL, bias=-0.3, edge=False)
     s.part(s.ellipse(20.5, 49.5, 3.6, 2.2), STEEL, bias=-0.3)
     s.g("weapon", 29, 23)
     # sword arm on the far side, raised: blade, crossguard, gauntlet
+    s.part(s.capsule(29, 23, 33, 24.7, 2.6), RED_D)
+    s.g("hand_w", 33, 24.7, "weapon")                            # elbow: forearm, gauntlet and sword
     s.part(s.poly([(36, 24), (39, 24), (43, 5), (41, 3), (39, 5)]), STEEL, flat=True, bias=0.2)
     s.line(41, 5, 38, 23, STEEL[4])
     s.line(40, 6, 37, 23, STEEL[1])
-    s.part(s.capsule(29, 23, 36, 26, 2.6), RED_D)
+    s.part(s.capsule(33, 24.7, 36, 26, 2.6), RED_D, edge=False)
     s.part(s.rect(33, 23, 43, 25), GOLD, flat=True)
     s.part(s.ellipse(37.5, 26.5, 2.6, 2.4), STEEL)
+    s.g("weapon", 29, 23)
     s.part(s.ellipse(30.5, 21.5, 4.2, 3.4), RED_D)             # far pauldron
     s.g("body")
     # torso: red breastplate with a steel collar and a centre ridge
@@ -41,7 +46,9 @@ def soldier(pose=None, pad=0):
     s.part(s.rect(19, 21, 30, 23), STEEL, flat=True)
     s.g("head", 24, 20)
     # helm: steel, flat-topped, eye slit and breath holes, red plume swept back
+    s.g("plume", 21, 7, "head")
     s.part(s.poly([(22, 6), (17, 2), (11, 4), (9, 10), (12, 16), (15, 11), (19, 10)]), RED)
+    s.g("head", 24, 20)
     s.part(s.ellipse(24.5, 14, 6.8, 7.0) | s.rect(18, 8, 31, 12), STEEL)
     s.part(s.rect(18, 7, 31, 9), STEEL, flat=True, bias=0.3)
     s.fill(s.rect(24, 13, 32, 15), DARK)                        # eye slit
@@ -52,6 +59,9 @@ def soldier(pose=None, pad=0):
     s.line(19, 20, 30, 20, STEEL[0])
     s.g("body")
     # tassets (plate skirt) and belt
+    s.g("leg_n", 27, 40)                                        # near thigh, under the plate skirt
+    s.part(s.capsule(27, 39, 27.5, 43, 2.8), STEEL)
+    s.g("body")
     s.part(s.poly([(16, 35), (32, 35), (33, 42), (15, 42)]), RED)
     s.line(15, 42, 33, 42, STEEL[3])
     s.line(24, 36, 24, 41, RED[0])
@@ -59,7 +69,8 @@ def soldier(pose=None, pad=0):
     s.pxs([(24, 34), (25, 34), (24, 35), (25, 35)], GOLD[3])
     s.g("leg_n", 27, 40)
     # near leg: greave with a red knee cop, sabaton
-    s.part(s.capsule(27, 42, 28, 47.5, 2.8), STEEL)
+    s.g("shin_n", 27.5, 43, "leg_n")
+    s.part(s.capsule(27.3, 42, 28, 47.5, 2.8), STEEL)
     s.part(s.ellipse(27.5, 43, 2.6, 2.0), RED)
     s.part(s.ellipse(29.5, 50, 4.2, 2.4) | s.rect(26, 46, 31, 50), STEEL)
     s.g("arm_n", 18.5, 24)
@@ -104,20 +115,27 @@ def orc(pose=None, pad=0):
     s = Sprite(58, 56, pose, pad)
     s.g("weapon", 25.5, 24)
     # axe haft and head behind the body, raised over the shoulder
+    s.g("hand_w", 30, 28.7, "weapon")
     s.part(s.capsule(37, 38, 44, 9, 1.1), WOOD, flat=True)
     s.part(s.poly([(40, 8), (49, 4), (53, 13), (45, 16)]), IRON)
     s.line(50, 5, 53, 12, IRON[4])
     s.line(51, 5, 53, 11, WHITE)
     # far arm and leg
     s.g("arm_f", 20, 24)
-    s.part(s.capsule(20, 25, 16, 36, 3.0), GREEN_D, bias=-0.15)
+    s.part(s.capsule(20, 25, 18, 30.5, 3.0), GREEN_D, bias=-0.15)
+    s.g("fore_f", 18, 30.5, "arm_f")
+    s.part(s.capsule(18, 30.5, 16, 36, 3.0), GREEN_D, bias=-0.15, edge=False)
     s.part(s.ellipse(15.5, 38, 3.2, 3.0), GREEN_D, bias=-0.1)
     s.g("leg_f", 22, 38)
-    s.part(s.capsule(22, 39, 21, 47, 3.0), GREEN_D, bias=-0.2)
+    s.part(s.capsule(22, 39, 21.5, 43, 3.0), GREEN_D, bias=-0.2)
+    s.g("shin_f", 21.5, 43, "leg_f")
+    s.part(s.capsule(21.5, 43, 21, 47, 3.0), GREEN_D, bias=-0.2, edge=False)
     s.part(s.ellipse(20.5, 49.5, 4.0, 2.4), GREEN_D, bias=-0.15)
     s.g("leg_n", 29.5, 38)
     # near leg, loincloth, torso
-    s.part(s.capsule(29.5, 39, 30.5, 47, 3.5), GREEN)
+    s.part(s.capsule(29.5, 39, 30, 43, 3.5), GREEN)
+    s.g("shin_n", 30, 43, "leg_n")
+    s.part(s.capsule(30, 43, 30.5, 47, 3.5), GREEN, edge=False)
     s.part(s.ellipse(31.5, 49.6, 4.8, 2.6), GREEN)
     s.g("body")
     s.part(s.ellipse(26, 28.5, 9.6, 9.0), GREEN)
@@ -142,10 +160,14 @@ def orc(pose=None, pad=0):
     s.line(34, 22, 38, 22, GREEN_D[0])                             # mouth
     s.g("weapon", 25.5, 24)
     # near arm: spiked pauldron, big forearm and fist gripping the haft
-    s.part(s.capsule(25.5, 24, 34, 33, 3.9), GREEN)
+    s.part(s.capsule(25.5, 24, 30, 28.7, 3.9), GREEN)
+    s.g("hand_w", 30, 28.7, "weapon")
+    s.part(s.capsule(30, 28.7, 34, 33, 3.9), GREEN, edge=False)
+    s.g("weapon", 25.5, 24)
     s.part(s.ellipse(24.5, 21, 5.4, 4.6), IRON)
     for x in (21, 24.5, 28):
         s.part(s.poly([(x - 1.5, 18), (x + 1.5, 18), (x, 13)]), BONE)
+    s.g("hand_w", 30, 28.7, "weapon")
     s.part(s.ellipse(36, 35, 3.8, 3.6), GREEN)
     s.pxs([(35, 37), (37, 37)], GREEN_D[0])                        # knuckles
     s.ink()
@@ -155,10 +177,12 @@ def orc(pose=None, pad=0):
 
 def skeleton(pose=None, pad=0):
     s = Sprite(48, 52, pose, pad)
+    s.g("cloak", 19, 19)
     cloak = s.poly([(17, 19), (23, 18), (22, 40), (19, 37), (17, 42), (14, 36), (15, 26)])
     s.part(cloak, PURPLE)
     s.g("weapon", 30, 21.5)
     # rusty sword behind the near hand
+    s.g("hand_w", 33, 26.5, "weapon")
     s.part(s.poly([(36, 26), (38, 27), (44, 10), (42, 9)]), RUST, flat=True, bias=0.15)
     s.line(43, 10, 37, 26, RUST[4])
     s.pxs([(40, 18), (41, 14)], RUST[0])                           # notches
@@ -169,10 +193,14 @@ def skeleton(pose=None, pad=0):
         for x, y in pts:
             s.part(s.ellipse(x, y, r + 0.9, r + 0.9), BONE, bias=bias)
     s.g("leg_f", 22, 33)
-    bone([(22, 33), (20.5, 39), (21, 45)], bias=-0.3)
+    bone([(22, 33), (20.5, 39)], bias=-0.3)
+    s.g("shin_f", 20.5, 39, "leg_f")
+    bone([(20.5, 39), (21, 45)], bias=-0.3)
     s.part(s.ellipse(22.5, 46.5, 3.0, 1.5), BONE, bias=-0.3)
     s.g("leg_n", 26.5, 33)
-    bone([(26.5, 33), (28.5, 39), (27.5, 45)])
+    bone([(26.5, 33), (28.5, 39)])
+    s.g("shin_n", 28.5, 39, "leg_n")
+    bone([(28.5, 39), (27.5, 45)])
     s.part(s.ellipse(29.5, 46.5, 3.4, 1.6), BONE)
     s.g("body")
     s.part(s.ellipse(24.5, 32.5, 4.6, 2.5), BONE)                  # pelvis
@@ -188,13 +216,19 @@ def skeleton(pose=None, pad=0):
     s.line(26, 21, 26, 29, BONE[2])                                # breastbone
     # arms
     s.g("arm_f", 20, 21.5)
-    bone([(20, 21.5), (17.5, 27), (20, 32)], bias=-0.3)
+    bone([(20, 21.5), (17.5, 27)], bias=-0.3)
+    s.g("fore_f", 17.5, 27, "arm_f")
+    bone([(17.5, 27), (20, 32)], bias=-0.3)
     s.g("weapon", 30, 21.5)
-    bone([(30, 21.5), (33, 26.5), (37, 27)])
+    bone([(30, 21.5), (33, 26.5)])
+    s.g("hand_w", 33, 26.5, "weapon")
+    bone([(33, 26.5), (37, 27)])
     s.part(s.capsule(34.5, 25, 39.5, 28.5, 0.9), RUST, flat=True)  # crossguard
     s.g("head", 25, 19)
     # skull
-    s.part(s.rect(24, 17, 31, 21), BONE)                           # jaw
+    s.g("jaw", 24, 17, "head")
+    s.part(s.rect(24, 17, 31, 21), BONE)
+    s.g("head", 25, 19)                           # jaw
     s.part(s.ellipse(25.5, 13.5, 6.2, 5.8), BONE)
     s.fill(s.rect(26, 12, 28, 15), DARK)
     s.fill(s.rect(30, 12, 32, 15), DARK)
@@ -266,14 +300,17 @@ def golem(pose=None, pad=0):
     s.g("arm_f", 52, 24)
     # far arm
     _slab(s, [(47, 22), (57, 22), (58, 32), (48, 32)], STONE_D, chips=1, seed=1)        # far shoulder
+    s.g("fore_f", 54, 33, "arm_f")
     _slab(s, [(50, 33), (57, 33), (58, 46), (51, 46)], STONE_D, seed=2)
     _slab(s, [(49, 47), (59, 47), (60, 57), (50, 57)], STONE_D, chips=1, seed=3)        # far fist
     # legs and feet
     s.g("leg_f", 29, 47)
     _slab(s, [(25, 47), (33, 47), (33, 60), (26, 60)], STONE_D, chips=1, seed=4)
+    s.g("shin_f", 29, 60, "leg_f")
     _slab(s, [(23, 61), (35, 61), (36, 67), (22, 67)], STONE, depth=(3, -2), seed=6)
     s.g("leg_n", 41, 47)
     _slab(s, [(37, 47), (46, 47), (46, 60), (38, 60)], STONE_D, chips=1, seed=5)
+    s.g("shin_n", 41, 60, "leg_n")
     _slab(s, [(36, 61), (49, 61), (50, 67), (35, 67)], STONE, depth=(3, -2), seed=7)
     s.g("body")
     # hips and the great chest block, wider at the shoulders
@@ -294,10 +331,12 @@ def golem(pose=None, pad=0):
     s.px(39, 12, RUNE[2], glow=True)
     s.px(44, 12, RUNE[2], glow=True)
     s.line(37, 17, 44, 17, STONE_D[0])                                                   # mouth crack
-    s.g("weapon", 17, 22)
+    s.g("weapon", 17, 30)
     # near arm: huge shoulder block, upper arm, forearm slab, fist on the ground side
     _slab(s, [(13, 31), (22, 31), (22, 43), (14, 43)], STONE_D, seed=12)
+    s.g("body")                                                    # the shoulder block stays with the chest
     _slab(s, [(8, 16), (24, 16), (25, 31), (9, 31)], STONE, depth=(4, -4), chips=3, seed=13)
+    s.g("hand_w", 18, 42, "weapon")                              # elbow: forearm slab and fist
     _slab(s, [(10, 42), (25, 42), (26, 56), (11, 56)], STONE, chips=3, seed=14)
     _slab(s, [(9, 56), (27, 56), (27, 65), (10, 65)], STONE_D, chips=1, seed=15)
     for x in (14, 19, 23):
@@ -305,6 +344,7 @@ def golem(pose=None, pad=0):
     s.line(12, 48, 24, 48, RUNE[0], glow=True)                                           # rune band on the forearm
     s.pxs([(14, 48), (18, 48), (22, 48)], RUNE[2], glow=True)
     # crystals grown out of the near shoulder, and a little moss in the joints
+    s.g("body")
     for (x, top, w) in ((12, 5, 3), (17, 2, 4), (22, 7, 3)):
         s.fill(s.poly([(x - w, 13), (x, top), (x + w, 13)]), RUNE[0], glow=True)
         s.fill(s.poly([(x - w + 1, 13), (x, top + 1), (x, 13)]), RUNE[1], glow=True)
@@ -326,30 +366,43 @@ def dragon(pose=None, pad=0):
     # tail, thin to thick, with a spade tip
     pts = [(6, 66), (12, 70), (20, 70), (28, 66), (36, 61)]
     for i, ((x0, y0), (x1, y1)) in enumerate(zip(pts, pts[1:])):
+        s.g("tail2", 20, 70, "tail") if i < 2 else s.g("tail", 36, 61)
         s.part(s.capsule(x0, y0, x1, y1, 1.5 + i * 1.6, 3.0 + i * 1.7), DRAGON, edge=False)
+    s.g("tail2", 20, 70, "tail")
     s.part(s.poly([(7, 66), (1, 60), (3, 68), (0, 73)]), BONE)
     # far legs
     s.g("leg_f", 60, 60)
-    s.part(s.capsule(60, 60, 64, 74, 3.0), DRAGON_D, bias=-0.2)
+    s.part(s.capsule(60, 60, 62, 67, 3.0), DRAGON_D, bias=-0.2)
+    s.g("shin_f", 62, 67, "leg_f")
+    s.part(s.capsule(62, 67, 64, 74, 3.0), DRAGON_D, bias=-0.2, edge=False)
     s.part(s.ellipse(66, 76.5, 4.4, 2.2), DRAGON_D, bias=-0.2)
     s.g("leg_f2", 40, 62)
-    s.part(s.capsule(40, 62, 44, 75, 3.2), DRAGON_D, bias=-0.2)
+    s.part(s.capsule(40, 62, 42, 68.5, 3.2), DRAGON_D, bias=-0.2)
+    s.g("shin_f2", 42, 68.5, "leg_f2")
+    s.part(s.capsule(42, 68.5, 44, 75, 3.2), DRAGON_D, bias=-0.2, edge=False)
     s.part(s.ellipse(46, 76.8, 4.6, 2.2), DRAGON_D, bias=-0.2)
     s.g("body")
     # body and neck
+    s.g("neck", 56, 50)
     s.part(s.capsule(56, 50, 70, 28, 6.4, 4.6), DRAGON)
+    s.g("body")
     s.part(s.ellipse(46, 56, 17, 11.5), DRAGON)
     # pale belly plates under the body and up the front of the neck
     s.part(s.ellipse(48, 62.5, 12.5, 5.0) & s.ellipse(46, 56, 17, 11.5), BELLY)
+    s.g("neck", 56, 50)
     s.part(s.capsule(62, 53, 73, 34, 2.6, 1.6) & ~s.capsule(55, 49, 69, 27, 5.0, 3.4), BELLY, edge=False)
+    s.g("body")
     for x, y in ((40, 62), (45, 63), (50, 63), (55, 62)):
         s.px(x, y, BELLY[0])
         s.px(x, y + 1, BELLY[0])
-    s.g("head", 70, 28)
+    s.g("head", 70, 28, "neck")
     # head: skull, snout, jaw, horns
     s.part(s.poly([(72, 19), (64, 9), (68, 21)]), BONE, bias=-0.2)  # far horn
     s.part(s.capsule(78, 26, 91, 28, 4.6, 3.2), DRAGON)
+    s.g("jaw", 77, 31, "head")
     s.part(s.capsule(77, 31.5, 89, 33, 2.4, 1.6), DRAGON_D)        # lower jaw
+    s.g("head", 70, 28, "neck")
+    #        # lower jaw
     s.part(s.ellipse(76, 24.5, 8.4, 6.8), DRAGON)
     s.part(s.poly([(73, 19), (63, 13), (70, 23)]), BONE)           # near horn
     s.fill(s.rect(80, 22, 83, 24), (255, 220, 60), glow=True)      # eye
@@ -366,18 +419,21 @@ def dragon(pose=None, pad=0):
         s.fill(s.poly([(93, 30), (99, 30), (99, 32), (94, 32)]), EMBER[3], glow=True)
     # spikes along the neck and back
     for x, y in ((66, 27), (62, 34), (58, 41), (30, 53), (23, 61), (15, 66)):
-        s.g("body") if x > 40 else s.g("tail", 36, 61)
+        s.g("neck", 56, 50) if x > 40 else s.g("tail2", 20, 70, "tail") if x < 20 else s.g("tail", 36, 61)
         s.part(s.poly([(x - 2, y + 2), (x + 2, y + 1), (x - 2, y - 4)]), BONE, edge=False)
     # near legs: thigh, shin, clawed feet
     s.g("leg_n2", 36, 60)
     s.part(s.ellipse(36, 61, 7.6, 9.0), DRAGON)
+    s.g("shin_n2", 35, 67, "leg_n2")
     s.part(s.capsule(34, 66, 38, 76, 3.4, 2.8), DRAGON)
     s.part(s.ellipse(40, 78.2, 5.6, 2.6), DRAGON)
     s.g("leg_n", 55, 60)
-    s.part(s.capsule(55, 60, 58, 76, 3.8, 2.8), DRAGON)
+    s.part(s.capsule(55, 60, 56.5, 68, 3.8, 3.3), DRAGON)
+    s.g("shin_n", 56.5, 68, "leg_n")
+    s.part(s.capsule(56.5, 68, 58, 76, 3.3, 2.8), DRAGON, edge=False)
     s.part(s.ellipse(60, 78.2, 5.4, 2.6), DRAGON)
     for x in (42, 44, 46, 62, 64, 66):
-        s.g("leg_n2", 36, 60) if x < 50 else s.g("leg_n", 55, 60)
+        s.g("shin_n2", 35, 67, "leg_n2") if x < 50 else s.g("shin_n", 56.5, 68, "leg_n")
         s.px(x, 79, WHITE)
         s.px(x - 1, 80, WHITE)
     s.g("wing", 50, 47)
@@ -408,16 +464,21 @@ def elf(pose=None, pad=0):
     """Elf archer: slim, hooded green cloak, long fair hair, pointed ear, longbow drawn with an arrow on the string."""
     s = Sprite(52, 58, pose, pad)
     # cloak hanging behind
+    s.g("cloak", 22, 20)
     s.part(s.poly([(20, 20), (27, 20), (25, 46), (19, 49), (13, 47), (11, 44), (15, 30)]), CLOAK_D)
     s.line(16, 31, 14, 46, CLOAK_D[0])
     s.g("leg_f", 22.5, 38)
     # far leg and boot
-    s.part(s.capsule(22.5, 38, 21, 48, 1.9), TUNIC, bias=-0.3)
+    s.part(s.capsule(22.5, 38, 21.8, 43, 1.9), TUNIC, bias=-0.3)
+    s.g("shin_f", 21.8, 43, "leg_f")
+    s.part(s.capsule(21.8, 43, 21, 48, 1.9), TUNIC, bias=-0.3, edge=False)
     s.part(s.capsule(20.5, 46, 20.5, 51, 2.1), LEATHER, bias=-0.3)
     s.part(s.ellipse(21.5, 52.5, 3.0, 1.6), LEATHER, bias=-0.3)
     s.g("leg_n", 26.5, 38)
     # near leg and tall boot
-    s.part(s.capsule(26.5, 38, 28.5, 47, 2.2), TUNIC)
+    s.part(s.capsule(26.5, 38, 27.5, 42.5, 2.2), TUNIC)
+    s.g("shin_n", 27.5, 42.5, "leg_n")
+    s.part(s.capsule(27.5, 42.5, 28.5, 47, 2.2), TUNIC, edge=False)
     s.part(s.capsule(28.5, 45, 28.5, 51, 2.4), LEATHER)
     s.part(s.ellipse(29.5, 52.5, 3.6, 1.8), LEATHER)
     s.line(26, 45, 31, 45, LEATHER[4])
@@ -438,8 +499,10 @@ def elf(pose=None, pad=0):
     s.part(s.ellipse(17.5, 25.5, 1.7, 1.6), SKIN)
     s.g("head", 25, 20)
     # head: hair falling behind, face, long pointed ear, hood pushed back
+    s.g("hair", 22, 10, "head")
     s.part(s.poly([(19, 9), (24, 6), (27, 12), (23, 27), (18, 28), (17, 18)]), HAIR)
     s.line(20, 12, 19, 26, HAIR[1])
+    s.g("head", 25, 20)
     s.part(s.ellipse(26.5, 14, 4.6, 5.0), SKIN)
     s.part(s.poly([(20, 11), (24, 7), (30, 8), (31, 10), (26, 10), (23, 15)]), HAIR)
     s.part(s.poly([(23, 14), (17, 9), (22, 16)]), SKIN)          # ear
@@ -453,11 +516,16 @@ def elf(pose=None, pad=0):
     for (x0, y0), (x1, y1) in (((40, 9), (43, 17)), ((43, 17), (43.5, 25)), ((43.5, 25), (43, 33)), ((43, 33), (40, 41))):
         s.part(s.capsule(x0, y0, x1, y1, 1.0), WOOD, edge=False)
     s.pxs([(39, 8), (39, 42)], GOLD[3])
-    s.line(39, 9, 18, 25, (220, 214, 200))                      # string, drawn back to the hand
-    s.line(18, 25, 39, 41, (220, 214, 200))
-    s.line(18, 25, 46, 25, WOOD[3])                             # arrow
-    s.pxs([(47, 25), (48, 25), (46, 24), (46, 26)], STEEL[4])
-    s.pxs([(19, 24), (20, 24), (19, 26), (20, 26)], WHITE)
+    pull = s.pose.get("arm_f", (0, 0, 0))[1]                    # how far the string hand has drawn back
+    if s.pose.get("_loosed"):                                   # arrow gone, string snapped straight
+        s.line(39, 9, 39, 41, (220, 214, 200))
+    else:
+        nx = 18 + pull
+        s.line(39, 9, nx, 25, (220, 214, 200))                  # string, drawn back to the hand
+        s.line(nx, 25, 39, 41, (220, 214, 200))
+        s.line(nx, 25, 46 + pull, 25, WOOD[3])                  # arrow
+        s.pxs([(47 + pull, 25), (48 + pull, 25), (46 + pull, 24), (46 + pull, 26)], STEEL[4])
+        s.pxs([(nx + 1, 24), (nx + 2, 24), (nx + 1, 26), (nx + 2, 26)], WHITE)
     s.part(s.capsule(29, 23.5, 41, 25, 1.9), CLOAK)             # near arm, straight out
     s.part(s.capsule(36, 24.5, 41, 25, 2.0), LEATHER)           # bracer
     s.part(s.ellipse(42.5, 25, 1.8, 2.0), SKIN)
@@ -471,6 +539,7 @@ def dwarf(pose=None, pad=0):
     s = Sprite(54, 48, pose, pad)
     s.g("weapon", 19, 22)
     # hammer haft behind, head up over the far shoulder
+    s.g("hand_w", 24.5, 26.5, "weapon")
     s.part(s.capsule(34, 33, 41, 9, 1.2), WOOD, flat=True)
     s.part(s.poly([(34, 3), (48, 6), (46, 15), (32, 12)]), IRON)
     s.line(35, 4, 47, 7, IRON[4])
@@ -479,11 +548,15 @@ def dwarf(pose=None, pad=0):
     s.part(s.poly([(45, 7.5), (47, 8), (45.5, 14), (43.5, 13.5)]), GOLD, flat=True)
     s.g("leg_f", 21, 35)
     # far leg and boot
-    s.part(s.capsule(21, 35, 20, 40, 3.0), LEATHER, bias=-0.3)
+    s.part(s.capsule(21, 35, 20.5, 37.5, 3.0), LEATHER, bias=-0.3)
+    s.g("shin_f", 20.5, 37.5, "leg_f")
+    s.part(s.capsule(20.5, 37.5, 20, 40, 3.0), LEATHER, bias=-0.3, edge=False)
     s.part(s.ellipse(20, 42.5, 4.4, 2.4), IRON, bias=-0.3)
     s.g("leg_n", 29, 35)
     # near leg and big iron-shod boot
-    s.part(s.capsule(29, 35, 30, 40, 3.4), LEATHER)
+    s.part(s.capsule(29, 35, 29.5, 37.5, 3.4), LEATHER)
+    s.g("shin_n", 29.5, 37.5, "leg_n")
+    s.part(s.capsule(29.5, 37.5, 30, 40, 3.4), LEATHER, edge=False)
     s.part(s.ellipse(31, 42.5, 5.2, 2.6), IRON)
     s.line(27, 41, 35, 41, IRON[4])
     s.g("body")
@@ -512,13 +585,18 @@ def dwarf(pose=None, pad=0):
     s.part(s.poly([(34, 8), (38, 3), (41, 1), (39, 6), (36, 10)]), BONE)
     s.g("weapon", 19, 22)
     # near arm: steel pauldron, thick mailed arm, gauntlet on the haft
-    s.part(s.capsule(19, 22, 30, 31, 3.6), MAIL)
+    s.part(s.capsule(19, 22, 24.5, 26.5, 3.6), MAIL)
+    s.g("hand_w", 24.5, 26.5, "weapon")
+    s.part(s.capsule(24.5, 26.5, 30, 31, 3.6), MAIL, edge=False)
+    s.g("weapon", 19, 22)
     s.part(s.ellipse(18, 20, 5.6, 4.6), STEEL)
     s.line(13, 22, 22, 23, GOLD[2])
+    s.g("hand_w", 24.5, 26.5, "weapon")
     s.part(s.ellipse(35, 33.5, 3.6, 3.4), IRON)
     s.pxs([(34, 35), (36, 35)], IRON[0])
     s.g("head", 28, 20)
     # beard over the chest and arm: full, forked, with gold braid rings, and a moustache
+    s.g("beard", 29, 18, "head")
     s.part(s.poly([(22, 16), (36, 17), (38, 23), (36, 30), (33, 36), (30, 31), (27, 37), (24, 30), (22, 23)]), BEARD)
     s.line(27, 23, 27, 34, BEARD[1])
     s.line(32, 23, 33, 33, BEARD[1])
@@ -555,7 +633,9 @@ def ghost(pose=None, pad=0):
     s.line(20, 24, 19, 37, GHOST[1])
     s.line(27, 25, 28, 37, GHOST[1])
     s.part(s.ellipse(25, 14, 9.0, 9.6) | s.poly([(16, 14), (34, 14), (35, 23), (15, 23)]), GHOST)
-    s.part(s.poly([(18, 8), (12, 3), (17, 12)]), GHOST)            # hood tip swept back
+    s.g("plume", 18, 10)
+    s.part(s.poly([(18, 8), (12, 3), (17, 12)]), GHOST)
+    s.g("body")            # hood tip swept back
     # the dark inside of the hood with two burning eyes and a gaping mouth
     s.fill(s.ellipse(28, 15.5, 5.6, 6.4), (22, 40, 52))
     s.pxs([(26, 13), (27, 13), (30, 13), (31, 13), (27, 14), (31, 14)], CYAN, glow=True)
@@ -567,6 +647,7 @@ def ghost(pose=None, pad=0):
     for dx, dy in ((2, -2), (3, 0), (2, 2), (4, -1), (4, 1)):
         s.px(33 + dx, 34 + dy, WHITE, glow=True)
     # chain hanging from the wrist
+    s.g("chain", 31, 36, "weapon")
     s.pxs([(31, 37), (31, 39), (30, 41), (30, 43)], IRON[3])
     s.pxs([(31, 38), (30, 40), (30, 42)], IRON[1])
     s.ink((30, 70, 84))
@@ -589,6 +670,7 @@ def elemental(kind="fire", pose=None, pad=0):
     tones, hot, mid = ELEMENTS[kind]
     s = Sprite(40, 46, pose, pad)
     cx, cy = 20, 20
+    s.g("aura", cx, cy)
     if kind == "fire":
         for pts in ([(10, 20), (8, 8), (14, 13), (17, 2), (22, 11), (27, 4), (27, 13), (33, 9), (30, 21)],):
             s.part(s.poly(pts), tones, flat=True, bias=-0.2, glow=True)
@@ -622,6 +704,7 @@ def elemental(kind="fire", pose=None, pad=0):
             s.px(round(cx + math.cos(a) * r), round(cy + math.sin(a) * r * 0.9), mid if i % 2 else hot, glow=True)
         s.part(s.ellipse(cx, cy, 13.5, 4.0, -0.35) & ~s.ellipse(cx, cy, 11.5, 2.6, -0.35), tones, flat=True, glow=True)
     # the core
+    s.g("body")
     s.part(s.ellipse(cx, cy + 1, 9.5, 9.5), tones, bulge=1.2, glow=True)
     s.part(s.ellipse(cx - 3, cy - 3, 3.4, 2.6, -0.6), [mid, hot], flat=True, edge=False, glow=True)   # shine
     if kind == "void":

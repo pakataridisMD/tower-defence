@@ -58,8 +58,8 @@ class Sprite:
     """Canvas for one creature frame.
 
     pose: None for the rest pose, or {group: (rot, dx, dy)} plus optional "_all" for the whole creature. The drawing
-    code names the group it is about to draw with g(name, pivot_x, pivot_y); every shape after that is moved by the
-    pose. Legs move on their own; every other group also follows "body". pad adds empty space on all sides so swings
+    code names the group it is about to draw with g(name, pivot_x, pivot_y, parent); every shape after that is moved
+    by the pose. Groups chain through their parents (thigh > shin, upper arm > forearm > weapon, neck > head > jaw). pad adds empty space on all sides so swings
     and falls are not clipped; drawing coordinates stay those of the rest pose.
     """
 
@@ -74,6 +74,7 @@ class Sprite:
         self._body = _tf(r, self.bw / 2, self.bh * 0.65, dx, dy)
         self.M = self._base if not self.pose and not pad else _mul(self._base, self._body)
         self._ident = not self.pose and not pad
+        self._world = {"body": self._body}
         self.rgb = np.zeros((h, w, 3), np.uint8)
         self.a = np.zeros((h, w), bool)
         self.nrm = np.zeros((h, w, 3), np.float32)
@@ -84,14 +85,25 @@ class Sprite:
         self.ys, self.xs = np.mgrid[0:h, 0:w]
 
     # ---- pose groups ----------------------------------------------------------------------------
-    def g(self, name="body", px=0.0, py=0.0):
-        """Everything drawn after this belongs to group `name`, which turns about the joint (px, py)."""
+    def g(self, name="body", px=0.0, py=0.0, parent=None):
+        """Everything drawn after this belongs to group `name`, which turns about the joint (px, py).
+
+        parent: a group named earlier that this one hangs from (a shin from its thigh, a forearm from the upper arm).
+        Without a parent, legs hang from the ground frame and every other group from "body".
+        """
         if self._ident:
             return
-        r, dx, dy = self.pose.get(name, (0, 0, 0)) if name != "body" else (0, 0, 0)
+        if name == "body":
+            self.M = _mul(self._base, self._body)
+            return
+        r, dx, dy = self.pose.get(name, (0, 0, 0))
         m = _tf(r, px, py, dx, dy)
-        legs = name.startswith("leg")
-        self.M = _mul(self._base, m) if legs else _mul(self._base, _mul(self._body, m))
+        if parent:
+            up = self._world[parent]
+        else:
+            up = IDENT if name.startswith("leg") else self._body
+        self._world[name] = _mul(up, m)
+        self.M = _mul(self._base, self._world[name])
 
     def fw(self, x, y):
         """Where a rest-pose point lands on the canvas."""
