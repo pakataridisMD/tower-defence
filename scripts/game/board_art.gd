@@ -27,6 +27,9 @@ const SHOT_STYLES := {
 	"drips": &"water", "steam": &"water", "dust": &"earth", "void": &"void", "soulfire": &"void",
 }
 
+## The colour of lantern light and of the Sunstone, for heroes with no element of their own.
+const HERO_LIGHT := Color(1.0, 0.9, 0.62)
+
 static var _info: Dictionary = {}
 static var _texture_cache: Dictionary = {}
 
@@ -451,6 +454,13 @@ func _sync_towers(delta: float) -> void:
 		var current: TowerVisual = _towers.get(tower.id)
 		if current != null and current.data_id == tower.data.id:
 			seen[tower.id] = true
+			if tower.is_hero():
+				# A hero can march to another tile.
+				current.root.position = _art_pos(tower.position) + Vector2(0, TOWER_BASE_DROP)
+		elif tower.is_hero():
+			_towers[tower.id] = _make_hero(tower)
+			seen[tower.id] = true
+			_celebrate(_towers[tower.id], true)
 		elif not tower_info(tower.data.id).is_empty():
 			if current != null:
 				_remove_caster(current.caster)
@@ -484,9 +494,10 @@ func _sync_towers(delta: float) -> void:
 		visual.light.energy = visual.light_energy * boost * (1.0 + flicker * 0.12 + visual.pulse * 0.6)
 		visual.glow.modulate = Color(1, 1, 1, 0.85 + 0.15 * flicker + visual.pulse * 0.3)
 		var ascended := visual.tower.ascendancy != null
-		if visual.tower.level != visual.level or ascended != visual.ascended:
+		var level_now := visual.tower.hero_level if visual.tower.is_hero() else visual.tower.level
+		if level_now != visual.level or ascended != visual.ascended:
 			var ascending := ascended and not visual.ascended
-			visual.level = visual.tower.level
+			visual.level = level_now
 			visual.ascended = ascended
 			_celebrate(visual, ascending)
 
@@ -536,6 +547,39 @@ func _make_tower(tower: SimTower) -> TowerVisual:
 		visual.root.tree_exiting.connect(emitter.queue_free)
 	visual.caster = _add_caster(visual.root, (body.texture as CanvasTexture).diffuse_texture, offset, 1.0)
 	visual.caster.blob.scale = Vector2(1.0, 0.45) * 28.0 / 32.0
+	return visual
+
+
+## A hero standing on its tile: its sprite, a light in its colour and a shadow.
+func _make_hero(tower: SimTower) -> TowerVisual:
+	var visual := TowerVisual.new()
+	visual.tower = tower
+	visual.data_id = tower.data.id
+	var element := tower.hero.element
+	var color := HERO_LIGHT if element.is_empty() else sim.config.element_color(element)
+	visual.colors.append(color)
+	visual.shot_style = shot_style(tower.data)
+	visual.root = Node2D.new()
+	visual.root.position = _art_pos(tower.position) + Vector2(0, TOWER_BASE_DROP)
+	_actors.add_child(visual.root)
+	var path := "res://assets/art/heroes/board/%s.png" % tower.hero.id
+	var texture: Texture2D = load(path) if ResourceLoader.exists(path) else _pixel
+	var size := texture.get_size()
+	var offset := Vector2(-size.x * 0.5, -size.y + 2.0)
+	var body := Sprite2D.new()
+	body.texture = texture
+	body.centered = false
+	body.offset = offset
+	visual.root.add_child(body)
+	visual.glow = Sprite2D.new()
+	visual.root.add_child(visual.glow)
+	visual.light_energy = 0.8
+	visual.light = _point_light(color.lerp(Color.WHITE, 0.3), visual.light_energy, 90.0, 40.0)
+	visual.light.position = Vector2(0, -size.y * 0.6)
+	visual.root.add_child(visual.light)
+	visual.muzzle = Vector2(0, -size.y * 0.6)
+	visual.caster = _add_caster(visual.root, texture, offset, 1.0)
+	visual.caster.blob.scale = Vector2(1.0, 0.45) * 24.0 / 32.0
 	return visual
 
 
@@ -948,7 +992,7 @@ func _update_shadows() -> void:
 
 func _on_chain_fired(tower: SimTower, points: PackedVector2Array) -> void:
 	var visual: TowerVisual = _towers.get(tower.id)
-	var color := sim.config.element_color(tower.data.elements[tower.data.elements.size() - 1])
+	var color := HERO_LIGHT if tower.data.elements.is_empty() else sim.config.element_color(tower.data.elements[tower.data.elements.size() - 1])
 	var bolt_points := PackedVector2Array()
 	var start := _art_pos(points[0])
 	if visual != null:

@@ -16,6 +16,10 @@ signal play_again_pressed
 signal menu_pressed
 signal campaign_pressed
 signal next_stage_pressed
+## A hero's portrait was clicked: summon it, or use its ability.
+signal hero_pressed(hero_id: StringName)
+## The selected hero's Move button.
+signal move_pressed
 
 const TOP_BAR_HEIGHT := 72.0
 const SIDE_PANEL_X := 1584.0
@@ -28,6 +32,9 @@ const SHOP_BUTTON_WIDTH := 68.0
 const SKILL_KEYS: Array[Key] = [KEY_Q, KEY_W, KEY_E, KEY_A, KEY_S, KEY_D]
 ## Keys for the selected tower's upgrade buttons, top to bottom.
 const ACTION_KEYS: Array[Key] = [KEY_Z, KEY_X, KEY_C, KEY_V, KEY_B, KEY_N]
+## Keys for the heroes in the party, in order. The fourth is for a hero who arrives mid-run.
+const HERO_KEYS: Array[Key] = [KEY_F1, KEY_F2, KEY_F3, KEY_F4]
+const HERO_BUTTON_SIZE := Vector2(54, 56)
 
 var sim: RunSim
 var speed := 1
@@ -35,6 +42,12 @@ var paused := false
 var selected: SimTower
 ## The skill the player is aiming on the board, or empty. Set by the game.
 var aiming: StringName = &""
+## The hero being summoned, or whose ability is being aimed. Set by the game.
+var summoning: StringName = &""
+var aiming_hero: StringName = &""
+
+var _hero_row: HBoxContainer
+var _hero_buttons: Dictionary[StringName, KeyButton] = {}
 
 var _top_bar: PanelContainer
 var _side_panel: PanelContainer
@@ -118,7 +131,13 @@ func _build_top_bar() -> void:
 	_gold = _stat(row, &"coin", UiStyle.GOLD, 78, "Gold")
 	_lives = _stat(row, &"heart", UiStyle.LIFE, 54, "Lives")
 	_wave = _fixed_label(row, 24, UiStyle.TEXT, 168)
-	_stage = _fixed_label(row, 18, UiStyle.TEXT_DIM, 210)
+	_stage = _fixed_label(row, 18, UiStyle.TEXT_DIM, 210 if sim.party.is_empty() else 150)
+	_hero_row = HBoxContainer.new()
+	_hero_row.add_theme_constant_override("separation", 4)
+	row.add_child(_hero_row)
+	for hero in sim.party:
+		_add_hero_button(hero)
+	sim.hero_arrived.connect(_on_hero_arrived)
 	_next = RichTextLabel.new()
 	_next.bbcode_enabled = true
 	_next.scroll_active = false
@@ -452,6 +471,98 @@ func press_action(index: int) -> bool:
 	return true
 
 
+# --- Heroes --------------------------------------------------------------------
+
+## A hero's portrait in the top bar: its key, its level and its ability's cooldown.
+func _add_hero_button(hero: HeroData) -> void:
+	var hero_id := hero.id
+	var button := UiStyle.key_button("", 14)
+	button.icon = hero_portrait(hero_id)
+	button.expand_icon = true
+	button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	button.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	button.custom_minimum_size = HERO_BUTTON_SIZE
+	var index := _hero_buttons.size()
+	if index < HERO_KEYS.size():
+		button.key_text = OS.get_keycode_string(HERO_KEYS[index])
+	button.pressed.connect(func() -> void: hero_pressed.emit(hero_id))
+	_hero_row.add_child(button)
+	_hero_buttons[hero_id] = button
+
+
+## The hero in a party slot, counted from 0, or an empty id.
+func hero_for_hotkey(index: int) -> StringName:
+	return sim.party[index].id if index >= 0 and index < sim.party.size() else &""
+
+
+static func hero_portrait(hero_id: StringName) -> Texture2D:
+	var path := "res://assets/art/heroes/portraits/%s.png" % hero_id
+	return load(path) if ResourceLoader.exists(path) else null
+
+
+func _on_hero_arrived(hero: HeroData) -> void:
+	_add_hero_button(hero)
+	var key := OS.get_keycode_string(HERO_KEYS[mini(sim.party.size() - 1, HERO_KEYS.size() - 1)])
+	show_message("%s has come back! Summon him with %s" % [hero.display_name, key], UiStyle.GOLD)
+
+
+func _hero_color(hero: HeroData) -> Color:
+	return sim.config.element_color(hero.element) if not hero.element.is_empty() else UiStyle.GOLD
+
+
+func _refresh_heroes() -> void:
+	for hero in sim.party:
+		var button: KeyButton = _hero_buttons.get(hero.id)
+		if button == null:
+			continue
+		var tower := sim.hero_tower(hero.id)
+		button.disabled = sim.is_over()
+		if tower == null:
+			button.modulate = Color(1, 1, 1, 0.7)
+			button.badge_text = ""
+			button.cooldown = 0.0
+			button.cooldown_text = ""
+			button.outline = UiStyle.GOLD if summoning == hero.id else Color(0, 0, 0, 0)
+			button.tooltip_text = "%s, %s\n%s\nNot on the field yet: click (or press %s), then click a free tile to summon. Free." % [
+				hero.display_name, hero.title, hero.blurb, button.key_text]
+			continue
+		button.modulate = Color.WHITE
+		button.badge_text = "%d" % tower.hero_level_now()
+		var ability := tower.hero_ability()
+		var left := tower.ability_cooldown
+		button.cooldown = left / ability.cooldown if left > 0.0 else 0.0
+		button.cooldown_text = "%d" % ceili(left) if left > 0.0 else ""
+		if aiming_hero == hero.id:
+			button.outline = UiStyle.GOLD
+		elif sim.hero_effect_time(hero.id) > 0.0:
+			button.outline = _hero_color(hero).lightened(0.3)
+		else:
+			button.outline = Color(0, 0, 0, 0)
+		button.tooltip_text = "%s  ·  Level %d\n%s: %s\nReady again after %d s  ·  Key: %s" % [
+			hero.display_name, tower.hero_level_now(), ability.display_name, ability.description, roundi(ability.cooldown), button.key_text]
+
+
+func _hero_info(tower: SimTower) -> String:
+	var hero := tower.hero
+	var color := _hero_color(hero).lightened(0.25).to_html(false)
+	var lines: PackedStringArray = []
+	lines.append("[b][color=#%s]%s[/color][/b]" % [color, hero.display_name])
+	lines.append("[i]%s[/i]" % hero.title)
+	lines.append("Level %d / %d  ·  a level for every wave fought" % [tower.hero_level_now(), HeroData.MAX_LEVEL])
+	lines.append("Damage %.1f  ·  %.2f attacks/s" % [tower.damage, tower.attacks_per_second])
+	lines.append("Range %d" % roundi(tower.attack_range))
+	lines.append(hero.attack.description)
+	lines.append("")
+	lines.append("[b]Aura[/b] (towers within %d cells): %s" % [roundi(HeroData.AURA_CELLS), hero.aura_text])
+	var ability := tower.hero_ability()
+	lines.append("[b]%s[/b]: %s" % [ability.display_name, ability.description])
+	if tower.hero_level_now() < HeroData.ULTIMATE_LEVEL:
+		lines.append("[color=#%s]At level %d: %s[/color]" % [UiStyle.TEXT_DIM.to_html(false), HeroData.ULTIMATE_LEVEL, hero.ultimate_text])
+	lines.append("")
+	lines.append("Kills %d  ·  Damage %d" % [tower.kills, roundi(tower.damage_dealt)])
+	return "\n".join(lines)
+
+
 # --- Refresh -------------------------------------------------------------------
 
 func _refresh() -> void:
@@ -489,6 +600,7 @@ func _refresh() -> void:
 		_refresh_tower_button(tower_id, _tower_buttons[tower_id], number if shown and number <= 9 else 0)
 	_refresh_shop_tabs()
 	_refresh_skills()
+	_refresh_heroes()
 	_refresh_info()
 
 
@@ -635,6 +747,11 @@ func _refresh_info() -> void:
 		_set_actions([])
 		return
 	var tower := selected
+	if tower.is_hero():
+		_info.text = _hero_info(tower)
+		_sell_button.hide()
+		_refresh_actions(tower)
+		return
 	var lines: PackedStringArray = []
 	var title := tower.data.display_name
 	if tower.ascendancy != null:
@@ -671,7 +788,7 @@ func _help_text() -> String:
 	var dim := UiStyle.TEXT_DIM.to_html(false)
 	var gold := UiStyle.GOLD.to_html(false)
 	var keys: Array[Array] = [
-		["T", "skill web"], ["1-9", "pick a tower"], ["Tab", "next tower page"], ["Q W E  A S D", "skills"],
+		["T", "skill web"], ["F1 F2 F3", "heroes"], ["1-9", "pick a tower"], ["Tab", "next tower page"], ["Q W E  A S D", "skills"],
 		["Z X C V", "upgrade the tower"], ["Del", "sell the tower"], ["Space", "start the wave"],
 		["F", "speed"], ["P", "pause"], ["Esc", "back"],
 	]
@@ -708,6 +825,16 @@ static func _effect_text(spec: StatusEffectData) -> String:
 ## One entry per upgrade button: [kind, id, label, tooltip, error].
 func _upgrade_choices(tower: SimTower) -> Array:
 	var choices := []
+	if tower.is_hero():
+		var hero_id := tower.hero.id
+		var key := _hero_buttons[hero_id].key_text if _hero_buttons.has(hero_id) else ""
+		var ability := tower.hero_ability()
+		choices.append([&"ability", hero_id, "%s  ·  %s" % [ability.display_name, key], ability.description,
+				sim.hero_ability_error(hero_id)])
+		var move_error := sim.move_error(tower, Vector2i(-1, -1)) if sim.state != RunSim.State.BUILDING or tower.moved_this_break else ""
+		choices.append([&"move", hero_id, "Move  ·  once per break", "Pick a free tile to march to. Only between waves, once each break.",
+				move_error])
+		return choices
 	if tower.level < SimTower.MAX_LEVEL:
 		choices.append([&"level", &"", "Level %d  ·  %dg" % [tower.level + 1, tower.level_up_price()],
 				"+%d%% more damage and +%d%% range per level." % [roundi(SimTower.DAMAGE_PER_LEVEL * 100.0), roundi(SimTower.RANGE_PER_LEVEL * 100.0)],
@@ -767,6 +894,10 @@ func _on_action_pressed(kind: StringName, id: StringName) -> void:
 			ascend_pressed.emit(id)
 		&"hybrid":
 			hybrid_pressed.emit(id)
+		&"ability":
+			hero_pressed.emit(id)
+		&"move":
+			move_pressed.emit()
 
 
 # --- Events --------------------------------------------------------------------
@@ -808,6 +939,9 @@ func show_stage_result(result: Dictionary, next_stage_open: bool) -> void:
 		var campaign := sim.config.campaign
 		lines.append("[center][b][color=#%s]%s complete![/color][/b]\n%s: %s[/center]" % [
 			UiStyle.GOOD.to_html(false), campaign.display_name, campaign.reward_name, campaign.reward_description])
+	for hero: HeroData in result.get("heroes_joined", []):
+		lines.append("[center][b][color=#%s]%s joins you![/color][/b]\n%s[/center]" % [
+			UiStyle.GOLD.to_html(false), hero.display_name, hero.blurb])
 	_end_stage.text = "\n".join(lines)
 	_end_stage.show()
 	_campaign_button.show()
