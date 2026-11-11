@@ -610,14 +610,17 @@ def main():
     ap.add_argument("--out", default=os.path.join("art", "pix2d", "stills"))
     ap.add_argument("--sheet")
     a = ap.parse_args()
+    import stills as mod  # the shot modules register into the imported module, not __main__
+    import shots_lands  # noqa: F401
+    cin = mod.CINEMATICS
     ims = []
-    for cid in a.ids or list(CINEMATICS):
+    for cid in a.ids or list(cin):
         os.makedirs(os.path.join(a.out, cid), exist_ok=True)
-        for i, fn in enumerate(CINEMATICS[cid]):
+        for i, fn in enumerate(cin[cid]):
             im = fn().image()
             im.save(os.path.join(a.out, cid, f"{i + 1:02d}.png"))
             ims.append((f"{cid} {i + 1:02d}", im))
-        print(cid, len(CINEMATICS[cid]))
+        print(cid, len(cin[cid]))
     if a.sheet:
         cols = 3
         rows = (len(ims) + cols - 1) // cols
