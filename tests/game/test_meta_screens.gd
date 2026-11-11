@@ -101,13 +101,21 @@ func test_refund_all_needs_a_second_click() -> void:
 
 # --- Main menu -----------------------------------------------------------------------
 
+func _key(keycode: Key) -> void:
+	var press := InputEventKey.new()
+	press.keycode = keycode
+	press.pressed = true
+	get_tree().root.push_input(press)
+
+
 func test_a_new_player_sees_locked_maps_and_levels() -> void:
 	_use_profile(0)
 	var menu = await _open(MENU_SCENE)
+	menu.open_page(&"skirmish")
 	var serpentine := _button_starting_with(menu, "Serpentine")
 	assert_not_null(serpentine)
 	assert_true(serpentine.disabled)
-	assert_string_contains(serpentine.tooltip_text, "meta tree")
+	assert_string_contains(serpentine.tooltip_text, "Talents")
 	assert_true(_button_starting_with(menu, "Hard").disabled)
 	assert_true(_button_starting_with(menu, "Switchback").button_pressed)
 
@@ -115,6 +123,7 @@ func test_a_new_player_sees_locked_maps_and_levels() -> void:
 func test_picking_an_unlocked_map_and_level_sets_up_the_next_run() -> void:
 	_use_profile(20, [&"expedition_serpentine", &"expedition_hard"])
 	var menu = await _open(MENU_SCENE)
+	menu.open_page(&"skirmish")
 	_pick(_button_starting_with(menu, "Serpentine"))
 	_pick(_button_starting_with(menu, "Hard"))
 	assert_false(_button_starting_with(menu, "Switchback").button_pressed, "one map at a time")
@@ -124,8 +133,113 @@ func test_picking_an_unlocked_map_and_level_sets_up_the_next_run() -> void:
 	assert_eq(Progress.meta.profile.last_map, &"serpentine")
 
 
-func test_the_meta_tree_button_shows_unspent_points() -> void:
+func test_the_talents_button_shows_unspent_points() -> void:
 	_use_profile(7)
 	var menu = await _open(MENU_SCENE)
-	assert_not_null(_button_starting_with(menu, "Meta tree"))
-	assert_string_contains(_button_starting_with(menu, "Meta tree").text, "7 points to spend")
+	assert_eq(menu.buttons[&"talents"].text, "Talents")
+	assert_string_contains(menu.buttons[&"talents"].note, "7 points")
+
+
+func test_the_title_screen_has_every_entry() -> void:
+	_use_profile(0)
+	var menu = await _open(MENU_SCENE)
+	for id: StringName in [&"campaign", &"skirmish", &"heroes", &"talents", &"codex", &"settings", &"credits", &"quit"]:
+		assert_true(menu.buttons.has(id), "%s is on the menu" % id)
+		assert_true(menu.buttons[id].is_visible_in_tree())
+	assert_false(menu.buttons.has(&"continue"), "nothing to continue before the first win")
+
+
+func test_continue_offers_the_next_stage_of_the_furthest_land() -> void:
+	_use_profile(0)
+	var campaign: CampaignData = Progress.meta.campaigns_in_order()[0]
+	Progress.meta.profile.stage_stars[campaign.stages[0].id] = 2
+	var menu = await _open(MENU_SCENE)
+	assert_true(menu.buttons.has(&"continue"))
+	assert_eq(menu.continue_stage, campaign.stages[1].id)
+
+
+func test_every_page_opens_and_esc_comes_back() -> void:
+	_use_profile(0)
+	var menu = await _open(MENU_SCENE)
+	for id: StringName in [&"skirmish", &"heroes", &"codex", &"settings", &"credits"]:
+		_press(menu.buttons[id])
+		await wait_process_frames(1)
+		assert_eq(menu.page, id)
+		assert_true(menu.pages[id].visible)
+		assert_false(menu.buttons[&"campaign"].is_visible_in_tree(), "the title menu hides behind a page")
+		_key(KEY_ESCAPE)
+		await wait_process_frames(1)
+		assert_eq(menu.page, &"", "Esc goes back from %s" % id)
+		assert_true(menu.buttons[&"campaign"].is_visible_in_tree())
+
+
+func test_keys_open_pages_and_esc_asks_before_quitting() -> void:
+	_use_profile(0)
+	var menu = await _open(MENU_SCENE)
+	_key(KEY_H)
+	await wait_process_frames(1)
+	assert_eq(menu.page, &"heroes")
+	_key(KEY_ESCAPE)
+	_key(KEY_K)
+	await wait_process_frames(1)
+	assert_eq(menu.page, &"codex")
+	_key(KEY_ESCAPE)
+	_key(KEY_ESCAPE)
+	await wait_process_frames(1)
+	assert_true(menu.quit_dialog.visible, "Esc on the title screen asks first")
+	_key(KEY_ESCAPE)
+	await wait_process_frames(1)
+	assert_false(menu.quit_dialog.visible, "and Esc again stays")
+
+
+func test_the_heroes_page_takes_a_hero_into_the_party() -> void:
+	_use_profile(0)
+	var menu = await _open(MENU_SCENE)
+	menu.open_page(&"heroes")
+	var heroes: HeroesPage = menu.pages[&"heroes"]
+	# Bring every hero, so some are left out of the three-hero party.
+	for hero in Progress.meta.heroes_in_order():
+		for stage_id in [hero.joins_after, hero.arrives_in]:
+			if not stage_id.is_empty():
+				Progress.meta.profile.stage_stars[stage_id] = 1
+	heroes.refresh()
+	var outside: HeroData = null
+	for hero in Progress.meta.joined_heroes():
+		if not Progress.meta.party().has(hero):
+			outside = hero
+	assert_not_null(outside)
+	heroes.select(outside.id)
+	assert_eq(heroes.party_button.text, "Take into battle")
+	_press(heroes.party_button)
+	assert_true(Progress.meta.party().has(outside), "the button takes them into the party")
+	assert_eq(heroes.party_button.text, "Leave behind")
+	Progress.meta.profile.stage_stars.clear()
+	heroes.refresh()
+	var locked: HeroData = Progress.meta.heroes_in_order()[-1]
+	heroes.select(locked.id)
+	assert_true(heroes.party_button.disabled, "a hero who has not joined cannot be taken")
+
+
+func test_the_codex_lists_towers_enemies_and_elements() -> void:
+	_use_profile(0)
+	var menu = await _open(MENU_SCENE)
+	menu.open_page(&"codex")
+	var codex: CodexPage = menu.pages[&"codex"]
+	for tab in CodexPage.TABS.size():
+		codex.show_tab(tab)
+		await wait_process_frames(1)
+		assert_false(codex.selected.is_empty(), "tab %s shows an entry" % CodexPage.TABS[tab])
+	assert_true(DataRegistry.elements.has(codex.selected))
+
+
+func test_the_settings_page_sets_the_volume() -> void:
+	_use_profile(0)
+	AudioSettings.reset_to_defaults()
+	var menu = await _open(MENU_SCENE)
+	menu.open_page(&"settings")
+	var settings: SettingsPage = menu.pages[&"settings"]
+	settings.sliders[&"Music"].value = 40
+	assert_almost_eq(AudioSettings.volume(&"Music"), 0.4, 0.001)
+	settings.mutes[&"Music"].button_pressed = true
+	assert_true(AudioSettings.is_muted(&"Music"))
+	AudioSettings.reset_to_defaults()

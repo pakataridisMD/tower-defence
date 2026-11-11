@@ -9,6 +9,8 @@ extends Node
 ## Add --heroes to take the campaign party picker and a battle with three heroes on the board.
 ## Add --campaign to take the campaign map and a battle in each biome instead (each battle jumps
 ## straight to a late wave with plenty of gold, so the board is busy).
+## Add --menu to take the title screen and every menu page (Skirmish, Heroes, Codex, Settings, Credits)
+## and the quit question.
 ## Add --story to take the cinematic player, a Herald's boss banner, the assault on the citadel and
 ## the campaign map with the citadel on it.
 
@@ -30,6 +32,7 @@ var _campaign := false
 var _ui := false
 var _story := false
 var _heroes := false
+var _menu := false
 
 
 func _ready() -> void:
@@ -47,9 +50,13 @@ func _ready() -> void:
 			_story = true
 		elif arg == "--heroes":
 			_heroes = true
+		elif arg == "--menu":
+			_menu = true
 	DirAccess.make_dir_recursive_absolute(_out)
 	Progress.use_memory_profile(_demo_profile())
-	if _story:
+	if _menu:
+		_run_menu()
+	elif _story:
 		_run_story()
 	elif _heroes:
 		_run_heroes()
@@ -298,6 +305,36 @@ static func _demo_profile() -> PlayerProfile:
 	profile.best_waves = 10
 	profile.enemies_killed = 412
 	return profile
+
+
+func _run_menu() -> void:
+	# Two stages won in the first land, so Continue and the story card show.
+	var first: CampaignData = Progress.meta.campaigns_in_order()[0]
+	Progress.meta.profile.stage_stars[first.stages[0].id] = 3
+	Progress.meta.profile.stage_stars[first.stages[1].id] = 2
+	var menu := MENU_SCENE.instantiate()
+	add_child(menu)
+	await _wait(0.5)
+	_hover(menu.buttons[&"continue"].get_global_rect().get_center())
+	await _wait(0.2)
+	await _shot("menu_title")
+	for id: StringName in [&"skirmish", &"heroes", &"codex", &"settings", &"credits"]:
+		menu.open_page(id)
+		await _wait(0.3)
+		await _shot("menu_" + id)
+	menu.pages[&"codex"].show_tab(1)
+	menu.open_page(&"codex")
+	await _wait(0.3)
+	await _shot("menu_codex_enemies")
+	menu.pages[&"settings"].show_tab(1)
+	menu.open_page(&"settings")
+	await _wait(0.3)
+	await _shot("menu_settings_video")
+	menu.close_page()
+	menu.ask_to_quit()
+	await _wait(0.3)
+	await _shot("menu_quit")
+	get_tree().quit()
 
 
 func _run() -> void:
