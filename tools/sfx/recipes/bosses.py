@@ -1,286 +1,403 @@
-"""Boss sounds: a reveal, footsteps, made-up speech, an enrage roar and a death for every boss.
+"""Boss sounds: a reveal, footsteps, speech, an enrage and a death for every boss.
 
-The six Heralds, the Ashen Regent, the Sundered Heart and Vael-Orrun follow their descriptions in
-docs/story (lore thread). The Wardens of the element campaigns share one set per element, and the
-plain Warden has its own. Each set is a Character (see voice.py) plus an element and a footstep style.
+Built from recordings (see kit.py, creature.py, samples.py): real orchestral hits, low brass, gongs and
+found sounds for the body, and spoken lines processed into monstrous voices. Each boss says lines that
+fit the lore (docs/story/bible.md and data/story/characters.json on the lore branch): the Heralds, the
+Ashen Regent, the Sundered Heart and the High King Vael-Orrun speak; the Leviathan and the Broodmother
+are beasts and only roar. The corrupted Wardens are freed when beaten, so their deaths end in release.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 
-from dsp import (boom, bubbles, crackle, debris, decay, drive, env, hp, lp, mix, modal, n_of, noise, osc,
-                 place, resonate, reverb, ring, rumble, silence, stereo, svf, sweep, thump, times, trem, whoosh)
-from registry import sound, register
-from voice import Character, phrase, roar, song
-from .palette import (ELEMENT_ROOT, attack_storm, bell, braam, chime, choir, flourish, gong, impact_earth, pitch,
-                      reverse, riser, semis, taiko)
+from dsp import SR, decay, env, hp, lp, mix, n_of, noise, place, silence, stereo, sweep, whoosh
+import creature as C
+from creature import Voice
+import kit
+import samples as S
+from kit import cut, tail
+from registry import register, sound
+from .textures import bed, burst, fire_crackle, thunder, wind
 
 
 @dataclass
 class BossSet:
     title: str
     element: str          # fire storm nature water earth void, or cosmos for Vael-Orrun
-    voice: Character
+    voice: Voice
     step: str             # footstep style
     enemies: tuple[str, ...]
+    lines: dict = field(default_factory=dict)   # reveal, talk (3), enrage, death
+    root: int = 31        # midi note of the reveal's low brass
+    size: float = 1.0     # how big the hits are
+    freed: bool = False   # a Warden: beating it frees it
+
+
+def _lines(reveal, talk, enrage, death):
+    return {"reveal": reveal, "talk": talk, "enrage": enrage, "death": death}
 
 
 SETS: dict[str, BossSet] = {
-    "saltmother": BossSet("Saltmother Ourra, the Drowned Herald", "water",
-                          Character(f0=150, tract=0.82, growl=0.35, breath=0.45, voices=2, detune=14, effect="water",
-                                    rate=3.6, vowels=["o", "u", "a", "aw"], reverb=2.4, reverb_mix=0.35, octave_down=0.3),
-                          "slosh", ("saltmother",)),
-    "gorrath": BossSet("Gorrath the Quarried, the Stone Herald", "earth",
-                       Character(f0=52, tract=0.55, growl=0.95, breath=0.15, effect="stone", rate=3.0, octave_down=0.5,
-                                 drive=3.0, reverb=1.8),
-                       "boulder", ("gorrath",)),
-    "pale_vesper": BossSet("The Pale Vesper, the Hollow Herald", "void",
-                           Character(f0=233, tract=1.0, growl=0.04, breath=0.35, voices=3, detune=10, sing=True,
-                                     effect="void", reverb=3.5, reverb_mix=0.45, octave_down=0.0,
-                                     vowels=["a", "o", "u", "e"], drive=1.3),
-                           "ghost", ("pale_vesper",)),
-    "ashwick": BossSet("Ashwick the Kindled, the Flame Herald", "fire",
-                       Character(f0=270, tract=1.12, growl=0.25, breath=0.4, rate=6.5, effect="fire", octave_down=0.0,
-                                 pitch_range=0.5, vowels=["a", "e", "i", "ae", "o"], reverb=1.2),
-                       "run", ("ashwick",)),
-    "vholt": BossSet("Vholt Stormcrown, the Sky Herald", "storm",
-                     Character(f0=78, tract=0.7, growl=0.6, breath=0.3, rate=3.8, effect="wind", octave_down=0.4,
-                               reverb=2.5, reverb_mix=0.35),
-                     "wings", ("vholt",)),
-    "mother_briar": BossSet("Mother Briar, the Thorn Herald", "nature",
-                            Character(f0=125, tract=0.88, growl=0.55, breath=0.6, rate=3.4, effect="wood",
-                                      octave_down=0.15, vowels=["e", "a", "i", "o", "ae"], reverb=1.8),
-                            "roots", ("mother_briar",)),
-    "ashen_regent": BossSet("Cassivane Dral, the Ashen Regent", "fire",
-                            Character(f0=88, tract=0.78, growl=0.3, breath=0.25, rate=3.6, effect="ember",
-                                      octave_down=0.35, reverb=2.2, reverb_mix=0.3),
-                            "armour", ("ashen_regent",)),
-    "sundered_heart": BossSet("The Sundered Heart", "void",
-                              Character(f0=70, tract=0.65, growl=0.6, voices=2, detune=20, effect="ember",
-                                        octave_down=0.5, reverb=2.6, reverb_mix=0.35),
-                              "heart", ("sundered_heart",)),
-    "vael_orrun": BossSet("Vael-Orrun, the Sunderer", "cosmos",
-                          Character(f0=44, tract=0.5, growl=0.75, voices=4, detune=28, effect="cosmos", reverb=4.0,
-                                    reverb_mix=0.4, octave_down=0.6, rate=2.6, drive=3.0),
-                          "colossus", ("vael_orrun",)),
-    "warden": BossSet("A corrupted Warden", "earth",
-                      Character(f0=64, tract=0.62, growl=0.7, effect="stone", octave_down=0.4, rate=3.2),
-                      "armour", ("warden",)),
-    # The corrupted Wardens of each element campaign.
-    "fire": BossSet("Fire Warden (Cinder Tyrant)", "fire",
-                    Character(f0=68, tract=0.62, growl=0.75, effect="fire", octave_down=0.45, rate=3.2),
-                    "stomp_fire", ("cinder_tyrant",)),
-    "storm": BossSet("Storm Warden (Thunderhead)", "storm",
-                     Character(f0=82, tract=0.68, growl=0.6, effect="wind", octave_down=0.35, rate=3.8),
-                     "thunder", ("thunderhead",)),
-    "nature": BossSet("Nature Warden (Broodmother)", "nature",
-                      Character(f0=140, tract=0.8, growl=0.8, breath=0.5, effect="wood", octave_down=0.2, rate=5.0,
-                                consonants=["k", "kh", "s", "sh", "k", "z"], vowels=["i", "e", "ae", "uh"]),
-                      "skitter", ("broodmother",)),
-    "water": BossSet("Water Warden (Leviathan)", "water",
-                     Character(f0=48, tract=0.5, growl=0.45, breath=0.3, effect="water", octave_down=0.5, rate=2.4,
-                               vowels=["o", "u", "aw"], reverb=3.0, reverb_mix=0.4, sing=True),
-                     "slosh", ("leviathan",)),
-    "earth": BossSet("Earth Warden (Mountain Titan)", "earth",
-                     Character(f0=42, tract=0.48, growl=0.9, effect="stone", octave_down=0.55, rate=2.6, drive=3.0),
-                     "boulder", ("mountain_titan",)),
-    "void": BossSet("Void Warden (Hollow King)", "void",
-                    Character(f0=72, tract=0.66, growl=0.5, voices=2, detune=22, effect="void", octave_down=0.4,
-                              reverb=3.0, reverb_mix=0.4),
-                    "drag", ("hollow_king",)),
+    "saltmother": BossSet(
+        "Saltmother Ourra, the Drowned Herald", "water",
+        Voice("bf_isabella:0.6,af_bella:0.4", 0.82, depth=-3, sub=0.3, whisper=0.35, chorus=2, grit=0.1, growl=0.12,
+              room=3.4, wet=0.36, roar_word="Haaaaaaah!"),
+        "slosh", ("saltmother",),
+        _lines("The sea has come for you.",
+               ["The tide remembers.", "Come down to the deep, little ones.", "All shores drown in the end."],
+               "You will drown!", "The tide... goes out."),
+        root=30),
+    "gorrath": BossSet(
+        "Gorrath the Quarried, the Stone Herald", "earth",
+        Voice("am_onyx", 0.8, depth=-6, sub=0.5, grit=0.4, growl=0.35, room=2.6),
+        "boulder", ("gorrath",),
+        _lines("I carved out my own heart. Yours is next.",
+               ["Stone does not bleed.", "Break against me.", "Grind them to dust!"],
+               "Crush them!", "Stone... returns to stone."),
+        root=28, size=1.3),
+    "pale_vesper": BossSet(
+        "The Pale Vesper, the Hollow Herald", "void",
+        Voice("af_nicole:0.5,bf_emma:0.5", 0.8, depth=-1, formant=True, sub=0.0, up=0.3, whisper=0.6, chorus=3,
+              grit=0.0, room=4.6, wet=0.45, roar_depth=-4, roar_word="Aaaaaaaah!"),
+        "ghost", ("pale_vesper",),
+        _lines("Wake, my sleeping ones. Wake.",
+               ["Hush now. Sing with me.", "The dead are listening.", "Rise, and walk with me."],
+               "Rise! All of you, rise!", "Let them... rest."),
+        root=34),
+    "ashwick": BossSet(
+        "Ashwick the Kindled, the Flame Herald", "fire",
+        Voice("am_puck", 1.12, depth=1.5, sub=0.0, grit=0.35, growl=0.05, room=1.6, wet=0.22, roar_depth=-5,
+              roar_word="Haaaaaaa!"),
+        "run", ("ashwick",),
+        _lines("Too slow! You are all too slow!",
+               ["Can't catch me!", "Burn, burn, burn!", "Faster! Faster!"],
+               "I'll burn it all!", "So... cold..."),
+        root=33, size=0.8),
+    "vholt": BossSet(
+        "Vholt Stormcrown, the Sky Herald", "storm",
+        Voice("bm_george", 0.82, depth=-3, sub=0.35, grit=0.2, growl=0.1, room=3.4, wet=0.33),
+        "wings", ("vholt",),
+        _lines("Kneel before the storm.",
+               ["The sky does not forgive.", "I taught her everything. Not this.", "Feel the wind turn."],
+               "Feel the thunder!", "The sky... is quiet, at last."),
+        root=31),
+    "mother_briar": BossSet(
+        "Mother Briar, the Thorn Herald", "nature",
+        Voice("af_sarah:0.5,bf_lily:0.5", 0.8, depth=-2.5, sub=0.15, whisper=0.4, chorus=2, grit=0.15, growl=0.22,
+              room=2.2, wet=0.3, roar_word="Haaaaaaagh!"),
+        "roots", ("mother_briar",),
+        _lines("Shh. The thorns will hold you.",
+               ["Let me heal you... forever.", "Grow, my darlings. Grow.", "Every wound becomes a root."],
+               "Tear them apart!", "Bloom... again."),
+        root=32),
+    "ashen_regent": BossSet(
+        "Cassivane Dral, the Ashen Regent", "fire",
+        Voice("bm_lewis:0.6,bm_george:0.4", 0.85, depth=-2, sub=0.25, grit=0.12, growl=0.0, room=3.0, wet=0.3),
+        "armour", ("ashen_regent",),
+        _lines("Stand aside, or turn to ash.",
+               ["Ilyra, I am so close.", "Everything I burn, I burn for her.", "You cannot stop what love began."],
+               "You will not take her from me!", "Ilyra... forgive me."),
+        root=29, size=1.1),
+    "sundered_heart": BossSet(
+        "The Sundered Heart", "void",
+        Voice("bm_lewis:0.5,am_onyx:0.5", 0.8, depth=-5, sub=0.6, whisper=0.4, chorus=3, grit=0.35, growl=0.4,
+              room=3.6, wet=0.36),
+        "heart", ("sundered_heart",),
+        _lines("We are one now.",
+               ["The Crack is open.", "Her heart beats in mine.", "There is no Regent. Only the Heart."],
+               "We will not fall!", "Daughter..."),
+        root=27, size=1.4),
+    "vael_orrun": BossSet(
+        "Vael-Orrun, the Sunderer", "cosmos",
+        Voice("am_onyx:0.5,bm_george:0.5", 0.75, depth=-7, sub=0.6, whisper=0.5, chorus=3, grit=0.2, growl=0.15,
+              room=4.8, wet=0.4),
+        "colossus", ("vael_orrun",),
+        _lines("Kneel. Your king has returned.",
+               ["This was my city. This is my crown.", "Six crowns. One king.", "I have waited two thousand years."],
+               "I am the High King!", "The crown... was always... mine."),
+        root=26, size=1.6),
+    "warden": BossSet(
+        "A corrupted Warden", "earth",
+        Voice("am_fenrir", 0.8, depth=-6, sub=0.45, whisper=0.45, grit=0.3, growl=0.3, room=2.8),
+        "armour", ("warden",),
+        _lines("He whispers. I obey.", ["Burn the Ring.", "Wake, and destroy.", "The High King calls."],
+               "Destroy them!", "Free... at last."),
+        root=29, freed=True),
+    # The corrupted Wardens of each element campaign. Vael-Orrun's whisper doubles their voices.
+    "fire": BossSet(
+        "Fire Warden (Cinder Tyrant)", "fire",
+        Voice("am_onyx", 0.78, depth=-8, sub=0.5, whisper=0.3, grit=0.5, growl=0.5, room=2.6),
+        "stomp_fire", ("cinder_tyrant",),
+        _lines("The mountain wakes!", ["Burn.", "Ash. All of it, ash.", "The fire hungers."],
+               "Burn!", "The fire... is mine again."),
+        root=28, size=1.3, freed=True),
+    "storm": BossSet(
+        "Storm Warden (Thunderhead)", "storm",
+        Voice("bm_george:0.5,am_fenrir:0.5", 0.8, depth=-6, sub=0.45, whisper=0.3, grit=0.3, growl=0.25, room=3.4),
+        "thunder", ("thunderhead",),
+        _lines("The storm stands still.", ["Thunder obeys him.", "Fall.", "No wind. No mercy."],
+               "Fall!", "The wind... moves again."),
+        root=30, size=1.2, freed=True),
+    "nature": BossSet(
+        "Nature Warden (Broodmother)", "nature",
+        Voice("af_kore", 1.0, depth=3, sub=0.2, whisper=0.6, chorus=3, grit=0.5, growl=0.6, room=2.0,
+              roar_depth=-9, roar_word="Kshaaaaaaa!", beast=True),
+        "skitter", ("broodmother",),
+        _lines("", [], "", ""),
+        root=32, freed=True),
+    "water": BossSet(
+        "Water Warden (Leviathan)", "water",
+        Voice("am_onyx", 0.7, depth=-10, sub=0.6, grit=0.15, growl=0.15, room=4.5, wet=0.45, roar_depth=-6,
+              roar_word="Ooooooooooh!", beast=True),
+        "slosh", ("leviathan",),
+        _lines("", [], "", ""),
+        root=26, size=1.4, freed=True),
+    "earth": BossSet(
+        "Earth Warden (Mountain Titan)", "earth",
+        Voice("am_onyx", 0.7, depth=-10, sub=0.6, grit=0.45, growl=0.4, room=3.0),
+        "boulder", ("mountain_titan",),
+        _lines("I am the mountain.", ["Fall beneath me.", "Crush.", "The ground is mine."],
+               "Crush!", "The stone... sleeps."),
+        root=26, size=1.5, freed=True),
+    "void": BossSet(
+        "Void Warden (Hollow King)", "void",
+        Voice("am_onyx:0.5,am_fenrir:0.5", 0.75, depth=-6, sub=0.45, whisper=0.7, chorus=2, grit=0.25, growl=0.3,
+              room=4.0, wet=0.4),
+        "drag", ("hollow_king",),
+        _lines("The Hollow hungers.", ["Come into the dark.", "Nothing remains.", "Hush. Be empty."],
+               "Nothing will remain!", "I see... the light."),
+        root=27, size=1.2, freed=True),
 }
 
-ROOTS = dict(ELEMENT_ROOT, cosmos=110.0)
 REVEAL = dict(positional=False, priority=8)
+LEAD = 0.9   # seconds of swell before a reveal's hit
 
 
-def _element_layer(element: str, seconds: float, rng) -> np.ndarray:
-    if element == "cosmos":
-        return mix(*[flourish(e, seconds, rng) * 0.4 for e in ("fire", "storm", "nature", "water", "earth", "void")])
-    return flourish(element, seconds, rng)
+def _room(x, bs: BossSet, rng, scale=1.0):
+    return C.room(x, bs.voice, rng, scale)
+
+
+def _say(bs: BossSet, text: str, rng, shout: bool = False) -> np.ndarray:
+    return C.speech(text, bs.voice, rng, shout)
+
+
+def _roar(bs: BossSet, rng, length=1.0, fall=-3.0, intensity=1.0, word=None) -> np.ndarray:
+    v = bs.voice
+    if bs.step == "skitter":
+        # The Broodmother: an insect shriek over chittering mandibles.
+        cry = C.roar(v, rng, word or v.roar_word, length, fall + 2, intensity)
+        chit = silence(len(cry) / SR)
+        for i in range(int(len(cry) / SR * 28)):
+            chit = place(chit, cut(kit.claves(rng, rng.uniform(2, 9), True), 0, 0.05, 0.02), i / 28 + rng.uniform(0, 0.01),
+                         rng.uniform(0.15, 0.4))
+        e = C.follow(cry, 8)
+        chit = S.mono(chit)[:len(e)]
+        return mix(cry, chit * e[:len(chit)])
+    if bs.element == "water" and v.beast:
+        # The Leviathan: a whale-deep moan that bends down, under a contrabass tremolo.
+        moan = C.roar(v, rng, word or v.roar_word, length * 1.3, fall - 2, intensity * 0.8)
+        moan = C.glide(moan, 1.5, -2.5, 0.8)
+        trem = S.mono(kit.held("bass_trem", 28, len(moan) / SR, rng, 0.3, 0.4)) * 0.35
+        return mix(moan, trem)
+    return C.roar(v, rng, word, length, fall, intensity)
+
+
+def _shout(bs: BossSet, rng) -> np.ndarray:
+    if bs.voice.beast or not bs.lines["enrage"]:
+        return _roar(bs, rng, 1.3, -4, 1.4)
+    return _say(bs, bs.lines["enrage"], rng, shout=True)
 
 
 # --- Footsteps ----------------------------------------------------------------------------
 
 def step(style: str, rng) -> np.ndarray:
     if style == "boulder":
-        return mix(thump(0.8, 70, 26, 0.2, 0.6, rng) * 1.4, debris(0.8, rng, 10, 0.45) * 0.6,
-                   modal(0.3, [(rng.uniform(110, 140), 0.08, 1.0), (320, 0.05, 0.5)], rng) * 0.5)
+        return mix(tail(kit.giant(rng, -10), 0.9) * 1.0, tail(kit.concert_bass(rng, -9), 0.9) * 0.7,
+                   kit.debris(rng, 0.8, 5, -6) * 0.5)
     if style == "slosh":
-        splash = svf(noise(0.8, rng, "pink"), sweep(2500, 300, 0.8, power=0.5), 0.8, "low") * decay(0.8, 0.18) * 1.5
-        return mix(thump(0.7, 80, 35, 0.12, 0.0) * 1.0, splash, bubbles(0.8, rng, 30, (200, 900)) * 0.4)
+        return mix(tail(kit.giant(rng, -6, "hand"), 0.7) * 0.7, burst("water", rng) * 0.45)
     if style == "ghost":
-        breath = resonate(noise(0.9, rng, "pink"), sweep(600, 1400, 0.9), 4) * env([(0, 0), (0.4, 1), (0.9, 0)], 0.9) * 1.2
-        toll = chime(rng.choice([466, 523, 554]), 1.2, rng) * 0.25
-        return mix(ring(breath, 29) * 0.6 + breath * 0.4, toll)
+        breath = kit.reverse(tail(kit.bowed(rng, -3 + rng.uniform(-1, 1)), 0.9, 0.3))
+        sigh = hp(noise(0.9, rng, "pink"), 1200) * env([(0, 0), (0.6, 1), (0.9, 0)], 0.9) * 0.3
+        return mix(breath, sigh)
     if style == "run":
-        out = silence(0.5)
+        out = silence(0.55)
         for i in range(2):
-            fall = mix(thump(0.15, 180, 90, 0.03, 0.4, rng) * 0.7, crackle(0.25, rng, 200, 2500) * decay(0.25, 0.08) * 0.8)
-            out = place(out, fall, i * 0.18 + rng.uniform(0, 0.02))
-        return mix(out, whoosh(0.5, rng, 600, 1800, 1.0) * 0.3)
+            out = place(out, tail(kit.frame_drum(rng, -2), 0.25) * 0.8, i * 0.17 + rng.uniform(0, 0.02))
+        flame = whoosh(0.5, rng, 500, 2200, 1.0) * 0.5
+        return mix(out, stereo(mix(flame, fire_crackle(0.5, rng, 1.5) * decay(0.5, 0.2) * 0.6), 0.6, rng=rng))
     if style == "wings":
-        flap = whoosh(0.55, rng, 120, 500, 0.9, [(0, 0), (0.15, 1), (0.55, 0)]) * 2.0
-        thunder = lp(noise(1.0, rng, "brown"), 250) * env([(0, 0), (0.2, 1), (1.0, 0)], 1.0) * 1.2
-        return mix(flap, thunder * rng.uniform(0.3, 0.8), crackle(0.6, rng, 40, 4000) * 0.3)
+        flap = whoosh(0.6, rng, 110, 600, 0.9, [(0, 0), (0.18, 1), (0.6, 0)]) * 1.6
+        return mix(stereo(flap, 0.7, rng=rng), cut(thunder(rng, 1.2), 0, 1.2, 0.6) * rng.uniform(0.15, 0.4))
     if style == "roots":
-        drag = resonate(trem(noise(0.9, rng), rng.uniform(20, 35), 0.95), sweep(250, 500, 0.9), 9) * env([(0, 0), (0.2, 1), (0.9, 0)], 0.9) * 2.5
-        thud = thump(0.5, 100, 45, 0.1, 0.3, rng) * 0.8
-        rustle = hp(noise(0.7, rng), 2500) * trem(env([(0, 0), (0.1, 1), (0.7, 0)], 0.7), 45, 0.8) * 0.4
-        return mix(thud, drag, rustle)
+        creak = cut(kit.guiro(rng, -9 - rng.uniform(0, 4)), 0, 0.6, 0.2) * 0.6
+        return mix(tail(kit.log_drum(rng, -10), 0.4) * 0.8, creak, cut(kit.brick(rng, -9), 0, 0.5, 0.2) * 0.5,
+                   tail(kit.giant(rng, -6, "soft"), 0.6) * 0.6)
     if style == "armour":
-        boot = thump(0.5, 110, 50, 0.09, 0.5, rng)
-        f = rng.uniform(500, 650)
-        clank = modal(0.4, [(f, 0.12, 1.0), (f * 1.52, 0.09, 0.7), (f * 2.3, 0.05, 0.4), (f * 3.7, 0.03, 0.2)], rng) * 0.6
-        return mix(boot, place(silence(0.5), clank, 0.01), crackle(0.4, rng, 60, 2500) * 0.3)
+        clank = cut(kit.metal(rng, -5 - rng.uniform(0, 3)), 0, 0.5, 0.25) * 0.45
+        return mix(tail(kit.giant(rng, -4, "hand"), 0.5) * 0.8, place(silence(0.6), clank, 0.01),
+                   kit.chain(rng, 0.4, -2) * 0.35)
     if style == "heart":
-        lub = thump(0.4, 75, 35, 0.1, 0.0) * 1.3
-        dub = thump(0.4, 62, 30, 0.08, 0.0) * 1.0
-        wet = lp(noise(0.3, rng, "brown"), 300) * decay(0.3, 0.05) * 0.6
-        return place(mix(lub, wet), mix(dub, wet * 0.7), 0.24)
+        lub = tail(kit.bass_drum(rng, -3, False), 0.5)
+        dub = tail(kit.bass_drum(rng, -5, False), 0.5) * 0.75
+        return mix(place(silence(0.8), lub, 0.0), place(silence(0.8), dub, 0.22),
+                   kit.sub(0.6, 60, 40, 0.15) * 0.4)
     if style == "colossus":
-        hit = mix(boom(1.6, rng, 1.6) * 0.6, thump(1.6, 55, 20, 0.45, 0.6, rng) * 1.4, debris(1.6, rng, 25, 0.4) * 0.5)
-        hum = ring(osc(55, 1.6), 23) * decay(1.6, 0.5) * 0.25
-        return mix(hit, hum)
+        return mix(tail(kit.impact(rng, 1.4, crash_level=0.0), 1.6), kit.debris(rng, 1.4, 8, -6) * 0.5,
+                   tail(kit.bowed(rng, -12), 1.4) * 0.15)
     if style == "stomp_fire":
-        return mix(thump(0.8, 85, 30, 0.16, 0.5, rng) * 1.3, flourish("fire", 0.7, rng) * 0.5)
+        return mix(tail(kit.giant(rng, -8), 0.9), tail(kit.concert_bass(rng, -7), 0.9) * 0.6,
+                   stereo(fire_crackle(0.8, rng, 2) * decay(0.8, 0.3), 0.7, rng=rng) * 0.5)
     if style == "thunder":
-        return mix(thump(0.7, 90, 35, 0.12, 0.4, rng), attack_storm(rng, 0.5, 0.2),
-                   lp(noise(1.0, rng, "brown"), 250) * decay(1.0, 0.3) * 0.8)
+        return mix(tail(kit.giant(rng, -7), 0.9), cut(thunder(rng, 1.2), 0, 1.2, 0.5) * 0.5)
     if style == "skitter":
         out = silence(0.7)
-        for i in range(14):
-            click = mix(modal(0.04, [(rng.uniform(1800, 3500), 0.008, 1.0)], rng), hp(noise(0.02, rng), 3000) * decay(0.02, 0.003))
-            out = place(out, click * rng.uniform(0.3, 0.8), i * 0.04 + rng.uniform(0, 0.015))
-        return mix(out, thump(0.5, 90, 45, 0.08, 0.0) * 0.8)
+        for i in range(12):
+            out = place(out, cut(kit.claves(rng, rng.uniform(-4, 4), True), 0, 0.06, 0.02) * rng.uniform(0.3, 0.8),
+                        i * 0.045 + rng.uniform(0, 0.012))
+        return mix(out, tail(kit.giant(rng, -4, "soft"), 0.5) * 0.6, cut(kit.shaker(rng, -4), 0, 0.5, 0.2) * 0.3)
     if style == "drag":
-        scrape = lp(noise(0.9, rng, "brown"), 600) * trem(env([(0, 0), (0.3, 1), (0.9, 0)], 0.9), 18, 0.6) * 2
-        return mix(thump(0.7, 75, 32, 0.14, 0.4, rng), scrape, flourish("void", 0.9, rng) * 0.3)
+        return mix(tail(kit.giant(rng, -7, "hand"), 0.7) * 0.7, cut(kit.gong_scrape(rng, -10), 0.2, 0.9, 0.4) * 0.6,
+                   kit.chain(rng, 0.8, -6) * 0.4)
     raise ValueError(style)
 
 
-# --- Reveal, enrage, death ---------------------------------------------------------------------
+# --- Reveal, speech, enrage, death -------------------------------------------------------------------
+
+def _hit(bs: BossSet, rng, seconds: float = 3.5) -> np.ndarray:
+    size = bs.size
+    metal = 0.6 if bs.step in ("armour", "colossus") else 0.0
+    core = tail(kit.impact(rng, size, metal_level=metal, gong_level=0.6 if bs.element in ("void", "cosmos") else 0.3),
+                seconds + 1.0)
+    brass = kit.braam(bs.root, 1.6 + 0.4 * size, rng, dark=0.8)
+    return mix(core, brass * 0.5, bed(bs.element, seconds, rng) * 0.6)
+
 
 def reveal(bs: BossSet, rng) -> np.ndarray:
-    root = ROOTS[bs.element] / 2
-    d = 5.0
-    hit = mix(braam(root / 2 if bs.element != "cosmos" else 27.5, 3.0, rng, 0.15),
-              taiko(2.0, rng, 48, 2.2) * 0.9, gong(root, 4.0, rng) * 0.35)
-    swell = _element_layer(bs.element, 3.5, rng) * 0.8
-    lead = riser(0.9, rng, 150, 2000) * 0.4
-    if bs.voice.sing:
-        notes = [(0, 0.5, "a"), (3, 0.4, "o"), (7, 0.5, "a"), (6, 1.4, "u")]
-        voice = song(bs.voice, notes, rng)
-    else:
-        voice = roar(bs.voice, 2.0, rng, 0.25, 0.45)
-    out = place(silence(d), lead, 0.0)
-    out = place(out, mix(hit, swell), 0.85)
-    out = place(out, voice * 1.1, 1.25)
-    if bs.element == "cosmos":
-        # Six element hits in a row for the overlord.
+    lead = kit.riser(LEAD, rng, -2)
+    out = place(silence(6.0), lead * 0.7, 0.0)
+    out = place(out, _hit(bs, rng, 4.0), LEAD)
+    if bs.key == "pale_vesper":
+        hum = S.choir([(50, 0, 3.0, 90), (53, 0.2, 2.8, 80), (56, 0.4, 2.6, 80), (61, 0.6, 2.4, 70)], S.VOICE_OOHS)
+        out = place(out, tail(hum, 4.0) * 0.5, LEAD + 0.1)
+        cry = _roar(bs, rng, 1.4, -1, 0.6)
+    elif bs.element == "cosmos":
+        # The six crowns struck one after another, then the High King's voice.
         for i, e in enumerate(("fire", "storm", "nature", "water", "earth", "void")):
-            out = place(out, flourish(e, 0.5, rng) * 0.8, 1.0 + i * 0.12)
-    return reverb(stereo(out, 0.7, rng=rng), 2.8, 0.3, rng=rng, wide=True)
-
-
-def enrage(bs: BossSet, rng) -> np.ndarray:
-    if bs.voice.sing:
-        voice = song(bs.voice, [(12, 0.3, "a"), (13, 0.3, "a"), (18, 1.0, "i")], rng)
+            out = place(out, burst(e, rng) * 0.35, LEAD + 0.25 + i * 0.12)
+        cry = None
     else:
-        voice = roar(bs.voice, 1.8, rng, 0.2, 0.5, ("a", "aw", "a", "o"), 1.8)
-    burst = mix(_element_layer(bs.element, 1.6, rng), taiko(1.2, rng, 55, 1.6) * 0.7)
-    return reverb(stereo(mix(voice, burst * 0.7), 0.6, rng=rng), 2.0, 0.25, rng=rng)
-
-
-def death(bs: BossSet, rng, key: str) -> np.ndarray:
-    d = 6.0
-    if bs.voice.sing:
-        cry = song(bs.voice, [(12, 0.4, "a"), (11, 0.4, "a"), (6, 0.6, "o"), (-1, 1.8, "u")], rng)
-    else:
-        cry = roar(bs.voice, 2.6, rng, 0.15, 0.8, ("a", "aw", "o", "u"), 1.5)
-    collapse = mix(boom(3.5, rng, 2.0) * 0.9, debris(3.5, rng, 40, 0.5) * 0.5)
-    layer = _death_layer(key, bs, rng)
-    out = place(silence(d), cry, 0.0)
-    out = place(out, collapse, 1.6)
-    out = place(out, layer, 0.8)
-    return reverb(stereo(out, 0.7, rng=rng), 3.2, 0.3, rng=rng, wide=True)
-
-
-def _death_layer(key: str, bs: BossSet, rng) -> np.ndarray:
-    if key == "saltmother":
-        # The column of seawater falls: a great wash, then draining gurgles.
-        wash = svf(noise(3.0, rng, "pink"), sweep(4000, 300, 3.0, power=0.4), 0.8, "low") * decay(3.0, 0.9, 0.05) * 2.2
-        return mix(wash, place(silence(4), bubbles(2.5, rng, 60, (150, 700)) * 0.7, 1.2))
-    if key == "gorrath":
-        # He breaks into three walking boulders.
-        out = silence(3.5)
-        for i in range(3):
-            out = place(out, mix(impact_earth(rng), thump(0.8, 70, 28, 0.2, 0.5, rng)) * 1.1, 1.2 + i * 0.45)
-        return mix(out, rumble(3.5, rng, 140, 5) * env([(0, 0), (0.5, 1), (3.5, 0)], 3.5))
-    if key == "pale_vesper":
-        # The song cracks into a choir of the dead letting go.
-        pad = choir([semis(116.5, s) for s in (0, 1, 6, 11)], 3.5, rng, (500, 900, 2500), 0.3) * 0.7
-        return mix(pad, reverse(resonate(noise(1.5, rng, "pink"), 1200, 3) * decay(1.5, 0.5)) * 0.6)
-    if key in ("ashwick", "fire"):
-        # The fire goes out: a last flare and a long steam hiss.
-        flare = flourish("fire", 1.0, rng) * 1.2
-        hiss = hp(noise(3.0, rng), 2500) * env([(0, 0), (0.8, 1), (3.0, 0)], 3.0) * 0.6
-        return mix(flare, place(silence(3.5), hiss, 0.7))
-    if key in ("vholt", "storm"):
-        thunder = mix(hp(noise(0.2, rng), 600) * decay(0.2, 0.03) * 2, lp(noise(4.0, rng, "brown"), 250) * decay(4.0, 1.2) * 2.5)
-        screech = roar(Character(f0=700, tract=1.4, growl=0.4, breath=0.4, octave_down=0.0, reverb=1.5), 1.2, rng,
-                       0.1, 0.8, ("i", "e", "a"), 1.2)
-        return mix(thunder, screech * 0.6, place(silence(4), whoosh(2.5, rng, 1500, 200, 0.8) * 0.6, 0.8))
-    if key in ("mother_briar", "nature"):
-        out = silence(3.5)
-        for i in range(10):
-            snap = mix(modal(0.2, [(rng.uniform(300, 900), 0.04, 1.0), (rng.uniform(1200, 2000), 0.02, 0.5)], rng),
-                       hp(noise(0.06, rng), 1500) * decay(0.06, 0.01))
-            out = place(out, snap * rng.uniform(0.5, 1.0), rng.uniform(0, 2.0))
-        sigh = roar(Character(f0=110, tract=0.9, growl=0.1, breath=0.9, octave_down=0.0, reverb=2.0), 1.6, rng,
-                    0.2, 0.7, ("a", "o", "u"), 0.6)
-        return mix(out, flourish("nature", 3.0, rng) * 0.6, place(silence(4), sigh * 0.6, 1.8))
-    if key in ("ashen_regent",):
-        # Armour hits the ground; embers scatter.
-        f = 420
-        clang = modal(2.0, [(f, 0.6, 1.0), (f * 1.52, 0.4, 0.7), (f * 2.3, 0.3, 0.5), (f * 3.7, 0.2, 0.3)], rng)
-        return mix(place(silence(3), clang * 0.7, 0.6), flourish("fire", 2.5, rng) * 0.5, flourish("void", 2.5, rng) * 0.4)
-    if key == "sundered_heart":
-        out = silence(3.5)
-        for i, t in enumerate((0.0, 0.7, 1.5, 2.5)):
-            beat = step("heart", rng) * (1.2 - i * 0.25)
-            out = place(out, pitch(beat, 1.0 - i * 0.08), t)
-        return mix(out, place(silence(3.5), choir([semis(110, s) for s in (0, 7, 12)], 2.5, rng, attack=0.8) * 0.5, 1.0))
-    if key == "vael_orrun":
-        out = silence(5.0)
-        for i, e in enumerate(("void", "earth", "water", "nature", "storm", "fire")):
-            out = place(out, mix(flourish(e, 0.9, rng), boom(0.9, rng, 0.8) * 0.5), 0.2 + i * 0.35)
-        implode = reverse(reverb(boom(1.5, rng, 1.5), 1.5, 0.7, rng=rng))[: n_of(1.5)] * 0.9
-        return mix(out, place(silence(5.0), implode, 2.2), place(silence(5.0), boom(2.5, rng, 2.2), 3.7),
-                   place(silence(5.0), choir([semis(55, s) for s in (0, 7, 12, 16, 19)], 1.3, rng, attack=0.4) * 0.6, 3.7))
-    if key in ("water",):
-        return svf(noise(3.0, rng, "pink"), sweep(3000, 200, 3.0, power=0.5), 0.8, "low") * decay(3.0, 0.8, 0.05) * 2
-    if key in ("earth", "warden"):
-        return mix(rumble(3.0, rng, 140, 5) * env([(0, 0), (0.3, 1), (3.0, 0)], 3.0) * 1.2, debris(3.0, rng, 30, 0.5) * 0.7)
-    if key == "void":
-        return mix(reverse(resonate(noise(1.5, rng, "pink"), 900, 2) * decay(1.5, 0.5)) * 0.8, flourish("void", 3.0, rng) * 0.7)
-    return _element_layer(bs.element, 3.0, rng)
+        cry = _roar(bs, rng, 1.2, -3, 1.1)
+    if cry is not None:
+        out = place(out, cry * 0.9, LEAD + 0.15)
+    line = bs.lines["reveal"]
+    if line and not bs.voice.beast:
+        at = LEAD + (0.4 if cry is None else 0.15 + len(cry) / SR - 0.2)
+        out = place(out, _say(bs, line, rng) * 1.05, at)
+    return _room(out, bs, rng)
 
 
 def voice_line(bs: BossSet, rng, v: int) -> np.ndarray:
-    if bs.voice.sing and bs.element != "water":
-        melodies = [[(0, 0.4, "a"), (2, 0.3, "o"), (3, 0.6, "a"), (-2, 0.9, "u")],
-                    [(7, 0.5, "o"), (5, 0.3, "a"), (3, 0.3, "e"), (2, 1.0, "a")],
-                    [(-5, 0.4, "u"), (0, 0.4, "o"), (1, 0.4, "a"), (0, 1.1, "o")]]
-        return song(bs.voice, melodies[v % 3], rng)
-    if bs.voice.sing:
-        # The Leviathan: a whale-like moan.
-        return roar(bs.voice, 2.2, rng, 0.4, 0.5, ("u", "o", "u"), 0.9)
-    length = [1.8, 2.3, 1.4][v % 3]
-    return phrase(bs.voice, length, rng, intensity=1.0 + 0.2 * v, question=(v == 1))
+    if bs.voice.beast or not bs.lines["talk"]:
+        return _room(_roar(bs, rng, [0.9, 1.3, 0.7][v % 3], [-2, -4, 1][v % 3], [0.8, 1.0, 0.6][v % 3]), bs, rng)
+    x = _say(bs, bs.lines["talk"][v % 3], rng)
+    if bs.key == "pale_vesper":
+        hum = S.choir([(49 + 2 * v, 0, 2.2, 70), (56 + v, 0.15, 2.0, 60)], S.VOICE_OOHS)
+        x = mix(x, S.mono(tail(hum, len(x) / SR + 0.4)) * 0.25)
+    if bs.element == "cosmos" or bs.freed:
+        # Vael-Orrun's whisper under the words.
+        x = mix(x, place(silence(0.1), C.whisper_of(x, rng) * 0.25, 0.06))
+    return _room(x, bs, rng)
+
+
+def enrage(bs: BossSet, rng) -> np.ndarray:
+    out = silence(3.0)
+    out = place(out, tail(kit.impact(rng, bs.size * 0.8, crash_level=0.8), 2.6) * 0.8, 0.0)
+    out = place(out, burst(bs.element, rng) * 0.6, 0.05)
+    out = place(out, _shout(bs, rng), 0.12)
+    if not bs.voice.beast and bs.lines["enrage"]:
+        out = place(out, _roar(bs, rng, 0.8, -3, 1.3) * 0.6, len(out) / SR - 1.2)
+    return _room(out, bs, rng, 0.9)
+
+
+def death(bs: BossSet, rng) -> np.ndarray:
+    d = 7.0
+    out = silence(d)
+    cry = _roar(bs, rng, 1.6, -7, 1.4)
+    out = place(out, cry, 0.0)
+    at = len(cry) / SR * 0.7
+    if not bs.voice.beast and bs.lines["death"]:
+        out = place(out, _say(bs, bs.lines["death"], rng) * 1.0, at)
+        at += 0.5
+    fall = mix(tail(kit.impact(rng, bs.size * 1.2, gong_level=0.7, crash_level=0.8), 4.0),
+               kit.debris(rng, 3.0, 14, -4) * 0.6)
+    out = place(out, fall, at)
+    out = place(out, _death_layer(bs, rng), at + 0.1)
+    if bs.freed:
+        # The madness lifts: a warm choir chord in a major key, rising out of the dust.
+        ah = S.choir([(48, 0, 3.0, 70), (55, 0.1, 2.9, 70), (64, 0.25, 2.75, 75), (67, 0.4, 2.6, 70)])
+        out = place(out, tail(ah, 3.5) * 0.45, at + 1.2)
+    return _room(out, bs, rng, 1.2)
+
+
+def _death_layer(bs: BossSet, rng) -> np.ndarray:
+    key = bs.key
+    if key == "saltmother":
+        # Her column of black seawater falls.
+        return mix(kit.water_rush(3.5, rng, 1.0) * 1.2, place(silence(4.0), kit.bubbles(rng, -5) * 0.6, 1.5))
+    if key == "gorrath":
+        # He breaks into walking boulders.
+        out = silence(3.5)
+        for i in range(3):
+            out = place(out, tail(kit.giant(rng, -9 + i), 1.0) * 0.9, 0.6 + i * 0.45)
+        return mix(out, bed("earth", 3.5, rng) * 0.7)
+    if key == "pale_vesper":
+        # The song cracks, and the dead she sang awake go back to sleep.
+        crack = S.choir([(50, 0, 1.2, 100), (51, 0, 1.2, 100), (56, 0, 1.2, 100), (61, 0, 1.2, 90)])
+        rest = S.choir([(50, 1.4, 2.5, 70), (57, 1.4, 2.5, 60), (62, 1.6, 2.3, 60)], S.VOICE_OOHS)
+        return mix(tail(crack, 1.5) * 0.6, tail(rest, 4.2) * 0.5, kit.reverse(tail(kit.bowed(rng, -2), 1.4, 0.1)) * 0.4)
+    if key in ("ashwick", "fire"):
+        # The fire goes out in a long hiss of steam.
+        hiss = hp(noise(3.0, rng), 2500) * env([(0, 0), (0.5, 1), (3.0, 0)], 3.0) * 0.5
+        return mix(burst("fire", rng), place(silence(3.5), stereo(hiss, 0.9, rng=rng), 0.6))
+    if key in ("vholt", "storm"):
+        screech = C.roar(Voice("af_kore", 1.0, depth=4, sub=0.0, grit=0.4, growl=0.2), rng, "Kreeeeeeee!", 1.0, -6, 1.0)
+        return mix(thunder(rng, 4.0), place(silence(4.0), screech * 0.5, 0.2), wind(3.5, rng) * 0.4)
+    if key in ("mother_briar", "nature"):
+        snaps = silence(3.0)
+        for i in range(12):
+            snaps = place(snaps, cut(kit.claves(rng, -rng.uniform(4, 12)), 0, 0.15, 0.05), rng.uniform(0, 2.2),
+                          rng.uniform(0.3, 0.8))
+        return mix(snaps, bed("nature", 3.0, rng) * 0.6)
+    if key == "ashen_regent":
+        # His armour hits the stones; chains and embers.
+        clang = mix(tail(kit.anvil(rng, -5), 2.0) * 0.7, tail(kit.metal(rng, -7), 2.0) * 0.6)
+        return mix(place(silence(3.0), clang, 0.4), kit.chain(rng, 1.6, -3) * 0.4, burst("fire", rng) * 0.5)
+    if key == "sundered_heart":
+        out = silence(4.0)
+        for i, t in enumerate((0.0, 0.8, 1.8, 3.0)):
+            out = place(out, step("heart", rng) * (1.2 - i * 0.25), t)
+        return mix(out, place(silence(4.0), tail(kit.glass(rng, -12), 1.5) * 0.6, 0.3))
+    if key == "vael_orrun":
+        out = silence(5.0)
+        for i, e in enumerate(("void", "earth", "water", "nature", "storm", "fire")):
+            out = place(out, burst(e, rng) * 0.6, 0.2 + i * 0.3)
+        implode = kit.reverse(tail(kit.tam_tam(rng, -10), 1.6, 0.0))
+        out = place(out, implode, 2.0)
+        out = place(out, tail(kit.impact(rng, 1.8, gong_level=1.0), 3.0), 3.6)
+        shards = mix(*[place(silence(2.0), tail(kit.glass(rng, -rng.uniform(0, 8)), 0.8), rng.uniform(0, 0.6))
+                       for _ in range(4)])
+        return mix(out, place(silence(5.0), shards * 0.6, 3.6))
+    if key == "water":
+        return kit.water_rush(4.0, rng, 0.7) * 1.2
+    if key in ("earth", "warden"):
+        return bed("earth", 3.5, rng)
+    if key == "void":
+        return mix(bed("void", 3.5, rng) * 0.8, kit.reverse(tail(kit.bowed(rng, 0), 1.5, 0.1)) * 0.4)
+    return bed(bs.element, 3.0, rng)
 
 
 def _register_set(key: str, bs: BossSet) -> None:
@@ -289,15 +406,16 @@ def _register_set(key: str, bs: BossSet) -> None:
              **REVEAL, description=f"{bs.title} appears")
     register(f"boss_{key}_step", folder, lambda rng, v: step(bs.step, rng), variants=3, loud=-19.0, max_voices=2,
              min_gap=0.15, pitch_jitter=0.05, priority=3, description=f"{bs.title} walks")
-    register(f"boss_{key}_voice", folder, lambda rng, v: voice_line(bs, rng, v), variants=3, loud=-15.0, max_voices=1,
+    register(f"boss_{key}_voice", folder, lambda rng, v: voice_line(bs, rng, v), variants=3, loud=-14.0, max_voices=1,
              min_gap=1.0, priority=6, duck_db=-5.0, duck_time=2.5, description=f"{bs.title} speaks")
-    register(f"boss_{key}_enrage", folder, lambda rng, v: enrage(bs, rng), loud=-13.0, max_voices=1, priority=7,
+    register(f"boss_{key}_enrage", folder, lambda rng, v: enrage(bs, rng), loud=-12.0, max_voices=1, priority=7,
              duck_db=-6.0, duck_time=2.0, description=f"{bs.title} is wounded and enraged")
-    register(f"boss_{key}_death", folder, lambda rng, v: death(bs, rng, key), loud=-11.0, max_voices=1, priority=8,
+    register(f"boss_{key}_death", folder, lambda rng, v: death(bs, rng), loud=-11.0, max_voices=1, priority=8,
              duck_db=-12.0, duck_time=4.0, positional=False, description=f"{bs.title} dies")
 
 
 for _key, _bs in SETS.items():
+    _bs.key = _key
     _register_set(_key, _bs)
 
 
@@ -306,55 +424,53 @@ for _key, _bs in SETS.items():
 @sound("boss_silence", "bosses", loud=-16.0, max_voices=1, min_gap=1.0, priority=6,
        description="a boss silences nearby towers")
 def boss_silence(rng, v):
-    d = 1.6
-    suck = reverse(resonate(noise(0.8, rng, "pink"), sweep(400, 3000, 0.8), 3) * decay(0.8, 0.3)) * 1.5
-    whine = osc(sweep(3000, 4200, d), d) * env([(0, 0), (0.75, 0), (0.8, 0.3), (d, 0)], d) * 0.15
-    thud = ring(thump(0.8, 90, 40, 0.2, 0.0), 31) * 1.0
-    return reverb(mix(suck, whine, place(silence(d), thud, 0.75)), 2.0, 0.4, rng=rng)
+    suck = kit.reverse(tail(kit.gong(rng, -5), 0.9, 0.0))
+    thud = tail(kit.tam_tam(rng, -14), 1.4)
+    hush = tail(kit.bowed(rng, 2), 1.2) * 0.3
+    return kit.hall(mix(place(silence(2.2), suck * 0.8, 0.0), place(silence(2.2), mix(thud, hush), 0.88)), 2.0, 0.35, rng)
 
 
 @sound("boss_blink", "bosses", loud=-17.0, max_voices=1, min_gap=0.5, priority=5,
        description="a boss steps forward through shadow")
 def boss_blink(rng, v):
-    out_ = reverse(whoosh(0.35, rng, 300, 2500, 1.5)) * 1.2
-    pop = ring(osc(sweep(800, 120, 0.15), 0.15), 40) * decay(0.15, 0.05)
-    arrive = whoosh(0.4, rng, 2500, 300, 1.5, [(0, 1), (0.4, 0)]) * 0.8
-    return reverb(mix(out_, place(silence(0.8), mix(pop, arrive), 0.33)), 1.2, 0.3, rng=rng)
+    gone = kit.reverse(tail(kit.cymbal(rng, -6), 0.45, 0.0))
+    arrive = mix(tail(kit.giant(rng, -6, "hand"), 0.6) * 0.6, whoosh(0.4, rng, 2500, 300, 1.5, [(0, 1), (0.4, 0)]) * 0.5)
+    return kit.hall(mix(place(silence(1.0), gone * 0.8, 0.0), place(silence(1.0), arrive, 0.44)), 1.4, 0.3, rng)
 
 
 @sound("boss_escape", "bosses", loud=-15.0, max_voices=1, priority=7, positional=False,
        description="a beaten boss escapes the board")
 def boss_escape(rng, v):
-    d = 2.5
-    rise = riser(1.2, rng, 200, 4000) * 0.6
-    vanish = mix(reverse(reverb(boom(0.8, rng, 0.8), 1.0, 0.5, rng=rng))[: n_of(0.8)] * 0.8,
-                 whoosh(1.2, rng, 3000, 150, 0.8) * 0.8)
-    laugh = phrase(SETS["ashen_regent"].voice, 1.2, rng, 1.2)
-    out = mix(rise, place(silence(d), vanish, 1.0), place(silence(d), laugh * 0.7, 0.0))
-    return reverb(stereo(out, 0.6, rng=rng), 2.0, 0.3, rng=rng)
+    regent = SETS["ashen_regent"]
+    line = _say(regent, "We will meet again.", rng)
+    vanish = mix(kit.reverse(tail(kit.crash(rng, -5), 1.0, 0.0)) * 0.7, whoosh(1.2, rng, 3000, 150, 0.8) * 0.6)
+    out = place(silence(3.0), line, 0.0)
+    out = place(out, vanish, len(line) / SR - 0.2)
+    return _room(out, regent, rng)
 
 
 @sound("structure_collapse", "bosses", variants=2, loud=-12.0, max_voices=1, priority=7, duck_db=-8.0, duck_time=3.0,
        description="a building of the enemy citadel falls")
 def structure_collapse(rng, v):
-    d = 5.0
+    d = 5.5
     out = silence(d)
-    for i in range(6):
-        out = place(out, mix(impact_earth(rng), thump(0.8, 80, 30, 0.2, 0.6, rng)) * rng.uniform(0.6, 1.0), i * rng.uniform(0.25, 0.4))
-    out = mix(out, boom(4.0, rng, 2.2) * 0.8, debris(d, rng, 80, 0.5) * 0.6,
-              rumble(d, rng, 120, 4) * env([(0, 0), (0.5, 1), (d, 0)], d))
-    return reverb(stereo(out, 0.7, rng=rng), 3.0, 0.3, rng=rng)
+    for i in range(5):
+        out = place(out, tail(kit.giant(rng, -8 - rng.uniform(0, 4)), 1.2) * rng.uniform(0.6, 1.0),
+                    i * rng.uniform(0.25, 0.45))
+    out = mix(out, tail(kit.impact(rng, 1.4, crash_level=0.7), 4.5) * 0.8, kit.debris(rng, d - 0.5, 40, -3) * 0.8,
+              bed("earth", d - 0.5, rng) * 0.7, place(silence(d), tail(kit.glass(rng, -6), 1.0) * 0.4, 0.3))
+    return kit.hall(out, 3.0, 0.3, rng)
 
 
 @sound("assault_phase", "bosses", loud=-13.0, duck_db=-8.0, duck_time=3.0, positional=False, priority=6,
        description="the assault moves on to its next part")
 def assault_phase(rng, v):
-    from .palette import horn_call
-    horn = horn_call([(98.0, 0.0, 0.6), (130.8, 0.7, 0.6), (146.8, 1.4, 2.0)], rng, layers=(1.0, 0.7))
+    horns = mix(kit.chord("horn", [43, 50, 55], 2.6, rng, 0.08, 0.8), kit.chord("trombone", [31, 38], 2.6, rng, 0.08, 0.8) * 0.7)
     drums = silence(3.6)
     for i in range(6):
-        drums = place(drums, taiko(1.0, rng, 60, 1.5), i * 0.35)
-    return reverb(stereo(mix(horn, drums * 0.8), 0.6, rng=rng), 2.6, 0.35, rng=rng)
+        drums = place(drums, tail(kit.giant(rng, -4, "sticks"), 0.8), i * 0.33)
+    drums = place(drums, tail(kit.impact(rng, 1.0), 2.5), 6 * 0.33)
+    return kit.hall(mix(place(silence(4.5), horns * 0.8, 0.2), drums), 2.6, 0.3, rng)
 
 
 def boss_sets() -> dict[str, str]:

@@ -17,8 +17,8 @@ const HITS_PER_SECOND := 12.0
 const ARMOUR_CLANK := 8.0
 ## A boss says something every this many seconds of wave time (random in between).
 const TALK_EVERY := Vector2(13.0, 21.0)
-## Seconds after its reveal that a boss first speaks.
-const FIRST_WORDS := 4.0
+## Seconds after its reveal that a boss first speaks (the reveal already carries a spoken line).
+const FIRST_WORDS := 8.5
 ## Below this share of its health a boss roars (if the simulation has no enrage of its own).
 const WOUNDED_SHARE := 0.35
 ## Bosses that are part of a bigger one and get no reveal or footsteps of their own.

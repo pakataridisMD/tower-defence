@@ -14,3 +14,7 @@ __pycache__/
 
 # Python caches of the art and sound tools
 __pycache__/
+
+# Recordings and speech cache of the sound tools (tools/sfx/fetch_samples.sh fetches them)
+tools/sfx/.samples/
+tools/sfx/.cache/

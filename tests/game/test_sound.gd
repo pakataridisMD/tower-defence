@@ -117,7 +117,7 @@ func test_a_boss_is_revealed_once_and_heard_walking_and_dying() -> void:
 	var data: EnemyData = registry.enemies[&"mountain_titan"]
 	var boss := sim._make_enemy(data, 1.0, 0, -1, 0.0)
 	sim.enemies.append(boss)
-	for i in 360:
+	for i in 600:
 		sim.time_in_wave += STEP
 		boss.progress += boss.speed() * STEP
 		audio._process(STEP)

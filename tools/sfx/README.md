@@ -1,48 +1,58 @@
-# Sound effects synthesiser
+# Sound effects
 
-`build.py` renders every sound effect of the game from code into `assets/audio/sfx/<group>/` as Ogg Vorbis,
-and writes `assets/audio/sfx/catalogue.json` for the game's `Sfx` autoload.
+`build.py` renders every sound effect of the game into `assets/audio/sfx/<group>/` as Ogg Vorbis, and writes
+`assets/audio/sfx/catalogue.json` for the game's `Sfx` autoload. Sounds are designed from real recordings
+(orchestral percussion and brass, found sounds, a sampled choir) and spoken lines, layered the way film and
+game sound designers build them, plus code-made noise, crackle and sub-bass.
 
 ```
-pip install numpy scipy soundfile        # and ffmpeg with libvorbis on the PATH
-python3 tools/sfx/build.py               # everything (about 20 s on 4 cores)
-python3 tools/sfx/build.py --only tower_,impact_   # names containing any of these
+tools/sfx/fetch_samples.sh               # once: recordings and the voice model into tools/sfx/.samples (~2.5 GB)
+pip install numpy scipy soundfile kokoro-onnx   # plus ffmpeg (libvorbis, rubberband) and fluidsynth + fluid-soundfont-gm
+python3 tools/sfx/build.py               # everything (about 2 minutes on 4 cores)
+python3 tools/sfx/build.py --only boss_,skill_   # names containing any of these
 python3 tools/sfx/build.py --list        # the catalogue with a line on each sound
 python3 tools/sfx/build.py --preview DIR # also MP3 copies and DIR/preview.json, for a listening page
 ```
 
-Rendering is deterministic: each file's random numbers are seeded from its name, so the same code always
-gives the same sound.
+Rendering is repeatable: each file's random numbers are seeded from its name, and generated speech and choir
+notes are cached in `tools/sfx/.cache`, so the same code gives the same sounds.
 
 ## Licence
 
-Nothing here uses recordings, samples, sound libraries or AI audio models. Every sound is built from
-oscillators, filtered noise, resonators and envelopes in `dsp.py` and `voice.py`, so the output is original
-work of this project and can ship in the commercial game with no credit or fee owed to anyone. The Python
-libraries used to render (numpy, scipy, soundfile, ffmpeg) put no conditions on what they render.
+See `assets/audio/sfx/LICENSE.md`. The recordings are VSCO 2 Community Edition (CC0), the choir is the
+FluidR3_GM sound font (MIT) and the voices are Kokoro-82M text to speech (Apache-2.0). All of them allow use
+in a commercial game. The voices count as AI-generated audio for Steam's disclosure.
 
 ## How it is laid out
 
-- `dsp.py`: oscillators, noise, envelopes, static and swept filters, modal resonators (struck bodies),
-  crackle, Karplus-Strong strings, distortion and a synthetic reverb, plus building blocks such as `thump`,
-  `whoosh`, `boom`, `debris` and `bubbles`.
-- `voice.py`: the creature voices. A glottal source with jitter, shimmer and a sub-octave growl runs through
-  three swept formant filters that glide from vowel to vowel, with noise consonants in between. Each boss has
-  a `Character` (pitch, throat size, roughness, breath, stacked voices, an effect such as water, stone, fire,
-  wind, wood, void or cosmos). `phrase()` makes up speech in no real language (the story's subtitles carry
-  the meaning), `roar()` a sustained roar and `song()` sung notes (the Pale Vesper sings).
-- `recipes/palette.py`: shared instruments (synth brass, bells, chimes, gong, taiko, braam, riser, choir)
-  and the six element palettes: an attack, an impact and a sustained texture for each element.
+- `samples.py`: loads VSCO recordings (trimmed to their attack, normalised), pitch changes (tape-style
+  `semis`/`speed`, and Rubber Band `stretch` that keeps the timing), Kokoro speech (`speak`, voices can be
+  blended) and the sampled choir (`choir`, rendered by FluidSynth).
+- `kit.py`: recorded building blocks: timpani, giant drums, bass drums, cymbals and swells, gongs and tam-tams,
+  bowed cymbals, scrapes, metal, glass, chains, brick, bubbles, zaps, wood; real brass and string notes at any
+  pitch (`note`, `held`, `chord`); and composites: the cinematic `impact` (sub drop, giant drum, bass drum,
+  timpani, crash), the low-brass `braam`, `riser`, `debris`, `water_rush`, `hall`.
+- `creature.py`: boss voices. A spoken line is shifted down in pitch and formants, doubled an octave down,
+  given a whisper double of the same words, distorted in parallel, rasped like a huge throat and put in a big
+  room. `roar()` pushes a shouted vowel much further and layers a hand-rubbed bass drum (throat), a trombone
+  blat (bark) and a sub that follows the voice.
+- `dsp.py`: oscillators, noise, envelopes, filters, distortion, a synthetic reverb and helpers such as
+  `whoosh` and `crackle`.
+- `recipes/textures.py`: element beds (sea surge, furnace roar, grinding stone, wind and thunder, creaking
+  wood, the void's hum) and short element bursts, all from recordings.
+- `recipes/palette.py`: the six element palettes: a tower attack and a shot impact for each element.
 - `recipes/combat.py`: one attack sound for every tower in `data/towers`, built from its elements and how it
   fights (chains crackle, knockback adds a push, duals and triples are heavier). New towers get a sound
-  automatically on the next build. Also impacts, explosions by splash size, armour clanks, enemy deaths,
-  splitting, summoning and status effects.
-- `recipes/events.py`: interface sounds, building and upgrading, wave horns, victory and defeat, the base
-  being hit, the low-lives warning and the six player skills.
-- `recipes/bosses.py`: a set of five sounds (reveal, footsteps, voice, enrage, death) for each boss: the six
-  Heralds, the Ashen Regent, the Sundered Heart and Vael-Orrun as the lore describes them, one set per
-  element for the corrupted Wardens, and the plain Warden. Also the boss tricks of the story branch
-  (silence, blink, escape), a citadel building collapsing and the assault's horn.
+  automatically on the next build. Also impacts, explosions by splash size, armour clanks, enemy deaths
+  (short spoken cries), splitting, summoning and status effects.
+- `recipes/events.py`: interface sounds (drum-skin presses, no chimes), building and upgrading (brass stabs,
+  choir), war-horn wave calls, victory and defeat, the base being rammed, the low-lives warning and the six
+  player skills.
+- `recipes/bosses.py`: five sounds (reveal, footsteps, voice, enrage, death) for each boss. The Heralds, the
+  Ashen Regent, the Sundered Heart and Vael-Orrun speak lines from the story (`lines` in each `BossSet`); the
+  Leviathan and the Broodmother only roar; the corrupted Wardens are doubled by Vael-Orrun's whisper and
+  their deaths end in a choir chord, because beating them frees them. Also the boss tricks of the story
+  branch (silence, blink, escape), a citadel building collapsing and the assault's horns.
 
 ## Adding or changing a sound
 
@@ -58,11 +68,13 @@ def ui_click(rng, v):
   it and keeps peaks under -1 dBFS.
 - `volume_db`, `bus`, `positional`, `max_voices`, `min_gap`, `pitch_jitter`, `priority`, `duck_db` and
   `duck_time` go into the catalogue and control how the game plays it.
-- A new boss needs a `BossSet` in `recipes/bosses.py` with its enemy ids; a new ordinary enemy can get a
-  death sound in `ENEMY_DEATHS` (otherwise it falls back by its tags).
+- A new boss needs a `BossSet` in `recipes/bosses.py` with its enemy ids, a `Voice` and its lines; a new
+  ordinary enemy can get a death sound in `ENEMY_DEATHS` (otherwise it falls back by its tags).
+- To change what a boss says, edit its `lines` and rerender: the speech is generated again.
 
 Then rerun `build.py` and `godot --headless --import`. `tests/game/test_sound.gd` checks that every tower,
 enemy, boss and skill in `data/` has its sounds and that every file loads.
 
 You can't listen in a cloud session, so check new sounds by their numbers (`build.py` prints length, peak
-and loudness) and by spectrogram, then ask someone to listen.
+and loudness) and by spectrogram, then ask someone to listen. Godot 4.7 runs in cloud sessions for the
+import and the tests (see the repo notes).
