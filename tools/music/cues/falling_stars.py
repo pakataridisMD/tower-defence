@@ -1,15 +1,19 @@
-"""The Night of Falling Stars: the midpoint (`night_of_falling_stars`), about 2:05.
+"""The Night of Falling Stars: the midpoint (`night_of_falling_stars`), about 2:05 (fitted to the voiced lines).
 One section per shot of the script. The darkest cue: Solenne's tune, betrayal, Fennick's
 stand, the sun broken, and one shard of hope drifting east.
 """
 from cues._kit import DEFEAT_A, HOLLOW, HOLLOW_OST, new, rep
+
+# Shot lengths in seconds: each voiced line + 0.4 s lead-in + ~2 s of music before the next shot.
+# Shots 5 and 10 are character lines shown as subtitles.
+SLOTS = {'1 still bright': 11.8, '2 the gate opens': 7.6, '3 the streets': 11.5, '4 fennick holds': 10.8, "5 fennick's words": 7.0, '6 the gatehouse falls': 10.1, '7 the spire': 10.8, '8 the sun breaks': 5.7, '9 the queen': 9.4, "10 the regent's promise": 9.0, '11 one shard': 15.5, '12 no dawn': 9.0}
 
 
 def build():
     s = new("falling_stars", "The Night of Falling Stars")
 
     # 1. Solenne at dusk, still bright
-    a = s.section("1 still bright", bars=5, meter=3, bpm=96)
+    a = s.section("1 still bright", bars=5, meter=3, seconds=SLOTS["1 still bright"])
     a.part("celesta", "F5:1 G5:.5 A5:1 C6:.5 | D6:1.5 C6:1 A5:.5 | G5:1 A5:.5 F5:1 D5:.5 | C5:1.5 F5:1 G5:.5 | "
                       "A5:3", vel="mp")
     a.part("fl", "r:3 | r:3 | r:3 | r:3 | A5:3", vel="p")
@@ -19,7 +23,7 @@ def build():
     a.part("vc", "F3:3 | Bb2:3 | G2:3 | C3:3 | F2:3", vel="pp")
 
     # 2. The Dawn Gate opens from the inside
-    b = s.section("2 the gate opens", bars=2, meter=5, bpm=76)
+    b = s.section("2 the gate opens", bars=2, meter=5, seconds=SLOTS["2 the gate opens"])
     b.part("hn", "D3+Ab3+D4:2> r:3 | r:5", vel="ff")
     b.part("tbn", "D2+Ab2:2> r:3 | r:5", vel="ff")
     b.part("tuba", "D1:2 r:3 | r:5", vel="ff")
@@ -31,7 +35,7 @@ def build():
     b.hits("timp:D2", "1 2.5 4 4.5", bar=2, vel="mf")
 
     # 3. Fighting in the streets
-    c = s.section("3 the streets", bars=3, meter=5, bpm=84)
+    c = s.section("3 the streets", bars=3, meter=5, seconds=SLOTS["3 the streets"])
     c.part("vc_spic", rep(HOLLOW_OST, 3), vel="f")
     c.part("cb_spic", rep(HOLLOW_OST, 3), vel="f", transpose=-12)
     c.part("vla_spic", rep(HOLLOW_OST, 3), vel="mf", transpose=12)
@@ -43,7 +47,7 @@ def build():
     c.hits("anvil", "4.5", bar=1, vel="mf", bars=3)
 
     # 4. Fennick holds the gate
-    d = s.section("4 fennick holds", bars=4, meter=4, bpm=96)
+    d = s.section("4 fennick holds", bars=4, meter=4, seconds=SLOTS["4 fennick holds"])
     ost4 = "D3:.5> D3:.5 D3:.5 D3:.5 D3:.5> D3:.5 D3:.5 D3:.5"
     d.part("vc_spic", rep(ost4, 4), vel="f")
     d.part("cb_spic", rep(ost4, 4), vel="f", transpose=-12)
@@ -57,7 +61,7 @@ def build():
     d.hits("bd", "1", bar=1, vel="f")
 
     # 5. "Spirewright! Fire burns, water slows..."
-    e = s.section("5 fennick's words", bars=3, meter=4, bpm=96)
+    e = s.section("5 fennick's words", bars=3, meter=4, seconds=SLOTS["5 fennick's words"])
     e.part("hn", "A3+D4+F4:4 | Bb3+D4+G4:4 | A3+C#4+E4:4", vel="mf")
     e.part("vc_trem", "D3:4 | G2:4 | A2:4", vel="mp")
     e.part("cb", "D2:4 | G1:4 | A1:4", vel="mp")
@@ -67,7 +71,7 @@ def build():
     e.hits("timp:A2", [1 + i * 0.25 for i in range(16)], bar=3, vel="mf")
 
     # 6. The gatehouse falls. Silence. A lament.
-    f = s.section("6 the gatehouse falls", bars=2, meter=5, bpm=60)
+    f = s.section("6 the gatehouse falls", bars=2, meter=5, seconds=SLOTS["6 the gatehouse falls"])
     f.part("hn", "D3+A3+D4:1> r:4 | r:5", vel="fff")
     f.part("tbn", "D2+A2:1> r:4 | r:5", vel="fff")
     f.part("vc", "D2+D3:1 r:4 | r:5", vel="ff")
@@ -82,7 +86,7 @@ def build():
     f.hits("gong", "1", bar=1, vel="f")
 
     # 7. The Lord Marshal on the Spire of Aurel
-    g = s.section("7 the spire", bars=3, meter=4, bpm=72)
+    g = s.section("7 the spire", bars=3, meter=4, seconds=SLOTS["7 the spire"])
     g.part("vc", "B2:2 F#3:2 | E3:1.5 D3:.5 C#3 B2 | G2:2 C#3 D3", vel="mf")
     g.part("cb", "B1:4 | E1:2 F#1:2 | G1:4", vel="mp")
     g.part("vln_trem", "B5+C6:4 | C6+D6:4 | D6+Eb6:4", vel="p")
@@ -94,7 +98,7 @@ def build():
     g.hits("timp:G2", [1 + i * 0.25 for i in range(16)], bar=3, vel="mf")
 
     # 8. "...and he broke the sun"
-    h = s.section("8 the sun breaks", bars=1, meter=4, bpm=60)
+    h = s.section("8 the sun breaks", bars=1, meter=4, seconds=SLOTS["8 the sun breaks"])
     h.part("tpt", "D5+Eb5:1.5> r:2.5", vel="fff")
     h.part("hn", "D4+Ab4+D5:1.5 r:2.5", vel="fff")
     h.part("tbn", "D3+Ab3:1.5 r:2.5", vel="fff")
@@ -112,7 +116,7 @@ def build():
     h.hits("bd", "1", vel="ff")
 
     # 9. The light falls on the Queen. White-out.
-    k = s.section("9 the queen", bars=2, meter=5, bpm=66)
+    k = s.section("9 the queen", bars=2, meter=5, seconds=SLOTS["9 the queen"])
     k.part("vln_trem", "D6+A6:10", vel="p")
     k.part("oohs", "D5+A5:10", vel="p")
     k.part("solo_vln", "A6:10", vel="pp")
@@ -120,7 +124,7 @@ def build():
     s.swell("oohs", [(k.at(1), 0), (k.at(2, 5), -14)])
 
     # 10. "There is a world without death, Ysolde..."
-    m = s.section("10 the regent's promise", bars=3, meter=4, bpm=66)
+    m = s.section("10 the regent's promise", bars=3, meter=4, seconds=SLOTS["10 the regent's promise"])
     m.part("vc_solo", "B3:2 F#4:2 | E4:1.5 D4:.5 C#4 B3 | G3:2 C4:1 B3:1", vel="mf")
     m.part("vla", "D4:4 | G3:2 F#3:2 | Eb3:4", vel="pp")
     m.part("cb", "B1:4 | E1:2 B1:2 | C2:4", vel="pp")
@@ -128,7 +132,7 @@ def build():
     m.part("choir", "r:4 | r:4 | C3+G3:4", vel="p")
 
     # 11. One shard drifts east, and does not land
-    n = s.section("11 one shard", bars=4, meter=4, bpm=72)
+    n = s.section("11 one shard", bars=4, meter=4, seconds=SLOTS["11 one shard"])
     n.part("celesta", "D6:2 A6:2 | G6:1.5 F#6:.5 E6 D6 | r:4 | r:4", vel="mp")
     n.part("solo_vln", "r:4 | r:4 | D6:2 A6:2 | A6:4", vel="pp")
     n.part("vln2", "F#5+A5:4 | G5+B5:4 | F#5+A5:4 | F#5+A5:4", vel="ppp")
@@ -138,7 +142,7 @@ def build():
     s.swell("vln2", [(n.at(1), -4), (n.at(4, 4), -14)])
 
     # 12. When the sun should have risen, it did not.
-    q = s.section("12 no dawn", bars=2, meter=4, bpm=60)
+    q = s.section("12 no dawn", bars=2, meter=4, seconds=SLOTS["12 no dawn"])
     q.part("cb", "D2:8", vel="p")
     q.part("vc", "D3+A3:8", vel="pp")
     q.part("tbn", "D3+F3:4 D3+Ab3:4", vel="pp")

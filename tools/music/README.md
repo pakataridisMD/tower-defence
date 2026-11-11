@@ -37,11 +37,12 @@ for Versilian Studios is a courtesy, not a requirement.
 | `herald` | The Heralds of the Hollow | 0:57 | the six Herald scenes, `crossroads` |
 | `warden_freed` | Freed | 0:54 | the six Warden scenes, `lumen_gate` |
 | `solenne` | The Crowned Heart | 1:22 | `regents_counsel`, `capital_prelude` |
-| `falling_stars` | The Night of Falling Stars | 1:58 | `night_of_falling_stars`, shot by shot |
+| `falling_stars` | The Night of Falling Stars | 2:05 | `night_of_falling_stars`, shot by shot |
 | `long_night` | There Was No Dawn | 0:57 | `long_night`, `solenne_falls` |
 | `white_lantern` | The White Lantern | 1:20 | `dawn`, `heart_falls` |
 | `citadel` | The Crownless Citadel | 1:11 | `assault_intro`, `mirror_spire`, `crownless_throne` |
 | `epilogue` | The Seventh Colour | 1:28 | `epilogue` |
+| `trailer`, `trailer_short` | Hold the Road (trailer) | 0:48, 0:23 | promo teaser and vertical short (hit at 0:42 and 0:19) |
 
 Each cue ships as `<cue>.ogg` (44.1 kHz stereo, -18 LUFS integrated, true peak at most -1 dBFS, so the
 narrator sits on top), `<cue>.json` (length and section markers, so shots can be timed to the music)
