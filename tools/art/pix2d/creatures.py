@@ -367,4 +367,236 @@ def dragon():
     return s
 
 
-CREATURES = {"soldier": soldier, "orc": orc, "skeleton": skeleton, "golem": golem, "dragon": dragon}
+HAIR = ramp("e6c466", spread=0.5)
+CLOAK = ramp("3f7a44")
+CLOAK_D = ramp("2c5a38", spread=0.45)
+TUNIC = ramp("8a6a3c")
+BEARD = ramp("d0682a", spread=0.55)
+MAIL = ramp("7c8490", spread=0.5)
+GHOST = ramp("a8e0d8", spread=0.6, shift=0.0)
+GHOST_D = ramp("5aa0a8", spread=0.5, shift=0.0)
+
+
+def elf():
+    """Elf archer: slim, hooded green cloak, long fair hair, pointed ear, longbow drawn with an arrow on the string."""
+    s = Sprite(52, 58)
+    # cloak hanging behind
+    s.part(s.poly([(20, 20), (27, 20), (25, 46), (19, 49), (13, 47), (11, 44), (15, 30)]), CLOAK_D)
+    s.line(16, 31, 14, 46, CLOAK_D[0])
+    # far leg and boot
+    s.part(s.capsule(22.5, 38, 21, 48, 1.9), TUNIC, bias=-0.3)
+    s.part(s.capsule(20.5, 46, 20.5, 51, 2.1), LEATHER, bias=-0.3)
+    s.part(s.ellipse(21.5, 52.5, 3.0, 1.6), LEATHER, bias=-0.3)
+    # near leg and tall boot
+    s.part(s.capsule(26.5, 38, 28.5, 47, 2.2), TUNIC)
+    s.part(s.capsule(28.5, 45, 28.5, 51, 2.4), LEATHER)
+    s.part(s.ellipse(29.5, 52.5, 3.6, 1.8), LEATHER)
+    s.line(26, 45, 31, 45, LEATHER[4])
+    # slim torso: green jerkin, belt, quiver strap
+    s.part(s.poly([(20, 21), (29, 21), (30, 35), (31, 41), (20, 41), (21, 35)]), CLOAK)
+    s.part(s.rect(20, 34, 31, 36), LEATHER, flat=True)
+    s.px(26, 34, GOLD[3])
+    s.px(26, 35, GOLD[2])
+    s.line(21, 22, 29, 33, LEATHER[1])
+    # quiver on the back with fletchings
+    s.part(s.capsule(18, 30, 15, 17, 2.0), LEATHER)
+    s.pxs([(14, 14), (15, 13), (16, 14), (13, 15), (16, 12)], WHITE)
+    s.pxs([(14, 15), (15, 15), (16, 15)], RED[3])
+    # far arm pulling the string back
+    s.part(s.capsule(23, 23, 18, 25.5, 1.8), CLOAK_D, bias=-0.1)
+    s.part(s.ellipse(17.5, 25.5, 1.7, 1.6), SKIN)
+    # head: hair falling behind, face, long pointed ear, hood pushed back
+    s.part(s.poly([(19, 9), (24, 6), (27, 12), (23, 27), (18, 28), (17, 18)]), HAIR)
+    s.line(20, 12, 19, 26, HAIR[1])
+    s.part(s.ellipse(26.5, 14, 4.6, 5.0), SKIN)
+    s.part(s.poly([(20, 11), (24, 7), (30, 8), (31, 10), (26, 10), (23, 15)]), HAIR)
+    s.part(s.poly([(23, 14), (17, 9), (22, 16)]), SKIN)          # ear
+    s.pxs([(29, 13), (29, 14)], (60, 130, 80))                  # eye
+    s.px(29, 12, HAIR[1])
+    s.px(31, 15, SKIN[1])                                       # nose
+    s.line(28, 17, 30, 17, SKIN[1])
+    s.part(s.poly([(19, 19), (30, 19), (31, 22), (18, 23)]), CLOAK)   # hood collar
+    # longbow in the near hand, arrow nocked
+    for (x0, y0), (x1, y1) in (((40, 9), (43, 17)), ((43, 17), (43.5, 25)), ((43.5, 25), (43, 33)), ((43, 33), (40, 41))):
+        s.part(s.capsule(x0, y0, x1, y1, 1.0), WOOD, edge=False)
+    s.pxs([(39, 8), (39, 42)], GOLD[3])
+    s.line(39, 9, 18, 25, (220, 214, 200))                      # string, drawn back to the hand
+    s.line(18, 25, 39, 41, (220, 214, 200))
+    s.line(18, 25, 46, 25, WOOD[3])                             # arrow
+    s.pxs([(47, 25), (48, 25), (46, 24), (46, 26)], STEEL[4])
+    s.pxs([(19, 24), (20, 24), (19, 26), (20, 26)], WHITE)
+    s.part(s.capsule(29, 23.5, 41, 25, 1.9), CLOAK)             # near arm, straight out
+    s.part(s.capsule(36, 24.5, 41, 25, 2.0), LEATHER)           # bracer
+    s.part(s.ellipse(42.5, 25, 1.8, 2.0), SKIN)
+    s.ink()
+    s.shadow(25, 54.5, 11, 2.4)
+    return s
+
+
+def dwarf():
+    """Dwarf: short and very broad, horned steel helm, huge braided beard, mail, two-handed warhammer."""
+    s = Sprite(54, 48)
+    # hammer haft behind, head up over the far shoulder
+    s.part(s.capsule(34, 33, 41, 9, 1.2), WOOD, flat=True)
+    s.part(s.poly([(34, 3), (48, 6), (46, 15), (32, 12)]), IRON)
+    s.line(35, 4, 47, 7, IRON[4])
+    s.line(34, 11, 45, 14, IRON[0])
+    s.part(s.poly([(35, 5), (37, 5.5), (35.5, 11.5), (33.5, 11)]), GOLD, flat=True)
+    s.part(s.poly([(45, 7.5), (47, 8), (45.5, 14), (43.5, 13.5)]), GOLD, flat=True)
+    # far leg and boot
+    s.part(s.capsule(21, 35, 20, 40, 3.0), LEATHER, bias=-0.3)
+    s.part(s.ellipse(20, 42.5, 4.4, 2.4), IRON, bias=-0.3)
+    # near leg and big iron-shod boot
+    s.part(s.capsule(29, 35, 30, 40, 3.4), LEATHER)
+    s.part(s.ellipse(31, 42.5, 5.2, 2.6), IRON)
+    s.line(27, 41, 35, 41, IRON[4])
+    # barrel torso in mail, red tabard edge, wide belt
+    s.part(s.ellipse(25, 26.5, 10.5, 9.0), MAIL)
+    for y in range(20, 34, 2):                                    # mail rings
+        for x in range(16 + (y // 2) % 2, 36, 2):
+            if s.a[y, x] and s.part_id[y, x] == s._n:
+                s.px(x, y, MAIL[1])
+    s.part(s.poly([(15, 31), (36, 31), (35, 38), (16, 38)]), RED_D)
+    s.line(16, 38, 35, 38, GOLD[2])
+    s.part(s.rect(15, 30, 37, 33), LEATHER, flat=True)
+    s.part(s.rect(24, 29, 29, 34), GOLD, flat=True)
+    s.px(26, 31, GOLD[0])
+    # head: big nose, helm with horns, beard over the chest
+    s.part(s.ellipse(28, 14.5, 6.6, 6.0), SKIN)
+    s.part(s.ellipse(34.5, 16, 2.6, 2.2), SKIN, bias=0.1)         # nose
+    s.part(s.ellipse(28, 9.5, 7.4, 5.4) & s.rect(0, 0, 54, 13), STEEL)   # helm dome
+    s.part(s.rect(20, 11, 36, 14), STEEL, flat=True, bias=0.25)   # brow band
+    s.pxs([(23, 12), (27, 12), (31, 12), (35, 12)], GOLD[3])
+    s.part(s.rect(32, 13, 34, 17), STEEL, flat=True)              # nasal bar
+    s.pxs([(30, 15), (31, 15)], DARK)                             # eye under the brow
+    s.part(s.poly([(22, 9), (19, 3), (16, 1), (18, 6), (20, 11)]), BONE)       # horns
+    s.part(s.poly([(34, 8), (38, 3), (41, 1), (39, 6), (36, 10)]), BONE)
+    # near arm: steel pauldron, thick mailed arm, gauntlet on the haft
+    s.part(s.capsule(19, 22, 30, 31, 3.6), MAIL)
+    s.part(s.ellipse(18, 20, 5.6, 4.6), STEEL)
+    s.line(13, 22, 22, 23, GOLD[2])
+    s.part(s.ellipse(35, 33.5, 3.6, 3.4), IRON)
+    s.pxs([(34, 35), (36, 35)], IRON[0])
+    # beard over the chest and arm: full, forked, with gold braid rings, and a moustache
+    s.part(s.poly([(22, 16), (36, 17), (38, 23), (36, 30), (33, 36), (30, 31), (27, 37), (24, 30), (22, 23)]), BEARD)
+    s.line(27, 23, 27, 34, BEARD[1])
+    s.line(32, 23, 33, 33, BEARD[1])
+    s.line(30, 22, 30, 30, BEARD[4])
+    s.part(s.rect(26, 33, 29, 35), GOLD, flat=True)
+    s.part(s.rect(32, 32, 35, 34), GOLD, flat=True)
+    s.part(s.poly([(29, 18), (37, 18), (40, 22), (32, 21)]), BEARD, bias=0.2)
+    s.ink()
+    s.shadow(26, 44.5, 14, 2.6)
+    return s
+
+
+def ghost():
+    """Ghost: hooded pale wraith, hollow glowing eyes, clawed hands reaching forward, body trailing into wisps."""
+    s = Sprite(48, 58)
+    # trailing tail, curling back and breaking into wisps
+    tail = s.poly([(16, 26), (32, 26), (31, 38), (26, 46), (19, 50), (12, 49), (16, 45), (13, 42), (17, 38), (14, 34)])
+    s.part(tail, GHOST_D)
+    for x, y in ((10, 51), (8, 49), (14, 52), (7, 53), (11, 55), (18, 53), (5, 51), (22, 51), (9, 46)):
+        s.px(x, y, GHOST_D[2 + (x + y) % 2], glow=True)
+    for y in range(36, 51):                                        # ragged, dithered lower edge
+        for x in range(10, 32):
+            if s.a[y, x] and (x + y) % 2 == 0 and y > 40 + (x % 5):
+                s.a[y, x] = False
+    # far arm reaching
+    s.part(s.capsule(27, 28, 37, 30, 1.8, 1.3), GHOST_D)
+    s.pxs([(39, 29), (40, 28), (39, 31), (40, 32), (40, 30)], GHOST[3], glow=True)
+    # robe body and hood
+    s.part(s.poly([(15, 20), (33, 20), (34, 30), (31, 38), (17, 38), (14, 30)]), GHOST)
+    s.line(20, 24, 19, 37, GHOST[1])
+    s.line(27, 25, 28, 37, GHOST[1])
+    s.part(s.ellipse(25, 14, 9.0, 9.6) | s.poly([(16, 14), (34, 14), (35, 23), (15, 23)]), GHOST)
+    s.part(s.poly([(18, 8), (12, 3), (17, 12)]), GHOST)            # hood tip swept back
+    # the dark inside of the hood with two burning eyes and a gaping mouth
+    s.fill(s.ellipse(28, 15.5, 5.6, 6.4), (22, 40, 52))
+    s.pxs([(26, 13), (27, 13), (30, 13), (31, 13), (27, 14), (31, 14)], CYAN, glow=True)
+    s.pxs([(27, 13), (31, 13)], WHITE, glow=True)
+    s.fill(s.ellipse(29.5, 19, 1.8, 2.2), (8, 16, 24))
+    # near arm and claws
+    s.part(s.capsule(21, 27, 33, 34, 2.4, 1.6), GHOST)
+    for dx, dy in ((2, -2), (3, 0), (2, 2), (4, -1), (4, 1)):
+        s.px(33 + dx, 34 + dy, WHITE, glow=True)
+    # chain hanging from the wrist
+    s.pxs([(31, 37), (31, 39), (30, 41), (30, 43)], IRON[3])
+    s.pxs([(31, 38), (30, 40), (30, 42)], IRON[1])
+    s.ink((30, 70, 84))
+    s.shadow(23, 56, 9, 1.8)
+    return s
+
+
+ELEMENTS = {
+    "fire": (ramp("f0701c", spread=0.6, shift=0.05), (255, 240, 170), (255, 190, 60)),
+    "storm": (ramp("7a8cf0", spread=0.6, shift=0.0), (240, 248, 255), (190, 220, 255)),
+    "water": (ramp("2a8ad0", spread=0.6, shift=0.0), (220, 250, 255), (120, 220, 255)),
+    "nature": (ramp("58b03a", spread=0.55), (236, 255, 190), (170, 240, 90)),
+    "earth": (ramp("a8783c", spread=0.5), (255, 226, 150), (230, 180, 80)),
+    "void": (ramp("7a3ac0", spread=0.6, shift=0.0), (240, 210, 255), (200, 130, 255)),
+}
+
+
+def elemental(kind="fire"):
+    """Elemental ball: a floating core with two eyes, wrapped in its element (flame tongues, arcs, waves, leaves...)."""
+    tones, hot, mid = ELEMENTS[kind]
+    s = Sprite(40, 46)
+    cx, cy = 20, 20
+    if kind == "fire":
+        for pts in ([(10, 20), (8, 8), (14, 13), (17, 2), (22, 11), (27, 4), (27, 13), (33, 9), (30, 21)],):
+            s.part(s.poly(pts), tones, flat=True, bias=-0.2, glow=True)
+        s.part(s.poly([(13, 18), (13, 11), (17, 14), (19, 7), (23, 13), (27, 10), (27, 18)]), [mid, hot], flat=True, glow=True)
+    elif kind == "storm":
+        s.part(s.ellipse(12, 16, 6, 5) | s.ellipse(28, 15, 7, 5.5) | s.ellipse(20, 11, 8, 6), ramp("5a6488", spread=0.5), glow=True)
+        for pts in ([(6, 24), (10, 28), (8, 30), (12, 36)], [(33, 22), (30, 27), (33, 29), (29, 36)], [(20, 31), (22, 35), (19, 37), (21, 41)]):
+            for a, b in zip(pts, pts[1:]):
+                s.line(*a, *b, hot, glow=True)
+    elif kind == "water":
+        s.part(s.poly([(20, 2), (26, 12), (14, 12)]), tones, glow=True)
+        for x, y in ((6, 14), (34, 16), (9, 30), (32, 29), (20, 37)):
+            s.part(s.ellipse(x, y, 1.8, 2.2), tones, glow=True)
+            s.px(x - 1, y - 1, hot, glow=True)
+    elif kind == "nature":
+        for ang in range(0, 360, 45):
+            a = math.radians(ang + 10)
+            x, y = cx + math.cos(a) * 12, cy + math.sin(a) * 12
+            s.part(s.ellipse(x, y, 4.2, 2.2, a + 0.5), MOSS if ang % 90 else PINE)
+        s.pxs([(20, 4), (21, 3), (22, 4), (21, 5)], (255, 150, 190))
+    elif kind == "earth":
+        for i, ang in enumerate(range(0, 360, 60)):
+            a = math.radians(ang + 20)
+            x, y = cx + math.cos(a) * 14, cy + math.sin(a) * 12
+            _slab(s, [(x - 3, y - 2.5), (x + 2.5, y - 3), (x + 3, y + 2.5), (x - 2, y + 3)], ROCK if i % 2 else ROCK_D,
+                  depth=(1.5, -1.5))
+    elif kind == "void":
+        for i, ang in enumerate(range(0, 360, 30)):
+            a = math.radians(ang)
+            r = 14 + (i % 3) * 1.5
+            s.px(round(cx + math.cos(a) * r), round(cy + math.sin(a) * r * 0.9), mid if i % 2 else hot, glow=True)
+        s.part(s.ellipse(cx, cy, 13.5, 4.0, -0.35) & ~s.ellipse(cx, cy, 11.5, 2.6, -0.35), tones, flat=True, glow=True)
+    # the core
+    s.part(s.ellipse(cx, cy + 1, 9.5, 9.5), tones, bulge=1.2, glow=True)
+    s.part(s.ellipse(cx - 3, cy - 3, 3.4, 2.6, -0.6), [mid, hot], flat=True, edge=False, glow=True)   # shine
+    if kind == "void":
+        s.fill(s.ellipse(cx + 1, cy + 2, 5.5, 5.5), (16, 8, 30))
+        s.part(s.ellipse(cx, cy, 13.5, 4.0, -0.35) & ~s.ellipse(cx, cy, 11.5, 2.6, -0.35) & s.rect(0, cy + 1, 40, 46),
+               tones, flat=True, glow=True)
+    if kind == "earth":
+        s.line(14, 22, 18, 26, tones[0])
+        s.line(18, 26, 17, 29, tones[0])
+        s.line(26, 14, 24, 17, tones[0])
+    # eyes, looking right
+    eye = hot if kind != "void" else (255, 255, 255)
+    for ex in (21, 26):
+        s.pxs([(ex, cy + 1), (ex, cy + 2), (ex + 1, cy + 1), (ex + 1, cy + 2)], DARK if kind != "void" else eye, glow=True)
+        s.px(ex + 1, cy + 1, eye, glow=True)
+    s.ink(tones[0])
+    s.shadow(20, 43, 8, 2.0)
+    return s
+
+
+CREATURES = {"soldier": soldier, "orc": orc, "skeleton": skeleton, "golem": golem, "dragon": dragon,
+             "elf": elf, "dwarf": dwarf, "ghost": ghost}
+for _k in ELEMENTS:
+    CREATURES["orb_" + _k] = (lambda k=_k: elemental(k))
