@@ -25,7 +25,7 @@ from score import midi
 
 # Narrated line lengths (seconds, with a 0.6 s tail), from the narrator's Elariel take of 2026-11-11
 # (/mnt/project-files/audio/voice/line_durations.json).
-LINES = [14.35, 26.73, 18.81, 17.82, 21.30, 13.76, 7.89, 13.95, 10.66, 20.00, 15.29, 17.47]
+LINES = [14.35, 26.73, 18.81, 17.82, 23.36, 13.76, 7.89, 13.95, 10.66, 20.00, 15.29, 17.47]
 # Each line starts 0.4 s into its slot (shot 1: 3.8 s, after the 3.2 s title card) and gets about
 # 2 s of music after it.
 TITLE = 3.4
