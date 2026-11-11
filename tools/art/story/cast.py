@@ -386,6 +386,81 @@ character(
 )
 
 
+def _brannoc_parts(J, p, b):
+    hr = J["head_r"]
+    out = []
+    for k in range(4):  # brass rings in the beard
+        out.append(ellipsoid(J["head"] + v(hr * 0.95, -hr * (1.3 + 0.45 * k), 0), (hr * 0.26, hr * 0.1, hr * 0.34), "brass",
+                             layer=5))
+    for k in range(5):  # glowing ember runes along the near forearm
+        t = (k + 0.5) / 5
+        pnt = J["el_n"] * (1 - t) + J["hand_n"] * t
+        out.append(sphere(pnt + v(0, 0, 0.045 * b.bulk), 0.012, "rune", layer=4))
+    # the leather forge apron
+    out.append(box(J["pelvis"] + v(0.13 * b.bulk, 0.05, 0), (0.025, 0.3, 0.15 * b.bulk), "apron", round_=0.02, layer=3,
+                   rot=rot_z(-0.06 - p.lean)))
+    return out
+
+
+character(
+    "brannoc",
+    title="Brannoc Emberhand, Smith-Lord of the Reach",
+    role="Fire hero. Huge, bald, black beard with brass rings, forge-hammer glowing at the seams.",
+    element="fire",
+    body=dict(height=1.95, bulk=1.45, shoulder=0.27, chest_depth=1.2, head_r=0.13),
+    mats=dict(
+        skin=mat("b07a5a"), mail=mat("6a6a72", spec=0.8, tex=0.3, tex_freq=220), cloth2=mat("3a2a24"),
+        leather=mat("4a3020"), apron=mat("5a3a24", tex=0.12, tex_freq=50), belt=mat("3a2418"), brass=mat("d8a040", spec=1.0),
+        beard=mat("3a2a26", tex=0.22, tex_freq=200, tex_axis="y", spread=0.55), eye=eye(), rune=glow_mat("ff8a3a"),
+        iron=mat("3a3a40", spec=0.8), seam=glow_mat("ffa040"), shaft=mat("4a3020"),
+    ),
+    spec=dict(beard="beard", beard_len=1.05, brows="beard", torso="mail", sleeve="skin", forearm="skin", legs="cloth2",
+              boots="leather", belt="belt", buckle="brass", extra=_brannoc_parts,
+              weapon=dict(type="hammer", shaft="shaft", head="iron", glow="seam")),
+    portrait=dict(center=(0.03, 1.62, 0.0), scale=125, yaw=-1.15, pitch=0.1, bg=("1a0c08", "6a2a14", "ffa040")),
+    rim=(255, 170, 100),
+)
+
+
+def _ignar_parts(J, p, b):
+    out = []
+    ch = J["chest"]
+    out.append(sphere(ch + v(0.16 * b.bulk, 0.02, 0), 0.13, "core", layer=12))
+    for k in range(5):  # black stone ribs over the molten heart
+        y = 0.1 - k * 0.045
+        out.append(cone(ch + v(0.26 * b.bulk, y, -0.12), ch + v(0.26 * b.bulk, y, 0.12), 0.014, 0.014, "basalt", layer=13))
+    for k in range(7):  # cracks of orange light
+        a = k * 0.9
+        base = J["pelvis"] + v(0.1 * math.cos(a), 0.15 + 0.08 * k, 0.15 * math.sin(a))
+        out.append(cone(base, base + v(0.02, 0.07, 0.03), 0.008, 0.006, "crack", layer=11))
+    hr = J["head_r"]
+    for k in range(6):  # a crown of slow flames
+        a = -1.3 + k * 0.52
+        base = J["head"] + v(math.cos(a) * hr * 0.6 - hr * 0.1, hr * 0.7, math.sin(a) * hr * 0.85)
+        out.append(cone(base, base + v(-0.02, hr * (1.0 + 0.4 * (k % 2)), 0), hr * 0.22, hr * 0.03,
+                        "flame" if k % 2 else "flame2", layer=14))
+    return out
+
+
+character(
+    "ignar",
+    title="Ignar, the Cinder Warden",
+    role="Fire Warden, freed after the Cinder Tyrant. Black basalt cracked with orange light, a molten core.",
+    element="fire",
+    body=dict(height=3.0, bulk=2.0, shoulder=0.32, chest_depth=1.2, head_r=0.15),
+    mats=dict(
+        skin=mat("2a2426", tex=0.25, tex_freq=60), basalt=mat("201c1e", tex=0.25, tex_freq=60), core=glow_mat("ff8a2a"),
+        crack=glow_mat("ffb050"), flame=glow_mat("ffa040"), flame2=glow_mat("ff6a20"), eye=glow_eye("ffc060"),
+        leather=mat("201c1e", tex=0.25, tex_freq=60), cloth2=mat("201c1e", tex=0.25, tex_freq=60),
+    ),
+    spec=dict(torso="basalt", sleeve="basalt", forearm="basalt", hands="basalt", legs="basalt", boots="basalt",
+              brows="basalt", extra=_ignar_parts),
+    portrait=dict(center=(0.06, 2.35, 0.0), scale=72, yaw=-1.1, pitch=0.12, bg=("120806", "5a2010", "ff8a2a")),
+    sprite_scale=28.0, frame=(104, 124), frame_cy=1.6,
+    rim=(255, 150, 80),
+)
+
+
 # ---------------------------------------------------------------- the six Heralds (stage-2 bosses)
 # Shared motif: faces intact but eyes (and mouths) empty grey light; outlines leak grey dust.
 HERALD_EYE = glow_eye("dcdce6")

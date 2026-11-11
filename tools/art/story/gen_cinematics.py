@@ -20,7 +20,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 OUT = os.path.join("art", "story", "cinematics")
 MODULES = {"prologue": "shots_prologue", "night_of_falling_stars": "shots_midpoint",
-           "dawn": "shots_dawn", "heart_falls": "shots_heart_falls"}
+           "dawn": "shots_dawn", "heart_falls": "shots_heart_falls",
+           "ember_intro": "shots_ember:INTRO", "ember_herald": "shots_ember:HERALD", "ember_warden": "shots_ember:WARDEN"}
 
 
 def contact(folder, n):
@@ -40,17 +41,18 @@ def main():
     ap.add_argument("--shots", default="")
     args = ap.parse_args()
     for cid in args.ids or list(MODULES):
-        mod = importlib.import_module(MODULES[cid])
+        name, _, attr = MODULES[cid].partition(":")
+        shots = getattr(importlib.import_module(name), attr or "SHOTS")
         folder = os.path.join(OUT, cid)
         os.makedirs(folder, exist_ok=True)
         want = {int(s) for s in args.shots.split(",") if s}
-        for i, fn in enumerate(mod.SHOTS, 1):
+        for i, fn in enumerate(shots, 1):
             if want and i not in want:
                 continue
             img = fn()
             Image.fromarray(np.asarray(img)).save(os.path.join(folder, f"{i:02d}.png"))
             print(cid, i)
-        contact(folder, len(mod.SHOTS))
+        contact(folder, len(shots))
 
 
 if __name__ == "__main__":

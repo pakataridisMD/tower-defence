@@ -384,6 +384,18 @@ def build(spec: dict, b: Body, p: Pose) -> list[Prim]:
                 a0 = top + v(-0.55 * t0, -0.1 * math.sin(t0 * 3.1) - 0.05 * t0, 0)
                 a1 = top + v(-0.55 * t1, -0.1 * math.sin(t1 * 3.1) - 0.05 * t1, 0)
                 P.append(cone(a0, a1, 0.05 * (1 - t0) + 0.01, 0.05 * (1 - t1) + 0.008, w["blade"], layer=10, k=0.02))
+        elif wtype == "hammer":
+            L = w.get("length", 0.7)
+            grip_end = hand - wd * 0.12
+            headc = hand + wd * L
+            P.append(cone(grip_end, headc, 0.022, 0.022, w["shaft"], layer=9))
+            side = np.cross(wd, v(0, 0, 1))
+            side /= max(np.linalg.norm(side), 1e-6)
+            P.append(box(headc, (0.075, 0.075, 0.13), w["head"], round_=0.02, layer=9,
+                         rot=rot_z(math.atan2(wd[1], wd[0]))))
+            if w.get("glow"):
+                P.append(box(headc, (0.08, 0.012, 0.135), w["glow"], round_=0.004, layer=10,
+                             rot=rot_z(math.atan2(wd[1], wd[0]))))
         elif wtype == "orb":
             P.append(sphere(hand + v(0.05, 0.1, 0), 0.07 + 0.04 * p.glow, w["gem"], layer=10))
         elif wtype == "lantern":

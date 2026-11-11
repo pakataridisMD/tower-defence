@@ -164,6 +164,8 @@ def particles(img, n, seed, box, col, size=(0, 1), bright=(0.5, 1.0), add=True):
         s = int(rng.integers(size[0], size[1] + 1))
         b = rng.uniform(*bright)
         ys, ye, xs, xe = max(0, y - s), min(H, y + s + 1), max(0, x - s), min(W, x + s + 1)
+        if ye <= ys or xe <= xs:  # off-canvas (a negative end would wrap round and paint a whole column)
+            continue
         if add:
             img[ys:ye, xs:xe] += c * b
         else:
