@@ -7,16 +7,16 @@
 script = ExtResource("1_mod")
 stat = &"starting_gold"
 kind = 0
-value = 30.0
+value = 8.0
 
 [resource]
 script = ExtResource("2_node")
 id = &"command_gold"
 display_name = "War Chest"
-description = "Start every run with 30 more gold."
+description = "Start every run with 8 more gold."
 kind = 1
 region = &"command"
-cost = 1
-position = Vector2(100, 0)
+cost = 2
+position = Vector2(112, 0)
 links = Array[StringName]([&"meta_start"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

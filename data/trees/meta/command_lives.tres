@@ -7,16 +7,16 @@
 script = ExtResource("1_mod")
 stat = &"starting_lives"
 kind = 0
-value = 5.0
+value = 2.0
 
 [resource]
 script = ExtResource("2_node")
 id = &"command_lives"
 display_name = "Fortify"
-description = "Start every run with 5 more lives."
+description = "Start every run with 2 more lives."
 kind = 2
 region = &"command"
-cost = 2
-position = Vector2(185, -65)
-links = Array[StringName]([&"command_gold"])
+cost = 3
+position = Vector2(343, -175)
+links = Array[StringName]([&"command_sentries"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

@@ -152,3 +152,45 @@ func test_path_to_is_empty_for_taken_unknown_or_blocked_nodes() -> void:
 	assert_eq(state.path_to(&"missing").size(), 0)
 	state.lock([&"b"])
 	assert_eq(state.path_to(&"c").size(), 0, "the only way there runs through a locked node")
+
+
+# --- Pick-one choices ----------------------------------------------------------------
+
+## The small tree with b and d made a pick-one choice (listed on one side only).
+func _choice_graph() -> TreeGraph:
+	var nodes: Array[TreeNodeData] = []
+	for id in graph.ids():
+		nodes.append(graph.node(id).duplicate())
+	for data in nodes:
+		if data.id == &"b":
+			data.excludes = [&"d"]
+	return TreeGraph.new(nodes)
+
+
+func test_choices_work_both_ways() -> void:
+	var choices := _choice_graph()
+	assert_eq(choices.exclusions(&"b"), [&"d"] as Array[StringName])
+	assert_eq(choices.exclusions(&"d"), [&"b"] as Array[StringName])
+	assert_eq(choices.exclusions(&"a").size(), 0)
+
+
+func test_taking_one_side_of_a_choice_closes_the_other() -> void:
+	var state := TreeState.new(_choice_graph(), 10)
+	state.allocate(&"a")
+	assert_true(state.allocate(&"d"))
+	assert_true(state.is_excluded(&"b"))
+	assert_eq(state.excluded_by(&"b"), &"d")
+	assert_false(state.can_allocate(&"b"))
+	assert_false(state.allocate(&"b"))
+	assert_eq(state.path_to(&"c").size(), 0, "the way to c runs through the closed node")
+	assert_true(state.refund(&"d"))
+	assert_false(state.is_excluded(&"b"))
+	assert_true(state.allocate(&"b"), "refunding reopens the other side")
+	assert_false(state.can_allocate(&"d"))
+
+
+func test_restoring_a_save_keeps_only_one_side_of_a_choice() -> void:
+	var state := TreeState.new(_choice_graph(), 10)
+	state.restore([&"a", &"b", &"d"])
+	assert_true(state.is_allocated(&"b"))
+	assert_false(state.is_allocated(&"d"))

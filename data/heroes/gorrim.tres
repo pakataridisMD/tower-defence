@@ -8,9 +8,9 @@
 [sub_resource type="Resource" id="S1"]
 script = ExtResource("status")
 kind = &"shatter"
-armour_reduction = 2.0
-duration = 6.0
-max_stacks = 5
+armour_reduction = 1.0
+duration = 5.0
+max_stacks = 3
 
 [sub_resource type="Resource" id="S2"]
 script = ExtResource("tower")
@@ -20,7 +20,7 @@ description = "A heavy pick that cracks armour."
 elements = Array[StringName]([&"earth"])
 tags = Array[StringName]([&"hero"])
 cost = 1
-damage = 70.0
+damage = 21.0
 attacks_per_second = 0.5
 attack_range = 140.0
 projectile_speed = 480.0
@@ -29,26 +29,26 @@ status_effects = Array[ExtResource("status")]([SubResource("S1")])
 [sub_resource type="Resource" id="S3"]
 script = ExtResource("ability")
 display_name = "Bulwark"
-description = "Gorrim's stone-door shield lands on the road where you choose and holds everything there for 6 seconds."
-cooldown = 60.0
+description = "Gorrim's stone-door shield lands on the road where you choose and holds everything there for 2.5 seconds."
+cooldown = 100.0
 target = 0
-radius_cells = 1.5
-hold_seconds = 6.0
+radius_cells = 1.0
+hold_seconds = 2.5
 
 [sub_resource type="Resource" id="S4"]
 script = ExtResource("ability")
 display_name = "Bulwark"
-description = "Holds everything where you choose for 6 seconds, then the wall bursts for heavy damage."
-cooldown = 60.0
+description = "Holds everything where you choose for 3 seconds, then the wall bursts and hurts them."
+cooldown = 100.0
 target = 0
-radius_cells = 1.5
-hold_seconds = 6.0
-burst_damage = 400.0
+radius_cells = 1.0
+hold_seconds = 3.0
+burst_damage = 60.0
 
 [sub_resource type="Resource" id="S5"]
 script = ExtResource("mod")
 stat = &"armour_ignore"
-value = 0.2
+value = 0.1
 
 [resource]
 script = ExtResource("hero")
@@ -61,8 +61,8 @@ element = &"earth"
 joins_after = &"earth_2"
 attack = SubResource("S2")
 aura = Array[ExtResource("mod")]([SubResource("S5")])
-aura_text = "Towers ignore 20% of armour"
+aura_text = "Towers ignore 10% of armour"
 ability = SubResource("S3")
 ultimate = SubResource("S4")
-ultimate_text = "The wall bursts for heavy damage when it falls"
+ultimate_text = "Holds for 3 s, and the wall bursts when it falls"
 barks = PackedStringArray("Hold.", "No more rings.", "Stone doesn't move. Neither do I.")

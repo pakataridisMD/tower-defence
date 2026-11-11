@@ -411,7 +411,7 @@ element = &"fire"
 script = ExtResource("3_s")
 element = &"water"
 is_boss = true
-health_multiplier = 0.36
+health_multiplier = 0.22
 groups = Array[ExtResource("2_s")]([SubResource("r54"), SubResource("r55"), SubResource("r56"), SubResource("r57"), SubResource("r58")])
 
 [resource]
@@ -419,5 +419,5 @@ script = ExtResource("1_s")
 id = &"c_converge_1"
 display_name = "Shattered Crossroads"
 health_growth = 1.1
-health_scale = 1.64
+health_scale = 1.24
 waves = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r4"), SubResource("r8"), SubResource("r12"), SubResource("r15"), SubResource("r18"), SubResource("r22"), SubResource("r26"), SubResource("r29"), SubResource("r32"), SubResource("r36"), SubResource("r40"), SubResource("r44"), SubResource("r48"), SubResource("r53"), SubResource("r59")])
