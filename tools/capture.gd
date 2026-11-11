@@ -5,7 +5,7 @@ extends Node
 ## It plays with a made-up profile kept in memory, so it never touches a real save.
 ## Add --quick after `--` to skip the run and only take the menu, the meta tree and the skill web.
 ## Add --ui to take the menu and the HUD at its busiest instead: a tower selected, skills cast, one
-## being aimed.
+## being aimed, and the Esc menu.
 ## Add --heroes to take the campaign party picker and a battle with three heroes on the board.
 ## Add --campaign to take the campaign map and a battle in each biome instead (each battle jumps
 ## straight to a late wave with plenty of gold, so the board is busy).
@@ -82,6 +82,14 @@ func _run_ui() -> void:
 	game.hud.show_shop_tier(2)
 	await _wait(0.3)
 	await _shot("hud_tower")
+	# The Esc menu, and its question before leaving a run.
+	game.open_pause_menu()
+	await _wait(0.2)
+	await _shot("pause_menu")
+	game.pause_menu.ask_to_leave(&"menu")
+	await _wait(0.2)
+	await _shot("pause_menu_leave")
+	game.close_pause_menu()
 	sim.wave_index = 6
 	game._start_wave()
 	await _until(func() -> bool: return sim.time_in_wave > 9.0 or sim.is_over())

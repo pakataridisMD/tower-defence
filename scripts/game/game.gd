@@ -28,6 +28,8 @@ var music: BattleMusic
 var paused := false
 var audio_panel: AudioPanel
 var _paused_before_audio := false
+## The Esc menu: resume, audio, main menu, quit.
+var pause_menu: PauseMenu
 ## Set before the node enters the tree, or with --autoplay.
 var autoplay := false
 var quit_at_end := false
@@ -85,8 +87,16 @@ func _build_views() -> void:
 	web.hide()
 	web_layer.add_child(web)
 
+	var pause_layer := CanvasLayer.new()
+	pause_layer.layer = 3
+	add_child(pause_layer)
+	pause_menu = PauseMenu.new()
+	pause_menu.hide()
+	pause_layer.add_child(pause_menu)
+
+	# Above the pause menu, which opens it.
 	var audio_layer := CanvasLayer.new()
-	audio_layer.layer = 3
+	audio_layer.layer = 4
 	add_child(audio_layer)
 	audio_panel = AudioPanel.new()
 	audio_panel.hide()
@@ -99,6 +109,10 @@ func _connect_signals() -> void:
 	hud.web_pressed.connect(_toggle_web)
 	hud.speed_pressed.connect(_cycle_speed)
 	hud.audio_pressed.connect(_open_audio)
+	hud.pause_menu_pressed.connect(open_pause_menu)
+	pause_menu.resume_requested.connect(close_pause_menu)
+	pause_menu.audio_requested.connect(_open_audio)
+	pause_menu.leave_requested.connect(_leave_from_menu)
 	hud.tower_chosen.connect(_choose_tower)
 	hud.skill_pressed.connect(_skill_button)
 	hud.sell_pressed.connect(_sell_selected)
@@ -152,19 +166,24 @@ func _process(delta: float) -> void:
 ## Tab is handled before the interface sees it, or it would move the keyboard focus instead.
 func _input(event: InputEvent) -> void:
 	var key := event as InputEventKey
-	if key != null and key.pressed and not key.echo and key.keycode == KEY_TAB and not web.visible:
+	if key != null and key.pressed and not key.echo and key.keycode == KEY_TAB and not web.visible \
+			and not pause_menu.visible:
 		hud.cycle_shop_tier()
 		get_viewport().set_input_as_handled()
 
 
 ## Keys: Space starts the wave, T opens the skill web, F changes speed, P pauses, O opens the audio
-## settings, M mutes everything, Esc backs out,
+## settings, M mutes everything, Esc backs out and then opens the pause menu,
 ## 1-9 pick a tower from the open shop page (Tab turns the page), Q W E A S D cast the skills,
 ## F1 to F4 summon the heroes and then use their abilities, Z X C V B N press the selected tower's
 ## upgrade buttons, and Delete sells it.
 func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
 	if key == null or not key.pressed or key.echo or audio_panel.visible:
+		return
+	if pause_menu.visible:
+		_pause_menu_key(key.keycode)
+		get_viewport().set_input_as_handled()
 		return
 	match key.keycode:
 		KEY_SPACE:
@@ -246,7 +265,8 @@ func _open_audio() -> void:
 
 
 func _close_audio() -> void:
-	paused = _paused_before_audio and not sim.is_over()
+	# Opened from the pause menu, the run keeps waiting until the menu is closed too.
+	paused = (_paused_before_audio and not sim.is_over()) or pause_menu.visible
 	hud.paused = paused
 
 
@@ -263,7 +283,8 @@ func _toggle_pause() -> void:
 	SoundPlayer.sfx(&"ui_pause" if paused else &"ui_resume")
 
 
-## Esc backs out of whatever is open: the web, then aiming, placing, the selection, then pause.
+## Esc backs out of whatever is open: the web, then aiming, placing, the selection, and then
+## opens the pause menu.
 func _escape() -> void:
 	if web.visible:
 		_close_web()
@@ -276,7 +297,61 @@ func _escape() -> void:
 	elif board.selected != null:
 		board.select(null)
 	else:
-		_toggle_pause()
+		open_pause_menu()
+
+
+# --- Pause menu ----------------------------------------------------------------
+
+## Opens the Esc menu. The run waits while it is open.
+func open_pause_menu() -> void:
+	if pause_menu.visible:
+		return
+	board.cancel_placing()
+	board.cancel_aiming()
+	board.cancel_hero_actions()
+	_close_web()
+	paused = true
+	hud.paused = true
+	var stage := sim.config.stage
+	var where := stage.display_name if stage != null else sim.config.map.display_name
+	pause_menu.open(where, stage != null, sim.is_over())
+	SoundPlayer.sfx(&"ui_pause")
+
+
+## Resume: the run goes on, even if it was paused with P before the menu opened.
+func close_pause_menu() -> void:
+	if not pause_menu.visible:
+		return
+	pause_menu.hide()
+	paused = false
+	hud.paused = false
+	SoundPlayer.sfx(&"ui_resume")
+
+
+## Keys while the menu is open: Esc resumes (or steps back from "Leave the run?"), O opens the
+## audio settings and M mutes. Every other key waits until the menu closes.
+func _pause_menu_key(keycode: Key) -> void:
+	match keycode:
+		KEY_ESCAPE:
+			if pause_menu.is_confirming():
+				pause_menu.back()
+			else:
+				close_pause_menu()
+		KEY_O:
+			if not pause_menu.is_confirming():
+				_open_audio()
+		KEY_M:
+			_toggle_mute()
+
+
+func _leave_from_menu(scene: StringName) -> void:
+	match scene:
+		&"quit":
+			get_tree().quit()
+		&"campaign":
+			get_tree().change_scene_to_file(CAMPAIGN_SCENE)
+		_:
+			get_tree().change_scene_to_file(MENU_SCENE)
 
 
 func _choose_tower(tower_id: StringName) -> void:
