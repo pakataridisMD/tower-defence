@@ -418,6 +418,11 @@ The full hero stories are in the heroes doc, "Heroes of the Ring: hero stories"
 - **Elowen** lies down in the ash of Sylvanmere after the war, and Nyxara walks her home.
 - **Orrok** leaves a piece of himself as the new door of Grundhallow, and opens it in the epilogue.
 - **Nyxara** lays her broken crown beside Oswin's lantern at the end.
+- **Mirelle** can no longer remember her mother's face: that was her Tidelore price.
+- **Gorrim**'s "no more rings" is a carved oath, which makes it dangerous: if another friend falls, he
+  starts turning to stone.
+- The first rune ever carved is **Orrok**'s oath from the Siege of Vael, and it is cut into the Heartstone.
+- **Ilyra**'s ability Last Light is her one use of the Unmaking.
 
 ### 7.4 Major allies (non-playable)
 
