@@ -1,0 +1,400 @@
+{
+  "_doc": "Acting direction for the narrator. 'emotions' define how a sentence is performed (speed multiplier, voice blend override, gain in dB, pause before in seconds, exclaim = end on '!' for more energetic delivery). 'lines' map cinematic id -> exact sentence text -> emotion. Subtitles are not affected.",
+  "emotions": {
+    "calm": {
+      "speed": 1.0
+    },
+    "awe": {
+      "speed": 0.92,
+      "voices": {
+        "bf_emma": 0.5,
+        "af_kore": 0.3,
+        "af_nicole": 0.2
+      },
+      "gain": -1
+    },
+    "dread": {
+      "speed": 0.88,
+      "voices": {
+        "af_kore": 0.6,
+        "af_nicole": 0.4
+      },
+      "gain": -3,
+      "pause": 0.3
+    },
+    "shock": {
+      "speed": 0.85,
+      "gain": 3,
+      "pause": 0.9,
+      "exclaim": true
+    },
+    "anger": {
+      "speed": 1.18,
+      "voices": {
+        "bf_emma": 0.6,
+        "af_bella": 0.25,
+        "af_kore": 0.15
+      },
+      "gain": 4,
+      "exclaim": true
+    },
+    "passion": {
+      "speed": 1.08,
+      "voices": {
+        "bf_emma": 0.6,
+        "af_bella": 0.2,
+        "af_kore": 0.2
+      },
+      "gain": 3
+    },
+    "pride": {
+      "speed": 1.0,
+      "gain": 2
+    },
+    "grief": {
+      "speed": 0.84,
+      "voices": {
+        "af_nicole": 0.5,
+        "bf_emma": 0.3,
+        "af_kore": 0.2
+      },
+      "gain": -4,
+      "pause": 0.5
+    },
+    "command": {
+      "speed": 0.88,
+      "voices": {
+        "bf_emma": 0.6,
+        "af_bella": 0.2,
+        "af_kore": 0.2
+      },
+      "gain": 5,
+      "pause": 0.7,
+      "exclaim": true
+    },
+    "tender": {
+      "speed": 0.9,
+      "voices": {
+        "af_nicole": 0.4,
+        "bf_emma": 0.4,
+        "af_kore": 0.2
+      },
+      "gain": -2
+    },
+    "bitter": {
+      "speed": 0.95,
+      "gain": 1
+    },
+    "hope": {
+      "speed": 1.0,
+      "gain": 2
+    },
+    "triumph": {
+      "speed": 0.92,
+      "gain": 4,
+      "exclaim": true
+    },
+    "whisper": {
+      "speed": 0.85,
+      "voices": {
+        "af_nicole": 0.7,
+        "bf_emma": 0.3
+      },
+      "gain": -5,
+      "pause": 0.4
+    },
+    "desperate": {
+      "speed": 1.1,
+      "gain": 4,
+      "exclaim": true
+    },
+    "wry": {
+      "speed": 1.0
+    }
+  },
+  "lines": {
+    "prologue": {
+      "Before the world, there was only the sea.": "awe",
+      "Fire and water.": "awe",
+      "Stone and storm.": "awe",
+      "Root, and starless dark.": "dread",
+      "All of it one.": "awe",
+      "And nothing.": "dread",
+      "Seven stepped out of it.": "awe",
+      "The seventh wanted to be everything.": "dread",
+      "His name was Vael-Orrun.": "anger",
+      "Where he walked, the elements did not mix.": "dread",
+      "They stopped.": "shock",
+      "The Six could not kill him.": "anger",
+      "So they joined hands, each across from its opposite, and drove him out past the edge of the stars.": "passion",
+      "We call it the Ring.": "pride",
+      "At its heart, six peoples built Solenne.": "pride",
+      "The Crowned Heart.": "pride",
+      "My city.": "grief",
+      "Six years ago, a man I loved like a father lost his daughter to the dark.": "grief",
+      "Something beyond the stars made him a promise.": "dread",
+      "On the night of the Black Comet, the edge of the world split open.": "shock",
+      "Oswin, the Grey Lantern, held it for one night.": "passion",
+      "The Crack closed to a hairline.": "dread",
+      "And Oswin fell.": "shock",
+      "His lantern went out.": "grief",
+      "But a voice can pass through a hairline.": "dread",
+      "It drove the six sleeping Wardens mad, and now each land marches on the one across from it.": "anger",
+      "We cannot win back the lands.": "grief",
+      "We can only hold the roads until their people escape.": "passion",
+      "Every road we hold will cost us a city.": "anger",
+      "I am Ysolde, Queen of a city that is running out of cities.": "grief",
+      "And you, Spirewright, are the last of Oswin's apprentices.": "passion",
+      "Hold the road.": "command",
+      "Six were content to be one thing each.": "calm",
+      "At dawn, he walked to the edge...": "grief",
+      "and gave it every light he had.": "passion"
+    },
+    "assault_intro": {
+      "Beyond the Crack, nothing is the right way up.": "dread",
+      "Nhal Vorath.": "dread",
+      "He built it out of everything his Unbound tore from our world.": "anger",
+      "I am told the walls of Kethra are in it.": "grief",
+      "And Vitrea.": "grief",
+      "And our Dawn Gate.": "bitter"
+    },
+    "capital_prelude": {
+      "Every survivor of every city was inside Solenne now.": "grief",
+      "The Emberfolk with their iron pots of fire.": "tender",
+      "The Galeborn and their horses.": "tender",
+      "The Deepwood with their seed.": "tender",
+      "Pearlhaven's children.": "tender",
+      "The Stoneborn.": "tender",
+      "The Veilwalkers.": "tender",
+      "We had no more cities to give.": "grief",
+      "For twenty-six cities we bought time with stone.": "bitter",
+      "There is no more stone.": "passion",
+      "There is only us.": "passion",
+      "Hold this wall, and nobody has to run again.": "command",
+      "...There's a light on the east road.": "whisper",
+      "Does nobody else see it?": "hope"
+    },
+    "convergence_intro": {
+      "Six lands were gone.": "grief",
+      "Every Warden was free, and every horde that was left turned toward the Heartland at once.": "dread",
+      "So the Wardens walked to Solenne.": "hope",
+      "The Lord Marshal's army was camped at Crossmere, where every road on the Ring meets.": "anger",
+      "That was where we went to meet him.": "passion"
+    },
+    "crossroads": {
+      "He fought like the hero he had been.": "grief",
+      "And when it was done, he did not run.": "bitter",
+      "He walked away, the way a man walks out of a room he is finished with.": "anger",
+      "In his camp we found a cage of grey light, and in it, a girl with white hair who had been gone for six years.": "shock"
+    },
+    "crownless_throne": {
+      "He had no throne.": "dread",
+      "He would not sit on anything that was not the centre of the world.": "anger",
+      "Mirelle had seen a death at the end of the war.": "whisper",
+      "She told me later what it was.": "tender",
+      "It was the Seventh's.": "triumph"
+    },
+    "dawn": {
+      "The Heart had reached the inner wall when the night split open in the east.": "shock",
+      "He came up the road on foot.": "awe",
+      "The Unbound fell still around him as he passed, the way the dead fall still at the end of a long walk.": "awe",
+      "He had walked the road of the dead the whole way round the world.": "awe",
+      "Every light we lost had passed him going the other way.": "grief",
+      "He had kept them.": "tender",
+      "He lifted the lantern to the broken frame of the Sunstone.": "hope",
+      "And the sun came up over Solenne.": "triumph"
+    },
+    "earth_herald": {
+      "Vholt Stormcrown taught Kaela to ride.": "grief",
+      "When his thunderbird fell, she was the one waiting at the bottom of the canyon.": "grief",
+      "Behind a collapsed terrace we found what was left of the Canyon's shield-company.": "dread",
+      "One of them was still standing, holding a door.": "pride"
+    },
+    "earth_intro": {
+      "The Stoneborn carve their cities into the canyon walls, and they carve the faces of their kings above the doors, so the kings can watch the road forever.": "pride",
+      "The Sky came down the canyon in armour, and the kings watched that, too.": "bitter"
+    },
+    "earth_warden": {
+      "When the Mountain Titan fell, the trees on its shoulders stopped burning.": "awe",
+      "The Stoneborn sealed the Deep Halls of Grundhallow with their ancestors inside.": "grief",
+      "Gorrim put a new ring in his beard, and did not speak of it.": "tender"
+    },
+    "ember_herald": {
+      "Saltmother Ourra once sang the tides into Frostmere's harbours.": "tender",
+      "She came back from the Rift with nothing behind her eyes.": "dread",
+      "In her tide-cage, we found the Smith-Lord of the Reach.": "hope",
+      "He had been swearing at her for nine days.": "wry"
+    },
+    "ember_intro": {
+      "The Ember Reach was the forge of the world.": "pride",
+      "Its people sang to their fires, and the fires sang back.": "awe",
+      "Then the sea came up the mountain.": "shock"
+    },
+    "ember_warden": {
+      "At the caldera, the Warden of Fire burned grey.": "dread",
+      "When the Cinder Tyrant fell, the grey went out of it all at once.": "triumph",
+      "But a land cannot be unburned.": "grief",
+      "The caldera flooded that night, and the Emberfolk walked west, carrying their forge-fires in iron pots.": "tender"
+    },
+    "epilogue": {
+      "At the end, the six Wardens joined hands around him, the way they had at the beginning of the world.": "awe",
+      "And Oswin set his lantern in the empty crown.": "awe",
+      "We did not kill him.": "calm",
+      "I do not think he could be killed.": "dread",
+      "We finished him.": "passion",
+      "We gave him one thing to be, at last.": "tender",
+      "He became the light.": "triumph",
+      "We went home to twenty-six cities of ash.": "grief",
+      "Every one of their people walked back to rebuild them.": "hope",
+      "That is what we fought for.": "passion",
+      "Not the land.": "passion",
+      "Them.": "tender",
+      "I am Ysolde, Queen of Solenne.": "pride",
+      "I am old now, and I have never seen a dawn since.": "grief",
+      "But I have felt every one of them.": "tender"
+    },
+    "heart_falls": {
+      "When the Sundered Heart fell, there was a man inside it.": "shock",
+      "Very small, and very grey, curled around a locket.": "grief",
+      "He looked at her for a long time.": "grief",
+      "Then he gave her the locket, and the ash took him.": "grief",
+      "I felt the sun on my face.": "awe",
+      "I could not see it, but I felt it.": "tender",
+      "Solenne stood.": "triumph",
+      "We had spent the whole war running.": "bitter",
+      "Now we went to find him.": "command"
+    },
+    "long_night": {
+      "There was no dawn.": "dread",
+      "There has not been one since.": "grief",
+      "I hold court by voice now.": "calm",
+      "I have learned which footsteps are good news.": "wry",
+      "Out on the roads, in the dark, we kept losing cities.": "grief",
+      "And we kept saving their people.": "pride",
+      "It was the only thing we were still good at.": "bitter"
+    },
+    "lumen_gate": {
+      "Prism Wastes was the last open ground before Solenne.": "dread",
+      "When we left it, there was nowhere left to go back to.": "grief",
+      "The Lumen Gate, the first of our six walls, fell that night.": "shock",
+      "Behind it, a knight who should have died nine hundred years ago drew her sword.": "awe"
+    },
+    "mirror_spire": {
+      "The Spire was Solenne, made wrong.": "dread",
+      "Six walls of stolen stone, and on every one, a Herald we had already buried.": "anger",
+      "At the top gate, the Dawnblade turned and held it open for all of us.": "passion",
+      "Her armour had gone grey.": "grief",
+      "She held it until the last of us were through.": "grief"
+    },
+    "nature_herald": {
+      "The Pale Vesper once walked the dead to their rest.": "tender",
+      "Now she sang them awake.": "dread",
+      "Before the end, she sang something else.": "whisper",
+      "In the root-halls of Elderhollow we found the archer who had held them alone for nine days.": "pride",
+      "Her bow had grown leaves.": "awe"
+    },
+    "nature_intro": {
+      "The Verdant Deep was older than the Ring.": "awe",
+      "Its people lived in trees the size of towers, and they forgot nothing.": "awe",
+      "Something hollow had crept in under the canopy.": "dread",
+      "At night it sang.": "whisper"
+    },
+    "nature_warden": {
+      "The Elder Broodmother fell in the oldest tree in the world.": "awe",
+      "What climbed out of the grey bark was a very old woman, and she was tired.": "tender",
+      "The people of Sylvanmere left by the highest branches.": "grief",
+      "Sylvaine carried the seed to Solenne in her hand the whole way.": "hope"
+    },
+    "night_of_falling_stars": {
+      "We had lost twelve cities by then.": "grief",
+      "Solenne was still bright.": "pride",
+      "We thought that meant something.": "bitter",
+      "At midnight, the Dawn Gate opened from the inside.": "shock",
+      "They were soldiers we had fed and armed.": "anger",
+      "He had been keeping them in our own barracks, under our own colours.": "anger",
+      "Fennick held the gate.": "passion",
+      "He had a handful of half-built towers, and a hammer, and a temper.": "pride",
+      "The gatehouse came down on him.": "shock",
+      "He did not let go of the gate until it did.": "grief",
+      "Above it all, on the Spire of Aurel, the Lord Marshal raised a blade made from a piece of our Heartstone...": "dread",
+      "...and he broke the sun.": "shock",
+      "The light fell on me as I ran.": "desperate",
+      "It was the last thing I ever saw.": "grief",
+      "Not all of the shards went with him.": "whisper",
+      "One of them fell east, and did not land.": "whisper",
+      "Nobody saw it but me...": "whisper",
+      "and I did not know what I had seen.": "tender",
+      "When the sun should have risen, it did not.": "dread",
+      "That was the beginning of the Long Night.": "grief"
+    },
+    "regents_counsel": {
+      "Every day more of them came up the roads to Solenne.": "grief",
+      "We gave them the gardens, then the squares, then the halls of the palace.": "tender",
+      "The Lord Marshal found room for every one of them.": "calm",
+      "He was always the first at the gates, and the last to leave.": "tender",
+      "I remember thinking how kind that was.": "bitter"
+    },
+    "solenne_falls": {
+      "The inner wall broke.": "shock",
+      "The Heartstone dimmed.": "dread",
+      "No.": "desperate",
+      "Not like this.": "desperate",
+      "Not yet.": "anger",
+      "Again.": "command"
+    },
+    "storm_herald": {
+      "Gorrath the Quarried once held the Kharum Pass for a month.": "pride",
+      "He carved out his own heart to hold the Rift for his new master.": "dread",
+      "Out of the ridge-dust rode the Marshal of the Steppe, who had been hunted across the plateau for eleven days, and had not once ridden in the direction of retreat.": "pride"
+    },
+    "storm_intro": {
+      "On the Thunder Steppe the sky had never once been still.": "awe",
+      "The Galeborn read the storms the way we read books.": "awe",
+      "Now the clouds hung motionless, and the Stone came climbing up the plateau.": "dread"
+    },
+    "storm_warden": {
+      "When the Thunderhead broke, the sky moved again for the first time in a season.": "triumph",
+      "The Galeborn wept in the rain.": "tender",
+      "The Galeborn packed the Sky-Moot onto ten thousand horses and rode for Solenne.": "grief",
+      "Kaela rode last.": "pride",
+      "That is how she learned the word.": "wry"
+    },
+    "void_herald": {
+      "Mother Briar was the wisest healer in the Deepwood.": "tender",
+      "The thorns had grown all the way through her.": "dread",
+      "In the thorns, bound and bleeding, was a man the Concord had exiled for murder.": "dread",
+      "The Queen's own brother.": "shock"
+    },
+    "void_intro": {
+      "We came back to the place where it began.": "dread",
+      "No stars over the road.": "dread",
+      "The grass glowed faintly, like the ghost of a bruise.": "whisper",
+      "At the Lamplight waystation, one lantern was burning.": "awe",
+      "Nobody had lit it.": "whisper"
+    },
+    "void_warden": {
+      "The Hollow King split in two when he fell.": "shock",
+      "One half was a crown.": "awe",
+      "The other half was a woman made of stars, holding it in her hand.": "awe",
+      "None of us understood her.": "whisper",
+      "Not yet.": "whisper"
+    },
+    "water_herald": {
+      "Ashwick was the youngest runner ever to carry the Concord's messages.": "tender",
+      "He was still running when he fell.": "grief",
+      "I think he had forgotten where to.": "grief",
+      "At the heart of the burning reeds stood a tower of ice that had not melted.": "awe",
+      "Inside it waited a blind girl who said she had been expecting us.": "whisper"
+    },
+    "water_intro": {
+      "Frostmere was a frozen sea, and the Tidefolk kept every memory of the world in its ice.": "awe",
+      "Then the Flame came running across it, and the memories began to melt.": "dread"
+    },
+    "water_warden": {
+      "The Tidal Leviathan sank into the black water, and the bells in it rang true again.": "triumph",
+      "That night, Mirelle looked into the ice for a long time.": "tender",
+      "She said she had seen a death at the very end of the war.": "whisper",
+      "She would not say whose.": "dread"
+    }
+  }
+}
