@@ -13,6 +13,8 @@ extends Node
 ## and the quit question.
 ## Add --map to take the campaign world map: the next stage up close, the whole world, a land, a city at
 ## the closest zoom, and the Heartland and the citadel once every other stage is won.
+## Add --bigmaps to take the big winding maps: a few battles with the whole map in view, then the same
+## battle zoomed in on a spawn hole.
 ## Add --story to take the cinematic player, a Herald's boss banner, the assault on the citadel and
 ## the campaign map with the citadel on it.
 
@@ -25,6 +27,10 @@ const CAMPAIGN_SHOTS := [
 	[&"ember_4", 14, 14.0], [&"storm_3", 9, 10.0], [&"nature_2", 8, 10.0], [&"water_3", 10, 10.0],
 	[&"earth_4", 14, 12.0], [&"void_4", 14, 16.0], [&"converge_2", 12, 12.0], [&"converge_3", 19, 14.0],
 ]
+## Big maps to shoot: stage (empty for the Switchback skirmish), wave to jump to, seconds into it.
+const BIG_MAP_SHOTS := [
+	[&"", 3, 12.0], [&"ember_2", 6, 14.0], [&"water_3", 8, 14.0], [&"void_4", 10, 14.0], [&"converge_3", 12, 16.0],
+]
 ## Gives up on a moment after this many frames, so a broken run cannot hang the tool.
 const MAX_WAIT_FRAMES := 40000
 
@@ -36,6 +42,7 @@ var _story := false
 var _heroes := false
 var _menu := false
 var _map := false
+var _bigmaps := false
 
 
 func _ready() -> void:
@@ -57,6 +64,8 @@ func _ready() -> void:
 			_menu = true
 		elif arg == "--map":
 			_map = true
+		elif arg == "--bigmaps":
+			_bigmaps = true
 	DirAccess.make_dir_recursive_absolute(_out)
 	Progress.use_memory_profile(_demo_profile())
 	# The map's glide down from the whole world would still be moving in the first shots.
@@ -65,6 +74,8 @@ func _ready() -> void:
 		_run_menu()
 	elif _map:
 		_run_map()
+	elif _bigmaps:
+		_run_big_maps()
 	elif _story:
 		_run_story()
 	elif _heroes:
@@ -271,6 +282,36 @@ func _run_campaign() -> void:
 		await _until(func() -> bool: return game.sim.state == RunSim.State.WAVE and game.sim.time_in_wave > entry[2] \
 				or game.sim.is_over())
 		await _shot("stage_" + String(entry[0]))
+		game.free()
+		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+func _run_big_maps() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	for entry: Array in BIG_MAP_SHOTS:
+		if String(entry[0]).is_empty():
+			Progress.play_skirmish()
+		else:
+			Progress.active_stage = entry[0]
+		var game := GAME_SCENE.instantiate() as Game
+		game.autoplay = true
+		add_child(game)
+		await _wait(0.2)
+		game.sim.wave_index = entry[1]
+		game.sim.gold = 6000
+		game.sim.tree.points = 14
+		await _until(func() -> bool: return game.sim.state == RunSim.State.WAVE and game.sim.time_in_wave > entry[2] \
+				or game.sim.is_over())
+		var shot_name := "bigmap_" + (String(entry[0]) if not String(entry[0]).is_empty() else "switchback")
+		await _shot(shot_name)
+		# Up close: the first spawn hole, or where the road comes in.
+		var map := game.sim.config.map
+		var lane := map.hole_lanes[0] if not map.hole_lanes.is_empty() else 0
+		game.camera.set_view(1.0, map.path_points(lane)[0])
+		await _wait(0.3)
+		await _shot(shot_name + "_close")
 		game.free()
 		await _wait(0.1)
 	print("Screenshots saved to ", _out)

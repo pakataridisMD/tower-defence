@@ -2,6 +2,8 @@ extends GutTest
 ## The sound effects: every tower, enemy, boss and skill in data/ has its sounds, every file loads,
 ## and a run played by the bot makes the sounds it should.
 
+const TEST_ROAD := preload("res://tests/support/test_road.tres")
+
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
 const STEP := RunSim.STEP
 const BOSS_PARTS: Array[String] = ["reveal", "step", "voice", "enrage", "death"]
@@ -13,6 +15,8 @@ var sfx: SoundPlayer
 func before_each() -> void:
 	registry = autofree(DataRegistryScript.new())
 	registry.reload()
+	# The small 24 x 15 road these tests were written against (the real maps are bigger and curved).
+	registry.maps[&"test_road"] = TEST_ROAD
 	sfx = SoundPlayer.instance
 	assert_not_null(sfx, "the Sfx autoload runs")
 
@@ -81,7 +85,7 @@ func test_a_bot_run_makes_the_sounds_of_battle() -> void:
 	var heard: Dictionary[StringName, int] = {}
 	var count := func(sound: StringName) -> void: heard[sound] = heard.get(sound, 0) + 1
 	sfx.played.connect(count)
-	var sim := RunSim.new(RunConfig.from_registry(registry, &"switchback"))
+	var sim := RunSim.new(RunConfig.from_registry(registry, &"test_road"))
 	var audio := GameAudio.new()
 	add_child_autofree(audio)
 	audio.setup(sim, Vector2(24, 96))
@@ -109,7 +113,7 @@ func test_a_boss_is_revealed_once_and_heard_walking_and_dying() -> void:
 	var heard: Array[StringName] = []
 	var listen := func(sound: StringName) -> void: heard.append(sound)
 	sfx.played.connect(listen)
-	var sim := RunSim.new(RunConfig.from_registry(registry, &"switchback"))
+	var sim := RunSim.new(RunConfig.from_registry(registry, &"test_road"))
 	var audio := GameAudio.new()
 	add_child_autofree(audio)
 	audio.setup(sim, Vector2.ZERO)

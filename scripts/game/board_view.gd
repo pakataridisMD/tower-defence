@@ -40,8 +40,11 @@ var aiming_hero: StringName = &""
 var moving: SimTower
 var selected: SimTower
 var hover_cell := Vector2i(-1, -1)
-## Where the mouse last was, in board pixels.
+## Where the mouse last was, in board pixels and on screen.
 var _mouse := Vector2(-1, -1)
+var _screen_mouse := Vector2(-1, -1)
+## The part of the screen the board is shown in (see BoardCamera). Empty means anywhere.
+var view_rect := Rect2()
 
 var _effects: Array[Effect] = []
 var _font: Font
@@ -161,12 +164,20 @@ func mouse_point() -> Vector2:
 
 ## True while the mouse is over the board.
 func mouse_inside() -> bool:
+	if view_rect.has_area() and not view_rect.has_point(_screen_mouse):
+		return false
 	return Rect2(Vector2.ZERO, sim.config.map.size_in_pixels()).has_point(_mouse)
+
+
+## How much bigger to draw text and bars so they stay readable when the board is zoomed out.
+func label_scale() -> float:
+	return clampf(1.0 / maxf(global_scale.x, 0.01), 1.0, 2.0)
 
 
 ## Follows the mouse from its events, so the cursor is right however the events arrive.
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouse:
+		_screen_mouse = (event as InputEventMouse).position
 		_mouse = (make_input_local(event) as InputEventMouse).position
 
 
@@ -186,6 +197,10 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	var click := event as InputEventMouseButton
 	if click == null or not click.pressed:
+		return
+	if click.button_index != MOUSE_BUTTON_LEFT and click.button_index != MOUSE_BUTTON_RIGHT:
+		return
+	if view_rect.has_area() and not view_rect.has_point(click.position):
 		return
 	var map := sim.config.map
 	var at := (make_input_local(click) as InputEventMouseButton).position
@@ -333,8 +348,9 @@ func _road_ends(lane: int) -> PackedVector2Array:
 
 
 func _draw_outlined(at: Vector2, text: String, color: Color) -> void:
-	draw_string_outline(_font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, 6, Color(0, 0, 0, 0.6))
-	draw_string(_font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, color)
+	var size := roundi(18 * label_scale())
+	draw_string_outline(_font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, 6, Color(0, 0, 0, 0.6))
+	draw_string(_font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, color)
 
 
 func _draw_ground_layer() -> void:
@@ -457,9 +473,12 @@ func _draw_enemy(enemy: SimEnemy) -> void:
 		if art_height > 0.0:
 			# Enemy art stands on its position, so the bar goes above the sprite.
 			top = BoardArt.ENEMY_DROP * BoardArt.SCALE - art_height - 6.0
-		var top_left := enemy.position + Vector2(-width * 0.5, top)
-		draw_rect(Rect2(top_left - Vector2(1, 1), Vector2(width + 2, 6)), Color(0, 0, 0, 0.75))
-		draw_rect(Rect2(top_left, Vector2(width * enemy.health / enemy.max_health, 4)), UiStyle.GOOD)
+		# Zoomed out, the bar keeps its size on screen.
+		var k := label_scale()
+		width *= k
+		var top_left := enemy.position + Vector2(-width * 0.5, top - 4.0 * (k - 1.0))
+		draw_rect(Rect2(top_left - Vector2(1, 1) * k, Vector2(width + 2.0 * k, 6.0 * k)), Color(0, 0, 0, 0.75))
+		draw_rect(Rect2(top_left, Vector2(width * enemy.health / enemy.max_health, 4.0 * k)), UiStyle.GOOD)
 
 
 ## In an assault, the ground the enemy still holds is shaded red, with its edge marked.
@@ -520,7 +539,9 @@ func _draw_effects() -> void:
 				draw_circle(effect.position, radius, Color(effect.color, 0.35 * fade))
 			&"text":
 				var rise := Vector2(0, -30.0 * (1.0 - fade))
-				draw_string(_font, effect.position + rise, effect.text, HORIZONTAL_ALIGNMENT_CENTER, 60, 18, Color(effect.color, fade))
+				var k := label_scale()
+				draw_string(_font, effect.position + rise * k - Vector2(30.0 * (k - 1.0), 0), effect.text, HORIZONTAL_ALIGNMENT_CENTER,
+					60.0 * k, roundi(18 * k), Color(effect.color, fade))
 			&"hero_blast":
 				var spread := effect.radius * (0.5 + 0.5 * (1.0 - fade))
 				draw_circle(effect.position, spread, Color(effect.color, 0.22 * fade))

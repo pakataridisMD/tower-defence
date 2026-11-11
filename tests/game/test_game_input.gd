@@ -2,11 +2,11 @@ extends GutTest
 ## Drives the real game scene with simulated key presses and clicks, the way a player would.
 
 const GAME_SCENE := preload("res://scenes/game/game.tscn")
-## An empty grass tile next to the first stretch of path on the switchback map.
-const GRASS := Vector2i(2, 3)
-const PATH := Vector2i(2, 2)
 
 var game: Game
+## A cell of road near where it enters the board, and an empty tile of grass next to it.
+var path_cell := Vector2i(-1, -1)
+var grass_cell := Vector2i(-1, -1)
 
 
 func before_each() -> void:
@@ -14,6 +14,23 @@ func before_each() -> void:
 	game = GAME_SCENE.instantiate()
 	add_child_autofree(game)
 	await wait_process_frames(2)
+	_find_cells()
+
+
+func _find_cells() -> void:
+	var map := game.sim.config.map
+	for point in map.path_points(0):
+		var cell := map.cell_at(point)
+		if map.is_inside(cell) and cell.x >= 2 and cell.y >= 2:
+			path_cell = cell
+			break
+	for reach in range(1, 4):
+		for offset: Vector2i in [Vector2i(0, reach), Vector2i(0, -reach), Vector2i(reach, 0), Vector2i(-reach, 0)]:
+			var cell := path_cell + offset
+			if grass_cell.x < 0 and map.is_inside(cell) and not game.sim.is_path(cell):
+				grass_cell = cell
+	assert_true(game.sim.is_path(path_cell), "found the road")
+	assert_true(grass_cell.x >= 0, "found grass beside it")
 
 
 ## Positions are in the game's 1920x1080 canvas coordinates, whatever the window size.
@@ -108,8 +125,8 @@ func test_a_hotkey_and_a_click_build_a_tower() -> void:
 	var gold := game.sim.gold
 	_key(KEY_1)
 	assert_eq(game.board.placing, &"fire_brazier")
-	_click_cell(GRASS)
-	assert_not_null(game.sim.tower_at(GRASS))
+	_click_cell(grass_cell)
+	assert_not_null(game.sim.tower_at(grass_cell))
 	assert_eq(game.sim.gold, gold - game.sim.tower_price(&"fire_brazier"))
 	assert_eq(game.board.placing, &"", "a plain click builds one tower and stops placing")
 
@@ -129,29 +146,29 @@ func test_locked_towers_cannot_be_picked() -> void:
 func test_clicking_the_path_does_not_build() -> void:
 	game.sim.allocate_node(&"fire_entry")
 	_key(KEY_1)
-	_click_cell(PATH)
-	assert_null(game.sim.tower_at(PATH))
+	_click_cell(path_cell)
+	assert_null(game.sim.tower_at(path_cell))
 	assert_eq(game.board.placing, &"fire_brazier", "still placing after a failed click")
 
 
 func test_right_click_cancels_placing() -> void:
 	game.sim.allocate_node(&"fire_entry")
 	_key(KEY_1)
-	_click_cell(GRASS, MOUSE_BUTTON_RIGHT)
+	_click_cell(grass_cell, MOUSE_BUTTON_RIGHT)
 	assert_eq(game.board.placing, &"")
-	assert_null(game.sim.tower_at(GRASS))
+	assert_null(game.sim.tower_at(grass_cell))
 
 
 func test_selecting_and_selling_a_tower() -> void:
 	game.sim.allocate_node(&"fire_entry")
-	var tower := game.sim.place_tower(&"fire_brazier", GRASS)
+	var tower := game.sim.place_tower(&"fire_brazier", grass_cell)
 	var gold := game.sim.gold
-	_click_cell(GRASS)
+	_click_cell(grass_cell)
 	assert_eq(game.board.selected, tower)
 	assert_eq(game.hud.selected, tower)
 	await wait_process_frames(1)
 	_press(game.hud._sell_button)
-	assert_null(game.sim.tower_at(GRASS))
+	assert_null(game.sim.tower_at(grass_cell))
 	assert_eq(game.sim.gold, gold + game.sim.sell_value(tower))
 	assert_null(game.board.selected)
 
@@ -166,8 +183,8 @@ func _action_button(kind: StringName, id: StringName = &"") -> Button:
 func test_the_tower_panel_levels_up_and_ascends() -> void:
 	game.sim.allocate_node(&"fire_entry")
 	game.sim.gold = 2000
-	var tower := game.sim.place_tower(&"fire_brazier", GRASS)
-	_click_cell(GRASS)
+	var tower := game.sim.place_tower(&"fire_brazier", grass_cell)
+	_click_cell(grass_cell)
 	for level in [2, 3]:
 		await wait_process_frames(1)
 		_press(_action_button(&"level"))
@@ -185,12 +202,12 @@ func test_the_tower_panel_turns_a_base_tower_into_a_hybrid() -> void:
 	for id: StringName in [&"fire_entry", &"fire_cw", &"storm_entry", &"storm_ccw", &"bridge_plasma"]:
 		game.sim.allocate_node(id)
 	game.sim.gold = 2000
-	var tower := game.sim.place_tower(&"storm_spire", GRASS)
-	_click_cell(GRASS)
+	var tower := game.sim.place_tower(&"storm_spire", grass_cell)
+	_click_cell(grass_cell)
 	await wait_process_frames(1)
 	_press(_action_button(&"hybrid", &"hybrid_plasma"))
 	assert_eq(tower.data.id, &"hybrid_plasma")
-	assert_eq(game.sim.tower_at(GRASS), tower)
+	assert_eq(game.sim.tower_at(grass_cell), tower)
 	await wait_process_frames(2)
 	assert_eq(game.board.art._towers[tower.id].data_id, &"hybrid_plasma", "the board redraws the tower as its new type")
 
@@ -237,14 +254,14 @@ func test_tab_turns_the_shop_page_and_numbers_pick_from_it() -> void:
 func test_keys_upgrade_and_sell_the_selected_tower() -> void:
 	game.sim.allocate_node(&"fire_entry")
 	game.sim.gold = 2000
-	var tower := game.sim.place_tower(&"fire_brazier", GRASS)
-	_click_cell(GRASS)
+	var tower := game.sim.place_tower(&"fire_brazier", grass_cell)
+	_click_cell(grass_cell)
 	await wait_process_frames(2)
 	assert_eq((game.hud._actions.get_child(0) as KeyButton).key_text, "Z")
 	_key(KEY_Z)
 	assert_eq(tower.level, 2)
 	_key(KEY_DELETE)
-	assert_null(game.sim.tower_at(GRASS))
+	assert_null(game.sim.tower_at(grass_cell))
 
 
 # --- Skills --------------------------------------------------------------------------
@@ -262,7 +279,7 @@ func test_a_skill_key_aims_and_a_click_casts() -> void:
 	_key(KEY_SPACE)
 	_key(KEY_Q)
 	assert_eq(game.board.aiming, &"meteor")
-	_click_cell(PATH)
+	_click_cell(path_cell)
 	assert_eq(game.board.aiming, &"")
 	assert_gt(game.sim.skill_cooldown_left(&"meteor"), 0.0)
 	_key(KEY_Q)
@@ -272,7 +289,7 @@ func test_a_skill_key_aims_and_a_click_casts() -> void:
 func test_a_skill_key_pressed_twice_casts_at_the_mouse() -> void:
 	game.sim.allocate_node(&"fire_entry")
 	_key(KEY_SPACE)
-	_move_mouse_to(PATH)
+	_move_mouse_to(path_cell)
 	_key(KEY_Q)
 	assert_eq(game.board.aiming, &"meteor")
 	_key(KEY_Q)
@@ -296,7 +313,7 @@ func test_escape_and_right_click_stop_aiming() -> void:
 	assert_eq(game.board.aiming, &"")
 	assert_false(game.paused, "Esc stopped the aiming, not the game")
 	_key(KEY_Q)
-	_click_cell(GRASS, MOUSE_BUTTON_RIGHT)
+	_click_cell(grass_cell, MOUSE_BUTTON_RIGHT)
 	assert_eq(game.board.aiming, &"")
 	assert_eq(game.sim.skill_cooldown_left(&"meteor"), 0.0, "nothing was cast")
 
@@ -329,8 +346,8 @@ func test_the_hud_stays_on_the_screen_at_its_busiest() -> void:
 		game.sim.allocate_node(StringName(element + "_entry"))
 		game.sim.allocate_node(StringName(element + "_core"))
 	game.sim.wave_index = game.sim.total_waves() - 1
-	game.sim.place_tower(&"fire_brazier", GRASS)
-	_click_cell(GRASS)
+	game.sim.place_tower(&"fire_brazier", grass_cell)
+	_click_cell(grass_cell)
 	var hud := game.hud
 	var screen := Rect2(0, 0, 1920, 1080)
 	for tier in [1, 2, 3]:
@@ -390,3 +407,52 @@ func test_f_cycles_the_speed() -> void:
 	_key(KEY_F)
 	_key(KEY_F)
 	assert_eq(game.hud.speed, 1)
+
+
+# --- Camera --------------------------------------------------------------------------
+
+func _settle_camera() -> void:
+	for i in 40:
+		game.camera._process(0.05)
+
+
+func test_the_whole_map_shows_at_the_start() -> void:
+	var map_size := game.sim.config.map.size_in_pixels() * game.board.scale
+	assert_true(game.camera.shows_all())
+	assert_true(BoardCamera.VIEW_RECT.encloses(Rect2(game.board.position, map_size)), "the map fits the view")
+	assert_true(map_size.x > BoardCamera.VIEW_RECT.size.x * 0.75, "and fills most of it")
+
+
+func test_the_wheel_zooms_in_on_the_cursor_and_home_shows_everything() -> void:
+	var cell := Vector2i(10, 10)
+	var at := game.board.to_global(game.sim.config.map.cell_center(cell))
+	var before := game.board.scale.x
+	var wheel := InputEventMouseButton.new()
+	wheel.button_index = MOUSE_BUTTON_WHEEL_UP
+	wheel.pressed = true
+	wheel.position = at
+	_push(wheel)
+	_settle_camera()
+	assert_gt(game.board.scale.x, before, "zoomed in")
+	assert_almost_eq(game.board.to_global(game.sim.config.map.cell_center(cell)), at, Vector2(2, 2),
+		"the cell under the cursor stays there")
+	assert_false(game.camera.shows_all())
+	_key(KEY_HOME)
+	assert_true(game.camera.shows_all())
+
+
+func test_panning_stops_at_the_edge_of_the_map() -> void:
+	game.camera.set_view(1.0, Vector2.ZERO)
+	game.camera.pan(Vector2(5000, 5000))
+	assert_eq(game.board.position, BoardCamera.VIEW_RECT.position, "the top-left corner stops at the view's corner")
+	game.camera.pan(Vector2(-9000, -9000))
+	var far_corner := game.board.to_global(game.sim.config.map.size_in_pixels())
+	assert_almost_eq(far_corner, BoardCamera.VIEW_RECT.end, Vector2(1, 1), "and so does the bottom-right")
+
+
+func test_clicks_still_land_on_the_right_cell_when_zoomed_in() -> void:
+	game.sim.allocate_node(&"fire_entry")
+	game.camera.set_view(2.0, game.sim.config.map.cell_center(grass_cell))
+	_key(KEY_1)
+	_click_cell(grass_cell)
+	assert_not_null(game.sim.tower_at(grass_cell))

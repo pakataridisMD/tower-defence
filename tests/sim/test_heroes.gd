@@ -1,8 +1,10 @@
 extends GutTest
 ## Heroes: who joins when, the party, summoning, moving, levels, auras and every ability.
 
+const TEST_ROAD := preload("res://tests/support/test_road.tres")
+
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
-const MAP := &"switchback"
+const MAP := &"test_road"
 ## Buildable cells far from the road, so nothing there ends a wave early.
 const FAR_CELL := Vector2i(0, 14)
 const FAR_CELL_2 := Vector2i(1, 14)
@@ -13,6 +15,8 @@ var registry: Node
 func before_each() -> void:
 	registry = autofree(DataRegistryScript.new())
 	registry.reload()
+	# The small 24 x 15 road these tests were written against (the real maps are bigger and curved).
+	registry.maps[&"test_road"] = TEST_ROAD
 
 
 func _hero(id: StringName) -> HeroData:

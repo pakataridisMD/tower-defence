@@ -29,6 +29,9 @@ const STAR_STEP := 0.45
 var sim: RunSim
 ## Where the board sits on screen: simulation positions are board pixels.
 var board_offset := Vector2.ZERO
+## The board node, when set: board positions are turned into screen positions through it, so sounds
+## pan right however the board is zoomed and scrolled.
+var board: Node2D
 
 var _towers: Dictionary[int, Array] = {}
 var _tree_nodes := 0
@@ -69,7 +72,7 @@ func setup(p_sim: RunSim, p_board_offset: Vector2) -> void:
 
 func play(sound: StringName, at: Variant = null, volume_db: float = 0.0) -> bool:
 	if at is Vector2:
-		at = (at as Vector2) + board_offset
+		at = board.to_global(at) if board != null else (at as Vector2) + board_offset
 	return SoundPlayer.sfx(sound, at, volume_db)
 
 

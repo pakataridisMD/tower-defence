@@ -1,8 +1,10 @@
 extends GutTest
 ## Run rules, driven through RunSim with the real data files.
 
+const TEST_ROAD := preload("res://tests/support/test_road.tres")
+
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
-const MAP := &"switchback"
+const MAP := &"test_road"
 ## A buildable cell next to the first stretch of path.
 const CELL := Vector2i(2, 3)
 
@@ -12,6 +14,8 @@ var registry: Node
 func before_each() -> void:
 	registry = autofree(DataRegistryScript.new())
 	registry.reload()
+	# The small 24 x 15 road these tests were written against (the real maps are bigger and curved).
+	registry.maps[&"test_road"] = TEST_ROAD
 
 
 func _sim(run_modifiers: Array[Modifier] = []) -> RunSim:
