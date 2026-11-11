@@ -157,14 +157,20 @@ func test_a_hero_gains_a_level_each_wave_and_hits_harder() -> void:
 	assert_eq(tower.hero_ability(), tower.hero.ultimate, "the ability grows at level %d" % HeroData.ULTIMATE_LEVEL)
 
 
-func test_a_hero_is_far_stronger_than_a_base_tower() -> void:
+## A hero helps, but the towers carry the run: a fresh hero hits about as hard as a base tower, and
+## even at the top level it is worth a couple of towers, not a whole defence.
+func test_a_hero_is_worth_a_tower_or_two_not_a_whole_defence() -> void:
 	var sim := _sim([&"brannoc"])
 	var hero := sim.summon_hero(&"brannoc", FAR_CELL)
 	sim.gold = 1000
 	var tower := sim.place_tower(&"fire_brazier", FAR_CELL_2)
-	var hero_dps := hero.damage * hero.attacks_per_second
 	var tower_dps := tower.damage * tower.attacks_per_second
-	assert_gt(hero_dps, tower_dps * 3.0)
+	assert_lt(hero.damage * hero.attacks_per_second, tower_dps * 1.5, "level 1")
+	hero.hero_level = HeroData.MAX_LEVEL
+	sim._recompute_towers()
+	var top_dps := hero.damage * hero.attacks_per_second
+	assert_gt(top_dps, tower_dps, "the top level beats a base tower")
+	assert_lt(top_dps, tower_dps * 2.5, "but not by much")
 
 
 func test_the_aura_lifts_towers_near_the_hero_only() -> void:
@@ -174,7 +180,7 @@ func test_the_aura_lifts_towers_near_the_hero_only() -> void:
 	var far := sim.place_tower(&"fire_brazier", Vector2i(23, 0)) if sim.can_place(&"fire_brazier", Vector2i(23, 0)) else null
 	var speed := near.attacks_per_second
 	sim.summon_hero(&"kaela", FAR_CELL)
-	assert_almost_eq(near.attacks_per_second, speed * 1.25, 0.001, "Kaela's aura: +25% attack speed")
+	assert_almost_eq(near.attacks_per_second, speed * 1.12, 0.001, "Kaela's aura: +12% attack speed")
 	if far != null:
 		assert_almost_eq(far.attacks_per_second, speed, 0.001, "towers far away get nothing")
 
@@ -213,14 +219,25 @@ func test_frozen_hour_holds_the_whole_board() -> void:
 			assert_eq(enemy.speed(), 0.0, "held in place")
 
 
-func test_great_flood_sends_enemies_back_to_the_start() -> void:
+func test_great_flood_pushes_enemies_back_and_its_ultimate_sends_them_to_the_start() -> void:
 	var sim := _sim([&"thalassa"])
 	sim.summon_hero(&"thalassa", FAR_CELL)
 	_wave_with_enemies(sim, 3)
 	_run(sim, 2.0)
+	var before := {}
+	for enemy in sim.enemies:
+		before[enemy.id] = enemy.progress
 	assert_true(sim.use_hero_ability(&"thalassa"))
 	for enemy in sim.enemies:
-		assert_eq(enemy.progress, 0.0)
+		assert_lt(enemy.progress, before[enemy.id] + 0.001, "pushed back, not forward")
+	var tower := sim.hero_tower(&"thalassa")
+	tower.hero_level = HeroData.ULTIMATE_LEVEL
+	tower.ability_cooldown = 0.0
+	_run(sim, 1.0)
+	assert_true(sim.use_hero_ability(&"thalassa"))
+	for enemy in sim.enemies:
+		if not enemy.data.tags.has(&"boss"):
+			assert_eq(enemy.progress, 0.0)
 
 
 func test_last_light_stops_leaks() -> void:
@@ -236,7 +253,7 @@ func test_last_light_stops_leaks() -> void:
 	assert_lt(enemy.progress, 50.0, "the enemy is thrown back to the start")
 
 
-func test_eclipse_doubles_gold_and_lifts_damage_for_a_while() -> void:
+func test_eclipse_lifts_gold_and_damage_for_a_while() -> void:
 	var sim := _sim([&"nyxara"])
 	sim.gold = 1000
 	var tower := sim.place_tower(&"fire_brazier", FAR_CELL_2)
@@ -244,9 +261,9 @@ func test_eclipse_doubles_gold_and_lifts_damage_for_a_while() -> void:
 	sim.summon_hero(&"nyxara", FAR_CELL)
 	_wave_with_enemies(sim, 1)
 	assert_true(sim.use_hero_ability(&"nyxara"))
-	assert_almost_eq(tower.damage, damage * 1.6, 0.01)
-	assert_eq(sim.gold_multiplier(), 2.0)
-	_run(sim, 9.0)
+	assert_almost_eq(tower.damage, damage * 1.2, 0.01)
+	assert_eq(sim.gold_multiplier(), 1.5)
+	_run(sim, 6.0)
 	assert_eq(sim.gold_multiplier(), 1.0, "it wears off")
 
 
@@ -271,7 +288,7 @@ func test_worldbreaker_swallows_weakened_enemies() -> void:
 	sim.summon_hero(&"orrok", FAR_CELL)
 	_wave_with_enemies(sim, 1)
 	var enemy := sim.enemies[0]
-	enemy.health = enemy.max_health * 0.3
+	enemy.health = enemy.max_health * 0.15
 	assert_true(sim.use_hero_ability(&"orrok", enemy.position))
 	assert_false(enemy.alive)
 

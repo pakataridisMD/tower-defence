@@ -7,16 +7,16 @@
 [sub_resource type="Resource" id="Effect_0"]
 script = ExtResource("2_status")
 kind = &"shatter"
-armour_reduction = 8.0
-duration = 8.0
+armour_reduction = 4.0
+duration = 5.0
 
 [resource]
 script = ExtResource("1_skill")
 id = &"earthquake"
 display_name = "Earthquake"
-description = "The ground shakes under every enemy: all of them take damage and lose 8 armour for 8 seconds."
+description = "The ground shakes under every enemy: all of them take damage and lose 4 armour for 5 seconds."
 element = &"earth"
 requires_node = &"earth_entry"
-cooldown = 45.0
-damage = 25.0
+cooldown = 75.0
+damage = 10.0
 status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0")])

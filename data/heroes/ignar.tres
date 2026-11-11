@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="S1"]
 script = ExtResource("status")
 kind = &"burn"
-damage_per_second = 16.0
+damage_per_second = 7.0
 duration = 4.0
 
 [sub_resource type="Resource" id="S2"]
@@ -19,58 +19,58 @@ description = "A cone of fire breath that sets everything burning."
 elements = Array[StringName]([&"fire"])
 tags = Array[StringName]([&"hero"])
 cost = 1
-damage = 45.0
+damage = 10.0
 attacks_per_second = 0.9
-attack_range = 170.0
+attack_range = 160.0
 projectile_speed = 600.0
-splash_radius = 80.0
+splash_radius = 55.0
 status_effects = Array[ExtResource("status")]([SubResource("S1")])
 
 [sub_resource type="Resource" id="S3"]
 script = ExtResource("status")
 kind = &"burn"
-damage_per_second = 20.0
+damage_per_second = 4.0
 duration = 4.0
 
 [sub_resource type="Resource" id="S4"]
 script = ExtResource("ability")
 display_name = "Cataclysm"
-description = "The caldera opens: three meteors fall on the most crowded spots."
-cooldown = 60.0
+description = "The caldera opens: two meteors fall on the most crowded spots."
+cooldown = 100.0
 target = 3
-radius_cells = 1.5
-strikes = 3
-damage = 260.0
+radius_cells = 1.0
+strikes = 2
+damage = 35.0
 status_effects = Array[ExtResource("status")]([SubResource("S3")])
 
 [sub_resource type="Resource" id="S5"]
 script = ExtResource("status")
 kind = &"burn"
-damage_per_second = 20.0
+damage_per_second = 4.0
 duration = 4.0
 
 [sub_resource type="Resource" id="S6"]
 script = ExtResource("ability")
 display_name = "Cataclysm"
-description = "The caldera opens: five meteors fall on the most crowded spots."
-cooldown = 60.0
+description = "The caldera opens: three meteors fall on the most crowded spots."
+cooldown = 100.0
 target = 3
-radius_cells = 1.5
-strikes = 5
-damage = 260.0
+radius_cells = 1.0
+strikes = 3
+damage = 35.0
 status_effects = Array[ExtResource("status")]([SubResource("S5")])
 
 [sub_resource type="Resource" id="S7"]
 script = ExtResource("mod")
 stat = &"damage"
 kind = 1
-value = 0.2
+value = 0.1
 required_tags = Array[StringName]([&"fire"])
 
 [sub_resource type="Resource" id="S8"]
 script = ExtResource("mod")
 stat = &"burn_spread_radius"
-value = 60.0
+value = 40.0
 required_tags = Array[StringName]([&"fire"])
 
 [resource]
@@ -84,8 +84,8 @@ element = &"fire"
 joins_after = &"ember_4"
 attack = SubResource("S2")
 aura = Array[ExtResource("mod")]([SubResource("S7"), SubResource("S8")])
-aura_text = "Fire towers deal 20% more damage, and their burns spread"
+aura_text = "Fire towers deal 10% more damage, and their burns spread a little"
 ability = SubResource("S4")
 ultimate = SubResource("S6")
-ultimate_text = "Five meteors"
+ultimate_text = "Three meteors"
 barks = PackedStringArray("Burn, and be warm.", "I am awake. I am awake.", "Little ones, stand back.")
