@@ -47,6 +47,16 @@ class Site:
 static func find(map: MapData, is_path: Callable, blocked: Callable = Callable()) -> Array[Site]:
 	var sites: Array[Site] = []
 	var taken: Dictionary[Vector2i, bool] = {}
+	# Every road end on the edge, so two ends close together leave the ground between them open.
+	var ends: Array[Vector2i] = []
+	for lane in map.lane_count():
+		var points := map.path_points(lane)
+		if points.size() < 2:
+			continue
+		for end: Vector2 in [points[0], points[points.size() - 1]]:
+			var into := _inward(map, end)
+			if into != Vector2i.ZERO:
+				ends.append(_anchor(map, end, into))
 	for kind: StringName in [&"camp", &"city"]:
 		for lane in map.lane_count():
 			var points := map.path_points(lane)
@@ -67,8 +77,17 @@ static func find(map: MapData, is_path: Callable, blocked: Callable = Callable()
 			site.anchor = anchor
 			site.inward = inward
 			site.gate = _gate(map, anchor, inward)
+			var closed_sides: Array[int] = []
+			for other in ends:
+				var d := other - anchor
+				var along := d.x * inward.x + d.y * inward.y
+				var aside := d.x * site.across().x + d.y * site.across().y
+				if along == 0 and aside != 0 and absi(aside) <= 2 * HALF_WIDTH + 1:
+					closed_sides.append(signi(aside))
 			for depth in DEPTH:
 				for side in range(-HALF_WIDTH, HALF_WIDTH + 1):
+					if closed_sides.has(signi(side)):
+						continue
 					var cell := anchor + inward * depth + site.across() * side
 					if not map.is_inside(cell) or taken.has(cell) or is_path.call(cell):
 						continue

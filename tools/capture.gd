@@ -489,7 +489,7 @@ func _run_landmarks() -> void:
 		if stage in LANDMARK_CLIPS:
 			for site in sim.landmarks:
 				await _clip("%s_%s_night" % [stage, site.kind], game, site, 40)
-		sim.lives = maxi(1, sim.starting_lives / 3)
+		sim.lives = maxi(1, roundi(sim.starting_lives * 0.55))
 		await _wait(1.0)
 		for site in sim.landmarks:
 			if site.kind == &"city":
@@ -515,8 +515,7 @@ func _site_region(game: Game, site: Landmarks.Site) -> Rect2i:
 	var rect := Rect2(map.cell_center(site.anchor), Vector2.ZERO)
 	for cell in site.cells:
 		rect = rect.expand(map.cell_center(cell))
-	rect = rect.grow(map.cell_size * 2.2)
-	rect.position += game.board.global_position
+	rect = game.board.get_global_transform_with_canvas() * rect.grow(map.cell_size * 2.2)
 	var screen := Rect2(Vector2.ZERO, get_viewport().get_visible_rect().size)
 	return Rect2i(rect.intersection(screen))
 

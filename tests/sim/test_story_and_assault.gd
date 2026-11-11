@@ -64,7 +64,7 @@ func test_silence_stops_towers_in_reach_from_shooting() -> void:
 	_spawn_all(sim)
 	var boss := sim.enemies[0]
 	sim.allocate_node(&"fire_entry")
-	var tower := sim.place_tower(&"fire_brazier", Vector2i(2, 3))
+	var tower := sim.place_tower(&"fire_brazier", Vector2i(3, 3))
 	assert_not_null(tower)
 	tower.position = boss.position + Vector2(30, 0)
 	watch_signals(sim)

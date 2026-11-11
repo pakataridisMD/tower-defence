@@ -50,6 +50,8 @@ var _font: Font
 var _ground: Node2D
 ## The lit pixel art, or null when the map has no art.
 var art: BoardArt
+## Draws the defended city's name over the art, or null.
+var _names: Node2D
 
 
 ## A short-lived visual: a lightning arc, an explosion, floating gold text or a leak flash.
@@ -78,7 +80,8 @@ func setup(p_sim: RunSim) -> void:
 		art.setup(sim)
 		if art.landmarks != null:
 			# The city's name sits over its gate, above the art (which draws over this node).
-			var names := Node2D.new()
+			_names = Node2D.new()
+			var names := _names
 			names.z_index = 8
 			names.material = overlay
 			names.draw.connect(_draw_city_names.bind(names))
@@ -315,6 +318,7 @@ func _has_tower_art(tower_id: StringName) -> bool:
 
 func _draw_road_labels() -> void:
 	if art.landmarks != null and not sim.landmarks.is_empty():
+		_names.queue_redraw()
 		return
 	for lane in sim.config.map.lane_count():
 		var ends := _road_ends(lane)

@@ -2,9 +2,9 @@ extends GutTest
 ## Drives the real game scene with simulated key presses and clicks, the way a player would.
 
 const GAME_SCENE := preload("res://scenes/game/game.tscn")
-## An empty grass tile next to the first stretch of path on the switchback map.
-const GRASS := Vector2i(2, 3)
-const PATH := Vector2i(2, 2)
+## An empty grass tile next to the first stretch of path on the switchback map, just past the war camp.
+const GRASS := Vector2i(3, 3)
+const PATH := Vector2i(3, 2)
 
 var game: Game
 
