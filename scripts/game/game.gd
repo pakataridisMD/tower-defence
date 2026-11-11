@@ -27,6 +27,7 @@ var story: Story
 var story_overlay: StoryOverlay
 ## The cinematic playing over the run, or null.
 var cinematic: CinematicPlayer
+var music: BattleMusic
 var paused := false
 ## Set before the node enters the tree, or with --autoplay.
 var autoplay := false
@@ -82,6 +83,10 @@ func _build_views() -> void:
 	web.can_refund = sim.can_refund_node
 	web.hide()
 	web_layer.add_child(web)
+
+	music = BattleMusic.new()
+	add_child(music)
+	music.setup(sim)
 
 
 func _connect_signals() -> void:
@@ -407,9 +412,14 @@ func play_cinematics(ids: Array[StringName]) -> void:
 	cinematic.change_scene_when_done = false
 	cinematic.story = story
 	cinematic.queue = ids.duplicate()
+	# The battle music holds while the story's own music plays.
+	if music != null and music.player != null:
+		music.player.stream_paused = true
 	cinematic.finished.connect(func() -> void:
 		cinematic.queue_free()
-		cinematic = null)
+		cinematic = null
+		if music != null and music.player != null:
+			music.player.stream_paused = false)
 	_cinematic_layer.add_child(cinematic)
 
 
