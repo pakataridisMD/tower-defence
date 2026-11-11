@@ -92,12 +92,14 @@ func test_a_cleared_wave_pays_points_and_gold() -> void:
 	var bot := AutoPlayer.new(sim)
 	bot.build_towers()
 	var gold_before := sim.gold
+	var enemies := sim.current_wave().enemy_count()
+	sim.lives = 999
 	assert_true(sim.start_next_wave())
 	assert_eq(sim.state, RunSim.State.WAVE)
 	_run_until_building(sim)
 	assert_eq(sim.state, RunSim.State.BUILDING)
 	assert_eq(sim.wave_index, 1)
-	assert_eq(sim.kills + sim.leaks, 10, "all 10 grunts were killed or leaked")
+	assert_eq(sim.kills + sim.leaks, enemies, "every enemy of the wave was killed or leaked")
 	assert_eq(sim.tree.points, 1, "one point per wave")
 	assert_true(sim.gold >= gold_before + 20, "wave bonus plus bounties")
 

@@ -7,18 +7,18 @@
 script = ExtResource("1_mod")
 stat = &"damage"
 kind = 1
-value = 0.1
+value = 0.02
 required_tags = Array[StringName]([&"fire"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"mastery_fire"
-display_name = "Fire Mastery"
-description = "Fire towers deal 10% more damage."
-kind = 2
-region = &"mastery"
-cost = 2
-position = Vector2(-185, -65)
-links = Array[StringName]([&"mastery_range"])
+display_name = "Fire Attunement"
+description = "Fire towers deal 2% more damage."
+kind = 1
+region = &"fire"
+cost = 3
+position = Vector2(328, -567)
+links = Array[StringName]([&"starpath_300"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])
 icon = &"flame"

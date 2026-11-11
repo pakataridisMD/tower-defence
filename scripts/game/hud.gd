@@ -100,7 +100,17 @@ func setup(p_sim: RunSim) -> void:
 	_build_message()
 	_build_end_panel()
 	sim.wave_cleared.connect(_on_wave_cleared)
-	sim.wave_started.connect(func(number: int) -> void: show_message("Wave %d" % number))
+	sim.wave_started.connect(_announce_wave)
+
+
+## "Wave 7", and on a second line how it comes: "Runner packs, a flank attack and a closing surge."
+func _announce_wave(number: int) -> void:
+	var wave := sim.current_wave()
+	var text := "Wave %d" % number
+	if wave != null and not wave.description.is_empty():
+		text += "\n" + wave.description
+	show_message(text)
+	_message_time = 4.0
 
 
 func show_message(text: String, color: Color = UiStyle.TEXT) -> void:
@@ -592,6 +602,10 @@ func _refresh() -> void:
 	_stage.visible = not where.is_empty()
 	_next.text = _wave_text()
 	_next.tooltip_text = _next.get_parsed_text()
+	# How the wave comes: its beats, in words.
+	var wave := sim.current_wave()
+	if wave != null and not wave.description.is_empty():
+		_next.tooltip_text += "\n" + wave.description
 	var points := sim.tree.points
 	_web_button.text = "Skill web (T)" + ("  ·  %d to spend" % points if points > 0 else "")
 	_web_button.add_theme_color_override("font_color", UiStyle.GOLD if points > 0 else UiStyle.TEXT)

@@ -150,8 +150,10 @@ func test_a_hero_gains_a_level_each_wave_and_hits_harder() -> void:
 	var tower := sim.summon_hero(&"tamsin", FAR_CELL)
 	var damage := tower.damage
 	assert_eq(tower.hero_level, 1)
+	# A lone hero lets most of a wave through: enough lives that the run outlasts it.
+	sim.lives = 999
 	assert_true(sim.start_next_wave())
-	for step in 20000:
+	for step in 40000:
 		if sim.state != RunSim.State.WAVE:
 			break
 		sim.step(RunSim.STEP)

@@ -1,16 +1,19 @@
 extends Control
-## The meta tree, opened from the main menu. Every finished run pays meta points, and the nodes
-## bought with them count in every later run. Each change is saved straight away, and refunds are
-## always free.
+## The meta tree, opened from the main menu as Talents. Every finished run pays meta points, and the
+## nodes bought with them count in every later run. Each change is saved straight away, and refunds
+## are always free. The tree is far bigger than the screen: drag or WASD to move, wheel to zoom.
 
 const MENU_SCENE := "res://scenes/main.tscn"
 const REFUND_ALL_TEXT := "Refund all"
 const CONFIRM_TEXT := "Click again to refund all"
 ## How long the refund-all button waits for the confirming second click.
 const CONFIRM_SECONDS := 3.0
+## The Starpath ring road, drawn as a dotted circle behind its nodes (see tools/meta/gen_meta_tree.py).
+const RING_RADII: Array[float] = [560.0, 1080.0]
 
 var web: SkillWebView
 var refund_all: Button
+var whole_tree: Button
 var _confirming := false
 
 
@@ -19,6 +22,9 @@ static func branch_regions() -> Dictionary[StringName, SkillWebView.Region]:
 	var result: Dictionary[StringName, SkillWebView.Region] = {}
 	for id in MetaProgress.BRANCH_NAMES:
 		result[id] = SkillWebView.Region.new(MetaProgress.BRANCH_NAMES[id], MetaProgress.BRANCH_COLORS[id])
+	# The Starpath circles the whole tree, so a glow at its middle would sit on the Origin.
+	result[&"starpath"].aura = false
+	result[&"starpath"].label = false
 	return result
 
 
@@ -27,10 +33,14 @@ func _ready() -> void:
 	theme = UiStyle.make_theme()
 	var rules := DataRegistry.run_rules
 	web = SkillWebView.new()
-	web.title = "Meta tree"
-	web.subtitle = ("Every run pays meta points, won or lost: %d for each wave cleared and %d more for a win. " +
-		"What you take here counts in every run. Refunds are always free: right-click a node at the tip " +
-		"of a branch.") % [rules.meta_points_per_wave, rules.meta_points_for_win]
+	web.title = "Talents"
+	web.navigable = true
+	web.ring_radii = RING_RADII
+	web.count_noun = "talents"
+	web.subtitle = ("Every run pays meta points, won or lost: %d for each wave cleared and %d more for a win, plus a " +
+		"bonus the first time you win a campaign stage. Hard and Nightmare pay more. What you take here counts in " +
+		"every run. Gold-ringed keystones change the rules, and pick-one choices close their partner. Refunds are " +
+		"always free: right-click a node at the tip of a branch.") % [rules.meta_points_per_wave, rules.meta_points_for_win]
 	web.points_noun = "meta point"
 	web.close_text = "Back (Esc)"
 	web.taken_text = "Taken. Refund the nodes past it first."
@@ -43,6 +53,9 @@ func _ready() -> void:
 	refund_all.custom_minimum_size = Vector2(290, 0)
 	refund_all.pressed.connect(_on_refund_all)
 	web.add_header_button(refund_all)
+	whole_tree = UiStyle.button("Whole tree (F)", 20)
+	whole_tree.pressed.connect(func() -> void: web.show_whole_tree())
+	web.add_header_button(whole_tree)
 	Progress.changed.connect(_refresh)
 	_refresh()
 

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"poison_spread_count"
+kind = 0
+value = 1.0
+required_tags = Array[StringName]([&"nature"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"nature_blight"
+display_name = "Blight Spread"
+description = "Poison from nature towers spreads to 1 more enemy."
+kind = 3
+region = &"nature"
+cost = 6
+position = Vector2(754, 679)
+links = Array[StringName]([&"nature_lingering"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

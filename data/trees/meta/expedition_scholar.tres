@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
+
+[sub_resource type="Resource" id="Resource_m1"]
+script = ExtResource("1_mod")
+stat = &"starting_gold"
+kind = 2
+value = -0.25
+
+[resource]
+script = ExtResource("2_node")
+id = &"expedition_scholar"
+display_name = "Scholar's Path"
+description = "Start every run with 1 more skill point. Start every run with 25% less gold. Pick one: closes Spoils of War."
+kind = 5
+region = &"expeditions"
+cost = 12
+position = Vector2(-75, 476)
+links = Array[StringName]([&"expedition_cartographer", &"starpath_90"])
+excludes = Array[StringName]([&"expedition_spoils"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0"), SubResource("Resource_m1")])
+icon = &"book"
