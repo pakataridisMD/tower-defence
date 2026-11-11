@@ -22,6 +22,10 @@ var granted_tree_nodes: Array[StringName] = []
 ## The campaign stage being played and its campaign, or null in a skirmish.
 var stage: StageData
 var campaign: CampaignData
+## The heroes the player brings, up to HeroData.MAX_PARTY. Each can be summoned once.
+var heroes: Array[HeroData] = []
+## Heroes who arrive during this run at a wave (HeroData.arrives_at_wave) and join the party then.
+var arriving_heroes: Array[HeroData] = []
 
 
 ## Config for a map using the data loaded by a DataRegistry.

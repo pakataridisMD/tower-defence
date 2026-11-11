@@ -11,6 +11,8 @@ signal selection_changed(tower: SimTower)
 signal placement_failed(reason: String)
 ## The player clicked the board while aiming a skill.
 signal skill_aimed(skill_id: StringName, at: Vector2)
+## The player clicked the board while aiming a hero's ability.
+signal hero_aimed(hero_id: StringName, at: Vector2)
 
 const GROUND := Color("243042")
 const GROUND_ALT := Color("273447")
@@ -32,6 +34,10 @@ var sim: RunSim
 var placing: StringName = &""
 ## Skill id being aimed, or empty.
 var aiming: StringName = &""
+## Hero being summoned, hero whose ability is being aimed, and hero marching, or empty / null.
+var summoning: StringName = &""
+var aiming_hero: StringName = &""
+var moving: SimTower
 var selected: SimTower
 var hover_cell := Vector2i(-1, -1)
 ## Where the mouse last was, in board pixels.
@@ -80,9 +86,11 @@ func setup(p_sim: RunSim) -> void:
 	sim.enemy_killed.connect(_on_enemy_killed)
 	sim.enemy_leaked.connect(_on_enemy_leaked)
 	sim.skill_used.connect(_on_skill_used)
+	sim.hero_ability_used.connect(_on_hero_ability_used)
 
 
 func begin_placing(tower_id: StringName) -> void:
+	cancel_hero_actions()
 	aiming = &""
 	placing = tower_id
 	select(null)
@@ -90,6 +98,42 @@ func begin_placing(tower_id: StringName) -> void:
 
 func cancel_placing() -> void:
 	placing = &""
+
+
+## Starts placing a hero: the next click on a free tile summons it.
+func begin_summoning(hero_id: StringName) -> void:
+	cancel_hero_actions()
+	placing = &""
+	aiming = &""
+	summoning = hero_id
+	select(null)
+
+
+## Starts aiming a hero's ability: the next click on the board casts it.
+func begin_hero_aiming(hero_id: StringName) -> void:
+	cancel_hero_actions()
+	placing = &""
+	aiming = &""
+	aiming_hero = hero_id
+
+
+## Starts marching a hero: the next click on a free tile moves it there.
+func begin_moving(tower: SimTower) -> void:
+	cancel_hero_actions()
+	placing = &""
+	aiming = &""
+	moving = tower
+
+
+func cancel_hero_actions() -> void:
+	summoning = &""
+	aiming_hero = &""
+	moving = null
+
+
+## True while the board is waiting for a click for a hero.
+func has_hero_action() -> bool:
+	return not summoning.is_empty() or not aiming_hero.is_empty() or moving != null
 
 
 func select(tower: SimTower) -> void:
@@ -101,6 +145,7 @@ func select(tower: SimTower) -> void:
 
 ## Starts aiming a skill: the cursor shows its reach and the next click on the board casts it.
 func begin_aiming(skill_id: StringName) -> void:
+	cancel_hero_actions()
 	placing = &""
 	aiming = skill_id
 
@@ -147,6 +192,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	var cell := map.cell_at(at)
 	if not map.is_inside(cell):
 		return
+	if has_hero_action():
+		if click.button_index == MOUSE_BUTTON_LEFT:
+			_hero_click(cell, at)
+		elif click.button_index == MOUSE_BUTTON_RIGHT:
+			cancel_hero_actions()
+		get_viewport().set_input_as_handled()
+		return
 	if not aiming.is_empty():
 		if click.button_index == MOUSE_BUTTON_LEFT:
 			skill_aimed.emit(aiming, at)
@@ -172,13 +224,38 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+func _hero_click(cell: Vector2i, at: Vector2) -> void:
+	if not aiming_hero.is_empty():
+		hero_aimed.emit(aiming_hero, at)
+		return
+	if not summoning.is_empty():
+		var error := sim.summon_error(summoning, cell)
+		if error.is_empty():
+			var tower := sim.summon_hero(summoning, cell)
+			cancel_hero_actions()
+			select(tower)
+		else:
+			placement_failed.emit(error)
+		return
+	if moving != null:
+		var error := sim.move_error(moving, cell)
+		if error.is_empty():
+			sim.move_hero(moving, cell)
+			cancel_hero_actions()
+		else:
+			placement_failed.emit(error)
+
+
 # --- Drawing -----------------------------------------------------------------
 
 func _draw() -> void:
 	if sim == null:
 		return
 	for tower in sim.towers:
-		if not _has_tower_art(tower.data.id):
+		if tower.is_hero():
+			if art == null:
+				_draw_hero(tower.hero.id, tower.position, 1.0)
+		elif not _has_tower_art(tower.data.id):
 			_draw_tower(tower.data, tower.position, 1.0)
 	for tower in sim.towers:
 		_draw_level(tower)
@@ -186,6 +263,8 @@ func _draw() -> void:
 		_draw_range(selected.position, selected.attack_range, Color(1, 1, 1, 0.55))
 		if selected.aura_radius > 0.0 and selected.aura_damage > 0.0:
 			_draw_range(selected.position, selected.aura_radius, Color(0.75, 0.5, 1.0, 0.5))
+		if selected.is_hero():
+			_draw_range(selected.position, sim.hero_aura_radius(), Color(UiStyle.GOLD, 0.6))
 	_draw_enemy_ground()
 	for structure in sim.structures:
 		_draw_structure(structure)
@@ -206,6 +285,9 @@ func _draw() -> void:
 
 ## Small gems under a tower: one per level above the first, gold once it has ascended.
 func _draw_level(tower: SimTower) -> void:
+	if tower.is_hero():
+		_draw_hero_level(tower)
+		return
 	var gems := tower.level - 1 + (1 if tower.ascendancy != null else 0)
 	if gems <= 0:
 		return
@@ -439,6 +521,10 @@ func _draw_effects() -> void:
 			&"text":
 				var rise := Vector2(0, -30.0 * (1.0 - fade))
 				draw_string(_font, effect.position + rise, effect.text, HORIZONTAL_ALIGNMENT_CENTER, 60, 18, Color(effect.color, fade))
+			&"hero_blast":
+				var spread := effect.radius * (0.5 + 0.5 * (1.0 - fade))
+				draw_circle(effect.position, spread, Color(effect.color, 0.22 * fade))
+				draw_arc(effect.position, spread, 0.0, TAU, 72, Color(effect.color.lightened(0.4), fade), 4.0, true)
 			&"leak":
 				draw_circle(effect.position, 30.0, Color(UiStyle.BAD, 0.5 * fade))
 
@@ -450,7 +536,13 @@ func _draw_cursor() -> void:
 	if not aiming.is_empty():
 		_draw_aim()
 		return
+	if not aiming_hero.is_empty():
+		_draw_hero_aim()
+		return
 	var cell_size := float(map.cell_size)
+	if not summoning.is_empty() or moving != null:
+		_draw_hero_cursor()
+		return
 	var rect := Rect2(Vector2(hover_cell) * cell_size, Vector2(cell_size, cell_size))
 	if placing.is_empty():
 		draw_rect(rect, Color(1, 1, 1, 0.06))
@@ -502,6 +594,77 @@ func _draw_build_grid() -> void:
 		draw_line(Vector2(x * cell_size, 0), Vector2(x * cell_size, board.y), Color(1, 1, 1, 0.07))
 	for y in range(1, map.grid_size.y):
 		draw_line(Vector2(0, y * cell_size), Vector2(board.x, y * cell_size), Color(1, 1, 1, 0.07))
+
+
+# --- Heroes ------------------------------------------------------------------
+
+## A hero's board sprite standing on its cell, for maps drawn without art.
+func _draw_hero(hero_id: StringName, center: Vector2, alpha: float) -> void:
+	var sprite := hero_sprite(hero_id)
+	if sprite == null:
+		draw_circle(center, 20.0, Color(UiStyle.GOLD, alpha))
+		return
+	var size := sprite.get_size() * BoardArt.SCALE
+	var feet := center + Vector2(0, BoardArt.TOWER_BASE_DROP * BoardArt.SCALE + 4.0)
+	draw_texture_rect(sprite, Rect2(feet - Vector2(size.x * 0.5, size.y), size), false, Color(1, 1, 1, alpha))
+
+
+static func hero_sprite(hero_id: StringName) -> Texture2D:
+	var path := "res://assets/art/heroes/board/%s.png" % hero_id
+	return load(path) if ResourceLoader.exists(path) else null
+
+
+## A hero's level under its feet, as a small gold number.
+func _draw_hero_level(tower: SimTower) -> void:
+	var at := tower.position + Vector2(-20, 40)
+	var text := "Lv %d" % tower.hero_level_now()
+	draw_string_outline(_font, at, text, HORIZONTAL_ALIGNMENT_CENTER, 40, 14, 4, Color(0, 0, 0, 0.8))
+	draw_string(_font, at, text, HORIZONTAL_ALIGNMENT_CENTER, 40, 14, UiStyle.GOLD)
+
+
+## The tile a hero would be summoned or marched to, with its reach and its aura.
+func _draw_hero_cursor() -> void:
+	var map := sim.config.map
+	var cell_size := float(map.cell_size)
+	var rect := Rect2(Vector2(hover_cell) * cell_size, Vector2(cell_size, cell_size))
+	var hero_id := summoning if moving == null else moving.hero.id
+	var error := sim.summon_error(hero_id, hover_cell) if moving == null else sim.move_error(moving, hover_cell)
+	var valid := error.is_empty()
+	if art != null:
+		_draw_build_grid()
+	draw_rect(rect, VALID if valid else INVALID)
+	draw_rect(rect, Color(VALID if valid else INVALID, 0.9), false, 2.0)
+	var center := map.cell_center(hover_cell)
+	var hero := sim.hero_data(hero_id)
+	if hero != null:
+		_draw_range(center, hero.attack.attack_range, Color(1, 1, 1, 0.45))
+		_draw_range(center, sim.hero_aura_radius(), Color(UiStyle.GOLD, 0.45))
+	_draw_hero(hero_id, center, 0.7)
+
+
+## The reach of the hero ability being aimed, around the mouse.
+func _draw_hero_aim() -> void:
+	var tower := sim.hero_tower(aiming_hero)
+	if tower == null:
+		return
+	var ability := tower.hero_ability()
+	var radius := ability.radius_cells * sim.config.map.cell_size
+	var color := UiStyle.GOLD if tower.hero.element.is_empty() else sim.config.element_color(tower.hero.element).lightened(0.25)
+	draw_circle(_mouse, radius, Color(color, 0.12))
+	draw_arc(_mouse, radius, 0.0, TAU, 72, Color(color, 0.95), 3.0, true)
+	for enemy in sim.enemies:
+		if enemy.alive and enemy.position.distance_to(_mouse) <= radius:
+			draw_arc(enemy.position, _enemy_radius(enemy) + 5.0, 0.0, TAU, 20, Color(1, 1, 1, 0.8), 2.0, true)
+
+
+func _on_hero_ability_used(tower: SimTower, ability: HeroAbility, points: PackedVector2Array) -> void:
+	var color := UiStyle.GOLD if tower.hero.element.is_empty() else sim.config.element_color(tower.hero.element)
+	var radius := ability.radius_cells * sim.config.map.cell_size
+	if ability.target == HeroAbility.Target.BOARD:
+		radius = sim.config.map.size_in_pixels().x * 0.5
+	for point in points:
+		var effect := _add_effect(&"hero_blast", 0.6, point, color)
+		effect.radius = radius
 
 
 # --- Effects -----------------------------------------------------------------

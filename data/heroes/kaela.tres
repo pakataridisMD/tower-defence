@@ -1,0 +1,63 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/hero_data.gd" id="hero"]
+[ext_resource type="Script" path="res://scripts/data/hero_ability.gd" id="ability"]
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="status"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod"]
+[sub_resource type="Resource" id="S1"]
+script = ExtResource("tower")
+id = &"kaela"
+display_name = "Kaela Stormrider"
+description = "A lance of lightning that jumps through five enemies."
+elements = Array[StringName]([&"storm"])
+tags = Array[StringName]([&"hero"])
+cost = 1
+damage = 22.0
+attacks_per_second = 1.4
+attack_range = 190.0
+chain_range = 150.0
+chain_falloff = 0.1
+chain_count = 5
+
+[sub_resource type="Resource" id="S2"]
+script = ExtResource("ability")
+display_name = "Thunder Charge"
+description = "Kaela rides the road on Thunderclap, knocking every enemy back two cells."
+cooldown = 70.0
+target = 2
+damage = 60.0
+knockback = 128.0
+
+[sub_resource type="Resource" id="S3"]
+script = ExtResource("ability")
+display_name = "Thunder Charge"
+description = "Kaela rides the road, knocking every enemy back two cells and stunning them for 2 seconds."
+cooldown = 70.0
+target = 2
+damage = 80.0
+hold_seconds = 2.0
+knockback = 128.0
+
+[sub_resource type="Resource" id="S4"]
+script = ExtResource("mod")
+stat = &"attacks_per_second"
+kind = 1
+value = 0.25
+
+[resource]
+script = ExtResource("hero")
+id = &"kaela"
+display_name = "Kaela Stormrider"
+title = "Marshal of the Steppe"
+blurb = "First rider of the Galeborn, who had never ridden in the direction of retreat."
+order = 2
+element = &"storm"
+joins_after = &"storm_2"
+attack = SubResource("S1")
+aura = Array[ExtResource("mod")]([SubResource("S4")])
+aura_text = "+25% attack speed"
+ability = SubResource("S2")
+ultimate = SubResource("S3")
+ultimate_text = "Also stuns for 2 s"
+barks = PackedStringArray("Ride!", "Thunderclap, with me!", "We don't ride backwards.")

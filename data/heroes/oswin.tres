@@ -1,0 +1,72 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/hero_data.gd" id="hero"]
+[ext_resource type="Script" path="res://scripts/data/hero_ability.gd" id="ability"]
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="status"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod"]
+[sub_resource type="Resource" id="S1"]
+script = ExtResource("tower")
+id = &"oswin"
+display_name = "Oswin the White Lantern"
+description = "White flame that runs through every enemy in a line, in each one's weakest element."
+elements = Array[StringName]([])
+tags = Array[StringName]([&"hero", &"prismatic"])
+cost = 1
+damage = 120.0
+attacks_per_second = 1.0
+attack_range = 240.0
+chain_range = 200.0
+chain_count = 6
+
+[sub_resource type="Resource" id="S2"]
+script = ExtResource("ability")
+display_name = "White Flame"
+description = "Every enemy within 5 cells under half its health burns away. Bosses take a huge blow."
+cooldown = 90.0
+target = 1
+radius_cells = 5.0
+damage = 300.0
+boss_damage_multiplier = 4.0
+execute_below = 0.5
+
+[sub_resource type="Resource" id="S3"]
+script = ExtResource("ability")
+display_name = "White Flame"
+description = "Burns away every weakened enemy within 5 cells, hits bosses hard, and every hero's ability is ready again."
+cooldown = 90.0
+target = 1
+radius_cells = 5.0
+damage = 300.0
+boss_damage_multiplier = 4.0
+execute_below = 0.5
+resets_heroes = true
+
+[sub_resource type="Resource" id="S4"]
+script = ExtResource("mod")
+stat = &"damage"
+kind = 1
+value = 0.25
+
+[sub_resource type="Resource" id="S5"]
+script = ExtResource("mod")
+stat = &"attack_range"
+kind = 1
+value = 0.1
+
+[resource]
+script = ExtResource("hero")
+id = &"oswin"
+display_name = "Oswin the White Lantern"
+title = "Master of the Order of the Spire"
+blurb = "The Grey Lantern, back from the road of the dead with the light of every fallen city."
+order = 15
+arrives_in = &"converge_3"
+arrives_at_wave = 17
+attack = SubResource("S1")
+aura = Array[ExtResource("mod")]([SubResource("S4"), SubResource("S5")])
+aura_text = "+25% damage and +10% range"
+ability = SubResource("S2")
+ultimate = SubResource("S3")
+ultimate_text = "Every other hero's ability is ready again"
+barks = PackedStringArray("Light's on. Let's go.", "Every light you lost, I kept.", "A long way round. Worth it.")

@@ -315,6 +315,12 @@ func record_stage(sim: RunSim) -> Dictionary:
 		result["first_clear_points"] = stage.first_clear_points
 	result["first_win"] = earned > 0 and before == 0
 	result["best"] = stars(stage.id)
+	var joined: Array[HeroData] = []
+	if earned > 0 and before == 0:
+		for hero in heroes_in_order():
+			if hero.joins_after == stage.id or hero.arrives_in == stage.id:
+				joined.append(hero)
+	result["heroes_joined"] = joined
 	if sim.config.campaign != null and not campaign_was_done:
 		result["campaign_complete"] = is_campaign_complete(sim.config.campaign.id)
 	return result
@@ -359,6 +365,84 @@ func story_before_stage(story: Story, stage_id: StringName) -> Array[StringName]
 		if not result.has(id):
 			result.append(id)
 	return result
+
+
+# --- Heroes ----------------------------------------------------------------------
+
+func heroes_in_order() -> Array[HeroData]:
+	var result: Array[HeroData] = []
+	result.assign(registry.heroes.values())
+	result.sort_custom(func(a: HeroData, b: HeroData) -> bool: return a.order < b.order)
+	return result
+
+
+## True once a hero has joined: from the start, or by winning the stage that brings them.
+func is_hero_joined(hero_id: StringName) -> bool:
+	var hero: HeroData = registry.heroes.get(hero_id)
+	if hero == null:
+		return false
+	if hero.joins_after.is_empty() and hero.arrives_in.is_empty():
+		return true
+	for stage_id in [hero.joins_after, hero.arrives_in]:
+		if not stage_id.is_empty() and stars(stage_id) > 0:
+			return true
+	return false
+
+
+func joined_heroes() -> Array[HeroData]:
+	var result: Array[HeroData] = []
+	for hero in heroes_in_order():
+		if is_hero_joined(hero.id):
+			result.append(hero)
+	return result
+
+
+## The heroes the next run brings: the ones picked, or if none are, the most recent to join.
+func party() -> Array[HeroData]:
+	var result: Array[HeroData] = []
+	for id in profile.hero_party:
+		var hero: HeroData = registry.heroes.get(id)
+		if hero != null and is_hero_joined(id) and result.size() < HeroData.MAX_PARTY:
+			result.append(hero)
+	if result.is_empty():
+		var joined := joined_heroes()
+		joined.reverse()
+		for hero in joined:
+			if result.size() >= HeroData.MAX_PARTY:
+				break
+			result.append(hero)
+		result.sort_custom(func(a: HeroData, b: HeroData) -> bool: return a.order < b.order)
+	return result
+
+
+## Adds a joined hero to the party, or takes them out. A full party drops its first hero to make
+## room. Returns false for a hero who has not joined.
+func toggle_party_hero(hero_id: StringName) -> bool:
+	if not is_hero_joined(hero_id):
+		return false
+	var ids: Array[StringName] = []
+	for hero in party():
+		ids.append(hero.id)
+	if ids.has(hero_id):
+		ids.erase(hero_id)
+	else:
+		if ids.size() >= HeroData.MAX_PARTY:
+			ids.remove_at(0)
+		ids.append(hero_id)
+	profile.hero_party = ids
+	return true
+
+
+## Adds the party, and any hero who arrives during the stage, to a run's config.
+func add_heroes(config: RunConfig) -> RunConfig:
+	if config == null:
+		return null
+	config.heroes = party()
+	if config.stage != null:
+		for hero in heroes_in_order():
+			if hero.arrives_in == config.stage.id and not config.heroes.has(hero):
+				config.arriving_heroes.append(hero)
+	return config
 
 
 # --- Internals -------------------------------------------------------------------

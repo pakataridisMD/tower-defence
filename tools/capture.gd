@@ -6,6 +6,7 @@ extends Node
 ## Add --quick after `--` to skip the run and only take the menu, the meta tree and the skill web.
 ## Add --ui to take the menu and the HUD at its busiest instead: a tower selected, skills cast, one
 ## being aimed.
+## Add --heroes to take the campaign party picker and a battle with three heroes on the board.
 ## Add --campaign to take the campaign map and a battle in each biome instead (each battle jumps
 ## straight to a late wave with plenty of gold, so the board is busy).
 ## Add --story to take the cinematic player, a Herald's boss banner, the assault on the citadel and
@@ -28,6 +29,7 @@ var _quick := false
 var _campaign := false
 var _ui := false
 var _story := false
+var _heroes := false
 
 
 func _ready() -> void:
@@ -43,10 +45,14 @@ func _ready() -> void:
 			_ui = true
 		elif arg == "--story":
 			_story = true
+		elif arg == "--heroes":
+			_heroes = true
 	DirAccess.make_dir_recursive_absolute(_out)
 	Progress.use_memory_profile(_demo_profile())
 	if _story:
 		_run_story()
+	elif _heroes:
+		_run_heroes()
 	elif _ui:
 		_run_ui()
 	elif _campaign:
@@ -101,6 +107,49 @@ func _run_ui() -> void:
 	game._cast_skill(&"entangle", _crowd(sim))
 	await _wait(0.15)
 	await _shot("skill_cast")
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+## The party picker, then a battle with the party summoned: one hero selected, one ability aimed.
+func _run_heroes() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	var screen := CAMPAIGN_SCENE.instantiate() as CampaignScreen
+	add_child(screen)
+	await _wait(0.4)
+	screen.select(&"storm_3")
+	await _wait(0.3)
+	await _shot("heroes_party")
+	screen.free()
+	Progress.active_stage = &"storm_3"
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.3)
+	var sim := game.sim
+	sim.gold = 3000
+	sim.tree.points = 14
+	var bot := AutoPlayer.for_sim(sim)
+	bot.build_towers()
+	await _wait(0.3)
+	var heroes := sim.hero_towers()
+	if not heroes.is_empty():
+		game.board.select(heroes[0])
+	await _wait(0.3)
+	await _shot("heroes_building")
+	sim.wave_index = 8
+	game._start_wave()
+	await _until(func() -> bool: return sim.time_in_wave > 10.0 or sim.is_over())
+	if heroes.size() > 1:
+		var target := _crowd(sim)
+		game._begin_hero(heroes[1].hero.id)
+		Input.warp_mouse(game.board.to_global(target))
+		_hover(game.board.to_global(target))
+		await _wait(0.2)
+		await _shot("heroes_aiming")
+		if game.board.aiming_hero == heroes[1].hero.id:
+			game._cast_hero(heroes[1].hero.id, target)
+		await _wait(0.15)
+		await _shot("heroes_ability")
 	print("Screenshots saved to ", _out)
 	get_tree().quit()
 

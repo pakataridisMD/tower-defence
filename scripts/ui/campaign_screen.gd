@@ -34,6 +34,9 @@ var _story: Label
 var _preview: TextureRect
 var _details: RichTextLabel
 var _begin: Button
+var _party_title: Label
+var _party_grid: GridContainer
+var _party_buttons: Dictionary[StringName, KeyButton] = {}
 
 
 func _ready() -> void:
@@ -121,7 +124,7 @@ func _build_panel() -> void:
 	_preview.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_preview.custom_minimum_size = Vector2(540, 270)
+	_preview.custom_minimum_size = Vector2(540, 230)
 	column.add_child(_preview)
 	_details = RichTextLabel.new()
 	_details.bbcode_enabled = true
@@ -131,6 +134,7 @@ func _build_panel() -> void:
 	_details.add_theme_font_size_override("normal_font_size", 17)
 	_details.add_theme_font_size_override("bold_font_size", 17)
 	column.add_child(_details)
+	_build_party(column)
 	var buttons := HBoxContainer.new()
 	buttons.add_theme_constant_override("separation", 12)
 	column.add_child(buttons)
@@ -142,6 +146,49 @@ func _build_panel() -> void:
 	back.custom_minimum_size = Vector2(200, 60)
 	back.pressed.connect(back_to_menu)
 	buttons.add_child(back)
+
+
+## The heroes who have joined, to pick the party from. Gold frames mark the ones going.
+func _build_party(column: VBoxContainer) -> void:
+	_party_title = UiStyle.label("", 20)
+	column.add_child(_party_title)
+	_party_grid = GridContainer.new()
+	_party_grid.columns = 8
+	_party_grid.add_theme_constant_override("h_separation", 6)
+	_party_grid.add_theme_constant_override("v_separation", 6)
+	column.add_child(_party_grid)
+	for hero in Progress.meta.heroes_in_order():
+		var hero_id := hero.id
+		var button := UiStyle.key_button("", 14)
+		button.icon = Hud.hero_portrait(hero_id)
+		button.expand_icon = true
+		button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		button.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		button.custom_minimum_size = Vector2(60, 60)
+		button.pressed.connect(func() -> void:
+			Progress.toggle_party_hero(hero_id)
+			SoundPlayer.sfx(&"ui_toggle")
+			_refresh_party())
+		_party_grid.add_child(button)
+		_party_buttons[hero_id] = button
+	_refresh_party()
+
+
+func _refresh_party() -> void:
+	var meta := Progress.meta
+	var party := meta.party()
+	var joined := meta.joined_heroes()
+	_party_title.text = "Heroes  ·  pick up to %d  ·  F1-F3 in a run" % HeroData.MAX_PARTY
+	for hero in meta.heroes_in_order():
+		var button := _party_buttons[hero.id]
+		var has_joined := joined.has(hero)
+		button.visible = has_joined
+		var slot := party.find(hero)
+		button.outline = UiStyle.GOLD if slot >= 0 else Color(0, 0, 0, 0)
+		button.key_text = "F%d" % (slot + 1) if slot >= 0 else ""
+		button.modulate = Color.WHITE if slot >= 0 else Color(1, 1, 1, 0.6)
+		button.tooltip_text = "%s, %s\n%s\n%s" % [hero.display_name, hero.title, hero.blurb,
+				"In the party. Click to leave behind." if slot >= 0 else "Click to bring."]
 
 
 func select(stage_id: StringName) -> void:

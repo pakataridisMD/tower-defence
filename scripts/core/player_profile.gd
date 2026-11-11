@@ -23,6 +23,8 @@ var stage_stars: Dictionary[StringName, int] = {}
 ## Story cinematics already played, in the order they were seen. Each plays on its own only once;
 ## the campaign map's Chronicle replays them.
 var seen_cinematics: Array[StringName] = []
+## Heroes picked for the next run, in key order. Empty brings the most recent heroes to join.
+var hero_party: Array[StringName] = []
 
 
 func to_dict() -> Dictionary:
@@ -32,6 +34,9 @@ func to_dict() -> Dictionary:
 	var seen: Array[String] = []
 	for id in seen_cinematics:
 		seen.append(String(id))
+	var party: Array[String] = []
+	for id in hero_party:
+		party.append(String(id))
 	var stars := {}
 	for id in stage_stars:
 		stars[String(id)] = stage_stars[id]
@@ -49,6 +54,7 @@ func to_dict() -> Dictionary:
 		"last_difficulty": String(last_difficulty),
 		"campaign": {"stars": stars},
 		"story": {"seen": seen},
+		"heroes": {"party": party},
 	}
 
 
@@ -86,6 +92,13 @@ static func from_dict(saved: Dictionary) -> PlayerProfile:
 			for id: Variant in seen:
 				if id is String and not (id as String).is_empty() and not profile.seen_cinematics.has(StringName(id)):
 					profile.seen_cinematics.append(StringName(id))
+	var heroes: Variant = data.get("heroes", {})
+	if heroes is Dictionary:
+		var party: Variant = (heroes as Dictionary).get("party", [])
+		if party is Array:
+			for id: Variant in party:
+				if id is String and not (id as String).is_empty() and not profile.hero_party.has(StringName(id)):
+					profile.hero_party.append(StringName(id))
 	return profile
 
 
