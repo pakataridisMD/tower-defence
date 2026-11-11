@@ -62,9 +62,11 @@ func _ready() -> void:
 	bold.fallbacks = [_font]
 	_bold = bold
 	_voice = AudioStreamPlayer.new()
+	_voice.bus = _bus(&"Voice")
 	add_child(_voice)
 	_music = AudioStreamPlayer.new()
 	_music.volume_db = MUSIC_DB
+	_music.bus = _bus(&"Music")
 	add_child(_music)
 	if story == null:
 		story = Story.shared()
@@ -72,6 +74,11 @@ func _ready() -> void:
 		queue = Progress.cinematic_queue.duplicate()
 		Progress.cinematic_queue.clear()
 	_next_cinematic()
+
+
+## Narration and music go to their own buses, so the volume settings reach them.
+static func _bus(bus_name: StringName) -> StringName:
+	return bus_name if AudioServer.get_bus_index(bus_name) >= 0 else &"Master"
 
 
 func _process(delta: float) -> void:
