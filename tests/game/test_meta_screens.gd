@@ -69,7 +69,7 @@ func test_clicking_a_meta_node_takes_it_and_spends_points() -> void:
 	_click(screen.web.screen_position(&"command_gold"))
 	assert_true(Progress.meta.tree.is_allocated(&"command_gold"))
 	assert_has(Progress.meta.profile.meta_nodes, &"command_gold")
-	assert_eq(Progress.meta.points(), 4)
+	assert_eq(Progress.meta.points(), 3, "War Chest costs 2")
 
 
 func test_a_node_without_enough_points_is_not_taken() -> void:
@@ -89,10 +89,10 @@ func test_right_click_refunds_a_meta_node_any_time() -> void:
 
 
 func test_refund_all_needs_a_second_click() -> void:
-	_use_profile(5, [&"command_gold", &"command_lives"])
+	_use_profile(5, [&"command_gold", &"command_purse"])
 	var screen = await _open(META_TREE_SCENE)
 	_press(screen.refund_all)
-	assert_true(Progress.meta.tree.is_allocated(&"command_lives"), "the first click only asks")
+	assert_true(Progress.meta.tree.is_allocated(&"command_purse"), "the first click only asks")
 	_press(screen.refund_all)
 	assert_eq(Progress.meta.profile.meta_nodes.size(), 0)
 	assert_eq(Progress.meta.points(), 5)
@@ -121,7 +121,7 @@ func test_a_new_player_sees_locked_maps_and_levels() -> void:
 
 
 func test_picking_an_unlocked_map_and_level_sets_up_the_next_run() -> void:
-	_use_profile(20, [&"expedition_serpentine", &"expedition_hard"])
+	_use_profile(20, [&"expedition_serpentine", &"expedition_scouts", &"expedition_hardened", &"expedition_hard"])
 	var menu = await _open(MENU_SCENE)
 	menu.open_page(&"skirmish")
 	_pick(_button_starting_with(menu, "Serpentine"))

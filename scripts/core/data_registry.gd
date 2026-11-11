@@ -308,6 +308,9 @@ func _validate_tree(errors: PackedStringArray, tree_name: String, nodes: Array[T
 		for link in node_data.links:
 			if not ids.has(link):
 				errors.append("%s node '%s': links to unknown node '%s'" % [tree_name, node_data.id, link])
+		for other in node_data.excludes:
+			if not ids.has(other) or other == node_data.id:
+				errors.append("%s node '%s': excludes unknown node '%s'" % [tree_name, node_data.id, other])
 	if starts == 1:
 		var graph := TreeGraph.new(nodes)
 		var reachable := graph.reachable_from_start()

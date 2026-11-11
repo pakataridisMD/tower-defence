@@ -350,11 +350,15 @@ func _run_story() -> void:
 	get_tree().quit()
 
 
-## A player a few runs in: some meta points spent, one map unlocked, a few left to spend.
+## A player some way into the campaign: the storm land done, part of the economy wing and one
+## map unlocked, a few points left to spend.
 static func _demo_profile() -> PlayerProfile:
 	var profile := PlayerProfile.new()
-	profile.meta_points_earned = 17
-	profile.meta_nodes = [&"command_gold", &"command_lives", &"mastery_range", &"expedition_serpentine"]
+	profile.meta_points_earned = 75
+	profile.meta_nodes = [&"command_gold", &"command_purse", &"command_levy", &"command_salvage", &"command_tithe",
+		&"starpath_30", &"starpath_15", &"starpath_0", &"mastery_storm", &"storm_focus", &"storm_power", &"storm_heart",
+		&"storm_haste", &"mastery_range", &"mastery_will", &"expedition_serpentine", &"arsenal_edge", &"arsenal_drill",
+		&"arsenal_cadence", &"arsenal_cadence_2"]
 	profile.runs_played = 3
 	profile.runs_won = 1
 	profile.best_waves = 10
@@ -405,6 +409,14 @@ func _run() -> void:
 	_hover(meta_tree.web.screen_position(&"arsenal_hoard"))
 	await _wait(0.2)
 	await _shot("meta_tree")
+	meta_tree.web.show_whole_tree()
+	_hover(Vector2(4, 4))
+	await _wait(0.3)
+	await _shot("meta_tree_whole")
+	meta_tree.web.zoom_by(3.0, meta_tree.web.screen_position(&"storm_heart"))
+	_hover(meta_tree.web.screen_position(&"storm_overload"))
+	await _wait(0.3)
+	await _shot("meta_tree_close")
 	meta_tree.free()
 
 	var game := GAME_SCENE.instantiate() as Game

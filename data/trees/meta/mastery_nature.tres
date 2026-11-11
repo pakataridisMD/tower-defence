@@ -5,20 +5,20 @@
 
 [sub_resource type="Resource" id="Resource_m0"]
 script = ExtResource("1_mod")
-stat = &"poison_duration"
-kind = 0
-value = 1.0
+stat = &"damage"
+kind = 1
+value = 0.02
 required_tags = Array[StringName]([&"nature"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"mastery_nature"
-display_name = "Nature Mastery"
-description = "Poison from nature towers lasts 1 second longer."
-kind = 2
-region = &"mastery"
-cost = 2
-position = Vector2(-185, 65)
-links = Array[StringName]([&"mastery_range"])
+display_name = "Nature Attunement"
+description = "Nature towers deal 2% more damage."
+kind = 1
+region = &"nature"
+cost = 3
+position = Vector2(328, 567)
+links = Array[StringName]([&"starpath_60"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])
 icon = &"leaf"

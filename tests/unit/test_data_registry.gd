@@ -92,7 +92,15 @@ func test_the_meta_tree_can_be_completed() -> void:
 		for id in graph.ids():
 			if state.allocate(id):
 				taken_any = true
-	assert_eq(state.allocated_ids().size(), graph.size(), "every meta node is reachable")
+	# Pick-one choices close their partner, so one node of each pair stays open.
+	var pairs := 0
+	for id in graph.ids():
+		for other in graph.exclusions(id):
+			if String(other) > String(id):
+				pairs += 1
+				assert_false(state.is_allocated(id) and state.is_allocated(other), "%s and %s both taken" % [id, other])
+	assert_gt(pairs, 0, "the meta tree has pick-one choices")
+	assert_eq(state.allocated_ids().size(), graph.size() - pairs, "every other meta node is reachable")
 
 
 func test_bad_meta_unlocks_are_reported() -> void:
@@ -103,13 +111,13 @@ func test_bad_meta_unlocks_are_reported() -> void:
 	node_data.unlocks_towers = [&"fire_brazier"]
 	node_data.unlocks_maps = [&"atlantis"]
 	node_data.unlocks_nodes = [&"nowhere"]
-	node_data.unlocks_difficulties = [&"nightmare"]
+	node_data.unlocks_difficulties = [&"impossible"]
 	registry.meta_tree_nodes.append(node_data)
 	var errors := "\n".join(registry.validate())
 	assert_string_contains(errors, "towers are unlocked in the in-run web")
 	assert_string_contains(errors, "unknown map 'atlantis'")
 	assert_string_contains(errors, "unknown in-run node 'nowhere'")
-	assert_string_contains(errors, "unknown difficulty 'nightmare'")
+	assert_string_contains(errors, "unknown difficulty 'impossible'")
 
 
 func test_in_run_nodes_cannot_unlock_maps() -> void:

@@ -5,20 +5,20 @@
 
 [sub_resource type="Resource" id="Resource_m0"]
 script = ExtResource("1_mod")
-stat = &"attacks_per_second"
+stat = &"damage"
 kind = 1
-value = 0.1
+value = 0.02
 required_tags = Array[StringName]([&"storm"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"mastery_storm"
-display_name = "Storm Mastery"
-description = "Storm towers attack 10% faster."
-kind = 2
-region = &"mastery"
-cost = 2
-position = Vector2(-275, 0)
-links = Array[StringName]([&"mastery_fire", &"mastery_nature"])
+display_name = "Storm Attunement"
+description = "Storm towers deal 2% more damage."
+kind = 1
+region = &"storm"
+cost = 3
+position = Vector2(655, 0)
+links = Array[StringName]([&"starpath_0"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])
 icon = &"bolt"

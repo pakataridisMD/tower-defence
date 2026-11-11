@@ -7,16 +7,16 @@
 script = ExtResource("1_mod")
 stat = &"attack_range"
 kind = 1
-value = 0.1
+value = 0.02
 
 [resource]
 script = ExtResource("2_node")
 id = &"mastery_range"
 display_name = "Long Sight"
-description = "All towers have 10% more range."
+description = "Towers have 2% more range."
 kind = 1
 region = &"mastery"
 cost = 3
-position = Vector2(-100, 0)
+position = Vector2(-112, 0)
 links = Array[StringName]([&"meta_start"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

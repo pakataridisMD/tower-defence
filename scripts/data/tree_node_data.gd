@@ -19,6 +19,9 @@ enum Kind { START, ENTRY, MINOR, NOTABLE, BRIDGE, KEYSTONE }
 ## Ids of connected nodes. Links work both ways, so each pair only needs listing on one side.
 @export var links: Array[StringName] = []
 @export var modifiers: Array[Modifier] = []
+## Ids of nodes this one is a pick-one choice with: taking either closes the others until it is
+## refunded. Works both ways, so each pair only needs listing on one side.
+@export var excludes: Array[StringName] = []
 
 @export_group("Unlocks")
 ## In-run web: ids of towers this node lets the player build.
