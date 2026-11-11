@@ -90,13 +90,25 @@ func setup(sim: RunSim) -> void:
 		_sync.set_sync_stream_volume(i, volumes[i])
 	player = _new_player(_sync)
 	player.play()
-	entrance_player = _new_player(load(ENTRANCE_FILE) as AudioStream)
+	var entrance := load(ENTRANCE_FILE) as AudioStreamOggVorbis
 	var loop := load(BOSS_LOOP_FILE) as AudioStreamOggVorbis
+	if entrance == null or loop == null:
+		push_warning("boss music missing: " + ENTRANCE_FILE + ", " + BOSS_LOOP_FILE)
 	if loop != null:
 		loop.loop = true
-	else:
-		push_warning("boss music missing: " + BOSS_LOOP_FILE)
-	boss_player = _new_player(loop)
+	entrance_player = _new_player(_wrap(entrance))
+	boss_player = _new_player(_wrap(loop))
+
+
+## The boss streams play inside a one-stream AudioStreamSynchronized, like the battle layers, so
+## _exit_tree can take the file streams out of a playback the audio server still holds at quit.
+func _wrap(stream: AudioStream) -> AudioStreamSynchronized:
+	if stream == null:
+		return null
+	var w := AudioStreamSynchronized.new()
+	w.stream_count = 1
+	w.set_sync_stream(0, stream)
+	return w
 
 
 func _new_player(stream: AudioStream) -> AudioStreamPlayer:
@@ -148,11 +160,13 @@ func _update_boss(boss: bool, delta: float) -> void:
 ## their playbacks when the game quits.
 func _exit_tree() -> void:
 	for p: AudioStreamPlayer in [player, entrance_player, boss_player]:
-		if p != null:
-			p.stop()
-			p.stream = null
-	if _sync != null:
-		for i in _sync.stream_count:
-			_sync.set_sync_stream(i, null)
+		if p == null:
+			continue
+		p.stop()
+		var sync := p.stream as AudioStreamSynchronized
+		p.stream = null
+		if sync != null:
+			for i in sync.stream_count:
+				sync.set_sync_stream(i, null)
 	_sync = null
 	_sim = null
