@@ -1,6 +1,8 @@
 """The Last Lantern: score for the opening story video (`prologue`), about 4:05.
 
-v6 (Doctor Paris: "too boring, more epic, AAA, higher tempo in the stress period, drums"):
+v7 (Doctor Paris: "too childish, more epic, fast and dark, 18+"): everything is in the minor, the
+quiet shots get a fast pulse (119 to 124 bpm) under them, and there is no celesta, harp sparkle or folk
+tune any more. v6 ("too boring, more epic, AAA, higher tempo in the stress period, drums"):
 the war in the middle runs at 136 to 150 bpm instead of 60 to 90. Vael-Orrun's march, the Ring,
 the Black Comet, Oswin's stand and the Wardens have war drums in 3+3+2, a grinding 16th-note
 ostinato, stacked low horns, a chanting choir and braams, in the manner of a modern game trailer.
@@ -17,9 +19,7 @@ One section per shot of the script (docs/story/scripts.md). Themes (see tools/mu
 import numpy as np
 
 import vocals as V
-from cues._kit import film, new, ost16
-from cues.solenne import TUNE_BASS, TUNE_CL, TUNE_HARP, TUNE_VLA
-from cues._kit import SOLENNE
+from cues._kit import film, new
 from loops.boss import HOLLOW4, drums, grind
 from score import midi
 
@@ -30,11 +30,11 @@ LINES = [14.35, 26.73, 18.81, 17.82, 21.30, 13.76, 7.89, 13.95, 10.66, 20.00, 15
 # 2 s of music after it.
 TITLE = 3.4
 SLOTS = [round((TITLE if i == 0 else 0) + 0.4 + line + 2.0, 2) for i, line in enumerate(LINES)]
-# Shot 12: 10 bars slowing to 0.8x; the final hit (bar 9) lands 3 s after her last words, leaving
+# Shot 12: 14 bars slowing to 0.8x; the final hit (bar 13) lands 3 s after her last words, leaving
 # room for the army's call-back.
 FINAL_TAIL = 7.3  # reverb and silence after the last chord, inside the last slot
 RIT12 = 0.8
-HIT_SHARE = float(np.log(1 + (RIT12 - 1) * 32 / 40) / np.log(RIT12))
+HIT_SHARE = float(np.log(1 + (RIT12 - 1) * 48 / 56) / np.log(RIT12))
 SLOTS[11] = round((0.4 + LINES[11] + 3.0) / HIT_SHARE + FINAL_TAIL, 2)
 
 
@@ -88,71 +88,81 @@ def build():
 
 
 # 1. Before the Concord... there were seven kingdoms. -----------------------------------------------
+# Darkness with a pulse: a clock, a heartbeat, the low strings starting to grind (119 bpm).
 def sea(s, sec_len):
-    a = s.section("1 sea", bars=4, meter=4, seconds=sec_len)
-    a.part("cb", "D2:16", vel="pp")
-    a.part("vc", "D3+A3:16", vel="p")
-    a.part("vln_trem", "A5+D6:8 Bb5+D6:4 A5+D6:4", vel="pp")
-    a.part("oohs", "D4+A4:4 | D4+F4+Bb4:4 | D4+G4+Bb4:4 | D4+F4+A4:4", vel="mf")
-    a.part("harp", "D3:.5 A3:.5 D4:.5 E4:.5 F4:.5 A4:.5 D5:1 | Bb2:.5 F3:.5 Bb3:.5 D4:.5 F4:.5 Bb4:.5 D5:1 | "
-                   "G2:.5 D3:.5 G3:.5 Bb3:.5 D4:.5 G4:.5 Bb4:1 | D3:.5 A3:.5 D4:.5 F4:.5 A4:.5 D5:.5 F5:1", vel="mp")
-    sw(s, a, "vln_trem", [(a.at(1), -18), (a.at(4, 4), 0)])
-    sw(s, a, "oohs", [(a.at(1), -12), (a.at(4, 4), 0)])
-    sw(s, a, "vc", [(a.at(1), -10), (a.at(2), 0)])
-    a.hits("gong", "1", bar=1, vel="p")
-    a.hits("timp:D2", [1 + i * 0.25 for i in range(16)], bar=4, vel="p")
-    # one low note that grows out of nothing, and a heartbeat
-    a.part("syn_pad", "D2+A2+D3:16", vel="mf")
-    a.part("syn_sub", "D1:16", vel="f")
-    a.part("hn_lo", "r:12 | D3:4", vel="mf")
-    sw(s, a, "syn_pad", [(a.at(1), -26), (a.at(4, 4), -2)])
-    sw(s, a, "syn_sub", [(a.at(1), -30), (a.at(4, 4), -4)])
-    sw(s, a, "hn_lo", [(a.at(4), -14), (a.at(4, 4), 0)])
-    a.hits("epic", "1", bar=1, vel="mf")
-    a.hits("taiko", "1", bar=2, vel="p", bars=2)
-    a.hits("taiko", "1 3", bar=4, vel="mf")
-    rise(s, a.at(4, 4) + 1, 2.0, gain=-6, seed=11)
+    a = s.section("1 sea", bars=10, meter=4, seconds=sec_len)
+    a.part("cb", "D2:40", vel="mp")
+    a.part("vc", "D3+A3:40", vel="p")
+    a.part("vln_trem", "D6+Eb6:24 D6+Eb6+Ab6:16", vel="pp")
+    a.part("choir", "D3+A3:16 D3+Ab3:16 D3+A3:8", vel="mp")
+    sw(s, a, "vln_trem", [(a.at(1), -20), (a.at(10, 4), 0)])
+    sw(s, a, "choir", [(a.at(1), -14), (a.at(10, 4), -2)])
+    hit(s, a.at(1), "D1", gain=-2, seed=21)
+    a.hits("gong", "1", bar=1, vel="mf")
+    a.hits("tick", [1 + i * 0.5 for i in range(8)], bar=1, vel="f", bars=4)
+    a.hits("tick", [1 + i * 0.25 for i in range(16)], bar=5, vel="f", bars=6)
+    a.hits("taiko", "1", bar=3, vel="mf", bars=4)
+    a.hits("taiko", "1 2.5 4", bar=7, vel="f", bars=4)
+    film(s, Span(a, 1, 4), "D2:4 | D2:4 | D2:4 | D2:4", "calm")
+    film(s, Span(a, 5, 6), "D2:4 | D2:4 | Eb2:4 | D2:4 | Ab1:4 | A1:4", "build")
+    # the Hollow, whispered in the low horns
+    a.part("hn_lo", "D3:3 Ab2:1 | G2:3 Eb3:1 | D3:4 | Ab2:2 A2:2", bar=7, vel="ff")
+    sw(s, a, "hn_lo", [(a.at(7), -12), (a.at(10, 4), 0)])
+    for i in range(4):
+        chant(s, a, 7 + i, "Vail:D3:1.5 Or:D3:1 Run:Ab2:1.5", men=10, gain=-8, seed=360 + i)
+    a.hits("timp:D2", [1 + i * 0.25 for i in range(16)], bar=10, vel="f")
+    a.hits("toms", [3 + i * 0.25 for i in range(8)], bar=10, vel="ff")
+    rise(s, a.at(10, 4) + 1, 2.0, gain=-3, seed=11)
 
 
 # 2. Six kingdoms, six magics; the seventh studied them all. And its king wanted all of it. ---------
+# Six crowns, one hit each, over an ostinato that tightens (124 bpm); then the seventh, colourless.
+KINGDOMS = [("Dm", "D2", "D4"), ("Bb", "Bb1", "F4"), ("Gm", "G1", "G4"), ("Eb", "Eb2", "Bb4"),
+            ("C", "C2", "C5"), ("A", "A1", "C#5")]
+CROWN = {"Dm": "D3+F3+A3", "Bb": "D3+F3+Bb3", "Gm": "D3+G3+Bb3", "Eb": "Eb3+G3+Bb3", "C": "E3+G3+C4",
+         "A": "E3+A3+C#4"}
+
+
 def seven(s, sec_len):
-    b = s.section("2 seven", bars=6, meter=5, seconds=sec_len)
-    # six lights, one every two and a half beats, each held until the seventh
-    b.part("hn_solo", "D4:20", vel="mp")
-    b.part("cl", "A4:17.5", bar=1, beat=3.5, vel="mp")
-    b.part("fl", "F#5:15", bar=2, vel="mp")
-    b.part("ob", "E5:12.5", bar=2, beat=3.5, vel="p")
-    b.part("vln", "A5:10", bar=3, vel="p")
-    b.part("oohs", "A3+D4+F#4+A4:7.5", bar=3, beat=3.5, vel="mp")
-    b.part("celesta", "D5:2.5 A5:2.5 | F#6:2.5 E6:2.5 | A6:2.5 D7:2.5", vel="mf")
-    b.part("harp", " | ".join(["D3:.5 A3:.5 D4:.5 E4:.5 F#4:.5 A4:.5 D5:.5 A4:.5 F#4:.5 E4:.5"] * 4), vel="mp")
-    b.part("cb", "D2:20", vel="p")
-    b.part("vc", "D3:20", vel="p")
-    b.part("vla", "D4:20", vel="pp")
-    film(s, Span(b, 1, 2), "D2:5 | D2:5", "calm")
-    film(s, Span(b, 3, 2), "D2:5 | D2:5", "build")
-    # the seventh: no colour at all, and the war begins to stir under it
-    b.part("tuba", "Ab1:10", bar=5, vel="f")
-    b.part("tbn", "D3+Ab2:10", bar=5, vel="f")
-    b.part("hn_lo", "Ab2+D3:10", bar=5, vel="ff")
-    b.part("bsn", "D2:10", bar=5, vel="mp")
-    b.part("vln_trem", "D6+Eb6:10", bar=5, vel="mp")
-    b.part("choir", "D3+Ab3:10", bar=5, vel="mf")
-    b.part("syn_bass", "Ab1:10", bar=5, vel="ff")
-    b.part("syn_sub", "Ab1:10", bar=5, vel="ff")
-    sw(s, b, "vln_trem", [(b.at(5), -6), (b.at(6, 5), 4)])
-    sw(s, b, "choir", [(b.at(5), -6), (b.at(6, 5), 4)])
-    b.part("vc_spic", ost16("D2:5", 5), bar=6, vel="ff")
-    b.part("cb_spic", ost16("D2:5", 5), bar=6, vel="ff", transpose=-12)
-    sw(s, b, "vc_spic", [(b.at(6), -16), (b.at(6, 5), 0)])
-    sw(s, b, "cb_spic", [(b.at(6), -16), (b.at(6, 5), 0)])
-    b.hits("epic", "1", bar=5, vel="fff")
-    b.hits("gong", "1", bar=5, vel="mf")
-    b.hits("sus_cym", "1", bar=4, vel="mp")
-    hit(s, b.at(5), "Ab1", gain=-3, seed=2)
-    b.hits("taiko", "1 2.5 4", bar=6, vel="ff")
-    b.hits("toms", [4 + i * 0.25 for i in range(8)], bar=6, vel="ff")
-    rise(s, b.at(6, 5) + 1, 2.5, gain=-2, seed=12)
+    b = s.section("2 seven", bars=15, meter=4, seconds=sec_len)
+    bass = " | ".join(f"{r}:4 | {r}:4" for _, r, _ in KINGDOMS)
+    film(s, Span(b, 1, 6), " | ".join(bass.split(" | ")[:6]), "build")
+    film(s, Span(b, 7, 6), " | ".join(bass.split(" | ")[6:]), "drive")
+    b.part("vc_spic", "r:16 | " + grind(" | ".join(bass.split(" | ")[4:]), 38), vel="ff")
+    b.part("cb_spic", "r:16 | " + grind(" | ".join(bass.split(" | ")[4:]), 26), vel="ff")
+    sw(s, b, "vc_spic", [(b.at(5), -12), (b.at(9), 0)])
+    sw(s, b, "cb_spic", [(b.at(5), -12), (b.at(9), 0)])
+    b.hits("taiko", "1 2.5 4", bar=1, vel="f", bars=6)
+    drums(Span(b, 7, 6), 6)
+    b.part("hn_solo", " ".join(f"{m}:8" for _, _, m in KINGDOMS), vel="ff")
+    b.part("hn_lo", " ".join(f"{CROWN[c]}:8" for c, _, _ in KINGDOMS), vel="ff")
+    b.part("tbn", " ".join(f"{CROWN[c]}:8" for c, _, _ in KINGDOMS), vel="f", transpose=-12)
+    b.part("tuba", " ".join(f"{r}:8" for _, r, _ in KINGDOMS), vel="f")
+    b.part("choir", " ".join(f"{CROWN[c]}:8" for c, _, _ in KINGDOMS), vel="f", transpose=12)
+    b.part("vln_trem", " ".join(f"{m}:8" for _, _, m in KINGDOMS), vel="mf", transpose=12)
+    sw(s, b, "choir", [(b.at(1), -8), (b.at(12, 4), 2)])
+    for i, (_, r, _) in enumerate(KINGDOMS):
+        hit(s, b.at(1 + 2 * i), r, gain=-6 + i, seed=50 + i)
+        b.hits("anvil", "1", bar=1 + 2 * i, vel="f")
+    # the seventh: no colour at all
+    b.part("tuba", "Ab1:12", bar=13, vel="ff")
+    b.part("tbn", "D3+Ab2:12", bar=13, vel="ff")
+    b.part("hn_lo", "Ab2+D3:12", bar=13, vel="fff")
+    b.part("vln_trem", "D6+Eb6:12", bar=13, vel="f")
+    b.part("choir", "D3+Ab3+Eb4:12", bar=13, vel="ff")
+    b.part("choir_hi", "Eb5+E5:12", bar=13, vel="f")
+    b.part("syn_bass", "Ab1:12", bar=13, vel="fff")
+    b.part("syn_sub", "Ab1:12", bar=13, vel="ff")
+    b.part("vc_spic", grind("Ab1:12", 38), bar=13, vel="ff")
+    b.part("cb_spic", grind("Ab1:12", 26), bar=13, vel="ff")
+    hit(s, b.at(13), "Ab1", gain=0, seed=2)
+    b.hits("epic", "1", bar=13, vel="fff")
+    b.hits("gong", "1", bar=13, vel="f")
+    b.hits("taiko", "1 2.5 4", bar=13, vel="ff", bars=3)
+    b.hits("snare", [1 + i * 0.25 for i in range(16)], bar=14, vel="f", bars=2)
+    b.hits("toms", [1 + i * 0.25 for i in range(16)], bar=15, vel="fff")
+    shout(s, b.at(15, 3), "Ha!", seed=8, gain=-2)
+    rise(s, b.at(15, 4) + 1, 2.0, gain=0, seed=12)
 
 
 # 3. Vael-Orrun, the High King. Where his armies marched, fire would not burn. ----------------------
@@ -199,44 +209,44 @@ def vael_orrun(s, sec_len):
 
 
 # 4. The six stood together anyway, and drove him out past the edge of the stars. The Ring. --------
-# The Lantern at 142 bpm, in broad horns over the drums: the first hero moment.
-H4 = ["D", "D", "G", "D/F#", "Em", "A", "D", "D", "Bb", "C", "Dhit", "Dhit"]
+# The Long Defeat (the Lantern in the minor) at 142 bpm, in broad horns over the war drums.
+H4 = ["Dm", "Dm", "Bb", "Gm", "C", "A", "Dm", "Dm", "Bb", "C", "Dhit", "Dhit"]
 
 
 def ring(s, sec_len):
     d = s.section("4 the ring", bars=12, meter=4, seconds=sec_len)
-    melody = "D4:4 | A4:4 | B4:3 A4:1 | G4:2 F#4:2 | G4:3 F#4:1 | E4:2 C#4:2 | D4:4 | D4:4"
+    melody = "D4:4 | A4:4 | Bb4:3 A4:1 | G4:2 F4:2 | G4:3 F4:1 | E4:2 C#4:2 | D4:4 | D4:4"
     push = "F4:2 G4:2 | G4:2 A4:2 | D5:8"
-    bass = "D2:4 | D2:4 | G1:4 | F#1:4 | E2:4 | A1:4 | D2:4 | D2:4"
+    bass = "D2:4 | D2:4 | Bb1:4 | G1:4 | C2:4 | A1:4 | D2:4 | D2:4"
     film(s, Span(d, 1, 8), bass, "drive", melody=melody, mel_transpose=-12)
     film(s, Span(d, 9, 2), "Bb1:4 | C2:4", "drive", melody="F4:2 G4:2 | G4:2 A4:2", mel_transpose=-12)
     film(s, Span(d, 11, 2), "D2:4 | D2:4", "hit")
     drums(Span(d, 1, 10), 10)
+    d.part("vc_spic", grind(bass + " | Bb1:4 | C2:4", 38), vel="ff")
+    d.part("cb_spic", grind(bass + " | Bb1:4 | C2:4", 26), vel="ff")
     d.part("hn_solo", melody + " | " + push, vel="fff")
     d.part("vln", melody + " | " + push, vel="ff", transpose=12)
-    d.part("tpt", "r:4 | r:4 | r:4 | r:4 | " + "G4:3 F#4:1 | E4:2 C#4:2 | D4:4 | D4:4 | " + push, vel="ff",
+    d.part("tpt", "r:4 | r:4 | r:4 | r:4 | " + "G4:3 F4:1 | E4:2 C#4:2 | D4:4 | D4:4 | " + push, vel="ff",
            transpose=12)
     v = {
-        "choir": {"D": "D4+F#4+A4", "D/F#": "D4+F#4+A4", "G": "D4+G4+B4", "Em": "E4+G4+B4", "A": "C#4+E4+A4",
-                  "Bb": "D4+F4+Bb4", "C": "E4+G4+C5", "Dhit": "D4+F#4+A4+D5"},
-        "hn": {"D": "F#3+A3+D4", "D/F#": "F#3+A3+D4", "G": "G3+B3+D4", "Em": "G3+B3+E4", "A": "E3+A3+C#4",
-               "Bb": "F3+Bb3+D4", "C": "G3+C4+E4", "Dhit": "F#3+A3+D4"},
-        "tbn": {"D": "D3+A3", "D/F#": "F#2+D3", "G": "G2+D3", "Em": "E3+B3", "A": "A2+E3", "Bb": "Bb2+F3",
-                "C": "C3+G3", "Dhit": "D3+A3"},
-        "tuba": {"D": "D2", "D/F#": "F#1", "G": "G1", "Em": "E2", "A": "A1", "Bb": "Bb1", "C": "C2", "Dhit": "D2"},
-        "vla": {"D": "F#4+A4", "D/F#": "F#4+A4", "G": "G4+B4", "Em": "G4+B4", "A": "E4+A4", "Bb": "F4+Bb4",
-                "C": "G4+C5", "Dhit": "F#4+A4"},
+        "choir": {"Dm": "D4+F4+A4", "Bb": "D4+F4+Bb4", "Gm": "D4+G4+Bb4", "C": "E4+G4+C5", "A": "C#4+E4+A4",
+                  "Dhit": "D4+F4+A4+D5"},
+        "hn": {"Dm": "F3+A3+D4", "Bb": "F3+Bb3+D4", "Gm": "G3+Bb3+D4", "C": "G3+C4+E4", "A": "E3+A3+C#4",
+               "Dhit": "F3+A3+D4"},
+        "tbn": {"Dm": "D3+A3", "Bb": "Bb2+F3", "Gm": "G2+D3", "C": "C3+G3", "A": "A2+E3", "Dhit": "D3+A3"},
+        "tuba": {"Dm": "D2", "Bb": "Bb1", "Gm": "G1", "C": "C2", "A": "A1", "Dhit": "D2"},
+        "vla": {"Dm": "F4+A4", "Bb": "F4+Bb4", "Gm": "G4+Bb4", "C": "G4+C5", "A": "E4+A4", "Dhit": "F4+A4"},
     }
     for inst, vo in v.items():
         d.part(inst, chords(H4, vo), vel="ff")
     d.part("cb", chords(H4, v["tuba"]), vel="ff")
     d.part("vc", chords(H4, v["tuba"]), vel="ff", transpose=12)
-    d.part("choir_hi", "r:4 | r:4 | r:4 | r:4 | r:4 | r:4 | r:4 | r:4 | D5:4 | E5:4 | F#5:4 | F#5:4", vel="ff")
-    d.part("bells", "r:4 | r:4 | r:4 | r:4 | r:4 | r:4 | r:4 | r:4 | r:4 | r:4 | D4:4 | A3:4", vel="f")
+    d.part("choir_hi", "r:4 | r:4 | r:4 | r:4 | r:4 | r:4 | r:4 | r:4 | D5:4 | E5:4 | F5:4 | F5:4", vel="ff")
     d.part("vln_trem", "Bb5+D6:4 | C6+E6:4", bar=9, vel="f")
     sw(s, d, "vln_trem", [(d.at(9), -8), (d.at(10, 4), 3)])
     hit(s, d.at(1), "D2", gain=-1, seed=4)
     d.hits("crash", "1", bar=1, vel="ff")
+    d.hits("anvil", "2 4", bar=1, vel="f", bars=10)
     d.hits("toms", [1 + i * 0.25 for i in range(16)], bar=10, vel="ff")
     rise(s, d.at(11), 2.0, gain=-2, seed=14)
     hit(s, d.at(11), "D2", gain=2, seed=5)
@@ -249,60 +259,67 @@ def ring(s, sec_len):
 
 
 # 5. The crown shattered into the Heartstone; they gave their lives to hold the door. Solenne. -----
+# A requiem over a driving pulse (122 bpm), then the city rising on the ruins, still in the minor.
 def solenne(s, sec_len):
-    e = s.section("5 solenne", bars=16, meter=3, seconds=sec_len)
-    # the crown shatters: glitter falling, a gong, a low boom
-    shards = "D7:.25 A6:.25 F6:.25 D6:.25 A5:.25 F5:.25 D5:1.5"
-    e.part("celesta", shards, vel="f")
-    e.part("glock", shards, vel="mf")
-    e.hits("gong", "1", bar=1, vel="f")
+    e = s.section("5 solenne", bars=12, meter=4, seconds=sec_len)
+    # the crown shatters: a high string cluster, a gong, a low boom
+    e.part("vln_trem", "D6+Eb6+Ab6:4", vel="f")
+    e.hits("gong", "1", bar=1, vel="ff")
     e.hits("crash", "1", bar=1, vel="f")
-    hit(s, e.at(1), "D2", gain=-4, seed=6)
-    # the six give their lives: a slow chorale, a heartbeat under it
-    e.part("choir", "D3+A3+D4+F4:6 Bb2+F3+Bb3+D4:6 G2+D3+G3+Bb3:6 A2+E3+A3+C#4:6", vel="f")
-    e.part("vln", "F5:6 F5:6 D5:6 C#5:6", vel="f")
-    e.part("vln2", "A4+D5:6 Bb4+D5:6 G4+Bb4:6 A4+E5:6", vel="mf")
-    e.part("vla", "F4:6 F4:6 D4:6 E4:6", vel="mf")
-    e.part("vc", "D3:6 Bb2:6 G2:6 A2:6", vel="f")
-    e.part("cb", "D2:6 Bb1:6 G1:6 A1:6", vel="f")
-    e.part("hn", "F3+A3+D4:6 F3+Bb3+D4:6 G3+Bb3+D4:6 E3+A3+C#4:6", vel="f")
-    e.part("tbn", "D3:6 Bb2:6 G2:6 A2:6", vel="mf")
-    sw(s, e, "choir", [(e.at(1), -2), (e.at(6), 2), (e.at(8, 3), -4)])
-    sw(s, e, "vln", [(e.at(1), 0), (e.at(6), 2), (e.at(8, 3), -6)])
-    film(s, Span(e, 1, 8), "D2:6 Bb1:6 G1:6 A1:6", "calm")
-    e.hits("taiko", "1", bar=2, vel="mf", bars=6)
-    e.hits("timp:A2", [1 + i * 0.25 for i in range(12)], bar=8, vel="mf")
-    # dawn: the home tune, the city rising
-    tune_bass = "D2:3 | G1:3 | E1:3 | A1:3 | D2:1.5 B1:1.5 | F#1:3 | G1:1.5 A1:1.5 | D1:3"
-    f = Span(e, 9, 8)
-    f.part("fl", SOLENNE, vel="mf", transpose=-3)
-    f.part("harp", TUNE_HARP, vel="mp", transpose=-3)
-    f.part("cl", TUNE_CL, vel="pp", transpose=-3)
-    f.part("vla", TUNE_VLA, vel="pp", transpose=-3)
-    f.part("vc", TUNE_BASS, vel="mp", transpose=9)
-    f.part("cb", tune_bass, vel="p")
-    second = " | ".join(x.strip() for x in SOLENNE.split("|")[4:])
-    f.part("vln", second, bar=5, vel="mf", transpose=-15)
-    f.part("hn", "D3+F#3+A3:3 | D3+G3+B3:3 | D3+F#3+A3:3", bar=6, vel="mp")
-    f.part("glock", "r:3 | r:3 | r:3 | r:3 | r:3 | r:3 | r:3 | D6:3", vel="p")
-    film(s, f, tune_bass, "calm")
-    e.hits("sus_cym", "1", bar=9, vel="mp")
+    e.hits("epic", "1", bar=1, vel="fff")
+    hit(s, e.at(1), "D2", gain=-1, seed=6)
+    # the six give their lives: a requiem chorale
+    harm = "D3+A3+D4+F4:8 Bb2+F3+Bb3+D4:8 G2+D3+G3+Bb3:8 A2+E3+A3+C#4:8"
+    e.part("choir", harm, vel="ff")
+    e.part("hn", "F3+A3+D4:8 F3+Bb3+D4:8 G3+Bb3+D4:8 E3+A3+C#4:8", vel="f")
+    e.part("tbn", "D3:8 Bb2:8 G2:8 A2:8", vel="f")
+    e.part("tuba", "D2:8 Bb1:8 G1:8 A1:8", vel="f")
+    e.part("vln", "F5:8 F5:8 D5:8 C#5:8", vel="ff")
+    e.part("vla", "A4:8 Bb4:8 G4:8 A4:8", vel="f")
+    e.part("vc", "D3:8 Bb2:8 G2:8 A2:8", vel="f")
+    e.part("cb", "D2:8 Bb1:8 G1:8 A1:8", vel="f")
+    sw(s, e, "choir", [(e.at(1), -4), (e.at(8, 4), 3)])
+    bass = "D2:4 | D2:4 | Bb1:4 | Bb1:4 | G1:4 | G1:4 | A1:4 | A1:4"
+    film(s, Span(e, 1, 8), bass, "build")
+    e.hits("taiko", "1 2.5 4", bar=2, vel="f", bars=7)
+    e.hits("toms", [1 + i * 0.25 for i in range(16)], bar=8, vel="ff")
+    for i in range(8):
+        chant(s, e, i + 1, "Ah:D3:4", men=10, gain=-8, seed=380 + i,
+              transpose=[0, 0, -4, -4, -7, -7, -5, -5][i])
+    # Solenne, built on his ruins: the city's tune turned dark, in eight horns over the drums
+    tune = "D4:2 E4:1 F4:1 | G4:3 F4:1 | E4:2 D4:1 C#4:1 | D4:4"
+    city = Span(e, 9, 4)
+    cbass = "Bb1:4 | G1:4 | A1:4 | D2:4"
+    film(s, city, cbass, "drive", melody=tune, mel_transpose=-12)
+    drums(city, 4)
+    city.part("hn_solo", tune, vel="fff")
+    city.part("vln", tune, vel="ff", transpose=12)
+    city.part("choir", "D4+F4+Bb4:4 | D4+G4+Bb4:4 | C#4+E4+A4:4 | D4+F4+A4:4", vel="ff")
+    city.part("tbn", "Bb2+F3:4 | G2+D3:4 | A2+E3:4 | D3+A3:4", vel="ff")
+    city.part("tuba", cbass, vel="ff")
+    city.part("vc_spic", grind(cbass, 38), vel="ff")
+    city.part("cb_spic", grind(cbass, 26), vel="ff")
+    hit(s, city.at(1), "Bb1", gain=-2, seed=22)
+    rise(s, city.at(4, 4) + 1, 1.5, gain=-4, seed=23)
 
 
 # 6. The Regent, the locket, the promise ------------------------------------------------------------
+# A cello alone over a ticking clock and a heartbeat (119 bpm); the promise is a tritone.
 def regent(s, sec_len):
-    f = s.section("6 regent", bars=4, meter=4, seconds=sec_len)
-    f.part("vc_solo", "B3:2 F#4:2 | E4:1.5 D4:.5 C#4 B3 | G3:2 C#4 D4 | C#4:4", vel="mf")
-    f.part("bsn", "B2:4 | E3:2 D3:2 | G2:2 A2:2 | F#2:4", vel="p")
-    f.part("cl", "D4:4 | G3:2 F#3:2 | B3:2 A3:2 | A#3:4", vel="pp")
-    f.part("vla", "F#3:4 | B3:2 B3:2 | D4:2 E4:2 | C#4:4", vel="pp")
-    f.part("cb", "B1:4 | E1:2 D2:2 | G1:2 A1:2 | F#1:4", vel="pp")
-    f.part("celesta", "r:2 F#6:1 D6:1 | r:4 | r:4 | r:2 C#6:2", vel="p")
-    f.part("harp", "B1+F#2:4 | r:4 | r:4 | F#1+C#2:4", vel="p")
-    f.part("choir", "r:4 | r:4 | r:4 | C#3+G3:4", vel="p")
-    f.part("syn_pad", "B2+F#3+D4:4 | E3+B3+D4:2 D3+A3+D4:2 | G2+D3+B3:2 A2+E3+C#4:2 | F#2+C#3+A#3:4", vel="mp")
-    sw(s, f, "syn_pad", [(f.at(1), -12), (f.at(4, 4), -6)])
-    f.hits("tick", [1 + i * 1.0 for i in range(4)], bar=4, vel="mf")
+    f = s.section("6 regent", bars=8, meter=4, seconds=sec_len)
+    f.part("vc_solo", "B3:4 | F#4:4 | E4:3 D4:1 | C#4:2 B3:2 | G3:4 | C#4:2 D4:2 | C#4:4 | C#4:4", vel="f")
+    f.part("bsn", "B2:8 E3:4 D3:4 G2:4 A2:4 F#2:8", vel="p")
+    f.part("vla", "F#3:8 B3:4 B3:4 D4:4 E4:4 C#4:8", vel="pp")
+    f.part("cb", "B1:8 E1:4 D2:4 G1:4 A1:4 F#1:8", vel="p")
+    f.part("choir", "B2+F#3:24 C#3+G3:8", vel="mp")
+    f.part("vln_trem", "F#5+G5:24 G5+C#6:8", vel="pp")
+    sw(s, f, "choir", [(f.at(1), -12), (f.at(7), -4), (f.at(8, 4), 2)])
+    sw(s, f, "vln_trem", [(f.at(1), -14), (f.at(8, 4), 0)])
+    film(s, Span(f, 1, 4), "B1:4 | B1:4 | E2:4 | D2:4", "calm")
+    film(s, Span(f, 5, 4), "G1:4 | A1:4 | F#1:4 | F#1:4", "build")
+    f.hits("tick", [1 + i * 0.5 for i in range(8)], bar=1, vel="f", bars=8)
+    f.hits("bd", "1 1.75", bar=1, vel="mf", bars=8)
+    hit(s, f.at(7), "C#2", gain=-5, seed=24)
 
 
 # 7. On the night of the Black Comet, the edge of the world split open. ------------------------------
@@ -329,11 +346,11 @@ def comet(s, sec_len):
 
 
 # 8. Oswin held it for one night. At dawn he walked to the edge, and gave it every light he had. ----
-# The Long Defeat (the Lantern in the minor) at 147 bpm, the men chanting "hold the road".
+# The first half of the Lantern in the minor, at 147 bpm, the men chanting "hold the road".
 def oswin(s, sec_len):
     h = s.section("8 oswin holds", bars=10, meter=4, seconds=sec_len)
-    melody = "D4:4 | A4:4 | Bb4:3 A4:1 | G4:2 F4:2 | G4:3 F4:1 | E4:2 C#4:2 | D4:4 | D4:4"
-    bass = "D2:4 | D2:4 | Bb1:4 | G1:4 | C2:4 | A1:4 | D2:4 | D2:4"
+    melody = "D4:4 | A4:4 | G4:3 F4:1 | E4:2 D4:2 | Bb3:4 | E4:2 F4:2 | E4:4 | E4:4"
+    bass = "D2:4 | D2:4 | C2:4 | A1:4 | G1:4 | A1:4 | A1:4 | A1:4"
     climb = "Bb1:4 | A1:4"
     film(s, Span(h, 1, 8), bass, "drive", melody=melody, mel_transpose=-12)
     film(s, Span(h, 9, 2), climb, "drive")
@@ -342,8 +359,8 @@ def oswin(s, sec_len):
     drums(Span(h, 1, 10), 10)
     h.part("hn_solo", melody, vel="fff")
     h.part("vln", melody, vel="ff", transpose=12)
-    h.part("tpt", "G4:3 F4:1 | E4:2 C#4:2 | D4:4 | D4:4", bar=5, vel="ff", transpose=12)
-    harm = ["Dm", "Dm", "Bb", "Gm", "C", "A", "Dm", "Dm", "Bb", "A"]
+    h.part("tpt", "Bb3:4 | E4:2 F4:2 | E4:4 | E4:4", bar=5, vel="ff", transpose=12)
+    harm = ["Dm", "Dm", "C", "A", "Gm", "A", "A", "A", "Bb", "A"]
     v = {
         "choir": {"Dm": "D4+F4+A4", "Bb": "D4+F4+Bb4", "Gm": "D4+G4+Bb4", "C": "E4+G4+C5", "A": "C#4+E4+A4"},
         "hn": {"Dm": "F3+A3+D4", "Bb": "F3+Bb3+D4", "Gm": "G3+Bb3+D4", "C": "G3+C4+E4", "A": "E3+A3+C#4"},
@@ -356,7 +373,7 @@ def oswin(s, sec_len):
     sw(s, h, "choir", [(h.at(1), -4), (h.at(5), 0), (h.at(10, 4), 5)])
     h.part("vln_trem", "Bb5+D6:4 | A5+C#6+E6:4", bar=9, vel="f")
     sw(s, h, "vln_trem", [(h.at(9), -6), (h.at(10, 4), 4)])
-    for i, r in enumerate(["D3", "D3", "Bb2", "G2", "C3", "A2", "D3", "D3"]):
+    for i, r in enumerate(["D3", "D3", "C3", "A2", "G2", "A2", "A2", "A2"]):
         chant(s, h, i + 1, f"Teh:{r}:.5 Neh:{r}:.5 Teh:{r}:1 Vee:{r}:1 Ahm:{r}:1", men=14, gain=-1,
               seed=20 + i * 5)
     hit(s, h.at(1), "D2", gain=0, seed=9)
@@ -371,19 +388,19 @@ def oswin(s, sec_len):
 # 9. The Crack closed to a hairline. And Oswin fell. His lantern went out. ---------------------------
 def fall(s, sec_len):
     k = s.section("9 the fall", bars=3, meter=4, seconds=sec_len, rit=0.7)
-    k.part("tpt", "D5+F#5+A5:2.5 r:1.5 | r:4 | r:4", vel="fff")
-    k.part("hn", "D4+F#4+A4+D5:2.5 r:1.5 | r:4 | r:4", vel="fff")
+    k.part("tpt", "D5+F5+A5:2.5 r:1.5 | r:4 | r:4", vel="fff")
+    k.part("hn", "D4+F4+A4+D5:2.5 r:1.5 | r:4 | r:4", vel="fff")
     k.part("hn_solo", "D4:2.5 r:1.5 | r:4 | r:4", vel="fff")
     k.part("tbn", "D3+A3:2.5 r:1.5 | r:4 | r:4", vel="fff")
     k.part("tuba", "D2:2.5 r:1.5 | r:4 | r:4", vel="fff")
     k.part("vln", "D5+A5+D6:2.5 r:1.5 | r:4 | r:4", vel="fff")
-    k.part("vla", "F#4+A4:2.5 r:1.5 | r:4 | r:4", vel="fff")
+    k.part("vla", "F4+A4:2.5 r:1.5 | r:4 | r:4", vel="fff")
     k.part("vc", "D3+A3:2.5 r:1.5 | r:4 | r:4", vel="fff")
     k.part("cb", "D2:2.5 r:1.5 | D2:8", vel="ff")
-    k.part("choir", "D4+F#4+A4+D5:2.5 r:1.5 | r:4 | r:4", vel="fff")
-    k.part("choir_hi", "F#5+A5:2.5 r:1.5 | r:4 | r:4", vel="fff")
+    k.part("choir", "D4+F4+A4+D5:2.5 r:1.5 | r:4 | r:4", vel="fff")
+    k.part("choir_hi", "F5+A5:2.5 r:1.5 | r:4 | r:4", vel="fff")
     k.part("solo_vln", "r:3.5 A6:8.5", vel="ppp")
-    k.part("celesta", "r:4 | A6:1 F#6:1 D6:1 A5:1 | r:2 D5:2", vel="p")
+    k.part("celesta", "r:4 | A6:1 F6:1 D6:1 A5:1 | r:2 D5:2", vel="p")
     sw(s, k, "cb", [(k.at(1), 0), (k.at(1, 2.5), 0), (k.at(2), -16), (k.at(3, 4), -24)])
     sw(s, k, "solo_vln", [(k.at(1, 3.5), 0), (k.at(3, 4), -8)])
     k.hits("gong", "1", bar=1, vel="fff")
@@ -399,7 +416,7 @@ def fall(s, sec_len):
     sw(s, k, "syn_pad", [(k.at(2), -18), (k.at(3), -8), (k.at(3, 4), -14)])
     k.hits("epic", "1", bar=1, vel="fff")
     # the whole choir cries out, then nothing
-    for note, women in [("D3", 0), ("A3", 0), ("F#4", 8), ("D4", 8)]:
+    for note, women in [("D3", 0), ("A3", 0), ("F4", 8), ("D4", 8)]:
         dur = s.time_of(k.at(1, 3.5)) - s.time_of(k.at(1))
         s.place(k.at(1), V.sung("Ah", midi(note), dur, n=8 if not women else 0, women=women, seed=midi(note)),
                 CHANT_DB + 2, group="chant", send=0.5)
@@ -492,62 +509,61 @@ def road(s, sec_len):
 
 
 # 12. I am Ysolde. You, Spirewright, are the last of Oswin's apprentices. Hold the road. -------------
-# The Lantern in full, broad over the drums, slowing to the final hit.
-H12 = ["D", "D", "G", "D/F#", "Em", "A", "D", "D", "Dfin", "Dfin"]
+# The Long Defeat in full, high and broad over the war drums, the cadence twice, then the last hit.
+H12 = ["Dm", "Dm", "Bb", "Gm", "C", "A", "Dm", "Dm", "Gm", "A", "Dm", "Dm", "Dfin", "Dfin"]
 
 
 def hold_the_road(s, sec_len):
-    q = s.section("12 hold the road", bars=10, meter=4, seconds=sec_len - FINAL_TAIL, rit=RIT12)
-    melody = "D5:4 | A5:4 | B5:3 A5:1 | G5:2 F#5:2 | G5:3 F#5:1 | E5:2 C#5:2 | D5:4 | D5:4 | D5:4 | D5:4"
+    q = s.section("12 hold the road", bars=14, meter=4, seconds=sec_len - FINAL_TAIL, rit=RIT12)
+    melody = ("D5:4 | A5:4 | Bb5:3 A5:1 | G5:2 F5:2 | G5:3 F5:1 | E5:2 C#5:2 | D5:4 | D5:4 | "
+              "G5:3 F5:1 | E5:2 C#5:2 | D5:4 | D5:4 | D5:4 | D5:4")
     q.part("vln", melody, vel="ff")
     q.part("tpt", melody, vel="ff")
-    q.part("ob", melody, vel="f")
-    q.part("fl", melody, vel="f", transpose=12)
     q.part("hn_solo", melody, vel="fff", transpose=-12)
     v = {
-        "hn": {"D": "F#4+A4", "D/F#": "F#4+A4", "G": "G4+B4", "Em": "G4+B4", "A": "E4+G4", "Dfin": "F#4+A4+D5"},
-        "tbn": {"D": "D3+A3", "D/F#": "F#2+D3", "G": "D3+G3", "Em": "E3+B3", "A": "C#3+G3", "Dfin": "D3+F#3+A3"},
-        "tuba": {"D": "D2", "D/F#": "F#1", "G": "G1", "Em": "E2", "A": "A1", "Dfin": "D2"},
-        "vla": {"D": "F#4+A4", "D/F#": "F#4+A4", "G": "G4+B4", "Em": "G4+B4", "A": "E4+G4", "Dfin": "F#4+A4"},
-        "vln2": {"D": "A4+D5", "D/F#": "A4+D5", "G": "B4+D5", "Em": "B4+E5", "A": "A4+E5", "Dfin": "A4+D5+F#5"},
-        "vc": {"D": "D3", "D/F#": "F#2", "G": "G2", "Em": "E2", "A": "A2", "Dfin": "D3"},
-        "choir": {"D": "A3+D4+F#4+A4", "D/F#": "A3+D4+F#4+A4", "G": "B3+D4+G4+B4", "Em": "B3+E4+G4+B4",
-                  "A": "A3+C#4+E4+G4", "Dfin": "A3+D4+F#4+A4"},
-        "choir_hi": {"D": "F#5", "D/F#": "F#5", "G": "G5", "Em": "G5", "A": "E5", "Dfin": "A5"},
-        "bells": {"D": "D4", "D/F#": "F#3", "G": "G3", "Em": "E3", "A": "A3", "Dfin": "D4"},
+        "hn": {"Dm": "F4+A4", "Bb": "F4+Bb4", "Gm": "G4+Bb4", "C": "G4+C5", "A": "E4+A4", "Dfin": "F4+A4+D5"},
+        "tbn": {"Dm": "D3+A3", "Bb": "Bb2+F3", "Gm": "G2+D3", "C": "C3+G3", "A": "A2+E3", "Dfin": "D3+F3+A3"},
+        "tuba": {"Dm": "D2", "Bb": "Bb1", "Gm": "G1", "C": "C2", "A": "A1", "Dfin": "D2"},
+        "vla": {"Dm": "F4+A4", "Bb": "F4+Bb4", "Gm": "G4+Bb4", "C": "G4+C5", "A": "E4+A4", "Dfin": "F4+A4"},
+        "vln2": {"Dm": "A4+D5", "Bb": "Bb4+D5", "Gm": "Bb4+D5", "C": "C5+E5", "A": "A4+E5", "Dfin": "A4+D5+F5"},
+        "vc": {"Dm": "D3", "Bb": "Bb2", "Gm": "G2", "C": "C3", "A": "A2", "Dfin": "D3"},
+        "choir": {"Dm": "A3+D4+F4+A4", "Bb": "Bb3+D4+F4+Bb4", "Gm": "Bb3+D4+G4+Bb4", "C": "C4+E4+G4+C5",
+                  "A": "A3+C#4+E4+A4", "Dfin": "A3+D4+F4+A4"},
+        "choir_hi": {"Dm": "F5", "Bb": "F5", "Gm": "G5", "C": "G5", "A": "E5", "Dfin": "A5"},
     }
     for inst, vo in v.items():
-        q.part(inst, chords(H12, vo), vel="ff" if inst != "bells" else "f")
+        q.part(inst, chords(H12, vo), vel="ff")
     q.part("cb", chords(H12, v["tuba"]), vel="f")
-    q.part("harp", "D3:.25 F#3:.25 A3:.25 D4:.25 F#4:.25 A4:.25 D5:.25 F#5:.25 A5:2", bar=8, vel="f")
-    bass = "D2:4 | D2:4 | G1:4 | F#1:4 | E2:4 | A1:4 | D2:4 | D2:4"
-    film(s, Span(q, 1, 8), bass, "drive", melody=melody.rsplit(" | ", 2)[0], mel_transpose=-12)
-    film(s, Span(q, 9, 2), "D2:4 | D2:4", "hit")
-    q.hits("epic", "3", bar=1, vel="fff", bars=6)
-    q.hits("taiko", "1 2.5 4", bar=1, vel="ff", bars=6)
-    q.hits("toms", [1 + i * 0.25 for i in range(32)], bar=7, vel="ff")
-    q.hits("sus_cym", "1", bar=1, vel="mf")
-    q.hits("timp:D2", "1", bar=1, vel="fff")
+    bass = " | ".join(f"{v['tuba'][h]}:4" for h in H12[:12])
+    film(s, Span(q, 1, 12), bass, "drive", melody=" | ".join(melody.split(" | ")[:12]), mel_transpose=-12)
+    film(s, Span(q, 13, 2), "D2:4 | D2:4", "hit")
+    q.part("vc_spic", grind(bass, 38), vel="ff")
+    q.part("cb_spic", grind(bass, 26), vel="ff")
+    drums(Span(q, 1, 10), 10)
+    q.hits("epic", "3", bar=1, vel="fff", bars=10)
+    q.hits("anvil", "2 4", bar=9, vel="f", bars=2)
+    q.hits("toms", [1 + i * 0.25 for i in range(32)], bar=11, vel="fff")
+    q.hits("timp:D2", [1 + i * 0.25 for i in range(16)], bar=12, vel="ff")
     q.hits("crash", "1", bar=1, vel="ff")
-    q.hits("timp:A2", "1 3", bar=2, vel="f", bars=5)
-    q.hits("timp:D2", [1 + i * 0.25 for i in range(16)], bar=8, vel="f")
+    q.hits("timp:D2", "1", bar=1, vel="fff")
     for kind in ["sus_cym", "crash", "gong"]:
-        q.hits(kind, "1", bar=9, vel="ff")
-    q.hits("timp:D2", "1", bar=9, vel="fff")
+        q.hits(kind, "1", bar=13, vel="ff")
+    q.hits("timp:D2", "1", bar=13, vel="fff")
     hit(s, q.at(1), "D2", gain=1, seed=18)
+    hit(s, q.at(9), "G1", gain=-2, seed=19)
     # the choir sings "hold the road" in Latin under her; the army answers her; the final hit
-    words = ("Teh:D4:4 | Neh:A4:4 | Teh:B4:3 Vee:A4:1 | Ah:G4:2 Ahm:F#4:2 | Teh:G4:3 Neh:F#4:1 | "
-             "Teh:E4:2 Vee:C#4:2 | Ahm:D4:4 | r:4")
+    words = ("Teh:D4:4 | Neh:A4:4 | Teh:Bb4:3 Vee:A4:1 | Ah:G4:2 Ahm:F4:2 | Teh:G4:3 Neh:F4:1 | "
+             "Teh:E4:2 Vee:C#4:2 | Ahm:D4:4 | r:4 | Teh:G4:3 Neh:F4:1 | Teh:E4:2 Vee:C#4:2 | Ahm:D4:4 | r:4")
     chant(s, q, 1, words, men=0, women=8, gain=-1, seed=60)
     chant(s, q, 1, words, men=14, gain=0, seed=70, transpose=-12)
     line_end = s.time_of(q.at(1)) + 0.4 + LINES[11]
     shout(s, s._beat_at(line_end + 0.5), "Hold the road!", gain=1, seed=4, n=20, women=6)
-    rise(s, q.at(9), 2.0, gain=0, seed=6)
-    shout(s, q.at(9), "Hey!", gain=-1, seed=5, n=20, women=6)
-    for note, women in [("D3", 0), ("A3", 0), ("D4", 8), ("F#4", 8)]:
-        s.place(q.at(9), V.sung("Ah", midi(note), 4.0, n=10 if not women else 0, women=women, seed=midi(note) + 1),
+    rise(s, q.at(13), 2.0, gain=0, seed=6)
+    shout(s, q.at(13), "Hey!", gain=-1, seed=5, n=20, women=6)
+    for note, women in [("D3", 0), ("A3", 0), ("D4", 8), ("F4", 8)]:
+        s.place(q.at(13), V.sung("Ah", midi(note), 4.0, n=10 if not women else 0, women=women, seed=midi(note) + 1),
                 CHANT_DB + 2, group="chant", send=0.5)
-    hit(s, q.at(9), "D2", gain=4, seed=7)
+    hit(s, q.at(13), "D2", gain=4, seed=7)
 
 
 # ------------------------------------------------------------------------------- trailer voices

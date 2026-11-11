@@ -189,6 +189,7 @@ class Track:
     double: int = 0  # extra detuned copies to thicken a solo sample into a section
     tail: float | None = None
     hpf: float = 0.0  # high-pass cutoff in Hz (0 = off)
+    mute: bool = False  # written in the score but not rendered
 
 
 class Score:
@@ -418,6 +419,8 @@ def mix_array(score: Score, out_dir: str, stems: bool = False) -> np.ndarray:
     dry = np.zeros((total, 2), np.float32)
     send = np.zeros((total, 2), np.float32)
     for key, tr in score.tracks.items():
+        if tr.mute or not tr.notes:
+            continue
         y = score.render_track(key, tr)
         if tr.hpf:
             sos = signal.butter(4, tr.hpf / (SR / 2), "high", output="sos")
