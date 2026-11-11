@@ -33,7 +33,7 @@ func _win_campaign(meta: MetaProgress, campaign_id: StringName) -> void:
 
 
 func test_there_is_a_campaign_per_element_and_the_convergence() -> void:
-	assert_eq(registry.campaigns.size(), 7)
+	assert_eq(registry.campaigns.size(), 8)
 	var elements: Array[StringName] = []
 	for campaign: CampaignData in registry.campaigns.values():
 		if not campaign.element.is_empty():
@@ -47,7 +47,7 @@ func test_there_is_a_campaign_per_element_and_the_convergence() -> void:
 	assert_eq(elements, all)
 	var convergence: CampaignData = registry.campaigns[&"convergence"]
 	assert_eq(convergence.requires_campaigns.size(), 6)
-	assert_eq(registry.stages.size(), 27)
+	assert_eq(registry.stages.size(), 28)
 
 
 func test_campaign_maps_stay_out_of_skirmish() -> void:

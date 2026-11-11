@@ -51,7 +51,7 @@ CAMPAIGNS = [
              [(-1, 7), (7, 7), (7, 3), (16, 3), (16, 11), (24, 11)], 10, 1.0, None),
             ("ember_2", "Cinder Steps", "Menders walk with the Tide now. Keep them burning, or they will heal.",
              [(-1, 2), (5, 2), (5, 12), (11, 12), (11, 4), (17, 4), (17, 12), (24, 12)], 12, 1.0,
-             ("gold_per_wave", 0, 10, [], "Rich veins: +10 gold after every wave.")),
+             ("gold_per_wave", 0, 10, [], "Rich veins: +10 gold after every wave."), {"lieutenant": "saltmother"}),
             ("ember_3", "Obsidian Crossing", "The road crosses itself on a field of black glass. Every tower there fires twice.",
              [(-1, 4), (18, 4), (18, 11), (9, 11), (9, -1)], 14, 1.0,
              ("attack_range", 1, -0.10, [], "Ash clouds: towers have 10% less range.")),
@@ -74,7 +74,7 @@ CAMPAIGNS = [
              [(-1, 11), (6, 11), (6, 4), (13, 4), (13, 10), (24, 10)], 10, 1.0, None),
             ("storm_2", "Galeback Ridge", "Splitters crack open on the ridge. Chain lightning loves a crowd.",
              [(-1, 3), (20, 3), (20, 7), (3, 7), (3, 11), (24, 11)], 12, 1.0,
-             ("attacks_per_second", 1, 0.10, [], "Tailwind: towers attack 10% faster.")),
+             ("attacks_per_second", 1, 0.10, [], "Tailwind: towers attack 10% faster."), {"lieutenant": "gorrath"}),
             ("storm_3", "The Long Squall", "The road dives down and climbs back up three times. Long, but never far from a spire.",
              [(3, -1), (3, 12), (9, 12), (9, 2), (15, 2), (15, 12), (21, 12), (21, -1)], 14, 1.0,
              ("cost", 1, 0.15, [], "Thin air: towers cost 15% more.")),
@@ -97,7 +97,7 @@ CAMPAIGNS = [
              [(-1, 4), (9, 4), (9, 10), (17, 10), (17, 5), (24, 5)], 10, 1.0, None),
             ("nature_2", "Rootway", "The road threads between the roots of trees older than the ring.",
              [(-1, 12), (4, 12), (4, 2), (12, 2), (12, 12), (19, 12), (19, 2), (24, 2)], 12, 1.0,
-             ("starting_lives", 0, 5, [], "Deep roots: +5 lives.")),
+             ("starting_lives", 0, 5, [], "Deep roots: +5 lives."), {"lieutenant": "pale_vesper"}),
             ("nature_3", "Bramble Maze", "Thorns everywhere. Warded beasts walk through poison as if it were rain.",
              [(-1, 7), (4, 7), (4, 1), (10, 1), (10, 13), (16, 13), (16, 1), (21, 1), (21, 9), (24, 9)], 14, 1.0,
              ("sell_refund", 0, 0.2, [], "Recycling: selling refunds 20% more.")),
@@ -120,7 +120,7 @@ CAMPAIGNS = [
              [(-1, 2), (6, 2), (6, 9), (14, 9), (14, 5), (24, 5)], 10, 1.0, None),
             ("water_2", "Saltmarsh Bends", "Reed beds and narrow causeways. Runners come in long, quick lines.",
              [(-1, 6), (3, 6), (3, 12), (9, 12), (9, 3), (15, 3), (15, 12), (20, 12), (20, 6), (24, 6)], 12, 1.0,
-             ("starting_gold", 0, 60, [], "Fishing fleet: start with 60 more gold.")),
+             ("starting_gold", 0, 60, [], "Fishing fleet: start with 60 more gold."), {"lieutenant": "ashwick"}),
             ("water_3", "Frozen Causeway", "The causeway crosses the lake four times. The ice groans under the Warded.",
              [(-1, 13), (21, 13), (21, 9), (2, 9), (2, 5), (21, 5), (21, 1), (-1, 1)], 14, 1.0,
              ("gold_per_wave", 1, -0.3, [], "Frozen trade: 30% less gold after each wave.")),
@@ -143,7 +143,7 @@ CAMPAIGNS = [
              [(4, -1), (4, 8), (12, 8), (12, 4), (19, 4), (19, 15)], 10, 1.0, None),
             ("earth_2", "Canyon Switchbacks", "The road zigzags down the canyon wall, five long terraces.",
              [(-1, 1), (21, 1), (21, 5), (2, 5), (2, 9), (21, 9), (21, 13), (-1, 13)], 12, 1.0,
-             ("damage", 1, 0.10, ["earth"], "Bedrock: Earth towers deal a further 10% more damage.")),
+             ("damage", 1, 0.10, ["earth"], "Bedrock: Earth towers deal a further 10% more damage."), {"lieutenant": "vholt"}),
             ("earth_3", "Mesa Loop", "A loop around a flat-topped mesa, then a sprint for the exit.",
              [(-1, 10), (7, 10), (7, 3), (16, 3), (16, 10), (10, 10), (10, 13), (24, 13)], 14, 1.0,
              ("starting_lives", 1, -0.25, [], "Rockfall: 25% fewer lives.")),
@@ -166,7 +166,7 @@ CAMPAIGNS = [
              [(-1, 5), (8, 5), (8, 11), (16, 11), (16, 3), (24, 3)], 10, 1.0, None),
             ("void_2", "Fractured Steps", "The ground is broken into floating steps.",
              [(-1, 12), (5, 12), (5, 8), (10, 8), (10, 3), (15, 3), (15, 10), (20, 10), (20, 1), (24, 1)], 12, 1.0,
-             ("bounty_bonus", 0, 1, [], "Soul tithe: +1 gold for every kill.")),
+             ("bounty_bonus", 0, 1, [], "Soul tithe: +1 gold for every kill."), {"lieutenant": "mother_briar"}),
             ("void_3", "Mirror Rift", "The road comes in at the top and leaves an arm's length away, the long way round.",
              [(11, -1), (11, 4), (3, 4), (3, 11), (20, 11), (20, 4), (13, 4), (13, -1)], 14, 1.0,
              ("attack_range", 1, 0.10, [], "Thin veil: towers have 10% more range.")),
@@ -188,7 +188,7 @@ CAMPAIGNS = [
             ("converge_1", "Shattered Crossroads", "Two roads meet at the edge of the heartland. Two hordes walk them.",
              {"lanes": [[(-1, 2), (13, 2), (13, 9), (18, 9), (18, 5), (24, 5)],
                         [(4, 15), (4, 9), (13, 9), (18, 9), (18, 5), (24, 5)]]}, 16, 1.0, None,
-             {"first_clear": 5}),
+             {"first_clear": 5, "lieutenant": "ashen_regent"}),
             ("converge_2", "Prism Wastes", "Glass plains where light splits into six colours. Three roads, one gate.",
              {"lanes": [[(-1, 2), (5, 2), (5, 7), (12, 7), (16, 7), (16, 12), (24, 12)],
                         [(9, -1), (9, 4), (12, 4), (12, 7), (16, 7), (16, 12), (24, 12)],
@@ -205,6 +205,59 @@ CAMPAIGNS = [
         ],
     },
 ]
+
+# The horde's lieutenants, one per element campaign, at the end of its second stage. Their names and
+# tricks live in data/enemies/<id>.tres; the names here are only for the rule text.
+LIEUTENANT_NAMES = {
+    "saltmother": "Saltmother Ourra, the Drowned Herald (shields the horde)",
+    "gorrath": "Gorrath the Quarried, the Stone Herald (armoured, charges when wounded, breaks into boulders)",
+    "pale_vesper": "the Pale Vesper, the Hollow Herald (raises shades, blinks down the road)",
+    "ashwick": "Ashwick the Kindled, the Flame Herald (fast, silences towers)",
+    "vholt": "Vholt Stormcrown, the Sky Herald (blinks, silences towers)",
+    "mother_briar": "Mother Briar, the Thorn Herald (immune to effects, shields the horde, chokes towers)",
+    "ashen_regent": "Cassivane, the Ashen Regent (shields his guard, silences towers, escapes when beaten)",
+}
+
+# ------------------------------------------------------------------------------------ the assault
+# The last campaign: after the capital holds, the player takes the war to the enemy's fortress. One
+# long stage (about 30 minutes) on a map whose right side is the enemy base. The horde comes down
+# three roads; two of them have a gate. Phase 1: bring down the gates. Phase 2: the spires of the
+# inner keep, which silence towers. Phase 3: the Black Throne, which releases the overlord. Towers
+# may only be built up to a column that moves right with each phase. Waves start on their own after
+# a short break and the last one repeats, stronger each time, until the fortress falls.
+ASSAULT = {
+    "id": "assault", "name": "The Crownless Citadel", "element": "",
+    "tagline": "Through the Crack, into Nhal Vorath",
+    "description": "Solenne held. Now we stop running. Through the Crack lies Nhal Vorath, the Crownless Citadel: "
+                   "break its living gate, climb the Mirror Spire, and unmake the Sunderer on his throne.",
+    "requires": ["convergence"],
+    "reward": ("Lantern of the White Order", "Every tower deals 5% more damage and costs 5% less in every run.",
+               [("damage", 2, 0.05, []), ("cost", 1, -0.05, [])]),
+    "stage": {
+        "id": "assault_1", "name": "Nhal Vorath",
+        "story": "The citadel's roads run west toward our camp. Hold them, push your towers east, and bring Nhal Vorath "
+                 "down piece by piece. It will not end until the Sunderer is finished.",
+        "lanes": [
+            [(22, 7), (16, 7), (16, 10), (10, 10), (10, 7), (-1, 7)],
+            [(24, 2), (14, 2), (14, 4), (7, 4), (7, 7), (-1, 7)],
+            [(24, 13), (13, 13), (13, 10), (10, 10), (10, 7), (-1, 7)],
+        ],
+        # (enemy, cell, phase, lane it releases onto, roads it closes when it falls, what it releases and
+        # at what share of their health)
+        "structures": [
+            ("gatemaw", (17, 7), 1, 0, [1, 2], ["saltmother", "gorrath", "pale_vesper", "ashwick", "vholt", "mother_briar"], 0.15),
+            ("mirror_spire", (20, 4), 2, 0, [], [], 1.0),
+            ("crownless_throne", (23, 7), 3, 0, [], ["vael_orrun"], 0.15),
+        ],
+        "build_columns": [15, 18, -1],
+        "auto_wave_delay": 12.0,
+        "waves": 40,
+        "first_clear": 20,
+        "echoes": {12: ["thunderhead"], 20: ["broodmother", "leviathan"], 28: ["mountain_titan", "cinder_tyrant"],
+                   36: ["hollow_king", "sundered_heart"]},
+    },
+}
+
 
 # Per-stage numbers the balance pass tunes: health scale, starting gold, health growth per wave.
 TUNING = {}
@@ -349,6 +402,9 @@ def plan_waves(campaign, stage_index, n, extra):
         if w == n and "boss" in extra:
             boss = True
             groups = [(extra["boss"], 1, 1.0, 0.0), ("grunt", size * 0.6, 0.7, 3.0), (sig, 3 + stage_index, 1.0, 6.0)]
+        elif w == n and "lieutenant" in extra:
+            boss = True
+            groups.append((extra["lieutenant"], 1, 1.0, 4.0))
         elif w == n and "boss_pair" in extra:
             boss = True
             groups = [(b, 1, 1.0, 6.0 * i) for i, b in enumerate(extra["boss_pair"])] + [("grunt", size * 0.6, 0.7, 3.0)]
@@ -415,6 +471,8 @@ def write_campaign(order, c):
                 NAMES[home], NAMES[allowed[1]], NAMES[allowed[2]], NAMES[home]))
             if extra.get("boss"):
                 rules.append(f"The Warden resists {NAMES[home]}: bring a neighbour.")
+        if extra.get("lieutenant"):
+            rules.append(f"The last wave is led by {LIEUTENANT_NAMES[extra['lieutenant']]}.")
         else:
             rules.append("Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
         if twist:
@@ -450,10 +508,102 @@ def write_campaign(order, c):
     t.write(f"data/campaigns/{c['id']}.tres", fields)
 
 
+def plan_assault_waves(stage):
+    """The assault's waves: every group its own element, the mix growing heavier, and old bosses
+    coming back every ten waves."""
+    waves = []
+    extras = ["mender", "splitter", "warded", "brute"]
+    for w in range(1, stage["waves"] + 1):
+        size = 10 + w
+        groups = [("grunt", size * 0.7, 0.6, 0.0), ("runner", size * 0.5, 0.45, 3.0)]
+        if w % 3 == 0:
+            groups.append(("brute", 1 + w // 4, 1.4, 5.0))
+        if w >= 4:
+            groups.append((extras[w % 4], 2 + w // 4, 1.0, 6.0))
+        if w >= 15 and w % 2 == 1:
+            groups.append((extras[(w + 1) % 4], 2 + w // 6, 1.0, 9.0))
+        boss = w in stage["echoes"]
+        if boss:
+            groups += [(b, 1, 1.0, 4.0 + 7.0 * i) for i, b in enumerate(stage["echoes"][w])]
+        groups = [g + (RING[(w + k * 2) % 6],) for k, g in enumerate(groups)]
+        waves.append((RING[w % 6], boss, groups))
+    return waves
+
+
+STRUCTURE = "res://scripts/data/structure_spec.gd"
+
+
+def write_assault(order, c):
+    st = c["stage"]
+    sid = st["id"]
+    tune = TUNING.get(sid, {})
+    # Waves
+    t = Tres("WaveSet")
+    script = t.script("res://scripts/data/wave_set.gd")
+    refs = []
+    for el, boss, groups in plan_assault_waves(st):
+        grefs = [group(t, e, n, i, d, ge) for e, n, i, d, ge in groups]
+        fields = [f"element = {sn(el)}"]
+        if boss:
+            fields.append("is_boss = true")
+            fields.append(f"health_multiplier = {tune.get('boss', 1.0)}")
+        fields.append(f"groups = {typed(t, GROUP, grefs)}")
+        refs.append(t.sub(WAVE, fields))
+    wave_set = "c_" + sid
+    t.write(f"data/waves/{wave_set}.tres", [
+        f"script = {script}", f"id = {sn(wave_set)}", f"display_name = {string(st['name'])}",
+        f"health_growth = {tune.get('growth', 1.09)}", f"health_scale = {tune.get('health', 1.0)}",
+        f"waves = {typed(t, WAVE, refs)}"])
+    write_map(sid, st["name"], {"lanes": st["lanes"]}, order * 10, "void", wave_set)
+    # Campaign and stage
+    t = Tres("CampaignData")
+    script = t.script("res://scripts/data/campaign_data.gd")
+    srefs = []
+    for e, (x, y), ph, lane, closes, releases, release_health in st["structures"]:
+        fields = [f"enemy = {sn(e)}", f"cell = Vector2i({x}, {y})", f"phase = {ph}", f"lane = {lane}"]
+        if closes:
+            fields.append("closes_lanes = PackedInt32Array(%s)" % ", ".join(str(v) for v in closes))
+        if releases:
+            fields.append(f"releases = {sn_array(releases)}")
+            if release_health != 1.0:
+                fields.append(f"release_health = {release_health}")
+        srefs.append(t.sub(STRUCTURE, fields))
+    rules = [
+        "Every element can be drafted. The horde comes down three roads from the fortress.",
+        "The Black Gate: bring down the Gatemaw. It closes the two flank roads, and the six Heralds return as Echoes.",
+        "The Mirror Spire: topple it. It silences towers near it.",
+        "The Crownless Throne: break it, then unmake Vael-Orrun before he reaches your camp.",
+        "You can only build on ground you hold: it moves east as each phase falls.",
+        "Waves start on their own %d seconds after the last one (Space calls the next one early). "
+        "When the waves run out, the last one comes again, stronger." % int(st["auto_wave_delay"]),
+    ]
+    fields = [f"id = {sn(sid)}", f"display_name = {string(st['name'])}", f"description = {string(st['story'])}",
+              f"map = {sn('c_' + sid)}", "is_guardian = true", f"modifiers = {typed(t, MOD, [])}",
+              "rule_text = PackedStringArray(%s)" % ", ".join(string(r) for r in rules)]
+    if tune.get("gold"):
+        fields.append(f"starting_gold = {tune['gold']}")
+    if tune.get("lives"):
+        fields.append(f"starting_lives = {tune['lives']}")
+    fields += [f"first_clear_points = {st['first_clear']}",
+               f"structures = {typed(t, STRUCTURE, srefs)}",
+               "build_columns = PackedInt32Array(%s)" % ", ".join(str(v) for v in st["build_columns"]),
+               f"auto_wave_delay = {float(st['auto_wave_delay'])}"]
+    stage_ref = t.sub(STAGE, fields)
+    reward_name, reward_text, reward_mods = c["reward"]
+    rmods = [modifier(t, *m) for m in reward_mods]
+    fields = [f"script = {script}", f"id = {sn(c['id'])}", f"display_name = {string(c['name'])}",
+              f"order = {order}", f"element = {sn('')}", f"tagline = {string(c['tagline'])}",
+              f"description = {string(c['description'])}", f"requires_campaigns = {sn_array(c['requires'])}",
+              f"stages = {typed(t, STAGE, [stage_ref])}", f"reward_name = {string(reward_name)}",
+              f"reward_description = {string(reward_text)}", f"reward_modifiers = {typed(t, MOD, rmods)}"]
+    t.write(f"data/campaigns/{c['id']}.tres", fields)
+
+
 def main():
     for order, c in enumerate(CAMPAIGNS):
         write_campaign(order, c)
-    print("Wrote %d campaigns and %d stages" % (len(CAMPAIGNS), sum(len(c["stages"]) for c in CAMPAIGNS)))
+    write_assault(len(CAMPAIGNS), ASSAULT)
+    print("Wrote %d campaigns and %d stages" % (len(CAMPAIGNS) + 1, sum(len(c["stages"]) for c in CAMPAIGNS) + 1))
 
 
 if __name__ == "__main__":

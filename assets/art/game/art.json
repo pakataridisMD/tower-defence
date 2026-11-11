@@ -1192,197 +1192,329 @@
   }
  },
  "enemies": {
-  "broodmother": {
+  "ashen_regent": {
    "size": [
-    44,
-    38
+    176,
+    188
    ],
    "anchor": [
-    22,
-    37
+    88,
+    148
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
+  },
+  "ashwick": {
+   "size": [
+    140,
+    136
+   ],
+   "anchor": [
+    70,
+    104
+   ],
+   "frames": 8,
+   "drawn": true
+  },
+  "broodmother": {
+   "size": [
+    272,
+    280
+   ],
+   "anchor": [
+    136,
+    236
+   ],
+   "frames": 8,
+   "drawn": true
   },
   "brute": {
    "size": [
-    26,
-    22
+    114,
+    112
    ],
    "anchor": [
-    13,
-    21
+    57,
+    80
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
   },
   "cinder_tyrant": {
    "size": [
-    42,
-    36
+    282,
+    344
    ],
    "anchor": [
-    21,
-    35
+    141,
+    274
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
+  },
+  "crownless_throne": {
+   "size": [
+    256,
+    276
+   ],
+   "anchor": [
+    128,
+    244
+   ],
+   "frames": 8,
+   "drawn": true
+  },
+  "gatemaw": {
+   "size": [
+    344,
+    232
+   ],
+   "anchor": [
+    172,
+    200
+   ],
+   "frames": 8,
+   "drawn": true
+  },
+  "gorrath": {
+   "size": [
+    192,
+    212
+   ],
+   "anchor": [
+    96,
+    164
+   ],
+   "frames": 8,
+   "drawn": true
   },
   "grunt": {
    "size": [
-    20,
-    17
+    104,
+    108
    ],
    "anchor": [
-    10,
-    16
+    52,
+    76
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
   },
   "hollow_king": {
    "size": [
-    40,
-    44
+    216,
+    282
    ],
    "anchor": [
-    20,
-    43
+    108,
+    250
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
   },
   "hollow_shade": {
    "size": [
-    26,
-    28
+    126,
+    148
    ],
    "anchor": [
-    13,
-    27
+    63,
+    116
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
   },
   "leviathan": {
    "size": [
-    68,
-    38
+    312,
+    280
    ],
    "anchor": [
-    34,
-    37
+    156,
+    236
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
   },
   "mender": {
    "size": [
-    20,
-    21
+    108,
+    114
    ],
    "anchor": [
-    10,
-    20
+    54,
+    82
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
+  },
+  "mirror_spire": {
+   "size": [
+    232,
+    318
+   ],
+   "anchor": [
+    116,
+    286
+   ],
+   "frames": 8,
+   "drawn": true
+  },
+  "mother_briar": {
+   "size": [
+    168,
+    166
+   ],
+   "anchor": [
+    84,
+    134
+   ],
+   "frames": 8,
+   "drawn": true
   },
   "mountain_titan": {
    "size": [
-    46,
-    40
+    312,
+    342
    ],
    "anchor": [
-    23,
-    39
+    156,
+    274
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
+  },
+  "pale_vesper": {
+   "size": [
+    152,
+    206
+   ],
+   "anchor": [
+    76,
+    174
+   ],
+   "frames": 8,
+   "drawn": true
   },
   "runner": {
    "size": [
-    22,
-    13
+    104,
+    114
    ],
    "anchor": [
-    11,
-    12
+    52,
+    82
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
+  },
+  "saltmother": {
+   "size": [
+    152,
+    206
+   ],
+   "anchor": [
+    76,
+    174
+   ],
+   "frames": 8,
+   "drawn": true
   },
   "shardling": {
    "size": [
-    16,
-    11
+    96,
+    102
    ],
    "anchor": [
-    8,
-    10
+    48,
+    70
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
   },
   "splitter": {
    "size": [
-    26,
-    17
+    128,
+    128
    ],
    "anchor": [
-    13,
-    16
+    64,
+    96
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
   },
   "sundered_heart": {
    "size": [
-    52,
-    46
+    266,
+    270
    ],
    "anchor": [
-    26,
-    45
+    133,
+    238
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
   },
   "thunderhead": {
    "size": [
-    40,
-    40
+    270,
+    242
    ],
    "anchor": [
-    20,
-    39
+    135,
+    210
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
+  },
+  "vael_orrun": {
+   "size": [
+    232,
+    392
+   ],
+   "anchor": [
+    116,
+    360
+   ],
+   "frames": 8,
+   "drawn": true
+  },
+  "vholt": {
+   "size": [
+    226,
+    186
+   ],
+   "anchor": [
+    113,
+    154
+   ],
+   "frames": 8,
+   "drawn": true
   },
   "warded": {
    "size": [
-    24,
-    20
+    110,
+    104
    ],
    "anchor": [
-    12,
-    19
+    55,
+    72
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
   },
   "warden": {
    "size": [
-    42,
-    34
+    166,
+    144
    ],
    "anchor": [
-    21,
-    33
+    83,
+    112
    ],
-   "gear": true,
-   "frames": 6
+   "frames": 8,
+   "drawn": true
   }
  },
  "props": {

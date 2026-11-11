@@ -205,7 +205,7 @@ func _validate_towers(errors: PackedStringArray) -> void:
 
 func _validate_enemies(errors: PackedStringArray) -> void:
 	for enemy: EnemyData in enemies.values():
-		if enemy.max_health <= 0.0 or enemy.speed <= 0.0:
+		if enemy.max_health <= 0.0 or (enemy.speed <= 0.0 and not enemy.structure):
 			errors.append("Enemy '%s': max_health and speed must be above 0" % enemy.id)
 
 
