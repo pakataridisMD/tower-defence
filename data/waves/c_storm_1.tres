@@ -655,5 +655,5 @@ script = ExtResource("1_s")
 id = &"c_storm_1"
 display_name = "Windswept Pass"
 health_growth = 1.1
-health_scale = 2.29
+health_scale = 2.19
 waves = Array[ExtResource("3_s")]([SubResource("r6"), SubResource("r12"), SubResource("r19"), SubResource("r26"), SubResource("r33"), SubResource("r42"), SubResource("r51"), SubResource("r60"), SubResource("r71"), SubResource("r81")])

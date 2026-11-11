@@ -2818,5 +2818,5 @@ script = ExtResource("1_s")
 id = &"c_converge_3"
 display_name = "Heart of the Ring"
 health_growth = 1.1
-health_scale = 0.96
+health_scale = 1.62
 waves = Array[ExtResource("3_s")]([SubResource("r9"), SubResource("r18"), SubResource("r30"), SubResource("r42"), SubResource("r53"), SubResource("r69"), SubResource("r82"), SubResource("r97"), SubResource("r114"), SubResource("r126"), SubResource("r142"), SubResource("r161"), SubResource("r178"), SubResource("r196"), SubResource("r208"), SubResource("r228"), SubResource("r247"), SubResource("r271"), SubResource("r292"), SubResource("r303")])

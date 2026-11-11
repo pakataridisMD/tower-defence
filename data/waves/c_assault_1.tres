@@ -945,7 +945,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.42
+health_multiplier = 0.65
 description = "Stragglers, a flank attack, Mender packs, brutes under escort and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r94"), SubResource("r95"), SubResource("r96"), SubResource("r97"), SubResource("r98"), SubResource("r99"), SubResource("r100"), SubResource("r101"), SubResource("r102"), SubResource("r103"), SubResource("r104")])
 
@@ -1684,7 +1684,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"nature"
 is_boss = true
-health_multiplier = 0.42
+health_multiplier = 0.65
 description = "A marching column, a flank attack, Mender packs and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r178"), SubResource("r179"), SubResource("r180"), SubResource("r181"), SubResource("r182"), SubResource("r183"), SubResource("r184"), SubResource("r185"), SubResource("r186")])
 
@@ -2507,7 +2507,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"earth"
 is_boss = true
-health_multiplier = 0.42
+health_multiplier = 0.65
 description = "A marching column, a flank attack, Mender packs, brutes under escort and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r267"), SubResource("r268"), SubResource("r269"), SubResource("r270"), SubResource("r271"), SubResource("r272"), SubResource("r273"), SubResource("r274"), SubResource("r275"), SubResource("r276"), SubResource("r277")])
 
@@ -3349,7 +3349,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.42
+health_multiplier = 0.65
 description = "Stragglers, a flank attack, Mender packs, brutes under escort and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r357"), SubResource("r358"), SubResource("r359"), SubResource("r360"), SubResource("r361"), SubResource("r362"), SubResource("r363"), SubResource("r364"), SubResource("r365"), SubResource("r366"), SubResource("r367"), SubResource("r368"), SubResource("r369"), SubResource("r370")])
 
@@ -3840,5 +3840,5 @@ script = ExtResource("1_s")
 id = &"c_assault_1"
 display_name = "Nhal Vorath"
 health_growth = 1.09
-health_scale = 0.34
+health_scale = 0.47
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r10"), SubResource("r19"), SubResource("r27"), SubResource("r36"), SubResource("r47"), SubResource("r56"), SubResource("r64"), SubResource("r76"), SubResource("r84"), SubResource("r93"), SubResource("r105"), SubResource("r114"), SubResource("r122"), SubResource("r136"), SubResource("r144"), SubResource("r155"), SubResource("r166"), SubResource("r177"), SubResource("r187"), SubResource("r201"), SubResource("r209"), SubResource("r220"), SubResource("r231"), SubResource("r242"), SubResource("r252"), SubResource("r266"), SubResource("r278"), SubResource("r289"), SubResource("r300"), SubResource("r311"), SubResource("r321"), SubResource("r335"), SubResource("r345"), SubResource("r356"), SubResource("r371"), SubResource("r383"), SubResource("r396"), SubResource("r410"), SubResource("r423")])
