@@ -20,7 +20,7 @@ map = &"c_void_1"
 allowed_elements = Array[StringName]([&"void", &"fire", &"earth"])
 starting_nodes = Array[StringName]([&"void_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r1")])
-rule_text = PackedStringArray("Home ground: Void towers deal 20% more damage.", "Only Void, Fire and Earth can be drafted. You start with Void.")
+rule_text = PackedStringArray("Home ground: Void towers deal 20% more damage.", "Only Void, Fire and Earth can be drafted. You start with Void.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r3"]
@@ -45,7 +45,7 @@ map = &"c_void_2"
 allowed_elements = Array[StringName]([&"void", &"fire", &"earth"])
 starting_nodes = Array[StringName]([&"void_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r3"), SubResource("r4")])
-rule_text = PackedStringArray("Home ground: Void towers deal 20% more damage.", "Only Void, Fire and Earth can be drafted. You start with Void.", "Soul tithe: +1 gold for every kill.")
+rule_text = PackedStringArray("Home ground: Void towers deal 20% more damage.", "Only Void, Fire and Earth can be drafted. You start with Void.", "The last wave is led by Mother Briar, the Thorn Herald (immune to effects, shields the horde, chokes towers).", "Soul tithe: +1 gold for every kill.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r6"]
@@ -70,7 +70,7 @@ map = &"c_void_3"
 allowed_elements = Array[StringName]([&"void", &"fire", &"earth"])
 starting_nodes = Array[StringName]([&"void_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r6"), SubResource("r7")])
-rule_text = PackedStringArray("Home ground: Void towers deal 20% more damage.", "Only Void, Fire and Earth can be drafted. You start with Void.", "Thin veil: towers have 10% more range.")
+rule_text = PackedStringArray("Home ground: Void towers deal 20% more damage.", "Only Void, Fire and Earth can be drafted. You start with Void.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.", "Thin veil: towers have 10% more range.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r9"]
@@ -90,7 +90,7 @@ is_guardian = true
 allowed_elements = Array[StringName]([&"void", &"fire", &"earth"])
 starting_nodes = Array[StringName]([&"void_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r9")])
-rule_text = PackedStringArray("Home ground: Void towers deal 20% more damage.", "Only Void, Fire and Earth can be drafted. You start with Void.", "The Warden resists Void: bring a neighbour.")
+rule_text = PackedStringArray("Home ground: Void towers deal 20% more damage.", "Only Void, Fire and Earth can be drafted. You start with Void.", "The Warden resists Void: bring a neighbour.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
 first_clear_points = 6
 
 [sub_resource type="Resource" id="r11"]

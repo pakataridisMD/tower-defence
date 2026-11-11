@@ -1508,6 +1508,248 @@ def sundered_heart_gear(c, cx, cy, rx, ry):
     c.ink()
 
 
+# ---------------------------------------------------------------- the Heralds and the story's bosses
+def saltmother_gear(c, cx, cy, rx, ry):
+    # A standing column of black seawater around her, drowned lanterns, empty grey eyes.
+    for x in range(int(cx - rx - 2), int(cx + rx + 3)):
+        u = (x - cx) / (rx + 2)
+        if abs(u) > 1 or abs(u) < 0.72:
+            continue
+        for y in range(int(cy - ry * 1.6), int(cy + ry * 0.6)):
+            if (x + y) % 3 == 0:
+                col = ABYSS[2 + int((y - cy) % 3 == 0)]
+                c.put(x, y, col, (u, 0.3, 0.7), ABYSS[4] if (y % 5 == 0) else None)
+    for side in (-1, 1):
+        lx, ly = cx + side * (rx + 1), cy - ry * 0.2
+        c.put(lx, ly, AMBER[2], glow=AMBER[3])
+        c.put(lx, ly - 1, IRON[1])
+    eyes(c, cx, cy, rx, ry, glow=hexc("c8d0d8"), gap=4)
+    c.ink()
+
+
+def gorrath_gear(c, cx, cy, rx, ry):
+    # Quarried stone plates and a glowing stone heart set in his chest.
+    rng = np.random.default_rng(21)
+    for px, py, r in ((-6, -0.7, 4.0), (1, -0.9, 5.0), (7, -0.6, 4.0)):
+        ccx, ccy = cx + px, cy + ry * py
+        for y in range(int(ccy - r), int(ccy + r * 0.6) + 1):
+            for x in range(int(ccx - r), int(ccx + r) + 1):
+                if abs(x - ccx) + abs(y - ccy) * 1.3 <= r:
+                    lit = 0.6 - 0.3 * (x - ccx) / r - 0.3 * (y - ccy) / r + rng.random() * 0.1
+                    c.put(x, y, ROCK[int(np.clip(lit, 0, 0.999) * len(ROCK))], ((x - ccx) / r * 0.6, 0.5, 0.7))
+    for dx, dy in ((0, 0), (-1, 0), (0, -1), (1, 0), (0, 1)):
+        c.put(cx + dx, cy + ry * 0.3 + dy, AMBER[3] if (dx, dy) == (0, 0) else AMBER[1], glow=AMBER[3])
+    eyes(c, cx, cy + 2, rx, ry, glow=hexc("ffb030"), gap=4)
+    c.ink()
+
+
+def pale_vesper_gear(c, cx, cy, rx, ry):
+    # A singer's veil and an open, glowing mouth; notes drift up.
+    for x in range(int(cx - rx * 0.8), int(cx + rx * 0.8) + 1):
+        for k in range(3):
+            c.put(x, cy - ry * 0.95 - k, VOID[1 + (k == 2)], (0, 0.5, 0.8))
+    eyes(c, cx, cy - 2, rx, ry, glow=VOID[4], gap=3)
+    for dy in (0, 1):
+        for dx in (-1, 0, 1):
+            c.put(cx + dx, cy + ry * 0.3 + dy, SOUL[3], glow=SOUL[4])
+    for k, (nx, ny) in enumerate(((-6, -2), (5, -4), (-3, -7))):
+        c.put(cx + nx, cy - ry + ny, SOUL[4], glow=SOUL[4])
+    c.ink()
+
+
+def ashwick_gear(c, cx, cy, rx, ry):
+    # An ever-burning boy: hair of flame streaming back.
+    flame_crown(c, cx - 1, cy - ry * 0.8, 4, COAL, hexc("ffb040"))
+    for k in range(6):
+        c.put(cx - rx * 0.5 - k, cy - ry * 0.6 + (k % 2), COAL[3 - k // 3], glow=COAL[2])
+    eyes(c, cx + 1, cy, rx, ry, glow=hexc("fff0a0"), gap=2)
+    c.ink()
+
+
+def vholt_gear(c, cx, cy, rx, ry):
+    # A crown of black cloud with a forked bolt, and thunderbird wings.
+    for side in (-1, 1):
+        for k in range(8):
+            for j in range(3 - k // 3):
+                c.put(cx + side * (rx * 0.6 + k), cy - ry * 0.3 - k * 0.6 + j, CLOUD[1 + (j == 0)], (side * 0.5, 0.5, 0.7))
+    for x in range(int(cx - 5), int(cx + 6)):
+        c.put(x, cy - ry * 0.95, CLOUD[0], (0, 0.5, 0.8))
+        if (x - int(cx)) % 3 == 0:
+            c.put(x, cy - ry * 0.95 - 2, SPARK[3], glow=SPARK[4])
+            c.put(x, cy - ry * 0.95 - 1, SPARK[2], glow=SPARK[3])
+    eyes(c, cx, cy, rx, ry, glow=hexc("e0f4ff"), gap=4)
+    c.ink()
+
+
+def mother_briar_gear(c, cx, cy, rx, ry):
+    # A thicket in the shape of a woman: thorny branches and a few leaves.
+    for side in (-1, 1):
+        x, y = cx + side * rx * 0.3, cy - ry * 0.7
+        for k in range(9):
+            x += side * (0.5 if k % 2 else 1.0)
+            y -= 0.9
+            c.put(x, y, WOOD[2], (side * 0.4, 0.5, 0.8))
+            if k % 3 == 1:
+                c.put(x + side, y, WOOD[4])
+                c.put(x - side, y - 1, LEAF[3])
+    for k in range(7):
+        a = k / 7 * math.tau
+        c.put(cx + math.cos(a) * rx * 0.9, cy + math.sin(a) * ry * 0.6, WOOD[1])
+    eyes(c, cx, cy, rx, ry, glow=hexc("b8ff60"), gap=3)
+    c.ink()
+
+
+def ashen_regent_gear(c, cx, cy, rx, ry):
+    # Cassivane: a marshal's crown of ash and ember, and a grey mantle on his shoulders.
+    crown_y = cy - ry * 0.9
+    for x in range(int(cx - 6), int(cx + 7)):
+        tooth = 3 if (x - int(cx)) % 3 == 0 else 1
+        for k in range(tooth + 1):
+            c.put(x, crown_y - k, OBSIDIAN[3] if x < cx else OBSIDIAN[2], (0, 0.5, 0.8))
+        if (x - int(cx)) % 3 == 0:
+            c.put(x, crown_y - tooth - 1, COAL[3], glow=COAL[2])
+    for side in (-1, 1):
+        for k in range(6):
+            c.put(cx + side * (rx * 0.75 + k * 0.5), cy - ry * 0.4 + k, OBSIDIAN[1 + (k < 2)], (side * 0.6, 0.4, 0.7))
+    eyes(c, cx, cy, rx, ry, glow=hexc("ff7a3a"), gap=4)
+    c.ink()
+
+
+def vael_orrun_gear(c, cx, cy, rx, ry):
+    # A figure of black glass: a crown with a gap where a face should be, stolen light in its chest.
+    top = cy - ry * 0.95
+    for i, x in enumerate(range(int(cx - 8), int(cx + 9))):
+        if abs(x - cx) <= 2:
+            continue  # the crown-shaped gap
+        h = 5 if i % 4 == 0 else 2
+        for k in range(h):
+            c.put(x, top - k, OBSIDIAN[4 if k == h - 1 else 2], (0, 0.5, 0.8))
+    for k in range(4):
+        c.put(cx - 2, top - k, VOID[4], glow=VOID[4])
+        c.put(cx + 2, top - k, VOID[4], glow=VOID[4])
+    for dy in range(-2, 3):
+        for dx in range(-2, 3):
+            if abs(dx) + abs(dy) <= 2:
+                col = hexc("ffffff") if abs(dx) + abs(dy) <= 1 else hexc("fff0c0")
+                c.put(cx + dx, cy + ry * 0.25 + dy, col, glow=col)
+    c.ink()
+
+
+# Six greys for buildings, which the game tints with their element like an enemy's body.
+BUILDING_GREY = [hexc(c) for c in ("2a303c", "3a4250", "6a7484", "a0a8b4", "d2d8de", "f4f6f8")]
+
+
+def building(name: str, w: int, h: int, body, gear) -> dict:
+    """A building of the enemy citadel. It stands still: its frames only differ in how its runes and
+    windows pulse. The body is drawn in greys (the game tints it with the building's element) and
+    the gear untinted, like an enemy's."""
+    for f in range(len(HOP)):
+        b = Canvas(w, h, 300 + f)
+        body(b)
+        b.ink()
+        b.save(os.path.join(OUT, "enemies"), f"{name}_{f}")
+        g = Canvas(w, h, 400)
+        gear(g, f)
+        g.save(os.path.join(OUT, "enemies"), f"{name}_gear_{f}", glow=True)
+    return {"size": [w, h], "anchor": [w // 2, h - 1], "gear": True, "frames": len(HOP), "building": True}
+
+
+def _pulse(f, k=0):
+    return 0.6 + 0.4 * math.sin((f / len(HOP) + k * 0.17) * math.tau)
+
+
+def gatemaw_body(c):
+    w, h = c.w, c.h
+    # Two squat towers and the wall between them, around a maw.
+    for cx in (9, w - 10):
+        c.cylinder(cx, h - 3, h - 14, 8, BUILDING_GREY, top_radius=7, seed=cx)
+        battlement(c, cx, h - 3 - (h - 14) - 2, 7, BUILDING_GREY)
+    for x in range(14, w - 14):
+        top = 16 + (2 if (x // 3) % 2 else 0)
+        for y in range(top, h - 3):
+            v = 0.35 + 0.25 * ((x + y // 4) % 5 == 0) + 0.2 * (y < top + 2)
+            c.put(x, y, SLIME_BODY[int(np.clip(v, 0, 0.999) * 5)], (0, -0.5, 0.85))
+
+
+def gatemaw_gear(c, f):
+    w, h = c.w, c.h
+    mx, top, bottom = w / 2, 24, h - 3
+    # The maw: a dark arch with teeth, and two eyes above it.
+    for y in range(top, bottom):
+        half = 9 * math.sqrt(max(0.0, 1 - ((y - bottom) / (bottom - top)) ** 2))
+        for x in range(int(mx - half), int(mx + half) + 1):
+            c.put(x, y, hexc("120a18"), (0, 0, 1), hexc("40103a") if y > bottom - 4 else None)
+    for k in range(-8, 9, 3):
+        for t in range(3):
+            c.put(mx + k, top + 3 + t, hexc("e8dcc0") if t < 2 else hexc("b8a888"))
+            c.put(mx + k + 1, bottom - 1 - t, hexc("d8ccb0"))
+    p = _pulse(f)
+    for ex in (mx - 6, mx + 5):
+        for dx in (0, 1):
+            col = hexc("ff4a6a") * p + hexc("400010") * (1 - p)
+            c.put(ex + dx, top - 4, col, glow=hexc("ff4a6a") * p)
+    for k, x in enumerate((9, w - 10)):
+        c.put(x, 22, VOID[3] * _pulse(f, k), glow=VOID[4] * _pulse(f, k))
+    c.ink()
+
+
+def mirror_spire_body(c):
+    w, h = c.w, c.h
+    c.cylinder(w / 2, h - 3, h - 22, 9, BUILDING_GREY, top_radius=4, seed=7)
+
+
+def mirror_spire_gear(c, f):
+    w, h = c.w, c.h
+    cx = w / 2
+    # A mirror crystal at the top and windows that show a wrong reflection of Solenne's light.
+    c.crystal(cx, 1, 11, 22, [VOID[1], VOID[2], VOID[3], hexc("e8f0ff"), hexc("ffffff")], glow=True)
+    for k, y in enumerate(range(30, h - 8, 7)):
+        p = _pulse(f, k)
+        for dy in range(3):
+            c.put(cx - 1 + (k % 2) * 2, y + dy, hexc("c8a0ff") * p, glow=hexc("c8a0ff") * p)
+    c.ink()
+
+
+def crownless_throne_body(c):
+    w, h = c.w, c.h
+    cx = w / 2
+    # Steps, a high back and two arms, in black glass.
+    for step in range(3):
+        y0 = h - 3 - step * 3
+        for y in range(y0 - 3, y0):
+            for x in range(int(cx - 22 + step * 3), int(cx + 22 - step * 3)):
+                c.put(x, y, SLIME_BODY[1 + (y == y0 - 3)], (0, 0.6 if y == y0 - 3 else -0.5, 0.8))
+    for y in range(6, h - 12):
+        half = 9 - max(0, 14 - y) * 0.3
+        for x in range(int(cx - half), int(cx + half) + 1):
+            u = (x - cx) / max(half, 1)
+            c.put(x, y, SLIME_BODY[int(np.clip(0.55 - 0.35 * u, 0, 0.999) * 5)], (u * 0.6, -0.4, 0.8))
+    for side in (-1, 1):
+        for y in range(h - 24, h - 12):
+            for x in range(int(cx + side * 10), int(cx + side * 16), side):
+                c.put(x, y, SLIME_BODY[2 if side < 0 else 1], (side * 0.5, 0.3, 0.8))
+
+
+def crownless_throne_gear(c, f):
+    w, h = c.w, c.h
+    cx = w / 2
+    # A crown hung over the empty seat, with a gap in it, and the stolen light pulsing in the back.
+    for i, x in enumerate(range(int(cx - 9), int(cx + 10))):
+        if abs(x - cx) <= 2:
+            continue
+        tall = 5 if i % 3 == 0 else 2
+        for k in range(tall):
+            c.put(x, 4 - k + 3, OBSIDIAN[4 if k == tall - 1 else 2])
+    p = _pulse(f)
+    for dy in range(-3, 4):
+        for dx in range(-3, 4):
+            d = abs(dx) + abs(dy)
+            if d <= 3:
+                col = hexc("ffffff") if d <= 1 else hexc("fff0c0") if d <= 2 else hexc("c8a0ff")
+                c.put(cx + dx, 22 + dy, col * (0.5 + 0.5 * p), glow=col * p)
+    c.ink()
+
+
 ENEMIES = {
     "grunt": lambda: creature("grunt", 20, 17, 7.5, 6.5, grunt_gear, 1),
     "runner": lambda: creature("runner", 22, 13, 6.0, 4.5, runner_gear, 2, "dart"),
@@ -1525,6 +1767,17 @@ ENEMIES = {
     "hollow_king": lambda: creature("hollow_king", 40, 44, 15.0, 15.0, hollow_king_gear, 14, "wisp"),
     "hollow_shade": lambda: creature("hollow_shade", 26, 28, 10.0, 10.0, hollow_shade_gear, 15, "wisp"),
     "sundered_heart": lambda: creature("sundered_heart", 52, 46, 20.0, 16.5, sundered_heart_gear, 16),
+    "saltmother": lambda: creature("saltmother", 40, 44, 14.0, 13.0, saltmother_gear, 17, "wisp"),
+    "gorrath": lambda: creature("gorrath", 42, 36, 16.5, 13.5, gorrath_gear, 18, "beetle"),
+    "pale_vesper": lambda: creature("pale_vesper", 36, 42, 13.0, 13.0, pale_vesper_gear, 19, "wisp"),
+    "ashwick": lambda: creature("ashwick", 34, 22, 9.0, 7.0, ashwick_gear, 20, "dart"),
+    "vholt": lambda: creature("vholt", 44, 42, 14.0, 12.5, vholt_gear, 21, "wisp"),
+    "mother_briar": lambda: creature("mother_briar", 38, 40, 14.5, 13.0, mother_briar_gear, 22),
+    "ashen_regent": lambda: creature("ashen_regent", 40, 38, 15.0, 13.0, ashen_regent_gear, 23),
+    "vael_orrun": lambda: creature("vael_orrun", 52, 54, 19.0, 18.0, vael_orrun_gear, 24, "wisp"),
+    "gatemaw": lambda: building("gatemaw", 64, 56, gatemaw_body, gatemaw_gear),
+    "mirror_spire": lambda: building("mirror_spire", 32, 72, mirror_spire_body, mirror_spire_gear),
+    "crownless_throne": lambda: building("crownless_throne", 56, 58, crownless_throne_body, crownless_throne_gear),
 }
 
 

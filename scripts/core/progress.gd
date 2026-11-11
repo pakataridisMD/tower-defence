@@ -17,6 +17,11 @@ var persist := true
 var meta: MetaProgress
 ## The campaign stage the next run plays, or empty for a skirmish on the selected map. Not saved.
 var active_stage: StringName = &""
+## Cinematics waiting to play, and the scene to open once they are done. Set by play_story().
+var cinematic_queue: Array[StringName] = []
+var cinematic_next_scene := ""
+
+const CINEMATIC_SCENE := "res://scenes/story/cinematic.tscn"
 
 
 func _ready() -> void:
@@ -108,6 +113,22 @@ func record_stage(sim: RunSim) -> Dictionary:
 	var result := meta.record_stage(sim)
 	_saved(true)
 	return result
+
+
+## Marks a cinematic as seen and saves.
+func mark_seen(cinematic_id: StringName) -> bool:
+	return _saved(meta.mark_seen(cinematic_id))
+
+
+## Opens a scene, first playing these cinematics if there are any. Use it for every scene change
+## the story can sit in front of.
+func play_story(tree: SceneTree, cinematics: Array[StringName], next_scene: String) -> void:
+	if cinematics.is_empty():
+		tree.change_scene_to_file(next_scene)
+		return
+	cinematic_queue = cinematics.duplicate()
+	cinematic_next_scene = next_scene
+	tree.change_scene_to_file(CINEMATIC_SCENE)
 
 
 ## True when GUT runs the tests: its runner scene or script is on the command line.

@@ -186,8 +186,14 @@ func _draw() -> void:
 		_draw_range(selected.position, selected.attack_range, Color(1, 1, 1, 0.55))
 		if selected.aura_radius > 0.0 and selected.aura_damage > 0.0:
 			_draw_range(selected.position, selected.aura_radius, Color(0.75, 0.5, 1.0, 0.5))
+	_draw_enemy_ground()
+	for structure in sim.structures:
+		_draw_structure(structure)
 	for enemy in sim.enemies:
 		_draw_enemy(enemy)
+	for tower in sim.towers:
+		if tower.silenced > 0.0:
+			_draw_silenced(tower)
 	if art == null:
 		for shot in sim.projectiles:
 			var radius := 7.0 if shot.splash_radius > 0.0 else 4.0
@@ -372,6 +378,48 @@ func _draw_enemy(enemy: SimEnemy) -> void:
 		var top_left := enemy.position + Vector2(-width * 0.5, top)
 		draw_rect(Rect2(top_left - Vector2(1, 1), Vector2(width + 2, 6)), Color(0, 0, 0, 0.75))
 		draw_rect(Rect2(top_left, Vector2(width * enemy.health / enemy.max_health, 4)), UiStyle.GOOD)
+
+
+## In an assault, the ground the enemy still holds is shaded red, with its edge marked.
+func _draw_enemy_ground() -> void:
+	var limit := sim.build_limit()
+	if limit < 0:
+		return
+	var map := sim.config.map
+	var left := float(limit + 1) * map.cell_size
+	var pulse := 0.5 + 0.5 * sin(Time.get_ticks_msec() * 0.002)
+	draw_rect(Rect2(left, 0, map.size_in_pixels().x - left, map.size_in_pixels().y), Color(0.35, 0.02, 0.12, 0.22))
+	draw_dashed_line(Vector2(left, 0), Vector2(left, map.size_in_pixels().y), Color(1.0, 0.35, 0.45, 0.4 + 0.3 * pulse), 3.0, 14.0)
+
+
+## A building of the enemy base: its health bar, and a shield while it cannot be hurt yet.
+func _draw_structure(structure: SimEnemy) -> void:
+	if not structure.alive:
+		return
+	var height := BoardArt.enemy_height(structure.data.id) if art != null else 0.0
+	if height <= 0.0:
+		var half := 40.0
+		draw_rect(Rect2(structure.position - Vector2(half, half), Vector2(half, half) * 2.0), Color("2a2338"))
+		draw_rect(Rect2(structure.position - Vector2(half, half), Vector2(half, half) * 2.0), sim.config.element_color_at(structure.element), false, 3.0)
+		height = half * 2.0
+	var center := structure.position + Vector2(0, -height * 0.4)
+	if not sim.is_vulnerable(structure):
+		var shimmer := 0.25 + 0.1 * sin(Time.get_ticks_msec() * 0.003 + structure.id)
+		draw_circle(center, height * 0.62, Color(0.75, 0.55, 1.0, shimmer * 0.4))
+		draw_arc(center, height * 0.62, 0.0, TAU, 48, Color(0.85, 0.7, 1.0, shimmer + 0.3), 2.0, true)
+	var width := 96.0
+	var top_left := structure.position + Vector2(-width * 0.5, BoardArt.ENEMY_DROP * BoardArt.SCALE - height - 14.0)
+	draw_rect(Rect2(top_left - Vector2(2, 2), Vector2(width + 4, 10)), Color(0, 0, 0, 0.8))
+	var color := UiStyle.BAD if sim.is_vulnerable(structure) else Color(0.6, 0.55, 0.7)
+	draw_rect(Rect2(top_left, Vector2(width * maxf(0.0, structure.health) / structure.max_health, 6)), color)
+
+
+## A silenced tower shows a crossed-out ring until it can fire again.
+func _draw_silenced(tower: SimTower) -> void:
+	var at := tower.position + Vector2(0, -44)
+	draw_circle(at, 11.0, Color(0, 0, 0, 0.6))
+	draw_arc(at, 11.0, 0.0, TAU, 24, Color(0.85, 0.6, 1.0), 2.0, true)
+	draw_line(at + Vector2(-7, -7), at + Vector2(7, 7), Color(0.85, 0.6, 1.0), 2.0)
 
 
 func _draw_effects() -> void:

@@ -32,6 +32,9 @@ static var _texture_cache: Dictionary = {}
 
 var sim: RunSim
 var day_night := DayNight.new()
+## Above 0, holds the light at this time of day whatever the waves, such as DayNight.NIGHT for the
+## Long Night or DayNight.DAWN once the dawn comes in the siege of Solenne.
+var light_override := -1.0
 
 var _world: Node2D
 var _ground: Node2D
@@ -431,7 +434,13 @@ func _process(delta: float) -> void:
 
 func _update_light(delta: float) -> void:
 	var in_wave := sim.state == RunSim.State.WAVE
-	day_night.set_target(DayNight.target_for(sim.wave_index, in_wave, sim.time_in_wave, sim.state == RunSim.State.WON))
+	var target := DayNight.target_for(sim.wave_index, in_wave, sim.time_in_wave, sim.state == RunSim.State.WON)
+	if light_override >= 0.0:
+		# The clock only runs forward, so the held time is today's, or tomorrow's if today's has passed.
+		target = floorf(day_night.clock) + light_override
+		if target < day_night.clock - 0.001:
+			target += 1.0
+	day_night.set_target(target)
 	day_night.advance(delta)
 	_ambient.color = day_night.ambient() * BIOME_TINTS[_biome]
 	_sun.energy = day_night.sun_energy()
@@ -668,7 +677,9 @@ func _tower_emitter(kind: String) -> CPUParticles2D:
 
 func _sync_enemies(delta: float) -> void:
 	var seen: Dictionary[int, bool] = {}
-	for enemy in sim.enemies:
+	var shown: Array[SimEnemy] = sim.enemies.duplicate()
+	shown.append_array(sim.structures)
+	for enemy in shown:
 		if not enemy.alive:
 			continue
 		seen[enemy.id] = true

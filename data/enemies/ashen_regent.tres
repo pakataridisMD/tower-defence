@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"ashen_regent"
+display_name = "Cassivane, the Ashen Regent"
+max_health = 2600.0
+speed = 40.0
+armour = 8.0
+bounty = 100
+leak_damage = 20
+tags = Array[StringName]([&"boss"])
+description = "The Lord Marshal of the Concord. Wards his guard (30% less damage) and silences towers every 9 seconds. When badly hurt he escapes through the Crack, leaving the field to you."
+element = &"void"
+ward_radius = 160.0
+ward_reduction = 0.3
+silence_interval = 9.0
+silence_radius = 170.0
+silence_duration = 2.5
+escape_below = 0.25

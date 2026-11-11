@@ -231,8 +231,13 @@ func _play() -> void:
 	get_tree().change_scene_to_file(GAME_SCENE)
 
 
+## Opens the campaign map. The first time, the story's prologue plays first.
 func open_campaign() -> void:
-	get_tree().change_scene_to_file(CAMPAIGN_SCENE)
+	var story := Story.shared()
+	var first: Array[StringName] = []
+	if story.has_cinematic(story.prologue) and not Progress.meta.has_seen(story.prologue):
+		first.append(story.prologue)
+	Progress.play_story(get_tree(), first, CAMPAIGN_SCENE)
 
 
 func open_meta_tree() -> void:

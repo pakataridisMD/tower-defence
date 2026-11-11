@@ -1192,6 +1192,30 @@
   }
  },
  "enemies": {
+  "ashen_regent": {
+   "size": [
+    40,
+    38
+   ],
+   "anchor": [
+    20,
+    37
+   ],
+   "gear": true,
+   "frames": 6
+  },
+  "ashwick": {
+   "size": [
+    34,
+    22
+   ],
+   "anchor": [
+    17,
+    21
+   ],
+   "gear": true,
+   "frames": 6
+  },
   "broodmother": {
    "size": [
     44,
@@ -1217,6 +1241,44 @@
    "frames": 6
   },
   "cinder_tyrant": {
+   "size": [
+    42,
+    36
+   ],
+   "anchor": [
+    21,
+    35
+   ],
+   "gear": true,
+   "frames": 6
+  },
+  "crownless_throne": {
+   "size": [
+    56,
+    58
+   ],
+   "anchor": [
+    28,
+    57
+   ],
+   "gear": true,
+   "frames": 6,
+   "building": true
+  },
+  "gatemaw": {
+   "size": [
+    64,
+    56
+   ],
+   "anchor": [
+    32,
+    55
+   ],
+   "gear": true,
+   "frames": 6,
+   "building": true
+  },
+  "gorrath": {
    "size": [
     42,
     36
@@ -1288,6 +1350,31 @@
    "gear": true,
    "frames": 6
   },
+  "mirror_spire": {
+   "size": [
+    32,
+    72
+   ],
+   "anchor": [
+    16,
+    71
+   ],
+   "gear": true,
+   "frames": 6,
+   "building": true
+  },
+  "mother_briar": {
+   "size": [
+    38,
+    40
+   ],
+   "anchor": [
+    19,
+    39
+   ],
+   "gear": true,
+   "frames": 6
+  },
   "mountain_titan": {
    "size": [
     46,
@@ -1300,6 +1387,18 @@
    "gear": true,
    "frames": 6
   },
+  "pale_vesper": {
+   "size": [
+    36,
+    42
+   ],
+   "anchor": [
+    18,
+    41
+   ],
+   "gear": true,
+   "frames": 6
+  },
   "runner": {
    "size": [
     22,
@@ -1308,6 +1407,18 @@
    "anchor": [
     11,
     12
+   ],
+   "gear": true,
+   "frames": 6
+  },
+  "saltmother": {
+   "size": [
+    40,
+    44
+   ],
+   "anchor": [
+    20,
+    43
    ],
    "gear": true,
    "frames": 6
@@ -1356,6 +1467,30 @@
    "anchor": [
     20,
     39
+   ],
+   "gear": true,
+   "frames": 6
+  },
+  "vael_orrun": {
+   "size": [
+    52,
+    54
+   ],
+   "anchor": [
+    26,
+    53
+   ],
+   "gear": true,
+   "frames": 6
+  },
+  "vholt": {
+   "size": [
+    44,
+    42
+   ],
+   "anchor": [
+    22,
+    41
    ],
    "gear": true,
    "frames": 6

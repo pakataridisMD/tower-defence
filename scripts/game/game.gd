@@ -23,6 +23,10 @@ var sim: RunSim
 var board: BoardView
 var hud: Hud
 var web: SkillWebView
+var story: Story
+var story_overlay: StoryOverlay
+## The cinematic playing over the run, or null.
+var cinematic: CinematicPlayer
 var paused := false
 ## Set before the node enters the tree, or with --autoplay.
 var autoplay := false
@@ -34,6 +38,9 @@ var _max_steps := MAX_STEPS_PER_FRAME
 var _bot: AutoPlayer
 var _bot_wait := BOT_BREAK
 var _bot_spent := false
+var _cinematic_layer: CanvasLayer
+## Cinematics to play once the player leaves the end screen: the stage's own scene and plot beats.
+var _story_after: Array[StringName] = []
 
 
 func _ready() -> void:
@@ -41,7 +48,9 @@ func _ready() -> void:
 	autoplay = autoplay or args.has("--autoplay")
 	quit_at_end = quit_at_end or args.has("--quit-at-end")
 	sim = RunSim.new(Progress.run_config())
+	story = Story.shared()
 	_build_views()
+	_build_story()
 	_connect_signals()
 	if autoplay:
 		_bot = AutoPlayer.for_sim(sim)
@@ -86,8 +95,8 @@ func _connect_signals() -> void:
 	hud.ascend_pressed.connect(_ascend_selected)
 	hud.hybrid_pressed.connect(_hybrid_selected)
 	hud.play_again_pressed.connect(func() -> void: get_tree().reload_current_scene())
-	hud.menu_pressed.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
-	hud.campaign_pressed.connect(func() -> void: get_tree().change_scene_to_file(CAMPAIGN_SCENE))
+	hud.menu_pressed.connect(func() -> void: _leave(MENU_SCENE))
+	hud.campaign_pressed.connect(func() -> void: _leave(CAMPAIGN_SCENE))
 	hud.next_stage_pressed.connect(_play_next_stage)
 	board.selection_changed.connect(func(tower: SimTower) -> void: hud.selected = tower)
 	board.placement_failed.connect(func(reason: String) -> void: hud.show_message(reason, UiStyle.BAD))
@@ -105,7 +114,14 @@ func _process(delta: float) -> void:
 	if not board.aiming.is_empty() and sim.state != RunSim.State.WAVE:
 		board.cancel_aiming()
 	hud.aiming = board.aiming
-	if paused or web.visible or sim.state != RunSim.State.WAVE:
+	if paused or web.visible or cinematic != null:
+		_accumulator = 0.0
+		return
+	if sim.state == RunSim.State.BUILDING and sim.break_time_left >= 0.0 and _bot == null:
+		# In an assault the next wave comes on its own after a short break.
+		if sim.tick_break(delta * SPEEDS[_speed_index]):
+			_close_web()
+	if sim.state != RunSim.State.WAVE:
 		_accumulator = 0.0
 		return
 	_accumulator += delta * SPEEDS[_speed_index]
@@ -132,7 +148,7 @@ func _input(event: InputEvent) -> void:
 ## Z X C V B N press the selected tower's upgrade buttons, and Delete sells it.
 func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
-	if key == null or not key.pressed or key.echo:
+	if key == null or not key.pressed or key.echo or cinematic != null:
 		return
 	match key.keycode:
 		KEY_SPACE:
@@ -316,6 +332,7 @@ func _on_run_ended(won: bool) -> void:
 		var result := Progress.record_stage(sim)
 		var next := Progress.meta.stage_after(sim.config.stage.id)
 		hud.show_stage_result(result, next != null and Progress.meta.is_stage_unlocked(next.id))
+		_story_after_run(won, result)
 		if autoplay:
 			print("Autoplay stage %s: %d stars" % [sim.config.stage.id, result["stars"]])
 	if autoplay:
@@ -331,9 +348,108 @@ func _on_run_ended(won: bool) -> void:
 func _play_next_stage() -> void:
 	var next := Progress.meta.stage_after(sim.config.stage.id) if sim.config.stage != null else null
 	if next != null and Progress.play_stage(next.id):
-		get_tree().reload_current_scene()
+		var scenes := _story_after.duplicate()
+		for id in Progress.meta.story_before_stage(story, next.id):
+			if not scenes.has(id):
+				scenes.append(id)
+		_story_after.clear()
+		Progress.play_story(get_tree(), scenes, scene_file_path)
 	else:
-		get_tree().change_scene_to_file(CAMPAIGN_SCENE)
+		_leave(CAMPAIGN_SCENE)
+
+
+## Leaves the run for another screen, first playing the story the run unlocked.
+func _leave(scene: String) -> void:
+	var scenes := _story_after.duplicate()
+	_story_after.clear()
+	if autoplay:
+		scenes.clear()
+	Progress.play_story(get_tree(), scenes, scene)
+
+
+# --- Story ---------------------------------------------------------------------
+
+func _build_story() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 1
+	add_child(layer)
+	story_overlay = StoryOverlay.new()
+	layer.add_child(story_overlay)
+	story_overlay.setup(sim, story)
+	_cinematic_layer = CanvasLayer.new()
+	_cinematic_layer.layer = 5
+	add_child(_cinematic_layer)
+	sim.wave_started.connect(_on_wave_started_story)
+	sim.phase_changed.connect(_on_phase_changed_story)
+	var stage := sim.config.stage
+	if stage != null and board.art != null and not stage.is_assault():
+		# After the midpoint the lands are fought in the Long Night.
+		var land := sim.config.campaign != null and not sim.config.campaign.element.is_empty()
+		if land and story.night_from_stages_won > 0 and Progress.meta.stages_won() >= story.night_from_stages_won:
+			board.art.light_override = DayNight.NIGHT
+			board.art.day_night.set_target(DayNight.NIGHT)
+			board.art.day_night.snap()
+
+
+## Plays cinematics over the run, which waits until they are done. The bot skips them.
+func play_cinematics(ids: Array[StringName]) -> void:
+	if ids.is_empty() or autoplay:
+		for id in ids:
+			Progress.mark_seen(id)
+		return
+	if cinematic != null:
+		cinematic.queue.append_array(ids)
+		return
+	board.cancel_placing()
+	board.cancel_aiming()
+	_close_web()
+	cinematic = CinematicPlayer.new()
+	cinematic.change_scene_when_done = false
+	cinematic.story = story
+	cinematic.queue = ids.duplicate()
+	cinematic.finished.connect(func() -> void:
+		cinematic.queue_free()
+		cinematic = null)
+	_cinematic_layer.add_child(cinematic)
+
+
+func _on_wave_started_story(number: int) -> void:
+	var stage := sim.config.stage
+	if stage == null:
+		return
+	var id := story.scene_at_wave(stage.id, number)
+	if id.is_empty():
+		return
+	# A scene in the middle of a stage turns the night: in the siege of Solenne, the dawn comes.
+	if board.art != null:
+		board.art.light_override = DayNight.DAWN
+	if not Progress.meta.has_seen(id):
+		play_cinematics([id])
+
+
+func _on_phase_changed_story(phase: int) -> void:
+	var movement := story.assault_movement(phase)
+	var id := StringName(str(movement.get("cinematic", "")))
+	if not id.is_empty() and story.has_cinematic(id):
+		play_cinematics([id])
+
+
+## After a stage: the city it cost (or saved), and which cinematics come next.
+func _story_after_run(won: bool, result: Dictionary) -> void:
+	var stage := sim.config.stage
+	var city := story.city(stage.id)
+	if won:
+		if not city.is_empty():
+			var saved: bool = city.get("saved", false)
+			var line := str(city.get("fall_text", ""))
+			hud.show_story_note(("%s is saved. %s" if saved else "%s has fallen, but its people got away. %s") % [city.get("name", ""), line])
+		_story_after = Progress.meta.story_after_stage(story, stage.id)
+		if not _story_after.is_empty():
+			hud.show_story_note("[color=#%s]The story continues when you leave this screen.[/color]" % UiStyle.GOLD.to_html(false))
+	else:
+		var lost := story.lost_scene(stage.id)
+		if not lost.is_empty():
+			play_cinematics([lost])
 
 
 # --- Autoplay ------------------------------------------------------------------

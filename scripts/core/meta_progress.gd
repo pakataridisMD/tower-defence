@@ -313,9 +313,51 @@ func record_stage(sim: RunSim) -> Dictionary:
 		profile.meta_points_earned += stage.first_clear_points
 		tree.points += stage.first_clear_points
 		result["first_clear_points"] = stage.first_clear_points
+	result["first_win"] = earned > 0 and before == 0
 	result["best"] = stars(stage.id)
 	if sim.config.campaign != null and not campaign_was_done:
 		result["campaign_complete"] = is_campaign_complete(sim.config.campaign.id)
+	return result
+
+
+# --- Story ---------------------------------------------------------------------------
+
+## Campaign stages won so far, in any order. The story moves on with this count.
+func stages_won() -> int:
+	var count := 0
+	for id in profile.stage_stars:
+		if profile.stage_stars[id] > 0:
+			count += 1
+	return count
+
+
+func has_seen(cinematic_id: StringName) -> bool:
+	return profile.seen_cinematics.has(cinematic_id)
+
+
+## Remembers that a cinematic was played, so it does not play on its own again. Returns true if it
+## was new.
+func mark_seen(cinematic_id: StringName) -> bool:
+	if cinematic_id.is_empty() or profile.seen_cinematics.has(cinematic_id):
+		return false
+	profile.seen_cinematics.append(cinematic_id)
+	return true
+
+
+## Cinematics that should play now that this stage was won, oldest first.
+func story_after_stage(story: Story, stage_id: StringName) -> Array[StringName]:
+	return story.due_after_win(stage_id, stages_won(), profile.seen_cinematics)
+
+
+## Cinematics that should play before a stage starts: the prologue before the very first stage,
+## and any written for that stage.
+func story_before_stage(story: Story, stage_id: StringName) -> Array[StringName]:
+	var result: Array[StringName] = []
+	if not story.prologue.is_empty() and story.has_cinematic(story.prologue) and not has_seen(story.prologue):
+		result.append(story.prologue)
+	for id in story.due_before_stage(stage_id, profile.seen_cinematics):
+		if not result.has(id):
+			result.append(id)
 	return result
 
 

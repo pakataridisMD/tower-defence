@@ -25,6 +25,10 @@ var ascendancy: AscendancyData
 var element_indices: Array[int] = []
 var tags: Array[StringName] = []
 var cooldown := 0.0
+## Seconds left in which a boss has silenced this tower: it does not attack.
+var silenced := 0.0
+## Attacks made so far, for the siege shots of an assault (see RunSim.SIEGE_EVERY).
+var shots := 0
 
 var damage := 0.0
 var attacks_per_second := 1.0

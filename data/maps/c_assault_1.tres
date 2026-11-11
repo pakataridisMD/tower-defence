@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MapData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/map_data.gd" id="1_s"]
+[ext_resource type="Script" path="res://scripts/data/map_lane.gd" id="2_s"]
+
+[sub_resource type="Resource" id="r1"]
+script = ExtResource("2_s")
+waypoints = Array[Vector2i]([Vector2i(24, 2), Vector2i(14, 2), Vector2i(14, 4), Vector2i(7, 4), Vector2i(7, 7), Vector2i(-1, 7)])
+
+[sub_resource type="Resource" id="r2"]
+script = ExtResource("2_s")
+waypoints = Array[Vector2i]([Vector2i(24, 13), Vector2i(13, 13), Vector2i(13, 10), Vector2i(10, 10), Vector2i(10, 7), Vector2i(-1, 7)])
+
+[resource]
+script = ExtResource("1_s")
+id = &"c_assault_1"
+display_name = "Nhal Vorath"
+order = 170
+grid_size = Vector2i(24, 15)
+cell_size = 64
+waypoints = Array[Vector2i]([Vector2i(22, 7), Vector2i(16, 7), Vector2i(16, 10), Vector2i(10, 10), Vector2i(10, 7), Vector2i(-1, 7)])
+wave_set = &"c_assault_1"
+extra_lanes = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2")])
+biome = &"void"
+skirmish = false

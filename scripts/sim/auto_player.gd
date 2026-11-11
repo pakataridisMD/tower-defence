@@ -67,10 +67,16 @@ func _init(
 ## neighbours, otherwise it plays the default Fire, Storm and Nature plan.
 static func for_sim(p_sim: RunSim) -> AutoPlayer:
 	var stage := p_sim.config.stage
+	var bot: AutoPlayer
 	if stage == null or stage.allowed_elements.is_empty():
-		return AutoPlayer.new(p_sim)
-	var plan := plan_for_elements(p_sim.config, stage.allowed_elements[0])
-	return AutoPlayer.new(p_sim, plan[0], plan[1])
+		bot = AutoPlayer.new(p_sim)
+	else:
+		var plan := plan_for_elements(p_sim.config, stage.allowed_elements[0])
+		bot = AutoPlayer.new(p_sim, plan[0], plan[1])
+	# An assault is long and pushes across the whole map, so it takes more towers.
+	if p_sim.is_assault():
+		bot.max_towers = 70
+	return bot
 
 
 ## Node and tower priorities built around one home element and its two neighbours on the ring:
@@ -299,11 +305,28 @@ func best_cell(tower_id: StringName) -> Vector2i:
 			var cell := Vector2i(x, y)
 			if not sim.can_place(tower_id, cell):
 				continue
-			var score := coverage(cell, reach)
+			var score := coverage(cell, reach) + siege_value(cell, reach)
 			if score > best_score:
 				best_score = score
 				best = cell
 	return best
+
+
+## In an assault, a cell that reaches a building of the enemy base which can be hurt now is worth
+## as much as this many path samples, so the bot pushes its towers toward the fortress.
+const SIEGE_WEIGHT := 60
+
+
+## Extra score for a cell whose tower would reach a building that can be hurt now.
+func siege_value(cell: Vector2i, reach: float) -> int:
+	if not sim.is_assault():
+		return 0
+	var center := sim.config.map.cell_center(cell)
+	var score := 0
+	for structure in sim.structures:
+		if sim.is_vulnerable(structure) and structure.position.distance_to(center) <= reach:
+			score += SIEGE_WEIGHT
+	return score
 
 
 ## How many path sample points lie within reach of a cell's centre.

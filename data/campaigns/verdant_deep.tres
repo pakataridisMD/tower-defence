@@ -20,7 +20,7 @@ map = &"c_nature_1"
 allowed_elements = Array[StringName]([&"nature", &"water", &"storm"])
 starting_nodes = Array[StringName]([&"nature_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r1")])
-rule_text = PackedStringArray("Home ground: Nature towers deal 20% more damage.", "Only Nature, Water and Storm can be drafted. You start with Nature.")
+rule_text = PackedStringArray("Home ground: Nature towers deal 20% more damage.", "Only Nature, Water and Storm can be drafted. You start with Nature.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r3"]
@@ -45,7 +45,7 @@ map = &"c_nature_2"
 allowed_elements = Array[StringName]([&"nature", &"water", &"storm"])
 starting_nodes = Array[StringName]([&"nature_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r3"), SubResource("r4")])
-rule_text = PackedStringArray("Home ground: Nature towers deal 20% more damage.", "Only Nature, Water and Storm can be drafted. You start with Nature.", "Deep roots: +5 lives.")
+rule_text = PackedStringArray("Home ground: Nature towers deal 20% more damage.", "Only Nature, Water and Storm can be drafted. You start with Nature.", "The last wave is led by the Pale Vesper, the Hollow Herald (raises shades, blinks down the road).", "Deep roots: +5 lives.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r6"]
@@ -70,7 +70,7 @@ map = &"c_nature_3"
 allowed_elements = Array[StringName]([&"nature", &"water", &"storm"])
 starting_nodes = Array[StringName]([&"nature_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r6"), SubResource("r7")])
-rule_text = PackedStringArray("Home ground: Nature towers deal 20% more damage.", "Only Nature, Water and Storm can be drafted. You start with Nature.", "Recycling: selling refunds 20% more.")
+rule_text = PackedStringArray("Home ground: Nature towers deal 20% more damage.", "Only Nature, Water and Storm can be drafted. You start with Nature.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.", "Recycling: selling refunds 20% more.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r9"]
@@ -90,7 +90,7 @@ is_guardian = true
 allowed_elements = Array[StringName]([&"nature", &"water", &"storm"])
 starting_nodes = Array[StringName]([&"nature_entry"])
 modifiers = Array[ExtResource("2_s")]([SubResource("r9")])
-rule_text = PackedStringArray("Home ground: Nature towers deal 20% more damage.", "Only Nature, Water and Storm can be drafted. You start with Nature.", "The Warden resists Nature: bring a neighbour.")
+rule_text = PackedStringArray("Home ground: Nature towers deal 20% more damage.", "Only Nature, Water and Storm can be drafted. You start with Nature.", "The Warden resists Nature: bring a neighbour.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
 first_clear_points = 6
 
 [sub_resource type="Resource" id="r11"]

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"pale_vesper"
+display_name = "The Pale Vesper"
+max_health = 1300.0
+speed = 42.0
+armour = 4.0
+bounty = 60
+leak_damage = 15
+tags = Array[StringName]([&"boss"])
+description = "The Hollow Herald. Sings the dead awake (one rises every 6 seconds) and steps through the veil, two cells down the road, every 8 seconds."
+element = &"void"
+summon = &"grunt"
+summon_interval = 6.0
+summon_count = 1
+blink_interval = 8.0
+blink_distance = 128.0

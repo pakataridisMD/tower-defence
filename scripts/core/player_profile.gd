@@ -4,7 +4,7 @@ extends RefCounted
 ## map and difficulty picked last, and the campaign stages won. SaveFile stores it as versioned JSON.
 
 ## Bump this when the saved shape changes, and teach migrate() to upgrade older saves.
-const VERSION := 2
+const VERSION := 3
 
 ## Every meta point ever earned. Unspent points are this minus the cost of the nodes taken, so
 ## changing a node's cost in an update can never leave a save with negative points.
@@ -20,12 +20,18 @@ var last_map: StringName = &""
 var last_difficulty: StringName = &""
 ## Best stars (1 to 3) for each campaign stage won. A stage that is missing has not been won.
 var stage_stars: Dictionary[StringName, int] = {}
+## Story cinematics already played, in the order they were seen. Each plays on its own only once;
+## the campaign map's Chronicle replays them.
+var seen_cinematics: Array[StringName] = []
 
 
 func to_dict() -> Dictionary:
 	var nodes: Array[String] = []
 	for id in meta_nodes:
 		nodes.append(String(id))
+	var seen: Array[String] = []
+	for id in seen_cinematics:
+		seen.append(String(id))
 	var stars := {}
 	for id in stage_stars:
 		stars[String(id)] = stage_stars[id]
@@ -42,6 +48,7 @@ func to_dict() -> Dictionary:
 		"last_map": String(last_map),
 		"last_difficulty": String(last_difficulty),
 		"campaign": {"stars": stars},
+		"story": {"seen": seen},
 	}
 
 
@@ -72,6 +79,13 @@ static func from_dict(saved: Dictionary) -> PlayerProfile:
 				var count := clampi(_read_int(stars, id), 0, 3) if id is String else 0
 				if count > 0 and not (id as String).is_empty():
 					profile.stage_stars[StringName(id)] = count
+	var story: Variant = data.get("story", {})
+	if story is Dictionary:
+		var seen: Variant = (story as Dictionary).get("seen", [])
+		if seen is Array:
+			for id: Variant in seen:
+				if id is String and not (id as String).is_empty() and not profile.seen_cinematics.has(StringName(id)):
+					profile.seen_cinematics.append(StringName(id))
 	return profile
 
 
@@ -82,6 +96,9 @@ static func migrate(saved: Dictionary) -> Dictionary:
 	if not (version is int or version is float) or int(version) < 2:
 		# Version 2 added the campaign. Older saves have played none of it.
 		data["campaign"] = {"stars": {}}
+	if not (version is int or version is float) or int(version) < 3:
+		# Version 3 added the story. Older saves have seen none of it.
+		data["story"] = {"seen": []}
 	data["version"] = VERSION
 	return data
 
