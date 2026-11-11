@@ -20,12 +20,17 @@ var last_map: StringName = &""
 var last_difficulty: StringName = &""
 ## Best stars (1 to 3) for each campaign stage won. A stage that is missing has not been won.
 var stage_stars: Dictionary[StringName, int] = {}
+## Heroes picked for the next run, in key order. Empty brings the most recent heroes to join.
+var hero_party: Array[StringName] = []
 
 
 func to_dict() -> Dictionary:
 	var nodes: Array[String] = []
 	for id in meta_nodes:
 		nodes.append(String(id))
+	var party: Array[String] = []
+	for id in hero_party:
+		party.append(String(id))
 	var stars := {}
 	for id in stage_stars:
 		stars[String(id)] = stage_stars[id]
@@ -42,6 +47,7 @@ func to_dict() -> Dictionary:
 		"last_map": String(last_map),
 		"last_difficulty": String(last_difficulty),
 		"campaign": {"stars": stars},
+		"heroes": {"party": party},
 	}
 
 
@@ -72,6 +78,13 @@ static func from_dict(saved: Dictionary) -> PlayerProfile:
 				var count := clampi(_read_int(stars, id), 0, 3) if id is String else 0
 				if count > 0 and not (id as String).is_empty():
 					profile.stage_stars[StringName(id)] = count
+	var heroes: Variant = data.get("heroes", {})
+	if heroes is Dictionary:
+		var party: Variant = (heroes as Dictionary).get("party", [])
+		if party is Array:
+			for id: Variant in party:
+				if id is String and not (id as String).is_empty() and not profile.hero_party.has(StringName(id)):
+					profile.hero_party.append(StringName(id))
 	return profile
 
 

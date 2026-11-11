@@ -16,6 +16,15 @@ signal run_ended(won: bool)
 ## A skill was cast. `at` is the point picked on the board, or the board's centre for a skill
 ## that reaches everything.
 signal skill_used(skill: SkillData, at: Vector2)
+## A hero was placed on the board, or marched to a new cell.
+signal hero_summoned(tower: SimTower)
+signal hero_moved(tower: SimTower)
+## A hero used its ability. `points` are where it landed: the point picked, the hero, the crowds hit
+## or, for one that reaches every enemy, the board's centre.
+signal hero_ability_used(tower: SimTower, ability: HeroAbility, points: PackedVector2Array)
+## A hero joined the party during the run (Oswin at the capital).
+signal hero_arrived(hero: HeroData)
+signal hero_leveled(tower: SimTower)
 
 enum State { BUILDING, WAVE, WON, LOST }
 
@@ -63,6 +72,16 @@ var _arrivals: Array[SimEnemy] = []
 var _skill_cooldowns: Dictionary[StringName, float] = {}
 ## Seconds left on each skill whose modifiers are still running, by skill id.
 var _skill_time: Dictionary[StringName, float] = {}
+## The heroes the player can summon in this run, in key order.
+var party: Array[HeroData] = []
+## Summoned heroes by hero id.
+var _heroes_on_board: Dictionary[StringName, SimTower] = {}
+## Hero abilities still running: each a HeroAbility and its seconds left, in [ability, time, tower].
+var _hero_effects: Array[Array] = []
+## Ground that bursts later: [seconds left, point, radius in pixels, damage, tower].
+var _bursts: Array[Array] = []
+## Lives given back by kills during the running hero abilities, so each keeps to its cap.
+var _lives_from_kills := 0
 
 
 func _init(p_config: RunConfig) -> void:
@@ -89,6 +108,9 @@ func _init(p_config: RunConfig) -> void:
 	path_curve = lane_curves[0]
 	path_length = lane_lengths[0]
 	_path_cells = config.map.path_cells()
+	for hero in config.heroes:
+		if hero != null and not party.has(hero) and party.size() < HeroData.MAX_PARTY:
+			party.append(hero)
 	_refresh_modifiers()
 
 
@@ -324,7 +346,7 @@ func place_tower(tower_id: StringName, cell: Vector2i) -> SimTower:
 ## of its own. A base tower becomes a dual, and a dual becomes a triple. Ascended towers stay as they are.
 func hybrid_options(tower: SimTower) -> Array[StringName]:
 	var result: Array[StringName] = []
-	if tower == null or tower.ascendancy != null:
+	if tower == null or tower.ascendancy != null or tower.is_hero():
 		return result
 	var own := tower.data.elements
 	for id: StringName in config.towers:
@@ -379,6 +401,8 @@ func level_up_error(tower: SimTower) -> String:
 		return "The run is over"
 	if not towers.has(tower):
 		return "Unknown tower"
+	if tower.is_hero():
+		return "Heroes grow a level for every wave they fight"
 	if tower.level >= SimTower.MAX_LEVEL:
 		return "Already at the top level"
 	if gold < tower.level_up_price():
@@ -404,6 +428,8 @@ func ascend_error(tower: SimTower, ascendancy_id: StringName) -> String:
 		return "The run is over"
 	if not towers.has(tower):
 		return "Unknown tower"
+	if tower.is_hero():
+		return "Heroes cannot ascend"
 	if tower.ascendancy != null:
 		return "Already ascended"
 	if tower.level < SimTower.MAX_LEVEL:
@@ -430,6 +456,8 @@ func ascend(tower: SimTower, ascendancy_id: StringName) -> bool:
 
 
 func sell_value(tower: SimTower) -> int:
+	if tower.is_hero():
+		return 0
 	return floori(tower.price_paid * clampf(run_stat(&"sell_refund", config.rules.sell_refund), 0.0, 1.0))
 
 
@@ -439,7 +467,7 @@ func run_stat(stat: StringName, base: float) -> float:
 
 
 func sell_tower(tower: SimTower) -> int:
-	if not towers.has(tower):
+	if not towers.has(tower) or tower.is_hero():
 		return 0
 	var refund := sell_value(tower)
 	gold += refund
@@ -459,6 +487,12 @@ func start_next_wave() -> bool:
 	_wave_element = config.element_index(wave.element)
 	_spawner.start(wave)
 	_taken_this_break.clear()
+	for tower in _heroes_on_board.values():
+		tower.moved_this_break = false
+	for hero in config.arriving_heroes:
+		if hero != null and hero.arrives_at_wave == wave_number() and not party.has(hero):
+			party.append(hero)
+			hero_arrived.emit(hero)
 	wave_started.emit(wave_number())
 	changed.emit()
 	return true
@@ -490,6 +524,7 @@ func step(delta: float) -> void:
 		return
 	time_in_wave += delta
 	_tick_skills(delta)
+	_tick_heroes(delta)
 	_spawn(delta)
 	_move_enemies(delta)
 	if state != State.WAVE:
@@ -552,7 +587,11 @@ func _move_enemies(delta: float) -> void:
 		if not enemy.alive:
 			continue
 		enemy.progress += enemy.speed() * delta
-		if enemy.progress >= lane_lengths[enemy.lane]:
+		if enemy.progress >= lane_lengths[enemy.lane] and is_warded():
+			# Last Light: the gate throws it back to the start of its road.
+			enemy.progress = 0.0
+			enemy.position = lane_curves[enemy.lane].sample_baked(0.0)
+		elif enemy.progress >= lane_lengths[enemy.lane]:
 			enemy.alive = false
 			enemy.leaked = true
 			leaks += 1
@@ -706,8 +745,9 @@ func _land(shot: SimProjectile) -> void:
 func _hit(tower: SimTower, enemy: SimEnemy, damage: float) -> void:
 	if not enemy.alive:
 		return
-	var multiplier := ElementRules.damage_multiplier(tower.element_indices, enemy.element)
-	_damage(enemy, CombatMath.hit_damage(damage, multiplier, enemy.effective_armour(), enemy.damage_taken_bonus()), tower)
+	var multiplier := _element_multiplier(tower, enemy)
+	var armour := enemy.effective_armour() * (1.0 - tower.armour_ignore)
+	_damage(enemy, CombatMath.hit_damage(damage, multiplier, armour, enemy.damage_taken_bonus()), tower)
 	if enemy.alive:
 		for spec in tower.effects:
 			enemy.apply_status(spec, tower, multiplier)
@@ -733,6 +773,8 @@ func _kill(enemy: SimEnemy, killer: SimTower) -> void:
 	if killer != null:
 		killer.kills += 1
 		bounty += killer.bounty_bonus
+	bounty = roundi(bounty * gold_multiplier())
+	_lives_for_kill()
 	gold += bounty
 	gold_earned += bounty
 	_spread_statuses(enemy)
@@ -781,6 +823,8 @@ func _finish_wave() -> void:
 	gold += bonus
 	gold_earned += bonus
 	projectiles.clear()
+	_bursts.clear()
+	_level_heroes()
 	if wave_index >= total_waves():
 		_end_run(true)
 	else:
@@ -804,12 +848,15 @@ func _refresh_modifiers() -> void:
 		var skill: SkillData = config.skills.get(skill_id)
 		if skill != null:
 			_modifiers.append_array(skill.modifiers)
+	for effect in _hero_effects:
+		_modifiers.append_array((effect[0] as HeroAbility).modifiers)
 	_recompute_towers()
 
 
 ## Recomputes every tower's stats, then hands out Void auras: each tower gets the strongest aura
 ## from another tower in range. Auras never boost the tower giving them.
 func _recompute_towers() -> void:
+	_apply_hero_auras()
 	for tower in towers:
 		tower.aura_bonus = 0.0
 		tower.recompute(_modifiers)
@@ -832,3 +879,338 @@ func _recompute_towers() -> void:
 func _new_id() -> int:
 	_next_id += 1
 	return _next_id
+
+
+# --- Heroes --------------------------------------------------------------------
+
+## The element factor of a hit. Prismatic attackers (Seraphel, Oswin) always strike the element
+## each enemy is weakest to.
+func _element_multiplier(tower: SimTower, enemy: SimEnemy) -> float:
+	if tower.tags.has(&"prismatic"):
+		return ElementRules.OPPOSITE_ELEMENT_MULTIPLIER if enemy.element >= 0 else 1.0
+	return ElementRules.damage_multiplier(tower.element_indices, enemy.element)
+
+
+func hero_data(hero_id: StringName) -> HeroData:
+	for hero in party:
+		if hero.id == hero_id:
+			return hero
+	return null
+
+
+## The summoned hero, or null while it is still waiting to be summoned.
+func hero_tower(hero_id: StringName) -> SimTower:
+	return _heroes_on_board.get(hero_id)
+
+
+func hero_towers() -> Array[SimTower]:
+	var result: Array[SimTower] = []
+	for hero in party:
+		if _heroes_on_board.has(hero.id):
+			result.append(_heroes_on_board[hero.id])
+	return result
+
+
+## Pixels from a hero to the towers its aura reaches.
+func hero_aura_radius() -> float:
+	return HeroData.AURA_CELLS * config.map.cell_size
+
+
+func _cell_error(cell: Vector2i) -> String:
+	if not config.map.is_inside(cell):
+		return "Outside the map"
+	if is_path(cell):
+		return "Heroes stand beside the road, not on it"
+	if _tower_at.has(cell):
+		return "There is already a tower here"
+	return ""
+
+
+## Why a hero cannot be summoned onto a cell, or an empty string if it can.
+func summon_error(hero_id: StringName, cell: Vector2i) -> String:
+	if is_over():
+		return "The run is over"
+	var hero := hero_data(hero_id)
+	if hero == null:
+		return "That hero is not in your party"
+	if _heroes_on_board.has(hero_id):
+		return "%s is already on the field" % hero.display_name
+	return _cell_error(cell)
+
+
+## Summons a hero onto a free cell, for free. Each hero comes once per run.
+func summon_hero(hero_id: StringName, cell: Vector2i) -> SimTower:
+	if not summon_error(hero_id, cell).is_empty():
+		return null
+	var hero := hero_data(hero_id)
+	var indices: Array[int] = []
+	for element_id in hero.attack.elements:
+		indices.append(config.element_index(element_id))
+	var tower := SimTower.new(_new_id(), hero.attack, cell, config.map.cell_center(cell), 0, indices)
+	tower.hero = hero
+	towers.append(tower)
+	_tower_at[cell] = tower
+	_heroes_on_board[hero_id] = tower
+	_recompute_towers()
+	hero_summoned.emit(tower)
+	changed.emit()
+	return tower
+
+
+## Why a hero cannot march to a cell now, or an empty string if it can.
+func move_error(tower: SimTower, cell: Vector2i) -> String:
+	if is_over():
+		return "The run is over"
+	if tower == null or not tower.is_hero() or not towers.has(tower):
+		return "Only heroes can move"
+	if state != State.BUILDING:
+		return "Heroes can only move between waves"
+	if tower.moved_this_break:
+		return "%s has already moved this break" % tower.hero.display_name
+	if cell == tower.cell:
+		return "%s is already there" % tower.hero.display_name
+	return _cell_error(cell)
+
+
+## Marches a hero to a new cell. A hero can move once in each break.
+func move_hero(tower: SimTower, cell: Vector2i) -> bool:
+	if not move_error(tower, cell).is_empty():
+		return false
+	_tower_at.erase(tower.cell)
+	tower.cell = cell
+	tower.position = config.map.cell_center(cell)
+	tower.moved_this_break = true
+	_tower_at[cell] = tower
+	_recompute_towers()
+	hero_moved.emit(tower)
+	changed.emit()
+	return true
+
+
+## Why the hero's ability cannot be used now, or an empty string if it can.
+func hero_ability_error(hero_id: StringName) -> String:
+	if is_over():
+		return "The run is over"
+	var hero := hero_data(hero_id)
+	if hero == null:
+		return "That hero is not in your party"
+	var tower := hero_tower(hero_id)
+	if tower == null:
+		return "Summon %s first" % hero.display_name
+	if state != State.WAVE:
+		return "Abilities can only be used during a wave"
+	if tower.ability_cooldown > 0.0:
+		return "%s is ready in %d s" % [tower.hero_ability().display_name, ceili(tower.ability_cooldown)]
+	return ""
+
+
+## Uses a summoned hero's ability. `at` is the point picked for an aimed one. Returns false and
+## does nothing if it cannot be used now.
+func use_hero_ability(hero_id: StringName, at: Vector2 = Vector2.ZERO) -> bool:
+	if not hero_ability_error(hero_id).is_empty():
+		return false
+	var tower := hero_tower(hero_id)
+	var ability := tower.hero_ability()
+	tower.ability_cooldown = ability.cooldown
+	var radius := ability.radius_cells * config.map.cell_size
+	var points := PackedVector2Array()
+	match ability.target:
+		HeroAbility.Target.AIMED:
+			points.append(at)
+		HeroAbility.Target.SELF:
+			points.append(tower.position)
+		HeroAbility.Target.CROWDS:
+			points = crowded_points(ability.strikes, radius)
+	var hits := 0
+	var strikes := 1 if ability.target == HeroAbility.Target.CROWDS else maxi(1, ability.strikes)
+	for strike in strikes:
+		if ability.target == HeroAbility.Target.BOARD:
+			for enemy in enemies:
+				hits += _ability_hit(tower, ability, enemy)
+		else:
+			for point in points:
+				for enemy in enemies:
+					if enemy.position.distance_to(point) <= radius:
+						hits += _ability_hit(tower, ability, enemy)
+	if ability.burst_damage > 0.0:
+		for point in points:
+			_bursts.append([maxf(ability.hold_seconds, 0.1), point, radius, ability.burst_damage * _ability_growth(), tower])
+	if ability.heal_lives > 0:
+		lives = maxi(lives, mini(lives + ability.heal_lives, starting_lives))
+	if ability.resets_skills:
+		_skill_cooldowns.clear()
+	if ability.resets_heroes:
+		for other: SimTower in _heroes_on_board.values():
+			if other != tower:
+				other.ability_cooldown = 0.0
+	if ability.duration > 0.0:
+		_hero_effects.append([ability, ability.duration, tower])
+		if ability.lives_per_kill > 0:
+			_lives_from_kills = 0
+		_refresh_modifiers()
+	if points.is_empty():
+		points.append(config.map.size_in_pixels() * 0.5)
+	hero_ability_used.emit(tower, ability, points)
+	changed.emit()
+	return true
+
+
+## Ability damage keeps pace with enemy health, as skill damage does.
+func _ability_growth() -> float:
+	return config.wave_set.health_multiplier(wave_number()) * config.enemy_health_multiplier()
+
+
+## One enemy struck by a hero's ability. Returns 1 if it was there to be hit.
+func _ability_hit(tower: SimTower, ability: HeroAbility, enemy: SimEnemy) -> int:
+	if not enemy.alive:
+		return 0
+	var boss := enemy.data.tags.has(&"boss")
+	if ability.execute_below > 0.0 and not boss and enemy.health <= enemy.max_health * ability.execute_below:
+		_damage(enemy, enemy.health + 1.0, tower)
+		return 1
+	var multiplier := _element_multiplier(tower, enemy)
+	if ability.hits_weakness:
+		multiplier = ElementRules.OPPOSITE_ELEMENT_MULTIPLIER if enemy.element >= 0 else 1.0
+	if ability.damage > 0.0:
+		var damage := ability.damage * _ability_growth() * (ability.boss_damage_multiplier if boss else 1.0)
+		_damage(enemy, CombatMath.hit_damage(damage, multiplier, enemy.effective_armour(), enemy.damage_taken_bonus()), tower)
+		if not enemy.alive:
+			return 1
+	for spec in ability.status_effects:
+		var scaled := spec.duplicate() as StatusEffectData
+		scaled.damage_per_second *= _ability_growth()
+		enemy.apply_status(scaled, tower, multiplier)
+	if ability.hold_seconds > 0.0:
+		var hold := StatusEffectData.new()
+		if boss:
+			hold.kind = &"slow"
+			hold.slow = 0.6
+		else:
+			hold.kind = &"root"
+		hold.duration = ability.hold_seconds
+		enemy.apply_status(hold, tower, multiplier)
+	if ability.send_to_start and (ability.send_bosses or not boss):
+		enemy.progress = 0.0
+		enemy.position = lane_curves[enemy.lane].sample_baked(0.0)
+	elif ability.knockback > 0.0 and enemy.knock_back(ability.knockback) > 0.0:
+		enemy.position = lane_curves[enemy.lane].sample_baked(enemy.progress)
+	return 1
+
+
+## Up to `count` points that each cover the most enemies within `radius`, no enemy counted twice.
+func crowded_points(count: int, radius: float) -> PackedVector2Array:
+	var result := PackedVector2Array()
+	var taken: Dictionary[int, bool] = {}
+	for i in count:
+		var best := -1
+		var best_point := Vector2.ZERO
+		for enemy in enemies:
+			if not enemy.alive or taken.has(enemy.id):
+				continue
+			var near := 0
+			for other in enemies:
+				if other.alive and not taken.has(other.id) and other.position.distance_to(enemy.position) <= radius:
+					near += 1
+			if near > best:
+				best = near
+				best_point = enemy.position
+		if best <= 0:
+			break
+		result.append(best_point)
+		for enemy in enemies:
+			if enemy.position.distance_to(best_point) <= radius:
+				taken[enemy.id] = true
+	return result
+
+
+func _tick_heroes(delta: float) -> void:
+	for tower: SimTower in _heroes_on_board.values():
+		tower.ability_cooldown = maxf(0.0, tower.ability_cooldown - delta)
+	if not _hero_effects.is_empty():
+		var running: Array[Array] = []
+		for effect in _hero_effects:
+			effect[1] -= delta
+			if effect[1] > 0.0:
+				running.append(effect)
+		if running.size() != _hero_effects.size():
+			_hero_effects = running
+			_refresh_modifiers()
+	if not _bursts.is_empty():
+		var waiting: Array[Array] = []
+		for burst in _bursts:
+			burst[0] -= delta
+			if burst[0] > 0.0:
+				waiting.append(burst)
+				continue
+			for enemy in enemies:
+				if enemy.alive and enemy.position.distance_to(burst[1]) <= burst[2]:
+					_damage(enemy, CombatMath.hit_damage(burst[3], 1.0, enemy.effective_armour(), enemy.damage_taken_bonus()), burst[4])
+		_bursts = waiting
+
+
+## Kills pay this many times their gold while an ability such as Eclipse runs.
+func gold_multiplier() -> float:
+	var result := 1.0
+	for effect in _hero_effects:
+		result = maxf(result, (effect[0] as HeroAbility).gold_multiplier)
+	return result
+
+
+## True while an ability such as Last Light keeps enemies from leaking.
+func is_warded() -> bool:
+	for effect in _hero_effects:
+		if (effect[0] as HeroAbility).ward:
+			return true
+	return false
+
+
+## Seconds left on a hero's running ability, or 0.
+func hero_effect_time(hero_id: StringName) -> float:
+	var left := 0.0
+	for effect in _hero_effects:
+		if (effect[2] as SimTower).hero.id == hero_id:
+			left = maxf(left, effect[1])
+	return left
+
+
+func _lives_for_kill() -> void:
+	for effect in _hero_effects:
+		var ability: HeroAbility = effect[0]
+		if ability.lives_per_kill > 0 and _lives_from_kills < ability.lives_per_kill_max:
+			var gain := mini(ability.lives_per_kill, ability.lives_per_kill_max - _lives_from_kills)
+			_lives_from_kills += gain
+			lives += gain
+			return
+
+
+## Every hero on the field gains a level for the wave it fought, and Elowen's aura gives lives back.
+func _level_heroes() -> void:
+	_hero_effects.clear()
+	for tower: SimTower in _heroes_on_board.values():
+		if tower.hero_level < HeroData.MAX_LEVEL:
+			tower.hero_level += 1
+			hero_leveled.emit(tower)
+		var hero := tower.hero
+		if hero.aura_lives_per_towers > 0:
+			var near := 0
+			for other in towers:
+				if not other.is_hero() and other.position.distance_to(tower.position) <= hero_aura_radius():
+					near += 1
+			lives += mini(near / hero.aura_lives_per_towers, hero.aura_lives_max)
+	_refresh_modifiers()
+
+
+## Gives every tower the auras of the heroes near it, and every hero the levels Ilyra's aura adds.
+func _apply_hero_auras() -> void:
+	var bonus_levels := 0
+	for tower: SimTower in _heroes_on_board.values():
+		bonus_levels += tower.hero.aura_hero_levels
+	var radius := hero_aura_radius()
+	for tower in towers:
+		tower.hero_aura.clear()
+		if tower.is_hero():
+			tower.hero_level_bonus = bonus_levels
+			continue
+		for hero: SimTower in _heroes_on_board.values():
+			if not hero.hero.aura.is_empty() and hero.position.distance_to(tower.position) <= radius:
+				tower.hero_aura.append_array(hero.hero.aura)

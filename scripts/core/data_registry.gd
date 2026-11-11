@@ -15,6 +15,7 @@ const MAPS_DIR := "res://data/maps"
 const DIFFICULTIES_DIR := "res://data/difficulties"
 const CAMPAIGNS_DIR := "res://data/campaigns"
 const SKILLS_DIR := "res://data/skills"
+const HEROES_DIR := "res://data/heroes"
 const RUN_RULES_PATH := "res://data/rules/run_rules.tres"
 
 var elements: Dictionary[StringName, ElementData] = {}
@@ -25,6 +26,7 @@ var maps: Dictionary[StringName, MapData] = {}
 var difficulties: Dictionary[StringName, DifficultyData] = {}
 var campaigns: Dictionary[StringName, CampaignData] = {}
 var skills: Dictionary[StringName, SkillData] = {}
+var heroes: Dictionary[StringName, HeroData] = {}
 ## Every campaign stage by id.
 var stages: Dictionary[StringName, StageData] = {}
 var in_run_tree_nodes: Array[TreeNodeData] = []
@@ -48,6 +50,7 @@ func reload() -> void:
 	difficulties.clear()
 	campaigns.clear()
 	skills.clear()
+	heroes.clear()
 	stages.clear()
 	in_run_tree_nodes.clear()
 	meta_tree_nodes.clear()
@@ -68,6 +71,8 @@ func reload() -> void:
 		_index(campaigns, resource as CampaignData, CAMPAIGNS_DIR)
 	for resource in load_folder(SKILLS_DIR):
 		_index(skills, resource as SkillData, SKILLS_DIR)
+	for resource in load_folder(HEROES_DIR):
+		_index(heroes, resource as HeroData, HEROES_DIR)
 	for campaign: CampaignData in campaigns.values():
 		for stage in campaign.stages:
 			if stage != null and not stage.id.is_empty() and not stages.has(stage.id):
@@ -129,6 +134,7 @@ func validate() -> PackedStringArray:
 	_validate_unlocks(errors)
 	_validate_campaigns(errors)
 	_validate_skills(errors)
+	_validate_heroes(errors)
 	if run_rules != null and run_rules.starting_lives <= 0:
 		errors.append("Run rules: starting lives must be above 0")
 	return errors
@@ -332,6 +338,42 @@ func _validate_skills(errors: PackedStringArray) -> void:
 			errors.append("%s: its modifiers need a duration" % label)
 		if skill.damage <= 0.0 and skill.status_effects.is_empty() and skill.knockback <= 0.0 and skill.modifiers.is_empty():
 			errors.append("%s: does nothing" % label)
+
+
+## Every hero, in the order they join.
+func heroes_in_order() -> Array[HeroData]:
+	var result: Array[HeroData] = []
+	result.assign(heroes.values())
+	result.sort_custom(func(a: HeroData, b: HeroData) -> bool: return a.order < b.order)
+	return result
+
+
+func _validate_heroes(errors: PackedStringArray) -> void:
+	for hero: HeroData in heroes.values():
+		var label := "Hero '%s'" % hero.id
+		if hero.attack == null:
+			errors.append("%s: has no attack" % label)
+		else:
+			if hero.attack.attacks_per_second <= 0.0 or hero.attack.attack_range <= 0.0:
+				errors.append("%s: attacks_per_second and attack_range must be above 0" % label)
+			for element_id in hero.attack.elements:
+				if not elements.has(element_id):
+					errors.append("%s: attacks with unknown element '%s'" % [label, element_id])
+		if not hero.element.is_empty() and not elements.has(hero.element):
+			errors.append("%s: unknown element '%s'" % [label, hero.element])
+		for stage_id in [hero.joins_after, hero.arrives_in]:
+			if not stage_id.is_empty() and not stages.has(stage_id):
+				errors.append("%s: joins at unknown stage '%s'" % [label, stage_id])
+		if not hero.arrives_in.is_empty() and hero.arrives_at_wave <= 0:
+			errors.append("%s: arrives during a stage but has no wave to arrive at" % label)
+		for ability in [hero.ability, hero.ultimate]:
+			if ability == null:
+				errors.append("%s: needs an ability and an ultimate" % label)
+			elif ability.cooldown <= 0.0:
+				errors.append("%s: %s needs a cooldown above 0" % [label, ability.display_name])
+		for modifier in hero.aura + hero.ultimate_modifiers:
+			if modifier == null or modifier.stat.is_empty():
+				errors.append("%s: a modifier has no stat" % label)
 
 
 ## The campaign a stage belongs to, or null.

@@ -167,13 +167,26 @@ func _on_run_ended(won: bool) -> void:
 	play(&"victory" if won else &"defeat")
 
 
+const HERO_ATTACK_SOUNDS: Dictionary[StringName, StringName] = {
+	&"fire": &"tower_fire_brazier", &"storm": &"tower_storm_spire", &"nature": &"tower_nature_thornbush",
+	&"water": &"tower_water_wellspring", &"earth": &"tower_earth_monolith", &"void": &"tower_void_obelisk",
+}
+
+
 # --- Combat ------------------------------------------------------------------------------
 
 func _on_tower_attacked(tower: SimTower, _target: SimEnemy) -> void:
 	if _attack_budget < 1.0:
 		return
-	if play(StringName("tower_" + tower.data.id), tower.position):
+	if play(_attack_sound(tower), tower.position):
 		_attack_budget -= 1.0
+
+
+## A tower's attack sound. A hero borrows the sound of its element's base tower.
+func _attack_sound(tower: SimTower) -> StringName:
+	if not tower.is_hero():
+		return StringName("tower_" + tower.data.id)
+	return HERO_ATTACK_SOUNDS.get(tower.hero.element, &"tower_triple_starfall")
 
 
 func _on_projectile_landed(shot: SimProjectile) -> void:

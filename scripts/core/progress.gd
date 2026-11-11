@@ -88,12 +88,18 @@ func play_skirmish() -> void:
 	active_stage = &""
 
 
+## The next run's config, with the hero party.
 func run_config() -> RunConfig:
 	if not active_stage.is_empty():
 		var config := meta.stage_config(active_stage)
 		if config != null:
-			return config
-	return meta.run_config()
+			return meta.add_heroes(config)
+	return meta.add_heroes(meta.run_config())
+
+
+## Adds a hero to the party or takes them out, and saves.
+func toggle_party_hero(hero_id: StringName) -> bool:
+	return _saved(meta.toggle_party_hero(hero_id))
 
 
 ## Pays a finished run's meta points, updates the records and saves. Returns the points earned.
