@@ -13,7 +13,8 @@ is what the cinematic player loads. Setup and commands are in the script's heade
 - **Model:** Kokoro-82M, Apache-2.0 weights. Commercial use is allowed with no fee,
   no account and no attribution requirement, so the audio can ship in a paid game.
 - **Voice:** the `regal` preset, chosen by Doctor Paris: a British blend of Kokoro's
-  `bf_emma` (60%) and its lowest female voice `af_kore` (40%) at 0.88x speed, with
+  `bf_emma` (60%) and its lowest female voice `af_kore` (40%), slow and dramatic
+  (0.8x speed, 0.75 s between sentences, 1.6 s at blank lines), with
   movie-trailer mastering (Doctor Paris asked for a clearer, trailer-like voice): close
   and dry, chest boost, presence at 3 kHz, de-essed, tightly compressed. `warm` (80/20, slightly lighter) is the other finalist.
 - **Keeping it natural:** no pitch shifting (it made the voice sound electronic),

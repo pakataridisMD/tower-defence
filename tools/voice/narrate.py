@@ -43,7 +43,8 @@ VOICE_OUT = ROOT / "assets" / "story" / "voice"
 
 # Voice = weighted blend of Kokoro voice styles + delivery + mastering.
 # Optional keys: "semitones" (pitch shift; sounds robotic, avoid), "room" (hall wetness, default 0.16),
-# "rt60" (hall length in seconds, default 1.1), "master": "trailer" (close, dry, punchy).
+# "rt60" (hall length in seconds, default 1.1), "master": "trailer" (close, dry, punchy),
+# "sentence_gap" / "para_gap" (pause lengths in seconds).
 PRESETS = {
     # Low, calm, storybook-ancient. Kore is the lowest Kokoro female voice;
     # a little Nicole adds breath and intimacy.
@@ -59,12 +60,14 @@ PRESETS = {
     # The narrator (chosen by Doctor Paris, 2026-11-11): British, crisp, regal.
     "regal": {
         "voices": {"bf_emma": 0.6, "af_kore": 0.4},
-        "lang": "en-gb", "speed": 0.88, "room": 0.07, "rt60": 0.9, "master": "trailer",
+        "lang": "en-gb", "speed": 0.8, "room": 0.07, "rt60": 0.9, "master": "trailer",
+        "sentence_gap": 0.75, "para_gap": 1.6,  # slow and dramatic (Doctor Paris, 2026-11-11)
     },
     # Warmer and more British, same cinematic hall: the other finalist.
     "warm": {
         "voices": {"bf_emma": 0.8, "af_kore": 0.2},
-        "lang": "en-gb", "speed": 0.9, "room": 0.07, "rt60": 0.9, "master": "trailer",
+        "lang": "en-gb", "speed": 0.82, "room": 0.07, "rt60": 0.9, "master": "trailer",
+        "sentence_gap": 0.75, "para_gap": 1.6,
     },
 }
 
@@ -121,7 +124,8 @@ def speak(text: str, preset: dict) -> tuple[np.ndarray, int]:
             out.append(_trim(samples, sr))
             last_in_para = si == len(sentences) - 1
             if not (last_in_para and pi == len(paras) - 1):
-                gap = PARAGRAPH_GAP if last_in_para else SENTENCE_GAP
+                gap = (preset.get("para_gap", PARAGRAPH_GAP) if last_in_para
+                       else preset.get("sentence_gap", SENTENCE_GAP))
                 out.append(np.zeros(int(sr * gap), dtype=np.float32))
     return np.concatenate(out).astype(np.float32), sr
 
