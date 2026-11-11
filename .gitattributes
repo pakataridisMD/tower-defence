@@ -39,3 +39,5 @@ assets/story/portraits/** -filter -diff -merge -text
 assets/art/menu/** -filter -diff -merge -text
 # OFL pixel fonts for the interface are small; plain Git.
 assets/fonts/** -filter -diff -merge -text
+# The campaign world map is painted by tools/art/worldmap/gen_world_map.py in cloud sessions too.
+assets/art/worldmap/** -filter -diff -merge -text
