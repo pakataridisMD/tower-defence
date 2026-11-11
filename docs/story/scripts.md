@@ -48,7 +48,7 @@ Beats keyed to stages won (any campaign order): `regents_counsel` after 6, `nigh
 
 ## The Last Lantern (`prologue`)
 
-*Before the first stage. The opening story video, 1 to 2 minutes.* About 2:30.
+*Before the first stage. The opening story video, 1 to 2 minutes.* About 2:33.
 
 **1. [An old painted map coming out of darkness: six kingdoms in a ring, each under its own crown and colour (red, blue-white, green, teal, ochre, violet), and a seventh, colourless, in the middle.]**
 
@@ -74,7 +74,7 @@ We call it the Ring.
 
 > **NARRATOR (YSOLDE):** They could not kill him. So they locked the door with his own crown, and gave their lives to hold it. On the ruins of his city, we built Solenne.  
 *(pause)*  
-My city.
+My city. That is how the songs tell it.
 
 **6. [Night. Cassivane Dral, the Lord Marshal, alone on a balcony, holding a gold locket. Over his shoulder, in the stars, the faint crown-shaped gap. His face is in shadow.]**
 
@@ -542,7 +542,7 @@ It was the only thing we were still good at.
 
 ## The Convergence (`convergence_intro`)
 
-*Before Shattered Crossroads (Converge 1).* About 0:32.
+*Before Shattered Crossroads (Converge 1).* About 1:31.
 
 **1. [A map of the Ring: six lands dark, grey tides converging from every side on the centre.]**
 
@@ -552,11 +552,31 @@ It was the only thing we were still good at.
 
 > **NARRATOR (YSOLDE):** So the Wardens walked to Solenne.
 
-**3. [The six Wardens standing in a ring around the outer walls of Solenne, the Heartstone pulsing.]**
+**3. [The six Wardens standing in a ring around the outer walls of Solenne, the Heartstone pulsing. Ignar kneels to the blind Queen.]**
 
-> **IGNAR:** We held each other once, little Queen. We will hold your walls.
+> **IGNAR:** We will hold your walls, little Queen. But before we do, you should know whose walls they are.
 
-**4. [Crossmere, a crossroads town at night, ringed by a grey war camp. Cassivane's standard: a red field, now burned black.]**
+**4. [Flashback, painted like an old fresco: a young, kind-faced king in grey at a long feast table between six crowned monarchs, his Tidefolk queen and small son beside him. Everyone is smiling.]**
+
+> **THALASSA:** I gave away my forgetting. So I remember. Vael-Orrun kept the peace between us for forty years. We feared his alchemy, and we wanted his gold.
+
+**5. [The fresco catches fire: the black city of Vael burning at night, soldiers of six colours in the gates; the king on his knees in the ashes of the feast hall, holding a ring.]**
+
+> **NARRATOR (YSOLDE):** They came to his feast as friends. At midnight they opened his gates. His city burned, and his wife and his son burned with it.  
+*(pause)*  
+The songs call it the Siege of Vael. The Wardens call it the Night of Six Knives.
+
+**6. [Nyxara, the stars in her face dim, turning away. Behind her, deep in the stars, a patch of sky with no stars in it at all.]**
+
+> **NYXARA:** He did not begin as a tyrant. We made him one. And something was waiting in the dark to finish the work.
+
+**7. [Ysolde alone in the Hall of the Ring, her hand on the Heartstone, which is warm, like a crown just taken off.]**
+
+> **NARRATOR (YSOLDE):** The songs had lied for two thousand years. It did not change what we had to do.  
+*(pause)*  
+It only changed how it felt.
+
+**8. [Crossmere, a crossroads town at night, ringed by a grey war camp. Cassivane's standard: a red field, now burned black.]**
 
 > **NARRATOR (YSOLDE):** The Lord Marshal's army was camped at Crossmere, where every road on the Ring meets. That was where we went to meet him.
 
@@ -750,15 +770,15 @@ We are taking it.
 
 ## The Crownless Throne (`crownless_throne`)
 
-*During the final assault, at the start of the third movement (the Vael-Orrun fight).* About 0:28.
+*During the final assault, at the start of the third movement (the Vael-Orrun fight).* About 0:31.
 
 **1. [A vast empty hall with no floor. In the middle, standing on nothing: a figure of black glass with a crown-shaped gap for a face, the Heartstone's stolen light caught in its chest.]**
 
 > **NARRATOR (YSOLDE):** He had no throne. He would not sit on anything that was not the centre of the world.
 
-**2. [Vael-Orrun turning toward the army; cracks in its glass bleeding red, then blue, then green.]**
+**2. [Vael-Orrun turning toward the army and the six Wardens; cracks in its glass bleeding red, then blue, then green.]**
 
-> **VAEL-ORRUN:** Six of you. Always six. Do you know how tired I am of six?
+> **VAEL-ORRUN:** Six of you. Always six. You wear their crowns, little Queen. Ask them what they did at my table.
 
 **3. [Mirelle at the edge of the hall, blind eyes glowing teal, a small smile.]**
 
@@ -770,7 +790,7 @@ It was the Seventh's.
 
 ## The Seventh Colour (`epilogue`)
 
-*After the final assault is won. Then the credits.* About 1:06.
+*After the final assault is won. Then the credits.* About 1:31.
 
 **1. [The six Wardens in a ring around Vael-Orrun, hands joined, their light rising.]**
 
@@ -780,25 +800,41 @@ It was the Seventh's.
 
 > **NARRATOR (YSOLDE):** And Oswin set his lantern in the empty crown.
 
-**3. [Vael-Orrun cracking apart into pure white light, which rises, and the black sun above the citadel turns gold.]**
+**3. [Inside the light: Vael-Orrun as he was, the kind-faced king in grey, holding his wife's ring. His eyes are not grey. They are only tired.]**
+
+> **NARRATOR (YSOLDE):** For a moment, in the light, he was a man again. Grey, and tired, and much younger than I had imagined.
+
+**4. [Vael-Orrun looking past the Wardens, past the heroes, at something behind the camera.]**
+
+> **VAEL-ORRUN:** It was never my voice in the dark. It spoke to me too.  
+*(pause)*  
+It is still listening.
+
+**5. [Vael-Orrun cracking apart into pure white light, which rises, and the black sun above the citadel turns gold.]**
 
 > **NARRATOR (YSOLDE):** We did not kill him. I do not think he could be killed. He wanted the middle of the world, so we gave it to him. Not as its king.  
 *(pause)*  
 As its light.
 
-**4. [Montage: Emberfolk relighting the forges of Kethra from their iron pots; Galeborn raising tents at Aurvanis; Sylvaine planting Elowen's seed; Pearlhaven's fleet coming home; Stoneborn unsealing Grundhallow through a door that is part of Orrok; Veilwalkers raising the telescope at Umbrael; Seraphel's glass sword set into the rebuilt Sunstone; Nyxara walking slowly beside Elowen through the ash of Sylvanmere. Tamsin, alive, sitting on the Lantern Walk with Fennick's spectacles, and Oswin, grey and old again, beside her, pointing at the sunset for the Queen.]**
+**6. [Montage: Emberfolk relighting the forges of Kethra from their iron pots; Galeborn raising tents at Aurvanis; Sylvaine planting Elowen's seed; Pearlhaven's fleet coming home; Stoneborn unsealing Grundhallow through a door that is part of Orrok; Veilwalkers raising the telescope at Umbrael; Seraphel's glass sword set into the rebuilt Sunstone; Nyxara walking slowly beside Elowen through the ash of Sylvanmere. Tamsin, alive, sitting on the Lantern Walk with Fennick's spectacles, and Oswin, grey and old again, beside her, pointing at the sunset for the Queen.]**
 
 > **NARRATOR (YSOLDE):** We went home to twenty-six cities of ash. Every one of their people walked back to rebuild them.  
 *(pause)*  
 That is what we fought for. Not the land. Them.
 
-**5. [Ysolde, older, grey hair, still blindfolded, on the walls of a rebuilt Solenne, sun on her face. Credits roll.]**
+**7. [Ysolde, older, grey hair, still blindfolded, on the walls of a rebuilt Solenne, sun on her face. Credits roll.]**
 
 > **NARRATOR (YSOLDE):** I am Ysolde, Queen of Solenne. I am old now, and I have never seen a dawn since.  
 *(pause)*  
 But I have felt every one of them.
 
-**6. [After the credits: the Hall of the Ring, rebuilt. The Heartstone glows in six colours... then, faintly, a seventh. A colour nobody has a name for yet. Cut to black.]**
+**8. [After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six colours... then, faintly, a seventh. Ilyra, alone, leans in to look. Deep inside the seventh colour, something with no colour at all opens, like an eye.]**
+
+**9. [Black. No sound at all for a moment before the voice, and none after. Title card: TO BE CONTINUED.]**
+
+> **???:** Seven crowns. One door.  
+*(pause)*  
+Thank you.
 
 ---
 
@@ -836,4 +872,4 @@ Shown after each stage win.
 | converge_2 | The Lumen Gate | The first of Solenne's six walls falls. There is nowhere left to retreat to. |
 | converge_3 | Solenne | Solenne stands. |
 
-Total cinematic running time: about 21 minutes.
+Total cinematic running time: about 23 minutes.

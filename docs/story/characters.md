@@ -210,8 +210,13 @@ black iron set with real stars, the only one whose face is hidden even then).
 - **Who:** The last king of Orrun, the seventh kingdom, banished beyond the stars by the other six at the
   dawn of history. Back to reclaim his crown and throne.
 - **Element:** None. He is the absence that makes elements stop.
-- **Look in the prologue's history shots:** A tall, lean king in black with a long pale face, very calm,
-  wearing a tall black crown with six empty sockets. His capital Vael is black stone at a crossroads.
+- **Look as the Keeper of the Crossroads (flashbacks in convergence_intro and the epilogue):** About 40,
+  kind-faced, plain grey robes, no crown, ink on his fingers, a Tidefolk wedding ring. Warm brown eyes.
+- **Look as the High King (prologue history shots):** The same man years later, gaunt and pale and very
+  calm, in black, wearing a tall black crown with six empty sockets; his wife's ring on a chain at his
+  throat. His capital Vael is black stone at a crossroads, half of it burned.
+- **Ysmera** (his queen, flashback only): a Tidefolk healer, round-faced, laughing, sea-green shawl.
+  **Caelan** (his son, flashback only): about seven, his father's grey robes cut down to size.
 - **Look in cinematics (before Act V):** Never seen whole. A black sun with a crown-shaped gap in its
   corona, through which there is nothing. When he speaks, every colour on screen drains toward grey.
 - **Look in Act V (boss):** A tall figure of black glass, very still, with a crown-shaped gap where his
@@ -219,6 +224,13 @@ black iron set with real stars, the only one whose face is hidden even then).
   the cracks in his glass (all six elements in ring order).
 - **Signature:** The crown-shaped hole.
 - **Key scenes:** prologue (the black sun), assault_intro, crownless_throne, epilogue (the finishing).
+
+### The Hush (secret, Part 2)
+- **Never drawn as a figure.** It appears once, in the post-credits shot of the epilogue: inside the
+  Heartstone's seventh colour, something with no colour at all opens like an eye. On the board and in
+  every cinematic before that, only its traces: the patch of sky with no stars (the Unwritten Star), and the
+  grey empty eyes of everything the Unmaking touches.
+- **Keep it out of every menu, codex and portrait list** (characters.json marks it `hidden`).
 
 ### Cassivane Dral, the Ashen Regent
 - **Element:** Fire, turning Void.
