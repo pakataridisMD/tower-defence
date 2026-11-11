@@ -1,0 +1,22 @@
+{
+  "id": "boss_entrance",
+  "title": "The Hollow Comes (entrance)",
+  "duration": 9.1429,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "entrance"
+    }
+  ],
+  "loop": false,
+  "loop_seconds": 9.1429,
+  "loop_samples": 403200,
+  "handover_seconds": 5.1429,
+  "bpm": 140,
+  "layers": [
+    "hit"
+  ],
+  "files": {
+    "hit": "boss_entrance_hit.ogg"
+  }
+}

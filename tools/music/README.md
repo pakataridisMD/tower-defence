@@ -65,7 +65,7 @@ in three layers that play in sync (`assets/game/music/battle_<layer>.ogg`, plus 
 |---|---|---|
 | `calm` | always (alone during the build phase) | pads, low strings, a harp ostinato, a ticking clock, the themes on solo cello, bassoon and horn |
 | `wave` | while a wave is running | 16th-note string and synth ostinatos, the drum ensemble, synth bass, eight low horns on the themes |
-| `boss` | boss waves, the last wave, and at 30% of lives or less | choir, trumpets, a chanting male choir ("Te-ne-te vi-am"), more drums, braams |
+| `boss` | the last wave, and at 30% of lives or less | choir, trumpets, a chanting male choir ("Te-ne-te vi-am"), more drums, braams |
 
 Sections of 8 bars: the march (i-VI-III-VII), the Long Defeat, the Hollow, the full Lantern theme,
 and the march again turning on the dominant back to the top. In the game, `scripts/game/battle_music.gd`
@@ -76,6 +76,26 @@ out over 4 s). Loudness: calm alone about -24 LUFS, with the wave layer -18, eve
 
 `render_loop.py` folds the reverb tail back onto the start so the loop has no seam, and gives
 every layer the same gain and peak limiting, so any combination sums correctly.
+
+### Boss waves
+
+A boss wave gets its own, faster and nastier music, **The Hollow Comes**, in D Phrygian at 140 bpm:
+
+- `loops/boss_entrance.py` is a one-shot stinger (`boss_entrance_hit.ogg`). It opens on a hit at 0.0 s:
+  low brass on a tritone, a fff choir, a war-drum ensemble, gong, a braam and sub drop, and a sung
+  cluster. Then come 2 bars of brass stabs, accelerating taiko and a riser into the downbeat at
+  3 bars (5.143 s, `handover_seconds` in `boss_entrance.json`).
+- `loops/boss.py` is the 55 s fight loop (`boss_fight.ogg`). It has a grinding 16th-note ostinato in
+  3+3+2, taiko on 1, 2.5 and 4, snare 16ths and tom fills, and a male choir chanting the overlord's
+  name ("Vail Or Run"). The Hollow theme is on eight horns, trombones and tuba against choirs a
+  semitone apart, then trumpets, anvils and shouts. It ends with a ticking, whispered build that
+  swells back into the top.
+
+When a boss wave starts, `BattleMusic` cuts the battle layers out over 0.4 s and plays the
+entrance. At `BattleMusic.ENTRANCE_SECONDS` it starts the boss loop. When the wave ends, the loop
+fades out over 3 s and the calm layer comes back. Both are about -16 LUFS.
+
+    python3 tools/music/render_loop.py boss boss_entrance    # about 1 minute
 
 ## Rendering
 
