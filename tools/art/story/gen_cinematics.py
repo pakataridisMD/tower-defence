@@ -19,7 +19,8 @@ from PIL import Image
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 OUT = os.path.join("art", "story", "cinematics")
-MODULES = {"prologue": "shots_prologue"}
+MODULES = {"prologue": "shots_prologue", "night_of_falling_stars": "shots_midpoint",
+           "dawn": "shots_dawn", "heart_falls": "shots_heart_falls"}
 
 
 def contact(folder, n):

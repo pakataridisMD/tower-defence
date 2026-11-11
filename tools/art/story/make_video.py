@@ -68,6 +68,8 @@ def main():
            "-i", "-"]
     if args.audio:
         cmd += ["-i", args.audio, "-c:a", "aac", "-b:a", "160k"]
+    if args.cues:
+        cmd += ["-t", str(json.load(open(args.cues))["duration"])]
     cmd += ["-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "24", args.out]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     fade = int(0.7 * FPS)

@@ -258,7 +258,7 @@ def build(spec: dict, b: Body, p: Pose) -> list[Prim]:
     if s.get("hood"):
         P.append(ellipsoid(head + hrot @ v(-hr * 0.22, hr * 0.15, 0), (hr * 1.2, hr * 1.28, hr * 1.18), s["hood"], k=0.0,
                            layer=5, disp=(hr * 0.04, 40, "y", 14)))
-        P.append(ellipsoid(head + hrot @ v(hr * 1.0, -hr * 0.35, 0), (hr * 1.05, hr * 1.25, hr * 1.0), s["hood"],
+        P.append(ellipsoid(head + hrot @ v(hr * 1.05, -hr * 0.3, 0), (hr * 1.15, hr * 1.3, hr * 1.02), s["hood"],
                            sub=True, layer=5, k=hr * 0.12))
         # the hood's cowl drapes onto the shoulders
         P.append(cone(head + hrot @ v(-hr * 0.75, -hr * 0.3, 0), (J["sh_n"] + J["sh_f"]) / 2 + v(-0.11, -0.02, 0),

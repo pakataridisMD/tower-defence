@@ -356,46 +356,100 @@ def shot10():
     img = canvas("08070a")
     pw, ph = 202, 176
 
+    cx, cy = W / 2, H / 2  # panels are cropped round the centre: x 219..421, y 96..264
+    L, R, T, B = cx - 101, cx + 101, cy - 84, cy + 84
+
     def volcano(t, s):
-        vgrad(t, [(0, "3a3a40"), (1, "8a8a8a")], 0, H)
-        poly(t, [(W * 0.3, H), (W * 0.47, H * 0.3), (W * 0.53, H * 0.3), (W * 0.7, H)], "2a2628")
-        glow(t, W * 0.5, H * 0.3, 70, "e8e8f0", 0.8)
-        particles(t, 80, s, (W * 0.38, H * 0.05, W * 0.62, H * 0.3), "d0d0d8", (0, 1), (0.3, 0.8))
+        vgrad(t, [(0, "2a2830"), (0.5, "4a4650"), (1, "6a6670")], 0, H)
+        smoke(t, cx + 4, T + 62, 120, "2a2a30", seed=s, lean=0.25, width=14)
+        poly(t, [(L - 10, B), (cx - 18, T + 64), (cx + 16, T + 62), (R + 10, B)], "28242a")
+        poly(t, [(cx - 18, T + 64), (cx + 16, T + 62), (cx + 40, B), (cx + 10, B)], "34303a")
+        glow(t, cx, T + 62, 60, "e8e8f8", 0.9, 1.6)
+        rng = np.random.default_rng(s)
+        for k in range(5):  # rivers of grey-white fire down the slope
+            x, y = cx + rng.uniform(-12, 12), T + 66
+            for _ in range(70):
+                x += rng.uniform(-1.2, 1.2) + (x - cx) * 0.012
+                y += 1.4
+                t[int(y):int(y) + 2, int(x):int(x) + 2] = C("d8d8e8")
+                glow(t, x, y, 5, "8a8a9a", 0.08, 2)
+        particles(t, 90, s, (L, T, R, T + 70), "c8c8d4", (0, 1), (0.3, 0.8))
 
     def stormcloud(t, s):
-        vgrad(t, [(0, "4a5060"), (1, "8a90a0")], 0, H)
-        m = fbm(H, W, 40, s) > 0.5
-        band = (np.arange(H)[:, None] > H * 0.25) & (np.arange(H)[:, None] < H * 0.62)
-        t[m & band] = C("0a0a10")
+        vgrad(t, [(0, "5a6070"), (0.7, "8a90a0"), (1, "a8acb4")], 0, H)
+        ridge(t, B - 30, 3, 60, "4a5040", s, top_col="6a7058")
         ys, xs = np.mgrid[0:H, 0:W]
-        ring = np.abs(np.hypot((xs - W / 2) / 1.6, ys - H * 0.45) - 70) < 1.5
-        t[ring] = C("e8f0ff")
+        cloud = np.zeros((H, W), bool)
+        rng = np.random.default_rng(s)
+        for _ in range(16):
+            bx, by, r = cx + rng.uniform(-70, 70), cy - 20 + rng.uniform(-18, 14), rng.uniform(16, 30)
+            cloud |= (xs - bx) ** 2 + ((ys - by) * 1.3) ** 2 < r * r
+        top = cloud & ~np.roll(cloud, 3, 0)
+        t[cloud] = C("0e0e16")
+        t[top] = C("3a3a4a")
+        # a ring of frozen lightning round it that never strikes
+        for k in range(48):
+            a0, a1 = k / 48 * 2 * math.pi, (k + 1) / 48 * 2 * math.pi
+            j0, j1 = rng.uniform(-6, 6), rng.uniform(-6, 6)
+            x0_, y0_ = cx + math.cos(a0) * 92 + j0, cy - 20 + math.sin(a0) * 42 + j0 * 0.5
+            x1_, y1_ = cx + math.cos(a1) * 92 + j1, cy - 20 + math.sin(a1) * 42 + j1 * 0.5
+            for u in np.linspace(0, 1, 8):
+                xx, yy = x0_ + (x1_ - x0_) * u, y0_ + (y1_ - y0_) * u
+                if 0 <= int(yy) < H and 0 <= int(xx) < W:
+                    t[int(yy), int(xx):int(xx) + 2] = C("f0f6ff")
+            glow(t, x0_, y0_, 8, "a8c0ff", 0.15, 2)
 
     def tree(t, s):
-        vgrad(t, [(0, "2a2a1e"), (1, "4a4a30")], 0, H)
-        t[int(H * 0.35):, int(W / 2 - 16):int(W / 2 + 16)] = C("3a3226")
-        for k in range(8):
-            glow(t, W / 2 + (k - 4) * 22, H * 0.3 + (k % 3) * 12, 40, "5a5a40", 0.8, 1.2)
-        particles(t, 60, s, (W / 2 - 90, H * 0.2, W / 2 + 90, H * 0.5), "8a8a70", (1, 2), (0.3, 0.7), add=False)
+        vgrad(t, [(0, "1e2018"), (1, "3a3a2a")], 0, H)
+        poly(t, [(cx - 20, B), (cx - 12, T + 70), (cx + 14, T + 70), (cx + 24, B)], "3a3024")
+        poly(t, [(cx - 60, B), (cx - 20, B - 24), (cx - 16, B)], "3a3024")
+        poly(t, [(cx + 64, B), (cx + 22, B - 26), (cx + 18, B)], "3a3024")
+        t[int(T + 70):int(B), int(cx - 6):int(cx - 4)] = C("2a221a")
+        rng = np.random.default_rng(s)
+        ys, xs = np.mgrid[0:H, 0:W]
+        for k in range(14):  # a sagging, rotting canopy
+            bx, by, r = cx + rng.uniform(-85, 85), T + 40 + rng.uniform(-22, 24) + abs(rng.uniform(-1, 1)) * 10, rng.uniform(14, 26)
+            m = (xs - bx) ** 2 + (ys - by) ** 2 < r * r
+            sh = np.clip((ys - by) / r * 0.5 + 0.6, 0.3, 1.1)
+            t[m] = (C("5a5e3e") * (1.25 - sh))[m][:, None].squeeze() if False else np.outer(1.25 - sh[m], C("5a5e3e"))
+        holes = fbm(H, W, 8, s + 1) > 0.66
+        canopy = (ys < T + 80) & (ys > T)
+        t[holes & canopy] = t[holes & canopy] * 0.35
+        particles(t, 70, s, (L, T + 40, R, B), "8a8a6a", (0, 1), (0.4, 0.9), add=False)
 
     def sea(t, s):
-        vgrad(t, [(0, "1a2a3a"), (1, "4a6a7a")], 0, H)
-        for k in range(6):
-            y = H * 0.35 + k * 22
-            prof = y - (noise1(W, 40, s + k) - 0.5) * 50
-            for x in range(W):
-                t[int(prof[x]):int(prof[x]) + 3, x] = C("d8f0ff") * (0.5 + 0.1 * k)
+        vgrad(t, [(0, "141c28"), (0.5, "2a3a4a"), (1, "4a5e6e")], 0, H)
+        rng = np.random.default_rng(s)
+        for k in range(7):  # frozen heaving waves, nearer and taller down the panel
+            yb = T + 46 + k * 19
+            amp = 8 + k * 4
+            for x in range(int(L) - 2, int(R) + 3):
+                ph = (x * (0.05 + 0.01 * k) + k * 1.7)
+                crest = yb - amp * max(0.0, math.sin(ph)) ** 3
+                col = C("9ab8c8") * (0.6 + 0.07 * k)
+                t[int(crest):int(yb + 22), x] = col * np.linspace(1.0, 0.45, int(yb + 22) - int(crest))[:, None] \
+                    if int(yb + 22) > int(crest) else t[int(crest):int(yb + 22), x]
+                t[int(crest), x] = C("eef8ff")
+        particles(t, 60, s, (L, T, R, B), "e8f4ff", (0, 0), (0.4, 0.9), add=False)
 
     def mountain(t, s):
-        vgrad(t, [(0, "3a3026"), (1, "6a5a46")], 0, H)
-        poly(t, [(W * 0.15, H), (W * 0.5, H * 0.18), (W * 0.85, H)], "4a3e30")
-        for dx in (-22, 22):
-            glow(t, W / 2 + dx, H * 0.48, 14, "c8c8d0", 1.2, 1.5)
-            t[int(H * 0.48) - 2:int(H * 0.48) + 2, int(W / 2 + dx - 5):int(W / 2 + dx + 5)] = C("e8e8f0")
+        vgrad(t, [(0, "2a2420"), (1, "5a4a3a")], 0, H)
+        poly(t, [(L - 20, B), (cx - 30, T + 10), (cx + 10, T + 2), (R + 20, B)], "4a3e32")
+        poly(t, [(cx + 10, T + 2), (R + 20, B), (cx + 30, B)], "3a3028")
+        for dx in (-26, 18):  # two grey eyes opening in the rock
+            glow(t, cx + dx, cy + 4, 26, "a8a8b8", 0.7, 1.6)
+            poly(t, [(cx + dx - 12, cy + 4), (cx + dx, cy - 1), (cx + dx + 12, cy + 4), (cx + dx, cy + 8)], "e8e8f4")
+            t[int(cy + 2):int(cy + 6), int(cx + dx - 2):int(cx + dx + 2)] = C("6a6a7a")
+        for k in range(9):  # dead burning pines on its shoulders
+            px = L + 10 + k * 22
+            py = T + 40 + abs(px - cx) * 0.55
+            t[int(py - 14):int(py), int(px):int(px) + 2] = C("1a1410")
+            glow(t, px, py - 14, 7, "c8c8d0", 0.5, 2)
 
     def starless(t, s):
-        vgrad(t, [(0, "000000"), (1, "1a1424")], 0, H)
-        black_sun(t, W / 2, H * 0.48, 28, seed=s, corona_col="8a80a0")
+        vgrad(t, [(0, "000000"), (0.7, "0e0a14"), (1, "1e1828")], 0, H)
+        black_sun(t, cx, cy - 10, 30, seed=s, corona_col="9a90b8")
+        ridge(t, B - 16, 6, 30, "050408", s + 2)
 
     fns = [volcano, stormcloud, tree, sea, mountain, starless]
     for k, fn in enumerate(fns):

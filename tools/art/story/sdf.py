@@ -340,8 +340,8 @@ def render(prims: list[Prim], mats: dict[str, Material], cam: Camera, light: Lig
             if m.rim > 0 and not m.emissive:
                 rc = np.array(light.rim_col, np.float32)
                 ra = rimv[sel] * light.rim_amt * m.rim
-                band = (ra > 0.42).astype(np.float32)[:, None]
-                col = col * (1 - band * 0.55) + rc * band * 0.55 * (0.6 + 0.4 * col / 255)
+                band = (ra > 0.5).astype(np.float32)[:, None]
+                col = col * (1 - band * 0.45) + rc * band * 0.45 * (0.5 + 0.5 * col / 255)
             rgb[hi[sel]] = col
             if m.emissive:
                 glow[hi[sel], :3] = np.clip(col, 0, 255).astype(np.uint8)

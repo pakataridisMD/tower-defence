@@ -182,6 +182,29 @@ character(
     rim=(255, 236, 190),
 )
 
+def _blindfold(J, p, b):
+    hr = J["head_r"]
+    return [ellipsoid(J["head"] + v(hr * 0.1, hr * 0.02, 0), (hr * 1.08, hr * 0.24, hr * 1.0), "blindfold", layer=8),
+            ellipsoid(J["head"] + v(hr * 1.06, hr * 0.02, 0), (hr * 0.05, hr * 0.06, hr * 0.5), "gold", layer=9)]
+
+
+character(
+    "ysolde_blind",
+    title="Queen Ysolde, after the Night of Falling Stars",
+    role="Blinded by the falling Sunstone: gold-embroidered black cloth over her eyes, braid cut short, a grey soldier's "
+         "cloak, Fennick's brass measuring rod as a staff.",
+    element="all",
+    body=dict(height=1.7, bulk=0.78, shoulder=0.19, head_r=0.122),
+    mats=dict(CAST["ysolde"]["mats"], cape=mat("6a6a70", tex=0.08, tex_freq=40, tex_axis="y"), blindfold=mat("1a1418"),
+              rod=mat("c8923e", spec=1.0), tip=mat("e8c060", spec=1.0)),
+    spec=dict(hair="hair", brows="hair", robe=True, belt="belt", buckle="gold", collar="cape", cape="cape",
+              circlet6="silver", sleeve="cloth", wide_sleeves=True, jaw=0.72, extra=_blindfold,
+              weapon=dict(type="staff", shaft="rod", gem="tip", above=0.7, below=0.85)),
+    portrait=dict(center=(0.03, 1.47, 0.0), scale=140, yaw=-1.2, pitch=0.08, bg=("101014", "4a4a5a", "fff0c0")),
+    rim=(255, 236, 190),
+)
+
+
 character(
     "tamsin",
     title="Tamsin Reed, Captain of the Lanternguard",
@@ -204,6 +227,165 @@ character(
 )
 
 
+# Master Tobias Fennick, Chief Tower-Wright. Briefings for stages 1-12; dies holding the Dawn Gate.
+def _fennick_parts(J, p, b):
+    hr = J["head_r"]
+    out = []
+    for s in (1, -1):  # magnifying spectacles pushed up on the head
+        c = J["head"] + v(hr * 0.45, hr * 0.85, s * hr * 0.35)
+        out.append(ellipsoid(c, (hr * 0.08, hr * 0.3, hr * 0.3), "brass", layer=7, rot=rot_z(-0.6)))
+        out.append(ellipsoid(c + v(hr * 0.05, hr * 0.04, 0), (hr * 0.06, hr * 0.22, hr * 0.22), "lens", layer=8, rot=rot_z(-0.6)))
+        # huge white side-whiskers
+        out.append(ellipsoid(J["head"] + v(hr * 0.35, -hr * 0.45, s * hr * 0.78), (hr * 0.4, hr * 0.55, hr * 0.32), "whisker",
+                             layer=4, k=hr * 0.1, disp=(hr * 0.06, 120, "y", 51)))
+    for k in range(4):  # brass buttons on the waistcoat
+        out.append(sphere(J["chest"] + v(0.15 * b.bulk, 0.1 - k * 0.07, 0), 0.016, "brass", layer=3))
+    out.append(ellipsoid(J["pelvis"] + v(0.0, 0.1, 0), (0.15 * b.bulk, 0.035, 0.18 * b.bulk), "belt", layer=3))
+    for k in range(5):  # chalk and calipers in the tool belt
+        a = -1.0 + k * 0.5
+        base = J["pelvis"] + v(math.cos(a) * 0.16 * b.bulk, 0.12, math.sin(a) * 0.18 * b.bulk)
+        out.append(cone(base, base + v(0, 0.07, 0), 0.012, 0.01, "chalk" if k % 2 else "brass", layer=3))
+    return out
+
+
+character(
+    "fennick",
+    title="Master Tobias Fennick, Chief Tower-Wright",
+    role="Briefings for stages 1-12. Dies holding the Dawn Gate on the Night of Falling Stars.",
+    element="none",
+    body=dict(height=1.5, bulk=1.35, head_r=0.13, chest_depth=1.25),
+    mats=dict(
+        skin=mat("d88a70"), cloth=mat("e8e0cc", tex=0.06, tex_freq=50, tex_axis="y"), cloth2=mat("4a3a30"),
+        vest=mat("6a3a28", tex=0.08, tex_freq=60), leather=mat("3a2a20"), belt=mat("5a3a24"), brass=mat("d8a040", spec=1.0),
+        lens=mat("a8d8e8", spec=1.0), whisker=mat("ece8e0", tex=0.2, tex_freq=200, tex_axis="y"), chalk=mat("f0f0e8"),
+        eye=eye(), hair=mat("ece8e0"), metal=mat("d8a040", spec=1.0), rod=mat("c8923e", spec=1.0), tip=mat("e8c060", spec=1.0),
+    ),
+    spec=dict(torso="vest", sleeve="cloth", forearm="cloth", legs="cloth2", brows="whisker", extra=_fennick_parts,
+              weapon=dict(type="staff", shaft="rod", gem="tip", above=0.45, below=0.5)),
+    portrait=dict(center=(0.03, 1.2, 0.0), scale=135, yaw=-1.15, pitch=0.1, bg=("1a1410", "6a4a2a", "ffd070")),
+    rim=(255, 210, 150),
+)
+
+# A Lanternguard soldier, hollowed (grey empty eyes) on the Night of Falling Stars.
+character(
+    "lanternguard_hollow",
+    title="Hollowed Lanternguard",
+    role="Solenne's guards whose eyes went grey: they open the east gate.",
+    element="none",
+    body=dict(height=1.75, bulk=1.0),
+    mats=dict(
+        skin=mat("a8a0a0"), cloth=mat("3e5a86", tex=0.08, tex_freq=40, tex_axis="y"), cloth2=mat("2e3038"),
+        steel=mat("8a8e9a", spec=1.0, tex=0.06, tex_freq=90), leather=mat("3a2a20"), belt=mat("3a2a20"),
+        gold=mat("c8a040", spec=1.0), eye=glow_eye("dcdce6"), visor=glow_mat("dcdce6"),
+        shaft=mat("4a3a2a"), blade=mat("b8bcc8", spec=1.0),
+    ),
+    spec=dict(torso="steel", armour="steel", pauldron="steel", tabard="cloth", legs="cloth2", boots="leather",
+              sleeve="cloth", forearm="steel", hands="leather", belt="belt", buckle="gold", helm="steel", helm_glow="visor",
+              weapon=dict(type="staff", shaft="shaft", gem="blade", above=0.9, below=0.8)),
+    portrait=dict(center=(0.03, 1.5, 0.0), scale=150, yaw=-1.15, pitch=0.1, bg=("101420", "2e3a5a", "dcdce6")),
+    rim=(200, 210, 240),
+)
+
+
+# Nyxara of the Hollow, Void Warden: a starfield where her face should be, a black train of slow stars.
+def _nyxara_parts(J, p, b):
+    out = []
+    hr = J["head_r"]
+    out.append(ellipsoid(J["head"] + v(hr * 0.55, -hr * 0.05, 0), (hr * 0.5, hr * 0.85, hr * 0.7), "starface", layer=3))
+    rs = np.random.default_rng(62)
+    for k in range(9):
+        out.append(sphere(J["head"] + v(hr * 1.0, rs.uniform(-0.6, 0.6) * hr, rs.uniform(-0.45, 0.45) * hr),
+                          hr * rs.uniform(0.04, 0.08), "star", layer=15))
+    # long train behind her
+    out.append(cone(J["pelvis"] + v(-0.1, 0.0, 0), v(J["pelvis"][0] - 0.9 - 0.3 * p.cape, 0.04, 0), 0.22, 0.35, "train",
+                    layer=1, disp=(0.02, 18, "y", 61)))
+    rng = np.random.default_rng(61)
+    for k in range(10):
+        t = rng.random()
+        out.append(sphere(v(J["pelvis"][0] - 0.1 - 0.85 * t, 0.06 + 0.4 * (1 - t) * rng.random(), rng.uniform(-0.25, 0.25)),
+                          0.012, "star", layer=14))
+    # the broken iron crown in her far hand
+    hand = J["hand_f"]
+    for k in range(5):
+        a = k * 1.1
+        out.append(cone(hand + v(math.cos(a) * 0.07, 0.0, math.sin(a) * 0.07),
+                        hand + v(math.cos(a) * 0.07, 0.05 + 0.03 * (k % 2), math.sin(a) * 0.07), 0.012, 0.004, "iron", layer=9))
+    out.append(ellipsoid(hand + v(0, -0.005, 0), (0.075, 0.012, 0.075), "iron", layer=9))
+    return out
+
+
+character(
+    "nyxara",
+    title="Nyxara of the Hollow",
+    role="Void Warden. Freed after the Hollow King; walks beside Oswin at dawn.",
+    element="void",
+    body=dict(height=2.5, bulk=0.82, shoulder=0.2, head_r=0.13),
+    mats=dict(
+        skin=mat("2a2440", spread=0.35), cloth=mat("1e1834", tex=0.12, tex_freq=40, tex_axis="y", spread=0.35),
+        cloth2=mat("100c1a", spread=0.3), leather=mat("100c1a", spread=0.3),
+        train=mat("161226", tex=0.12, tex_freq=30, tex_axis="y", spread=0.35), starface=Material(make_ramp("0c0a1e", 4, 0.3), flat=1.0, rim=0),
+        star=glow_mat("e8e0ff"), iron=mat("5a5660", spec=0.8), eye=glow_eye("e8e0ff"), hair=mat("1a1428"),
+    ),
+    spec=dict(robe=True, wide_sleeves=True, hood="cloth", face=False, extra=_nyxara_parts, crown=None,
+              motes=[(0.2, 0.6, 0.1, 0.012, "star"), (-0.3, 0.3, -0.1, 0.01, "star"), (0.1, 0.9, -0.2, 0.011, "star"),
+                     (0.4, 0.2, 0.2, 0.009, "star")]),
+    portrait=dict(center=(0.03, 2.1, 0.0), scale=120, yaw=-1.15, pitch=0.1, bg=("06040e", "2a1a4a", "c8a8ff")),
+    sprite_scale=28.0, frame=(80, 96), frame_cy=1.3,
+    rim=(200, 170, 255),
+)
+
+
+def _ilyra_parts(J, p, b):
+    hand = J["hand_n"]
+    out = [cone(J["neck"] + v(0.12, -0.02, 0), hand + v(0.0, -0.04, 0), 0.004, 0.004, "brass", layer=9)]
+    c = hand + v(0.03, -0.1, 0)
+    out.append(ellipsoid(c, (0.012, 0.06, 0.06), "brass", layer=9))
+    out.append(ellipsoid(c, (0.014, 0.045, 0.045), "astro", sub=True, layer=9))
+    out.append(cone(c + v(0, 0.05, -0.04), c + v(0, -0.05, 0.04), 0.006, 0.006, "brass", layer=9))
+    out.append(sphere(c, 0.012, "spark", layer=10))
+    return out
+
+
+character(
+    "ilyra",
+    title="Ilyra the Unbroken",
+    role="Cassivane's daughter. Found as a captive at the crossroads; white hair, a broken astrolabe on a chain.",
+    element="void+storm",
+    body=dict(height=1.62, bulk=0.72, shoulder=0.18, head_r=0.12),
+    mats=dict(
+        skin=mat("d8c0b8"), cloth=mat("1e2a4a", tex=0.12, tex_freq=50, tex_axis="y"), cloth2=mat("161e30"),
+        leather=mat("2a2228"), belt=mat("2a2228"), metal=mat("8a8aa0", spec=1.0), brass=mat("c8a050", spec=1.0),
+        astro=mat("c8a050"), spark=glow_mat("c8e0ff"), hair=mat("eceaf0", tex=0.2, tex_freq=200, tex_axis="y", spread=0.4),
+        eye=eye("3a3a5a"), veins=glow_mat("9ad0ff"),
+    ),
+    spec=dict(hair="hair", long_hair=True, brows="hair", jaw=0.7, robe=True, cape="cloth", cape_tatter=True,
+              belt="belt", buckle="metal", sleeve="skin", forearm="skin", extra=_ilyra_parts),
+    portrait=dict(center=(0.03, 1.42, 0.0), scale=165, yaw=-1.15, pitch=0.1, bg=("0a0c1a", "2a2a5a", "9ad0ff")),
+    rim=(170, 200, 255),
+)
+
+character(
+    "corvin",
+    title="Corvin the Uncrowned, Ranger-King of the Rift",
+    role="Void hero. Hooded ranger, silver hair, a curved black-glass blade that shows stars.",
+    element="void",
+    body=dict(height=1.88, bulk=0.9),
+    mats=dict(
+        skin=mat("c09478"), cloth=mat("2a2236", tex=0.1, tex_freq=40, tex_axis="y", spread=0.4), cloth2=mat("2a2434", spread=0.4),
+        hood=mat("342a48", tex=0.1, tex_freq=40, tex_axis="y", spread=0.4),
+        cape=mat("342a48", tex=0.1, tex_freq=40, tex_axis="y", spread=0.4),
+        leather=mat("3a2a24"), belt=mat("3a2a24"), metal=mat("a8a8c0", spec=1.0), hair=mat("c8c8d4", tex=0.18, tex_freq=200),
+        eye=eye(), blade=mat("100c1a", spec=1.0, tex=0.0), edge=glow_mat("c8b0ff"), guard=mat("6a6080", spec=1.0),
+    ),
+    spec=dict(hair="hair", brows="hair", hood="hood", cape="cape", belt="belt", buckle="metal",
+              torso="cloth", sleeve="cloth", legs="cloth2", boots="leather",
+              weapon=dict(type="sword", blade="blade", guard="guard", glow_edge="edge", grip="leather")),
+    portrait=dict(center=(0.03, 1.6, 0.0), scale=150, yaw=-1.15, pitch=0.1, bg=("08060e", "2a1a3a", "c8b0ff")),
+    portrait_spec=dict(hood=None, collar="hood"),
+    rim=(200, 170, 255),
+)
+
+
 # ---------------------------------------------------------------- the six Heralds (stage-2 bosses)
 # Shared motif: faces intact but eyes (and mouths) empty grey light; outlines leak grey dust.
 HERALD_EYE = glow_eye("dcdce6")
@@ -218,8 +400,8 @@ def _dust(n=5, spread=0.5, seed=0):
 
 def _open_mouth(J, p, b):
     hr = J["head_r"]
-    face = J["head"] + v(hr * 0.86, -hr * 0.5, 0)
-    return [ellipsoid(face, (hr * 0.12, hr * 0.2, hr * 0.18), "mouth", layer=3)]
+    face = J["head"] + v(hr * 0.9, -hr * 0.62, 0)
+    return [ellipsoid(face, (hr * 0.1, hr * 0.13, hr * 0.13), "mouth", layer=3)]
 
 
 def _ourra_column(J, p, b):
@@ -258,7 +440,8 @@ character(
     ),
     spec=dict(hair="hair", long_hair=True, brows="hair", robe=True, cape="cape", cape_tatter=True, wide_sleeves=True,
               belt="belt", buckle="metal", extra=_ourra_column, motes=_dust(5, 0.5, 1), collar="cape"),
-    portrait=dict(center=(0.04, 1.36, 0.0), scale=125, yaw=-1.15, pitch=0.1, bg=("06141a", "1e4a50", "6ae0d0")),
+    portrait=dict(center=(0.04, 1.42, 0.0), scale=150, yaw=-1.15, pitch=0.1, bg=("06141a", "1e4a50", "6ae0d0")),
+    portrait_spec=dict(extra=_open_mouth),
     portrait_pose=dict(arm_n=(0.9, 0.3, 0.9), arm_f=(0.7, 0.3, 1.0)),
     frame=(104, 128), frame_cy=1.3, sprite_scale=36.0,
     rim=(120, 230, 220),
@@ -288,7 +471,7 @@ character(
     body=dict(height=2.3, bulk=1.6, shoulder=0.3, chest_depth=1.15, head_r=0.12),
     mats=dict(
         skin=mat("6e6258", tex=0.18, tex_freq=60), rock=mat("6e5e4e", tex=0.22, tex_freq=55),
-        armour=mat("8a5a3a", spec=0.6, tex=0.2, tex_freq=55), cloth=mat("5a4a3a"), cloth2=mat("4a3e34", tex=0.15, tex_freq=60),
+        armour=mat("5e4636", spec=0.4, tex=0.22, tex_freq=55), cloth=mat("5a4a3a"), cloth2=mat("4a3e34", tex=0.15, tex_freq=60),
         leather=mat("4a3e34", tex=0.15, tex_freq=60), belt=mat("3a2e24"), metal=mat("a07040", spec=1.0),
         eye=HERALD_EYE, mouth=HERALD_EYE, dust=DUST, heartstone=mat("a89a88", tex=0.2, tex_freq=90),
     ),
@@ -296,7 +479,7 @@ character(
               forearm="armour", hands="rock", helm=None, belt="belt", buckle="metal", brows="rock",
               extra=_gorrath_parts, motes=_dust(6, 0.6, 2),
               weapon=dict(type="greatsword", blade="rock", guard="armour", grip="leather")),
-    portrait=dict(center=(0.06, 1.85, 0.0), scale=100, yaw=-1.0, pitch=0.1, bg=("140e0a", "5a3a22", "e8a030")),
+    portrait=dict(center=(0.06, 1.95, 0.0), scale=120, yaw=-1.0, pitch=0.1, bg=("140e0a", "5a3a22", "e8a030")),
     frame=(96, 112), frame_cy=1.15, sprite_scale=38.0,
     rim=(255, 190, 110),
 )
@@ -323,12 +506,12 @@ character(
     element="void",
     body=dict(height=2.25, bulk=0.75, shoulder=0.19),
     mats=dict(
-        skin=mat("b8b0c0"), cloth=mat("6a6670", tex=0.1, tex_freq=40, tex_axis="y"), cloth2=mat("4a4650"),
-        hood=mat("8a8690", tex=0.1, tex_freq=40, tex_axis="y"), veil=mat("9a96a4", tex=0.1, tex_freq=30, tex_axis="y"),
+        skin=mat("c8b8c8"), cloth=mat("4a4652", tex=0.1, tex_freq=40, tex_axis="y"), cloth2=mat("3a3640"),
+        hood=mat("4e4a58", tex=0.1, tex_freq=40, tex_axis="y"), veil=mat("9a96a4", tex=0.1, tex_freq=30, tex_axis="y"),
         leather=mat("3a3640"), belt=mat("3a3640"), metal=mat("8a80a0", spec=1.0), eye=HERALD_EYE, mouth=HERALD_EYE,
         dust=DUST, ghost=glow_mat("c8a8ff"), hair=mat("3a3640"),
     ),
-    spec=dict(hood="hood", robe=True, wide_sleeves=True, belt="belt", buckle="metal", extra=_vesper_parts,
+    spec=dict(hood="hood", robe=True, wide_sleeves=True, belt="belt", buckle="metal", extra=_vesper_parts, jaw=0.75,
               motes=_dust(5, 0.5, 3)),
     portrait=dict(center=(0.04, 1.86, 0.0), scale=125, yaw=-1.05, pitch=0.12, bg=("100c18", "3a2a5a", "c8a8ff")),
     portrait_pose=dict(arm_n=(1.4, 0.35, 0.7), arm_f=(1.2, 0.35, 0.8), head=-0.25),
@@ -471,7 +654,7 @@ character(
     ),
     spec=dict(hood="hood", robe=True, wide_sleeves=True, extra=_briar_parts, motes=_dust(5, 0.5, 7)),
     pose_override=dict(lean=0.45, head=0.2),
-    portrait=dict(center=(0.18, 1.18, 0.0), scale=135, yaw=-1.1, pitch=0.12, bg=("0a0e0a", "2a3a22", "c8c8c4")),
+    portrait=dict(center=(0.2, 1.22, 0.0), scale=165, yaw=-1.1, pitch=0.12, bg=("0a0e0a", "2a3a22", "c8c8c4")),
     portrait_pose=dict(lean=0.45, head=0.1, arm_n=(0.9, 0.3, 1.2), arm_f=(0.7, 0.3, 1.1)),
     sprite_scale=34.0,
     rim=(200, 230, 170),
