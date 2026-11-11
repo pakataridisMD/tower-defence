@@ -27,6 +27,7 @@ var story: Story
 var story_overlay: StoryOverlay
 ## The cinematic playing over the run, or null.
 var cinematic: CinematicPlayer
+var audio: GameAudio
 var music: BattleMusic
 var paused := false
 ## Set before the node enters the tree, or with --autoplay.
@@ -65,6 +66,13 @@ func _build_views() -> void:
 	board.position = BOARD_OFFSET
 	board.setup(sim)
 	add_child(board)
+
+	audio = GameAudio.new()
+	add_child(audio)
+	audio.setup(sim, BOARD_OFFSET)
+	music = BattleMusic.new()
+	add_child(music)
+	music.setup(sim)
 
 	var hud_layer := CanvasLayer.new()
 	add_child(hud_layer)
@@ -200,15 +208,19 @@ func _toggle_web() -> void:
 		board.cancel_placing()
 		board.cancel_aiming()
 		web.show_tree(sim.tree, SkillWebView.element_regions(sim.config.elements))
+		SoundPlayer.sfx(&"ui_open")
 
 
 func _close_web() -> void:
+	if web.visible:
+		SoundPlayer.sfx(&"ui_close")
 	web.hide()
 
 
 func _cycle_speed() -> void:
 	_speed_index = (_speed_index + 1) % SPEEDS.size()
 	hud.speed = SPEEDS[_speed_index]
+	SoundPlayer.sfx(&"ui_toggle")
 
 
 func _toggle_pause() -> void:
@@ -216,6 +228,7 @@ func _toggle_pause() -> void:
 		return
 	paused = not paused
 	hud.paused = paused
+	SoundPlayer.sfx(&"ui_pause" if paused else &"ui_resume")
 
 
 ## Esc backs out of whatever is open: the web, then aiming, placing, the selection, then pause.
@@ -270,6 +283,7 @@ func _begin_skill(skill_id: StringName) -> void:
 	var skill: SkillData = sim.config.skills[skill_id]
 	if skill.is_targeted():
 		board.begin_aiming(skill_id)
+		SoundPlayer.sfx(&"skill_aim")
 		hud.show_message("%s: click where it should land" % skill.display_name)
 	else:
 		_cast_skill(skill_id, Vector2.ZERO)
@@ -338,6 +352,8 @@ func _on_run_ended(won: bool) -> void:
 		var next := Progress.meta.stage_after(sim.config.stage.id)
 		hud.show_stage_result(result, next != null and Progress.meta.is_stage_unlocked(next.id))
 		_story_after_run(won, result)
+		if won:
+			audio.play_stars(result.get("stars", 0))
 		if autoplay:
 			print("Autoplay stage %s: %d stars" % [sim.config.stage.id, result["stars"]])
 	if autoplay:
