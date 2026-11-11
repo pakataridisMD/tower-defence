@@ -47,25 +47,31 @@ def cin(cid, title, when, *shots):
 
 # ----------------------------------------------------------------------------- the opening (~1:50)
 cin("prologue", "The Last Lantern", "Before the first stage. The opening story video, 1 to 2 minutes.",
-    shot("Before the world, there was only the sea. Fire and water. Stone and storm. Root, and starless dark.\n\n"
-         "All of it one. And nothing.",
-         "Black. Slowly, a churning sea of every colour at once, no horizon, colours bleeding into each other."),
-    shot("Seven stepped out of it. Six were content to be one thing each.\n\nThe seventh wanted to be everything.",
-         "Seven tall silhouettes rise from the sea in a line, each glowing one colour (red, blue-white, green, "
-         "teal, ochre, violet). The seventh is a black outline with no colour at all."),
-    shot("His name was Vael-Orrun. Where he walked, the elements did not mix.\n\nThey stopped.",
-         "The black figure walks forward. Around his feet the colours of the sea freeze into grey glass. "
-         "Behind him the sky shows a black sun with a crown-shaped gap in its corona."),
-    shot("The Six could not kill him. So they joined hands, each across from its opposite, and drove him out "
-         "past the edge of the stars.\n\nWe call it the Ring.",
-         "Top-down: the six coloured figures in a ring, Fire across from Water, Storm across from Earth, "
-         "Nature across from Void, hands joined. The black figure is flung out through the edge of a starfield. "
-         "The six lights settle into six lands around a centre."),
-    shot("At its heart, six peoples built Solenne. The Crowned Heart.\n\nMy city.",
-         "Dawn over Solenne: six concentric white walls each faced with a different stone, the Heartstone "
-         "glowing in the open hall at the centre, the golden Sunstone lens hanging in the sky above."),
-    shot("Six years ago, a man I loved like a father lost his daughter to the dark. Something beyond the stars "
-         "made him a promise.",
+    shot("Before the Concord, before the Spire, before anyone kept count of the years... there were seven "
+         "kingdoms.",
+         "An old painted map coming out of darkness: six kingdoms in a ring, each under its own crown and "
+         "colour (red, blue-white, green, teal, ochre, violet), and a seventh, colourless, in the middle."),
+    shot("Six were bound to the elements of their lands. The seventh ruled the middle of the world.\n\nAnd he "
+         "wanted all of it.",
+         "Six crowned monarchs, each lit by their element: a forge-king, a horse-king, a green queen, a "
+         "sea-queen, a mountain-king, a star-queen. Then the middle kingdom's black-walled capital, and on its "
+         "throne a king in black with a tall crown of six empty sockets."),
+    shot("His name was Vael-Orrun, the High King. Where his armies marched, fire would not burn, and the wind "
+         "lay down and died.",
+         "The High King's armies crossing a burning land; behind them the flames freeze into grey glass, the "
+         "grass stops moving, a river hangs still in mid-fall."),
+    shot("The six hated one another. They stood together anyway, each beside its oldest enemy, and drove him "
+         "out past the edge of the stars.\n\nWe call it the Ring.",
+         "The six monarchs in a ring around the burning black city, hands joined, Fire across from Water, Storm "
+         "across from Earth, Nature across from Void. The High King is flung out through the edge of a "
+         "starfield into darkness."),
+    shot("They could not kill him. So they locked the door with his own crown, and gave their lives to hold "
+         "it. On the ruins of his city, we built Solenne.\n\nMy city.",
+         "The crown shattering into a six-coloured crystal, the Heartstone. The six monarchs fading into a "
+         "volcano, a storm, a tree, a sea, a mountain, a starless sky. Then dawn over Solenne: six white "
+         "walls rising on black ruins, the Heartstone glowing at the centre, the golden Sunstone above."),
+    shot("Six years ago, a man I loved like a father lost his daughter to the dark. The exiled king made him "
+         "a promise.",
          "Night. Cassivane Dral, the Lord Marshal, alone on a balcony, holding a gold locket. Over his "
          "shoulder, in the stars, the faint crown-shaped gap. His face is in shadow."),
     shot("On the night of the Black Comet, the edge of the world split open.",
@@ -78,8 +84,8 @@ cin("prologue", "The Last Lantern", "Before the first stage. The opening story v
     shot("The Crack closed to a hairline.\n\nAnd Oswin fell. His lantern went out.",
          "A blast of white light; the Crack slams almost shut. The ground under Oswin gives way. He falls into "
          "the dark, the lantern going out. Last frame: one tiny spark still drifting down after him."),
-    shot("But a voice can pass through a hairline. It drove the six sleeping Wardens mad, and now each land "
-         "marches on the one across from it.",
+    shot("But a voice can pass through a hairline. It drove the six sleeping monarchs mad, and set each land "
+         "against the one across from it.\n\nThe High King has come back for what was his.",
          "Six quick cuts: a volcano burning grey, a stormcloud gone solid black, a giant tree rotting, a "
          "frozen sea heaving, a mountain opening grey eyes, a starless sky with a crown. Then hordes of "
          "grey-eyed elemental spirits pouring across the land toward each other."),
@@ -507,7 +513,7 @@ cin("assault_intro", "The Crownless Citadel", "Before the final assault (about 3
          "Kethra are in it. And Vitrea. And our Dawn Gate.",
          "Close on the citadel walls: recognisable pieces of fallen cities: glass towers, a frozen ship, "
          "uprooted trees, broken Spirewright towers, and the Dawn Gate set as a tooth in an enormous mouth."),
-    shot("This is my world. You are standing in it. That is a mistake you will not make twice.",
+    shot("You built your city on my city. You hang my crown over it like a lamp. I have come home for both.",
          "The black sun's corona flaring; every colour on screen drains to grey for a moment.",
          speaker="vael_orrun"),
     shot("Then it's a good thing we only need to make it once. Spirewright... for the first time in this "
@@ -548,16 +554,18 @@ cin("epilogue", "The Seventh Colour", "After the final assault is won. Then the 
     shot("And Oswin set his lantern in the empty crown.",
          "Oswin stepping into the ring and placing the white lantern into the crown-shaped gap. Light floods "
          "the black glass from the inside."),
-    shot("We did not kill him. I do not think he could be killed. We finished him. We gave him one thing "
-         "to be, at last.\n\nHe became the light.",
+    shot("We did not kill him. I do not think he could be killed. He wanted the middle of the world, so we "
+         "gave it to him. Not as its king.\n\nAs its light.",
          "Vael-Orrun cracking apart into pure white light, which rises, and the black sun above the citadel "
          "turns gold."),
     shot("We went home to twenty-six cities of ash. Every one of their people walked back to rebuild them.\n\n"
          "That is what we fought for. Not the land. Them.",
          "Montage: Emberfolk relighting the forges of Kethra from their iron pots; Galeborn raising tents at "
          "Aurvanis; Sylvaine planting Elowen's seed; Pearlhaven's fleet coming home; Stoneborn unsealing "
-         "Grundhallow; Veilwalkers raising the telescope at Umbrael. Tamsin, alive, sitting on a wall with "
-         "Fennick's spectacles."),
+         "Grundhallow through a door that is part of Orrok; Veilwalkers raising the telescope at Umbrael; "
+         "Seraphel's glass sword set into the rebuilt Sunstone; Nyxara walking slowly beside Elowen through "
+         "the ash of Sylvanmere. Tamsin, alive, sitting on the Lantern Walk with Fennick's spectacles, and "
+         "Oswin, grey and old again, beside her, pointing at the sunset for the Queen."),
     shot("I am Ysolde, Queen of Solenne. I am old now, and I have never seen a dawn since.\n\nBut I have "
          "felt every one of them.",
          "Ysolde, older, grey hair, still blindfolded, on the walls of a rebuilt Solenne, sun on her face. "
@@ -695,7 +703,8 @@ CHARACTERS = [
     ("mother_briar", "Mother Briar", "the Thorn Herald", "herald", "nature", "",
      "The Deepwood's wisest healer, grown through with thorns. Boss of Fractured Steps."),
     ("vael_orrun", "Vael-Orrun", "the Sunderer", "overlord", "", "",
-     "The seventh Primordial, locked out of the world, who wants to be the centre of everything."),
+     "The High King of the seventh kingdom, banished beyond the stars at the dawn of history, come back to "
+     "reclaim his crown and his throne at the centre of the world."),
 ]
 
 # Existing boss enemies (data/enemies) per character, and the ones the gameplay thread will add.
