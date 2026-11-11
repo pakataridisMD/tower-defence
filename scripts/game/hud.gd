@@ -87,6 +87,8 @@ func setup(p_sim: RunSim) -> void:
 
 
 func show_message(text: String, color: Color = UiStyle.TEXT) -> void:
+	if color == UiStyle.BAD:
+		SoundPlayer.sfx(&"ui_error")
 	_message.text = text
 	_message.add_theme_color_override("font_color", color)
 	_message_time = 2.2
@@ -384,6 +386,7 @@ func show_shop_tier(tier: int) -> void:
 
 ## Opens the next shop tab that has a tower in it, wrapping round to the base towers.
 func cycle_shop_tier() -> void:
+	SoundPlayer.sfx(&"ui_tab")
 	for step in [1, 2, 3]:
 		var tier: int = (_shop_tier - 1 + step) % 3 + 1
 		for tower_id in _shop_ids:

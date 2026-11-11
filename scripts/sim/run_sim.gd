@@ -9,6 +9,8 @@ signal wave_cleared(wave_number: int, tree_points: int, gold: int)
 signal enemy_killed(enemy: SimEnemy, killer: SimTower, bounty: int)
 signal enemy_leaked(enemy: SimEnemy)
 signal chain_fired(tower: SimTower, points: PackedVector2Array)
+## A tower fired: a shot left it, or its chain jumped. Used for sound.
+signal tower_attacked(tower: SimTower, target: SimEnemy)
 signal projectile_landed(projectile: SimProjectile)
 signal run_ended(won: bool)
 ## A skill was cast. `at` is the point picked on the board, or the board's centre for a skill
@@ -636,6 +638,7 @@ func _find_target(tower: SimTower) -> SimEnemy:
 
 
 func _attack(tower: SimTower, target: SimEnemy) -> void:
+	tower_attacked.emit(tower, target)
 	if tower.chains():
 		_fire_chain(tower, target)
 		return
