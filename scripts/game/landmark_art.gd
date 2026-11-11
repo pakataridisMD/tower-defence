@@ -1,5 +1,5 @@
 class_name LandmarkArt
-extends RefCounted
+extends Node
 ## Builds and animates the enemy war camps and the defended city at the ends of the roads (see
 ## Landmarks for where they stand).
 ##
@@ -10,7 +10,7 @@ extends RefCounted
 ## burning, and the townsfolk run when an enemy gets through.
 ##
 ## Pieces come from tools/art/landmarks/gen_landmarks.py. BoardArt owns the layers and lights;
-## this only adds to them.
+## this only adds to them. It is a child node of BoardArt, so its signal connections go with the board.
 
 const ART := "res://assets/art/game/landmarks/"
 const CELL := 32.0
@@ -97,7 +97,7 @@ func build(p_board: BoardArt) -> void:
 		else:
 			_build_city(site)
 	sim.enemy_leaked.connect(_on_enemy_leaked)
-	sim.wave_started.connect(func(_n: int) -> void: _alarm = ALARM_TIME)
+	sim.wave_started.connect(_on_wave_started)
 
 
 # ------------------------------------------------------------------ layout helpers
@@ -456,6 +456,10 @@ func _spawned_at_camps() -> void:
 				var gate := _gate_point(site)
 				board._burst(gate + Vector2(0, 8), Color(0.45, 0.38, 0.3, 0.6), 4, 10.0, false)
 				break
+
+
+func _on_wave_started(_wave_number: int) -> void:
+	_alarm = ALARM_TIME
 
 
 func _on_enemy_leaked(_enemy: SimEnemy) -> void:

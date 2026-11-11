@@ -231,6 +231,7 @@ func setup(p_sim: RunSim) -> void:
 	_build_ground()
 	if LandmarkArt.has_art():
 		landmarks = LandmarkArt.new()
+		add_child(landmarks)
 		landmarks.build(self)
 	_build_fireflies()
 	sim.chain_fired.connect(_on_chain_fired)
