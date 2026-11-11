@@ -398,6 +398,20 @@ def pan_stereo(x: np.ndarray, pan: float) -> np.ndarray:
 
 
 def mix(score: Score, out_dir: str, stems: bool = False) -> str:
+    """Render a cue, normalise it to a 0.5 peak, fade the last 1.5 s and write a float WAV."""
+    out = mix_array(score, out_dir, stems)
+    peak = np.abs(out).max() + 1e-9
+    out = out / peak * 0.5
+    # fade the very end
+    k = int(1.5 * SR)
+    out[-k:] *= np.linspace(1, 0, k)[:, None]
+    raw = os.path.join(out_dir, f"{score.name}.raw.wav")
+    sf.write(raw, out, SR, subtype="FLOAT")
+    return raw
+
+
+def mix_array(score: Score, out_dir: str, stems: bool = False) -> np.ndarray:
+    """Every track, percussion and placed audio through the hall, unnormalised (stereo float)."""
     os.makedirs(out_dir, exist_ok=True)
     total = int(score.duration * SR)
     dry = np.zeros((total, 2), np.float32)
@@ -440,15 +454,7 @@ def mix(score: Score, out_dir: str, stems: bool = False) -> str:
     out = dry * 0.85 + wet * 0.55
     # tidy the low end and master
     sos = signal.butter(4, 34 / (SR / 2), "high", output="sos")
-    out = signal.sosfilt(sos, out, axis=0).astype(np.float32)
-    peak = np.abs(out).max() + 1e-9
-    out = out / peak * 0.5
-    # fade the very end
-    k = int(1.5 * SR)
-    out[-k:] *= np.linspace(1, 0, k)[:, None]
-    raw = os.path.join(out_dir, f"{score.name}.raw.wav")
-    sf.write(raw, out, SR, subtype="FLOAT")
-    return raw
+    return signal.sosfilt(sos, out, axis=0).astype(np.float32)
 
 
 def master(raw: str, out_base: str, lufs: float = -16.0) -> dict:

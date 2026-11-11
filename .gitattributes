@@ -22,3 +22,5 @@ assets/art/ui/** -filter -diff -merge -text
 
 # Story music is rendered in cloud sessions where LFS uploads are blocked.
 assets/story/music/** -filter -diff -merge -text
+# Gameplay music is rendered in cloud sessions too (tools/music/render_loop.py).
+assets/game/music/** -filter -diff -merge -text

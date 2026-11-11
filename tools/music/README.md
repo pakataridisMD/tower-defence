@@ -56,6 +56,27 @@ and `<cue>.mid` (the score as MIDI, so a composer can re-voice it with a commerc
 Playback: start the cue with the cinematic, fade it out over about 1.5 s if the scene ends first,
 and duck it 6 to 8 dB under narration.
 
+## Battle music (gameplay)
+
+`loops/battle.py` is **Hold the Line**, the music under a run: a 96 s loop in D minor at 100 bpm,
+in three layers that play in sync (`assets/game/music/battle_<layer>.ogg`, plus `battle.json`):
+
+| Layer | When it plays | What it adds |
+|---|---|---|
+| `calm` | always (alone during the build phase) | pads, low strings, a harp ostinato, a ticking clock, the themes on solo cello, bassoon and horn |
+| `wave` | while a wave is running | 16th-note string and synth ostinatos, the drum ensemble, synth bass, eight low horns on the themes |
+| `boss` | boss waves, the last wave, and at 30% of lives or less | choir, trumpets, a chanting male choir ("Te-ne-te vi-am"), more drums, braams |
+
+Sections of 8 bars: the march (i-VI-III-VII), the Long Defeat, the Hollow, the full Lantern theme,
+and the march again turning on the dominant back to the top. In the game, `scripts/game/battle_music.gd`
+plays the layers as one `AudioStreamSynchronized` on the `Music` bus and fades them (in over 1.5 s,
+out over 4 s). Loudness: calm alone about -24 LUFS, with the wave layer -18, everything -16.
+
+    python3 tools/music/render_loop.py battle    # about 2 minutes
+
+`render_loop.py` folds the reverb tail back onto the start so the loop has no seam, and gives
+every layer the same gain and peak limiting, so any combination sums correctly.
+
 ## Rendering
 
     sudo apt-get install fluidsynth fluid-soundfont-gm ffmpeg

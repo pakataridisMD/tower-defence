@@ -23,6 +23,7 @@ var sim: RunSim
 var board: BoardView
 var hud: Hud
 var web: SkillWebView
+var music: BattleMusic
 var paused := false
 ## Set before the node enters the tree, or with --autoplay.
 var autoplay := false
@@ -73,6 +74,10 @@ func _build_views() -> void:
 	web.can_refund = sim.can_refund_node
 	web.hide()
 	web_layer.add_child(web)
+
+	music = BattleMusic.new()
+	add_child(music)
+	music.setup(sim)
 
 
 func _connect_signals() -> void:
