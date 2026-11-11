@@ -1,4 +1,36 @@
 {
+ "ashwick": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   70,
+   104
+  ],
+  "frame": [
+   140,
+   136
+  ]
+ },
  "cinder_tyrant": {
   "anims": {
    "attack": {
@@ -221,6 +253,38 @@
   "frame": [
    192,
    212
+  ]
+ },
+ "mother_briar": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   84,
+   134
+  ],
+  "frame": [
+   168,
+   166
   ]
  },
  "orb_earth": {
@@ -447,6 +511,38 @@
    112
   ]
  },
+ "ourra": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   76,
+   174
+  ],
+  "frame": [
+   152,
+   206
+  ]
+ },
  "skeleton": {
   "anims": {
    "attack": {
@@ -541,6 +637,70 @@
   "frame": [
    232,
    392
+  ]
+ },
+ "vesper": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   76,
+   174
+  ],
+  "frame": [
+   152,
+   206
+  ]
+ },
+ "vholt": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   113,
+   154
+  ],
+  "frame": [
+   226,
+   186
   ]
  }
 }

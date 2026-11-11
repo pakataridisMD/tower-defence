@@ -25,9 +25,11 @@ PAD = 28
 FPS = {"idle": 6, "walk": 10, "attack": 14, "death": 10}
 STYLE = {"elf": "shoot", "dragon": "lunge", "ghost": "float", "golem": "heavy"}
 STYLE.update({k: "float" for k in creatures.CREATURES if k.startswith("orb_")})
-STYLE.update({"gorrath": "titan", "cinder_tyrant": "titan", "vael_orrun": "float"})
+STYLE.update({"gorrath": "titan", "cinder_tyrant": "titan", "vael_orrun": "float", "ourra": "float", "vesper": "float",
+              "vholt": "lunge"})
+DEATH = {"ashwick": "float", "mother_briar": "titan", "vholt": "float"}   # how it dies, when not like its style
 PADS = {"gorrath": 44, "cinder_tyrant": 66}          # room for the long arms of the big ones
-LEGS = {"gorrath": 32, "cinder_tyrant": 48}          # thigh + shin length, for kneeling
+LEGS = {"gorrath": 32, "cinder_tyrant": 48, "mother_briar": 18}          # thigh + shin length, for kneeling
 
 
 ORBIT = {"orb_earth": math.pi / 3, "orb_nature": math.pi / 4}   # aura turns by one symmetry step per loop
@@ -159,6 +161,8 @@ def frames(name, anim):
     style = STYLE.get(name, "swing")
     out = []
     for i in range(n):
+        if anim == "death":
+            style = DEATH.get(name, style)
         pose = fn(i, n, style, name)
         pad = PADS.get(name, PAD)
         s = creatures.CREATURES[name](pose, pad)

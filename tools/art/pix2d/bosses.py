@@ -294,5 +294,341 @@ def vael_orrun(pose=None, pad=0):
     return s
 
 
-BOSSES = {"gorrath": gorrath, "cinder_tyrant": cinder_tyrant, "vael_orrun": vael_orrun}
+SEA = ramp("1c4656", spread=0.5, shift=0.0)
+SEA_D = ramp("10303c", spread=0.4, shift=0.0)
+TEAL = ramp("3a8a8a", spread=0.5)
+PALE = ramp("9a9088", spread=0.42, shift=0.02)      # ashen Herald skin, so the empty eyes read
+BEAK = ramp("d8c078", spread=0.5)
+VEIL = ramp("8a8894", spread=0.55, shift=0.0)
+VEIL_D = ramp("5c5a68", spread=0.5, shift=0.0)
+GHOSTV = [(120, 96, 170), (176, 150, 226), (226, 210, 255), (250, 246, 255)]
+EMBERW = [(196, 74, 20), (250, 132, 36), (255, 194, 84), (255, 232, 160), (255, 252, 236)]
+CLOUD = ramp("34343e", spread=0.5, shift=0.0)
+CLOUD_D = ramp("22222a", spread=0.4, shift=0.0)
+BOLT = [(150, 140, 230), (214, 208, 255), (250, 250, 255)]
+THORN = ramp("3a3040", spread=0.5, shift=0.02)
+THORN_D = ramp("261f2c", spread=0.4, shift=0.02)
+SATCHEL = ramp("7a5632", spread=0.5)
+
+
+def _herald_face(s, x, y, dark=False, big=1):
+    """Two empty eyes and an open mouth of grey light, looking right from (x, y) = the nearer eye."""
+    c0, c1 = ((70, 74, 86), (110, 114, 126)) if dark else (GREY_GLOW[2], GREY_GLOW[3])
+    for ex in (x, x + 4 * big):
+        s.fill(s.rect(ex, y, ex + 2 * big, y + 2 * big), c0, glow=True)
+        s.px(ex, y, c1, glow=True)
+    s.fill(s.rect(x + 1, y + 4 * big, x + 1 + 4 * big, y + 4 * big + 2 * big), c0, glow=True)
+    s.px(x + 2, y + 4 * big, c1, glow=True)
+
+
+def ourra(pose=None, pad=0):
+    """Saltmother Ourra, the Drowned Herald: an old priestess inside a walking column of black seawater."""
+    s = Sprite(96, 150, pose, pad)
+    # the column: a wave crest on top, a spreading foot of foam
+    s.part(s.ellipse(48, 136, 40, 9), SEA_D)
+    s.part(s.capsule(48, 30, 48, 122, 27, 31), SEA, bulge=0.8)
+    s.part(s.poly([(22, 34), (30, 10), (44, 22), (56, 4), (66, 20), (78, 12), (74, 36)]), SEA)      # crest
+    for x, y in ((30, 12), (56, 6), (78, 14), (40, 20), (66, 20)):
+        s.pxs([(x, y), (x + 1, y - 1), (x - 1, y + 1)], (220, 240, 240))
+    for x in range(12, 86, 5):
+        s.px(x, 138 + (x * 7) % 5, (200, 226, 226))
+        s.px(x + 2, 133 + (x * 3) % 4, (150, 200, 204))
+    for x, y0, y1 in ((27, 44, 112), (33, 60, 126), (66, 40, 100), (72, 64, 124), (60, 96, 128)):  # currents in the water
+        s.line(x, y0, x + 1, y1, SEA[3])
+    s.line(24, 40, 23, 110, SEA[4])
+    # the priestess inside: tattered teal robes, grey hair, arms lifted
+    s.g("cloak", 46, 60)
+    s.part(s.poly([(38, 58), (54, 58), (60, 100), (57, 118), (52, 110), (47, 120), (42, 108), (36, 116), (34, 96)]), TEAL)
+    s.line(44, 66, 42, 106, TEAL[1])
+    s.line(51, 68, 53, 104, TEAL[1])
+    s.g("arm_f", 40, 62)
+    s.part(s.capsule(40, 62, 30, 52, 2.6, 2.0), TEAL, bias=-0.1)
+    s.part(s.ellipse(29, 50, 2.2, 2.4), PALE)
+    s.g("head", 47, 56)
+    s.part(s.poly([(40, 44), (46, 38), (54, 42), (52, 62), (44, 66), (38, 58)]), VEIL)                # long grey hair
+    s.part(s.ellipse(49, 49, 5.2, 6.0), PALE)
+    _herald_face(s, 49, 46)
+    s.part(s.poly([(42, 42), (48, 37), (55, 41), (50, 44), (44, 47)]), VEIL)
+    s.g("weapon", 52, 62)
+    s.part(s.capsule(52, 62, 60, 56, 2.8, 2.2), TEAL)
+    s.g("hand_w", 60, 56, "weapon")
+    s.part(s.capsule(60, 56, 68, 46, 2.2, 1.8), TEAL, edge=False)
+    s.part(s.ellipse(69, 44, 2.4, 2.6), PALE)
+    # drowned lanterns and fish circling inside
+    s.g("aura", 48, 80)
+    for x, y in ((28, 72), (68, 84), (36, 104), (62, 36)):
+        s.fill(s.rect(x, y, x + 4, y + 5), (90, 70, 40))
+        s.fill(s.rect(x + 1, y + 1, x + 3, y + 4), (255, 190, 90), glow=True)
+        s.px(x + 1, y - 1, (60, 50, 40))
+    for x, y, d in ((62, 70, 1), (30, 88, -1), (56, 112, 1), (34, 56, -1), (70, 104, -1)):
+        s.part(s.ellipse(x, y, 3.2, 1.6), VEIL, edge=False)
+        s.pxs([(x - 4 * d, y - 1), (x - 4 * d, y + 1), (x - 3 * d, y)], VEIL[2])
+        s.px(x + 2 * d, y, DARK)
+    s.ink((8, 26, 34))
+    _dust(s, 22, 4)
+    s.shadow(48, 143, 38, 4)
+    return s
+
+
+def vesper(pose=None, pad=0):
+    """The Pale Vesper, the Hollow Herald: a thin, very tall singer in mourning veils, with a choir of ghost-lights."""
+    s = Sprite(96, 150, pose, pad)
+    # the choir behind her
+    s.g("aura", 30, 60)
+    for x, y, r in ((14, 40, 5), (24, 66, 4.5), (10, 84, 4), (30, 26, 4), (20, 104, 3.5)):
+        s.fill(s.ellipse(x, y, r + 1.5, r + 1.5), GHOSTV[0], glow=True)
+        s.fill(s.ellipse(x, y, r, r), GHOSTV[1], glow=True)
+        s.fill(s.ellipse(x + 0.5, y - 0.5, r * 0.5, r * 0.5), GHOSTV[3], glow=True)
+        s.fill(s.poly([(x - r, y + 2), (x + r, y + 2), (x - 2, y + r * 2.6)]), GHOSTV[0], glow=True)   # a trailing wisp
+        s.pxs([(x + 1, y), (x + 3, y)], (60, 40, 90))
+        s.px(x + 2, y + 2, (60, 40, 90))                                                         # tiny singing mouths
+    # trailing veils
+    s.g("cloak", 56, 30)
+    s.part(s.poly([(50, 26), (62, 24), (60, 80), (52, 132), (40, 140), (30, 134), (42, 80)]), VEIL_D)
+    s.line(48, 40, 38, 130, VEIL_D[0])
+    s.line(54, 44, 48, 128, VEIL_D[3])
+    # tall narrow gown to the ground
+    s.g("body")
+    s.part(s.poly([(52, 34), (68, 34), (70, 80), (76, 140), (46, 140), (50, 80)]), VEIL, bulge=0.8)
+    for x0, x1 in ((54, 50), (60, 60), (66, 70)):
+        s.line(x0, 48, x1, 138, VEIL[1])
+    s.part(s.rect(52, 62, 70, 64), VEIL_D, flat=True)
+    for x in range(46, 77, 3):
+        s.px(x, 140 + x % 2, VEIL_D[1])
+    # folded far arm
+    s.g("arm_f", 66, 38)
+    s.part(s.capsule(66, 38, 72, 56, 2.4, 2.0), VEIL_D, bias=-0.1)
+    # head: veiled, mouth always open in song
+    s.g("head", 60, 32)
+    s.part(s.capsule(60, 34, 61, 26, 2.6), PALE)
+    s.part(s.ellipse(62, 17, 6.5, 8.5), PALE)
+    s.part(s.poly([(52, 16), (58, 6), (66, 5), (70, 10), (63, 12), (58, 20), (56, 34), (50, 34)]), VEIL)     # hood of the veil
+    s.fill(s.rect(63, 13, 65, 15), GREY_GLOW[2], glow=True)
+    s.fill(s.rect(67, 13, 69, 15), GREY_GLOW[2], glow=True)
+    s.g("jaw", 62, 20, "head")
+    s.fill(s.ellipse(66, 21.5, 2.6, 3.4), GREY_GLOW[1], glow=True)
+    s.fill(s.ellipse(66, 21.5, 1.6, 2.4), GREY_GLOW[3], glow=True)
+    # rings of sung light leaving the mouth
+    s.g("plume", 66, 21, "head")
+    for r, t in ((7, 2), (12, 1), (17, 0)):
+        ring = s.ellipse(70 + r * 0.6, 21, r * 0.5, r) & ~s.ellipse(69 + r * 0.6, 21, r * 0.5, r)
+        s.fill(ring & ~s.a, GHOSTV[t], glow=True)
+    # near arm lifted, long fingers conducting
+    s.g("weapon", 56, 38)
+    s.part(s.capsule(56, 38, 62, 54, 2.6, 2.2), VEIL)
+    s.g("hand_w", 62, 54, "weapon")
+    s.part(s.capsule(62, 54, 76, 44, 2.2, 1.6), VEIL, edge=False)
+    for dx, dy in ((5, -5), (6, -2), (6, 1), (4, 3)):
+        s.line(77, 43, 77 + dx, 43 + dy, PALE[3])
+    s.ink()
+    _dust(s, 20, 6)
+    s.shadow(60, 144, 20, 3)
+    return s
+
+
+def ashwick(pose=None, pad=0):
+    """Ashwick the Kindled, the Flame Herald: a messenger boy made of white-hot embers, flame streaming behind."""
+    s = Sprite(84, 80, pose, pad)
+    E = EMBERW
+    # flame cape streaming back
+    s.g("cloak", 40, 30)
+    s.fill(s.poly([(40, 26), (26, 20), (10, 24), (20, 30), (2, 36), (18, 40), (6, 50), (24, 48), (18, 60), (36, 48), (42, 38)]), E[0], glow=True)
+    s.fill(s.poly([(40, 28), (28, 24), (16, 27), (24, 32), (10, 37), (22, 40), (14, 48), (28, 45), (36, 44)]), E[1], glow=True)
+    s.fill(s.poly([(40, 30), (30, 28), (26, 33), (20, 38), (28, 40), (34, 40)]), E[2], glow=True)
+    s.pxs([(4, 28), (0, 42), (8, 56), (14, 64), (2, 20)], E[1], glow=True)
+    # far leg kicking back, far arm forward (running)
+    s.g("leg_f", 44, 50)
+    s.part(s.capsule(44, 50, 38, 58, 3.0), E, bias=-0.25, glow=True)
+    s.g("shin_f", 38, 58, "leg_f")
+    s.part(s.capsule(38, 58, 30, 62, 2.6), E, bias=-0.25, edge=False, glow=True)
+    s.part(s.ellipse(28, 63, 3.0, 2.0), E, bias=-0.25, glow=True)
+    s.g("arm_f", 50, 34)
+    s.part(s.capsule(50, 34, 58, 38, 2.4), E, bias=-0.2, glow=True)
+    s.g("fore_f", 58, 38, "arm_f")
+    s.part(s.capsule(58, 38, 64, 33, 2.2), E, bias=-0.2, edge=False, glow=True)
+    # near leg striding, torso leaning into the run
+    s.g("leg_n", 48, 50)
+    s.part(s.capsule(48, 50, 55, 59, 3.4), E, glow=True)
+    s.g("shin_n", 55, 59, "leg_n")
+    s.part(s.capsule(55, 59, 54, 69, 3.0), E, edge=False, glow=True)
+    s.part(s.ellipse(57, 71, 4.0, 2.2), E, glow=True)
+    s.g("body")
+    s.part(s.poly([(40, 30), (52, 28), (54, 40), (52, 52), (42, 52), (40, 40)]), E, glow=True)
+    # the messenger's satchel: the one thing that is not fire, and it is burning
+    s.line(41, 30, 52, 48, SATCHEL[0])
+    s.line(42, 30, 53, 48, SATCHEL[2])
+    s.part(s.poly([(42, 44), (53, 44), (54, 54), (43, 55)]), SATCHEL)
+    s.part(s.poly([(42, 44), (53, 44), (52, 48), (43, 48)]), SATCHEL, flat=True, bias=0.2)
+    s.px(47, 49, (230, 190, 90))
+    s.pxs([(44, 43), (50, 42), (53, 43)], E[2], glow=True)
+    s.pxs([(45, 41), (51, 40)], E[3], glow=True)
+    # head, hair of flame, empty grey face
+    s.g("head", 48, 28)
+    s.part(s.ellipse(50, 20, 6.4, 6.6), E, glow=True)
+    s.g("plume", 46, 16, "head")
+    s.fill(s.poly([(44, 20), (40, 12), (45, 14), (44, 6), (50, 12), (52, 5), (55, 13), (56, 16), (48, 15)]), E[1], glow=True)
+    s.fill(s.poly([(46, 18), (44, 13), (48, 14), (48, 9), (52, 14), (54, 16)]), E[3], glow=True)
+    s.g("head", 48, 28)
+    _herald_face(s, 51, 18, dark=True)
+    # near arm pumping back
+    s.g("weapon", 44, 33)
+    s.part(s.capsule(44, 33, 38, 41, 2.8), E, glow=True)
+    s.g("hand_w", 38, 41, "weapon")
+    s.part(s.capsule(38, 41, 44, 46, 2.5), E, edge=False, glow=True)
+    s.ink((120, 40, 14))
+    _dust(s, 14, 8)
+    s.shadow(46, 74, 16, 2.6)
+    return s
+
+
+def vholt(pose=None, pad=0):
+    """Vholt Stormcrown, the Sky Herald: an old warchief crowned with lightning, riding a thunderbird of black cloud."""
+    s = Sprite(170, 130, pose, pad)
+    # far wing, raised
+    s.g("wing_f", 86, 62)
+    s.part(s.poly([(86, 62), (104, 22), (132, 6), (124, 24), (138, 26), (124, 40), (132, 46), (112, 56)]), CLOUD_D, flat=True, bias=-0.2)
+    # tail of streaming cloud
+    s.g("tail", 58, 78)
+    s.part(s.poly([(60, 70), (36, 68), (20, 62), (26, 74), (8, 76), (24, 84), (14, 94), (38, 88), (58, 86)]), CLOUD_D)
+    s.g("tail2", 24, 78, "tail")
+    for x, y in ((6, 70), (2, 82), (10, 98), (0, 92)):
+        s.part(s.ellipse(x, y, 3, 2), CLOUD_D, edge=False)
+    # body of rolling black cloud
+    s.g("body")
+    for cx, cy, rx, ry in ((70, 78, 20, 14), (92, 76, 20, 15), (82, 68, 18, 11), (106, 72, 13, 12)):
+        s.part(s.ellipse(cx, cy, rx, ry), CLOUD, edge=False)
+    for cx, cy, r in ((62, 88, 7), (76, 92, 8), (92, 91, 8), (104, 86, 6)):
+        s.part(s.ellipse(cx, cy, r, r * 0.7), CLOUD_D, edge=False)
+    # lightning in its belly, and talons of white fire
+    for pts in ([(72, 92), (68, 100), (74, 104), (70, 114)], [(94, 92), (98, 100), (93, 106), (97, 116)]):
+        for a, b in zip(pts, pts[1:]):
+            s.line(*a, *b, BOLT[2], glow=True)
+            s.line(a[0] + 1, a[1], b[0] + 1, b[1], BOLT[0], glow=True)
+    _crack(s, [(64, 74), (72, 80), (80, 74), (90, 82), (100, 76)], BOLT[1], BOLT[2])
+    # neck and head: hooked beak, white-hot eye
+    s.g("neck", 108, 70)
+    s.part(s.capsule(108, 70, 124, 52, 9, 7), CLOUD, bias=0.2)
+    s.g("head", 124, 52, "neck")
+    s.part(s.ellipse(130, 46, 10, 8.5), CLOUD, bias=0.3)
+    s.part(s.poly([(124, 40), (112, 30), (118, 44)]), CLOUD_D)                                       # crest feathers
+    s.part(s.poly([(128, 38), (120, 26), (124, 42)]), CLOUD_D)
+    s.part(s.poly([(136, 41), (148, 42), (155, 49), (146, 50), (138, 50)]), BEAK)                    # hooked upper beak
+    s.px(154, 50, BEAK[1])
+    s.px(153, 51, BEAK[1])
+    s.fill(s.poly([(128, 41), (136, 42), (135, 47), (128, 46)]), BOLT[2], glow=True)
+    s.fill(s.rect(129, 40, 136, 41), CLOUD_D[0])
+    s.px(132, 44, BOLT[0], glow=True)
+    s.g("jaw", 137, 50, "head")
+    s.part(s.poly([(137, 50), (148, 51), (141, 55)]), BEAK, bias=-0.3)
+    # the rider: old warchief, grey braids, crown of lightning, spear
+    s.g("rider", 86, 62)
+    s.part(s.capsule(82, 62, 76, 70, 3.0), SATCHEL, bias=-0.2)                                        # leg astride
+    s.part(s.poly([(78, 40), (92, 40), (94, 62), (78, 63)]), ramp("5a6688"))
+    s.part(s.rect(78, 56, 94, 59), SATCHEL, flat=True)
+    s.g("hand_w", 90, 46, "rider")
+    s.line(86, 70, 112, 14, SATCHEL[1])                                                              # spear
+    s.line(87, 70, 113, 14, SATCHEL[3])
+    s.fill(s.poly([(111, 16), (115, 16), (117, 4), (112, 10)]), BOLT[2], glow=True)
+    s.part(s.capsule(90, 46, 98, 50, 2.6), ramp("5a6688"))
+    s.part(s.ellipse(99.5, 50, 2.4, 2.4), PALE)
+    s.g("rhead", 86, 40, "rider")
+    s.part(s.poly([(78, 30), (84, 26), (86, 44), (80, 46)]), VEIL)                                   # braids
+    s.part(s.ellipse(87, 32, 5.6, 6.0), PALE)
+    s.part(s.poly([(88, 36), (94, 36), (92, 44), (88, 42)]), VEIL)                                   # beard
+    _herald_face(s, 88, 30)
+    for pts in ([(80, 27), (79, 20), (82, 23), (83, 15)], [(85, 25), (86, 17), (88, 21), (90, 12)], [(90, 26), (93, 19), (94, 23), (97, 16)]):
+        for a, b in zip(pts, pts[1:]):
+            s.line(*a, *b, BOLT[2], glow=True)
+    # near wing, sweeping down and forward
+    s.g("wing", 84, 66)
+    wing = [(84, 66), (70, 40), (44, 20), (22, 18), (32, 30), (14, 34), (28, 44), (12, 52), (30, 58), (22, 68), (46, 70), (66, 78)]
+    s.part(s.poly(wing), CLOUD, flat=True)
+    for x, y in ((22, 18), (14, 34), (12, 52), (22, 68)):
+        s.line(70, 44, x, y, CLOUD[0])
+    s.part(s.capsule(84, 66, 70, 40, 4.5, 3.4), CLOUD, edge=False)
+    s.part(s.capsule(70, 40, 44, 20, 3.4, 2.0), CLOUD, edge=False)
+    s.line(70, 40, 46, 22, CLOUD[4])
+    s.ink()
+    _dust(s, 30, 3)
+    s.shadow(84, 124, 40, 4)
+    return s
+
+
+def _flower(s, x, y):
+    """A white flower gone grey."""
+    s.pxs([(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)], (214, 214, 222))
+    s.pxs([(x - 1, y - 1), (x + 1, y + 1)], (160, 160, 172))
+    s.px(x, y, (120, 124, 136), glow=True)
+
+
+def mother_briar(pose=None, pad=0):
+    """Mother Briar, the Thorn Herald: a thicket of black thorns shaped like a hunched old healer."""
+    s = Sprite(112, 110, pose, pad)
+    rng = np.random.default_rng(12)
+
+    def thorns(cx, cy, rx, ry, n, tone=THORN):
+        """Thorn spikes standing out all round a mass."""
+        for i in range(n):
+            a = 2 * np.pi * i / n + rng.uniform(-0.2, 0.2)
+            ln = rng.uniform(4, 9)
+            bx, by = cx + np.cos(a) * rx * 0.9, cy + np.sin(a) * ry * 0.9
+            s.part(s.poly([(bx - np.sin(a) * 1.6, by + np.cos(a) * 1.6), (bx + np.sin(a) * 1.6, by - np.cos(a) * 1.6),
+                           (bx + np.cos(a) * ln, by + np.sin(a) * ln)]), tone, flat=True, edge=False)
+
+    # root legs under the skirt of briars
+    for grp, sub, x, tone in (("leg_f", "shin_f", 44, THORN_D), ("leg_n", "shin_n", 60, THORN)):
+        s.g(grp, x, 82)
+        s.part(s.capsule(x, 82, x + 1, 92, 4.2), tone)
+        s.g(sub, x + 1, 92, grp)
+        s.part(s.capsule(x + 1, 92, x + 2, 100, 3.6), tone, edge=False)
+        s.part(s.poly([(x - 3, 100), (x + 8, 99), (x + 13, 104), (x - 4, 104)]), tone)
+    # the hunched back, a great knot of briar
+    s.g("body")
+    thorns(40, 52, 26, 24, 22, THORN_D)
+    s.part(s.ellipse(40, 54, 25, 23), THORN_D)
+    thorns(54, 68, 22, 18, 14)
+    s.part(s.ellipse(54, 68, 22, 18), THORN)
+    for pts in ([(20, 60), (30, 46), (44, 38), (58, 40)], [(24, 70), (38, 58), (52, 54), (66, 60)], [(34, 80), (48, 72), (62, 74), (72, 70)],
+                [(30, 40), (40, 50), (38, 62), (46, 74)], [(52, 46), (56, 58), (50, 70), (56, 82)]):
+        for a, b in zip(pts, pts[1:]):                                                             # woven canes
+            s.line(*a, *b, THORN[4])
+            s.line(a[0], a[1] + 1, b[0], b[1] + 1, THORN_D[0])
+    for x, y in ((28, 44), (44, 34), (20, 62), (50, 52), (36, 70), (62, 64), (30, 56), (56, 42)):
+        _flower(s, x, y)
+    # healer's satchel on a strap
+    s.line(48, 40, 70, 78, SATCHEL[1])
+    s.line(49, 40, 71, 78, SATCHEL[3])
+    s.part(s.poly([(62, 72), (78, 72), (80, 88), (64, 90)]), SATCHEL)
+    s.part(s.poly([(62, 72), (78, 72), (77, 78), (63, 79)]), SATCHEL, flat=True, bias=0.2)
+    s.fill(s.rect(69, 81, 73, 82), (200, 200, 208))
+    s.fill(s.rect(70, 80, 72, 85), (200, 200, 208))                                                # a faded healer's cross
+    # far arm
+    s.g("arm_f", 66, 54)
+    s.part(s.capsule(66, 54, 78, 62, 3.0), THORN_D)
+    # head thrust forward and low, a hood of thorns, the empty face
+    s.g("head", 66, 46)
+    thorns(76, 40, 11, 10, 10, THORN_D)
+    s.part(s.ellipse(76, 41, 11, 10), THORN)
+    s.fill(s.ellipse(80, 43, 6.5, 6.5), (20, 16, 24))
+    _herald_face(s, 79, 39)
+    _flower(s, 70, 33)
+    _flower(s, 80, 31)
+    # near arm reaching forward on a gnarled staff
+    s.g("weapon", 60, 52)
+    s.part(s.capsule(60, 52, 72, 62, 3.6), THORN)
+    s.g("hand_w", 72, 62, "weapon")
+    for (x0, y0), (x1, y1) in (((96, 20), (93, 44)), ((93, 44), (95, 70)), ((95, 70), (92, 104))):
+        s.part(s.capsule(x0, y0, x1, y1, 1.8), THORN_D, edge=False)
+    s.part(s.poly([(96, 20), (90, 12), (98, 8), (104, 14), (100, 18)]), THORN_D)                    # the crook of the staff
+    _flower(s, 97, 13)
+    s.part(s.capsule(72, 62, 92, 58, 3.2, 2.4), THORN, edge=False)
+    s.pxs([(93, 55), (95, 57), (93, 60), (96, 60)], THORN[4])
+    s.ink()
+    _dust(s, 26, 11)
+    s.shadow(56, 105, 30, 3.4)
+    return s
+
+
+BOSSES = {"gorrath": gorrath, "cinder_tyrant": cinder_tyrant, "vael_orrun": vael_orrun, "ourra": ourra, "vesper": vesper,
+          "ashwick": ashwick, "vholt": vholt, "mother_briar": mother_briar}
 CREATURES.update(BOSSES)
