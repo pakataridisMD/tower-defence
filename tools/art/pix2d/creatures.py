@@ -10,7 +10,8 @@ STEEL = ramp("8e98aa", spread=0.6)
 BLUE = ramp("3558a8")
 LEATHER = ramp("6b4526")
 GOLD = ramp("e0aa36")
-RED = ramp("b8302a")
+RED = ramp("b4282a", spread=0.55)
+RED_D = ramp("8a1f26", spread=0.45)
 WOOD = ramp("7a5230")
 BONE = ramp("e6dcc0", spread=0.55)
 DARK = (30, 22, 30)
@@ -18,43 +19,59 @@ WHITE = (250, 246, 236)
 
 
 def soldier():
-    s = Sprite(48, 52)
-    # far side first: shield arm, far leg
-    s.part(s.capsule(21, 35, 20, 43, 2.3), BLUE, bias=-0.25)
-    s.part(s.ellipse(20.5, 45, 3.4, 2.2), LEATHER, bias=-0.2)
-    # round shield on the far arm, seen behind the body
-    s.part(s.ellipse(15.5, 30, 5.2, 7.2), BLUE)
-    s.part(s.ellipse(15.5, 30, 5.2, 7.2) & ~s.ellipse(15.5, 30, 4.0, 6.0), STEEL, flat=True)
-    s.part(s.ellipse(15, 30, 1.6, 2.0), GOLD)
-    # near leg and boot
-    s.part(s.capsule(26, 35, 27.5, 43, 2.7), BLUE)
-    s.part(s.ellipse(28.5, 45.2, 4.0, 2.4) | s.rect(25, 41, 30, 45), LEATHER)
-    # torso: breastplate, tabard skirt, belt
-    s.part(s.poly([(18, 33), (31, 33), (32, 39), (17, 39)]), BLUE)
-    s.part(s.ellipse(24.5, 28.5, 6.6, 6.8), STEEL)
-    s.part(s.rect(18, 32, 31, 34), LEATHER, flat=True)
-    s.pxs([(27, 32), (28, 32), (27, 33), (28, 33)], GOLD[3])
-    s.pxs([(22, 36), (23, 37), (24, 36), (25, 37)], GOLD[2])  # trim on the tabard
-    # head: face, then helmet over the top and back
-    s.part(s.ellipse(25.5, 16.5, 5.6, 5.6), SKIN)
-    helm = s.ellipse(24.8, 14.2, 6.6, 6.0) & ((s.ys < 15) | (s.xs < 22))
-    s.part(helm, STEEL)
-    s.part(s.rect(19, 14, 33, 16), STEEL, flat=True, bias=0.25)
-    s.part(s.poly([(20, 5), (28, 4), (31, 8), (19, 9)]), RED)
-    s.pxs([(28, 17), (28, 18)], DARK)                 # eye
-    s.px(29, 17, WHITE)
-    s.pxs([(31, 19)], SKIN[1])                        # nose shadow
-    s.pxs([(27, 21), (28, 21), (29, 21), (30, 21), (28, 22), (29, 22)], LEATHER[1])  # moustache and chin
-    # near arm: pauldron, sleeve, gauntlet, sword raised forward
-    blade = s.poly([(35, 27), (37, 28), (44, 10), (42, 9)])
-    s.part(blade, STEEL, flat=True, bias=0.3)
-    s.line(43, 10, 36, 27, STEEL[4])
-    s.part(s.capsule(27.5, 26, 33.5, 29.5, 2.3), BLUE)
-    s.part(s.ellipse(27, 24.5, 3.6, 3.2), STEEL)
-    s.part(s.ellipse(34.5, 29.5, 2.4, 2.3), STEEL, bias=0.1)
-    s.part(s.capsule(32.5, 26.5, 38.5, 29.5, 1.0), GOLD)   # crossguard
+    """Footman: heavy red plate with steel trim, closed helm with a plume, heater shield forward, broadsword raised."""
+    s = Sprite(50, 56)
+    # far leg (steel greave, sabaton)
+    s.part(s.capsule(21, 39, 20.5, 47, 2.4), STEEL, bias=-0.3)
+    s.part(s.ellipse(20.5, 49.5, 3.6, 2.2), STEEL, bias=-0.3)
+    # sword arm on the far side, raised: blade, crossguard, gauntlet
+    s.part(s.poly([(36, 24), (39, 24), (43, 5), (41, 3), (39, 5)]), STEEL, flat=True, bias=0.2)
+    s.line(41, 5, 38, 23, STEEL[4])
+    s.line(40, 6, 37, 23, STEEL[1])
+    s.part(s.capsule(29, 23, 36, 26, 2.6), RED_D)
+    s.part(s.rect(33, 23, 43, 25), GOLD, flat=True)
+    s.part(s.ellipse(37.5, 26.5, 2.6, 2.4), STEEL)
+    s.part(s.ellipse(30.5, 21.5, 4.2, 3.4), RED_D)             # far pauldron
+    # torso: red breastplate with a steel collar and a centre ridge
+    s.part(s.ellipse(24, 29, 7.4, 7.4), RED)
+    s.line(27, 23, 28, 34, RED[4])
+    s.part(s.rect(19, 21, 30, 23), STEEL, flat=True)
+    # helm: steel, flat-topped, eye slit and breath holes, red plume swept back
+    s.part(s.poly([(22, 6), (17, 2), (11, 4), (9, 10), (12, 16), (15, 11), (19, 10)]), RED)
+    s.part(s.ellipse(24.5, 14, 6.8, 7.0) | s.rect(18, 8, 31, 12), STEEL)
+    s.part(s.rect(18, 7, 31, 9), STEEL, flat=True, bias=0.3)
+    s.fill(s.rect(24, 13, 32, 15), DARK)                        # eye slit
+    s.px(28, 13, (255, 240, 200))
+    s.px(30, 13, (255, 240, 200))
+    s.line(28, 9, 28, 20, STEEL[1])                             # nose ridge
+    s.pxs([(26, 17), (26, 19), (30, 17), (30, 19)], DARK)      # breath holes
+    s.line(19, 20, 30, 20, STEEL[0])
+    # tassets (plate skirt) and belt
+    s.part(s.poly([(16, 35), (32, 35), (33, 42), (15, 42)]), RED)
+    s.line(15, 42, 33, 42, STEEL[3])
+    s.line(24, 36, 24, 41, RED[0])
+    s.part(s.rect(16, 34, 32, 36), LEATHER, flat=True)
+    s.pxs([(24, 34), (25, 34), (24, 35), (25, 35)], GOLD[3])
+    # near leg: greave with a red knee cop, sabaton
+    s.part(s.capsule(27, 42, 28, 47.5, 2.8), STEEL)
+    s.part(s.ellipse(27.5, 43, 2.6, 2.0), RED)
+    s.part(s.ellipse(29.5, 50, 4.2, 2.4) | s.rect(26, 46, 31, 50), STEEL)
+    # shield arm and heater shield held forward, covering the body
+    s.part(s.capsule(18.5, 25, 22, 31, 2.6), RED)
+    shield = s.poly([(24, 24), (37, 24), (37, 35), (30.5, 44), (24, 35)])
+    s.part(shield, STEEL, flat=True)
+    inner = s.poly([(25.5, 25.5), (35.5, 25.5), (35.5, 34.5), (30.5, 41.5), (25.5, 34.5)])
+    s.part(inner, RED, bulge=0.6)
+    s.line(30, 27, 30, 39, GOLD[3])                             # gold cross on the shield
+    s.line(31, 27, 31, 38, GOLD[2])
+    s.line(27, 30, 34, 30, GOLD[3])
+    s.line(27, 31, 34, 31, GOLD[2])
+    # near pauldron, big and layered, with a steel rim
+    s.part(s.ellipse(18.5, 23.5, 5.6, 4.6), RED)
+    s.line(14, 26, 22, 27, STEEL[3])
+    s.line(15, 24, 21, 21, RED[4])
     s.ink()
-    s.shadow(24, 47.5, 11, 2.6)
+    s.shadow(25, 52, 12, 2.6)
     return s
 
 
@@ -185,54 +202,103 @@ def _cracks(s, mask, n, seed, col):
             y += 1
 
 
+STONE = ramp("8d8676", spread=0.5, shift=0.02)
+STONE_D = ramp("6a645c", spread=0.45, shift=0.02)
+RUNE = [(40, 150, 200), (90, 220, 255), (200, 250, 255)]
+
+
+def _slab(s, pts, tones=STONE, depth=(3, -3), chips=0, seed=0):
+    """A chiselled stone block: a flat front face, a lit top and a dark right side, with hard edges."""
+    import numpy as np
+    dx, dy = depth
+    cx = sum(p[0] for p in pts) / len(pts)
+    cy = sum(p[1] for p in pts) / len(pts)
+    n = len(pts)
+    for i in range(n):
+        (x0, y0), (x1, y1) = pts[i], pts[(i + 1) % n]
+        mx, my = (x0 + x1) / 2 - cx, (y0 + y1) / 2 - cy
+        ex, ey = x1 - x0, y1 - y0
+        nx, ny = ey, -ex
+        if nx * mx + ny * my < 0:
+            nx, ny = -nx, -ny
+        L = math.hypot(nx, ny) or 1
+        nx, ny = nx / L, ny / L
+        quad = s.poly([(x0, y0), (x1, y1), (x1 + dx, y1 + dy), (x0 + dx, y0 + dy)])
+        if ny < -0.35:
+            s.fill(quad, tones[4])                               # top face catches the light
+        elif nx > 0.35:
+            s.fill(quad, tones[1])                               # right side in shadow
+    front = s.poly(pts)
+    s.fill(front, tones[2])
+    # bevel: a light line inside the top and left edges, a dark one inside the bottom and right
+    up = front & ~np.roll(front, 1, 0)
+    left = front & ~np.roll(front, 1, 1)
+    down = front & ~np.roll(front, -1, 0)
+    right = front & ~np.roll(front, -1, 1)
+    s.rgb[up | left] = tones[3]
+    s.rgb[down | right] = tones[1]
+    rng = np.random.default_rng(seed)
+    ys, xs = np.where(front)
+    for _ in range(chips):                                       # chisel marks and cracks
+        i = rng.integers(len(xs))
+        x, y = int(xs[i]), int(ys[i])
+        for _ in range(int(rng.integers(2, 6))):
+            if 0 <= y < s.h and 0 <= x < s.w and front[y, x]:
+                s.rgb[y, x] = tones[0]
+                if x > 0 and front[y, x - 1]:
+                    s.rgb[y, x - 1] = tones[3]
+            x += int(rng.integers(0, 2))
+            y += 1
+    return front
+
+
 def golem():
-    s = Sprite(66, 66)
-    # far arm and shoulder
-    s.part(s.capsule(45, 27, 47, 43, 5.2), ROCK_D, bias=-0.15)
-    s.part(s.ellipse(47.5, 48, 6.0, 5.4), ROCK_D, bias=-0.1)
-    s.part(s.ellipse(43, 21.5, 7.5, 6.5), ROCK_D)
-    # legs: short pillars with wide feet
-    s.part(s.poly([(24, 44), (31, 44), (32, 57), (23, 57)]), ROCK_D, bias=-0.1)
-    s.part(s.poly([(34, 44), (42, 44), (43, 57), (33, 57)]), ROCK_D)
-    s.part(s.ellipse(27, 59.5, 6.5, 3.2), ROCK, bias=-0.1)
-    s.part(s.ellipse(39, 59.8, 7.0, 3.4), ROCK)
-    # body: a great boulder, hips below it
-    s.part(s.ellipse(32.5, 43, 10.5, 5.5), ROCK_D)
-    body = s.ellipse(32, 30.5, 14.5, 13.0)
-    s.part(body, ROCK)
-    # the core burning through a crack in the chest
-    core = s.poly([(35, 22), (39, 26), (37, 30), (41, 35), (37, 40), (35, 34), (32, 30), (34, 26)])
-    s.fill(core, EMBER[1], glow=True)
-    s.fill(s.poly([(35, 25), (37, 27), (36, 31), (38, 35), (36, 37), (35, 33), (34, 29)]), EMBER[2], glow=True)
-    s.pxs([(36, 28), (36, 32), (37, 35)], EMBER[3], glow=True)
-    s.line(41, 35, 44, 38, EMBER[0], glow=True)
-    s.line(32, 30, 28, 33, EMBER[0], glow=True)
-    s.line(35, 22, 33, 19, EMBER[0], glow=True)
-    # head: small, sunk between the shoulders
-    s.part(s.ellipse(37, 17, 7.4, 6.4), ROCK_D)
-    s.part(s.rect(35, 13, 45, 15), ROCK_D, flat=True, bias=-0.35)  # brow ridge
-    s.fill(s.rect(37, 15, 39, 17), EMBER[2], glow=True)
-    s.fill(s.rect(41, 15, 43, 17), EMBER[2], glow=True)
-    s.line(37, 20, 43, 20, ROCK_D[0])
-    s.pxs([(38, 21), (40, 21), (42, 21)], ROCK_D[0])
-    # near shoulder, arm and fist, hanging to the knee
-    s.part(s.capsule(19, 30, 20, 45, 6.2), ROCK)
-    s.part(s.ellipse(20.5, 21.5, 9.2, 8.2), ROCK)
-    s.part(s.ellipse(20.5, 51, 7.4, 6.4), ROCK)
-    s.line(16, 53, 25, 53, ROCK[0])
-    s.pxs([(19, 54), (22, 54), (19, 55), (22, 55)], ROCK[0])       # fingers
-    for m, seed in ((body, 1), (s.ellipse(20.5, 21.5, 9.2, 8.2), 2), (s.ellipse(20.5, 51, 7.4, 6.4), 3),
-                    (s.capsule(19, 30, 20, 45, 6.2), 4)):
-        _cracks(s, m & (s.part_id > 0) & ~s.glow, 3, seed, ROCK[0])
-    # moss and a small pine growing on the near shoulder
-    s.part(s.ellipse(19.5, 14.5, 8.2, 3.0), MOSS)
-    s.pxs([(13, 17), (17, 18), (24, 17), (26, 18)], MOSS[1])
-    s.part(s.rect(13, 8, 15, 13), WOOD, flat=True)
-    s.part(s.poly([(14, 1), (18, 6), (10, 6)]), PINE)
-    s.part(s.poly([(14, 4), (19, 10), (9, 10)]), PINE)
-    s.pxs([(22, 12), (25, 13)], (240, 220, 120))                   # small flowers in the moss
+    """Stone golem: hard-edged quarried blocks, a slit of rune light for eyes, glowing runes cut into the chest."""
+    s = Sprite(72, 72)
+    # far arm
+    _slab(s, [(47, 22), (57, 22), (58, 32), (48, 32)], STONE_D, chips=1, seed=1)        # far shoulder
+    _slab(s, [(50, 33), (57, 33), (58, 46), (51, 46)], STONE_D, seed=2)
+    _slab(s, [(49, 47), (59, 47), (60, 57), (50, 57)], STONE_D, chips=1, seed=3)        # far fist
+    # legs and feet
+    _slab(s, [(25, 47), (33, 47), (33, 60), (26, 60)], STONE_D, chips=1, seed=4)
+    _slab(s, [(37, 47), (46, 47), (46, 60), (38, 60)], STONE_D, chips=1, seed=5)
+    _slab(s, [(23, 61), (35, 61), (36, 67), (22, 67)], STONE, depth=(3, -2), seed=6)
+    _slab(s, [(36, 61), (49, 61), (50, 67), (35, 67)], STONE, depth=(3, -2), seed=7)
+    # hips and the great chest block, wider at the shoulders
+    _slab(s, [(26, 40), (46, 40), (45, 47), (27, 47)], STONE_D, seed=8)
+    chest = _slab(s, [(21, 19), (49, 19), (46, 40), (25, 40)], STONE, chips=5, seed=9)
+    # runes cut into the chest, glowing
+    for (x0, y0, x1, y1) in ((33, 23, 33, 35), (33, 23, 38, 27), (38, 27, 33, 30), (29, 26, 29, 33), (29, 33, 26, 36),
+                             (41, 30, 41, 36), (41, 33, 44, 31)):
+        s.line(x0, y0, x1, y1, RUNE[1], glow=True)
+    s.pxs([(33, 26), (33, 31), (29, 29), (41, 33)], RUNE[2], glow=True)
+    # head: a squat block set forward, one glowing eye slit under a heavy brow
+    _slab(s, [(33, 8), (46, 8), (46, 19), (34, 19)], STONE_D, chips=1, seed=10)
+    _slab(s, [(32, 6), (47, 6), (47, 10), (32, 10)], STONE, depth=(3, -2), seed=11)     # brow slab
+    s.fill(s.rect(37, 12, 46, 14), (20, 30, 40))
+    s.fill(s.rect(38, 12, 41, 14), RUNE[1], glow=True)
+    s.fill(s.rect(43, 12, 46, 14), RUNE[1], glow=True)
+    s.px(39, 12, RUNE[2], glow=True)
+    s.px(44, 12, RUNE[2], glow=True)
+    s.line(37, 17, 44, 17, STONE_D[0])                                                   # mouth crack
+    # near arm: huge shoulder block, upper arm, forearm slab, fist on the ground side
+    _slab(s, [(13, 31), (22, 31), (22, 43), (14, 43)], STONE_D, seed=12)
+    _slab(s, [(8, 16), (24, 16), (25, 31), (9, 31)], STONE, depth=(4, -4), chips=3, seed=13)
+    _slab(s, [(10, 42), (25, 42), (26, 56), (11, 56)], STONE, chips=3, seed=14)
+    _slab(s, [(9, 56), (27, 56), (27, 65), (10, 65)], STONE_D, chips=1, seed=15)
+    for x in (14, 19, 23):
+        s.line(x, 60, x, 64, STONE_D[0])                                                 # finger gaps
+    s.line(12, 48, 24, 48, RUNE[0], glow=True)                                           # rune band on the forearm
+    s.pxs([(14, 48), (18, 48), (22, 48)], RUNE[2], glow=True)
+    # crystals grown out of the near shoulder, and a little moss in the joints
+    for (x, top, w) in ((12, 5, 3), (17, 2, 4), (22, 7, 3)):
+        s.fill(s.poly([(x - w, 13), (x, top), (x + w, 13)]), RUNE[0], glow=True)
+        s.fill(s.poly([(x - w + 1, 13), (x, top + 1), (x, 13)]), RUNE[1], glow=True)
+        s.line(x, top + 1, x - w + 1, 12, RUNE[2], glow=True)
+    s.pxs([(26, 40), (27, 41), (45, 40), (24, 31), (25, 32), (13, 43), (33, 60), (38, 61)], MOSS[2])
+    s.pxs([(27, 40), (46, 41), (25, 31), (14, 44)], MOSS[1])
     s.ink()
-    s.shadow(33, 62.5, 17, 3.0)
+    s.shadow(37, 68.5, 20, 3.0)
     return s
 
 
