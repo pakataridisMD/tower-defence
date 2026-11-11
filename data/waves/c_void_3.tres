@@ -353,7 +353,7 @@ start_delay = 1.0
 script = ExtResource("3_s")
 element = &"storm"
 is_boss = true
-health_multiplier = 1.25
+health_multiplier = 1.51
 groups = Array[ExtResource("2_s")]([SubResource("r51"), SubResource("r52"), SubResource("r53"), SubResource("r54"), SubResource("r55")])
 
 [resource]
@@ -361,5 +361,5 @@ script = ExtResource("1_s")
 id = &"c_void_3"
 display_name = "Mirror Rift"
 health_growth = 1.1
-health_scale = 2.54
+health_scale = 2.0
 waves = Array[ExtResource("3_s")]([SubResource("r3"), SubResource("r7"), SubResource("r10"), SubResource("r14"), SubResource("r18"), SubResource("r23"), SubResource("r26"), SubResource("r30"), SubResource("r34"), SubResource("r39"), SubResource("r42"), SubResource("r46"), SubResource("r50"), SubResource("r56")])

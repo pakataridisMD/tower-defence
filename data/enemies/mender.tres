@@ -6,9 +6,12 @@
 script = ExtResource("1_enemy")
 id = &"mender"
 display_name = "Mender"
-max_health = 70.0
+max_health = 62.0
 speed = 70.0
 bounty = 5
 leak_damage = 1
-description = "Heals 4% of its health every second, unless it is burning or poisoned."
-regen_per_second = 0.04
+power = &"mend"
+power_interval = 5.0
+power_radius = 140.0
+power_amount = 0.1
+description = "A fallen elf who calls healing down on the horde. Fire and poison choke the spell."

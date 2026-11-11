@@ -372,5 +372,5 @@ script = ExtResource("1_s")
 id = &"c_water_4"
 display_name = "The Drowned Throne"
 health_growth = 1.1
-health_scale = 1.3
+health_scale = 1.39
 waves = Array[ExtResource("3_s")]([SubResource("r3"), SubResource("r6"), SubResource("r9"), SubResource("r14"), SubResource("r18"), SubResource("r22"), SubResource("r25"), SubResource("r30"), SubResource("r34"), SubResource("r38"), SubResource("r41"), SubResource("r46"), SubResource("r50"), SubResource("r54"), SubResource("r58")])

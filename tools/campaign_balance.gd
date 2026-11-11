@@ -37,6 +37,12 @@ func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--stage="):
 			only = arg.trim_prefix("--stage=")
+	# --no-power=<power> plays without that power, to see what it is worth.
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--no-power="):
+			for data: EnemyData in registry.enemies.values():
+				if data.power == StringName(arg.trim_prefix("--no-power=")):
+					data.power = &""
 	var tune := OS.get_cmdline_user_args().has("--tune")
 	var meta := MetaProgress.new(registry, PlayerProfile.new())
 	if OS.get_cmdline_user_args().has("--compare"):

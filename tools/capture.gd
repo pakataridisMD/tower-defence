@@ -13,6 +13,8 @@ extends Node
 ## and the quit question.
 ## Add --map to take the campaign world map: the next stage up close, the whole world, a land, a city at
 ## the closest zoom, and the Heartland and the citadel once every other stage is won.
+## Add --powers to film the horde's powers: a wave of every kind of the rank and file and the Warden
+## against the bot's towers, saved as numbered frames in <out>/powers/ (make a GIF from them).
 ## Add --story to take the cinematic player, a Herald's boss banner, the assault on the citadel and
 ## the campaign map with the citadel on it.
 
@@ -36,6 +38,7 @@ var _story := false
 var _heroes := false
 var _menu := false
 var _map := false
+var _powers := false
 
 
 func _ready() -> void:
@@ -57,11 +60,15 @@ func _ready() -> void:
 			_menu = true
 		elif arg == "--map":
 			_map = true
+		elif arg == "--powers":
+			_powers = true
 	DirAccess.make_dir_recursive_absolute(_out)
 	Progress.use_memory_profile(_demo_profile())
 	# The map's glide down from the whole world would still be moving in the first shots.
 	CampaignScreen.intro_played = true
-	if _menu:
+	if _powers:
+		_run_powers()
+	elif _menu:
 		_run_menu()
 	elif _map:
 		_run_map()
@@ -438,6 +445,50 @@ func _run() -> void:
 	await _wait(1.0)
 	await _shot("end")
 	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+func _run_powers() -> void:
+	var game := GAME_SCENE.instantiate() as Game
+	game.autoplay = true
+	add_child(game)
+	await _wait(0.2)
+	# Real time, not the bot's top speed, so the film plays as a person sees it.
+	game._speed_index = 0
+	game.hud.speed = Game.SPEEDS[0]
+	game.sim.gold = 900
+	game.sim.tree.points = 6
+	var wave := WaveData.new()
+	wave.element = &"void"
+	var groups: Array[SpawnGroup] = []
+	for entry: Array in [[&"grunt", 6, 0.7, 0.0], [&"brute", 2, 1.6, 2.0], [&"mender", 2, 2.0, 3.0],
+			[&"runner", 4, 0.9, 5.0], [&"splitter", 2, 2.5, 7.0], [&"warded", 3, 1.6, 8.0], [&"warden", 1, 1.0, 11.0]]:
+		var group := SpawnGroup.new()
+		group.enemy = entry[0]
+		group.count = entry[1]
+		group.spawn_interval = entry[2]
+		group.start_delay = entry[3]
+		groups.append(group)
+	wave.groups = groups
+	var waves := WaveSet.new()
+	waves.id = &"powers"
+	waves.health_growth = 1.0
+	waves.waves = [wave, wave] as Array[WaveData]
+	game.sim.config.wave_set = waves
+	await _until(func() -> bool: return game.sim.state == RunSim.State.WAVE)
+	var folder := _out.path_join("powers")
+	DirAccess.make_dir_recursive_absolute(folder)
+	var count := [0]
+	game.sim.enemy_power.connect(func(enemy: SimEnemy, power: StringName, _t: Array) -> void:
+		print("frame %d: %s %s" % [count[0], enemy.data.id, power]))
+	while game.sim.state == RunSim.State.WAVE and count[0] < 900:
+		await RenderingServer.frame_post_draw
+		if Engine.get_process_frames() % 2 == 0:
+			var image := get_viewport().get_texture().get_image()
+			image.save_png(folder.path_join("f_%04d.png" % count[0]))
+			count[0] += 1
+		await get_tree().process_frame
+	print("Saved %d frames to %s" % [count[0], folder])
 	get_tree().quit()
 
 

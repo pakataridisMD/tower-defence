@@ -355,7 +355,7 @@ element = &"nature"
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.15
+health_multiplier = 0.31
 groups = Array[ExtResource("2_s")]([SubResource("r45"), SubResource("r46"), SubResource("r47"), SubResource("r48"), SubResource("r49")])
 
 [sub_resource type="Resource" id="r51"]
@@ -637,7 +637,7 @@ element = &"earth"
 script = ExtResource("3_s")
 element = &"nature"
 is_boss = true
-health_multiplier = 0.15
+health_multiplier = 0.31
 groups = Array[ExtResource("2_s")]([SubResource("r84"), SubResource("r85"), SubResource("r86"), SubResource("r87"), SubResource("r88")])
 
 [sub_resource type="Resource" id="r90"]
@@ -935,7 +935,7 @@ element = &"fire"
 script = ExtResource("3_s")
 element = &"earth"
 is_boss = true
-health_multiplier = 0.15
+health_multiplier = 0.31
 groups = Array[ExtResource("2_s")]([SubResource("r125"), SubResource("r126"), SubResource("r127"), SubResource("r128"), SubResource("r129")])
 
 [sub_resource type="Resource" id="r131"]
@@ -1233,7 +1233,7 @@ element = &"earth"
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.15
+health_multiplier = 0.31
 groups = Array[ExtResource("2_s")]([SubResource("r165"), SubResource("r166"), SubResource("r167"), SubResource("r168"), SubResource("r169"), SubResource("r170")])
 
 [sub_resource type="Resource" id="r172"]
@@ -1377,5 +1377,5 @@ script = ExtResource("1_s")
 id = &"c_assault_1"
 display_name = "Nhal Vorath"
 health_growth = 1.09
-health_scale = 0.8
+health_scale = 0.54
 waves = Array[ExtResource("3_s")]([SubResource("r3"), SubResource("r6"), SubResource("r10"), SubResource("r14"), SubResource("r18"), SubResource("r23"), SubResource("r27"), SubResource("r31"), SubResource("r36"), SubResource("r40"), SubResource("r44"), SubResource("r50"), SubResource("r54"), SubResource("r58"), SubResource("r64"), SubResource("r68"), SubResource("r73"), SubResource("r78"), SubResource("r83"), SubResource("r89"), SubResource("r95"), SubResource("r99"), SubResource("r104"), SubResource("r109"), SubResource("r114"), SubResource("r118"), SubResource("r124"), SubResource("r130"), SubResource("r135"), SubResource("r140"), SubResource("r145"), SubResource("r149"), SubResource("r155"), SubResource("r159"), SubResource("r164"), SubResource("r171"), SubResource("r176"), SubResource("r180"), SubResource("r186"), SubResource("r190")])

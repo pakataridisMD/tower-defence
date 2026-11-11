@@ -175,6 +175,8 @@ func select(id: StringName) -> void:
 				parts.append(String(tag).to_upper())
 			_caption.text = "  -  ".join(parts)
 			_text.text = e.description
+			if not e.power_text().is_empty():
+				_text.text += "\n\n" + e.power_text()
 			_picture.texture = _enemy_picture(id)
 			_picture.modulate = _enemy_tint(e)
 			_stat("Health", "%d" % roundi(e.max_health))

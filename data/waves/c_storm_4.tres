@@ -364,7 +364,7 @@ start_delay = 6.0
 script = ExtResource("3_s")
 element = &"void"
 is_boss = true
-health_multiplier = 0.2
+health_multiplier = 0.21
 groups = Array[ExtResource("2_s")]([SubResource("r55"), SubResource("r56"), SubResource("r57")])
 
 [resource]
