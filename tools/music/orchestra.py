@@ -83,7 +83,11 @@ PERC = {
     "gong": "Percussion/gongHit_*.wav",
     "anvil": "Percussion/Anvil_Hit1_*.wav",
     "snare_roll": "Percussion/Snare2-rollSN*",
-    "taiko": "Percussion/bassdrum_rub*",
+    "bd_rub": "Percussion/bassdrum_rub*",
+    "snare": "Percussion/Snare2-HitSN_*",
+    "logdrum": "Percussion/LogDrumLo_*",
+    "tumba": "Percussion/Tumba-HitN_*",
+    "tenor": "Percussion/timpsnaretenor_*",
 }
 
 # General MIDI programs rendered with FluidSynth.

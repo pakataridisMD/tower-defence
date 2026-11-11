@@ -1,6 +1,8 @@
 """The Last Lantern: score for the opening story video (`prologue`), about 3:00.
 
-v4 adds a trailer layer (`trailer_layer`): a chanting choir that sings words on the written notes,
+v5 adds a film layer (`film_layer`): stacked low horns, 16th-note string and synth ostinatos,
+drum ensembles, synth pads and sub bass, in the modern epic film-score manner (no melody borrowed).
+v4 added a trailer layer (`trailer_layer`): a chanting choir that sings words on the written notes,
 gang shouts in the gaps between narrated lines, braams, risers, impacts, sub drops and taiko.
 Words are original: "Te-ne-te vi-am" (Latin, "hold the road"), "Lu-men", "Vael-Orrun".
 
@@ -12,12 +14,22 @@ Themes introduced here and reused by the other cues (see tools/music/README.md):
   - the Hollow (Vael-Orrun): a falling tritone in low brass over a 5/4 ostinato
 """
 import vocals as V
-from cues._kit import HOLLOW, HOLLOW_OST, SOLENNE, new, rep
+from cues._kit import HOLLOW, HOLLOW_OST, SOLENNE, new, ost16, rep
 from score import midi
 from cues.solenne import TUNE_BASS, TUNE_CL, TUNE_HARP, TUNE_VLA
 
 # Shot lengths (seconds) for the narration at 0.8x speed with long pauses.
-SLOTS = [18.7, 13.8, 12.4, 16.7, 12.1, 13.0, 8.5, 13.2, 12.0, 14.0, 15.3, 29.3]
+# Narrated line lengths (seconds), from the voice thread's emotional re-take of 2026-11-11.
+LINES = [17.92, 11.89, 11.25, 12.77, 10.28, 13.19, 6.65, 11.29, 11.58, 10.37, 11.88, 15.48]
+# Each line starts 0.4 s into its slot (shot 1: 3.8 s, after the 3.2 s title card) and gets about
+# 2 s of music after it; a slot never gets shorter than the v3 timing the music was written to.
+TITLE = 3.4
+_V3 = [18.7, 13.8, 12.4, 16.7, 12.1, 13.0, 8.5, 13.2, 12.0, 14.0, 15.3]
+SLOTS = [round(max(v + (TITLE if i == 0 else 0), (TITLE if i == 0 else 0) + 0.4 + l + 2.0), 1)
+         for i, (v, l) in enumerate(zip(_V3, LINES))]
+# Shot 12: the final hit (bar 5, at 78.2% of the section with its ritardando) lands 3 s after her
+# last words, leaving room for the army's call-back.
+SLOTS.append(round((0.4 + LINES[11] + 3.0) / 0.782 + 7.3, 1))
 FINAL_TAIL = 7.3  # reverb and silence after the last chord, inside the last slot
 
 
@@ -254,6 +266,7 @@ def build():
     q.hits("gong", "1", bar=5, vel="ff")
     q.hits("bd", "1", bar=5, vel="fff")
     s.end_pad = FINAL_TAIL
+    film_layer(s)
     trailer_layer(s)
     return s
 
@@ -355,7 +368,7 @@ def trailer_layer(s):
     chant(s, q, 1, words, men=0, women=8, gain=-1, seed=60)
     chant(s, q, 1, words, men=14, gain=0, seed=70, transpose=-12)
     q.hits("taiko", "1 2.5 3 4", bar=1, vel="fff", bars=3)
-    line_end = 149.7 + 0.4 + 13.34
+    line_end = s.time_of(q.at(1)) + 0.4 + LINES[11]
     call = s._beat_at(line_end + 0.5)
     shout(s, call, "Hold the road!", gain=1, seed=4, n=20, women=6)
     rise(s, q.at(5), 2.0, gain=0, seed=6)
@@ -365,3 +378,145 @@ def trailer_layer(s):
         s.place(q.at(5), V.sung("Ah", midi(note), dur, n=10 if not women else 0, women=women, seed=midi(note) + 1),
                 CHANT_DB + 2, group="chant", send=0.5)
     hit(s, q.at(5), "D2", gain=4, seed=7)
+
+
+# ------------------------------------------------------------------------------- film layer
+def film_layer(s):
+    sec = {x.name.split(" ", 1)[0]: x for x in s.sections}
+    for k in ["hn_solo", "hn"]:
+        s.tracks[k].double = max(s.tracks[k].double, 2)
+    s.tracks["tbn"].double = 1
+    s.tracks["vc_spic"].gain_db += 2
+    s.tracks["cb_spic"].gain_db += 2
+
+    # 1. one low note that grows out of nothing
+    a = sec["1"]
+    a.part("syn_pad", "D2+A2+D3:16", vel="mf")
+    a.part("syn_sub", "D1:16", vel="f")
+    a.part("hn_lo", "r:12 | D3:4", vel="mf")
+    s.swell("syn_pad", [(a.at(1), -26), (a.at(4, 4), -2)])
+    s.swell("syn_sub", [(a.at(1), -30), (a.at(4, 4), -4)])
+    s.swell("hn_lo", [(a.at(4), -14), (a.at(4, 4), 0)])
+    a.hits("epic", "1", bar=1, vel="mf")
+
+    # 2. the six lights; the seventh lands like a wall
+    b = sec["2"]
+    b.part("syn_pad", "D3+A3+F#4:10 | D3+Ab3:5", vel="mp")
+    b.part("syn_bass", "r:10 | Ab2:5", vel="ff")
+    b.part("syn_sub", "r:10 | Ab1:5", vel="ff")
+    b.part("hn_lo", "r:10 | Ab2+D3:5", vel="ff")
+    s.swell("syn_pad", [(b.at(1), -6), (b.at(3), -6), (b.at(3, 5), -2)])
+    b.hits("epic", "1", bar=3, vel="ff")
+
+    # 3. Vael-Orrun: the Hollow in eight horns and a growling synth, drums under it
+    c = sec["3"]
+    hollow3 = "D3:3 Ab2:2 | G2:1.5 Bb2:.5 A2:1 Eb3:2 | D3:3 Eb3:1.5> r:.5"
+    c.part("hn_lo", hollow3, vel="ff")
+    c.part("syn_bass", hollow3, vel="ff", transpose=-12)
+    c.part("syn_sub", "D1:10 | D1:3 Eb1:1.5 r:.5", vel="f")
+    c.part("syn_pulse", ost16("D2:15", 5), vel="f")
+    c.part("syn_pad", "D3+Ab3:15", vel="mp")
+    s.swell("syn_pulse", [(c.at(1), -12), (c.at(3, 4), 0)])
+    c.hits("epic", "1", bar=1, vel="f", bars=3)
+    c.hits("toms", [3 + i * 0.25 for i in range(4)], bar=3, vel="f")
+    c.hits("epic", "4", bar=3, vel="fff")
+
+    # 4. the Ring: the ostinato starts, the Lantern in stacked horns, a wall of sound on bar 4
+    d = sec["4"]
+    roots = "D3:4 | G2:2 E3:2 | B2:2 A2:2 | D3:4 | D3:4"
+    d.part("vc_spic", ost16(roots, 4), vel="f")
+    d.part("cb_spic", ost16(roots, 4), vel="f", transpose=-12)
+    d.part("syn_pulse", ost16(roots, 4), vel="f", transpose=-12)
+    d.part("hn_lo", "D3:2 A3:2 | G3:1.5 F#3:.5 E3 D3 | B2:2 E3 F#3 | D3:4 | D3:4", vel="f")
+    d.part("syn_bass", "r:4 | r:4 | r:4 | D2:8", vel="ff")
+    d.part("syn_sub", "D1:4 | G1:2 E1:2 | B1:2 A1:2 | D1:8", vel="f")
+    d.part("syn_pad", "D3+A3+F#4:4 | D3+G3+B3:2 E3+G3+B3:2 | D3+F#3+B3:2 C#3+E3+A3:2 | D3+F#3+A3+D4:8",
+           vel="mf")
+    for k in ["vc_spic", "cb_spic", "syn_pulse"]:
+        s.swell(k, [(d.at(1), -14), (d.at(3, 4), -2), (d.at(4), 0)])
+    d.hits("taiko", "1 3", bar=2, vel="f", bars=2)
+    d.hits("toms", [3 + i * 0.25 for i in range(8)], bar=3, vel="ff")
+    d.hits("epic", "1", bar=4, vel="fff")
+    d.hits("taiko", "1 2.5 3 4", bar=4, vel="ff", bars=2)
+
+    # 6. the Regent: a low, warm pad under the cello
+    f = sec["6"]
+    f.part("syn_pad", "B2+F#3+D4:4 | E3+B3+D4:2 D3+A3+D4:2 | G2+D3+B3:2 A2+E3+C#4:2 | F#2+C#3+A#3:4", vel="mp")
+    s.swell("syn_pad", [(f.at(1), -12), (f.at(4, 4), -6)])
+
+    # 7. the Black Comet: a ticking clock, the ostinato and the drums gather
+    g = sec["7"]
+    g.hits("tick", [1 + i * 0.5 for i in range(10)], bar=1, vel="f", bars=2)
+    g.part("syn_pulse", ost16("D2:10", 5), vel="f")
+    g.part("syn_bass", "D2:10", vel="f")
+    g.part("syn_sub", "D1:10", vel="f")
+    s.swell("syn_pulse", [(g.at(1), -10), (g.at(2, 5), 0)])
+    s.swell("syn_bass", [(g.at(1), -14), (g.at(2, 5), 0)])
+    g.hits("epic", "1", bar=1, vel="ff")
+    g.hits("toms", [3 + i * 0.25 for i in range(12)], bar=2, vel="ff")
+
+    # 8. Oswin holds: everything drives
+    h = sec["8"]
+    roots = "D3:5 | C3:3 A2:2 | Bb2:5 | C3:2 A2:3"
+    h.part("syn_pulse", ost16(roots, 5), vel="ff", transpose=-12)
+    h.part("hn_lo", "D3:2 A3:3 | G3:1.5 F#3:.5 E3:1 A3:2 | Bb3:2 A3:1 G3:1 F3:1 | G3:2 A3:3", vel="ff")
+    h.part("syn_bass", "D2:5 | C2:3 A1:2 | Bb1:5 | C2:2 A1:3", vel="ff")
+    h.part("syn_sub", "D1:5 | C2:3 A1:2 | Bb1:5 | C2:2 A1:3", vel="ff")
+    h.part("syn_pad", "D3+A3+F#4:5 | C3+G3+E4:3 A2+E3+C#4:2 | Bb2+F3+D4:5 | C3+G3+E4:2 A2+E3+C#4:3", vel="mf")
+    h.hits("epic", "1", bar=1, vel="fff", bars=4)
+    h.hits("snare", [1 + i * 0.25 for i in range(20) if i % 4 in (0, 3)], bar=1, vel="mf", bars=4)
+    h.hits("toms", [4 + i * 0.25 for i in range(8)], bar=4, vel="ff")
+
+    # 9. the blast; then the long low fall into silence
+    k = sec["9"]
+    k.part("syn_bass", "D2:2.5 r:1.5 | r:4 | r:4", vel="fff")
+    k.part("syn_sub", "D1:12", vel="ff")
+    k.part("hn_lo", "D3+A3:2.5 r:1.5 | r:4 | r:4", vel="fff")
+    k.part("syn_pad", "r:4 | D4+A4+D5:8", vel="p")
+    s.swell("syn_sub", [(k.at(1), 0), (k.at(3, 4), -26)])
+    s.swell("syn_pad", [(k.at(2), -18), (k.at(3), -8), (k.at(3, 4), -14)])
+    k.hits("epic", "1", bar=1, vel="fff")
+
+    # 10. the Wardens: the Hollow in the low brass wall, synth growl, war drums
+    m = sec["10"]
+    m.part("hn_lo", HOLLOW, vel="ff", transpose=-12)
+    m.part("syn_bass", HOLLOW, vel="ff", transpose=-24)
+    m.part("syn_sub", "D1:20", vel="ff")
+    m.part("syn_pulse", ost16("D2:20", 5), vel="ff")
+    m.part("syn_pad", "D3+Ab3:20", vel="mf")
+    s.swell("syn_sub", [(m.at(1), 0)])
+    s.swell("syn_pad", [(m.at(1), 0)])
+    m.hits("epic", "1", bar=1, vel="fff", bars=4)
+    m.hits("snare", [1 + i * 0.25 for i in range(20) if i % 4 in (0, 3)], bar=1, vel="mf", bars=4)
+    m.hits("toms", [4 + i * 0.25 for i in range(4)], bar=4, vel="ff")
+
+    # 11. the road: grief, then the ostinato returns and the drums build towards the Queen
+    n = sec["11"]
+    n.part("syn_pad", "B2+F#3+D4:2 A2+E3+C#4:2 | G2+D3+B3:2 F#2+C#3+A3:2 | E2+B2+G3:2 A2+E3+C#4:2 | "
+                      "A2+E3+C#4:4", vel="mf")
+    n.part("vc_spic", "r:4 | r:4 | " + ost16("E3:2 A2:2 | A2:4", 4), vel="f")
+    n.part("syn_pulse", "r:4 | r:4 | " + ost16("E2:2 A1:2 | A1:4", 4), vel="f")
+    n.part("syn_sub", "B1:2 A1:2 | G1:2 F#1:2 | E1:2 A1:2 | A1:4", vel="mf")
+    s.swell("vc_spic", [(n.at(3), -12), (n.at(4, 4), 0)])
+    s.swell("syn_pulse", [(n.at(3), -12), (n.at(4, 4), 0)])
+    n.hits("taiko", "1 3", bar=3, vel="f")
+    n.hits("taiko", "1 2 3 3.5 4 4.5", bar=4, vel="ff")
+    n.hits("toms", [4 + i * 0.25 for i in range(4)], bar=4, vel="fff")
+
+    # 12. Hold the road: the full wall
+    q = sec["12"]
+    roots = "D3:4 | G2:2 F#2:2 | E2:2 A2:2 | D3:4"
+    q.part("vc_spic", ost16(roots, 4), vel="ff")
+    q.part("cb_spic", ost16(roots, 4), vel="ff", transpose=-12)
+    q.part("vla_spic", ost16(roots, 4), vel="f", transpose=12)
+    q.part("syn_pulse", ost16(roots, 4), vel="ff", transpose=-12)
+    q.part("hn_lo", "D4:2 A4:2 | B4:1.5 A4:.5 G4 F#4 | G4:1.5 F#4:.5 E4 C#4 | D4:4 | D4:4", vel="ff", transpose=-12)
+    q.part("syn_bass", "D2:4 | G1:2 F#2:2 | E2:2 A1:2 | D2:4 | D2:4", vel="ff")
+    q.part("syn_sub", "D1:4 | G1:2 F#1:2 | E1:2 A1:2 | D1:4 | D1:4", vel="ff")
+    q.part("syn_pad", "D3+A3+F#4:4 | D3+G3+B3:2 D3+F#3+A3:2 | E3+G3+B3:2 C#3+E3+A3:2 | D3+F#3+A3:4 | "
+                      "D3+F#3+A3+D4:4", vel="f")
+    q.hits("epic", "1 3", bar=1, vel="fff", bars=3)
+    q.hits("taiko", "2 2.5 4 4.5", bar=1, vel="ff", bars=3)
+    q.hits("snare", [1 + i * 0.25 for i in range(16) if i % 4 in (0, 3)], bar=1, vel="mf", bars=3)
+    q.hits("toms", [1 + i * 0.25 for i in range(16)], bar=4, vel="ff")
+    q.hits("epic", "1", bar=5, vel="fff")

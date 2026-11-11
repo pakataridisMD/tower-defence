@@ -37,7 +37,47 @@ def seat(s: Score) -> Score:
     t("choir", pan=0.0, legato=1.05, gain_db=-11)
     t("choir_hi", inst="choir", pan=-0.1, gain_db=-12)
     t("oohs", pan=0.05, gain_db=-7)
+    # film-trailer layer: stacked low horns and hybrid synths
+    t("hn_lo", inst="hn", pan=0.1, attack=0.07, legato=1.04, release=0.5, gain_db=-4, double=2)
+    t("syn_pulse", pan=0.0, gain_db=-4, send=0.15, hpf=70)
+    t("syn_pad", pan=0.0, gain_db=-15, send=0.3, hpf=50)
+    t("syn_sub", pan=0.0, gain_db=-16, send=0.0)
+    t("syn_bass", pan=0.0, gain_db=-20, send=0.1, hpf=28)
     return s
+
+
+NAMES = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
+
+
+def name(m: int) -> str:
+    return f"{NAMES[m % 12]}{m // 12 - 1}"
+
+
+GROUPS = {3: [3, 3, 3, 3], 4: [3, 3, 2, 3, 3, 2], 5: [3, 3, 2, 3, 3, 2, 4]}
+
+
+def ost16(changes: str, meter: int, fifth: bool = True) -> str:
+    """A film-score 16th-note ostinato: the root repeated, an accent at the start of each
+    3+3+2 group, the fifth on the last note of each group.  `changes` is "D3:4 | G2:2 E3:2 ..."
+    (root per span, in beats; bar lines optional)."""
+    from score import midi
+
+    segs = []
+    for tok in changes.replace("|", " ").split():
+        p, b = tok.split(":")
+        segs += [midi(p)] * int(round(float(b) * 4))
+    grp = GROUPS[meter]
+    pos_in_bar = []
+    for g in grp:
+        pos_in_bar += [(i, g) for i in range(g)]
+    out = []
+    for i, r in enumerate(segs):
+        k, g = pos_in_bar[i % len(pos_in_bar)]
+        n = r + 7 if (fifth and k == g - 1 and g > 2) else r
+        out.append(f"{name(n)}:.25" + (">" if k == 0 else "") + "'")
+        if (i + 1) % (meter * 4) == 0:
+            out.append("|")
+    return " ".join(out).rstrip(" |")
 
 
 def new(name: str, title: str) -> Score:

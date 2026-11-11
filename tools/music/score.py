@@ -24,6 +24,7 @@ import numpy as np
 import soundfile as sf
 from scipy import signal
 
+import hybrid
 import orchestra as orc
 from orchestra import SR
 
@@ -42,7 +43,8 @@ def midi(p: str) -> int:
 
 # Percussion trims so a forte hit sits inside the orchestra rather than on top of it.
 PERC_DB = {"timp": -13, "bd": -12, "crash": -18, "sus_cym": -20, "gong": -14, "anvil": -20,
-           "snare_roll": -18, "taiko": -12}
+           "snare_roll": -18, "taiko": -13, "epic": -12, "toms": -15,
+           "snare": -19, "tick": -22}
 
 
 SWELLS = {"sus_cym": 7.2}  # seconds from sample start to the loudest point
@@ -303,8 +305,11 @@ class Score:
             vel = int(np.clip(n.vel + dv, 1, 127))
             copies = [(0.0, 0)] + [((-1) ** k * 0.11 * ((k + 2) // 2), k + 1) for k in range(tr.double)]
             for cents, ci in copies:
-                y = orc.render_note(tr.inst, n.pitch + cents, vel, max(0.05, e - s), tr.attack,
-                                    tr.release if not n.short else 0.12, seed=i + ci * 7, tail=tr.tail)
+                if tr.inst in hybrid.SYNTHS:
+                    y = hybrid.synth_note(tr.inst, n.pitch + cents, vel, max(0.05, e - s), seed=i + ci * 7)
+                else:
+                    y = orc.render_note(tr.inst, n.pitch + cents, vel, max(0.05, e - s), tr.attack,
+                                        tr.release if not n.short else 0.12, seed=i + ci * 7, tail=tr.tail)
                 off = int((s + 0.006 * ci) * SR)
                 if ci:
                     y = y[:, ::-1] * 0.8
@@ -338,6 +343,8 @@ class Score:
         for i, (beat, kind, vel) in enumerate(sorted(self.perc)):
             if kind.startswith("timp:"):
                 y = orc.render_note("timp", midi(kind[5:]), vel, 3.0, seed=i)
+            elif kind in hybrid.DRUMS:
+                y = hybrid.drum(kind, vel, seed=i)
             else:
                 y = orc.render_perc(kind, vel, seed=i)
             y = y * 10 ** (PERC_DB.get(kind.split(":")[0], -10) / 20)
@@ -447,7 +454,8 @@ def mix(score: Score, out_dir: str, stems: bool = False) -> str:
 def master(raw: str, out_base: str, lufs: float = -16.0) -> dict:
     """Loudness-normalise with a limiter and write Ogg Vorbis (game) and MP3 (preview)."""
     wav = out_base + ".wav"
-    lim = "alimiter=limit=0.89:attack=5:release=80:level=false"
+    lim = ("acompressor=threshold=0.1:ratio=2.5:attack=25:release=250:makeup=1.5,"
+           "alimiter=limit=0.89:attack=5:release=80:level=false")
     probe = subprocess.run(["ffmpeg", "-hide_banner", "-i", raw, "-af",
                             f"{lim},loudnorm=I={lufs}:TP=-1.0:LRA=20:print_format=json", "-f", "null", "-"],
                            capture_output=True, text=True, check=True).stderr
