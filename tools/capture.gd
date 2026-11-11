@@ -11,6 +11,8 @@ extends Node
 ## straight to a late wave with plenty of gold, so the board is busy).
 ## Add --menu to take the title screen and every menu page (Skirmish, Heroes, Codex, Settings, Credits)
 ## and the quit question.
+## Add --map to take the campaign world map: the next stage up close, the whole world, a land, a city at
+## the closest zoom, and the Heartland and the citadel once every other stage is won.
 ## Add --story to take the cinematic player, a Herald's boss banner, the assault on the citadel and
 ## the campaign map with the citadel on it.
 
@@ -33,6 +35,7 @@ var _ui := false
 var _story := false
 var _heroes := false
 var _menu := false
+var _map := false
 
 
 func _ready() -> void:
@@ -52,10 +55,16 @@ func _ready() -> void:
 			_heroes = true
 		elif arg == "--menu":
 			_menu = true
+		elif arg == "--map":
+			_map = true
 	DirAccess.make_dir_recursive_absolute(_out)
 	Progress.use_memory_profile(_demo_profile())
+	# The map's glide down from the whole world would still be moving in the first shots.
+	CampaignScreen.intro_played = true
 	if _menu:
 		_run_menu()
+	elif _map:
+		_run_map()
 	elif _story:
 		_run_story()
 	elif _heroes:
@@ -133,7 +142,7 @@ func _run_heroes() -> void:
 	add_child(screen)
 	await _wait(0.4)
 	screen.select(&"storm_3")
-	await _wait(0.3)
+	await _wait(0.6)
 	await _shot("heroes_party")
 	screen.free()
 	Progress.active_stage = &"storm_3"
@@ -194,17 +203,60 @@ static func _campaign_profile() -> PlayerProfile:
 	return profile
 
 
+func _run_map() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	var screen := CAMPAIGN_SCENE.instantiate() as CampaignScreen
+	add_child(screen)
+	await _wait(0.6)
+	await _shot("map_stage")
+	screen.show_whole_world()
+	await _wait(0.9)
+	_hover(screen.stage_position(&"water_2"))
+	await _wait(0.2)
+	await _shot("map_world")
+	screen.select(&"ember_3")
+	await _wait(0.8)
+	await _shot("map_land")
+	screen.zoom_step(1)
+	await _wait(0.6)
+	screen.zoom_step(1)
+	await _wait(0.6)
+	screen.select(&"ember_4")
+	await _wait(0.6)
+	await _shot("map_close")
+	screen.free()
+	var profile := _campaign_profile()
+	for stage: StageData in DataRegistry.stages.values():
+		if not stage.id in [&"assault_1", &"converge_3"]:
+			profile.stage_stars[stage.id] = 3
+	Progress.use_memory_profile(profile)
+	screen = CAMPAIGN_SCENE.instantiate() as CampaignScreen
+	add_child(screen)
+	await _wait(0.6)
+	screen.select(&"converge_3")
+	await _wait(0.8)
+	await _shot("map_heartland")
+	profile.stage_stars[&"converge_3"] = 3
+	screen.select(&"assault_1")
+	await _wait(0.9)
+	await _shot("map_citadel")
+	screen.free()
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
 func _run_campaign() -> void:
 	Progress.use_memory_profile(_campaign_profile())
 	var screen := CAMPAIGN_SCENE.instantiate() as CampaignScreen
 	add_child(screen)
 	await _wait(0.4)
 	screen.select(&"nature_3")
+	await _wait(0.6)
 	_hover(screen.stage_position(&"storm_4"))
-	await _wait(0.4)
+	await _wait(0.2)
 	await _shot("campaign_map")
 	screen.select(&"converge_3")
-	await _wait(0.3)
+	await _wait(0.6)
 	await _shot("campaign_convergence")
 	screen.free()
 	for entry: Array in CAMPAIGN_SHOTS:
@@ -288,7 +340,7 @@ func _run_story() -> void:
 	add_child(screen)
 	await _wait(0.4)
 	screen.select(&"assault_1")
-	await _wait(0.4)
+	await _wait(0.8)
 	await _shot("story_campaign_citadel")
 	screen.free()
 	print("Screenshots saved to ", _out)

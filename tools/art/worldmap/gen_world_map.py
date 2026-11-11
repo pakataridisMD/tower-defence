@@ -1,6 +1,7 @@
 """The campaign world map of Orrhen, version 3: the whole world, each kingdom its own continent.
 
-Design only (not wired into the game). Needs numpy, Pillow, scipy and scikit-image. Takes a few minutes.
+The game's campaign screen (scripts/ui/campaign_screen.gd) shows it. Needs numpy, Pillow, scipy and
+scikit-image. Takes a few minutes.
 
 The world ocean floats in the Outer Hollow (the starfield beyond the edge of the world). Six continents,
 one per kingdom, lie around the Heartland of Orrun, where Solenne stands on the ruins of Vael; each is
@@ -17,7 +18,12 @@ at 2x with nearest filtering. It is grown in this order:
    lanes, watchtowers, ships, lighthouses, forests, peaks, ground tufts and flowers, towns and capitals.
 
 Usage:
-    python3 tools/art/worldmap/gen_world_map.py [--out art/worldmap] [--seed 7]
+    python3 tools/art/worldmap/gen_world_map.py [--game assets/art/worldmap] [--out PREVIEW_DIR] [--seed 7]
+
+--game writes what the game uses: world_map.png (the painted map without labels or stage markers),
+one medallion per stage, the land names as pixel lettering and world_map.json (where every stage, city,
+road and label sits, in map pixels). --out also writes the design previews: the labelled map, an
+overview and a close-up of each land.
 """
 from __future__ import annotations
 
@@ -159,7 +165,7 @@ def stage_layout() -> dict[int, tuple[float, float]]:
             t = ts[k]
             out[li * 4 + k + 1] = (far[0] + (near[0] - far[0]) * t + px * r_pp * zig[k],
                                    far[1] + (near[1] - far[1]) * t + py * r_pp * zig[k])
-    out[25] = ring_point(118)
+    out[25] = ring_point(156)        # Crossmere, where the roads from the six lands meet the ring road
     out[26] = (CX - 150, CY + 120)
     out[27] = (CX, CY + 10)
     return out
@@ -1091,7 +1097,7 @@ def draw_assault(img: Image.Image, pts):
 
 # --------------------------------------------------------------------------- labels
 
-CITY_SIDE = {27: "right", 26: "left", 25: "left", 23: "left", 24: "right"}
+CITY_SIDE = {27: "right", 25: "left", 23: "left", 24: "right"}
 SERIF = "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf"
 
 
@@ -1138,15 +1144,99 @@ def label_view(img: Image.Image, scale: float, ox: float, oy: float, nodes, av, 
     return out
 
 
+# --------------------------------------------------------------------------- game export
+
+# Stage numbers on the map and the game's stage ids: four per land in ring order, then the Convergence.
+STAGE_PREFIX = {"fire": "ember", "storm": "storm", "nature": "nature", "water": "water", "earth": "earth",
+                "void": "void"}
+
+
+def stage_id(n: int) -> str:
+    if n > 24:
+        return f"converge_{n - 24}"
+    return f"{STAGE_PREFIX[LANDS[(n - 1) // 4]]}_{(n - 1) % 4 + 1}"
+
+
+def resample(pts, step: float = 14.0) -> list[list[float]]:
+    """A road from the coarse search grid, smoothed and evened out to a point every `step` px."""
+    pts = smooth_path(pts, 4)
+    if len(pts) < 2:
+        return [[round(float(x), 1), round(float(y), 1)] for x, y in pts]
+    seg = np.sqrt(((pts[1:] - pts[:-1]) ** 2).sum(1))
+    dist = np.concatenate([[0.0], np.cumsum(seg)])
+    marks = np.linspace(0, dist[-1], max(2, int(dist[-1] / step) + 1))
+    xs = np.interp(marks, dist, pts[:, 0])
+    ys = np.interp(marks, dist, pts[:, 1])
+    return [[round(float(x), 1), round(float(y), 1)] for x, y in zip(xs, ys)]
+
+
+def medal_spot(n: int, nodes) -> tuple[float, float]:
+    x, y = nodes[n]
+    return x, y + (118 if n == 27 else 12)
+
+
+def export_game(game: Path, clean: Image.Image, nodes, av, trails, links, assault, city_tops) -> None:
+    """What the campaign screen draws: the map, the stage medallions, the land names and where it all is."""
+    log("game export")
+    game.mkdir(parents=True, exist_ok=True)
+    clean.convert("RGB").save(game / "world_map.png", optimize=True)
+    stages = {}
+    for n in sorted(nodes):
+        land = LANDS[(n - 1) // 4] if n <= 24 else "heart"
+        v1.medallion(str(n), ACCENT[land], big=n % 4 == 0 or n > 24).save(game / f"medal_{n:02d}.png")
+        mx, my = medal_spot(n, nodes)
+        entry = {"number": n, "city": STAGES[n][1], "land": land,
+                 "medal": [round(mx, 1), round(my, 1)],
+                 "city_top": [round(city_tops[n][0], 1), round(city_tops[n][1], 1)],
+                 "label": CITY_SIDE.get(n, "below")}
+        if n in trails:
+            entry["trail"] = resample(trails[n])
+        stages[stage_id(n)] = entry
+    v1.letter_medallion([".#.", "#.#", "###", "#.#", "#.#"], "d07cff").save(game / "medal_assault.png")
+    stages["assault_1"] = {"number": 28, "city": "Nhal Vorath", "land": "hollow",
+                           "medal": [round(av[0], 1), round(av[1], 1)],
+                           "city_top": [round(av[0], 1), round(av[1] - 40, 1)], "label": "below",
+                           "trail": resample(assault, 18.0)}
+    labels = {}
+    for land in LANDS:
+        cx, cy = cont_centre(land)
+        b = CONT[land][2][1]
+        ly = cy + b + 120 if land == "water" else cy - b - 90
+        ac = ACCENT[land]
+        txt = pixel_text(LAND_NAME[land], ["ffffff", _lighten(ac), ac, _darken(ac, 0.8), _darken(ac, 0.6)], unit=1)
+        txt.save(game / f"label_{land}.png")
+        labels[land] = {"file": f"label_{land}.png", "at": [round(cx, 1), round(ly, 1)]}
+    txt = pixel_text("THE HEARTLAND OF ORRUN", ["ffffff", "f4f0ff", "d8d0f0", "b8b0d8", "9890c0"], unit=1)
+    txt.save(game / "label_heart.png")
+    labels["heart"] = {"file": "label_heart.png", "at": [CX, round(CY - HEART_R[1] - 50, 1)]}
+    txt = pixel_text("NHAL VORATH", ["f0d8ff", "d0a8ff", "b27cff", "8a4ad8", "6a2ab0"], unit=1)
+    txt.save(game / "label_hollow.png")
+    labels["hollow"] = {"file": "label_hollow.png", "at": [CITADEL[0], CITADEL[1] + 50]}
+    data = {
+        "size": [W, H],
+        "image": "world_map.png",
+        "centre": [CX, CY],
+        "stages": stages,
+        "links": {STAGE_PREFIX[land] + "_4": resample(pts) for land, pts in links.items()},
+        "lands": {land: {"centre": [round(v, 1) for v in cont_centre(land)], "accent": ACCENT[land]}
+                  for land in LANDS},
+        "labels": labels,
+    }
+    (game / "world_map.json").write_text(json.dumps(data, indent=1) + "\n")
+
+
 # --------------------------------------------------------------------------- main
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default=str(ROOT / "art" / "worldmap"))
+    ap.add_argument("--game", default=str(ROOT / "assets" / "art" / "worldmap"),
+                    help="where the game's map art goes; empty to skip")
+    ap.add_argument("--out", default="", help="where the design previews go; empty to skip them")
     ap.add_argument("--seed", type=int, default=7)
     args = ap.parse_args()
-    out = Path(args.out)
-    out.mkdir(parents=True, exist_ok=True)
+    out = Path(args.out) if args.out else None
+    if out is not None:
+        out.mkdir(parents=True, exist_ok=True)
     seed = args.seed
     rng = np.random.default_rng(seed)
     nodes = stage_layout()
@@ -1236,15 +1326,21 @@ def main() -> None:
         return [((x + 0.5) * DS, (y + 0.5) * DS) for y, x in idx]
 
     paths = []
+    trails: dict[int, list] = {}     # the road into each stage from the one before it
+    links: dict[str, list] = {}      # each land's road from its capital to the Heartland ring road
     for li, land in enumerate(LANDS):
         for k in range(3):
-            paths.append(("road", route(nodes[li * 4 + k + 1], nodes[li * 4 + k + 2])))
+            trails[li * 4 + k + 2] = route(nodes[li * 4 + k + 1], nodes[li * 4 + k + 2])
+            paths.append(("road", trails[li * 4 + k + 2]))
         _, qh = link_ends(land)
         ang = math.degrees(math.atan2((qh[1] - CY) / RING_R[1], (qh[0] - CX) / RING_R[0]))
-        paths.append(("road", route(nodes[li * 4 + 4], ring_point(ang))))
+        links[land] = route(nodes[li * 4 + 4], ring_point(ang))
+        paths.append(("road", links[land]))
     ring = [ring_point(a) for a in range(0, 361, 3)]
     paths.append(("ring", ring))
-    paths.append(("royal", route(nodes[25], nodes[26]) + route(nodes[26], nodes[27])))
+    trails[26] = route(nodes[25], nodes[26])
+    trails[27] = route(nodes[26], nodes[27])
+    paths.append(("royal", trails[26] + trails[27]))
 
     # --- villages, farmland and the lanes that join them to the roads
     log("villages")
@@ -1448,23 +1544,27 @@ def main() -> None:
 
     # --- towns, capitals, Solenne, Nhal Vorath
     log("cities")
+    city_tops: dict[int, tuple[float, float]] = {}   # where smoke rises when a city falls
     for n, (x, y) in nodes.items():
         if n == 27:
             with scaled(3):
                 im = v1.solenne_sprite()
             im = stonework(im, seed + 71, brick=(5, 3), skip_bright=250)
             board.put(im, x, y + 100, 4)
+            city_tops[n] = (x, y + 100 - im.height * 0.7)
             continue
         if n == 26:
             with scaled(2):
                 im = lumen_gate_sprite()
             board.put(im, x, y - 10, 3)
-            continue
-        if n == 25:
-            board.put(crossmere_sprite(rng, 2), x, y - 10, 2)
-            continue
-        land = LANDS[(n - 1) // 4]
-        board.put(town_sprite(n, land, rng, n % 4 == 0), x, y - 10, 2)
+        elif n == 25:
+            im = crossmere_sprite(rng, 2)
+            board.put(im, x, y - 10, 2)
+        else:
+            land = LANDS[(n - 1) // 4]
+            im = town_sprite(n, land, rng, n % 4 == 0)
+            board.put(im, x, y - 10, 2)
+        city_tops[n] = (x, y - 10 - im.height * 0.6)
     with scaled(4):
         nv = v1.nhal_vorath_sprite()
     nv = stonework(nv, seed + 70, brick=(10, 4), skip_bright=150)
@@ -1496,6 +1596,11 @@ def main() -> None:
         return Image.fromarray(a)
 
     clean = frame(img)
+    if args.game:
+        export_game(Path(args.game), clean, nodes, av, trails, links, assault, city_tops)
+    if out is None:
+        log("done")
+        return
     clean.convert("RGB").save(out / "world_map_v3_clean.png")
 
     log("medallions")
