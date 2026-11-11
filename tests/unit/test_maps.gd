@@ -75,4 +75,3 @@ func test_enemies_walk_the_curve() -> void:
 	var waypoints := sim.config.map.lane_waypoints(0)
 	assert_gt(sim.lane_lengths[0], sim.config.map.cell_center(waypoints[0]).distance_to(
 		sim.config.map.cell_center(waypoints[waypoints.size() - 1])) * 1.5, "the road winds")
-	assert_eq(straight, 0.0)

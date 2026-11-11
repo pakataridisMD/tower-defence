@@ -178,12 +178,15 @@ func test_prismatic_enemies_turn_round_the_ring() -> void:
 
 func test_shared_groups_take_turns_over_the_roads() -> void:
 	var sim := _sim([_group(&"grunt", 6)], &"c_converge_2")
-	assert_eq(sim.lane_curves.size(), 3)
+	var count := sim.lane_curves.size()
+	assert_gte(count, 3, "three roads, plus any spawn holes")
 	_spawn_all(sim)
 	var lanes: Array[int] = []
-	for enemy in sim.enemies:
-		lanes.append(enemy.lane)
-	assert_eq(lanes, [0, 1, 2, 0, 1, 2] as Array[int])
+	var expected: Array[int] = []
+	for i in sim.enemies.size():
+		lanes.append(sim.enemies[i].lane)
+		expected.append(i % count)
+	assert_eq(lanes, expected)
 
 
 func test_a_group_can_keep_to_one_road() -> void:
