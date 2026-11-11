@@ -63,6 +63,12 @@ PRESETS = {
         "lang": "en-gb", "speed": 0.8, "room": 0.07, "rt60": 0.9, "master": "trailer",
         "sentence_gap": 0.75, "para_gap": 1.6,  # slow and dramatic (Doctor Paris, 2026-11-11)
     },
+    # ElevenLabs v3: real acting from emotion tags (Doctor Paris chose it, 2026-11-11).
+    # voice_id is filled in from the voice audition (tools/voice/audition_elevenlabs.py).
+    "regal_el": {
+        "engine": "elevenlabs", "voice_id": os.environ.get("NARRATOR_VOICE_ID", ""),
+        "stability": 0.0, "para_gap": 1.2, "room": 0.05, "rt60": 0.9, "master": "trailer",
+    },
     # Warmer and more British, same cinematic hall: the other finalist.
     "warm": {
         "voices": {"bf_emma": 0.8, "af_kore": 0.2},
@@ -120,6 +126,8 @@ def direction_for(cid: str | None) -> dict[str, dict]:
         return {}
     doc = json.loads(DIRECTION_FILE.read_text(encoding="utf-8"))
     emotions = doc.get("emotions", {})
+    for name, settings in emotions.items():
+        EMOTION_NAMES[id(settings)] = name
     return {line: emotions[name] for line, name in doc.get("lines", {}).get(cid, {}).items()
             if name in emotions}
 
@@ -148,6 +156,27 @@ def speak(text: str, preset: dict, direction: dict | None = None) -> tuple[np.nd
                 gap = (preset.get("para_gap", PARAGRAPH_GAP) if last_in_para
                        else preset.get("sentence_gap", SENTENCE_GAP))
                 out.append(np.zeros(int(sr * gap), dtype=np.float32))
+    return np.concatenate(out).astype(np.float32), sr
+
+
+EMOTION_NAMES: dict[int, str] = {}  # id(emotion settings) -> emotion name, for ElevenLabs tags
+
+
+def speak_elevenlabs(text: str, preset: dict, direction: dict | None = None) -> tuple[np.ndarray, int]:
+    """Same text handling as speak(), voiced by ElevenLabs v3 with emotion tags.
+    One request per paragraph; blank lines become pauses of para_gap seconds."""
+    import elevenlabs_tts as el
+    direction = direction or {}
+    out, sr = [], 44100
+    paras = [p.strip() for p in text.split("\n\n") if p.strip()]
+    for pi, para in enumerate(paras):
+        sentences = [x for x in re.split(r"(?<=[.!?])\s+", " ".join(para.split())) if x]
+        emotions = [EMOTION_NAMES.get(id(direction[x])) if x in direction else None for x in sentences]
+        audio, sr = el.decode(el.tts(el.tagged(sentences, emotions), preset["voice_id"],
+                                     preset.get("stability", 0.0)))
+        out.append(_trim(audio, sr))
+        if pi < len(paras) - 1:
+            out.append(np.zeros(int(sr * preset.get("para_gap", PARAGRAPH_GAP)), dtype=np.float32))
     return np.concatenate(out).astype(np.float32), sr
 
 
@@ -219,7 +248,10 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
 
 
 def render(text: str, out: Path, preset: dict, direction: dict | None = None) -> float:
-    samples, sr = speak(text, preset, direction)
+    if preset.get("engine") == "elevenlabs":
+        samples, sr = speak_elevenlabs(text, preset, direction)
+    else:
+        samples, sr = speak(text, preset, direction)
     with tempfile.TemporaryDirectory() as tmp:
         raw = Path(tmp) / "raw.wav"
         sf.write(raw, samples, sr)
