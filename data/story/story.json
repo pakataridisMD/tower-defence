@@ -1,0 +1,265 @@
+{
+  "prologue": "prologue",
+  "beats": [
+    {
+      "id": "refugee_road",
+      "cinematic": "regents_counsel",
+      "after_stages_won": 6
+    },
+    {
+      "id": "midpoint",
+      "cinematic": "night_of_falling_stars",
+      "after_stages_won": 12
+    },
+    {
+      "id": "long_night",
+      "cinematic": "long_night",
+      "after_stages_won": 18
+    }
+  ],
+  "stage_scenes": {
+    "ember_1": {
+      "before": "ember_intro"
+    },
+    "ember_2": {
+      "after": "ember_herald"
+    },
+    "ember_4": {
+      "after": "ember_warden"
+    },
+    "storm_1": {
+      "before": "storm_intro"
+    },
+    "storm_2": {
+      "after": "storm_herald"
+    },
+    "storm_4": {
+      "after": "storm_warden"
+    },
+    "nature_1": {
+      "before": "nature_intro"
+    },
+    "nature_2": {
+      "after": "nature_herald"
+    },
+    "nature_4": {
+      "after": "nature_warden"
+    },
+    "water_1": {
+      "before": "water_intro"
+    },
+    "water_2": {
+      "after": "water_herald"
+    },
+    "water_4": {
+      "after": "water_warden"
+    },
+    "earth_1": {
+      "before": "earth_intro"
+    },
+    "earth_2": {
+      "after": "earth_herald"
+    },
+    "earth_4": {
+      "after": "earth_warden"
+    },
+    "void_1": {
+      "before": "void_intro"
+    },
+    "void_2": {
+      "after": "void_herald"
+    },
+    "void_4": {
+      "after": "void_warden"
+    },
+    "converge_1": {
+      "before": "convergence_intro",
+      "after": "crossroads"
+    },
+    "converge_2": {
+      "after": "lumen_gate"
+    },
+    "converge_3": {
+      "before": "capital_prelude",
+      "during": [
+        {
+          "wave": 17,
+          "cinematic": "dawn"
+        }
+      ],
+      "after": "heart_falls",
+      "lost": "solenne_falls"
+    }
+  },
+  "night_from_stages_won": 12,
+  "stage_bosses": {
+    "ember_2": "saltmother",
+    "storm_2": "gorrath",
+    "nature_2": "pale_vesper",
+    "water_2": "ashwick",
+    "earth_2": "vholt",
+    "void_2": "mother_briar",
+    "converge_1": "ashen_regent"
+  },
+  "cities": {
+    "ember_1": {
+      "name": "Kethra",
+      "fall_text": "Kethra's forges go cold under a black tide of seawater and ash.",
+      "saved": false
+    },
+    "ember_2": {
+      "name": "Brazier Hold",
+      "fall_text": "The Lanternguard bring down Brazier Hold's gate behind the last cart.",
+      "saved": false
+    },
+    "ember_3": {
+      "name": "Vitrea",
+      "fall_text": "Vitrea's glass towers ring like bells as they shatter, all at once.",
+      "saved": false
+    },
+    "ember_4": {
+      "name": "Pyrrhenhall",
+      "fall_text": "The caldera floods. The Emberfolk walk west carrying their forge-fires in iron pots.",
+      "saved": false
+    },
+    "storm_1": {
+      "name": "Stonering Camp",
+      "fall_text": "The standing stones of Stonering Camp topple inward like a closing hand.",
+      "saved": false
+    },
+    "storm_2": {
+      "name": "Highwind",
+      "fall_text": "Highwind's wind-bridges are cut, so nothing can follow.",
+      "saved": false
+    },
+    "storm_3": {
+      "name": "Tarrow's Rest",
+      "fall_text": "The Galeborn set the grass alight behind Tarrow's Rest to slow the Stone.",
+      "saved": false
+    },
+    "storm_4": {
+      "name": "Aurvanis",
+      "fall_text": "The Sky-Moot rides away on ten thousand horses. Only the tent poles remain.",
+      "saved": false
+    },
+    "nature_1": {
+      "name": "Fernholt",
+      "fall_text": "The moss of Fernholt stops glowing. The village is silent by morning.",
+      "saved": false
+    },
+    "nature_2": {
+      "name": "Elderhollow",
+      "fall_text": "The Deepwood seal Elderhollow's root-doors with their own hands.",
+      "saved": false
+    },
+    "nature_3": {
+      "name": "Thornwall",
+      "fall_text": "The thorns of Thornwall turn on their own wall.",
+      "saved": false
+    },
+    "nature_4": {
+      "name": "Sylvanmere",
+      "fall_text": "The Tree-City's people leave by its highest branches.",
+      "saved": false
+    },
+    "water_1": {
+      "name": "Netmend",
+      "fall_text": "Netmend's nets burn on the ice.",
+      "saved": false
+    },
+    "water_2": {
+      "name": "Reedhaven",
+      "fall_text": "The reeds are fired, and Reedhaven's stilts go with them.",
+      "saved": false
+    },
+    "water_3": {
+      "name": "Glasswater",
+      "fall_text": "The ice under Glasswater cracks, and the lake takes it whole.",
+      "saved": false
+    },
+    "water_4": {
+      "name": "Pearlhaven",
+      "fall_text": "Pearlhaven's fleet sails west with every child of Frostmere aboard. The harbour boils.",
+      "saved": false
+    },
+    "earth_1": {
+      "name": "Dustmark",
+      "fall_text": "A dust storm buries Dustmark to its roofs.",
+      "saved": false
+    },
+    "earth_2": {
+      "name": "The Kharum Terraces",
+      "fall_text": "The Stoneborn collapse the switchbacks onto the road themselves.",
+      "saved": false
+    },
+    "earth_3": {
+      "name": "Mesa Kharn",
+      "fall_text": "Lightning splits Mesa Kharn in two.",
+      "saved": false
+    },
+    "earth_4": {
+      "name": "Grundhallow",
+      "fall_text": "The Stoneborn seal the Deep Halls with their ancestors inside.",
+      "saved": false
+    },
+    "void_1": {
+      "name": "Lamplight",
+      "fall_text": "Lamplight's lamps are left burning for anyone still on the road.",
+      "saved": false
+    },
+    "void_2": {
+      "name": "Vesperhold",
+      "fall_text": "Vesperhold's floating steps drift apart into the dark.",
+      "saved": false
+    },
+    "void_3": {
+      "name": "Twinmoor",
+      "fall_text": "Twinmoor's reflection walks away without it.",
+      "saved": false
+    },
+    "void_4": {
+      "name": "Umbrael",
+      "fall_text": "Umbrael's great telescope turns to face the Crack one last time, and falls.",
+      "saved": false
+    },
+    "converge_1": {
+      "name": "Crossmere",
+      "fall_text": "Every road on the Ring met at Crossmere. Now none do.",
+      "saved": false
+    },
+    "converge_2": {
+      "name": "The Lumen Gate",
+      "fall_text": "The first of Solenne's six walls falls. There is nowhere left to retreat to.",
+      "saved": false
+    },
+    "converge_3": {
+      "name": "Solenne",
+      "fall_text": "Solenne stands.",
+      "saved": true
+    }
+  },
+  "assault": {
+    "intro": "assault_intro",
+    "movements": [
+      {
+        "name": "The Black Gate",
+        "minutes": 10,
+        "boss": "gatemaw",
+        "cinematic": ""
+      },
+      {
+        "name": "The Mirror Spire",
+        "minutes": 10,
+        "boss": "echo_heralds",
+        "cinematic": "mirror_spire"
+      },
+      {
+        "name": "The Crownless Throne",
+        "minutes": 10,
+        "boss": "vael_orrun",
+        "cinematic": "crownless_throne"
+      }
+    ],
+    "outro": "epilogue"
+  }
+}
