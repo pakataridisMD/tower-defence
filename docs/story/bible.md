@@ -53,14 +53,42 @@ the crossroads where every road of the world met. Orrun had no element of its ow
 traders and go-betweens, and its kings called themselves the Keepers of the Crossroads: they settled the
 quarrels between the six, and they grew rich on them.
 
+### The Seven Arts
+
+The elements are the raw stuff of the world, but nobody in Orrhen simply "uses fire". Each kingdom
+learned to work its element in its own way, with its own alchemy, its own magic and its own price. These
+arts outlived the kingdoms, and the six peoples still practise them. Every tower, hero, Herald and Warden
+in the game draws its power from one of them.
+
+| Art | Kingdom | How it works | Its price | Practitioners |
+|---|---|---|---|---|
+| **Kindling** (cinder alchemy) | The Ember Throne (fire) | Fire is fed, never commanded. Kindlers write ember-runes into metal and glass, then quench them, trapping heat as power. Their great works are transmutations: sand into glass, ore into steel, a man's anger into a blade. | The caster's own heat. Old Kindlers are always cold, and their glowing rune tattoos are where the fire went. | Forge-wrights, glass-singers, the smith-lords |
+| **Stormsong** | The Wind Crown (storm) | Weather is music. Galeborn stormsingers chant in rhythm with the sky, and the sky answers in kind; a war-chant calls lightning down, a lullaby stills a gale. Their horses are part of the song. | Breath and voice. A stormsinger who sings too long goes hoarse, then silent, forever. | Stormsingers, sky-riders |
+| **Rootcraft** (green alchemy) | The Green Realm (nature) | Slow magic of seed, graft, venom and remedy. A spell is planted rather than cast, and grows into its effect: a thorn that becomes a wall, a poison brewed over a season. Healing and poison are the same craft. | Time. Great rootcraft takes years, and the Deepwood live long to pay for it. | Grovewardens, apothecaries, bow-shapers |
+| **Tidelore** (rime memory) | The Tide Throne (water) | Water remembers everything it has touched. Tidefolk seers read memory and the future in ice, freeze moments in place (slowing, holding) and call drowned things back up. Initiates are drowned under the ice and brought back. | Their own memories, given to the water in trade. Great seers forget their own names. | Ice-seers, tide-priests, the Saltmothers |
+| **Runecarving** (deepcraft) | Kharum (earth) | Oaths cut into stone hold forever. Stoneborn carve runes of weight, ward and breaking into rock, armour and gates; their golems are oaths given a body. | Permanence. A rune can never be uncarved, and a Stoneborn who breaks a carved oath turns, slowly, to stone. | Runewrights, shieldmasters, oath-keepers |
+| **Starcraft** (veil astromancy) | The Star Kingdom (void) | The stars are a map of every hidden road, including the road of the dead. Veilwalkers chart a spell in the stars, then walk it: curses, shadows, pulls of gravity, and passage between the living and the dead. | Light. Every starcraft spell darkens something of the caster's (their hair, their eyes, their shadow). | Astronomers, deathwalkers, rangers of the Rift |
+| **The Grand Alchemy** | Orrun, the Middle Kingdom (no element) | Orrun had no element of its own, so its scholars studied all six arts and learned how each was put together, so that they could trade in them. The Grand Alchemy was the science of magic itself: how to combine the arts, and how to take them apart. | Nothing, at first. That was what made it dangerous. | The alchemist-merchants of Vael |
+
+**The Unmaking** was the last and worst discovery of the Grand Alchemy. If you know how an art is put
+together, you can pull it apart. The High King learned to unpick any art down to nothing, so that fire
+forgets to burn and a stormsong ends mid-note. That is what makes the elements *stop* where his armies
+march, and what drains the colour out of the Unbound.
+
+**Spirecraft**, the art of the Order of the Spire, came a thousand years later. Aurel rediscovered the
+half of the Grand Alchemy that combines arts, never the half that unpicks them: a Spirewright binds a
+kingdom's art into worked stone, and a tower holding two or three arts at once (the game's hybrid and
+triple towers) is stronger than any of them alone. Few in the Order know where their art first came from.
+Oswin did.
+
 ### The High King
 
 The last king of Orrun was **Vael-Orrun**, who took the name of both his city and his kingdom, because he
 said they were the same thing as himself. He was brilliant, patient and very lonely. He looked at a world
 of six quarrelling crowns and decided it would be kinder, and quieter, with one.
 
-He found the art the Veilwalkers later called **the Unmaking**: not to command an element, but to make it
-*stop*. Fire that will not burn. Wind that lies down. Water that hangs in the air mid-fall. He had a crown
+Out of his kingdom's Grand Alchemy he found the art the Veilwalkers later called **the Unmaking**: not to
+command an element, but to unpick the magic that moves it until it *stops*. Fire that will not burn. Wind that lies down. Water that hangs in the air mid-fall. He had a crown
 made with six empty sockets, one for each of the six crowns he meant to take, and he named himself the
 **High King**.
 
@@ -139,10 +167,12 @@ counted on.
 
 ### Aurel and the First Spire (Year 0)
 
-A Galeborn shepherd named **Aurel** learned that an element could be *bound*: poured into worked stone and
-held there, still and useful, the way the Wardens held their lands. She built the first **Spire** on the
+A Galeborn shepherd named **Aurel**, digging in the ruins of Vael, found the scraps of the Grand Alchemy
+and learned that any of the six arts could be *bound*: poured into worked stone and held there, still and
+useful, the way the Wardens held their lands. She called it **Spirecraft**. She built the first **Spire** on the
 ruins of Vael at the centre of the world, where the Heartstone glowed, and showed all six peoples that a tower of
-fire stood strongest when a tower of water stood beside it.
+Kindling stood strongest when a tower of Tidelore stood beside it, and that one tower could hold two arts
+at once.
 
 Aurel united the peoples in the **Concord of the Ring**, founded the **Order of the Spire** to train
 tower-binders (**Spirewrights**), and raised the city of **Solenne** around the Heartstone. Above the city
@@ -343,6 +373,16 @@ who comes back at the capital.
 | 14 | **Ilyra the Unbroken** | Void + Storm | Convergence, after stage 1 | The Regent's lost daughter, found alive in his war camp as a hollowed captive. Freed, she remembers six years in the Outer Hollow and can bend its dark. She is the reason her father fell, and she will be the reason he is stopped. |
 | 15 | **Seraphel the Dawnblade**, Knight of the Sunstone | All six | Convergence, after stage 2 | The last living knight of the Sunstone, sworn to its lens since Aurel's day and bound to it by an old rite that keeps her alive while it shines. When the Sunstone broke she began to die. She has one fight left in her. |
 | 16 | **Oswin the White Lantern** | All six (light) | Heart of the Ring, mid-battle | Oswin returns. See section 8. |
+
+**Each hero's art.** Tamsin has no magic, only Lanternguard drill and a lantern that is an old Spirecraft
+relic. Brannoc is a master Kindler. Kaela is a stormsinger. Sylvaine works Rootcraft through her bow.
+Mirelle is a Tidelore seer. Gorrim is a runewright, and his door-shield is carved with Kharum's oldest
+oath-runes. Corvin works Starcraft, and his silver hair is what it has cost him. The six Wardens *founded*
+their kingdoms' arts and work them at the source. Ilyra knows Starcraft and Stormsong, and from six
+years in the Outer Hollow, a little of the Unmaking, which frightens everyone, including her. Seraphel
+and Oswin work Spirecraft; Oswin alone in the Order understands the Grand Alchemy it came from. The Heralds
+still use their old arts, unpicked and turned grey by the Unmaking. Cassivane was a Kindler and a soldier;
+his Heartstone blade is the Unmaking given an edge.
 
 Heroes thread note: this roster keeps the names already drafted there, with two changes. The starting
 hero is Tamsin Reed (Oswin cannot be fielded until he comes back). Oswin returns as hero 16.
@@ -596,6 +636,9 @@ but the Sunderer's; Oswin's lantern is set into the crown.
   Stoneborn are heavy (Gorrim, Orrok, Grund, Kharn). Veilwalkers are dark and sharp (Nyxara, Corvin,
   Vesper, Umbrael).
 - The six elements are always written Fire, Storm, Nature, Water, Earth, Void (capitalised, ring order).
+- Elements are the raw forces; the **arts** are how people work them. Characters talk about their art
+  ("a Kindler", "she sang the storm down", "runecarved steel"), not about "using Fire". Arts: Kindling,
+  Stormsong, Rootcraft, Tidelore, Runecarving, Starcraft, the Grand Alchemy and its Unmaking, Spirecraft.
 - Say "the Unbound" for the enemy hordes as a whole, "the Tide", "the Stone", "the Hollow", "the
   Flame", "the Sky" and "the Grove" for each land's invaders.
 - Never call Vael-Orrun "the Dark Lord". He is the High King, the Sunderer, the Seventh, the Crownless.

@@ -48,21 +48,21 @@ Beats keyed to stages won (any campaign order): `regents_counsel` after 6, `nigh
 
 ## The Last Lantern (`prologue`)
 
-*Before the first stage. The opening story video, 1 to 2 minutes.* About 2:26.
+*Before the first stage. The opening story video, 1 to 2 minutes.* About 2:30.
 
 **1. [An old painted map coming out of darkness: six kingdoms in a ring, each under its own crown and colour (red, blue-white, green, teal, ochre, violet), and a seventh, colourless, in the middle.]**
 
 > **NARRATOR (YSOLDE):** Before the Concord, before the Spire, before anyone kept count of the years... there were seven kingdoms.
 
-**2. [Six crowned monarchs, each lit by their element: a forge-king, a horse-king, a green queen, a sea-queen, a mountain-king, a star-queen. Then the middle kingdom's black-walled capital, and on its throne a king in black with a tall crown of six empty sockets.]**
+**2. [Six crowned monarchs, each working their art: a forge-king hammering glowing runes, a horse-king singing lightning down, a green queen with a sprouting seed, a sea-queen reading ice, a mountain-king carving a rune into rock, a star-queen tracing a star-chart in the air. Then the middle kingdom's black-walled capital, and on its throne a king in black with a tall crown of six empty sockets.]**
 
-> **NARRATOR (YSOLDE):** Six were bound to the elements of their lands. The seventh ruled the middle of the world.  
+> **NARRATOR (YSOLDE):** Each had its own magic. Forge-runes and storm-songs. Root-craft and tide-memory. Stone-oaths and star-charts. The seventh kingdom studied them all.  
 *(pause)*  
-And he wanted all of it.
+And its king wanted all of it.
 
 **3. [The High King's armies crossing a burning land; behind them the flames freeze into grey glass, the grass stops moving, a river hangs still in mid-fall.]**
 
-> **NARRATOR (YSOLDE):** His name was Vael-Orrun, the High King. Where his armies marched, fire would not burn, and the wind lay down and died.
+> **NARRATOR (YSOLDE):** His name was Vael-Orrun, the High King. He learned to unmake magic. Where his armies marched, fire would not burn, and the wind lay down and died.
 
 **4. [The six monarchs in a ring around the burning black city, hands joined, Fire across from Water, Storm across from Earth, Nature across from Void. The High King is flung out through the edge of a starfield into darkness.]**
 
