@@ -130,6 +130,11 @@ def build(spec: dict, b: Body, p: Pose) -> list[Prim]:
     cloth2 = s.get("cloth2", "cloth2")
     armour = s.get("armour")          # material name or None
     robe = s.get("robe", False)
+    if s.get("custom"):  # non-humanoid bosses (leviathan, gatemaw, sundered heart) build their own shape
+        P = list(s["custom"](J, p, b))
+        if p.fall > 0 or p.sink > 0:
+            P = transform(P, rot_z(p.fall * 0.6), v(0, 0, 0), v(0, -p.fall * 0.3 - p.sink * 0.8, 0))
+        return P
 
     # ---- cape behind (its own layer so it doesn't melt into the body)
     if s.get("cape"):
@@ -396,6 +401,26 @@ def build(spec: dict, b: Body, p: Pose) -> list[Prim]:
             if w.get("glow"):
                 P.append(box(headc, (0.08, 0.012, 0.135), w["glow"], round_=0.004, layer=10,
                              rot=rot_z(math.atan2(wd[1], wd[0]))))
+        elif wtype == "spear":  # lance or spear, held point-forward; optional glowing tip
+            tilt = 0.9 + p.weapon
+            dirv = v(math.sin(tilt), math.cos(tilt), 0)
+            top = hand + dirv * w.get("above", 1.0)
+            P.append(cone(hand - dirv * 0.6, top, 0.02, 0.018, w["shaft"], layer=9))
+            P.append(cone(top, top + dirv * 0.22, 0.04, 0.004, w["blade"], layer=10))
+            if w.get("glow"):
+                P.append(sphere(top + dirv * 0.1, 0.035 + 0.04 * p.glow, w["glow"], layer=11))
+        elif wtype == "bow":  # longbow held upright in the near hand
+            for i in range(8):
+                t0, t1 = i / 8 - 0.5, (i + 1) / 8 - 0.5
+                a0 = hand + v(0.04 + 0.12 * (0.25 - t0 * t0), t0 * 1.3, 0)
+                a1 = hand + v(0.04 + 0.12 * (0.25 - t1 * t1), t1 * 1.3, 0)
+                P.append(cone(a0, a1, 0.018, 0.018, w["wood"], layer=9, k=0.01))
+            P.append(cone(hand + v(0.04, 0.65, 0), hand + v(0.04, -0.65, 0), 0.003, 0.003, w.get("string", "leather"), layer=9))
+            for i in range(5):
+                lp = hand + v(0.04 + 0.12 * 0.2, (i - 2) * 0.24, 0)
+                if w.get("leaf"):
+                    P.append(ellipsoid(lp + v(0.04, 0.02, 0.02), (0.035, 0.018, 0.018), w["leaf"], layer=10,
+                                       rot=rot_z(0.6)))
         elif wtype == "orb":
             P.append(sphere(hand + v(0.05, 0.1, 0), 0.07 + 0.04 * p.glow, w["gem"], layer=10))
         elif wtype == "lantern":
@@ -408,6 +433,11 @@ def build(spec: dict, b: Body, p: Pose) -> list[Prim]:
         if w2["type"] == "shield":
             P.append(ellipsoid(hand + v(0.08, 0.05, -0.04), (0.04, 0.24, 0.18), w2["mat"], layer=9))
             P.append(sphere(hand + v(0.12, 0.05, -0.04), 0.05, w2.get("boss", "metal"), layer=9, k=0.01))
+        elif w2["type"] == "door":  # a carved stone door carried as a shield
+            P.append(box(hand + v(0.1, 0.12, -0.02), (0.05, 0.42, 0.24), w2["mat"], round_=0.03, layer=9))
+            for k in range(3):
+                P.append(box(hand + v(0.155, 0.12 + (k - 1) * 0.24, -0.02), (0.01, 0.07, 0.18), w2.get("carve", w2["mat"]),
+                             round_=0.01, layer=10))
         elif w2["type"] == "flame":
             P.append(sphere(hand + v(0.04, 0.08, 0), 0.06 + 0.05 * p.glow, w2["mat"], layer=10))
 

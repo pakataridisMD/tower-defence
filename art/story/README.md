@@ -37,3 +37,24 @@ python3 tools/art/story/gen_story_art.py [ids...]          # characters
 python3 tools/art/story/gen_cinematics.py [cinematic_id]   # stills
 python3 tools/art/story/make_video.py prologue --json data/story/cinematics/prologue.json --out prologue.mp4
 ```
+
+## Review sheets
+
+`bosses.png` and `allies.png` put every boss and ally on one page (portrait, battle sprite, where they appear).
+Rebuild with `python3 tools/art/story/boss_roster.py` and `--allies`.
+
+## Ids when copying into the game
+
+The cinematic player reads `assets/story/portraits/<id>.png` with ids from `data/story/characters.json`. Most folders
+here already use those ids; the Heralds and a few others differ:
+
+| here | game id |
+|---|---|
+| herald_ourra | saltmother |
+| herald_gorrath | gorrath |
+| herald_vesper | pale_vesper |
+| herald_ashwick | ashwick |
+| herald_vholt | vholt |
+| herald_briar | mother_briar |
+| oswin_grey / oswin_white | oswin |
+| cassivane / cassivane_ashen | cassivane |
