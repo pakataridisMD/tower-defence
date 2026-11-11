@@ -790,7 +790,7 @@ It was the Seventh's.
 
 ## The Seventh Colour (`epilogue`)
 
-*After the final assault is won. Then the credits.* About 1:31.
+*After the final assault is won. Then the credits.* About 1:34.
 
 **1. [The six Wardens in a ring around Vael-Orrun, hands joined, their light rising.]**
 
@@ -810,27 +810,31 @@ It was the Seventh's.
 *(pause)*  
 It is still listening.
 
-**5. [Vael-Orrun cracking apart into pure white light, which rises, and the black sun above the citadel turns gold.]**
+**5. [Thalassa, bells silent in her hair, the only Warden who can meet his eyes.]**
+
+> **THALASSA:** We remember.
+
+**6. [Vael-Orrun cracking apart into pure white light, which rises, and the black sun above the citadel turns gold.]**
 
 > **NARRATOR (YSOLDE):** We did not kill him. I do not think he could be killed. He wanted the middle of the world, so we gave it to him. Not as its king.  
 *(pause)*  
 As its light.
 
-**6. [Montage: Emberfolk relighting the forges of Kethra from their iron pots; Galeborn raising tents at Aurvanis; Sylvaine planting Elowen's seed; Pearlhaven's fleet coming home; Stoneborn unsealing Grundhallow through a door that is part of Orrok; Veilwalkers raising the telescope at Umbrael; Seraphel's glass sword set into the rebuilt Sunstone; Nyxara walking slowly beside Elowen through the ash of Sylvanmere. Tamsin, alive, sitting on the Lantern Walk with Fennick's spectacles, and Oswin, grey and old again, beside her, pointing at the sunset for the Queen.]**
+**7. [Montage: Emberfolk relighting the forges of Kethra from their iron pots; Galeborn raising tents at Aurvanis; Sylvaine planting Elowen's seed; Pearlhaven's fleet coming home; Stoneborn unsealing Grundhallow through a door that is part of Orrok; Veilwalkers raising the telescope at Umbrael; Seraphel's glass sword set into the rebuilt Sunstone; Nyxara walking slowly beside Elowen through the ash of Sylvanmere. Tamsin, alive, sitting on the Lantern Walk with Fennick's spectacles, and Oswin, grey and old again, beside her, pointing at the sunset for the Queen.]**
 
 > **NARRATOR (YSOLDE):** We went home to twenty-six cities of ash. Every one of their people walked back to rebuild them.  
 *(pause)*  
 That is what we fought for. Not the land. Them.
 
-**7. [Ysolde, older, grey hair, still blindfolded, on the walls of a rebuilt Solenne, sun on her face. Credits roll.]**
+**8. [Ysolde, older, grey hair, still blindfolded, on the walls of a rebuilt Solenne, sun on her face. Credits roll.]**
 
 > **NARRATOR (YSOLDE):** I am Ysolde, Queen of Solenne. I am old now, and I have never seen a dawn since.  
 *(pause)*  
 But I have felt every one of them.
 
-**8. [After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six colours... then, faintly, a seventh. Ilyra, alone, leans in to look. Deep inside the seventh colour, something with no colour at all opens, like an eye.]**
+**9. [After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six colours... then, faintly, a seventh. Ilyra, alone, leans in to look. Deep inside the seventh colour, something with no colour at all opens, like an eye.]**
 
-**9. [Black. No sound at all for a moment before the voice, and none after. Title card: TO BE CONTINUED.]**
+**10. [Black. No sound at all for a moment before the voice, and none after. Title card: TO BE CONTINUED.]**
 
 > **???:** Seven crowns. One door.  
 *(pause)*  

@@ -463,6 +463,22 @@ The full hero stories are in the heroes doc, "Heroes of the Ring: hero stories"
   not fall, she went where she meant to go, and the grey stops there. He gives her no ring.
 - The first rune ever carved is **Orrok**'s oath from the Siege of Vael, and it is cut into the Heartstone.
 - **Ilyra**'s ability Last Light is her one use of the Unmaking.
+- **The Wardens and the Night of Six Knives.** Ignar's Kindlers set the fire he says he meant only for the
+  gates; it took the feast hall, and in the epilogue ring he says "It was my fire." Aurath's riders were
+  first through the gates; the others think he gave up his stillness so he would never have to stand still
+  with it. Elowen asked for Ysmera and Caelan to be sent out before midnight; nobody did it, and she did not
+  check. Ysmera was one of Thalassa's Tidefolk; Thalassa tells the truth at the Convergence, and answers his
+  last words with "We remember." Orrok swore the peace aloud at the feast knowing it would be broken, then
+  invented Runecarving so no oath of his could break again; his Siege oath is the first he kept, and the
+  voice he gave the Heartstone is the one that swore the false peace. Nyxara was crowned the Hollow King
+  because she came to his feast wearing a crown; her starfield face has one starless patch, the Unwritten
+  Star, which she never looks at.
+- **Ilyra** heard two voices in the Hollow: one wept for a wife and son, the other never wept, and she
+  thought both were him. At "It spoke to me too" she understands the weeping one was his, which is why she
+  is watching the Heartstone after the credits. Her line: "One of them wept. The other never did."
+- **Corvin**'s blade shows every star except the Unwritten Star, and that gap is what Ilyra chased.
+- The voice that handed Ilyra to Cassivane is "the voice he had bargained with, which he believed was
+  Vael-Orrun's".
 
 ### 7.4 Major allies (non-playable)
 

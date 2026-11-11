@@ -580,6 +580,9 @@ cin("epilogue", "The Seventh Colour", "After the final assault is won. Then the 
     shot("It was never my voice in the dark. It spoke to me too.\n\nIt is still listening.",
          "Vael-Orrun looking past the Wardens, past the heroes, at something behind the camera.",
          speaker="vael_orrun"),
+    shot("We remember.",
+         "Thalassa, bells silent in her hair, the only Warden who can meet his eyes.", speaker="thalassa",
+         duration=3.0),
     shot("We did not kill him. I do not think he could be killed. He wanted the middle of the world, so we "
          "gave it to him. Not as its king.\n\nAs its light.",
          "Vael-Orrun cracking apart into pure white light, which rises, and the black sun above the citadel "
