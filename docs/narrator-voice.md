@@ -22,7 +22,10 @@ is what the cinematic player loads. Setup and commands are in the script's heade
   instead of discrete echoes, faint room tone under the pauses, the synthetic fizz
   around 5.5 kHz tamed, normalised to -16 LUFS.
 - **Who is voiced:** shots whose `speaker` is `narrator` or `ysolde` (Queen Ysolde
-  is the narrator). Other characters stay as subtitles until they get voices.
+  is the narrator), plus `the_hush`, the hidden god teased at the end of the
+  epilogue. The Hush uses the free Kokoro `hush` preset: three layers (an octave
+  down, the dry voice and a fifth up) with a short dark echo, about 4 dB quieter
+  than Ysolde. Other characters stay as subtitles until they get voices.
 - **Presets:** `regal` (default narrator), `elder` (lower, American, storybook),
   `whisper` (quiet or sad beats). A shot can pick one with `"voice_preset"`,
   or opt out of narration with `"voice": false`.

@@ -70,6 +70,12 @@ PRESETS = {
         "voice_id": os.environ.get("NARRATOR_VOICE_ID", "ksryVoNAGZT8GxWCTiVm"),  # Elariel (Voice Library), picked by Doctor Paris
         "stability": 0.0, "para_gap": 1.2, "room": 0.05, "rt60": 0.9, "master": "trailer",
     },
+    # The Hush, the hidden god (Part 2 tease): deliberately a different engine from
+    # every character, flat and slow, then layered an octave down and a fifth up.
+    "hush": {
+        "voices": {"af_nicole": 0.5, "bf_isabella": 0.5}, "lang": "en-us", "speed": 0.78,
+        "sentence_gap": 0.9, "para_gap": 1.4, "room": 0.0, "master": "hush",
+    },
     # Warmer and more British, same cinematic hall: the other finalist.
     "warm": {
         "voices": {"bf_emma": 0.8, "af_kore": 0.2},
@@ -81,6 +87,8 @@ PRESETS = {
 # Speaker ids voiced by the narrator. Queen Ysolde is the narrator, so her
 # in-scene lines use the same voice.
 NARRATOR_SPEAKERS = {"narrator", "ysolde"}
+# Other speakers with their own voice: speaker id -> preset.
+SPEAKER_PRESETS = {"the_hush": "hush"}
 
 _kokoro = None
 
@@ -205,6 +213,19 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
     filters = []
     if preset.get("semitones"):  # pitch shifting adds a robotic edge; avoid if possible
         filters.append(f"rubberband=pitch={2 ** (preset['semitones'] / 12):.4f}:formant=preserved")
+    if preset.get("master") == "hush":
+        with tempfile.TemporaryDirectory() as tmp:
+            mastered = Path(tmp) / "m.wav"
+            graph = ("[0:a]asplit=3[a][b][c];"
+                     "[a]rubberband=pitch=0.5:formant=shifted,volume=0.9[lo];"
+                     "[b]volume=0.35[mid];"
+                     "[c]rubberband=pitch=1.5:formant=shifted,highpass=f=1500,volume=0.25[hi];"
+                     "[lo][mid][hi]amix=inputs=3:normalize=0,aecho=0.6:0.7:400|900:0.25|0.15,"
+                     "lowpass=f=6000,apad=pad_dur=2,loudnorm=I=-19:TP=-2,aresample=44100")
+            subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(wav_in), "-filter_complex", graph,
+                            "-ac", "1", str(mastered)], check=True)
+            _write_ogg(mastered, ogg_out)
+        return
     if preset.get("master") == "trailer":
         # Movie-trailer narrator: close and dry, big chest, forward and clear,
         # tightly compressed so every word cuts through loud music.
@@ -240,12 +261,16 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
         mastered = Path(tmp) / "m.wav"
         subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(roomy),
                         "-af", ",".join(filters), "-ac", "1", str(mastered)], check=True)
-        data, sr = sf.read(mastered)
-        ogg_out.parent.mkdir(parents=True, exist_ok=True)
-        # libsndfile's Vorbis encoder can crash on one huge write: feed it in blocks.
-        with sf.SoundFile(ogg_out, "w", sr, 1, format="OGG", subtype="VORBIS") as f:
-            for i in range(0, len(data), 8192):
-                f.write(data[i:i + 8192].astype(np.float32))
+        _write_ogg(mastered, ogg_out)
+
+
+def _write_ogg(wav: Path, ogg_out: Path) -> None:
+    data, sr = sf.read(wav)
+    ogg_out.parent.mkdir(parents=True, exist_ok=True)
+    # libsndfile's Vorbis encoder can crash on one huge write: feed it in blocks.
+    with sf.SoundFile(ogg_out, "w", sr, 1, format="OGG", subtype="VORBIS") as f:
+        for i in range(0, len(data), 8192):
+            f.write(data[i:i + 8192].astype(np.float32))
 
 
 def render(text: str, out: Path, preset: dict, direction: dict | None = None) -> float:
@@ -278,9 +303,10 @@ def narrate_cinematic(path: Path, preset_name: str, out_root: Path = VOICE_OUT) 
         text = (shot.get("text") or "").strip()
         if not text or shot.get("voice") is False:
             continue
-        if shot.get("speaker", "narrator") not in NARRATOR_SPEAKERS:
+        speaker = shot.get("speaker", "narrator")
+        if speaker not in NARRATOR_SPEAKERS and speaker not in SPEAKER_PRESETS:
             continue  # other characters stay as subtitles until they get voices
-        preset = PRESETS[shot.get("voice_preset", preset_name)]
+        preset = PRESETS[shot.get("voice_preset", SPEAKER_PRESETS.get(speaker, preset_name))]
         out = out_dir / f"{n:02d}.ogg"
         secs = render(text, out, preset, direction)
         print(f"{out}  {secs:5.1f}s")

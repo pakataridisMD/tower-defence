@@ -23,6 +23,8 @@ ap.add_argument("--intro", type=float, default=4.0, help="music before the first
 ap.add_argument("--gap", type=float, default=1.2, help="pause between lines (no cues)")
 ap.add_argument("--first-start", type=float, default=0.0,
                 help="earliest start for line 1 (e.g. to clear a title card)")
+ap.add_argument("--duck-ratio", type=float, default=2.5,
+                help="how hard the music dips under the voice (2.5 is about 5 dB, 4 is about 8 dB)")
 ap.add_argument("--music-db", type=float, default=5.0, help="music gain in dB before ducking")
 args = ap.parse_args()
 
@@ -63,7 +65,7 @@ parts.append(f"[0:a]aresample=44100,aformat=channel_layouts=stereo,apad=whole_du
              f"volume={args.music_db}dB,"
              "acompressor=threshold=-16dB:ratio=3:attack=30:release=300,"   # trailer-loud music
              "equalizer=f=2800:t=q:w=1:g=-4[mus]")
-parts.append("[mus][key]sidechaincompress=threshold=0.06:ratio=2.5:attack=60:release=700:makeup=1[ducked]")
+parts.append(f"[mus][key]sidechaincompress=threshold=0.06:ratio={args.duck_ratio}:attack=60:release=700:makeup=1[ducked]")
 parts.append("[voice]volume=2dB[vox];[ducked][vox]amix=inputs=2:normalize=0:duration=first,"
              "alimiter=limit=0.9:attack=3:release=80,loudnorm=I=-12:TP=-1:LRA=10[out]")
 args.out.parent.mkdir(parents=True, exist_ok=True)
