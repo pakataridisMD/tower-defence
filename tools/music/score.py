@@ -200,7 +200,17 @@ class Score:
         self.end_pad = 6.0
 
     # ----- structure -----
-    def section(self, name: str, bars: float, meter: float = 4, bpm: float = 72, end_bpm: float | None = None):
+    def section(self, name: str, bars: float, meter: float = 4, bpm: float = 72, end_bpm: float | None = None,
+                seconds: float | None = None, rit: float = 1.0):
+        """A run of bars in one metre. Give `seconds` (and optionally `rit`, end tempo / start tempo)
+        to fit the section to a shot length instead of a fixed `bpm`."""
+        if seconds is not None:
+            beats = bars * meter
+            if abs(rit - 1.0) < 1e-6:
+                bpm, end_bpm = beats * 60.0 / seconds, None
+            else:
+                bpm = beats * 60.0 * np.log(rit) / ((rit - 1.0) * seconds)
+                end_bpm = bpm * rit
         start = self.sections[-1].start + self.sections[-1].beats if self.sections else 0.0
         s = Section(self, name, bars, meter, bpm, end_bpm, start)
         self.sections.append(s)
