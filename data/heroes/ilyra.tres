@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/hero_data.gd" id="hero"]
+[ext_resource type="Script" path="res://scripts/data/hero_ability.gd" id="ability"]
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="status"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod"]
+[sub_resource type="Resource" id="S1"]
+script = ExtResource("status")
+kind = &"curse"
+damage_taken = 0.3
+duration = 3.0
+
+[sub_resource type="Resource" id="S2"]
+script = ExtResource("tower")
+id = &"ilyra"
+display_name = "Ilyra the Unbroken"
+description = "Black lightning that curses and chains."
+elements = Array[StringName]([&"void", &"storm"])
+tags = Array[StringName]([&"hero"])
+cost = 1
+damage = 40.0
+attacks_per_second = 1.2
+attack_range = 200.0
+chain_range = 160.0
+chain_falloff = 0.1
+chain_count = 4
+status_effects = Array[ExtResource("status")]([SubResource("S1")])
+
+[sub_resource type="Resource" id="S3"]
+script = ExtResource("ability")
+display_name = "Last Light"
+description = "For 10 seconds nothing gets past the gate: whatever reaches it is thrown back to the start."
+cooldown = 120.0
+target = 2
+duration = 10.0
+ward = true
+
+[sub_resource type="Resource" id="S4"]
+script = ExtResource("ability")
+display_name = "Last Light"
+description = "For 10 seconds whatever reaches the gate is thrown back to the start, and 5 lives come back."
+cooldown = 120.0
+target = 2
+duration = 10.0
+heal_lives = 5
+ward = true
+
+[resource]
+script = ExtResource("hero")
+id = &"ilyra"
+display_name = "Ilyra the Unbroken"
+title = "Daughter of the Regent"
+blurb = "The Regent's lost daughter, six years in the Outer Hollow, and the reason he will be stopped."
+order = 13
+element = &"void"
+joins_after = &"converge_1"
+attack = SubResource("S2")
+aura_text = "Every hero in the party fights one level higher"
+aura_hero_levels = 1
+ability = SubResource("S3")
+ultimate = SubResource("S4")
+ultimate_text = "Also heals 5 lives"
+barks = PackedStringArray("I know this dark. It doesn't know me any more.", "Three heartbeats. Now.", "One of them wept. The other never did.")

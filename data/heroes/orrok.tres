@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="HeroData" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/hero_data.gd" id="hero"]
+[ext_resource type="Script" path="res://scripts/data/hero_ability.gd" id="ability"]
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="tower"]
+[ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="status"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod"]
+[sub_resource type="Resource" id="S1"]
+script = ExtResource("status")
+kind = &"stun"
+duration = 0.6
+
+[sub_resource type="Resource" id="S2"]
+script = ExtResource("tower")
+id = &"orrok"
+display_name = "Orrok"
+description = "Boulders with a huge splash that stun."
+elements = Array[StringName]([&"earth"])
+tags = Array[StringName]([&"hero"])
+cost = 1
+damage = 110.0
+attacks_per_second = 0.4
+attack_range = 170.0
+projectile_speed = 420.0
+splash_radius = 100.0
+status_effects = Array[ExtResource("status")]([SubResource("S1")])
+
+[sub_resource type="Resource" id="S3"]
+script = ExtResource("ability")
+display_name = "Worldbreaker"
+description = "A fissure opens where you choose. Every enemy in it under 40% health falls in."
+cooldown = 70.0
+target = 0
+radius_cells = 1.5
+damage = 150.0
+execute_below = 0.4
+
+[sub_resource type="Resource" id="S4"]
+script = ExtResource("ability")
+display_name = "Worldbreaker"
+description = "A fissure opens where you choose. Every enemy in it under 60% health falls in."
+cooldown = 70.0
+target = 0
+radius_cells = 1.5
+damage = 200.0
+execute_below = 0.6
+
+[sub_resource type="Resource" id="S5"]
+script = ExtResource("mod")
+stat = &"damage"
+kind = 1
+value = 0.4
+required_tags = Array[StringName]([&"earth"])
+
+[resource]
+script = ExtResource("hero")
+id = &"orrok"
+display_name = "Orrok"
+title = "the Mountain"
+blurb = "The Warden of Earth: a slow stone giant who says almost nothing."
+order = 11
+element = &"earth"
+joins_after = &"earth_4"
+attack = SubResource("S2")
+aura = Array[ExtResource("mod")]([SubResource("S5")])
+aura_text = "Earth towers deal 40% more damage"
+ability = SubResource("S3")
+ultimate = SubResource("S4")
+ultimate_text = "Swallows enemies under 60% health"
+barks = PackedStringArray("Hold.", "Stand.", "...")

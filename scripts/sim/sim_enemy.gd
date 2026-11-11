@@ -44,7 +44,7 @@ func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
 
 
 func speed() -> float:
-	if statuses.has(&"stun"):
+	if statuses.has(&"stun") or statuses.has(&"root"):
 		return 0.0
 	var slow := 0.0
 	for status: SimStatus in statuses.values():
@@ -92,6 +92,9 @@ func is_regenerating() -> bool:
 
 func apply_status(spec: StatusEffectData, source: SimTower, element_multiplier: float) -> void:
 	if data.status_immune:
+		return
+	# A root (from a hero) holds anything but a boss, whatever stuns came before.
+	if spec.kind == &"root" and data.tags.has(&"boss"):
 		return
 	# A stun is never extended or re-applied early, and bosses cannot be stunned at all.
 	if spec.kind == &"stun" and (statuses.has(&"stun") or stun_immunity > 0.0 or data.tags.has(&"boss")):
