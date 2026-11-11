@@ -1,0 +1,115 @@
+{
+  "_doc": "Acting direction for the narrator. 'emotions' define how a sentence is performed (speed multiplier, voice blend override, gain in dB, pause before in seconds, exclaim = end on '!' for more energetic delivery). 'lines' map cinematic id -> exact sentence text -> emotion. Subtitles are not affected.",
+  "emotions": {
+    "calm": {
+      "speed": 1.0
+    },
+    "awe": {
+      "speed": 0.92,
+      "voices": {
+        "bf_emma": 0.5,
+        "af_kore": 0.3,
+        "af_nicole": 0.2
+      },
+      "gain": -1
+    },
+    "dread": {
+      "speed": 0.88,
+      "voices": {
+        "af_kore": 0.6,
+        "af_nicole": 0.4
+      },
+      "gain": -3,
+      "pause": 0.3
+    },
+    "shock": {
+      "speed": 0.85,
+      "gain": 3,
+      "pause": 0.9,
+      "exclaim": true
+    },
+    "anger": {
+      "speed": 1.18,
+      "voices": {
+        "bf_emma": 0.6,
+        "af_bella": 0.25,
+        "af_kore": 0.15
+      },
+      "gain": 4,
+      "exclaim": true
+    },
+    "passion": {
+      "speed": 1.08,
+      "voices": {
+        "bf_emma": 0.6,
+        "af_bella": 0.2,
+        "af_kore": 0.2
+      },
+      "gain": 3
+    },
+    "pride": {
+      "speed": 1.0,
+      "gain": 2
+    },
+    "grief": {
+      "speed": 0.84,
+      "voices": {
+        "af_nicole": 0.5,
+        "bf_emma": 0.3,
+        "af_kore": 0.2
+      },
+      "gain": -4,
+      "pause": 0.5
+    },
+    "command": {
+      "speed": 0.88,
+      "voices": {
+        "bf_emma": 0.6,
+        "af_bella": 0.2,
+        "af_kore": 0.2
+      },
+      "gain": 5,
+      "pause": 0.7,
+      "exclaim": true
+    }
+  },
+  "lines": {
+    "prologue": {
+      "Before the world, there was only the sea.": "awe",
+      "Fire and water.": "awe",
+      "Stone and storm.": "awe",
+      "Root, and starless dark.": "dread",
+      "All of it one.": "awe",
+      "And nothing.": "dread",
+      "Seven stepped out of it.": "awe",
+      "The seventh wanted to be everything.": "dread",
+      "His name was Vael-Orrun.": "anger",
+      "Where he walked, the elements did not mix.": "dread",
+      "They stopped.": "shock",
+      "The Six could not kill him.": "anger",
+      "So they joined hands, each across from its opposite, and drove him out past the edge of the stars.": "passion",
+      "We call it the Ring.": "pride",
+      "At its heart, six peoples built Solenne.": "pride",
+      "The Crowned Heart.": "pride",
+      "My city.": "grief",
+      "Six years ago, a man I loved like a father lost his daughter to the dark.": "grief",
+      "Something beyond the stars made him a promise.": "dread",
+      "On the night of the Black Comet, the edge of the world split open.": "shock",
+      "Oswin, the Grey Lantern, held it for one night.": "passion",
+      "The Crack closed to a hairline.": "dread",
+      "And Oswin fell.": "shock",
+      "His lantern went out.": "grief",
+      "But a voice can pass through a hairline.": "dread",
+      "It drove the six sleeping Wardens mad, and now each land marches on the one across from it.": "anger",
+      "We cannot win back the lands.": "grief",
+      "We can only hold the roads until their people escape.": "passion",
+      "Every road we hold will cost us a city.": "anger",
+      "I am Ysolde, Queen of a city that is running out of cities.": "grief",
+      "And you, Spirewright, are the last of Oswin's apprentices.": "passion",
+      "Hold the road.": "command",
+      "Six were content to be one thing each.": "calm",
+      "At dawn, he walked to the edge...": "grief",
+      "and gave it every light he had.": "passion"
+    }
+  }
+}

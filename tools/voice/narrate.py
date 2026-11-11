@@ -111,17 +111,38 @@ def _trim(x: np.ndarray, sr: int, floor: float = 0.004) -> np.ndarray:
     return x[max(0, loud[0] - pad): loud[-1] + pad]
 
 
-def speak(text: str, preset: dict) -> tuple[np.ndarray, int]:
+DIRECTION_FILE = Path(__file__).resolve().parent / "direction.json"
+
+
+def direction_for(cid: str | None) -> dict[str, dict]:
+    """sentence text -> emotion settings, from tools/voice/direction.json."""
+    if not cid or not DIRECTION_FILE.exists():
+        return {}
+    doc = json.loads(DIRECTION_FILE.read_text(encoding="utf-8"))
+    emotions = doc.get("emotions", {})
+    return {line: emotions[name] for line, name in doc.get("lines", {}).get(cid, {}).items()
+            if name in emotions}
+
+
+def speak(text: str, preset: dict, direction: dict | None = None) -> tuple[np.ndarray, int]:
     """Raw speech, one sentence at a time with natural breaths between them.
-    A blank line in the text becomes a longer, dramatic pause."""
+    A blank line in the text becomes a longer, dramatic pause. Each sentence can
+    be acted with an emotion from direction.json (speed, voice, loudness, pause)."""
     k, voice = kokoro(), style(preset)
+    direction = direction or {}
     out, sr = [], 24000
     paras = [p.strip() for p in text.split("\n\n") if p.strip()]
     for pi, para in enumerate(paras):
         sentences = [x for x in re.split(r"(?<=[.!?])\s+", " ".join(para.split())) if x]
         for si, sentence in enumerate(sentences):
-            samples, sr = k.create(sentence, voice=voice, speed=preset["speed"], lang=preset["lang"])
-            out.append(_trim(samples, sr))
+            emo = direction.get(sentence, {})
+            said = sentence[:-1] + "!" if emo.get("exclaim") and sentence.endswith(".") else sentence
+            v = style({"voices": emo["voices"]}) if "voices" in emo else voice
+            samples, sr = k.create(said, voice=v, speed=preset["speed"] * emo.get("speed", 1.0),
+                                   lang=preset["lang"])
+            if emo.get("pause") and out:
+                out.append(np.zeros(int(sr * emo["pause"]), dtype=np.float32))
+            out.append(_trim(samples, sr) * 10 ** (emo.get("gain", 0) / 20))
             last_in_para = si == len(sentences) - 1
             if not (last_in_para and pi == len(paras) - 1):
                 gap = (preset.get("para_gap", PARAGRAPH_GAP) if last_in_para
@@ -164,7 +185,7 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
             "equalizer=f=3000:t=q:w=1.4:g=3",     # presence: intelligibility
             "highshelf=f=9000:g=2",               # air
             "deesser=i=0.4",
-            "acompressor=threshold=-26dB:ratio=4:attack=8:release=160:makeup=2",
+            "acompressor=threshold=-24dB:ratio=2.5:attack=8:release=160:makeup=2",  # keep acted dynamics
             "alimiter=limit=0.89:attack=2:release=50",
             "apad=pad_dur=0.6",
             "loudnorm=I=-15:TP=-1:LRA=7",
@@ -197,8 +218,8 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
                 f.write(data[i:i + 8192].astype(np.float32))
 
 
-def render(text: str, out: Path, preset: dict) -> float:
-    samples, sr = speak(text, preset)
+def render(text: str, out: Path, preset: dict, direction: dict | None = None) -> float:
+    samples, sr = speak(text, preset, direction)
     with tempfile.TemporaryDirectory() as tmp:
         raw = Path(tmp) / "raw.wav"
         sf.write(raw, samples, sr)
@@ -219,6 +240,7 @@ def narrate_cinematic(path: Path, preset_name: str, out_root: Path = VOICE_OUT) 
     doc = json.loads(path.read_text(encoding="utf-8"))
     cid = doc.get("id", path.stem) if isinstance(doc, dict) else path.stem
     out_dir = out_root / cid
+    direction = direction_for(cid)
     for n, shot in enumerate(shots_of(doc), start=1):
         text = (shot.get("text") or "").strip()
         if not text or shot.get("voice") is False:
@@ -227,7 +249,7 @@ def narrate_cinematic(path: Path, preset_name: str, out_root: Path = VOICE_OUT) 
             continue  # other characters stay as subtitles until they get voices
         preset = PRESETS[shot.get("voice_preset", preset_name)]
         out = out_dir / f"{n:02d}.ogg"
-        secs = render(text, out, preset)
+        secs = render(text, out, preset, direction)
         print(f"{out}  {secs:5.1f}s")
 
 
