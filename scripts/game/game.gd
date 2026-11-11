@@ -365,9 +365,9 @@ func _leave_from_menu(scene: StringName) -> void:
 		&"quit":
 			get_tree().quit()
 		&"campaign":
-			get_tree().change_scene_to_file(CAMPAIGN_SCENE)
+			_leave(CAMPAIGN_SCENE)
 		_:
-			get_tree().change_scene_to_file(MENU_SCENE)
+			_leave(MENU_SCENE)
 
 
 func _choose_tower(tower_id: StringName) -> void:
