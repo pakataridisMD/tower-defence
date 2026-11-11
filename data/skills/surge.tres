@@ -8,15 +8,15 @@
 script = ExtResource("3_mod")
 stat = &"attacks_per_second"
 kind = 1
-value = 0.5
+value = 0.2
 
 [resource]
 script = ExtResource("1_skill")
 id = &"surge"
 display_name = "Surge"
-description = "Lightning runs through every tower: all of them attack 50% faster for 6 seconds."
+description = "Lightning runs through every tower: all of them attack 20% faster for 5 seconds."
 element = &"storm"
 requires_node = &"storm_entry"
-cooldown = 45.0
+cooldown = 75.0
 modifiers = Array[ExtResource("3_mod")]([SubResource("Mod_0")])
-duration = 6.0
+duration = 5.0

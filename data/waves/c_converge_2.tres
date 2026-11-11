@@ -2281,7 +2281,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.31
+health_multiplier = 0.24
 description = "A marching column, runner packs, a mixed swarm, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r234"), SubResource("r235"), SubResource("r236"), SubResource("r237"), SubResource("r238"), SubResource("r239"), SubResource("r240"), SubResource("r241"), SubResource("r242"), SubResource("r243"), SubResource("r244")])
 
@@ -2290,5 +2290,5 @@ script = ExtResource("1_s")
 id = &"c_converge_2"
 display_name = "Prism Wastes"
 health_growth = 1.1
-health_scale = 1.04
+health_scale = 0.97
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r14"), SubResource("r25"), SubResource("r35"), SubResource("r46"), SubResource("r59"), SubResource("r71"), SubResource("r83"), SubResource("r98"), SubResource("r113"), SubResource("r127"), SubResource("r144"), SubResource("r160"), SubResource("r176"), SubResource("r196"), SubResource("r214"), SubResource("r233"), SubResource("r245")])

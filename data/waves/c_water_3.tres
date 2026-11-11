@@ -1143,7 +1143,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"void"
 is_boss = true
-health_multiplier = 0.67
+health_multiplier = 1.56
 description = "A marching column, runner packs, an ambush, Wardeds in a line, brutes under escort and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r127"), SubResource("r128"), SubResource("r129"), SubResource("r130"), SubResource("r131"), SubResource("r132"), SubResource("r133"), SubResource("r134"), SubResource("r135"), SubResource("r136"), SubResource("r137"), SubResource("r138")])
 
@@ -1152,5 +1152,5 @@ script = ExtResource("1_s")
 id = &"c_water_3"
 display_name = "Frozen Causeway"
 health_growth = 1.1
-health_scale = 2.69
+health_scale = 0.81
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r14"), SubResource("r23"), SubResource("r31"), SubResource("r38"), SubResource("r49"), SubResource("r58"), SubResource("r67"), SubResource("r79"), SubResource("r90"), SubResource("r100"), SubResource("r114"), SubResource("r126"), SubResource("r139")])
