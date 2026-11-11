@@ -10,10 +10,16 @@ extends Resource
 @export var grid_size: Vector2i = Vector2i(24, 15)
 ## Pixels per cell.
 @export var cell_size: int = 64
-## Cells the path turns at, in order. The path runs in straight lines between them, so
-## consecutive waypoints must share a row or a column. The first and last may sit outside
-## the grid so enemies walk in from the edge and leave through it.
+## Cells the path turns at, in order. Without a curve the path runs in straight lines between them,
+## so consecutive waypoints must share a row or a column. The first and last may sit outside the
+## grid so enemies walk in from the edge and leave through it. A first waypoint inside the grid is
+## where the road starts on the board: a spawn hole (see hole_lanes) or a building of the enemy base.
 @export var waypoints: Array[Vector2i] = []
+## The road's centre line, densely sampled, in cells (cell (x, y) has its centre at (x, y)). When set,
+## enemies walk along it instead of the straight lines between waypoints, and every cell it passes
+## close to is road. It starts and ends at the first and last waypoint. Written by
+## tools/campaign/maps.py; tools/art/gen_game_art.py paints the road from it.
+@export var curve: PackedVector2Array = []
 ## Id of the WaveSet played on this map.
 @export var wave_set: StringName
 ## Extra roads for maps with more than one entrance. Lane 0 is `waypoints`; lane n is extra_lanes[n - 1].
