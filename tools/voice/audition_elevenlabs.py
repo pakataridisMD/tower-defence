@@ -33,8 +33,9 @@ candidates = []
 for v in el.api_get("/voices").get("voices", []):
     labels = v.get("labels") or {}
     if labels.get("gender") == "female":
+        brit = labels.get("accent") == "british"
         candidates.append({"voice_id": v["voice_id"], "name": v["name"], "source": "my voices",
-                           "labels": labels})
+                           "labels": labels, "score": 2 if brit else -1})
 query = urllib.parse.urlencode({"gender": "female", "age": "middle_aged", "use_cases": "narrative_story",
                                 "language": "en", "page_size": 30, "sort": "trending"})
 shared = el.api_get(f"/shared-voices?{query}").get("voices", [])

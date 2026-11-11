@@ -66,7 +66,8 @@ PRESETS = {
     # ElevenLabs v3: real acting from emotion tags (Doctor Paris chose it, 2026-11-11).
     # voice_id is filled in from the voice audition (tools/voice/audition_elevenlabs.py).
     "regal_el": {
-        "engine": "elevenlabs", "voice_id": os.environ.get("NARRATOR_VOICE_ID", ""),
+        "engine": "elevenlabs",
+        "voice_id": os.environ.get("NARRATOR_VOICE_ID", "ksryVoNAGZT8GxWCTiVm"),  # Elariel (Voice Library), picked by Doctor Paris
         "stability": 0.0, "para_gap": 1.2, "room": 0.05, "rt60": 0.9, "master": "trailer",
     },
     # Warmer and more British, same cinematic hall: the other finalist.
@@ -288,7 +289,7 @@ def narrate_cinematic(path: Path, preset_name: str, out_root: Path = VOICE_OUT) 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("cinematics", nargs="*", help="cinematic ids (default: all)")
-    ap.add_argument("--preset", default="regal", choices=sorted(PRESETS))
+    ap.add_argument("--preset", default="regal_el", choices=sorted(PRESETS))
     ap.add_argument("--text", help="speak this text instead of cinematics")
     ap.add_argument("--out", type=Path, help="output .ogg for --text, or output root for cinematics")
     ap.add_argument("--scripts", type=Path, default=CINEMATICS, help="folder of cinematic .json files")

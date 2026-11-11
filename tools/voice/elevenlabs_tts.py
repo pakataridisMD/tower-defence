@@ -39,6 +39,13 @@ TAGS = {
     "pride": "[proudly]",
     "grief": "[sad, voice breaking]",
     "command": "[shouting]",
+    "tender": "[softly, tenderly]",
+    "bitter": "[bitterly]",
+    "hope": "[hopeful]",
+    "triumph": "[triumphant]",
+    "whisper": "[whispers]",
+    "desperate": "[desperate, voice cracking]",
+    "wry": "[dry, wry]",
 }
 
 
@@ -87,7 +94,7 @@ def tagged(sentences: list[str], emotions: list[str | None]) -> str:
     parts = []
     for s, e in zip(sentences, emotions):
         tag = TAGS.get(e or "calm", "")
-        if e == "command" and s.endswith("."):
+        if e in ("command", "triumph", "desperate") and s.endswith("."):
             s = s[:-1] + "!"
         parts.append(f"{tag} {s}".strip())
     return " ".join(parts)

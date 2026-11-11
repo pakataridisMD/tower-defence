@@ -44,6 +44,10 @@ else:
 
 if starts:
     starts[0] = max(starts[0], args.first_start)
+    # Never let a line start before the previous one has finished (plus a breath),
+    # in case the voice was re-recorded after the music was scored.
+    for i in range(1, len(starts)):
+        starts[i] = max(starts[i], starts[i - 1] + durs[i - 1] + 0.3)
 
 inputs = ["-i", str(args.music)]
 for f in lines:
