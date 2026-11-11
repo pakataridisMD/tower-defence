@@ -209,6 +209,32 @@ icon in that script's `SKILL_ICONS`.
 `tests/game/test_tree_art.gd` fails if a tree node, region or stat has no icon. A tower or map without art
 falls back to the old flat shapes, so the game still runs while the art is being made.
 
+## Sound effects
+
+Every sound effect is designed by `tools/sfx/build.py` from real recordings: CC0 orchestral percussion,
+brass and found sounds (VSCO 2 Community Edition), a sampled choir (FluidR3_GM, MIT) and bosses' lines spoken
+by Kokoro text to speech (Apache-2.0), all free to ship commercially (`assets/audio/sfx/LICENSE.md`). See
+`tools/sfx/README.md` for how the recipes work and how to add a sound.
+
+```
+tools/sfx/fetch_samples.sh                    # once: the recordings and voice model (~2.5 GB, not in Git)
+python3 tools/sfx/build.py                    # writes assets/audio/sfx/ and its catalogue.json (~2 minutes)
+python3 tools/sfx/build.py --only boss_gorrath  # just the sounds whose names contain the text
+godot --headless --import
+```
+
+The game plays them through the `Sfx` autoload (`scripts/core/sound_player.gd`), which reads
+`assets/audio/sfx/catalogue.json` for each sound's variations, bus, volume and how often it may play, and
+pans board sounds by where they happen. `scripts/game/game_audio.gd` listens to the run and decides what to
+play: an attack sound for every tower (built from its elements and how it fights), hits and explosions,
+enemy deaths, the war horn of each wave, the base being hit, skills, building and upgrading, and for every
+boss a reveal, footsteps, lines from the story in its own voice, a roar when it is badly wounded and a death. Buttons click on
+their own. The buses are Master, Music, Sfx, Ui and Voice (`default_bus_layout.tres`); big moments duck the
+Music bus for a few seconds.
+
+`tests/game/test_sound.gd` fails if a tower, enemy, boss or skill in `data/` has no sound, so new content
+needs a rerun of `build.py` (towers get theirs automatically from their elements).
+
 ## Running the tests
 
 In the editor, open the **GUT** panel at the bottom and press **Run All**.
@@ -259,8 +285,10 @@ scripts/
              send it player actions
   ui/        main menu, meta tree screen, shared styles, data check
 tests/       GUT tests: unit tests and full simulated runs
-tools/       benchmark and screenshot tools, and the art generators in tools/art/ (not part of the game)
-assets/      art and audio. Generated art in assets/art/ is plain Git files, everything else Git LFS
+tools/       benchmark and screenshot tools, the art generators in tools/art/ and the sound effect
+             designer in tools/sfx/ (not part of the game)
+assets/      art and audio. Generated art in assets/art/ and sound in assets/audio/sfx/ are plain Git
+             files, everything else Git LFS
 addons/gut/  the GUT test framework (MIT licence)
 ```
 
