@@ -43,6 +43,8 @@ enabled=PackedStringArray("res://addons/gut/plugin.cfg")
 
 [rendering]
 
+textures/vram_compression/import_etc2_astc=true
+
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 environment/defaults/default_clear_color=Color(0.12156863, 0.14117647, 0.2, 1)

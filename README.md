@@ -16,6 +16,18 @@ ascendancies, an in-run skill web, and a meta tree that is saved between runs, a
 4. Press **F5**. Choose **Campaign** on the main menu, or pick a map and a difficulty level and choose **Play skirmish**. **Data check**
    lists the loaded data and any data errors.
 
+### Mac app (no Godot needed)
+
+`export_presets.cfg` has a **macOS** preset that builds one universal app for Apple Silicon and Intel Macs.
+
+- From GitHub: **Actions > Build macOS app > Run workflow**, then download `tower-defence-2d-macos` from the finished run.
+- Locally: install the Godot 4.7.2 export templates and run `tools/build/export_macos.sh` (it writes
+  `builds/macos/Tower Defence 2D.zip`).
+
+The app is ad-hoc signed but not notarized, so the first time macOS blocks it: double-click it, choose **Done**, then open
+**System Settings > Privacy & Security**, scroll down and click **Open Anyway** next to "Tower Defence 2D". Saves go to
+`~/Library/Application Support/Godot/app_userdata/Tower Defence 2D/`.
+
 ## How to play
 
 Enemies walk the brown road from IN to OUT. Each one that gets out costs lives; lose them all and the run ends.
