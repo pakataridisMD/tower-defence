@@ -102,10 +102,16 @@ def render(name: str, stems: bool = False):
         sc.export_midi(s, os.path.join(ASSETS, f"{name}_{layer}.mid"))
         n = int(round(s.time_of(s.total_beats) * SR))
         y = sc.mix_array(s, OUT, stems)
+        if getattr(mod, "ONESHOT", False):
+            # a one-shot keeps its tail and fades out its last half second
+            k = int(0.5 * SR)
+            y[-k:] *= np.linspace(1, 0, k)[:, None]
+            layers[layer] = y * 10 ** (getattr(mod, "LAYER_DB", {}).get(layer, 0.0) / 20)
+            continue
         layers[layer] = fold(y, n) * 10 ** (getattr(mod, "LAYER_DB", {}).get(layer, 0.0) / 20)
         print(f"  {layer}: rendered")
     full = sum(layers.values())
-    gain = 10 ** ((LUFS - loudness(full)) / 20)
+    gain = 10 ** ((getattr(mod, "LUFS", LUFS) - loudness(full)) / 20)
     env = limiter_gain(full * gain, CEILING)
     os.makedirs(ASSETS, exist_ok=True)
     for layer, y in layers.items():
@@ -118,9 +124,13 @@ def render(name: str, stems: bool = False):
     acc = np.zeros_like(full)
     for layer in mod.LAYERS:
         acc = acc + layers[layer]
-        preview(acc, os.path.join(OUT, f"{name}_upto_{layer}.mp3"), loops=2)
+        preview(acc, os.path.join(OUT, f"{name}_upto_{layer}.mp3"),
+                loops=1 if getattr(mod, "ONESHOT", False) else 2)
     sheet = sc.cue_sheet(first)
-    sheet.update({"loop": True, "loop_seconds": round(len(full) / SR, 4), "loop_samples": len(full),
+    oneshot = getattr(mod, "ONESHOT", False)
+    body = first.time_of(first.total_beats)
+    sheet.update({"loop": not oneshot, "loop_seconds": round(len(full) / SR, 4), "loop_samples": len(full),
+                  "handover_seconds": round(body, 4),
                   "bpm": first.sections[0].bpm, "layers": list(mod.LAYERS),
                   "files": {l: f"{name}_{l}.ogg" for l in mod.LAYERS}})
     sheet["duration"] = sheet["loop_seconds"]
