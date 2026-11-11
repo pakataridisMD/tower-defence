@@ -12,6 +12,7 @@ text scores in `cues/` and rendered with a small sampler. Everything here is des
 | Choir, celesta, tubular bells | FluidR3_GM soundfont (Debian `fluid-soundfont-gm`), played by FluidSynth | MIT |
 | Sung chant words and gang shouts (prologue) | Kokoro-82M text-to-speech voices, put on pitch by `vocals.py` | Apache-2.0 (commercial use allowed) |
 | Braams, risers, impacts, sub drops | synthesised in `vocals.py` | ours |
+| Synth pulse, pads, sub and bass; drum-ensemble booms | synthesised in `hybrid.py` (drum ensembles layer the CC0 VSCO drums) | ours |
 
 No AI music model and no existing score was used. The chant and shout voices come from a
 text-to-speech model (Kokoro), so they count as AI-generated audio for Steam's AI content
@@ -36,7 +37,7 @@ for Versilian Studios is a courtesy, not a requirement.
 
 | Cue | Title | Length | Plays under |
 |---|---|---|---|
-| `prologue` | The Last Lantern | 2:59 | `prologue`, scored shot by shot to the narration, with a trailer layer (sung chant, gang shouts in the gaps between lines, braams, risers, taiko) |
+| `prologue` | The Last Lantern | 3:14 | `prologue`, scored shot by shot to the narration, with a trailer layer (sung chant, gang shouts in the gaps between lines, braams, risers, taiko) |
 | `hold_the_road` | Hold the Road | 0:52 | the six land intros, `convergence_intro` |
 | `herald` | The Heralds of the Hollow | 0:57 | the six Herald scenes, `crossroads` |
 | `warden_freed` | Freed | 0:54 | the six Warden scenes, `lumen_gate` |
@@ -64,6 +65,18 @@ and duck it 6 to 8 dB under narration.
     python3 tools/music/levels.py prologue       # per-section stem levels (after --stems)
 
 MP3 previews land in `tools/music/out/` (ignored). A cue renders in 10 to 45 seconds.
+
+## Film-trailer layer: hybrid orchestra
+
+Every cue carries a modern epic film-score layer on top of the orchestra (in the manner of big
+action scores; no melody or cue is borrowed). `hybrid.py` adds synth instruments that are written
+like any part (`syn_pulse`, `syn_pad`, `syn_sub`, `syn_bass`) and drum ensembles used as
+percussion kinds (`taiko`, `epic`, `toms`, `snare`, `tick`). `cues/_kit.py` has `ost16()`, a
+16th-note string ostinato with 3+3+2 accents, and `film(score, section, bass, level, melody)`, which
+adds the whole layer to a section from its bass line: `calm` (soft pad and sub), `build` (the
+ostinato swells in and the drums gather), `drive` (full ostinato, synth bass, drum ensemble and
+eight low horns doubling the melody) or `hit` (one wall-of-sound downbeat). The master bus has
+gentle glue compression before the limiter.
 
 ## Trailer layer: voices and sound design
 

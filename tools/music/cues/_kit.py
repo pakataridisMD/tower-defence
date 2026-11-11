@@ -39,9 +39,13 @@ def seat(s: Score) -> Score:
     t("oohs", pan=0.05, gain_db=-7)
     # film-trailer layer: stacked low horns and hybrid synths
     t("hn_lo", inst="hn", pan=0.1, attack=0.07, legato=1.04, release=0.5, gain_db=-4, double=2)
+    t("vc_spic16", inst="vc_spic", pan=0.25, gain_db=-9)
+    t("cb_spic16", inst="cb_spic", pan=0.45, gain_db=-10, hpf=36)
     t("syn_pulse", pan=0.0, gain_db=-4, send=0.15, hpf=70)
     t("syn_pad", pan=0.0, gain_db=-15, send=0.3, hpf=50)
     t("syn_sub", pan=0.0, gain_db=-16, send=0.0)
+    t("syn_pad_soft", inst="syn_pad", pan=0.0, gain_db=-24, send=0.4, hpf=50)
+    t("syn_sub_soft", inst="syn_sub", pan=0.0, gain_db=-23, send=0.0)
     t("syn_bass", pan=0.0, gain_db=-20, send=0.1, hpf=28)
     return s
 
@@ -65,7 +69,7 @@ def ost16(changes: str, meter: int, fifth: bool = True) -> str:
     segs = []
     for tok in changes.replace("|", " ").split():
         p, b = tok.split(":")
-        segs += [midi(p)] * int(round(float(b) * 4))
+        segs += [None if p == "r" else midi(p)] * int(round(float(b) * 4))
     grp = GROUPS[meter]
     pos_in_bar = []
     for g in grp:
@@ -73,6 +77,11 @@ def ost16(changes: str, meter: int, fifth: bool = True) -> str:
     out = []
     for i, r in enumerate(segs):
         k, g = pos_in_bar[i % len(pos_in_bar)]
+        if r is None:
+            out.append("r:.25")
+            if (i + 1) % (meter * 4) == 0:
+                out.append("|")
+            continue
         n = r + 7 if (fifth and k == g - 1 and g > 2) else r
         out.append(f"{name(n)}:.25" + (">" if k == 0 else "") + "'")
         if (i + 1) % (meter * 4) == 0:
@@ -101,3 +110,68 @@ SOLENNE = ("F5:1 G5:.5 A5:1 C6:.5 | D6:1.5 C6:1 A5:.5 | G5:1 A5:.5 F5:1 D5:.5 | 
 
 def rep(text: str, n: int) -> str:
     return " | ".join([text] * n)
+
+
+# ---------------------------------------------------------------- film-trailer layer for any cue
+def _in_range(m: int, lo: int) -> int:
+    while m < lo:
+        m += 12
+    while m >= lo + 12:
+        m -= 12
+    return m
+
+
+def _map(bass: str, fn) -> str:
+    """Rewrite each pitch of a single-line bass part ("D2:4 | G1:2 A1:2") with fn(midi) -> text."""
+    from score import midi
+
+    out = []
+    for tok in bass.split():
+        if tok == "|" or tok.startswith("r"):
+            out.append(tok)
+            continue
+        p, d = tok.split(":")
+        out.append(f"{fn(midi(p))}:{d}")
+    return " ".join(out)
+
+
+def film(s: Score, sec, bass: str, level: str, melody: str | None = None, mel_transpose: int = -12,
+         vel: str = "f"):
+    """Add the hybrid film-score layer to a section, following its bass line.
+    level: "calm" (pad + sub), "build" (+ ostinato swelling in, drums gathering),
+    "drive" (+ full ostinato, synth bass, drum ensemble), "hit" (one wall-of-sound downbeat).
+    melody (optional) is doubled by eight low horns."""
+    meter = int(sec.meter)
+    bars = int(sec.bars)
+    sub = _map(bass, lambda m: name(_in_range(m, 26)))          # D1..C#2
+    low = _map(bass, lambda m: name(_in_range(m, 38)))          # D2..C#3
+    pad = _map(bass, lambda m: "+".join(name(x) for x in (_in_range(m, 50), _in_range(m, 50) + 7,
+                                                                  _in_range(m, 50) + 12)))
+    if level == "calm":
+        sec.part("syn_pad_soft", pad, vel="mf")
+        sec.part("syn_sub_soft", sub, vel=vel)
+        return
+    sec.part("syn_pad", pad, vel="f")
+    sec.part("syn_sub", sub, vel=vel)
+    if level == "hit":
+        sec.part("syn_bass", low, vel="fff")
+        sec.hits("epic", "1", bar=1, vel="fff")
+        return
+    sec.part("vc_spic16", ost16(low, meter), vel=vel)
+    sec.part("syn_pulse", ost16(low, meter), vel=vel)
+    if level == "build":
+        for k in ("vc_spic16", "syn_pulse"):
+            s.swell(k, [(sec.at(1) - 0.02, 0), (sec.at(1), -14), (sec.at(bars, meter), 0),
+                        (sec.at(bars, meter) + 0.01, 0)])
+        sec.hits("taiko", "1 3" if meter == 4 else "1 3.5", bar=1, vel="f", bars=bars)
+        sec.hits("toms", [meter + i * 0.25 for i in range(4)], bar=bars, vel="ff")
+        return
+    # drive
+    sec.part("cb_spic16", ost16(low, meter), vel=vel, transpose=-12)
+    sec.part("syn_bass", low, vel="ff")
+    if melody:
+        sec.part("hn_lo", melody, vel="ff", transpose=mel_transpose)
+    sec.hits("epic", "1", bar=1, vel="fff", bars=bars)
+    sec.hits("taiko", "2.5 3 4.5" if meter == 4 else "2.5 4 4.5", bar=1, vel="ff", bars=bars)
+    sec.hits("snare", [1 + i * 0.25 for i in range(meter * 4) if i % 4 in (0, 3)], bar=1, vel="mf", bars=bars)
+    sec.hits("toms", [meter + i * 0.25 for i in range(4)], bar=bars, vel="ff")

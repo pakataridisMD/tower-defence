@@ -2,7 +2,7 @@
 Solenne's tune going home, the Lantern at peace in D major, and a last chord with one
 note nobody has a name for yet (a raised fourth, G#, over D).
 """
-from cues._kit import LANTERN_A, LANTERN_B, SOLENNE, new
+from cues._kit import LANTERN_A, LANTERN_B, SOLENNE, new, film
 
 
 def build():
@@ -64,5 +64,11 @@ def build():
     e.part("solo_vln", "r:4 | r:4 | G#6:4", vel="pp")
     for k in ["vln2", "vla", "vc", "cb", "oohs"]:
         s.swell(k, [(e.at(1), 0), (e.at(3, 4), -6)])
+    # film-trailer layer: warm pads and sub; the Lantern's return gets the low horns and one big drum
+    film(s, b, "F2:3 | Bb1:3 | G1:3 | C2:3 | F2:1.5 D2:1.5 | A1:3 | Bb1:1.5 C2:1.5 | F1:3", "calm", vel="mf")
+    film(s, d, "D2:4 | G1:2 E2:2 | B1:2 A1:2 | A1:4 | D2:4 | G1:2 F#1:2 | E1:2 A1:2 | D2:4", "calm")
+    d.part("hn_lo", "r:4 | r:4 | r:4 | r:4 | " + LANTERN_B, vel="f", transpose=-12)
+    d.hits("epic", "1", bar=5, vel="ff")
+    film(s, e, "D2:12", "calm", vel="mf")
     s.end_pad = 8.0
     return s

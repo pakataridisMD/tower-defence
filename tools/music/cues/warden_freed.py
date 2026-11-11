@@ -1,7 +1,7 @@
 """Freed: a corrupted Warden comes back to itself. For `ember_warden` .. `void_warden` and
 `lumen_gate`. About 0:45. The Lantern in Eb, first on a solo horn, then on the strings.
 """
-from cues._kit import LANTERN_A, LANTERN_B, new
+from cues._kit import LANTERN_A, LANTERN_B, new, film
 
 
 def build():
@@ -55,5 +55,12 @@ def build():
     s.swell("vln2", [(d.at(1), 0), (d.at(2, 4), -10)])
     s.swell("vla", [(d.at(1), 0), (d.at(2, 4), -10)])
     s.swell("vc", [(d.at(1), 0), (d.at(2, 4), -10)])
+    # film-trailer layer: freedom is big but not violent, so pads, sub and one build
+    film(s, a, "C2:4 | Ab1:4", "calm")
+    film(s, b, "Eb2:4 | Ab1:2 F1:2 | C2:2 Bb1:2 | Bb1:4", "build")
+    film(s, c, "Eb2:4 | Ab1:2 G1:2 | F1:2 Bb1:2 | Eb1:4", "calm")
+    c.hits("epic", "1", bar=1, vel="ff")
+    c.part("hn_lo", LANTERN_B, vel="f", transpose=1 - 12)
+    film(s, d, "Eb2:8", "calm")
     s.end_pad = 6.0
     return s

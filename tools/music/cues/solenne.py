@@ -3,7 +3,7 @@
 The home tune on flute, then violins, then the Lantern in a lilting 6/8 for horn and cellos,
 then everyone, and a quiet close. F major. 6/8 is written as three quarter beats per bar.
 """
-from cues._kit import SOLENNE, new
+from cues._kit import SOLENNE, new, film
 
 HARP = {
     "F": "F2:.5 C3:.5 F3:.5 A3:.5 C4:.5 A3:.5",
@@ -85,5 +85,10 @@ def build():
     f.part("vln2", "A4:3 | Bb4:3 | A4:3 | A4:9", vel="pp")
     f.part("vc", "F3:3 | Bb2:3 | F3:3 | F2:9", vel="pp")
     f.part("glock", "r:3 | r:3 | r:3 | r:3 | C7:3 | r:3", vel="p")
+    # film-trailer layer: home stays pastoral; a warm pad and sub, and the low horns on the Lantern
+    film(s, d, "F2:3 | Bb1:1.5 G1:1.5 | D2:1.5 C2:1.5 | C2:3 | F2:3 | Bb1:1.5 A1:1.5 | G1:1.5 C2:1.5 | F1:3", "calm",
+         vel="mf")
+    film(s, e, TUNE_BASS, "calm")
+    e.hits("epic", "1", bar=1, vel="f")
     s.end_pad = 6.0
     return s

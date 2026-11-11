@@ -2,7 +2,7 @@
 A light on the east road, the Hollow falling quiet around him, then the Lantern in full,
 lifted from D to E major, with choir and bells.
 """
-from cues._kit import LANTERN_A, LANTERN_B, new, rep
+from cues._kit import LANTERN_A, LANTERN_B, new, rep, film
 
 E_OST = "E2:.5> E2:.5 E2:.5 E2:.5 E2:.5> E2:.5 E2:.5 E2:.5"
 
@@ -94,5 +94,11 @@ def build():
     e.part("celesta", "r:2 E6:1 G#6:1 | B6:4", vel="mp")
     for k in ["vln2", "vla", "vc", "cb", "hn", "choir"]:
         s.swell(k, [(e.at(1), 0), (e.at(2, 4), -8)])
+    # film-trailer layer
+    film(s, a, "D2:12", "calm")
+    film(s, b, "E2:4 | A1:2 F#1:2 | C#2:2 B1:2 | B1:4", "build")
+    film(s, c, "C2:4 | D2:4", "build")
+    film(s, d, bass, "drive", melody=tune, mel_transpose=-10)
+    film(s, e, "E2:8", "calm")
     s.end_pad = 7.0
     return s

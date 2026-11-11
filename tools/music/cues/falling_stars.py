@@ -2,7 +2,7 @@
 One section per shot of the script. The darkest cue: Solenne's tune, betrayal, Fennick's
 stand, the sun broken, and one shard of hope drifting east.
 """
-from cues._kit import DEFEAT_A, HOLLOW, HOLLOW_OST, new, rep
+from cues._kit import DEFEAT_A, HOLLOW, HOLLOW_OST, new, rep, film
 
 # Shot lengths in seconds: each voiced line + 0.4 s lead-in + ~2 s of music before the next shot.
 # Shots 5 and 10 are character lines shown as subtitles.
@@ -150,5 +150,17 @@ def build():
     q.part("bsn", "F2:8", vel="pp")
     q.hits("timp:D2", "1", bar=1, vel="p")
     q.hits("gong", "1", bar=2, vel="p")
+    # film-trailer layer
+    film(s, a, "F2:3 | Bb1:3 | G1:3 | C2:3 | F2:3", "calm")
+    film(s, b, "D2:2 r:3 | r:5", "hit")
+    film(s, c, "D2:15", "drive", melody=" | ".join(HOLLOW.split(" | ")[:3]))
+    film(s, d, "D2:4 | G1:2 A1:2 | Bb1:2 C2:2 | A1:4", "drive", melody=DEFEAT_A)
+    film(s, e, "D2:4 | G1:4 | A1:4", "calm")
+    film(s, f, "D2:1 r:4 | r:5", "hit")
+    film(s, g, "B1:4 | E1:2 F#1:2 | G1:4", "build")
+    film(s, h, "D2:1.5 r:2.5", "hit")
+    film(s, k, "D2:10", "calm")
+    film(s, m, "B1:4 | E1:2 B1:2 | C2:4", "calm")
+    film(s, q, "D2:8", "calm")
     s.end_pad = 7.0
     return s

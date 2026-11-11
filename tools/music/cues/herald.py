@@ -1,7 +1,7 @@
 """The Heralds: the Hollow theme for the Herald scenes (`ember_herald` .. `void_herald`),
 `crossroads` and boss reveals. About 0:50. 5/4.
 """
-from cues._kit import HOLLOW, HOLLOW_OST, new, rep
+from cues._kit import HOLLOW, HOLLOW_OST, new, rep, film
 
 
 def build():
@@ -63,5 +63,11 @@ def build():
     e.hits("gong", "1", vel="fff")
     e.hits("timp:D2", "1", vel="fff")
     e.hits("bd", "1", vel="ff")
+    # film-trailer layer
+    film(s, a, "D2:10", "calm")
+    film(s, b, "D2:10", "build")
+    film(s, c, "D2:20", "drive", melody=HOLLOW)
+    film(s, d, "D2:20", "drive", melody=HOLLOW, mel_transpose=-24)
+    film(s, e, "D2:5", "hit")
     s.end_pad = 7.0
     return s

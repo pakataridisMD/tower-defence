@@ -2,7 +2,7 @@
 `crownless_throne`). About 1:05. The Lantern and the Hollow fight each other, 5/4 against 4/4,
 until the Lantern wins in D major.
 """
-from cues._kit import DEFEAT_B, HOLLOW, HOLLOW_OST, LANTERN_B, new, rep
+from cues._kit import DEFEAT_B, HOLLOW, HOLLOW_OST, LANTERN_B, new, rep, film
 
 OST4 = "D3:.5> D3:.5 D3:.5 D3:.5 D3:.5> D3:.5 D3:.5 D3:.5"
 
@@ -94,5 +94,12 @@ def build():
     f.hits("timp:D2", "1", bar=5, vel="fff")
     f.hits("crash", "1", bar=5, vel="ff")
     f.hits("gong", "1", bar=5, vel="f")
+    # film-trailer layer
+    film(s, a, "D2:10", "build")
+    film(s, b, "D2:5 | C2:3 A1:2 | Bb1:5 | A1:5", "drive", melody=lantern5)
+    film(s, c, "D2:20", "drive", melody=HOLLOW)
+    film(s, d, "D2:4 | G1:4 | G1:2 A1:2 | D2:4", "drive", melody=DEFEAT_B)
+    film(s, e, "Bb1:4 | C2:2 A1:2", "build")
+    film(s, f, "D2:4 | G1:2 F#1:2 | E1:2 A1:2 | D2:4 | D2:4", "drive", melody=tune)
     s.end_pad = 7.0
     return s

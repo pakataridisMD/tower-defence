@@ -4,7 +4,7 @@
 The Lantern in the minor over a driving string ostinato, turning to the major at the end:
 we will lose the land, and we will still save its people.
 """
-from cues._kit import DEFEAT_A, LANTERN_B, new, rep
+from cues._kit import DEFEAT_A, LANTERN_B, new, rep, film
 
 OST = "D3:.5> D3:.5 D3:.5 D3:.5 D3:.5> D3:.5 D3:.5 D3:.5"
 
@@ -80,5 +80,11 @@ def build():
     e.hits("timp:D2", "1", bar=5, vel="ff")
     e.hits("bd", "1", bar=5, vel="f")
     e.hits("crash", "1", bar=5, vel="f")
+    # film-trailer layer
+    film(s, a, "D2:8", "build")
+    film(s, b, "D2:4 | G1:2 A1:2 | Bb1:2 C2:2 | A1:4", "drive", melody=DEFEAT_A)
+    film(s, c, "D2:4 | G1:4 | G1:2 A1:2 | D2:4", "drive", melody=melody, mel_transpose=-24)
+    film(s, d, "Bb1:4 | C2:2 C#2:2", "build")
+    film(s, e, "D2:4 | G1:2 F#1:2 | E1:2 A1:2 | D2:4 | D2:4", "drive", melody=tune)
     s.end_pad = 6.0
     return s

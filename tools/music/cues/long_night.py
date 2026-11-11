@@ -1,7 +1,7 @@
 """There Was No Dawn: the Long Night lament (`long_night`, also `solenne_falls`). About 0:50.
 The Lantern in the minor on a solo violin, lanterns flickering on the celesta.
 """
-from cues._kit import DEFEAT_A, DEFEAT_B, new
+from cues._kit import DEFEAT_A, DEFEAT_B, new, film
 
 
 def build():
@@ -37,5 +37,12 @@ def build():
     d.part("cb", "D2:8", vel="pp")
     d.part("celesta", "A5:1 r:1 E6:1 r:1 | D6:4", vel="p")
     s.swell("vln2", [(d.at(1), 0), (d.at(2, 4), -12)])
+    # film-trailer layer: grief stays quiet; a low pad and sub, the strings swell over a held drum
+    film(s, a, "D2:8", "calm", vel="mf")
+    film(s, b, "D2:4 | G1:2 A1:2 | Bb1:2 C2:2 | A1:4", "calm", vel="mf")
+    film(s, c, "D2:4 | G1:4 | G1:2 A1:2 | D2:4", "calm")
+    c.hits("epic", "1", bar=1, vel="f")
+    c.part("hn_lo", DEFEAT_B, vel="f", transpose=-12)
+    film(s, d, "D2:8", "calm", vel="mf")
     s.end_pad = 7.0
     return s
