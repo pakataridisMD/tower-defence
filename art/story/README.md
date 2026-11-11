@@ -58,3 +58,9 @@ here already use those ids; the Heralds and a few others differ:
 | herald_briar | mother_briar |
 | oswin_grey / oswin_white | oswin |
 | cassivane / cassivane_ashen | cassivane |
+
+## Boss sprites in the game
+
+These boss sprites are drawn at 40 px per board cell (`BOSS_SIZE` in `cast.py`). The game draws 32 art px per cell
+at whole-number scale, so before copying boss sheets into the game, re-render them at 32 px per cell (multiply the
+`BOSS_SIZE` heights by 0.8) and clear that boss's `BoardArt.BOSS_CELLS` entry so its native size is used.
