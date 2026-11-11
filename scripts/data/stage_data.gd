@@ -31,3 +31,27 @@ extends Resource
 @export_group("Reward")
 ## Meta points paid the first time the stage is won, on top of the usual points.
 @export var first_clear_points: int = 3
+
+@export_group("Assault")
+## Buildings of the enemy base. A stage with any is an assault: it is won by bringing every one of
+## them down (and whatever the last one releases), not by surviving the waves. When the waves run
+## out, the last one repeats, stronger each time.
+@export var structures: Array[StructureSpec] = []
+## The rightmost column towers may be built in, for each phase of the assault (first phase first).
+## Phases past the end of the list, or a value below 0, allow the whole map.
+@export var build_columns: PackedInt32Array = []
+## Above 0, the next wave starts on its own this many seconds after a wave is cleared.
+@export var auto_wave_delay: float = 0.0
+
+
+func is_assault() -> bool:
+	return not structures.is_empty()
+
+
+## The number of phases: the highest phase of any structure.
+func phase_count() -> int:
+	var count := 0
+	for spec in structures:
+		if spec != null:
+			count = maxi(count, spec.phase)
+	return count

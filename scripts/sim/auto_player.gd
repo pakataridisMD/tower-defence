@@ -37,6 +37,8 @@ var max_towers := 40
 ## Turn off to make the bot play like a beginner: no levels, no skills.
 var upgrades := true
 var skills := true
+## Turn off to leave the heroes unsummoned.
+var heroes := true
 ## Turn off to stop the bot at the top level instead of ascending.
 var ascends := true
 ## How far the bot trusts an upgrade against a new tower. At 1 it takes its own sums at face value;
@@ -67,10 +69,16 @@ func _init(
 ## neighbours, otherwise it plays the default Fire, Storm and Nature plan.
 static func for_sim(p_sim: RunSim) -> AutoPlayer:
 	var stage := p_sim.config.stage
+	var bot: AutoPlayer
 	if stage == null or stage.allowed_elements.is_empty():
-		return AutoPlayer.new(p_sim)
-	var plan := plan_for_elements(p_sim.config, stage.allowed_elements[0])
-	return AutoPlayer.new(p_sim, plan[0], plan[1])
+		bot = AutoPlayer.new(p_sim)
+	else:
+		var plan := plan_for_elements(p_sim.config, stage.allowed_elements[0])
+		bot = AutoPlayer.new(p_sim, plan[0], plan[1])
+	# An assault is long and pushes across the whole map, so it takes more towers.
+	if p_sim.is_assault():
+		bot.max_towers = 70
+	return bot
 
 
 ## Node and tower priorities built around one home element and its two neighbours on the ring:
@@ -182,6 +190,62 @@ func use_skills() -> void:
 				sim.use_skill(skill.id)
 		elif boss or alive.size() >= SKILL_BOARD_CROWD:
 			sim.use_skill(skill.id)
+	_use_hero_abilities(alive, boss, furthest)
+
+
+## Summons every hero in the party that is not on the field yet, where it covers the most road.
+func summon_heroes() -> void:
+	if not heroes:
+		return
+	for hero in sim.party:
+		if sim.hero_tower(hero.id) != null:
+			continue
+		var best := Vector2i(-1, -1)
+		var best_score := 0
+		var grid := sim.config.map.grid_size
+		for x in grid.x:
+			for y in grid.y:
+				var cell := Vector2i(x, y)
+				if not sim.summon_error(hero.id, cell).is_empty():
+					continue
+				var score := coverage(cell, hero.attack.attack_range)
+				if score > best_score:
+					best_score = score
+					best = cell
+		if best.x >= 0:
+			sim.summon_hero(hero.id, best)
+
+
+## Casts each summoned hero's ability when it would do the most good.
+func _use_hero_abilities(alive: Array[SimEnemy], boss: bool, furthest: float) -> void:
+	if not heroes:
+		return
+	for tower in sim.hero_towers():
+		if not sim.hero_ability_error(tower.hero.id).is_empty():
+			continue
+		var ability := tower.hero_ability()
+		var radius := ability.radius_cells * sim.config.map.cell_size
+		match ability.target:
+			HeroAbility.Target.AIMED:
+				var skill := SkillData.new()
+				skill.radius = radius
+				var aim := _best_aim(skill, alive)
+				if aim.z >= SKILL_CROWD or aim.z < 0.0:
+					sim.use_hero_ability(tower.hero.id, Vector2(aim.x, aim.y))
+			HeroAbility.Target.SELF:
+				var near := 0
+				for enemy in alive:
+					if enemy.position.distance_to(tower.position) <= radius:
+						near += 1
+				if near >= SKILL_CROWD:
+					sim.use_hero_ability(tower.hero.id)
+			_:
+				var saves_lives := ability.ward or ability.send_to_start or ability.knockback > 0.0 or ability.hold_seconds > 0.0
+				if saves_lives:
+					if furthest >= SKILL_PUSH_PROGRESS:
+						sim.use_hero_ability(tower.hero.id)
+				elif boss or alive.size() >= SKILL_BOARD_CROWD:
+					sim.use_hero_ability(tower.hero.id)
 
 
 ## Where an aimed skill reaches the most enemies: (x, y, how many). A boss in reach makes the
@@ -215,6 +279,7 @@ func spend_points() -> void:
 ## Spends the gold, best buy first: another tower where it covers the most road, or a level (or
 ## an ascension) for a tower that already stands in a good spot.
 func build_towers() -> void:
+	summon_heroes()
 	for purchase in 400:
 		var tower_id := _affordable_tower() if sim.towers.size() < max_towers else &""
 		var cell := best_cell(tower_id) if not tower_id.is_empty() else Vector2i(-1, -1)
@@ -248,6 +313,8 @@ func _best_upgrade() -> Upgrade:
 		return null
 	var best: Upgrade = null
 	for tower in sim.towers:
+		if tower.is_hero():
+			continue
 		var gain := 0.0
 		var price := 0
 		var ascendancy: StringName = &""
@@ -299,11 +366,28 @@ func best_cell(tower_id: StringName) -> Vector2i:
 			var cell := Vector2i(x, y)
 			if not sim.can_place(tower_id, cell):
 				continue
-			var score := coverage(cell, reach)
+			var score := coverage(cell, reach) + siege_value(cell, reach)
 			if score > best_score:
 				best_score = score
 				best = cell
 	return best
+
+
+## In an assault, a cell that reaches a building of the enemy base which can be hurt now is worth
+## as much as this many path samples, so the bot pushes its towers toward the fortress.
+const SIEGE_WEIGHT := 60
+
+
+## Extra score for a cell whose tower would reach a building that can be hurt now.
+func siege_value(cell: Vector2i, reach: float) -> int:
+	if not sim.is_assault():
+		return 0
+	var center := sim.config.map.cell_center(cell)
+	var score := 0
+	for structure in sim.structures:
+		if sim.is_vulnerable(structure) and structure.position.distance_to(center) <= reach:
+			score += SIEGE_WEIGHT
+	return score
 
 
 ## How many path sample points lie within reach of a cell's centre.

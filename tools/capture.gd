@@ -5,9 +5,12 @@ extends Node
 ## It plays with a made-up profile kept in memory, so it never touches a real save.
 ## Add --quick after `--` to skip the run and only take the menu, the meta tree and the skill web.
 ## Add --ui to take the menu and the HUD at its busiest instead: a tower selected, skills cast, one
-## being aimed.
+## being aimed, and the Esc menu.
+## Add --heroes to take the campaign party picker and a battle with three heroes on the board.
 ## Add --campaign to take the campaign map and a battle in each biome instead (each battle jumps
 ## straight to a late wave with plenty of gold, so the board is busy).
+## Add --story to take the cinematic player, a Herald's boss banner, the assault on the citadel and
+## the campaign map with the citadel on it.
 
 const MENU_SCENE := preload("res://scenes/main.tscn")
 const META_TREE_SCENE := preload("res://scenes/meta/meta_tree.tscn")
@@ -25,6 +28,8 @@ var _out := ""
 var _quick := false
 var _campaign := false
 var _ui := false
+var _story := false
+var _heroes := false
 
 
 func _ready() -> void:
@@ -38,9 +43,17 @@ func _ready() -> void:
 			_campaign = true
 		elif arg == "--ui":
 			_ui = true
+		elif arg == "--story":
+			_story = true
+		elif arg == "--heroes":
+			_heroes = true
 	DirAccess.make_dir_recursive_absolute(_out)
 	Progress.use_memory_profile(_demo_profile())
-	if _ui:
+	if _story:
+		_run_story()
+	elif _heroes:
+		_run_heroes()
+	elif _ui:
 		_run_ui()
 	elif _campaign:
 		_run_campaign()
@@ -76,6 +89,14 @@ func _run_ui() -> void:
 	game.hud.show_shop_tier(2)
 	await _wait(0.3)
 	await _shot("hud_tower")
+	# The Esc menu, and its question before leaving a run.
+	game.open_pause_menu()
+	await _wait(0.2)
+	await _shot("pause_menu")
+	game.pause_menu.ask_to_leave(&"menu")
+	await _wait(0.2)
+	await _shot("pause_menu_leave")
+	game.close_pause_menu()
 	sim.wave_index = 6
 	game._start_wave()
 	await _until(func() -> bool: return sim.time_in_wave > 9.0 or sim.is_over())
@@ -94,6 +115,49 @@ func _run_ui() -> void:
 	game._cast_skill(&"entangle", _crowd(sim))
 	await _wait(0.15)
 	await _shot("skill_cast")
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+## The party picker, then a battle with the party summoned: one hero selected, one ability aimed.
+func _run_heroes() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	var screen := CAMPAIGN_SCENE.instantiate() as CampaignScreen
+	add_child(screen)
+	await _wait(0.4)
+	screen.select(&"storm_3")
+	await _wait(0.3)
+	await _shot("heroes_party")
+	screen.free()
+	Progress.active_stage = &"storm_3"
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.3)
+	var sim := game.sim
+	sim.gold = 3000
+	sim.tree.points = 14
+	var bot := AutoPlayer.for_sim(sim)
+	bot.build_towers()
+	await _wait(0.3)
+	var heroes := sim.hero_towers()
+	if not heroes.is_empty():
+		game.board.select(heroes[0])
+	await _wait(0.3)
+	await _shot("heroes_building")
+	sim.wave_index = 8
+	game._start_wave()
+	await _until(func() -> bool: return sim.time_in_wave > 10.0 or sim.is_over())
+	if heroes.size() > 1:
+		var target := _crowd(sim)
+		game._begin_hero(heroes[1].hero.id)
+		Input.warp_mouse(game.board.to_global(target))
+		_hover(game.board.to_global(target))
+		await _wait(0.2)
+		await _shot("heroes_aiming")
+		if game.board.aiming_hero == heroes[1].hero.id:
+			game._cast_hero(heroes[1].hero.id, target)
+		await _wait(0.15)
+		await _shot("heroes_ability")
 	print("Screenshots saved to ", _out)
 	get_tree().quit()
 
@@ -150,6 +214,76 @@ func _run_campaign() -> void:
 		await _shot("stage_" + String(entry[0]))
 		game.free()
 		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+func _run_story() -> void:
+	# The cinematic player: the prologue's title card, then two of its shots.
+	var player := CinematicPlayer.new()
+	player.queue = [&"prologue", &"ember_herald"] as Array[StringName]
+	player.change_scene_when_done = false
+	player.mark_seen = false
+	add_child(player)
+	await _wait(1.6)
+	await _shot("story_title")
+	for shot in [0, 4, 9]:
+		while player.current_id() == &"prologue" and player.current_shot() < shot:
+			player.next_shot()
+			await _wait(CinematicPlayer.FADE * 2.0 + 0.2)
+		await _wait(2.5)
+		await _shot("story_prologue_%02d" % (shot + 1))
+	player.skip_cinematic()
+	await _wait(CinematicPlayer.FADE * 2.0 + 1.2)
+	player.next_shot()
+	await _wait(CinematicPlayer.FADE * 2.0 + 2.5)
+	await _shot("story_herald_scene")
+	player.free()
+
+	# A Herald leads the last wave of its element's second stage.
+	for entry: Array in [[&"ember_2", "story_herald_boss"], [&"water_2", "story_saltmother"]]:
+		Progress.active_stage = entry[0]
+		var game := GAME_SCENE.instantiate() as Game
+		game.autoplay = true
+		add_child(game)
+		await _wait(0.2)
+		game.sim.wave_index = game.sim.total_waves() - 1
+		game.sim.gold = 6000
+		game.sim.tree.points = 14
+		await _until(func() -> bool: return game.sim.strongest_boss() != null and game.sim.time_in_wave > 9.0 \
+				or game.sim.is_over())
+		await _shot(entry[1])
+		game.free()
+		await _wait(0.1)
+
+	# The assault: the opening, then the second movement once the gate has fallen.
+	Progress.active_stage = &"assault_1"
+	var assault := GAME_SCENE.instantiate() as Game
+	assault.autoplay = true
+	add_child(assault)
+	await _until(func() -> bool: return assault.sim.wave_number() >= 4 and assault.sim.time_in_wave > 8.0 \
+			or assault.sim.is_over())
+	await _shot("story_assault_gate")
+	Engine.time_scale = 8.0
+	await _until(func() -> bool: return assault.sim.structure_phase >= 2 or assault.sim.is_over())
+	Engine.time_scale = 1.0
+	await _wait(3.0)
+	await _shot("story_assault_heralds")
+	assault.free()
+
+	# The campaign map once the Convergence is won: the road to the citadel opens.
+	var profile := _campaign_profile()
+	for stage: StageData in DataRegistry.stages.values():
+		if stage.id != &"assault_1":
+			profile.stage_stars[stage.id] = 3
+	Progress.use_memory_profile(profile)
+	var screen := CAMPAIGN_SCENE.instantiate() as CampaignScreen
+	add_child(screen)
+	await _wait(0.4)
+	screen.select(&"assault_1")
+	await _wait(0.4)
+	await _shot("story_campaign_citadel")
+	screen.free()
 	print("Screenshots saved to ", _out)
 	get_tree().quit()
 

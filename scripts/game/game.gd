@@ -23,7 +23,17 @@ var sim: RunSim
 var board: BoardView
 var hud: Hud
 var web: SkillWebView
+var story: Story
+var story_overlay: StoryOverlay
+## The cinematic playing over the run, or null.
+var cinematic: CinematicPlayer
+var audio: GameAudio
+var music: BattleMusic
 var paused := false
+var audio_panel: AudioPanel
+var _paused_before_audio := false
+## The Esc menu: resume, audio, main menu, quit.
+var pause_menu: PauseMenu
 ## Set before the node enters the tree, or with --autoplay.
 var autoplay := false
 var quit_at_end := false
@@ -34,6 +44,9 @@ var _max_steps := MAX_STEPS_PER_FRAME
 var _bot: AutoPlayer
 var _bot_wait := BOT_BREAK
 var _bot_spent := false
+var _cinematic_layer: CanvasLayer
+## Cinematics to play once the player leaves the end screen: the stage's own scene and plot beats.
+var _story_after: Array[StringName] = []
 
 
 func _ready() -> void:
@@ -41,7 +54,9 @@ func _ready() -> void:
 	autoplay = autoplay or args.has("--autoplay")
 	quit_at_end = quit_at_end or args.has("--quit-at-end")
 	sim = RunSim.new(Progress.run_config())
+	story = Story.shared()
 	_build_views()
+	_build_story()
 	_connect_signals()
 	if autoplay:
 		_bot = AutoPlayer.for_sim(sim)
@@ -55,6 +70,13 @@ func _build_views() -> void:
 	board.position = BOARD_OFFSET
 	board.setup(sim)
 	add_child(board)
+
+	audio = GameAudio.new()
+	add_child(audio)
+	audio.setup(sim, BOARD_OFFSET)
+	music = BattleMusic.new()
+	add_child(music)
+	music.setup(sim)
 
 	var hud_layer := CanvasLayer.new()
 	add_child(hud_layer)
@@ -74,11 +96,32 @@ func _build_views() -> void:
 	web.hide()
 	web_layer.add_child(web)
 
+	var pause_layer := CanvasLayer.new()
+	pause_layer.layer = 3
+	add_child(pause_layer)
+	pause_menu = PauseMenu.new()
+	pause_menu.hide()
+	pause_layer.add_child(pause_menu)
+
+	# Above the pause menu, which opens it.
+	var audio_layer := CanvasLayer.new()
+	audio_layer.layer = 4
+	add_child(audio_layer)
+	audio_panel = AudioPanel.new()
+	audio_panel.hide()
+	audio_panel.closed.connect(_close_audio)
+	audio_layer.add_child(audio_panel)
+
 
 func _connect_signals() -> void:
 	hud.start_wave_pressed.connect(_start_wave)
 	hud.web_pressed.connect(_toggle_web)
 	hud.speed_pressed.connect(_cycle_speed)
+	hud.audio_pressed.connect(_open_audio)
+	hud.pause_menu_pressed.connect(open_pause_menu)
+	pause_menu.resume_requested.connect(close_pause_menu)
+	pause_menu.audio_requested.connect(_open_audio)
+	pause_menu.leave_requested.connect(_leave_from_menu)
 	hud.tower_chosen.connect(_choose_tower)
 	hud.skill_pressed.connect(_skill_button)
 	hud.sell_pressed.connect(_sell_selected)
@@ -86,9 +129,13 @@ func _connect_signals() -> void:
 	hud.ascend_pressed.connect(_ascend_selected)
 	hud.hybrid_pressed.connect(_hybrid_selected)
 	hud.play_again_pressed.connect(func() -> void: get_tree().reload_current_scene())
-	hud.menu_pressed.connect(func() -> void: get_tree().change_scene_to_file(MENU_SCENE))
-	hud.campaign_pressed.connect(func() -> void: get_tree().change_scene_to_file(CAMPAIGN_SCENE))
+	hud.menu_pressed.connect(func() -> void: _leave(MENU_SCENE))
+	hud.campaign_pressed.connect(func() -> void: _leave(CAMPAIGN_SCENE))
 	hud.next_stage_pressed.connect(_play_next_stage)
+	hud.hero_pressed.connect(_hero_button)
+	hud.move_pressed.connect(_move_selected)
+	board.hero_aimed.connect(_cast_hero)
+	sim.hero_summoned.connect(_on_hero_summoned)
 	board.selection_changed.connect(func(tower: SimTower) -> void: hud.selected = tower)
 	board.placement_failed.connect(func(reason: String) -> void: hud.show_message(reason, UiStyle.BAD))
 	board.skill_aimed.connect(_cast_skill)
@@ -104,8 +151,21 @@ func _process(delta: float) -> void:
 	# A skill can only be aimed while there is a wave to cast it on.
 	if not board.aiming.is_empty() and sim.state != RunSim.State.WAVE:
 		board.cancel_aiming()
+	if not board.aiming_hero.is_empty() and sim.state != RunSim.State.WAVE:
+		board.cancel_hero_actions()
+	if board.moving != null and sim.state != RunSim.State.BUILDING:
+		board.cancel_hero_actions()
 	hud.aiming = board.aiming
-	if paused or web.visible or sim.state != RunSim.State.WAVE:
+	hud.aiming_hero = board.aiming_hero
+	hud.summoning = board.summoning
+	if paused or web.visible or cinematic != null:
+		_accumulator = 0.0
+		return
+	if sim.state == RunSim.State.BUILDING and sim.break_time_left >= 0.0 and _bot == null:
+		# In an assault the next wave comes on its own after a short break.
+		if sim.tick_break(delta * SPEEDS[_speed_index]):
+			_close_web()
+	if sim.state != RunSim.State.WAVE:
 		_accumulator = 0.0
 		return
 	_accumulator += delta * SPEEDS[_speed_index]
@@ -122,21 +182,32 @@ func _process(delta: float) -> void:
 ## Tab is handled before the interface sees it, or it would move the keyboard focus instead.
 func _input(event: InputEvent) -> void:
 	var key := event as InputEventKey
-	if key != null and key.pressed and not key.echo and key.keycode == KEY_TAB and not web.visible:
+	if key != null and key.pressed and not key.echo and key.keycode == KEY_TAB and not web.visible \
+			and not pause_menu.visible:
 		hud.cycle_shop_tier()
 		get_viewport().set_input_as_handled()
 
 
-## Keys: Space starts the wave, T opens the skill web, F changes speed, P pauses, Esc backs out,
+## Keys: Space starts the wave, T opens the skill web, F changes speed, P pauses, O opens the audio
+## settings, M mutes everything, Esc backs out and then opens the pause menu,
 ## 1-9 pick a tower from the open shop page (Tab turns the page), Q W E A S D cast the skills,
-## Z X C V B N press the selected tower's upgrade buttons, and Delete sells it.
+## F1 to F4 summon the heroes and then use their abilities, Z X C V B N press the selected tower's
+## upgrade buttons, and Delete sells it.
 func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
-	if key == null or not key.pressed or key.echo:
+	if key == null or not key.pressed or key.echo or cinematic != null or audio_panel.visible:
+		return
+	if pause_menu.visible:
+		_pause_menu_key(key.keycode)
+		get_viewport().set_input_as_handled()
 		return
 	match key.keycode:
 		KEY_SPACE:
 			_start_wave()
+		KEY_O:
+			_open_audio()
+		KEY_M:
+			_toggle_mute()
 		KEY_T:
 			_toggle_web()
 		KEY_F:
@@ -151,6 +222,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_DELETE, KEY_BACKSPACE:
 			if not web.visible:
 				_sell_selected()
+		KEY_F1, KEY_F2, KEY_F3, KEY_F4:
+			if not web.visible:
+				_hero_key(hud.hero_for_hotkey(Hud.HERO_KEYS.find(key.keycode)))
 		_:
 			var skill := Hud.SKILL_KEYS.find(key.keycode)
 			var action := Hud.ACTION_KEYS.find(key.keycode)
@@ -178,16 +252,43 @@ func _toggle_web() -> void:
 	elif not sim.is_over():
 		board.cancel_placing()
 		board.cancel_aiming()
+		board.cancel_hero_actions()
 		web.show_tree(sim.tree, SkillWebView.element_regions(sim.config.elements))
+		SoundPlayer.sfx(&"ui_open")
 
 
 func _close_web() -> void:
+	if web.visible:
+		SoundPlayer.sfx(&"ui_close")
 	web.hide()
 
 
 func _cycle_speed() -> void:
 	_speed_index = (_speed_index + 1) % SPEEDS.size()
 	hud.speed = SPEEDS[_speed_index]
+	SoundPlayer.sfx(&"ui_toggle")
+
+
+## The audio settings pause the run while they are open.
+func _open_audio() -> void:
+	if audio_panel.visible:
+		return
+	_paused_before_audio = paused
+	paused = true
+	hud.paused = true
+	audio_panel.refresh()
+	audio_panel.show()
+
+
+func _close_audio() -> void:
+	# Opened from the pause menu, the run keeps waiting until the menu is closed too.
+	paused = (_paused_before_audio and not sim.is_over()) or pause_menu.visible
+	hud.paused = paused
+
+
+func _toggle_mute() -> void:
+	var muted := AudioSettings.toggle_mute_all()
+	hud.show_message("Sound off (M)" if muted else "Sound on", UiStyle.TEXT_DIM if muted else UiStyle.TEXT)
 
 
 func _toggle_pause() -> void:
@@ -195,12 +296,16 @@ func _toggle_pause() -> void:
 		return
 	paused = not paused
 	hud.paused = paused
+	SoundPlayer.sfx(&"ui_pause" if paused else &"ui_resume")
 
 
-## Esc backs out of whatever is open: the web, then aiming, placing, the selection, then pause.
+## Esc backs out of whatever is open: the web, then aiming, placing, the selection, and then
+## opens the pause menu.
 func _escape() -> void:
 	if web.visible:
 		_close_web()
+	elif board.has_hero_action():
+		board.cancel_hero_actions()
 	elif not board.aiming.is_empty():
 		board.cancel_aiming()
 	elif not board.placing.is_empty():
@@ -208,7 +313,61 @@ func _escape() -> void:
 	elif board.selected != null:
 		board.select(null)
 	else:
-		_toggle_pause()
+		open_pause_menu()
+
+
+# --- Pause menu ----------------------------------------------------------------
+
+## Opens the Esc menu. The run waits while it is open.
+func open_pause_menu() -> void:
+	if pause_menu.visible:
+		return
+	board.cancel_placing()
+	board.cancel_aiming()
+	board.cancel_hero_actions()
+	_close_web()
+	paused = true
+	hud.paused = true
+	var stage := sim.config.stage
+	var where := stage.display_name if stage != null else sim.config.map.display_name
+	pause_menu.open(where, stage != null, sim.is_over())
+	SoundPlayer.sfx(&"ui_pause")
+
+
+## Resume: the run goes on, even if it was paused with P before the menu opened.
+func close_pause_menu() -> void:
+	if not pause_menu.visible:
+		return
+	pause_menu.hide()
+	paused = false
+	hud.paused = false
+	SoundPlayer.sfx(&"ui_resume")
+
+
+## Keys while the menu is open: Esc resumes (or steps back from "Leave the run?"), O opens the
+## audio settings and M mutes. Every other key waits until the menu closes.
+func _pause_menu_key(keycode: Key) -> void:
+	match keycode:
+		KEY_ESCAPE:
+			if pause_menu.is_confirming():
+				pause_menu.back()
+			else:
+				close_pause_menu()
+		KEY_O:
+			if not pause_menu.is_confirming():
+				_open_audio()
+		KEY_M:
+			_toggle_mute()
+
+
+func _leave_from_menu(scene: StringName) -> void:
+	match scene:
+		&"quit":
+			get_tree().quit()
+		&"campaign":
+			_leave(CAMPAIGN_SCENE)
+		_:
+			_leave(MENU_SCENE)
 
 
 func _choose_tower(tower_id: StringName) -> void:
@@ -249,6 +408,7 @@ func _begin_skill(skill_id: StringName) -> void:
 	var skill: SkillData = sim.config.skills[skill_id]
 	if skill.is_targeted():
 		board.begin_aiming(skill_id)
+		SoundPlayer.sfx(&"skill_aim")
 		hud.show_message("%s: click where it should land" % skill.display_name)
 	else:
 		_cast_skill(skill_id, Vector2.ZERO)
@@ -264,9 +424,88 @@ func _cast_skill(skill_id: StringName, at: Vector2) -> void:
 		hud.show_message(skill.display_name, sim.config.element_color(skill.element).lightened(0.35))
 
 
+## A hero's portrait: summons the hero if it is not on the field yet, else uses its ability.
+## Clicking it again while placing or aiming stops.
+func _hero_button(hero_id: StringName) -> void:
+	if board.summoning == hero_id or board.aiming_hero == hero_id:
+		board.cancel_hero_actions()
+	else:
+		_begin_hero(hero_id)
+
+
+## A hero's key: like its portrait, but pressed again while aiming it casts where the mouse is.
+func _hero_key(hero_id: StringName) -> void:
+	if hero_id.is_empty():
+		return
+	if board.aiming_hero == hero_id and board.mouse_inside():
+		_cast_hero(hero_id, board.mouse_point())
+	elif board.summoning == hero_id:
+		board.cancel_hero_actions()
+	else:
+		_begin_hero(hero_id)
+
+
+func _begin_hero(hero_id: StringName) -> void:
+	if sim.is_over():
+		return
+	var hero := sim.hero_data(hero_id)
+	if hero == null:
+		return
+	if sim.hero_tower(hero_id) == null:
+		board.begin_summoning(hero_id)
+		hud.show_message("%s: click a free tile to summon" % hero.display_name)
+		return
+	var error := sim.hero_ability_error(hero_id)
+	if not error.is_empty():
+		hud.show_message(error, UiStyle.BAD)
+		return
+	var ability := sim.hero_tower(hero_id).hero_ability()
+	if ability.is_aimed():
+		board.begin_hero_aiming(hero_id)
+		SoundPlayer.sfx(&"skill_aim")
+		hud.show_message("%s: click where it should land" % ability.display_name)
+	else:
+		_cast_hero(hero_id, Vector2.ZERO)
+
+
+func _cast_hero(hero_id: StringName, at: Vector2) -> void:
+	var error := sim.hero_ability_error(hero_id)
+	board.cancel_hero_actions()
+	if not error.is_empty():
+		hud.show_message(error, UiStyle.BAD)
+		return
+	var tower := sim.hero_tower(hero_id)
+	var ability := tower.hero_ability()
+	if sim.use_hero_ability(hero_id, at):
+		hud.show_message("%s  ·  %s" % [ability.display_name, _bark(tower.hero)], UiStyle.GOLD)
+
+
+func _move_selected() -> void:
+	var tower := board.selected
+	if tower == null or not tower.is_hero():
+		return
+	var error := sim.move_error(tower, Vector2i(-1, -1)) if sim.state != RunSim.State.BUILDING or tower.moved_this_break else ""
+	if not error.is_empty():
+		hud.show_message(error, UiStyle.BAD)
+		return
+	board.begin_moving(tower)
+	hud.show_message("%s: click a free tile to march to" % tower.hero.display_name)
+
+
+func _on_hero_summoned(tower: SimTower) -> void:
+	hud.show_message("%s: \"%s\"" % [tower.hero.display_name, _bark(tower.hero)], UiStyle.GOLD)
+
+
+static func _bark(hero: HeroData) -> String:
+	return hero.barks[randi() % hero.barks.size()] if not hero.barks.is_empty() else hero.title
+
+
 func _sell_selected() -> void:
 	var tower := board.selected
 	if tower == null:
+		return
+	if tower.is_hero():
+		hud.show_message("Heroes cannot be sold", UiStyle.BAD)
 		return
 	var refund := sim.sell_tower(tower)
 	board.select(null)
@@ -309,6 +548,7 @@ func _hybrid_selected(hybrid_id: StringName) -> void:
 func _on_run_ended(won: bool) -> void:
 	board.cancel_placing()
 	board.cancel_aiming()
+	board.cancel_hero_actions()
 	_close_web()
 	var meta_points := Progress.record_run(sim)
 	hud.show_end(won, meta_points)
@@ -316,6 +556,9 @@ func _on_run_ended(won: bool) -> void:
 		var result := Progress.record_stage(sim)
 		var next := Progress.meta.stage_after(sim.config.stage.id)
 		hud.show_stage_result(result, next != null and Progress.meta.is_stage_unlocked(next.id))
+		_story_after_run(won, result)
+		if won:
+			audio.play_stars(result.get("stars", 0))
 		if autoplay:
 			print("Autoplay stage %s: %d stars" % [sim.config.stage.id, result["stars"]])
 	if autoplay:
@@ -331,9 +574,113 @@ func _on_run_ended(won: bool) -> void:
 func _play_next_stage() -> void:
 	var next := Progress.meta.stage_after(sim.config.stage.id) if sim.config.stage != null else null
 	if next != null and Progress.play_stage(next.id):
-		get_tree().reload_current_scene()
+		var scenes := _story_after.duplicate()
+		for id in Progress.meta.story_before_stage(story, next.id):
+			if not scenes.has(id):
+				scenes.append(id)
+		_story_after.clear()
+		Progress.play_story(get_tree(), scenes, scene_file_path)
 	else:
-		get_tree().change_scene_to_file(CAMPAIGN_SCENE)
+		_leave(CAMPAIGN_SCENE)
+
+
+## Leaves the run for another screen, first playing the story the run unlocked.
+func _leave(scene: String) -> void:
+	var scenes := _story_after.duplicate()
+	_story_after.clear()
+	if autoplay:
+		scenes.clear()
+	Progress.play_story(get_tree(), scenes, scene)
+
+
+# --- Story ---------------------------------------------------------------------
+
+func _build_story() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 1
+	add_child(layer)
+	story_overlay = StoryOverlay.new()
+	layer.add_child(story_overlay)
+	story_overlay.setup(sim, story)
+	_cinematic_layer = CanvasLayer.new()
+	_cinematic_layer.layer = 5
+	add_child(_cinematic_layer)
+	sim.wave_started.connect(_on_wave_started_story)
+	sim.phase_changed.connect(_on_phase_changed_story)
+	var stage := sim.config.stage
+	if stage != null and board.art != null and not stage.is_assault():
+		# After the midpoint the lands are fought in the Long Night.
+		var land := sim.config.campaign != null and not sim.config.campaign.element.is_empty()
+		if land and story.night_from_stages_won > 0 and Progress.meta.stages_won() >= story.night_from_stages_won:
+			board.art.light_override = DayNight.NIGHT
+			board.art.day_night.set_target(DayNight.NIGHT)
+			board.art.day_night.snap()
+
+
+## Plays cinematics over the run, which waits until they are done. The bot skips them.
+func play_cinematics(ids: Array[StringName]) -> void:
+	if ids.is_empty() or autoplay:
+		for id in ids:
+			Progress.mark_seen(id)
+		return
+	if cinematic != null:
+		cinematic.queue.append_array(ids)
+		return
+	board.cancel_placing()
+	board.cancel_aiming()
+	_close_web()
+	cinematic = CinematicPlayer.new()
+	cinematic.change_scene_when_done = false
+	cinematic.story = story
+	cinematic.queue = ids.duplicate()
+	# The battle music holds while the story's own music plays.
+	if music != null and music.player != null:
+		music.player.stream_paused = true
+	cinematic.finished.connect(func() -> void:
+		cinematic.queue_free()
+		cinematic = null
+		if music != null and music.player != null:
+			music.player.stream_paused = false)
+	_cinematic_layer.add_child(cinematic)
+
+
+func _on_wave_started_story(number: int) -> void:
+	var stage := sim.config.stage
+	if stage == null:
+		return
+	var id := story.scene_at_wave(stage.id, number)
+	if id.is_empty():
+		return
+	# A scene in the middle of a stage turns the night: in the siege of Solenne, the dawn comes.
+	if board.art != null:
+		board.art.light_override = DayNight.DAWN
+	if not Progress.meta.has_seen(id):
+		play_cinematics([id])
+
+
+func _on_phase_changed_story(phase: int) -> void:
+	var movement := story.assault_movement(phase)
+	var id := StringName(str(movement.get("cinematic", "")))
+	if not id.is_empty() and story.has_cinematic(id):
+		play_cinematics([id])
+
+
+## After a stage: the city it cost (or saved), and which cinematics come next.
+func _story_after_run(won: bool, result: Dictionary) -> void:
+	var stage := sim.config.stage
+	var city := story.city(stage.id)
+	if won:
+		if not city.is_empty():
+			var saved: bool = city.get("saved", false)
+			var line := str(city.get("fall_text", ""))
+			hud.show_story_note(("%s is saved. %s" if saved else "%s has fallen, but its people got away. %s") % [city.get("name", ""), line])
+		_story_after = Progress.meta.story_after_stage(story, stage.id)
+		if not _story_after.is_empty():
+			hud.show_story_note("[color=#%s]The story continues when you leave this screen.[/color]" % UiStyle.GOLD.to_html(false))
+	else:
+		var lost := story.lost_scene(stage.id)
+		if not lost.is_empty():
+			play_cinematics([lost])
 
 
 # --- Autoplay ------------------------------------------------------------------

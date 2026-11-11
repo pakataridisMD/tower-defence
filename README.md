@@ -111,6 +111,50 @@ The bot levels and ascends its towers and casts skills, but follows one fixed pl
 60%, 45%, 30% and 20% of its lives across an element campaign's four stages, and the printed numbers already
 have a safety margin taken off.
 
+## Story
+
+The campaign tells a story in cinematics. Everything here is a first version for review: the art, voice and
+music are placeholders or design drafts until they are approved.
+
+- **The opening** plays the first time the campaign is opened, and before the first stage.
+- **Cinematics every few stages.** Each element campaign has an opening scene, a scene after its Herald (the
+  boss leading the last wave of its second stage) and one after its Warden. Plot scenes come after 6, 12 and
+  18 stages won, and the middle one ("the night of falling stars") turns every land stage to night.
+- **Cities.** Each stage defends a city. Winning tells you which city was saved, and losing which one fell.
+  The last stage of the Convergence defends the capital.
+- **Bosses.** Six Heralds and Cassivane, the Ashen Regent, lead stages. They have new tricks: a shield that
+  softens damage to nearby allies, silencing towers, blinking forward, enraging when hurt, and (the Regent)
+  escaping instead of dying. A banner and a health bar show the boss that is on the board.
+- **The assault.** After the Convergence, *The Crownless Citadel* (stage `assault_1`, Nhal Vorath) is about
+  30 minutes long. You bring down three buildings in turn: the Gatemaw, the Mirror Spire and the Crownless
+  Throne. Each one that falls lets you build further east, closes roads or releases the Heralds again, and
+  the Throne releases Vael-Orrun. The run is won when he falls. Waves start on their own 12 seconds after the
+  last one. `godot --headless -s tools/assault_sim.gd` plays it with the bot and prints a timeline.
+
+The story itself is plain JSON in `data/story/` (written from `docs/story/`):
+
+| File | What it holds |
+| --- | --- |
+| `story.json` | the prologue id, plot beats (`after_stages_won`, `after_stage`, `before_stage`), `stage_scenes` (`before`, `after`, `lost`, `during: [{wave, cinematic}]`), `night_from_stages_won`, `cities`, and the `assault` (`intro`, `movements`, `outro`) |
+| `characters.json` | the cast; `boss_enemy` links a character to its enemy for the boss banner |
+| `cinematics/<id>.json` | `{id, title, music, shots: [{text, speaker, art_note, image, voice, duration}]}` |
+
+Files are found by name when a shot leaves `image` or `voice` empty:
+
+- pictures: `assets/story/images/<cinematic>/<NN>.png` (NN counts shots from 01)
+- narration: `assets/story/voice/<cinematic>/<NN>.ogg` (`"voice": false` turns it off for a shot)
+- portraits: `assets/story/portraits/<character>.png`
+- music: `assets/story/music/<cue>.ogg`, with the cue for each cinematic in `assets/story/music/cinematic_music.json`
+
+A shot with no picture shows a card with its art note, and a shot with no voice is timed from its words, so
+the whole story can be played before its art and voice exist. In a cinematic, Space, Enter, a click or the
+right arrow moves on and Esc skips. Each cinematic plays on its own once; the save (version 3) remembers which.
+When exporting the game, add `data/story/*.json` and `assets/story/music/*.json` to the export's
+"Filters to export non-resource files".
+
+`godot --resolution 1920x1080 --fixed-fps 30 res://tools/capture.tscn -- --out=<folder> --story` takes
+screenshots of the cinematic player, two Herald fights, the assault and the campaign map with the citadel.
+
 ## Meta tree and saves
 
 Every run pays **meta points**, won or lost: one for each wave cleared and two more for a win, times the
@@ -209,6 +253,32 @@ icon in that script's `SKILL_ICONS`.
 `tests/game/test_tree_art.gd` fails if a tree node, region or stat has no icon. A tower or map without art
 falls back to the old flat shapes, so the game still runs while the art is being made.
 
+## Sound effects
+
+Every sound effect is designed by `tools/sfx/build.py` from real recordings: CC0 orchestral percussion,
+brass and found sounds (VSCO 2 Community Edition), a sampled choir (FluidR3_GM, MIT) and bosses' lines spoken
+by Kokoro text to speech (Apache-2.0), all free to ship commercially (`assets/audio/sfx/LICENSE.md`). See
+`tools/sfx/README.md` for how the recipes work and how to add a sound.
+
+```
+tools/sfx/fetch_samples.sh                    # once: the recordings and voice model (~2.5 GB, not in Git)
+python3 tools/sfx/build.py                    # writes assets/audio/sfx/ and its catalogue.json (~2 minutes)
+python3 tools/sfx/build.py --only boss_gorrath  # just the sounds whose names contain the text
+godot --headless --import
+```
+
+The game plays them through the `Sfx` autoload (`scripts/core/sound_player.gd`), which reads
+`assets/audio/sfx/catalogue.json` for each sound's variations, bus, volume and how often it may play, and
+pans board sounds by where they happen. `scripts/game/game_audio.gd` listens to the run and decides what to
+play: an attack sound for every tower (built from its elements and how it fights), hits and explosions,
+enemy deaths, the war horn of each wave, the base being hit, skills, building and upgrading, and for every
+boss a reveal, footsteps, lines from the story in its own voice, a roar when it is badly wounded and a death. Buttons click on
+their own. The buses are Master, Music, Sfx, Ui and Voice (`default_bus_layout.tres`); big moments duck the
+Music bus for a few seconds.
+
+`tests/game/test_sound.gd` fails if a tower, enemy, boss or skill in `data/` has no sound, so new content
+needs a rerun of `build.py` (towers get theirs automatically from their elements).
+
 ## Running the tests
 
 In the editor, open the **GUT** panel at the bottom and press **Run All**.
@@ -259,8 +329,10 @@ scripts/
              send it player actions
   ui/        main menu, meta tree screen, shared styles, data check
 tests/       GUT tests: unit tests and full simulated runs
-tools/       benchmark and screenshot tools, and the art generators in tools/art/ (not part of the game)
-assets/      art and audio. Generated art in assets/art/ is plain Git files, everything else Git LFS
+tools/       benchmark and screenshot tools, the art generators in tools/art/ and the sound effect
+             designer in tools/sfx/ (not part of the game)
+assets/      art and audio. Generated art in assets/art/ and sound in assets/audio/sfx/ are plain Git
+             files, everything else Git LFS
 addons/gut/  the GUT test framework (MIT licence)
 ```
 

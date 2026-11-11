@@ -251,14 +251,23 @@ spawn_interval = 1.1
 start_delay = 2.0
 
 [sub_resource type="Resource" id="r41"]
+script = ExtResource("2_s")
+enemy = &"gorrath"
+count = 1
+spawn_interval = 1.0
+start_delay = 4.0
+
+[sub_resource type="Resource" id="r42"]
 script = ExtResource("3_s")
 element = &"earth"
-groups = Array[ExtResource("2_s")]([SubResource("r39"), SubResource("r40")])
+is_boss = true
+health_multiplier = 0.72
+groups = Array[ExtResource("2_s")]([SubResource("r39"), SubResource("r40"), SubResource("r41")])
 
 [resource]
 script = ExtResource("1_s")
 id = &"c_storm_2"
 display_name = "Galeback Ridge"
 health_growth = 1.1
-health_scale = 2.97
-waves = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r6"), SubResource("r10"), SubResource("r13"), SubResource("r16"), SubResource("r20"), SubResource("r24"), SubResource("r27"), SubResource("r30"), SubResource("r34"), SubResource("r38"), SubResource("r41")])
+health_scale = 2.82
+waves = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r6"), SubResource("r10"), SubResource("r13"), SubResource("r16"), SubResource("r20"), SubResource("r24"), SubResource("r27"), SubResource("r30"), SubResource("r34"), SubResource("r38"), SubResource("r42")])

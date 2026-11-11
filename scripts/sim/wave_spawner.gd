@@ -39,3 +39,8 @@ func is_finished() -> bool:
 
 func remaining() -> int:
 	return _times.size() - _next
+
+
+## Drops the rest of the wave: nothing more spawns.
+func stop() -> void:
+	_next = _times.size()
