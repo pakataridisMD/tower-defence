@@ -784,7 +784,7 @@ Come in, then.
 
 *Final level, wave 39: Vael-Orrun comes out himself.* About 0:16.
 
-**1. [The fortress gates opening. Vael-Orrun walking out: crowned, armoured, a crown-shaped wound in his brow.]**
+**1. [The fortress gates opening. Vael-Orrun walking out: huge, bare, dark hard-muscled hide, the molten core burning behind his ribs.]**
 
 > **NARRATOR (YSOLDE):** When his army was spent, he came out himself.
 
@@ -814,7 +814,7 @@ Come in, then.
 
 ## The Truth (`the_truth`)
 
-*After the fortress falls (end of the final level). About 2 minutes.* About 2:12.
+*After the fortress falls (end of the final level). About 2 minutes.* About 2:10.
 
 **1. [Seraphel in the inner gate, armour drained of colour, sword blazing, holding the doors apart as the army runs past her. Her light goes out.]**
 
@@ -864,9 +864,9 @@ It is still listening.
 
 > **NARRATOR (YSOLDE):** Mirelle had seen a death at the end of the war. It was his.
 
-**12. [Oswin placing the white lantern into the crown-shaped wound. Vael-Orrun turns to white light, which rises through the stone sky.]**
+**12. [Oswin pressing the white lantern into the molten core behind Vael-Orrun's ribs. Vael-Orrun turns to white light, which rises through the stone sky.]**
 
-> **NARRATOR (YSOLDE):** Oswin set his lantern in the wound in his brow, where his crown had been. He turned to light, and the light went up out of the Hollow, home to Solenne, into the Heartstone that had been his crown.
+> **NARRATOR (YSOLDE):** Oswin pressed his lantern into the burning core in his chest. He turned to light, and the light went up out of the Hollow, home to Solenne, into the Heartstone that had been his crown.
 
 **13. [Solenne at dawn: a beam of white light coming down out of the sky into the Hall of the Ring, and the Heartstone blazing.]**
 

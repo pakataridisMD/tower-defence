@@ -21,7 +21,7 @@ Seven Arts"):
 | Tidelore | Water | Frost spreading in fractal patterns, frozen moments (droplets hanging mid-air), ghostly reflections in ice |
 | Runecarving | Earth | Square ochre runes cut into stone that glow and crack, falling grit, heavy shockwaves |
 | Starcraft | Void | Lines of a star-chart drawn between points of light, then everything inside them going dark; violet gravity wells |
-| Grand Alchemy / Unmaking | None | Colour draining to grey, effects that freeze and crumble like ash, a crown-shaped hole |
+| Grand Alchemy / Unmaking | None | Colour draining to grey, effects that freeze and crumble like ash |
 | Spirecraft | All | Two or three arts' effects braided together, bound inside carved stone with six-colour keystone glyphs |
 
 ---
@@ -190,7 +190,7 @@ black iron set with real stars, the only one whose face is hidden even then).
 - **Signature:** The lantern on the staff. In silhouette alone he must be recognisable.
 - **Key scenes:** prologue (drives the Black Gate back, falls through with his lantern lit), void_intro (a white
   light walking at the bottom of the Rift), dawn (returns with the last piece of the Sunstone; dawn breaks),
-  heart_falls, the_truth (sets the lantern in the wound in Vael-Orrun's brow).
+  heart_falls, the_truth (presses the lantern into the burning core in Vael-Orrun's chest).
 
 ---
 
@@ -219,11 +219,11 @@ black iron set with real stars, the only one whose face is hidden even then).
 - **Ysmera** (his queen, flashback only): a Tidefolk healer, round-faced, laughing, sea-green shawl.
   **Caelan** (his son, flashback only): about seven, his father's grey robes cut down to size.
 - **Look now (final level):** what two thousand years in the Hollow with the Hush made of him: the huge
-  humanoid demon king from the boss redesign, with a crown-shaped wound in his brow where his crown sat.
-  Three forms on wave 39: the High King (crowned, armoured), the Sunderer (the six stolen magics at once),
+  demon king from the boss redesign: no crown, no clothes, dark hard-muscled hide, a molten core
+  behind his ribs (sheet: /mnt/project-files/art-test/vael-orrun-bare.png). Three forms on wave 39: the High King, the Sunderer (the six stolen magics at once),
   the Unmade (a beast, the Hush showing through). Before the final level he is never seen whole: a huge
   shape in the dark; when he speaks, every colour on screen drains toward grey.
-- **Signature:** The crown-shaped wound.
+- **Signature:** The molten core burning behind his ribs.
 - **Key scenes:** prologue (the songs' tyrant), assault_intro (voice), the_high_king, the_truth (the man
   inside the monster; turned to light).
 

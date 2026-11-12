@@ -486,9 +486,10 @@ These details from it are canon:
 | **The six mad Wardens** | Nothing. They are mad. | The six old monarchs, whose sleep holds the Gate. | Each is fought and freed at stage 4 of its land, and joins us. |
 
 **Vael-Orrun** is a tragic villain, not a monster at heart, and the game should let the player pity him by
-the end. He speaks rarely. His three forms on wave 39 are **the High King** (crowned, armoured), **the
+the end. He speaks rarely. His three forms on wave 39 are **the High King**, **the
 Sunderer** (the six stolen magics at once) and **the Unmade** (a beast, the Hush showing through him).
-He wears a crown-shaped wound in his brow where his crown once sat.
+He is huge and bare, with dark hard-muscled hide and a molten core burning behind his ribs (art
+redesign of 2026-11-12, pending approval); Oswin's lantern goes into that core in The Truth.
 
 **Cassivane** is not cruel; he is certain. He appears as an ally until the midpoint. Boss of Crossmere
 (Converge 1), where he retreats; final form at the capital as **the Sundered Heart** (Converge 3).
@@ -546,7 +547,7 @@ wept and one that never did; Vael-Orrun's "It was never my own voice. It is stil
 | P | After Converge 2 | The Lumen Gate (`lumen_gate`) | Solenne's outer wall falls, the only wall we lose. Seraphel joins. |
 | Q | Converge 3 | `capital_prelude`, `dawn` (wave 17), `heart_falls` (or `solenne_falls` if lost) | The Sundered Heart comes for the Heartstone. Ysolde sees a light on the east road. Oswin walks up it with the last piece of the Sunstone and relights it; the dark sinks back into the Rift. Cassivane dies in Ilyra's arms. We march east. |
 | R | Final level | `assault_intro`, `the_high_king` (wave 39), `the_turning` (wave 40) | Down the Rift road, through the gap, dig in before Nhal Vorath. 38 waves of defence, Echo-Heralds every sixth wave. Wave 39: Vael-Orrun's three forms, then he flees. Wave 40: we attack the fortress; Brannoc breaks the gate. |
-| S | Fortress falls | The Truth (`the_truth`) | Seraphel dies at the inner gate. The Wardens confess the Night of Six Knives. "It was never my own voice." Mirelle's foreseen death was his. Oswin's lantern in the wound in his brow; his light goes home to the Heartstone. |
+| S | Fortress falls | The Truth (`the_truth`) | Seraphel dies at the inner gate. The Wardens confess the Night of Six Knives. "It was never my own voice." Mirelle's foreseen death was his. Oswin's lantern in the burning core in his chest; his light goes home to the Heartstone. |
 | T | Then | The Seventh Colour (`epilogue`) | The Wardens seal the Gate. The towns rebuild; Sylvaine plants the seed; Fennick and Seraphel are buried. "I have felt every one of them." Credits. |
 | U | After the credits | One Door (`the_hush`) | The Hush's reveal. "Seven crowns. One door. Thank you." |
 

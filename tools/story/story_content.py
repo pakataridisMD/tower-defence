@@ -600,8 +600,8 @@ cin("assault_intro", "Through the Gate", "Before the final level (40 waves under
 
 cin("the_high_king", "The High King", "Final level, wave 39: Vael-Orrun comes out himself.",
     shot("When his army was spent, he came out himself.",
-         "The fortress gates opening. Vael-Orrun walking out: crowned, armoured, a crown-shaped wound in "
-         "his brow."),
+         "The fortress gates opening. Vael-Orrun walking out: huge, bare, dark hard-muscled hide, the molten "
+         "core burning behind his ribs."),
     shot("Six of you. Always six. Ask them what they did at my table.",
          "Vael-Orrun turning toward the six Wardens.", speaker="vael_orrun"),
     shot("None of the Wardens answered him.",
@@ -649,11 +649,10 @@ cin("the_truth", "The Truth", "After the fortress falls (end of the final level)
          "camera.", speaker="vael_orrun"),
     shot("Mirelle had seen a death at the end of the war. It was his.",
          "Mirelle at the edge of the hall, blind eyes glowing teal."),
-    shot("Oswin set his lantern in the wound in his brow, where his crown had been. He turned to light, and "
-         "the light went up out of the Hollow, home to Solenne, into the Heartstone that had been his "
-         "crown.",
-         "Oswin placing the white lantern into the crown-shaped wound. Vael-Orrun turns to white light, which "
-         "rises through the stone sky."),
+    shot("Oswin pressed his lantern into the burning core in his chest. He turned to light, and the light "
+         "went up out of the Hollow, home to Solenne, into the Heartstone that had been his crown.",
+         "Oswin pressing the white lantern into the molten core behind Vael-Orrun's ribs. Vael-Orrun turns "
+         "to white light, which rises through the stone sky."),
     shot("He wanted the middle of the world. So we gave it to him. Not as its king.\n\nAs its light.",
          "Solenne at dawn: a beam of white light coming down out of the sky into the Hall of the Ring, and "
          "the Heartstone blazing."),
