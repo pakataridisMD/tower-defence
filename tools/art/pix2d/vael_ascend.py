@@ -211,6 +211,212 @@ def vael_ascend(pose=None, pad=0):
     return s
 
 
-ASCEND = {"vael_ascend": vael_ascend}
+# ---- the bare version (Doctor Paris, 2026-11-12): no coat, no crown wound, no fire; naked dark muscled hide
+FLESH = [(20, 10, 14), (44, 24, 28), (66, 37, 39), (90, 53, 50), (122, 76, 66)]
+BONE = [(30, 24, 24), (64, 52, 48), (108, 94, 84), (154, 140, 124), (204, 192, 172)]
+
+
+def _nrm(x0, y0, x1, y1):
+    """Unit normal of a segment, turned to face the light (up, then left)."""
+    dx, dy = x1 - x0, y1 - y0
+    L = math.hypot(dx, dy) or 1.0
+    nx, ny = -dy / L, dx / L
+    if ny > 0.15 or (abs(ny) <= 0.15 and nx > 0):
+        nx, ny = -nx, -ny
+    return nx, ny, dx / L, dy / L
+
+
+def _mlimb(s, x0, y0, x1, y1, r0, r1, belly=0.38, bk=1.0):
+    """A hard-muscled limb in flat planes: dark base, lit side, a bulging belly with a hot spot, a seam on the shadow side."""
+    m = s.capsule(x0, y0, x1, y1, r0, r1)
+    s.fill(m, FLESH[1])
+    s.a |= m
+    nx, ny, ux, uy = _nrm(x0, y0, x1, y1)
+    lit = s.capsule(x0 + nx * r0 * 0.4, y0 + ny * r0 * 0.4, x1 + nx * r1 * 0.4, y1 + ny * r1 * 0.4, r0 * 0.62, r1 * 0.62) & m
+    s.fill(lit, FLESH[2])
+    L = math.hypot(x1 - x0, y1 - y0)
+    bx, by = x0 + (x1 - x0) * belly, y0 + (y1 - y0) * belly
+    r = r0 + (r1 - r0) * belly
+    rot = math.atan2(uy, ux)
+    s.fill(s.ellipse(bx + nx * r * 0.3, by + ny * r * 0.3, L * 0.26 * bk, r * 0.62, rot) & m, FLESH[3])
+    s.fill(s.ellipse(bx + nx * r * 0.55, by + ny * r * 0.55, L * 0.12 * bk, r * 0.22, rot) & m, FLESH[4])
+    for o in (0.45, 0.55):
+        s.line(bx - ux * L * 0.22 - nx * r * o, by - uy * L * 0.22 - ny * r * o,
+               bx + ux * L * 0.34 - nx * r * o, by + uy * L * 0.34 - ny * r * o, FLESH[0])     # the seam under the belly
+    return m
+
+
+def _bclaw(s, hx, hy, ang, n=5, ln=17):
+    """A spread hand: a knuckled palm and long hooked bone claws."""
+    s.fill(s.ellipse(hx, hy, 7, 6, ang), FLESH[2])
+    s.fill(s.ellipse(hx - 1, hy - 2, 4, 3, ang), FLESH[3])
+    for k in range(n):
+        a = ang - 1.1 + k * 0.55
+        mx, my = hx + math.cos(a) * 8, hy + math.sin(a) * 8
+        fx, fy = hx + math.cos(a) * ln, hy + math.sin(a) * ln
+        s.fill(s.capsule(hx, hy, mx, my, 2.6, 2), FLESH[2])                                    # finger
+        s.fill(s.capsule(mx, my, fx, fy, 2, 0.6), BONE[2])                                      # claw
+        s.line(fx, fy, fx + math.cos(a - 0.7) * 5, fy + math.sin(a - 0.7) * 5, BONE[3])          # the hook
+
+
+def vael_bare(pose=None, pad=0):
+    """Vael-Orrun, bare: the same floating pose, stripped to a naked hide of dark, hard muscle."""
+    s = Sprite(300, 440, pose, pad, origin=(0, 40))
+    cx = 150
+    # ---- a thin tail, curling down behind the far leg, a barb at the tip
+    s.g("tail", 146, 232)
+    tl = _curve((146, 232), (92, 268), (96, 330), 14) + _curve((96, 330), (102, 354), (88, 360), 6)[1:]
+    s.fill(_ribbon(s, tl, 4.5, 1.4), FLESH[1])
+    s.fill(_ribbon(s, tl[:10], 2.0, 0.8), FLESH[2])
+    s.fill(s.poly([(80, 352), (96, 358), (84, 372)]), BONE[2])
+    # ---- hips, under the thighs
+    s.g("body")
+    hips = s.poly([(128, 194), (172, 194), (178, 214), (150, 234), (122, 214)])
+    s.fill(hips, FLESH[1])
+    s.a |= hips
+    # ---- legs: heavy thighs, long hanging shins, clawed feet pointed down
+    for grp, sub, (hx, hy), (kx, ky), (ax, ay), fs in (("leg_f", "shin_f", (137, 214), (129, 286), (125, 346), -1),
+                                                       ("leg_n", "shin_n", (163, 214), (170, 284), (168, 344), 1)):
+        s.g(grp, hx, hy)
+        _mlimb(s, hx, hy, kx, ky, 18, 11, belly=0.38)
+        s.fill(s.ellipse(kx - fs * 3, ky - 13, 6, 8) & s.capsule(hx, hy, kx, ky, 18, 11), FLESH[3 if fs < 0 else 2])  # teardrop above the knee
+        s.line(hx + fs * 2, hy + 14, kx + fs * 4, ky - 6, FLESH[0])                            # the split between the thigh muscles
+        s.g(sub, kx, ky, grp)
+        s.fill(s.ellipse(kx, ky, 10, 8), FLESH[2])
+        s.fill(s.ellipse(kx - 2, ky - 1, 5, 4), FLESH[3])                                        # kneecap
+        _mlimb(s, kx, ky + 4, ax, ay, 11, 5, belly=0.26, bk=0.85)                                # calf
+        s.fill(s.poly([(ax - 5, ay - 2), (ax + 5, ay - 2), (ax + 3, ay + 16), (ax - 1, ay + 20)]), FLESH[1])
+        s.fill(s.poly([(ax - 4, ay - 2), (ax, ay - 2), (ax - 1, ay + 16)]), FLESH[2])
+        for k in (-3, 0, 3):                                                                     # toe claws hanging
+            s.fill(s.poly([(ax + k - 1.5, ay + 16), (ax + k + 1.5, ay + 16), (ax + k, ay + 28 - abs(k))]), BONE[2])
+    s.g("body")
+    s.line(150, 222, 150, 240, FLESH[0])                                                         # the crease between the thighs
+    # ---- torso: a broad V of muscle, the sternum split on molten light behind bars of rib
+    torso = s.poly([(102, 108), (198, 108), (190, 140), (170, 198), (130, 198), (110, 140)])
+    s.fill(torso, FLESH[1])
+    s.a |= torso
+    s.fill(s.poly([(102, 108), (150, 106), (150, 198), (130, 198), (110, 140)]), FLESH[2])
+    s.line(129, 200, 147, 228, FLESH[0])                                                         # the hip lines, a hard V
+    s.line(171, 200, 153, 228, FLESH[0])
+    s.line(128, 198, 146, 224, FLESH[3])
+    for sgn, base, top in ((-1, 2, 3), (1, 1, 2)):                                               # obliques over the flanks
+        s.fill(s.poly([(150 + sgn * 34, 150), (150 + sgn * 20, 158), (150 + sgn * 18, 198), (150 + sgn * 22, 202), (150 + sgn * 30, 182)]),
+               FLESH[base])
+        for y in (148, 157, 166):                                                                # serratus fingers
+            s.line(150 + sgn * 36, y, 150 + sgn * 26, y + 5, FLESH[0])
+            s.line(150 + sgn * 35, y + 2, 150 + sgn * 28, y + 6, FLESH[top])
+    s.fill(s.ellipse(150, 177, 18, 26) & s.rect(130, 152, 171, 202), FLESH[0])                 # the abdomen: three pairs of rounded slabs
+    for row in range(3):
+        y = 164 + row * 12
+        for sgn in (-1, 1):
+            x = 150 + sgn * 8
+            s.fill(s.ellipse(x, y, 7, 5.5), FLESH[2 if sgn < 0 else 1])
+            s.fill(s.ellipse(x - 1.5, y - 1.5, 4.5, 3), FLESH[3 if sgn < 0 else 2])
+            if sgn < 0:
+                s.px(x - 3, y - 3, FLESH[4])
+    for sgn, base, top, hi in ((-1, 2, 3, 4), (1, 1, 2, 3)):                                     # pectorals: lit tops, deep shadow under
+        pts = [(150 + sgn * 2, 110), (150 + sgn * 46, 112), (150 + sgn * 40, 140), (150 + sgn * 18, 152), (150 + sgn * 2, 146)]
+        pec = s.poly(pts)
+        s.fill(pec, FLESH[base - 1])
+        s.fill(s.ellipse(150 + sgn * 22, 128, 21, 15) & pec, FLESH[base])                      # a rounded slab of muscle
+        s.fill(s.ellipse(150 + sgn * 25, 124, 14, 8, -sgn * 0.15) & pec, FLESH[top])
+        s.fill(s.ellipse(150 + sgn * 28, 121, 6, 3, -sgn * 0.15) & pec, FLESH[hi])
+        s.line(150 + sgn * 4, 110, 150 + sgn * 40, 111, FLESH[0])                                # the collarbone shadow
+        for o in (0, 1, 2):
+            s.line(150 + sgn * 2, 146 + o, 150 + sgn * 18, 152 + o, FLESH[0])
+            s.line(150 + sgn * 18, 152 + o, 150 + sgn * 40, 140 + o, FLESH[0])
+    core = s.ellipse(150, 132, 9, 22)
+    for r, col in ((1.0, HOT[0]), (0.8, HOT[1]), (0.6, HOT[2]), (0.4, HOT[3]), (0.22, HOT[4]), (0.1, HOT[5])):
+        s.fill(s.ellipse(150, 132, 9 * r + 0.5, 22 * r + 0.5) & core, col, glow=True)
+    for k in range(5):                                                                           # rib bars across the light
+        y = 116 + k * 7
+        w = 10 - abs(k - 2) * 1.5
+        s.fill(s.poly([(150 - w - 3, y), (150, y + 3), (150 + w + 3, y), (150 + w + 3, y + 3), (150, y + 6), (150 - w - 3, y + 3)]),
+               BONE[1])
+        s.line(150 - w - 3, y, 150, y + 3, BONE[2])
+    for k, col in enumerate(RING):                                                              # the six stolen colours, faint
+        s.px(145 + k * 2, 128 + (k % 2) * 8, col, glow=True)
+    vrng = np.random.default_rng(29)
+    for _ in range(7):                                                                           # ember cracks spreading from the core
+        a = vrng.uniform(0, 6.28)
+        x, y = 150 + math.cos(a) * 10, 132 + math.sin(a) * 22
+        for j in range(3):
+            nx_, ny_ = x + math.cos(a) * 5 + vrng.uniform(-2, 2), y + math.sin(a) * 5 + vrng.uniform(-2, 2)
+            s.line(x, y, nx_, ny_, HOT[1] if j else HOT[2], glow=True)
+            x, y = nx_, ny_
+    # ---- bone spines breaking out of the shoulders and back
+    for sgn in (-1, 1):
+        for k in range(5):
+            a = -math.pi / 2 + sgn * (0.3 + k * 0.24)
+            bx, by = cx + sgn * (20 + k * 6), 104 + k * 2
+            L = 26 + (k % 2) * 12 - k * 2
+            tip = (bx + math.cos(a) * L, by + math.sin(a) * L)
+            s.fill(s.poly([(bx - 3, by + 2), (bx + 3, by + 2), tip]), BONE[1])
+            s.line(bx + sgn * -2, by, tip[0], tip[1], BONE[2])
+    # ---- neck and traps
+    s.fill(s.poly([(136, 92), (164, 92), (176, 110), (124, 110)]), FLESH[1])
+    s.fill(s.poly([(136, 92), (150, 92), (150, 110), (124, 110)]), FLESH[2])
+    s.line(140, 96, 148, 112, FLESH[3])
+    # ---- head: a long demon skull of dark hide, heavy brow, horns, a wild mane behind
+    s.g("head", cx, 104)
+    mrng = np.random.default_rng(17)
+    for k in range(19):
+        a = -math.pi / 2 + (k - 9) * 0.17 + mrng.uniform(-0.08, 0.08)
+        L = mrng.uniform(8, 34) * (1.0 - abs(k - 9) * 0.03)
+        tip = (cx + math.cos(a) * (L + 16), 74 + math.sin(a) * (L + 16))
+        s.fill(s.poly([(cx + math.cos(a - 0.12) * 12, 74 + math.sin(a - 0.12) * 12),
+                       (cx + math.cos(a + 0.12) * 12, 74 + math.sin(a + 0.12) * 12), tip]), SIL_D[2])
+    for sgn in (-1, 1):
+        pts = _curve((cx + sgn * 10, 62), (cx + sgn * 34, 44), (cx + sgn * 20, 10), 12)
+        s.fill(_ribbon(s, pts, 5, 0.7), BONE[1])
+        s.fill(_ribbon(s, pts[:9], 2, 0.6), BONE[2])
+    head = s.poly([(cx - 13, 58), (cx + 13, 58), (cx + 16, 72), (cx + 11, 90), (cx + 4, 100), (cx - 4, 100), (cx - 11, 90), (cx - 16, 72)])
+    s.fill(head, FLESH[1])
+    s.a |= head
+    s.fill(s.poly([(cx - 13, 58), (cx, 58), (cx, 100), (cx - 4, 100), (cx - 11, 90), (cx - 16, 72)]), FLESH[2])
+    s.fill(s.poly([(cx - 15, 70), (cx, 76), (cx + 15, 70), (cx + 14, 74), (cx, 80), (cx - 14, 74)]), FLESH[3])  # heavy V brow
+    s.fill(s.poly([(cx - 12, 64), (cx - 2, 70), (cx - 2, 72), (cx - 13, 68)]), FLESH[3])     # ridges up the forehead
+    s.fill(s.poly([(cx + 12, 64), (cx + 2, 70), (cx + 2, 72), (cx + 13, 68)]), FLESH[2])
+    s.fill(s.poly([(cx - 13, 76), (cx - 3, 81), (cx - 4, 84), (cx - 12, 81)]), EYES, glow=True)     # eyes of white fire
+    s.fill(s.poly([(cx + 13, 76), (cx + 3, 81), (cx + 4, 84), (cx + 12, 81)]), EYES, glow=True)
+    s.pxs([(cx - 12, 77), (cx + 12, 77), (cx - 10, 82), (cx + 10, 82)], HOT[3], glow=True)
+    s.line(cx - 11, 86, cx - 6, 92, FLESH[3])                                                   # cheekbones
+    s.line(cx + 11, 86, cx + 6, 92, FLESH[0])
+    s.g("jaw", cx, 90, "head")
+    s.fill(s.poly([(cx - 8, 90), (cx + 8, 90), (cx + 5, 99), (cx, 101), (cx - 5, 99)]), HOT[1], glow=True)   # a maw of embers
+    s.fill(s.poly([(cx - 4, 93), (cx + 4, 93), (cx + 2, 98), (cx - 2, 98)]), HOT[3], glow=True)
+    for x, ln in ((cx - 6, 6), (cx - 2, 4), (cx + 2, 4), (cx + 6, 6)):                         # upper fangs
+        s.fill(s.poly([(x - 1.2, 90), (x + 1.2, 90), (x, 90 + ln)]), BONE[3])
+    for x in (cx - 4, cx + 4):                                                                     # lower fangs
+        s.fill(s.poly([(x - 1, 100), (x + 1, 100), (x, 95)]), BONE[3])
+    # ---- arms spread wide and raised, claws open
+    for grp, sub, (sx, sy), (ex, ey), (hx, hy) in (("arm_f", "fore_f", (110, 116), (74, 100), (50, 72)),
+                                                   ("weapon", "hand_w", (190, 118), (230, 124), (260, 102))):
+        s.g(grp, sx, sy)
+        s.fill(s.ellipse(sx, sy - 2, 17, 13), FLESH[1])                                            # deltoid
+        s.a |= s.ellipse(sx, sy - 2, 17, 13)
+        s.fill(s.ellipse(sx - 2, sy - 5, 12, 8), FLESH[2])
+        s.fill(s.ellipse(sx - 4, sy - 8, 7, 3.5), FLESH[3 if sx < cx else 2])
+        _mlimb(s, sx, sy, ex, ey, 14, 10, belly=0.45)
+        s.g(sub, ex, ey, grp)
+        _mlimb(s, ex, ey, hx, hy, 11, 7, belly=0.3, bk=0.9)
+        _bclaw(s, hx, hy, math.atan2(hy - ey, hx - ex))
+    # ---- backlight: every edge still burns against the red sky behind him
+    s.g("body")
+    a = s.a & ~s.glow
+    up = a & ~np.roll(s.a, 1, 0)
+    dn = a & ~np.roll(s.a, -1, 0)
+    lf = a & ~np.roll(s.a, 1, 1)
+    rt = a & ~np.roll(s.a, -1, 1)
+    s.rgb[dn] = RIM_B
+    s.rgb[(lf | rt) & ~up] = RIM_S
+    s.rgb[up] = RIM_T
+    s.ink(INK)
+    _dust(s, 40, 3, [HOT[1], HOT[2], HOT[3]])
+    s.shadow(150, 404, 40, 3)
+    return s
+
+
+ASCEND = {"vael_ascend": vael_ascend, "vael_bare": vael_bare}
 CREATURES.update(ASCEND)
 BOSSES.update(ASCEND)

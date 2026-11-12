@@ -29,6 +29,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("out")
     ap.add_argument("--zoom", type=int, default=2)
+    ap.add_argument("--name", default="vael_ascend")
     a = ap.parse_args()
     ys, xs = np.mgrid[0:H, 0:W]
     sx, sy, R = 200, 230, 108
@@ -83,7 +84,7 @@ def main():
         x, y = rng.uniform(0, W), rng.uniform(0, H)
         im.putpixel((int(x), int(y)), [(255, 180, 70, 255), (255, 120, 40, 255), (255, 230, 150, 255)][int(rng.integers(3))])
     # him
-    spr = vael_ascend.vael_ascend().image()
+    spr = vael_ascend.ASCEND[a.name]().image()
     im.alpha_composite(spr, ((W - spr.width) // 2, 34))
     im = im.convert("RGB").resize((W * a.zoom, H * a.zoom), Image.NEAREST)
     im.save(a.out)
