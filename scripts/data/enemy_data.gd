@@ -56,7 +56,7 @@ extends Resource
 
 @export_group("Boss abilities")
 ## The bosses' own abilities (see BossAbilities). Each one is off while its interval is 0.
-## Every heal_interval seconds it heals heal_amount of its max health. Burning or poisoned, half as much.
+## Every heal_interval seconds it heals heal_amount of its max health. Not while burning or poisoned.
 @export var heal_interval: float = 0.0
 @export var heal_amount: float = 0.0
 ## Every shield_interval seconds it raises a barrier worth shield_amount of its max health that soaks
@@ -263,7 +263,7 @@ func power_text() -> String:
 func boss_text() -> String:
 	var lines: PackedStringArray = []
 	if heal_interval > 0.0 and heal_amount > 0.0:
-		lines.append("Every %.0f s it heals %d%% of its life (half as much while burning or poisoned)." % [heal_interval, roundi(heal_amount * 100.0)])
+		lines.append("Every %.0f s it heals %s%% of its life, but not while burning or poisoned." % [heal_interval, String.num(heal_amount * 100.0, 1)])
 	if shield_interval > 0.0 and shield_amount > 0.0:
 		lines.append("Every %.0f s it raises a barrier worth %d%% of its life for %.0f s." % [shield_interval, roundi(shield_amount * 100.0), shield_duration])
 	if bind_interval > 0.0 and bind_duration > 0.0:

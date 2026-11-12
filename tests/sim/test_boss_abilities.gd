@@ -83,7 +83,7 @@ func test_vael_orrun_has_every_ability_in_every_form() -> void:
 		assert_eq(data.doom_interval, 20.0, "%s hurls a fireball every 20 s" % form)
 
 
-func test_a_boss_heals_itself_and_burning_halves_it() -> void:
+func test_a_boss_heals_itself_but_not_while_burning() -> void:
 	var sim := _sim(&"broodmother")
 	var boss := sim.enemies[0]
 	var used := _abilities(sim)
@@ -99,7 +99,21 @@ func test_a_boss_heals_itself_and_burning_halves_it() -> void:
 	var before := boss.health
 	boss.heal_timer = 0.0
 	sim.boss_powers.tick(RunSim.STEP)
-	assert_almost_eq(boss.health - before, boss.max_health * boss.data.heal_amount * 0.5, 1.0, "half while burning")
+	assert_eq(boss.health, before, "no heal while burning")
+	assert_eq(_named(used, &"heal").size(), 1)
+	assert_almost_eq(boss.heal_timer, BossAbilities.HEAL_RETRY, 0.05, "it tries again soon")
+
+
+func test_boss_healing_stays_gentle() -> void:
+	# Doctor Paris found the bosses' healing too strong: no boss heals more than 0.4%
+	# of its life a second, from its heal and its regeneration together.
+	for data: EnemyData in registry.enemies.values():
+		if not data.tags.has(&"boss"):
+			continue
+		var per_second := data.regen_per_second
+		if data.heal_interval > 0.0:
+			per_second += data.heal_amount / data.heal_interval
+		assert_lte(per_second, 0.004, "%s heals %.2f%% a second" % [data.id, per_second * 100.0])
 
 
 func test_a_full_boss_waits_to_heal() -> void:

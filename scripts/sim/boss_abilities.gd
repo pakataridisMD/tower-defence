@@ -9,6 +9,8 @@ extends RefCounted
 
 ## Seconds a fireball flies from the boss's hand to the tower.
 const FIREBALL_FLIGHT := 1.4
+## Seconds a burning or poisoned boss waits before it tries to heal again.
+const HEAL_RETRY := 2.0
 
 ## The run, held weakly: the run owns this, and a strong reference both ways would never be freed.
 var _sim_ref: WeakRef
@@ -50,8 +52,12 @@ func tick(delta: float) -> void:
 		if data.heal_interval > 0.0 and data.heal_amount > 0.0:
 			enemy.heal_timer -= delta
 			if enemy.heal_timer <= 0.0 and enemy.health < enemy.max_health:
-				enemy.heal_timer = data.heal_interval
-				_heal(enemy)
+				# Burning or poisoned it cannot heal: it tries again a little later.
+				if enemy.has_status(&"burn") or enemy.has_status(&"poison"):
+					enemy.heal_timer = HEAL_RETRY
+				else:
+					enemy.heal_timer = data.heal_interval
+					_heal(enemy)
 		if data.shield_interval > 0.0 and data.shield_amount > 0.0:
 			enemy.shield_timer -= delta
 			if enemy.shield_timer <= 0.0:
@@ -76,12 +82,9 @@ func tick(delta: float) -> void:
 	_fly(delta)
 
 
-## Heals a share of its life; burns and poison halve it.
+## Heals a share of its life.
 func _heal(enemy: SimEnemy) -> void:
-	var share := enemy.data.heal_amount
-	if enemy.has_status(&"burn") or enemy.has_status(&"poison"):
-		share *= 0.5
-	enemy.health = minf(enemy.max_health, enemy.health + enemy.max_health * share)
+	enemy.health = minf(enemy.max_health, enemy.health + enemy.max_health * enemy.data.heal_amount)
 	_sim.boss_ability.emit(enemy, &"heal", [])
 
 

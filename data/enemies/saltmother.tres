@@ -17,6 +17,6 @@ shield_amount = 0.12
 shield_duration = 6.0
 description = "The Drowned Herald. Walks inside a column of black seawater that shields the horde around her (35% less damage), and heals 1% a second unless burning or poisoned."
 element = &"water"
-regen_per_second = 0.01
+regen_per_second = 0.0025
 ward_radius = 150.0
 ward_reduction = 0.35
