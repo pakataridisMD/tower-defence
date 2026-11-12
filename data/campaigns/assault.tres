@@ -43,7 +43,7 @@ rule_text = PackedStringArray("Every element can be drafted. The horde comes dow
 starting_lives = 30
 first_clear_points = 20
 structures = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2"), SubResource("r3")])
-build_columns = PackedInt32Array(22, 29, -1)
+build_columns = PackedInt32Array(25, 32, -1)
 auto_wave_delay = 12.0
 
 [sub_resource type="Resource" id="r5"]

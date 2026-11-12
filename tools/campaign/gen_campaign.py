@@ -861,6 +861,11 @@ def write_assault(order, c):
             if release_health != 1.0:
                 fields.append(f"release_health = {release_health}")
         srefs.append(t.sub(STRUCTURE, fields))
+    # The ground you hold ends as many cells short of each phase's building as it did on the small
+    # sketch, so towers at the front still reach it on the big map.
+    fronts = []
+    for (e, (sx, _sy), *_), v in zip(st["structures"], st["build_columns"]):
+        fronts.append(v if v < 0 else cells_at[e][0] - (sx - v))
     rules = [
         "Every element can be drafted. The horde comes down three roads from the fortress.",
         "The Black Gate: bring down the Gatemaw. It closes the two flank roads, and the six Heralds return as Echoes.",
@@ -879,8 +884,7 @@ def write_assault(order, c):
         fields.append(f"starting_lives = {tune['lives']}")
     fields += [f"first_clear_points = {st['first_clear']}",
                f"structures = {typed(t, STRUCTURE, srefs)}",
-               "build_columns = PackedInt32Array(%s)" % ", ".join(
-                   str(maps.scale_column(v, st["lanes"])) for v in st["build_columns"]),
+               "build_columns = PackedInt32Array(%s)" % ", ".join(str(v) for v in fronts),
                f"auto_wave_delay = {float(st['auto_wave_delay'])}"]
     stage_ref = t.sub(STAGE, fields)
     reward_name, reward_text, reward_mods = c["reward"]
