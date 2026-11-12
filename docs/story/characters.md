@@ -21,7 +21,7 @@ Seven Arts"):
 | Tidelore | Water | Frost spreading in fractal patterns, frozen moments (droplets hanging mid-air), ghostly reflections in ice |
 | Runecarving | Earth | Square ochre runes cut into stone that glow and crack, falling grit, heavy shockwaves |
 | Starcraft | Void | Lines of a star-chart drawn between points of light, then everything inside them going dark; violet gravity wells |
-| Grand Alchemy / Unmaking | None | Colour draining to grey, effects that freeze and crumble like ash, a crown-shaped hole |
+| Grand Alchemy / Unmaking | None | Colour draining to grey, effects that freeze and crumble like ash |
 | Spirecraft | All | Two or three arts' effects braided together, bound inside carved stone with six-colour keystone glyphs |
 
 ---
@@ -60,8 +60,8 @@ Seven Arts"):
 - **Look:** Leather forge apron over chain mail, bare scarred arms, one arm tattooed with glowing ember
   runes. Forge-hammer with a head that glows orange at the seams.
 - **Signature:** The glowing hammer and the brass-ringed beard.
-- **Key scenes:** ember_herald (freed from the salt-cage), ember_warden (walks west as Pyrrhenhall floods), night_of_falling_stars
-  (forges the bars of the Dawn Gate shut), assault_intro (the Black Gate).
+- **Key scenes:** ember_herald (freed from the salt-cage), ember_warden (Ignar wakes, the forges relight), the_turning
+  ("Gates are my trade"), the_truth (broke the fortress's outer gate).
 
 ### 3. Kaela Stormrider, Marshal of the Steppe
 - **Element:** Storm.
@@ -69,16 +69,16 @@ Seven Arts"):
 - **Look:** Long blue-grey riding coat slit for the saddle, white war-paint lightning stripes across the
   face, long black hair whipping. Lightning lance with crackling white tip. Grey stallion Thunderclap.
 - **Signature:** Mounted silhouette with lance raised; lightning paint.
-- **Key scenes:** storm_herald (rides out of the ridge-dust after Gorrath falls), storm_warden (rides last
-  out of Aurvanis), earth_herald (stands over her fallen teacher Vholt), assault_intro.
+- **Key scenes:** storm_herald (rides out of the ridge-dust after Gorrath falls), earth_intro ("If I have to kill him, I'll
+  do it facing him"), earth_herald (brings down her teacher Vholt), assault_intro.
 
-### 4. Sylvaine Thornwhisper, Warden-Archer of the Deep
+### 4. Sylvaine Thornwhisper, Bow of the Deep
 - **Element:** Nature.
 - **Age / build:** 300 (looks 30). Tall, slender.
 - **Look:** Green and bark-brown layered leathers, a cloak of living moss, longbow of pale white wood
   that has sprouted leaves. Gold freckles that glow faintly.
 - **Signature:** The leafing bow.
-- **Key scenes:** nature_herald (found after nine days holding Elderhollow), nature_warden (carries Elowen's seed out of the Tree-City), epilogue (plants it).
+- **Key scenes:** nature_herald (held Elderhollow's root-doors until every child was out), nature_warden (Elowen gives her the last seed), epilogue (plants it in Solenne).
 
 ### 5. Mirelle the Tide-Seer
 - **Element:** Water.
@@ -86,8 +86,8 @@ Seven Arts"):
 - **Look:** Layers of white and teal sea-wool, pearls sewn on everything, milky blind eyes, a staff of
   clear ice with a fish skeleton frozen inside. Barefoot on frost.
 - **Signature:** The ice-staff with the frozen fish; blind eyes that glow teal when she sees.
-- **Key scenes:** water_herald (found in her ice tower in the burning reeds), water_warden (foresees "a death at the end"),
-  crownless_throne (the death she saw is Vael-Orrun's).
+- **Key scenes:** water_herald (found in her ice tower with forty children), water_warden (foresees "a death at the end"),
+  the_truth (the death she saw is Vael-Orrun's).
 
 ### 6. Gorrim Stonebeard, Shield of the Canyon
 - **Element:** Earth.
@@ -95,17 +95,17 @@ Seven Arts"):
 - **Look:** Rust-red plate, a beard to his belt braided with iron rings (one per buried comrade). His
   shield is a carved stone door from the Kharum Terraces. Short heavy pick.
 - **Signature:** The door-shield.
-- **Key scenes:** earth_herald (found holding a door behind the collapsed terraces), earth_warden (Grundhallow is sealed; a new ring), capital_prelude,
+- **Key scenes:** earth_herald (found holding a door behind the collapsed terraces), earth_warden (the last ring, sworn), capital_prelude,
   assault_intro.
 
-### 7. Corvin the Uncrowned, Ranger-King of the Rift
+### 7. Corvin the Uncrowned, Ranger of the Rift
 - **Element:** Void.
 - **Age / build:** 34. Tall, lean, rangy.
 - **Look:** Weathered black and violet ranger cloak with a hood, star-charts stitched into the lining,
   silver hair tied back though he is young. A long curved blade of black glass that shows stars.
   Stubble, a thin scar through one eyebrow.
 - **Signature:** The star-glass blade; hooded silhouette.
-- **Key scenes:** void_herald (freed from thorns: "I told them it was the Marshal"), void_warden, crossroads (cuts open Ilyra's cage), heart_falls.
+- **Key scenes:** void_herald (freed from thorns: "Six years I told them it was the Marshal"), void_warden, crossroads (cuts open Ilyra's cage), heart_falls.
 
 **The Wardens as monarchs.** The six Wardens were the founding kings and queens of the six kingdoms
 before they bound themselves to the Ring. The prologue shows them once as mortal monarchs, crowned and
@@ -122,7 +122,7 @@ black iron set with real stars, the only one whose face is hidden even then).
 - **Build:** 3 m tall when walking with the army. Black basalt body cracked with orange light, a molten
   core visible through the chest, a crown of slow flames.
 - **Signature:** The glowing heart behind black stone ribs.
-- **Key scenes:** ember_warden (freed), convergence_intro (the Wardens gather), epilogue (the Ring of Six).
+- **Key scenes:** ember_warden (freed), convergence_intro (the Wardens walk to Solenne), the_truth ("It was my fire"), epilogue (the Wardens seal the Gate).
 
 ### 9. Aurath of the Storms
 - **Element:** Storm.
@@ -144,7 +144,7 @@ black iron set with real stars, the only one whose face is hidden even then).
 - **Build:** Tall, translucent sea-glass woman, currents visible inside her, drowned bronze bells woven
   in long floating hair.
 - **Signature:** Floating hair full of bells.
-- **Key scenes:** water_warden (freed), convergence_intro, epilogue.
+- **Key scenes:** water_warden (freed), convergence_intro ("I will tell you what we did at Vael"), the_truth (the confession, "We remember"), epilogue.
 
 ### 12. Orrok the Mountain
 - **Element:** Earth.
@@ -158,9 +158,9 @@ black iron set with real stars, the only one whose face is hidden even then).
 - **Element:** Void.
 - **Corrupted boss:** Hollow King (Void 4).
 - **Build:** Very tall, slender, a starfield where her face should be, a long black train full of slow
-  stars, a broken iron crown in her hand (the one Vael-Orrun forced on her).
+  stars, a broken iron crown in her hand (the crown her madness wore as the Hollow King).
 - **Signature:** The starfield face, the broken crown in her hand.
-- **Key scenes:** void_warden (freed: "He is not finished"), convergence_intro, dawn (turns toward Oswin on the road), epilogue.
+- **Key scenes:** void_warden (freed: "Your Grey Lantern is alive"), convergence_intro, dawn (turns toward Oswin on the road), epilogue.
 
 ### 14. Ilyra the Unbroken
 - **Element:** Void + Storm.
@@ -169,16 +169,16 @@ black iron set with real stars, the only one whose face is hidden even then).
   the campaign, white hair (it was dark before), a broken astrolabe on a chain that she uses as a focus.
   Lightning in the black veins when she fights.
 - **Signature:** White hair and the astrolabe.
-- **Key scenes:** crossroads (found as a captive, freed: "I'm the only one he might stop for"),
-  heart_falls (her father's last moment), mirror_spire.
+- **Key scenes:** crossroads (found in her father's cage, empty; recovers: "One of them wept. The other never did"),
+  heart_falls (her father's last moment), the_hush (alone at the Heartstone).
 
 ### 15. Seraphel the Dawnblade, Knight of the Sunstone
 - **Element:** All six.
-- **Age / build:** Looks 40, is over 900. Tall, broad-shouldered, grave.
+- **Age / build:** Looks 40, is about a thousand. Tall, broad-shouldered, grave.
 - **Look:** White-gold plate etched with six colours that dim over time (bright in lumen_gate, nearly grey by
-  mirror_spire), a greatsword whose blade is a sliver of Sunstone glass, gold eyes, cropped grey hair.
+  the_truth), a greatsword whose blade is a sliver of Sunstone glass, gold eyes, cropped grey hair.
 - **Signature:** The glass greatsword glowing like a dawn.
-- **Key scenes:** lumen_gate (joins as the outer wall falls), capital_prelude, mirror_spire (dies holding the top gate).
+- **Key scenes:** lumen_gate (joins as the outer wall falls), capital_prelude, the_truth (dies holding the fortress's inner gate).
 
 ### 16. Oswin the Grey Lantern / the White Lantern
 - **Element:** None, then all six (light).
@@ -188,8 +188,9 @@ black iron set with real stars, the only one whose face is hidden even then).
 - **Look (White):** Robes of white that glow at the hems, no hat, hair and beard bright, standing tall.
   The lantern now burns white with six coloured sparks orbiting inside it.
 - **Signature:** The lantern on the staff. In silhouette alone he must be recognisable.
-- **Key scenes:** prologue (the stand at the Crack, the fall), night_of_falling_stars (one shard drifts toward the Rift),
-  void_intro (the lantern nobody lit), dawn (returns; dawn breaks), heart_falls, epilogue (sets the lantern in the crown).
+- **Key scenes:** prologue (drives the Black Gate back, falls through with his lantern lit), void_intro (a white
+  light walking at the bottom of the Rift), dawn (returns with the last piece of the Sunstone; dawn breaks),
+  heart_falls, the_truth (presses the lantern into the burning core in Vael-Orrun's chest).
 
 ---
 
@@ -200,36 +201,36 @@ black iron set with real stars, the only one whose face is hidden even then).
 - **Look:** Brass-buttoned waistcoat over a stained shirt, magnifying spectacles pushed up on his head, a
   tool belt bursting with chalk and calipers, a brass measuring rod.
 - **Signature:** The spectacles and whiskers.
-- **Key scenes:** Briefing portrait until the midpoint, regents_counsel, night_of_falling_stars (holds the Dawn Gate, dies).
+- **Key scenes:** Briefing portrait until the midpoint, regents_counsel, night_of_falling_stars (holds Solenne's east gate, dies).
 
 ---
 
 ## Villains
 
-### Vael-Orrun, the High King, the Sunderer (overlord)
-- **Who:** The last king of Orrun, the seventh kingdom, banished beyond the stars by the other six at the
-  dawn of history. Back to reclaim his crown and throne.
+### Vael-Orrun, the High King (overlord)
+- **Who:** The last king of Orrun, the seventh kingdom, shut behind the Black Gate by the other six two
+  thousand years ago. He wants his crown back: the Heartstone, the key to the Gate.
 - **Element:** None. He is the absence that makes elements stop.
-- **Look as the Keeper of the Crossroads (flashbacks in convergence_intro and the epilogue):** About 40,
+- **Look as the Keeper of the Crossroads (the painted memory and the man inside the monster in the_truth):** About 40,
   kind-faced, plain grey robes, no crown, ink on his fingers, a Tidefolk wedding ring. Warm brown eyes.
 - **Look as the High King (prologue history shots):** The same man years later, gaunt and pale and very
   calm, in black, wearing a tall black crown with six empty sockets; his wife's ring on a chain at his
   throat. His capital Vael is black stone at a crossroads, half of it burned.
 - **Ysmera** (his queen, flashback only): a Tidefolk healer, round-faced, laughing, sea-green shawl.
   **Caelan** (his son, flashback only): about seven, his father's grey robes cut down to size.
-- **Look in cinematics (before Act V):** Never seen whole. A black sun with a crown-shaped gap in its
-  corona, through which there is nothing. When he speaks, every colour on screen drains toward grey.
-- **Look in Act V (boss):** A tall figure of black glass, very still, with a crown-shaped gap where his
-  face should be, the stolen Heartstone light caught in his chest. Phases change the colour bleeding out of
-  the cracks in his glass (all six elements in ring order).
-- **Signature:** The crown-shaped hole.
-- **Key scenes:** prologue (the black sun), assault_intro, crownless_throne, epilogue (the finishing).
+- **Look now (final level):** what two thousand years in the Hollow with the Hush made of him: the huge
+  demon king from the boss redesign: no crown, no clothes, dark hard-muscled hide, a molten core
+  behind his ribs (sheet: /mnt/project-files/art-test/vael-orrun-bare.png). Three forms on wave 39: the High King, the Sunderer (the six stolen magics at once),
+  the Unmade (a beast, the Hush showing through). Before the final level he is never seen whole: a huge
+  shape in the dark; when he speaks, every colour on screen drains toward grey.
+- **Signature:** The molten core burning behind his ribs.
+- **Key scenes:** prologue (the songs' tyrant), assault_intro (voice), the_high_king, the_truth (the man
+  inside the monster; turned to light).
 
 ### The Hush (secret, Part 2)
-- **Never drawn as a figure.** It appears once, in the post-credits shot of the epilogue: inside the
-  Heartstone's seventh colour, something with no colour at all opens like an eye. On the board and in
-  every cinematic before that, only its traces: the patch of sky with no stars (the Unwritten Star), and the
-  grey empty eyes of everything the Unmaking touches.
+- **Never drawn as a figure.** It appears once, in the post-credits scene `the_hush`: inside the
+  Heartstone's seventh colour, something with no colour at all opens like an eye. Before that, only its
+  traces: the grey empty eyes of everything the Unmaking touches.
 - **Keep it out of every menu, codex and portrait list** (characters.json marks it `hidden`).
 
 ### Cassivane Dral, the Ashen Regent
@@ -242,7 +243,7 @@ black iron set with real stars, the only one whose face is hidden even then).
 - **Final form (the Sundered Heart):** A huge floating knot of Sunstone shards and Heartstone light around
   a small grey figure in the middle, curled around the locket. It changes colour every few seconds.
 - **Signature:** The locket.
-- **Key scenes:** prologue, regents_counsel, night_of_falling_stars (shatters the Sunstone), crossroads (boss of Converge 1, escapes), heart_falls (the Sundered Heart falls, he sees Ilyra).
+- **Key scenes:** prologue (grieving), regents_counsel, night_of_falling_stars (opens the east gate, shatters the Sunstone, comes for the Heartstone), crossroads (boss of Converge 1, confesses, retreats), heart_falls (the Sundered Heart falls, he sees Ilyra whole).
 
 ### The Six Heralds
 All six share a design motif: their faces are intact, but their eyes and mouths are empty grey light,
@@ -269,19 +270,18 @@ Each is the freed Warden above, made wrong. Art already exists for these as enem
 | Mountain Titan | Orrok with grey lichen over his eyes, his trees dead and burning. |
 | Hollow King | Nyxara wearing the iron crown, her starfield face gone black but for two lights; splits into two Hollow Shades. |
 
-### Final assault bosses
-- **The Gatemaw:** Nhal Vorath's living gate. A mouth the width of the map made of stolen city gates
-  (Brazier Hold's, the Dawn Gate's) set like teeth. Spits Unbound.
-- **The Echo-Heralds:** All six Heralds at once, now glassy grey reflections, flickering between their
-  elements.
-- **Vael-Orrun:** see above.
+### Final level bosses
+- **The Echo-Heralds:** glassy grey copies of the six Heralds, one leading every sixth wave (6, 12, 18, 24,
+  30, 36), flickering between their elements.
+- **Vael-Orrun:** wave 39, three forms; see above.
 
 ---
 
 ## Unbound (regular enemies)
 
-Elemental spirits torn loose from their Warden. They are not people. The existing enemy types map like
-this for flavour text: **Grunt** = a "husk" spirit, **Runner** = a "flicker", **Brute** = a "hulk",
-**Mender** = a "knitter" spirit that heals, **Warded** = a "barkhide", **Splitter** = a "cluster" that
-breaks into **Shardlings**, **Hollow Shade** = half of the Hollow King. All Unbound have the Heralds'
-grey empty eyes.
+Three kinds: **Hollowed** (living people the Unmaking emptied), **Risen** (the dead, marching) and **Wild**
+(beasts and spirits of the invading element). Existing types: **Grunt** (Risen), **Runner** (Wild, a shade),
+**Brute** (Hollowed soldier), **Mender** (Hollowed Deepwood healer), **Warded** (Hollowed Stoneborn
+runewright), **Splitter** and **Shardlings** (Wild rune-golem), **Ashdrake** (Wild drake; enemy id
+`warden`), **Hollow Shade** (half of the Hollow King). All Unbound have the Heralds' grey empty eyes.
+Never orcs, elves or dwarves.

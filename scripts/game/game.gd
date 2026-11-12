@@ -740,7 +740,7 @@ func _story_after_run(won: bool, result: Dictionary) -> void:
 		if not city.is_empty():
 			var saved: bool = city.get("saved", false)
 			var line := str(city.get("fall_text", ""))
-			hud.show_story_note(("%s is saved. %s" if saved else "%s has fallen, but its people got away. %s") % [city.get("name", ""), line])
+			hud.show_story_note(("%s is saved. %s" if saved else "%s has fallen. %s") % [city.get("name", ""), line])
 		_story_after = Progress.meta.story_after_stage(story, stage.id)
 		if not _story_after.is_empty():
 			hud.show_story_note("[color=#%s]The story continues when you leave this screen.[/color]" % UiStyle.GOLD.to_html(false))

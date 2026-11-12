@@ -369,7 +369,7 @@ character(
 
 character(
     "corvin",
-    title="Corvin the Uncrowned, Ranger-King of the Rift",
+    title="Corvin the Uncrowned, Ranger of the Rift",
     role="Void hero. Hooded ranger, silver hair, a curved black-glass blade that shows stars.",
     element="void",
     body=dict(height=1.88, bulk=0.9),
@@ -558,7 +558,7 @@ def _sylvaine_parts(J, p, b):
 
 character(
     "sylvaine",
-    title="Sylvaine Thornwhisper, Warden-Archer of the Deep",
+    title="Sylvaine Thornwhisper, Bow of the Deep",
     role="Nature hero. Green and bark leathers, a cloak of living moss, a pale longbow that has sprouted leaves.",
     element="nature",
     body=dict(height=1.85, bulk=0.82, shoulder=0.2, head_r=0.118),
