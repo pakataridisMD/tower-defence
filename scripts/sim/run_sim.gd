@@ -191,7 +191,7 @@ func _init(p_config: RunConfig) -> void:
 	if config.stage != null:
 		base_gold = config.stage.starting_gold if config.stage.starting_gold > 0 else base_gold
 		base_lives = config.stage.starting_lives if config.stage.starting_lives > 0 else base_lives
-	gold = roundi(StatCalculator.compute(&"starting_gold", base_gold, config.run_modifiers))
+	gold = roundi(StatCalculator.compute(&"starting_gold", base_gold, config.run_modifiers) * config.starting_gold_multiplier())
 	lives = roundi(StatCalculator.compute(&"starting_lives", base_lives, config.run_modifiers))
 	starting_lives = lives
 	var start_points := roundi(StatCalculator.compute(&"starting_tree_points", rules.starting_tree_points, config.run_modifiers))

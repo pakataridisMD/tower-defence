@@ -200,3 +200,10 @@ func test_a_saved_endless_run_stays_endless() -> void:
 	assert_string_contains(SavesPage.SlotRow.details(info), "Wave 8")
 	assert_false(SavesPage.SlotRow.details(info).contains("Wave 8 of"), "an endless run has no last wave")
 	assert_false(RunSnapshot.capture(_sim(&"hard")).get("endless", true))
+
+
+func test_the_hardest_levels_start_with_more_gold() -> void:
+	var normal := _sim(&"normal")
+	assert_eq(_sim(&"merciless").gold, normal.gold)
+	assert_eq(_sim(&"nightmare").gold, normal.gold * 4)
+	assert_eq(_sim(&"oblivion").gold, normal.gold * 8)

@@ -372,7 +372,8 @@ wing("expeditions", {
             "unlocks_difficulties": ["hard", "merciless"]}),
     "b3": ("expedition_nightmare", "Nightmare", KEYSTONE, 14, [],
            {"desc": "Unlocks the Nightmare and Oblivion difficulties: eight and sixteen times the enemies, with "
-                    "eight and sixteen times the health. Runs earn 2.5 and 3 times the meta points.",
+                    "eight and sixteen times the health, with four and eight times the starting gold. Runs earn 2.5 "
+                    "and 3 times the meta points.",
             "unlocks_difficulties": ["nightmare", "oblivion"]}),
     "m1": ("expedition_forage", "Forage", MINOR, 3, [flat("gold_per_wave", 3)]),
     "m2": ("expedition_cartographer", "Cartographer", NOTABLE, 5, [inc("attack_range", 6)]),

@@ -59,6 +59,11 @@ func enemy_count_multiplier() -> float:
 	return difficulty.enemy_count_multiplier if difficulty != null else 1.0
 
 
+## Starting gold is multiplied by this (the difficulty's).
+func starting_gold_multiplier() -> float:
+	return difficulty.starting_gold_multiplier if difficulty != null else 1.0
+
+
 func element_index(id: StringName) -> int:
 	var element: ElementData = elements.get(id)
 	return element.ring_index if element != null else -1

@@ -13,5 +13,7 @@ extends Resource
 ## Every wave brings this many times as many enemies (bosses excepted), spaced closer so the wave
 ## lasts about as long. See RunSim.MAX_WAVE_ENEMIES for the cap.
 @export var enemy_count_multiplier: float = 1.0
+## Starting gold is multiplied by this, so the hardest levels can build enough for their first waves.
+@export var starting_gold_multiplier: float = 1.0
 ## Meta points earned at the end of a run are multiplied by this.
 @export var meta_point_multiplier: float = 1.0
