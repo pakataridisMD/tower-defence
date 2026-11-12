@@ -602,7 +602,8 @@ cin("epilogue", "The Seventh Colour", "After the final assault is won. Then the 
     )
 
 # The post-credits reveal (Part 2 tease). Only the Hush speaks: no narrator, almost no sound. It shows,
-# without naming it, that Vael-Orrun and the Regent were both its hands, and that the war was its door.
+# without naming it, that it lived inside Vael-Orrun (who tempted the Regent) and came home inside his
+# light when it went into the Heartstone.
 cin("the_hush", "One Door", "Straight after the epilogue's credits.",
     shot("", "After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six "
          "colours... then, faintly, a seventh. Ilyra, alone, leans in to look.", duration=5.0),
@@ -610,12 +611,13 @@ cin("the_hush", "One Door", "Straight after the epilogue's credits.",
          "Two thousand years ago: the vault under burning Vael. The young Keeper, Vael-Orrun, kneels in the "
          "dark with his wife's ring in his fist, listening. Grey creeps into his eyes from the edges.",
          speaker="the_hush"),
-    shot("The Regent thought he bargained with a king.\n\nHe bargained with me, wearing a king's voice.",
-         "Six years ago: Cassivane at his daughter's grave in the rain. Above him, a thin crack of starless "
-         "dark opens in the night sky.", speaker="the_hush"),
-    shot("I could never open the door from my side.\n\nYou opened it from yours.",
-         "The Crack in the Hollow Rift seen from the far side, from the Outer Hollow: wide open where the "
-         "Concord marched through. The six Wardens' light spills in from the world beyond it.",
+    shot("Every word he whispered to your Regent,\n\nI had whispered to him first.",
+         "Behind the Black Gate at the bottom of the Rift: Vael-Orrun, sealed in the dark under the world, "
+         "leans to the seam of the Gate and whispers through it. The darkness behind him is deeper than dark, "
+         "and it leans in close to his ear. No figure, only that darkness.", speaker="the_hush"),
+    shot("I could never climb out of the dark.\n\nSo I waited for you to carry me home.",
+         "The end of the war: Vael-Orrun's white light rising out of the Rift toward Solenne and the "
+         "Heartstone that was his crown. Inside the light runs a single thin thread of no colour at all.",
          speaker="the_hush"),
     shot("Your High King was never my enemy. He was my hand.\n\nSo were you.",
          "Ilyra, frozen in front of the Heartstone. Reflected in both her eyes, very small, something with no "

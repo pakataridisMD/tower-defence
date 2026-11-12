@@ -847,17 +847,17 @@ But I have felt every one of them.
 *(pause)*  
 I taught him how a world goes quiet.
 
-**3. [Six years ago: Cassivane at his daughter's grave in the rain. Above him, a thin crack of starless dark opens in the night sky.]**
+**3. [Behind the Black Gate at the bottom of the Rift: Vael-Orrun, sealed in the dark under the world, leans to the seam of the Gate and whispers through it. The darkness behind him is deeper than dark, and it leans in close to his ear. No figure, only that darkness.]**
 
-> **???:** The Regent thought he bargained with a king.  
+> **???:** Every word he whispered to your Regent,  
 *(pause)*  
-He bargained with me, wearing a king's voice.
+I had whispered to him first.
 
-**4. [The Crack in the Hollow Rift seen from the far side, from the Outer Hollow: wide open where the Concord marched through. The six Wardens' light spills in from the world beyond it.]**
+**4. [The end of the war: Vael-Orrun's white light rising out of the Rift toward Solenne and the Heartstone that was his crown. Inside the light runs a single thin thread of no colour at all.]**
 
-> **???:** I could never open the door from my side.  
+> **???:** I could never climb out of the dark.  
 *(pause)*  
-You opened it from yours.
+So I waited for you to carry me home.
 
 **5. [Ilyra, frozen in front of the Heartstone. Reflected in both her eyes, very small, something with no colour at all.]**
 
