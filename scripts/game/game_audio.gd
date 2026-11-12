@@ -63,7 +63,8 @@ func setup(p_sim: RunSim, p_board_offset: Vector2) -> void:
 	sim.changed.connect(_on_changed)
 	sim.tree.changed.connect(_on_tree_changed)
 	for signal_name: StringName in [&"boss_arrived", &"towers_silenced", &"enemy_blinked", &"enemy_escaped",
-			&"structure_destroyed", &"phase_changed", &"enemy_power"]:
+			&"structure_destroyed", &"phase_changed", &"enemy_power", &"enemy_transformed", &"boss_fled",
+			&"citadel_struck", &"ally_died", &"allies_mustered", &"counter_attack_started"]:
 		if sim.has_signal(signal_name):
 			sim.connect(signal_name, Callable(self, "_on_" + signal_name))
 	_snapshot_towers()
@@ -403,6 +404,37 @@ func _on_structure_destroyed(structure: SimEnemy) -> void:
 
 func _on_phase_changed(_phase: int) -> void:
 	play(&"assault_phase")
+
+
+## The boss throws off its form: its roar over the blast, and it is a new boss to the ear.
+func _on_enemy_transformed(enemy: SimEnemy, _from: EnemyData) -> void:
+	var set_name := boss_set_of(enemy.data)
+	play(&"explosion_large", enemy.position)
+	if not set_name.is_empty():
+		play(StringName("boss_%s_enrage" % set_name), enemy.position)
+	_bosses.erase(enemy.id)
+	_track_boss(enemy)
+
+
+func _on_boss_fled(enemy: SimEnemy) -> void:
+	_bosses.erase(enemy.id)
+	play(&"boss_escape")
+
+
+func _on_citadel_struck(structure: SimEnemy, _targets: Array) -> void:
+	play(&"boss_blink", structure.position, -8.0)
+
+
+func _on_ally_died(ally: SimAlly) -> void:
+	play(&"death_grunt", ally.position, -8.0)
+
+
+func _on_allies_mustered(_squad: Array) -> void:
+	play(&"tower_level_up", null, -6.0)
+
+
+func _on_counter_attack_started() -> void:
+	play(&"wave_start_final")
 
 
 ## The horde's powers (see EnemyData.power): each kind's own sound, kept under the battle.

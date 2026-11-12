@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"banner_bearer"
+display_name = "Banner of Solenne"
+title = "Battle standard"
+description = "The Queen's standard. Every unit near it fights a quarter harder. At most three on the field."
+role = 4
+element = &""
+order = 15
+cost = 120
+cooldown = 15.0
+count = 1
+max_alive = 3
+max_health = 120.0
+armour = 4.0
+speed = 50.0
+damage = 6.0
+attack_interval = 1.0
+attack_range = 36.0
+aura_damage = 0.25
+aura_radius = 150.0

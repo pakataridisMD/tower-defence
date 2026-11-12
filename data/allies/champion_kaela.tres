@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_kaela"
+display_name = "Kaela Stormrider"
+title = "Marshal of the Steppe"
+description = "The Marshal of the Steppe rides ahead of everyone."
+role = 5
+element = &"storm"
+hero = &"kaela"
+order = 102
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 460.0
+armour = 6.0
+speed = 120.0
+damage = 40.0
+attack_interval = 1.1
+attack_range = 48.0

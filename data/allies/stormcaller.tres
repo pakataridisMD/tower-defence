@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"stormcaller"
+display_name = "Galeborn Stormcallers"
+title = "Chain lightning"
+description = "They sing the lightning down and send it leaping from one of the horde to the next."
+role = 1
+element = &"storm"
+order = 11
+cost = 150
+cooldown = 8.0
+count = 2
+max_health = 40.0
+armour = 0.0
+speed = 52.0
+blocks = false
+damage = 13.0
+attack_interval = 1.4
+attack_range = 180.0
+chain_count = 3

@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_ignar"
+display_name = "Ignar"
+title = "the Cinder Warden"
+description = "The Cinder Warden walks into the horde as a fire walks into a field."
+role = 5
+element = &"fire"
+hero = &"ignar"
+order = 107
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 800.0
+armour = 10.0
+speed = 44.0
+damage = 50.0
+attack_interval = 1.4
+attack_range = 56.0
+splash_radius = 80.0
+dot_damage = 14.0
+dot_duration = 3.0
+dot_kind = &"burn"

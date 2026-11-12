@@ -2,7 +2,7 @@ extends SceneTree
 ## Plays every campaign stage with the scripted AutoPlayer and prints how each went, for tuning the
 ## campaign (see tools/campaign/gen_campaign.py). No meta tree bonuses, Normal difficulty.
 ##
-##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune] [--skirmish] [--compare]
+##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--health=X --boss=X] [--tune] [--skirmish] [--compare]
 ##       [--heroes] [--list] [--no-meta] [--check]
 ##
 ## --tune searches each stage's health scale so the bot wins keeping a target share of its lives,
@@ -135,16 +135,36 @@ var _wave_seconds: PackedFloat32Array = []
 
 
 func _play(meta: MetaProgress, stage: StageData) -> RunSim:
-	var sim := RunSim.new(_config(meta, stage))
+	var config := _config(meta, stage)
+	# --health=X and --boss=X try other numbers than tuning.py's without regenerating the data.
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--health="):
+			config.wave_set.health_scale = float(arg.trim_prefix("--health="))
+		if arg.begins_with("--boss="):
+			for wave in config.wave_set.waves:
+				if wave.is_boss:
+					wave.health_multiplier = float(arg.trim_prefix("--boss="))
+	var sim := RunSim.new(config)
 	var bot := AutoPlayer.for_sim(sim)
 	_wave_seconds.clear()
 	sim.wave_cleared.connect(func(_n: int, _p: int, _g: int) -> void: _wave_seconds.append(sim.time_in_wave))
 	var elapsed := 0.0
+	if OS.get_cmdline_user_args().has("--trace"):
+		_trace(sim, func() -> float: return elapsed)
 	while not sim.is_over() and elapsed < 8000.0:
 		bot.act()
 		sim.step(RunSim.STEP)
 		elapsed += RunSim.STEP
 	return sim
+
+
+## --trace prints the bosses, their forms and every leak as the run goes.
+func _trace(sim: RunSim, clock: Callable) -> void:
+	var at := func() -> String: return "%6.0f s  wave %2d  lives %3d  " % [clock.call(), sim.wave_number(), sim.lives]
+	sim.boss_arrived.connect(func(e: SimEnemy) -> void: print(at.call(), "boss ", e.data.id))
+	sim.enemy_transformed.connect(func(e: SimEnemy, _from: EnemyData) -> void: print(at.call(), "changes into ", e.data.id))
+	sim.boss_fled.connect(func(e: SimEnemy) -> void: print(at.call(), "flees ", e.data.id))
+	sim.enemy_leaked.connect(func(e: SimEnemy) -> void: print(at.call(), "leaked ", e.data.id))
 
 
 ## Average and longest wave of the last _play, and the whole time spent in waves.

@@ -1636,6 +1636,74 @@
   ],
   "source": "vael_orrun"
  },
+ "vael_orrun_unmade": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   116,
+   360
+  ],
+  "frame": [
+   232,
+   392
+  ],
+  "source": "vael_orrun",
+  "stand_in": true
+ },
+ "vael_orrun_wrath": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   116,
+   360
+  ],
+  "frame": [
+   232,
+   392
+  ],
+  "source": "vael_orrun",
+  "stand_in": true
+ },
  "vholt": {
   "anims": {
    "attack": {

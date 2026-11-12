@@ -158,6 +158,7 @@ func _connect_signals() -> void:
 	hud.next_stage_pressed.connect(_play_next_stage)
 	hud.hero_pressed.connect(_hero_button)
 	hud.move_pressed.connect(_move_selected)
+	hud.muster_pressed.connect(_muster)
 	board.hero_aimed.connect(_cast_hero)
 	sim.hero_summoned.connect(_on_hero_summoned)
 	board.selection_changed.connect(func(tower: SimTower) -> void: hud.selected = tower)
@@ -209,7 +210,11 @@ func _input(event: InputEvent) -> void:
 	var key := event as InputEventKey
 	if key != null and key.pressed and not key.echo and key.keycode == KEY_TAB and not web.visible \
 			and not pause_menu.visible:
-		hud.cycle_shop_tier()
+		if _mustering():
+			SoundPlayer.sfx(&"ui_tab")
+			hud.muster.cycle_page()
+		else:
+			hud.cycle_shop_tier()
 		get_viewport().set_input_as_handled()
 
 
@@ -242,9 +247,16 @@ func _unhandled_input(event: InputEvent) -> void:
 			_toggle_pause()
 		KEY_ESCAPE:
 			_escape()
-		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9:
-			if not web.visible:
+		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9, KEY_0:
+			if web.visible:
+				pass
+			elif _mustering():
+				_muster(hud.muster.ally_for_hotkey(MusterBar.KEYS.find(key.keycode)))
+			elif key.keycode != KEY_0:
 				_choose_tower(hud.tower_for_hotkey(key.keycode - KEY_0))
+		KEY_R:
+			if _mustering():
+				hud.muster.cycle_road()
 		KEY_DELETE, KEY_BACKSPACE:
 			if not web.visible:
 				_sell_selected()
@@ -444,6 +456,24 @@ func _skill_button(skill_id: StringName) -> void:
 
 
 ## A skill's key: like its button, but pressing it again while aiming casts where the mouse is.
+## True while the muster bar of the counter-attack is up: the number keys and Tab muster units then.
+func _mustering() -> bool:
+	return hud.muster != null and hud.muster.visible
+
+
+## Sends a squad up the chosen road, or says why it cannot go.
+func _muster(ally_id: StringName) -> void:
+	if ally_id.is_empty():
+		return
+	var lane := hud.muster.target_lane()
+	var error := sim.muster_error(ally_id, lane)
+	if not error.is_empty():
+		hud.show_message(error, UiStyle.BAD)
+		return
+	sim.muster(ally_id, lane)
+	SoundPlayer.sfx(&"ui_confirm")
+
+
 func _skill_key(skill_id: StringName) -> void:
 	if skill_id.is_empty():
 		return
@@ -745,6 +775,7 @@ func _drive_bot(delta: float) -> void:
 		_bot_wait = BOT_BREAK
 		if not paused and not web.visible:
 			_bot.use_skills()
+			_bot.play_wave_step()
 		return
 	_bot_wait -= delta
 	if _bot_wait > 0.0:

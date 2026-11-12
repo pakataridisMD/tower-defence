@@ -15,6 +15,7 @@ Everything here is deterministic: the same sketch and stage id always give the s
 """
 from __future__ import annotations
 
+import contextlib
 import math
 import random
 import zlib
@@ -85,9 +86,24 @@ def _inside(p, grid, margin=0.0):
 # ------------------------------------------------------------------------------------ scaling
 # Inside the board, a sketch is stretched so its roads reach this close to the edges.
 MARGIN = 3
+# Columns kept free of road at the right edge of the board, for the final assault's citadel. Set it
+# with reserve_right() around the calls that build and scale that one map.
+_RIGHT_RESERVE = 0
 
 
-def _scale_axis(v, src, dst, span=None):
+@contextlib.contextmanager
+def reserve_right(columns):
+    """Builds and scales maps whose roads keep `columns` cells at the right edge free."""
+    global _RIGHT_RESERVE
+    old = _RIGHT_RESERVE
+    _RIGHT_RESERVE = columns
+    try:
+        yield
+    finally:
+        _RIGHT_RESERVE = old
+
+
+def _scale_axis(v, src, dst, span=None, reserve=0):
     if v < 0:
         return -1
     if v >= src:
@@ -96,7 +112,7 @@ def _scale_axis(v, src, dst, span=None):
     if span is not None:
         lo, hi = span
         plain_lo, plain_hi = (lo + 0.5) * dst / src - 0.5, (hi + 0.5) * dst / src - 0.5
-        new_lo, new_hi = min(MARGIN, plain_lo), max(dst - 1 - MARGIN, plain_hi)
+        new_lo, new_hi = min(MARGIN, plain_lo), max(dst - 1 - MARGIN - reserve, plain_hi if not reserve else 0)
         if hi > lo:
             plain = new_lo + (plain - plain_lo) * (new_hi - new_lo) / (plain_hi - plain_lo)
     return int(round(plain))
@@ -112,7 +128,8 @@ def _spans(lanes):
 
 
 def scale_point(p, grid=GRID, spans=(None, None)):
-    return (_scale_axis(p[0], SKETCH[0], grid[0], spans[0]), _scale_axis(p[1], SKETCH[1], grid[1], spans[1]))
+    return (_scale_axis(p[0], SKETCH[0], grid[0], spans[0], _RIGHT_RESERVE),
+            _scale_axis(p[1], SKETCH[1], grid[1], spans[1]))
 
 
 def scale_lanes(lanes, grid=GRID, spans=None):
@@ -497,7 +514,7 @@ def scale_cell(cell, sketch_lanes, grid=GRID):
 def scale_column(column, sketch_lanes, grid=GRID):
     if column < 0:
         return column
-    return _scale_axis(column, SKETCH[0], grid[0], _spans(sketch_lanes)[0])
+    return _scale_axis(column, SKETCH[0], grid[0], _spans(sketch_lanes)[0], _RIGHT_RESERVE)
 
 
 def describe(roads, grid=GRID) -> str:

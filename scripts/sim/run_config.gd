@@ -24,6 +24,8 @@ var stage: StageData
 var campaign: CampaignData
 ## The heroes the player brings, up to HeroData.MAX_PARTY. Each can be summoned once.
 var heroes: Array[HeroData] = []
+## Units the player can muster in the counter-attack of the final assault, by id.
+var allies: Dictionary[StringName, AllyData] = {}
 ## Heroes who arrive during this run at a wave (HeroData.arrives_at_wave) and join the party then.
 var arriving_heroes: Array[HeroData] = []
 
@@ -40,6 +42,7 @@ static func from_registry(registry: Node, map_id: StringName) -> RunConfig:
 	config.elements = registry.elements
 	config.tree_nodes = registry.in_run_tree_nodes
 	config.skills = registry.skills
+	config.allies = registry.allies
 	return config
 
 

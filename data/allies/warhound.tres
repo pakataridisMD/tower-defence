@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"warhound"
+display_name = "Emberfolk Warhounds"
+title = "Fast pack"
+description = "Forge-bred hounds with iron collars. Fast and cheap: they reach the horde first and tie it up."
+role = 0
+element = &""
+order = 3
+cost = 70
+cooldown = 4.0
+count = 4
+max_health = 35.0
+armour = 0.0
+speed = 120.0
+damage = 7.0
+attack_interval = 0.7
+attack_range = 30.0

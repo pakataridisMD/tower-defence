@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_nyxara"
+display_name = "Nyxara"
+title = "of the Hollow"
+description = "Where her face should be, there are only stars. The horde cannot look at her."
+role = 5
+element = &"void"
+hero = &"nyxara"
+order = 112
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 560.0
+armour = 6.0
+speed = 60.0
+blocks = false
+damage = 70.0
+attack_interval = 1.6
+attack_range = 240.0
+boss_multiplier = 2.0

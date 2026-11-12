@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"tide_priestess"
+display_name = "Tidefolk Ice-Seers"
+title = "Healing tide"
+description = "Tidefolk seers of Frostmere. They give away a memory with every wound they close."
+role = 3
+element = &"water"
+order = 7
+cost = 120
+cooldown = 10.0
+count = 1
+max_health = 60.0
+armour = 0.0
+speed = 52.0
+blocks = false
+damage = 5.0
+attack_interval = 1.2
+attack_range = 150.0
+heal_amount = 0.08
+heal_radius = 140.0
+heal_interval = 2.0

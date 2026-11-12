@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"firebrand"
+display_name = "Emberfolk Firebrands"
+title = "Fire volleys"
+description = "Battle-kindlers who throw fire in arcs. Every volley costs them a little of their own warmth."
+role = 1
+element = &"fire"
+order = 10
+cost = 140
+cooldown = 8.0
+count = 2
+max_health = 40.0
+armour = 0.0
+speed = 52.0
+blocks = false
+damage = 14.0
+attack_interval = 1.6
+attack_range = 170.0
+splash_radius = 60.0
