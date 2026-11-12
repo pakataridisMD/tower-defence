@@ -145,7 +145,7 @@ func update(delta: float) -> void:
 
 ## How thick the snow can lie: thicker in a blizzard.
 func _cover_cap() -> float:
-	return 0.55 if kind == Weather.Kind.BLIZZARD else 0.42
+	return 0.6 if kind == Weather.Kind.BLIZZARD else 0.45
 
 
 ## Turns on the emitters of a new kind of weather (the old ones stop and their last flakes fall).
@@ -256,7 +256,7 @@ func _bolt(points: PackedVector2Array, power: float) -> void:
 # ------------------------------------------------------------------ the emitters
 
 func _make_textures() -> void:
-	_streak = _image(1, 7, func(_x: int, y: int) -> Color: return Color(1, 1, 1, 0.25 + 0.75 * float(y) / 6.0))
+	_streak = _image(1, 11, func(_x: int, y: int) -> Color: return Color(1, 1, 1, 0.2 + 0.8 * float(y) / 10.0))
 	_drop = _image(3, 1, func(x: int, _y: int) -> Color: return Color(1, 1, 1, 1.0 if x == 1 else 0.55))
 	_flake = _image(1, 1, func(_x: int, _y: int) -> Color: return Color.WHITE)
 	_flake_big = _image(2, 2, func(x: int, y: int) -> Color: return Color(1, 1, 1, 1.0 if x == y else 0.6))
@@ -327,9 +327,9 @@ func _build_debris() -> void:
 
 
 func _build_rain() -> void:
-	for spec in [[Weather.Kind.RAIN, 1500.0, 300.0, 360.0, 0.3, Color(0.72, 0.8, 0.95, 0.55)],
-			[Weather.Kind.STORM, 1000.0, 380.0, 450.0, 0.55, Color(0.74, 0.82, 0.98, 0.65)]]:
-		var rain := _emitter(_count(spec[1], 200, 1400), 0.36, _streak)
+	for spec in [[Weather.Kind.RAIN, 900.0, 300.0, 360.0, 0.3, Color(0.8, 0.86, 0.98, 0.8)],
+			[Weather.Kind.STORM, 600.0, 380.0, 450.0, 0.55, Color(0.82, 0.88, 1.0, 0.9)]]:
+		var rain := _emitter(_count(spec[1], 300, 2400), 0.36, _streak)
 		rain.position.y -= 40.0
 		rain.direction = _slant(1.0, float(spec[4]) * weather.wind)
 		rain.spread = 2.0
@@ -353,8 +353,10 @@ func _build_rain() -> void:
 func _build_snow() -> void:
 	for spec in [[Weather.Kind.SNOW, 1.0, 14.0, 28.0, 0.6], [Weather.Kind.BLIZZARD, 2.0, 40.0, 75.0, 2.4]]:
 		var many := float(spec[1])
-		var small := _emitter(_count(1600.0 / many, 200, 1500), 6.0, _flake)
-		var big := _emitter(_count(4200.0 / many, 80, 600), 5.0, _flake_big)
+		var small := _emitter(_count(1100.0 / many, 300, 2400), 6.0, _flake_big)
+		var big := _emitter(_count(3000.0 / many, 120, 900), 5.0, _flake_big)
+		big.scale_amount_min = 1.5
+		big.scale_amount_max = 2.0
 		for flakes: CPUParticles2D in [small, big]:
 			flakes.direction = _slant(1.0, float(spec[4]) * weather.wind)
 			flakes.spread = 18.0
@@ -422,10 +424,12 @@ func _build_cover() -> void:
 	tex.width = maxi(8, int(_size.x / 4.0))
 	tex.height = maxi(8, int(_size.y / 4.0))
 	tex.noise = noise
-	tex.color_ramp = _fade([Color(0.95, 0.97, 1.0, 0.0), Color(0.95, 0.97, 1.0, 0.0), Color(0.96, 0.98, 1.0, 0.85), Color(1, 1, 1, 1)], [0.0, 0.38, 0.62, 1.0])
+	tex.color_ramp = _fade([Color(1, 1, 1, 0.0), Color(1, 1, 1, 0.0), Color(1, 1, 1, 0.7), Color(1, 1, 1, 0.95)], [0.0, 0.42, 0.68, 1.0])
 	_cover = Sprite2D.new()
 	_cover.texture = tex
 	_cover.centered = false
 	_cover.scale = Vector2(4, 4)
+	# Smooth drifts, not 4-pixel blocks.
+	_cover.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_cover.visible = false
 	board._ground.add_child(_cover)
