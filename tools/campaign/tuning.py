@@ -38,8 +38,8 @@ TUNING["void_2"] = {"health": 13.56, "boss": 1.40}
 TUNING["void_3"] = {"health": 7.70, "boss": 1.50}
 TUNING["void_4"] = {"health": 13.49, "boss": 3.55}
 TUNING["converge_1"] = {"health": 11.54, "boss": 0.59}
-TUNING["converge_2"] = {"health": 11.17, "boss": 0.24}
-TUNING["converge_3"] = {"health": 13.83, "boss": 0.24}
+TUNING["converge_2"] = {"health": 11.17, "boss": 0.24, "boss_life": 0.6}
+TUNING["converge_3"] = {"health": 13.83, "boss": 0.24, "boss_life": 0.17}
 # Nov 12: every boss got 4x its life (Vael-Orrun 10x) and new abilities (heal, barrier, binding towers,
 # his fireball). "boss_life" softens a stage's bosses alone (WaveSet.boss_health_scale) where the bot could
 # no longer beat them keeping a tenth of its lives; from `campaign_balance.gd -- --tune-bosses`. Stages
