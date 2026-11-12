@@ -18,12 +18,15 @@ const BUSES: Array[Array] = [
 	[&"Voice", "Voices and narration", 1.0],
 ]
 const MASTER := &"Master"
+## The title screen's music on or off (Settings > Sound), saved with the volumes.
+const MENU_MUSIC_KEY := "menu_music"
 const MUSIC := &"Music"
 
 static var path := PATH
 static var persist := true
 static var _volume: Dictionary[StringName, float] = {}
 static var _muted: Dictionary[StringName, bool] = {}
+static var _menu_music := true
 static var _loaded := false
 
 
@@ -37,6 +40,7 @@ static func load_saved() -> void:
 			for bus: StringName in _volume.keys():
 				_volume[bus] = clampf(float(file.get_value(SECTION, "%s_volume" % bus, _volume[bus])), 0.0, 1.0)
 				_muted[bus] = bool(file.get_value(SECTION, "%s_muted" % bus, false))
+			_menu_music = bool(file.get_value(SECTION, MENU_MUSIC_KEY, true))
 	_loaded = true
 	apply()
 
@@ -77,6 +81,18 @@ static func set_muted(bus: StringName, muted: bool) -> void:
 	save()
 
 
+## True when the title screen plays its music (MenuMusic).
+static func menu_music_on() -> bool:
+	_ensure()
+	return _menu_music
+
+
+static func set_menu_music(on: bool) -> void:
+	_ensure()
+	_menu_music = on
+	save()
+
+
 ## Mutes or unmutes everything (the M key in a run). Returns true when the game is now muted.
 static func toggle_mute_all() -> bool:
 	set_muted(MASTER, not is_muted(MASTER))
@@ -112,6 +128,7 @@ static func save() -> void:
 	for bus: StringName in _volume.keys():
 		file.set_value(SECTION, "%s_volume" % bus, snappedf(_volume[bus], 0.01))
 		file.set_value(SECTION, "%s_muted" % bus, _muted[bus])
+	file.set_value(SECTION, MENU_MUSIC_KEY, _menu_music)
 	file.save(path)
 
 
@@ -121,6 +138,7 @@ static func _defaults() -> void:
 	for entry in BUSES:
 		_volume[entry[0]] = entry[2]
 		_muted[entry[0]] = false
+	_menu_music = true
 
 
 static func _ensure() -> void:

@@ -13,7 +13,7 @@ const LINES: Array[Array] = [
 	["STORY", ["The War of Seven Crowns"]],
 	["NARRATOR", ["Elariel (ElevenLabs)"]],
 	["MUSIC AND SOUND", ["Original score and effects"]],
-	["FONTS (SIL OPEN FONT LICENSE)", ["Pirata One, Jersey 10, Pixelify Sans, Silkscreen"]],
+	["FONTS (SIL OPEN FONT LICENSE)", ["Pirata One, Jersey 10, Pixelify Sans, Silkscreen, Cinzel"]],
 	["ENGINE", ["Godot Engine (MIT licence)"]],
 ]
 

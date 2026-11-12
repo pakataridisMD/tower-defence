@@ -41,3 +41,5 @@ assets/art/menu/** -filter -diff -merge -text
 assets/fonts/** -filter -diff -merge -text
 # The campaign world map is painted by tools/art/worldmap/gen_world_map.py in cloud sessions too.
 assets/art/worldmap/** -filter -diff -merge -text
+# The studio splash sound is rendered by tools/sfx/intro.py; plain Git like the other sounds.
+assets/audio/intro/** -filter -diff -merge -text
