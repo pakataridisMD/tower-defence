@@ -25,6 +25,7 @@ const LEAVE_BUTTON: Dictionary[StringName, String] = {
 
 var resume_button: Button
 var audio_button: Button
+var fullscreen_button: Button
 var campaign_button: Button
 var menu_button: Button
 var quit_button: Button
@@ -78,6 +79,8 @@ func _init() -> void:
 	menu_button = _add_button(_choices, "Exit to main menu", func() -> void: ask_to_leave(&"menu"))
 	campaign_button = _add_button(_choices, "Exit to campaign map", func() -> void: ask_to_leave(&"campaign"))
 	audio_button = _add_button(_choices, "Audio settings  (O)", func() -> void: audio_requested.emit())
+	fullscreen_button = _add_button(_choices, VideoSettings.toggle_text(), VideoSettings.toggle_fullscreen)
+	FullscreenKey.watch(_show_fullscreen)
 	quit_button = _add_button(_choices, "Quit to desktop", func() -> void: ask_to_leave(&"quit"))
 
 	_confirm = VBoxContainer.new()
@@ -114,8 +117,13 @@ func open(where: String, in_campaign: bool, over: bool) -> void:
 	_subtitle.visible = not where.is_empty()
 	campaign_button.visible = in_campaign
 	run_is_over = over
+	_show_fullscreen()
 	back()
 	show()
+
+
+func _show_fullscreen(_on: bool = false) -> void:
+	fullscreen_button.text = VideoSettings.toggle_text()
 
 
 func ask_to_leave(scene: StringName) -> void:
