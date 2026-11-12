@@ -1,18 +1,498 @@
 {
 "size": [
-768,
-480
+1344,
+832
 ],
 "biome": "earth",
 "props": [
 {
 "kind": "cactus_0",
 "pos": [
-68,
-281
+610,
+296
+],
+"cell": [
+19,
+9
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+18,
+198
+],
+"cell": [
+0,
+6
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+412,
+64
+],
+"cell": [
+12,
+1
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+988,
+484
+],
+"cell": [
+30,
+15
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+49,
+558
+],
+"cell": [
+1,
+17
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+306,
+746
+],
+"cell": [
+9,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+580,
+331
+],
+"cell": [
+18,
+10
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+100,
+496
+],
+"cell": [
+3,
+15
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+523,
+544
+],
+"cell": [
+16,
+17
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+67,
+355
 ],
 "cell": [
 2,
+11
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+869,
+259
+],
+"cell": [
+27,
+8
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+810,
+770
+],
+"cell": [
+25,
+24
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+717,
+230
+],
+"cell": [
+22,
+7
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+766,
+436
+],
+"cell": [
+23,
+13
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+880,
+400
+],
+"cell": [
+27,
+12
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+528,
+454
+],
+"cell": [
+16,
+14
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+73,
+484
+],
+"cell": [
+2,
+15
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1048,
+182
+],
+"cell": [
+32,
+5
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+743,
+358
+],
+"cell": [
+23,
+11
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+332,
+158
+],
+"cell": [
+10,
+4
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+230,
+106
+],
+"cell": [
+7,
+3
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+443,
+323
+],
+"cell": [
+13,
+10
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+559,
+285
+],
+"cell": [
+17,
+8
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+415,
+764
+],
+"cell": [
+12,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+919,
+92
+],
+"cell": [
+28,
+2
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+69,
+486
+],
+"cell": [
+2,
+15
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+756,
+342
+],
+"cell": [
+23,
+10
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+562,
+698
+],
+"cell": [
+17,
+21
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+77,
+777
+],
+"cell": [
+2,
+24
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+130,
+769
+],
+"cell": [
+4,
+24
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+523,
+105
+],
+"cell": [
+16,
+3
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1150,
+379
+],
+"cell": [
+35,
+11
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+894,
+458
+],
+"cell": [
+27,
+14
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+540,
+187
+],
+"cell": [
+16,
+5
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1040,
+223
+],
+"cell": [
+32,
+6
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+94,
+570
+],
+"cell": [
+2,
+17
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+970,
+343
+],
+"cell": [
+30,
+10
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+1320,
+103
+],
+"cell": [
+41,
+3
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1003,
+564
+],
+"cell": [
+31,
+17
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+49,
+381
+],
+"cell": [
+1,
+11
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+881,
+262
+],
+"cell": [
+27,
 8
 ],
 "flip": true
@@ -20,11 +500,575 @@
 {
 "kind": "dry_tuft_1",
 "pos": [
-736,
-75
+49,
+821
+],
+"cell": [
+1,
+25
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+138,
+32
+],
+"cell": [
+4,
+0
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+169,
+485
+],
+"cell": [
+5,
+15
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+699,
+266
+],
+"cell": [
+21,
+8
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+455,
+263
+],
+"cell": [
+14,
+8
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+284,
+276
+],
+"cell": [
+8,
+8
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+174,
+478
+],
+"cell": [
+5,
+14
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+957,
+242
+],
+"cell": [
+29,
+7
+],
+"flip": false
+},
+{
+"kind": "bones",
+"pos": [
+434,
+333
+],
+"cell": [
+13,
+10
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+571,
+424
+],
+"cell": [
+17,
+13
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+94,
+421
+],
+"cell": [
+2,
+13
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+548,
+88
+],
+"cell": [
+17,
+2
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+536,
+164
+],
+"cell": [
+16,
+5
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+72,
+87
+],
+"cell": [
+2,
+2
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+421,
+297
+],
+"cell": [
+13,
+9
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+275,
+204
+],
+"cell": [
+8,
+6
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+562,
+506
+],
+"cell": [
+17,
+15
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+443,
+11
+],
+"cell": [
+13,
+0
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+189,
+436
+],
+"cell": [
+5,
+13
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1129,
+604
+],
+"cell": [
+35,
+18
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+380,
+618
+],
+"cell": [
+11,
+19
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+434,
+318
+],
+"cell": [
+13,
+9
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+107,
+741
+],
+"cell": [
+3,
+23
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+876,
+248
+],
+"cell": [
+27,
+7
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1121,
+223
+],
+"cell": [
+35,
+6
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+859,
+429
+],
+"cell": [
+26,
+13
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+582,
+561
+],
+"cell": [
+18,
+17
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+690,
+416
+],
+"cell": [
+21,
+13
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1211,
+735
+],
+"cell": [
+37,
+22
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+597,
+781
+],
+"cell": [
+18,
+24
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+726,
+603
 ],
 "cell": [
 22,
+18
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+44,
+488
+],
+"cell": [
+1,
+15
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+21,
+229
+],
+"cell": [
+0,
+7
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1094,
+762
+],
+"cell": [
+34,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+536,
+761
+],
+"cell": [
+16,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+915,
+44
+],
+"cell": [
+28,
+1
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+61,
+718
+],
+"cell": [
+1,
+22
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+16,
+770
+],
+"cell": [
+0,
+24
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+826,
+184
+],
+"cell": [
+25,
+5
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+469,
+47
+],
+"cell": [
+14,
+1
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+978,
+407
+],
+"cell": [
+30,
+12
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+437,
+495
+],
+"cell": [
+13,
+15
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+444,
+78
+],
+"cell": [
+13,
+2
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+587,
+516
+],
+"cell": [
+18,
+16
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+230,
+468
+],
+"cell": [
+7,
+14
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+1128,
+313
+],
+"cell": [
+35,
+9
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+807,
+236
+],
+"cell": [
+25,
+7
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+910,
+94
+],
+"cell": [
+28,
 2
 ],
 "flip": true
@@ -32,8 +1076,1736 @@
 {
 "kind": "cactus_0",
 "pos": [
-178,
-421
+739,
+229
+],
+"cell": [
+23,
+7
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+701,
+823
+],
+"cell": [
+21,
+25
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+836,
+267
+],
+"cell": [
+26,
+8
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+911,
+350
+],
+"cell": [
+28,
+10
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+273,
+220
+],
+"cell": [
+8,
+6
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+705,
+368
+],
+"cell": [
+22,
+11
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+444,
+597
+],
+"cell": [
+13,
+18
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+793,
+411
+],
+"cell": [
+24,
+12
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+847,
+226
+],
+"cell": [
+26,
+7
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+242,
+210
+],
+"cell": [
+7,
+6
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+760,
+405
+],
+"cell": [
+23,
+12
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+168,
+742
+],
+"cell": [
+5,
+23
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+689,
+402
+],
+"cell": [
+21,
+12
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+565,
+418
+],
+"cell": [
+17,
+13
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+913,
+240
+],
+"cell": [
+28,
+7
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+415,
+468
+],
+"cell": [
+12,
+14
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+1011,
+822
+],
+"cell": [
+31,
+25
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+694,
+213
+],
+"cell": [
+21,
+6
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1161,
+437
+],
+"cell": [
+36,
+13
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+852,
+548
+],
+"cell": [
+26,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+171,
+574
+],
+"cell": [
+5,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+675,
+774
+],
+"cell": [
+21,
+24
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+539,
+781
+],
+"cell": [
+16,
+24
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+176,
+829
+],
+"cell": [
+5,
+25
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+16,
+169
+],
+"cell": [
+0,
+5
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+425,
+300
+],
+"cell": [
+13,
+9
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+674,
+504
+],
+"cell": [
+21,
+15
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+347,
+821
+],
+"cell": [
+10,
+25
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+906,
+408
+],
+"cell": [
+28,
+12
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+637,
+567
+],
+"cell": [
+19,
+17
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+408,
+718
+],
+"cell": [
+12,
+22
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1311,
+214
+],
+"cell": [
+40,
+6
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+668,
+383
+],
+"cell": [
+20,
+11
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+475,
+430
+],
+"cell": [
+14,
+13
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+510,
+128
+],
+"cell": [
+15,
+3
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+142,
+782
+],
+"cell": [
+4,
+24
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+844,
+95
+],
+"cell": [
+26,
+2
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+450,
+71
+],
+"cell": [
+14,
+2
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+1262,
+194
+],
+"cell": [
+39,
+6
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+862,
+176
+],
+"cell": [
+26,
+5
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+884,
+427
+],
+"cell": [
+27,
+13
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+382,
+319
+],
+"cell": [
+11,
+9
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1139,
+50
+],
+"cell": [
+35,
+1
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+8,
+593
+],
+"cell": [
+0,
+18
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+475,
+76
+],
+"cell": [
+14,
+2
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+874,
+469
+],
+"cell": [
+27,
+14
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+923,
+42
+],
+"cell": [
+28,
+1
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+502,
+145
+],
+"cell": [
+15,
+4
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+644,
+71
+],
+"cell": [
+20,
+2
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+541,
+89
+],
+"cell": [
+16,
+2
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+667,
+707
+],
+"cell": [
+20,
+22
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+456,
+265
+],
+"cell": [
+14,
+8
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+661,
+514
+],
+"cell": [
+20,
+16
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1157,
+205
+],
+"cell": [
+36,
+6
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1233,
+642
+],
+"cell": [
+38,
+20
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+1252,
+309
+],
+"cell": [
+39,
+9
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+942,
+53
+],
+"cell": [
+29,
+1
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1120,
+599
+],
+"cell": [
+34,
+18
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+549,
+606
+],
+"cell": [
+17,
+18
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+570,
+517
+],
+"cell": [
+17,
+16
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+279,
+754
+],
+"cell": [
+8,
+23
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+857,
+41
+],
+"cell": [
+26,
+1
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+907,
+746
+],
+"cell": [
+28,
+23
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+684,
+328
+],
+"cell": [
+21,
+10
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+529,
+461
+],
+"cell": [
+16,
+14
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+692,
+567
+],
+"cell": [
+21,
+17
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+625,
+135
+],
+"cell": [
+19,
+4
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+229,
+356
+],
+"cell": [
+7,
+11
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+814,
+815
+],
+"cell": [
+25,
+25
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+491,
+598
+],
+"cell": [
+15,
+18
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+21,
+512
+],
+"cell": [
+0,
+15
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+437,
+224
+],
+"cell": [
+13,
+7
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+185,
+824
+],
+"cell": [
+5,
+25
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+709,
+385
+],
+"cell": [
+22,
+12
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+411,
+77
+],
+"cell": [
+12,
+2
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+349,
+639
+],
+"cell": [
+10,
+19
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+771,
+769
+],
+"cell": [
+24,
+24
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+747,
+156
+],
+"cell": [
+23,
+4
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+905,
+94
+],
+"cell": [
+28,
+2
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+235,
+212
+],
+"cell": [
+7,
+6
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+1329,
+99
+],
+"cell": [
+41,
+3
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1230,
+788
+],
+"cell": [
+38,
+24
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+692,
+235
+],
+"cell": [
+21,
+7
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+1024,
+456
+],
+"cell": [
+32,
+14
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+967,
+447
+],
+"cell": [
+30,
+13
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+31,
+808
+],
+"cell": [
+0,
+25
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+106,
+809
+],
+"cell": [
+3,
+25
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+83,
+598
+],
+"cell": [
+2,
+18
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1103,
+801
+],
+"cell": [
+34,
+25
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+426,
+787
+],
+"cell": [
+13,
+24
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+942,
+489
+],
+"cell": [
+29,
+15
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+1270,
+501
+],
+"cell": [
+39,
+15
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+585,
+275
+],
+"cell": [
+18,
+8
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+441,
+424
+],
+"cell": [
+13,
+13
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+965,
+55
+],
+"cell": [
+30,
+1
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+853,
+703
+],
+"cell": [
+26,
+21
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+231,
+500
+],
+"cell": [
+7,
+15
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+455,
+326
+],
+"cell": [
+14,
+10
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1068,
+477
+],
+"cell": [
+33,
+14
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+844,
+786
+],
+"cell": [
+26,
+24
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+618,
+710
+],
+"cell": [
+19,
+22
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+269,
+538
+],
+"cell": [
+8,
+16
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1292,
+723
+],
+"cell": [
+40,
+22
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+26,
+427
+],
+"cell": [
+0,
+13
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1214,
+719
+],
+"cell": [
+37,
+22
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+23,
+189
+],
+"cell": [
+0,
+5
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1061,
+376
+],
+"cell": [
+33,
+11
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1149,
+13
+],
+"cell": [
+35,
+0
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+315,
+781
+],
+"cell": [
+9,
+24
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+150,
+23
+],
+"cell": [
+4,
+0
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+812,
+315
+],
+"cell": [
+25,
+9
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+14,
+274
+],
+"cell": [
+0,
+8
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+987,
+343
+],
+"cell": [
+30,
+10
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+680,
+383
+],
+"cell": [
+21,
+11
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1247,
+589
+],
+"cell": [
+38,
+18
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+18,
+441
+],
+"cell": [
+0,
+13
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+913,
+793
+],
+"cell": [
+28,
+24
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+670,
+736
+],
+"cell": [
+20,
+22
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+1276,
+685
+],
+"cell": [
+39,
+21
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+739,
+343
+],
+"cell": [
+23,
+10
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1100,
+14
+],
+"cell": [
+34,
+0
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+209,
+201
+],
+"cell": [
+6,
+6
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+325,
+685
+],
+"cell": [
+10,
+21
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+499,
+407
+],
+"cell": [
+15,
+12
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+933,
+749
+],
+"cell": [
+29,
+23
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+232,
+265
+],
+"cell": [
+7,
+8
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1282,
+212
+],
+"cell": [
+40,
+6
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+235,
+487
+],
+"cell": [
+7,
+15
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+351,
+661
+],
+"cell": [
+10,
+20
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+228,
+172
+],
+"cell": [
+7,
+5
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1266,
+295
+],
+"cell": [
+39,
+9
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+1142,
+196
+],
+"cell": [
+35,
+6
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+919,
+768
+],
+"cell": [
+28,
+24
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+1235,
+776
+],
+"cell": [
+38,
+24
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+637,
+405
+],
+"cell": [
+19,
+12
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+494,
+574
+],
+"cell": [
+15,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+551,
+274
+],
+"cell": [
+17,
+8
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+1269,
+415
+],
+"cell": [
+39,
+12
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+1037,
+434
+],
+"cell": [
+32,
+13
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+216,
+346
+],
+"cell": [
+6,
+10
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+21,
+379
+],
+"cell": [
+0,
+11
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+26,
+468
+],
+"cell": [
+0,
+14
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+607,
+64
+],
+"cell": [
+18,
+1
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+359,
+114
+],
+"cell": [
+11,
+3
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+163,
+431
 ],
 "cell": [
 5,
@@ -44,35 +2816,1295 @@
 {
 "kind": "boulder_0",
 "pos": [
-362,
-34
+700,
+319
+],
+"cell": [
+21,
+9
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+382,
+278
 ],
 "cell": [
 11,
-1
+8
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+856,
+789
+],
+"cell": [
+26,
+24
 ],
 "flip": false
 },
 {
 "kind": "dry_tuft_0",
 "pos": [
-378,
-79
+940,
+186
 ],
 "cell": [
-11,
+29,
+5
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+433,
+67
+],
+"cell": [
+13,
 2
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+908,
+181
+],
+"cell": [
+28,
+5
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+125,
+659
+],
+"cell": [
+3,
+20
 ],
 "flip": false
 },
 {
 "kind": "dry_tuft_1",
 "pos": [
+1059,
+16
+],
+"cell": [
+33,
+0
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+723,
+797
+],
+"cell": [
+22,
+24
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+854,
+194
+],
+"cell": [
 26,
+6
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+1277,
+69
+],
+"cell": [
+39,
+2
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+543,
+579
+],
+"cell": [
+16,
+18
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+979,
+690
+],
+"cell": [
+30,
+21
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+483,
+725
+],
+"cell": [
+15,
+22
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+108,
+742
+],
+"cell": [
+3,
 23
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+583,
+383
+],
+"cell": [
+18,
+11
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1095,
+561
+],
+"cell": [
+34,
+17
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+390,
+511
+],
+"cell": [
+12,
+15
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1257,
+74
+],
+"cell": [
+39,
+2
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+252,
+445
+],
+"cell": [
+7,
+13
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+221,
+199
+],
+"cell": [
+6,
+6
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+671,
+532
+],
+"cell": [
+20,
+16
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+115,
+150
+],
+"cell": [
+3,
+4
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+766,
+222
+],
+"cell": [
+23,
+6
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+845,
+678
+],
+"cell": [
+26,
+21
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+488,
+748
+],
+"cell": [
+15,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+11,
+683
 ],
 "cell": [
 0,
+21
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+987,
+79
+],
+"cell": [
+30,
+2
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+1056,
+477
+],
+"cell": [
+32,
+14
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+892,
+577
+],
+"cell": [
+27,
+18
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+992,
+603
+],
+"cell": [
+30,
+18
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+738,
+393
+],
+"cell": [
+23,
+12
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1019,
+43
+],
+"cell": [
+31,
+1
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+845,
+798
+],
+"cell": [
+26,
+24
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1175,
+204
+],
+"cell": [
+36,
+6
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+1103,
+547
+],
+"cell": [
+34,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1014,
+283
+],
+"cell": [
+31,
+8
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+1144,
+56
+],
+"cell": [
+35,
+1
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+175,
+566
+],
+"cell": [
+5,
+17
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+184,
+217
+],
+"cell": [
+5,
+6
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+584,
+808
+],
+"cell": [
+18,
+25
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+528,
+811
+],
+"cell": [
+16,
+25
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+66,
+19
+],
+"cell": [
+2,
+0
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+980,
+292
+],
+"cell": [
+30,
+9
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+334,
+661
+],
+"cell": [
+10,
+20
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1279,
+576
+],
+"cell": [
+39,
+18
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+927,
+176
+],
+"cell": [
+28,
+5
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+1179,
+751
+],
+"cell": [
+36,
+23
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+62,
+28
+],
+"cell": [
+1,
+0
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+361,
+762
+],
+"cell": [
+11,
+23
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+801,
+65
+],
+"cell": [
+25,
+2
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+716,
+388
+],
+"cell": [
+22,
+12
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+346,
+588
+],
+"cell": [
+10,
+18
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+503,
+822
+],
+"cell": [
+15,
+25
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+725,
+305
+],
+"cell": [
+22,
+9
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+992,
+388
+],
+"cell": [
+30,
+12
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+354,
+556
+],
+"cell": [
+11,
+17
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+693,
+282
+],
+"cell": [
+21,
+8
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+388,
+289
+],
+"cell": [
+12,
+9
+],
+"flip": false
+},
+{
+"kind": "bones",
+"pos": [
+782,
+718
+],
+"cell": [
+24,
+22
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+440,
+597
+],
+"cell": [
+13,
+18
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1026,
+712
+],
+"cell": [
+32,
+22
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+550,
+487
+],
+"cell": [
+17,
+15
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+784,
+594
+],
+"cell": [
+24,
+18
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+827,
+562
+],
+"cell": [
+25,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1109,
+197
+],
+"cell": [
+34,
+6
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+390,
+325
+],
+"cell": [
+12,
+10
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+490,
+548
+],
+"cell": [
+15,
+17
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+939,
+255
+],
+"cell": [
+29,
+7
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1276,
+342
+],
+"cell": [
+39,
+10
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+839,
+190
+],
+"cell": [
+26,
+5
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1174,
+466
+],
+"cell": [
+36,
+14
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+244,
+607
+],
+"cell": [
+7,
+18
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+65,
+160
+],
+"cell": [
+2,
+4
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+178,
+143
+],
+"cell": [
+5,
+4
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+1310,
+345
+],
+"cell": [
+40,
+10
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+535,
+752
+],
+"cell": [
+16,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1019,
+292
+],
+"cell": [
+31,
+9
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+630,
+267
+],
+"cell": [
+19,
+8
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+526,
+585
+],
+"cell": [
+16,
+18
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+291,
+59
+],
+"cell": [
+9,
+1
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+1084,
+622
+],
+"cell": [
+33,
+19
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1004,
+743
+],
+"cell": [
+31,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+607,
+817
+],
+"cell": [
+18,
+25
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+1075,
+549
+],
+"cell": [
+33,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+435,
+532
+],
+"cell": [
+13,
+16
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+660,
+8
+],
+"cell": [
+20,
+0
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1327,
+732
+],
+"cell": [
+41,
+22
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+478,
+57
+],
+"cell": [
+14,
+1
+],
+"flip": false
+},
+{
+"kind": "bones",
+"pos": [
+321,
+656
+],
+"cell": [
+10,
+20
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+237,
+334
+],
+"cell": [
+7,
+10
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+905,
+364
+],
+"cell": [
+28,
+11
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1229,
+699
+],
+"cell": [
+38,
+21
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1025,
+50
+],
+"cell": [
+32,
+1
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+106,
+515
+],
+"cell": [
+3,
+16
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+436,
+51
+],
+"cell": [
+13,
+1
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+192,
+337
+],
+"cell": [
+6,
+10
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+754,
+707
+],
+"cell": [
+23,
+22
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+827,
+428
+],
+"cell": [
+25,
+13
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+633,
+34
+],
+"cell": [
+19,
+1
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+105,
+51
+],
+"cell": [
+3,
+1
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+781,
+230
+],
+"cell": [
+24,
+7
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+28,
+423
+],
+"cell": [
+0,
+13
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+879,
+442
+],
+"cell": [
+27,
+13
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1148,
+606
+],
+"cell": [
+35,
+18
+],
+"flip": false
+},
+{
+"kind": "bones",
+"pos": [
+215,
+605
+],
+"cell": [
+6,
+18
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+897,
+774
+],
+"cell": [
+28,
+24
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+1189,
+24
+],
+"cell": [
+37,
 0
 ],
 "flip": true
@@ -80,11 +4112,1319 @@
 {
 "kind": "boulder_0",
 "pos": [
-581,
-90
+356,
+394
+],
+"cell": [
+11,
+12
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1260,
+760
+],
+"cell": [
+39,
+23
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+806,
+58
+],
+"cell": [
+25,
+1
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1042,
+722
+],
+"cell": [
+32,
+22
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+107,
+355
+],
+"cell": [
+3,
+11
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+898,
+226
+],
+"cell": [
+28,
+7
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+685,
+513
+],
+"cell": [
+21,
+16
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+435,
+330
+],
+"cell": [
+13,
+10
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+440,
+776
+],
+"cell": [
+13,
+24
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1137,
+131
+],
+"cell": [
+35,
+4
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+742,
+744
+],
+"cell": [
+23,
+23
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+1307,
+25
+],
+"cell": [
+40,
+0
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+633,
+41
+],
+"cell": [
+19,
+1
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+774,
+751
+],
+"cell": [
+24,
+23
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+437,
+224
+],
+"cell": [
+13,
+7
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+273,
+223
+],
+"cell": [
+8,
+6
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+905,
+34
+],
+"cell": [
+28,
+1
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+105,
+741
+],
+"cell": [
+3,
+23
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+560,
+51
+],
+"cell": [
+17,
+1
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+919,
+423
+],
+"cell": [
+28,
+13
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+677,
+69
+],
+"cell": [
+21,
+2
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+251,
+32
+],
+"cell": [
+7,
+1
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+398,
+136
+],
+"cell": [
+12,
+4
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+42,
+496
+],
+"cell": [
+1,
+15
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+1125,
+133
+],
+"cell": [
+35,
+4
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+655,
+565
+],
+"cell": [
+20,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+941,
+574
+],
+"cell": [
+29,
+17
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+532,
+495
+],
+"cell": [
+16,
+15
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+14,
+717
+],
+"cell": [
+0,
+22
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+236,
+216
+],
+"cell": [
+7,
+6
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+851,
+386
+],
+"cell": [
+26,
+12
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+613,
+350
+],
+"cell": [
+19,
+10
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1092,
+59
+],
+"cell": [
+34,
+1
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+402,
+350
+],
+"cell": [
+12,
+10
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1060,
+26
+],
+"cell": [
+33,
+0
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1147,
+387
+],
+"cell": [
+35,
+12
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+18,
+650
+],
+"cell": [
+0,
+20
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+270,
+800
+],
+"cell": [
+8,
+25
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1253,
+148
+],
+"cell": [
+39,
+4
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+176,
+257
+],
+"cell": [
+5,
+8
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+1088,
+369
+],
+"cell": [
+33,
+11
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+263,
+538
+],
+"cell": [
+8,
+16
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+808,
+357
+],
+"cell": [
+25,
+11
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+553,
+502
+],
+"cell": [
+17,
+15
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+198,
+202
+],
+"cell": [
+6,
+6
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+758,
+364
+],
+"cell": [
+23,
+11
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+694,
+192
+],
+"cell": [
+21,
+5
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+487,
+478
+],
+"cell": [
+15,
+14
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+711,
+339
+],
+"cell": [
+22,
+10
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+556,
+829
+],
+"cell": [
+17,
+25
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+473,
+807
+],
+"cell": [
+14,
+25
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+605,
+54
 ],
 "cell": [
 18,
+1
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1049,
+317
+],
+"cell": [
+32,
+9
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+989,
+408
+],
+"cell": [
+30,
+12
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+535,
+485
+],
+"cell": [
+16,
+15
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1024,
+606
+],
+"cell": [
+32,
+18
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+670,
+174
+],
+"cell": [
+20,
+5
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1002,
+437
+],
+"cell": [
+31,
+13
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+525,
+83
+],
+"cell": [
+16,
+2
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+438,
+453
+],
+"cell": [
+13,
+14
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+628,
+305
+],
+"cell": [
+19,
+9
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+90,
+786
+],
+"cell": [
+2,
+24
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+369,
+326
+],
+"cell": [
+11,
+10
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+775,
+31
+],
+"cell": [
+24,
+0
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+6,
+598
+],
+"cell": [
+0,
+18
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+337,
+768
+],
+"cell": [
+10,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+283,
+422
+],
+"cell": [
+8,
+13
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+604,
+768
+],
+"cell": [
+18,
+23
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+85,
+773
+],
+"cell": [
+2,
+24
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1168,
+15
+],
+"cell": [
+36,
+0
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+464,
+824
+],
+"cell": [
+14,
+25
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+759,
+703
+],
+"cell": [
+23,
+21
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+229,
+596
+],
+"cell": [
+7,
+18
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+1249,
+21
+],
+"cell": [
+39,
+0
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+921,
+159
+],
+"cell": [
+28,
+4
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+583,
+60
+],
+"cell": [
+18,
+1
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+1170,
+749
+],
+"cell": [
+36,
+23
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+145,
+254
+],
+"cell": [
+4,
+7
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+49,
+650
+],
+"cell": [
+1,
+20
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+616,
+8
+],
+"cell": [
+19,
+0
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1261,
+733
+],
+"cell": [
+39,
+22
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+755,
+714
+],
+"cell": [
+23,
+22
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+640,
+695
+],
+"cell": [
+20,
+21
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+568,
+303
+],
+"cell": [
+17,
+9
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+78,
+278
+],
+"cell": [
+2,
+8
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+229,
+114
+],
+"cell": [
+7,
+3
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+723,
+537
+],
+"cell": [
+22,
+16
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+73,
+675
+],
+"cell": [
+2,
+21
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+975,
+577
+],
+"cell": [
+30,
+18
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+291,
+146
+],
+"cell": [
+9,
+4
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+438,
+324
+],
+"cell": [
+13,
+10
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+971,
+215
+],
+"cell": [
+30,
+6
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+572,
+382
+],
+"cell": [
+17,
+11
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+412,
+18
+],
+"cell": [
+12,
+0
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1313,
+759
+],
+"cell": [
+41,
+23
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+545,
+94
+],
+"cell": [
+17,
+2
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+810,
+779
+],
+"cell": [
+25,
+24
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+558,
+711
+],
+"cell": [
+17,
+22
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+449,
+247
+],
+"cell": [
+14,
+7
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+43,
+361
+],
+"cell": [
+1,
+11
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+328,
+570
+],
+"cell": [
+10,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+233,
+682
+],
+"cell": [
+7,
+21
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1300,
+452
+],
+"cell": [
+40,
+14
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+525,
+235
+],
+"cell": [
+16,
+7
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+1266,
+558
+],
+"cell": [
+39,
+17
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+263,
+475
+],
+"cell": [
+8,
+14
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+263,
+560
+],
+"cell": [
+8,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+59,
+282
+],
+"cell": [
+1,
+8
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+325,
+816
+],
+"cell": [
+10,
+25
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+125,
+71
+],
+"cell": [
+3,
 2
 ],
 "flip": true
@@ -93,958 +5433,850 @@
 "kind": "dry_tuft_0",
 "pos": [
 51,
-74
+28
 ],
 "cell": [
 1,
-2
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-170,
-237
-],
-"cell": [
-5,
-7
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-450,
-151
-],
-"cell": [
-14,
-4
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-141,
-252
-],
-"cell": [
-4,
-7
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-678,
-14
-],
-"cell": [
-21,
 0
 ],
-"flip": false
+"flip": true
 },
 {
 "kind": "dry_tuft_1",
 "pos": [
-632,
-80
+446,
+520
 ],
 "cell": [
-19,
-2
+13,
+16
 ],
 "flip": true
 },
 {
-"kind": "dry_tuft_0",
+"kind": "dry_tuft_1",
 "pos": [
-626,
-93
+1071,
+645
 ],
 "cell": [
-19,
-2
+33,
+20
 ],
 "flip": false
 },
 {
 "kind": "cactus_1",
 "pos": [
-210,
-433
+406,
+558
+],
+"cell": [
+12,
+17
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+1137,
+343
+],
+"cell": [
+35,
+10
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+944,
+315
+],
+"cell": [
+29,
+9
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+945,
+688
+],
+"cell": [
+29,
+21
+],
+"flip": false
+},
+{
+"kind": "bones",
+"pos": [
+458,
+272
+],
+"cell": [
+14,
+8
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1339,
+128
+],
+"cell": [
+41,
+3
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+204,
+28
 ],
 "cell": [
 6,
-13
+0
 ],
 "flip": false
-},
-{
-"kind": "boulder_1",
-"pos": [
-700,
-114
-],
-"cell": [
-21,
-3
-],
-"flip": false
-},
-{
-"kind": "bones",
-"pos": [
-148,
-81
-],
-"cell": [
-4,
-2
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-53,
-467
-],
-"cell": [
-1,
-14
-],
-"flip": false
-},
-{
-"kind": "cactus_0",
-"pos": [
-685,
-223
-],
-"cell": [
-21,
-6
-],
-"flip": true
 },
 {
 "kind": "dry_tuft_1",
 "pos": [
+1207,
+328
+],
+"cell": [
+37,
+10
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1152,
+308
+],
+"cell": [
 35,
-269
-],
-"cell": [
-1,
-8
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-664,
-146
-],
-"cell": [
-20,
-4
-],
-"flip": true
-},
-{
-"kind": "cactus_0",
-"pos": [
-304,
-374
-],
-"cell": [
-9,
-11
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-662,
-345
-],
-"cell": [
-20,
-10
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-146,
-45
-],
-"cell": [
-4,
-1
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-462,
-476
-],
-"cell": [
-14,
-14
-],
-"flip": true
-},
-{
-"kind": "boulder_0",
-"pos": [
-351,
-373
-],
-"cell": [
-10,
-11
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-21,
-468
-],
-"cell": [
-0,
-14
-],
-"flip": false
-},
-{
-"kind": "cactus_0",
-"pos": [
-176,
-15
-],
-"cell": [
-5,
-0
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-439,
-297
-],
-"cell": [
-13,
 9
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-94,
-166
-],
-"cell": [
-2,
-5
-],
-"flip": true
-},
-{
-"kind": "boulder_0",
-"pos": [
-182,
-38
-],
-"cell": [
-5,
-1
-],
-"flip": false
-},
-{
-"kind": "bones",
-"pos": [
-380,
-461
-],
-"cell": [
-11,
-14
 ],
 "flip": true
 },
 {
 "kind": "boulder_1",
 "pos": [
-758,
-140
-],
-"cell": [
-23,
-4
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-648,
-345
-],
-"cell": [
-20,
-10
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-343,
-307
-],
-"cell": [
-10,
-9
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-644,
-8
-],
-"cell": [
-20,
-0
-],
-"flip": true
-},
-{
-"kind": "cactus_0",
-"pos": [
-639,
-19
-],
-"cell": [
-19,
-0
-],
-"flip": false
-},
-{
-"kind": "bones",
-"pos": [
-97,
-454
-],
-"cell": [
-3,
-14
-],
-"flip": false
-},
-{
-"kind": "cactus_0",
-"pos": [
-166,
-62
-],
-"cell": [
-5,
-1
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-293,
-16
-],
-"cell": [
-9,
-0
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-494,
-190
-],
-"cell": [
-15,
-5
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-759,
-166
-],
-"cell": [
-23,
-5
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-713,
-37
-],
-"cell": [
-22,
-1
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-704,
-321
-],
-"cell": [
-21,
-10
-],
-"flip": false
-},
-{
-"kind": "cactus_0",
-"pos": [
-169,
-56
-],
-"cell": [
-5,
-1
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-617,
-112
-],
-"cell": [
-19,
-3
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-510,
-153
-],
-"cell": [
-15,
-4
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-106,
-332
-],
-"cell": [
-3,
-10
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-294,
-292
-],
-"cell": [
-9,
-9
-],
-"flip": false
-},
-{
-"kind": "boulder_1",
-"pos": [
-70,
-190
-],
-"cell": [
-2,
-5
-],
-"flip": false
-},
-{
-"kind": "cactus_0",
-"pos": [
-32,
-224
-],
-"cell": [
-0,
-6
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-487,
-10
-],
-"cell": [
-15,
-0
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-403,
-435
-],
-"cell": [
-12,
-13
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-270,
-458
-],
-"cell": [
-8,
-14
-],
-"flip": true
-},
-{
-"kind": "cactus_0",
-"pos": [
-502,
-339
-],
-"cell": [
-15,
-10
-],
-"flip": true
-},
-{
-"kind": "boulder_0",
-"pos": [
-254,
-260
-],
-"cell": [
-7,
-8
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-376,
-152
-],
-"cell": [
-11,
-4
-],
-"flip": true
-},
-{
-"kind": "boulder_0",
-"pos": [
-714,
-216
-],
-"cell": [
-22,
-6
-],
-"flip": true
-},
-{
-"kind": "cactus_1",
-"pos": [
-284,
-30
-],
-"cell": [
-8,
-0
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-134,
-201
-],
-"cell": [
-4,
-6
-],
-"flip": true
-},
-{
-"kind": "boulder_1",
-"pos": [
-264,
-176
-],
-"cell": [
-8,
-5
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-181,
-305
-],
-"cell": [
-5,
-9
-],
-"flip": false
-},
-{
-"kind": "boulder_1",
-"pos": [
-439,
-87
-],
-"cell": [
-13,
-2
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-519,
-180
+528,
+312
 ],
 "cell": [
 16,
-5
+9
 ],
 "flip": true
 },
 {
-"kind": "dry_tuft_1",
+"kind": "dry_tuft_0",
 "pos": [
-731,
-51
+68,
+521
 ],
 "cell": [
-22,
-1
+2,
+16
 ],
-"flip": true
+"flip": false
 },
 {
-"kind": "dry_tuft_1",
+"kind": "boulder_1",
 "pos": [
-402,
-37
+1194,
+767
 ],
 "cell": [
-12,
-1
+37,
+23
 ],
-"flip": true
+"flip": false
 },
 {
-"kind": "cactus_0",
+"kind": "boulder_0",
 "pos": [
-142,
-345
+567,
+377
 ],
 "cell": [
-4,
-10
+17,
+11
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+322,
+141
+],
+"cell": [
+10,
+4
 ],
 "flip": false
 },
 {
 "kind": "cactus_1",
 "pos": [
-386,
-233
+1018,
+415
 ],
 "cell": [
-12,
-7
-],
-"flip": true
-},
-{
-"kind": "boulder_1",
-"pos": [
-411,
-18
-],
-"cell": [
-12,
-0
+31,
+12
 ],
 "flip": true
 },
 {
 "kind": "boulder_0",
 "pos": [
-52,
-20
+417,
+388
 ],
 "cell": [
-1,
-0
+13,
+12
 ],
 "flip": false
 },
 {
-"kind": "cactus_0",
+"kind": "boulder_0",
 "pos": [
-603,
-34
+1321,
+638
 ],
 "cell": [
-18,
-1
+41,
+19
 ],
 "flip": true
 },
 {
 "kind": "dry_tuft_0",
 "pos": [
-234,
-274
+1174,
+337
 ],
 "cell": [
-7,
-8
+36,
+10
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+919,
+540
+],
+"cell": [
+28,
+16
 ],
 "flip": false
 },
 {
 "kind": "boulder_0",
 "pos": [
-92,
-445
+88,
+561
 ],
 "cell": [
 2,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+801,
+455
+],
+"cell": [
+25,
+14
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1147,
+747
+],
+"cell": [
+35,
+23
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+540,
+796
+],
+"cell": [
+16,
+24
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+255,
+473
+],
+"cell": [
+7,
+14
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+448,
+592
+],
+"cell": [
+13,
+18
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+872,
+96
+],
+"cell": [
+27,
+3
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+209,
+267
+],
+"cell": [
+6,
+8
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+1024,
+433
+],
+"cell": [
+32,
 13
 ],
 "flip": true
 },
 {
-"kind": "dry_tuft_1",
-"pos": [
-390,
-12
-],
-"cell": [
-12,
-0
-],
-"flip": false
-},
-{
 "kind": "cactus_0",
 "pos": [
-384,
-175
+109,
+393
 ],
 "cell": [
-11,
-5
+3,
+12
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+545,
+501
+],
+"cell": [
+17,
+15
 ],
 "flip": false
 },
 {
 "kind": "boulder_1",
 "pos": [
-330,
-27
+1296,
+44
 ],
 "cell": [
-10,
-0
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-262,
-177
-],
-"cell": [
-8,
-5
-],
-"flip": true
-},
-{
-"kind": "cactus_0",
-"pos": [
-297,
-449
-],
-"cell": [
-9,
-14
+40,
+1
 ],
 "flip": true
 },
 {
 "kind": "dry_tuft_0",
 "pos": [
-699,
-141
+357,
+17
 ],
 "cell": [
-21,
-4
+11,
+0
 ],
-"flip": true
+"flip": false
 },
 {
-"kind": "dry_tuft_1",
+"kind": "boulder_0",
 "pos": [
-102,
-146
+1309,
+646
 ],
 "cell": [
-3,
-4
+40,
+20
 ],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-124,
-55
-],
-"cell": [
-3,
-1
-],
-"flip": true
+"flip": false
 },
 {
 "kind": "cactus_0",
 "pos": [
-694,
-39
+476,
+231
 ],
 "cell": [
-21,
+14,
+7
+],
+"flip": false
+},
+{
+"kind": "bones",
+"pos": [
+1025,
+46
+],
+"cell": [
+32,
 1
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+65,
+638
+],
+"cell": [
+2,
+19
 ],
 "flip": true
 },
 {
 "kind": "boulder_0",
 "pos": [
-547,
-459
+138,
+746
+],
+"cell": [
+4,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+760,
+680
+],
+"cell": [
+23,
+21
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+665,
+50
+],
+"cell": [
+20,
+1
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+559,
+477
 ],
 "cell": [
 17,
 14
 ],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+758,
+778
+],
+"cell": [
+23,
+24
+],
 "flip": true
 },
 {
-"kind": "dry_tuft_1",
+"kind": "dry_tuft_0",
 "pos": [
-503,
-46
+436,
+204
 ],
 "cell": [
-15,
-1
+13,
+6
+],
+"flip": false
+},
+{
+"kind": "bones",
+"pos": [
+854,
+689
+],
+"cell": [
+26,
+21
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1304,
+662
+],
+"cell": [
+40,
+20
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+736,
+408
+],
+"cell": [
+22,
+12
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1018,
+14
+],
+"cell": [
+31,
+0
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1333,
+137
+],
+"cell": [
+41,
+4
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+746,
+525
+],
+"cell": [
+23,
+16
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+254,
+202
+],
+"cell": [
+7,
+6
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+546,
+31
+],
+"cell": [
+17,
+0
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+441,
+356
+],
+"cell": [
+13,
+11
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+241,
+568
+],
+"cell": [
+7,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+27,
+30
+],
+"cell": [
+0,
+0
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+456,
+397
+],
+"cell": [
+14,
+12
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+662,
+602
+],
+"cell": [
+20,
+18
 ],
 "flip": false
 },
 {
 "kind": "dry_tuft_1",
 "pos": [
-390,
-345
+1098,
+442
 ],
 "cell": [
-12,
+34,
+13
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+766,
+86
+],
+"cell": [
+23,
+2
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+49,
+335
+],
+"cell": [
+1,
 10
 ],
 "flip": true
 },
 {
-"kind": "cactus_1",
+"kind": "boulder_0",
 "pos": [
-621,
-350
+332,
+277
 ],
 "cell": [
-19,
-10
+10,
+8
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+989,
+546
+],
+"cell": [
+30,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1153,
+48
+],
+"cell": [
+36,
+1
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+470,
+19
+],
+"cell": [
+14,
+0
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+340,
+172
+],
+"cell": [
+10,
+5
 ],
 "flip": true
 },
 {
-"kind": "cactus_1",
+"kind": "boulder_0",
 "pos": [
-121,
-417
+297,
+111
 ],
 "cell": [
-3,
+9,
+3
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+1128,
+213
+],
+"cell": [
+35,
+6
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+143,
+130
+],
+"cell": [
+4,
+4
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+508,
+403
+],
+"cell": [
+15,
+12
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+381,
+418
+],
+"cell": [
+11,
 13
 ],
 "flip": true
@@ -1052,8 +6284,140 @@
 {
 "kind": "dry_tuft_1",
 "pos": [
-10,
-36
+929,
+363
+],
+"cell": [
+29,
+11
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1242,
+117
+],
+"cell": [
+38,
+3
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1107,
+798
+],
+"cell": [
+34,
+24
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+395,
+741
+],
+"cell": [
+12,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1262,
+416
+],
+"cell": [
+39,
+13
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+517,
+221
+],
+"cell": [
+16,
+6
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+152,
+578
+],
+"cell": [
+4,
+18
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1149,
+363
+],
+"cell": [
+35,
+11
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+1261,
+562
+],
+"cell": [
+39,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1045,
+452
+],
+"cell": [
+32,
+14
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+986,
+352
+],
+"cell": [
+30,
+10
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+13,
+58
 ],
 "cell": [
 0,
@@ -1062,238 +6426,118 @@
 "flip": false
 },
 {
-"kind": "boulder_0",
+"kind": "boulder_1",
 "pos": [
-614,
-50
+1045,
+740
 ],
 "cell": [
-19,
-1
+32,
+23
 ],
-"flip": false
+"flip": true
 },
 {
-"kind": "dry_tuft_0",
+"kind": "boulder_1",
 "pos": [
-114,
-469
+1295,
+51
 ],
 "cell": [
-3,
-14
+40,
+1
 ],
 "flip": false
 },
 {
 "kind": "boulder_1",
 "pos": [
-300,
-22
+520,
+123
 ],
 "cell": [
-9,
-0
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-61,
-85
-],
-"cell": [
-1,
-2
-],
-"flip": true
-},
-{
-"kind": "cactus_0",
-"pos": [
-394,
-216
-],
-"cell": [
-12,
-6
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-112,
-444
-],
-"cell": [
-3,
-13
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-729,
-440
-],
-"cell": [
-22,
-13
-],
-"flip": false
-},
-{
-"kind": "bones",
-"pos": [
-169,
-205
-],
-"cell": [
-5,
-6
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-580,
-445
-],
-"cell": [
-18,
-13
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-630,
-96
-],
-"cell": [
-19,
-2
-],
-"flip": true
-},
-{
-"kind": "cactus_0",
-"pos": [
-437,
-13
-],
-"cell": [
-13,
-0
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-44,
-382
-],
-"cell": [
-1,
-11
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-648,
-359
-],
-"cell": [
-20,
-11
-],
-"flip": true
-},
-{
-"kind": "bones",
-"pos": [
-712,
-200
-],
-"cell": [
-22,
-6
+16,
+3
 ],
 "flip": true
 },
 {
 "kind": "boulder_0",
 "pos": [
-231,
-15
-],
-"cell": [
-7,
-0
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-39,
-466
-],
-"cell": [
-1,
-14
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-632,
-59
-],
-"cell": [
-19,
-1
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-741,
-25
-],
-"cell": [
-23,
-0
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-330,
-32
+325,
+303
 ],
 "cell": [
 10,
+9
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1287,
+220
+],
+"cell": [
+40,
+6
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+469,
+21
+],
+"cell": [
+14,
 0
 ],
 "flip": true
 },
 {
+"kind": "dry_tuft_0",
+"pos": [
+707,
+152
+],
+"cell": [
+22,
+4
+],
+"flip": false
+},
+{
 "kind": "dry_tuft_1",
 "pos": [
-438,
-35
+474,
+320
+],
+"cell": [
+14,
+9
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+872,
+215
+],
+"cell": [
+27,
+6
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+418,
+48
 ],
 "cell": [
 13,
@@ -1302,26 +6546,26 @@
 "flip": true
 },
 {
-"kind": "dry_tuft_1",
+"kind": "boulder_1",
 "pos": [
-634,
-14
+1168,
+344
 ],
 "cell": [
-19,
-0
+36,
+10
 ],
-"flip": false
+"flip": true
 },
 {
-"kind": "dry_tuft_0",
+"kind": "boulder_0",
 "pos": [
-463,
-68
+879,
+196
 ],
 "cell": [
-14,
-2
+27,
+6
 ],
 "flip": false
 },
@@ -1329,718 +6573,34 @@
 "kind": "dry_tuft_0",
 "pos": [
 583,
-428
-],
-"cell": [
-18,
-13
-],
-"flip": true
-},
-{
-"kind": "boulder_1",
-"pos": [
-10,
-356
-],
-"cell": [
-0,
-11
-],
-"flip": true
-},
-{
-"kind": "boulder_1",
-"pos": [
-473,
-13
-],
-"cell": [
-14,
-0
-],
-"flip": true
-},
-{
-"kind": "boulder_0",
-"pos": [
-314,
-116
-],
-"cell": [
-9,
-3
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-198,
-77
-],
-"cell": [
-6,
-2
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-653,
-350
-],
-"cell": [
-20,
-10
-],
-"flip": false
-},
-{
-"kind": "cactus_0",
-"pos": [
-417,
-456
-],
-"cell": [
-13,
-14
-],
-"flip": true
-},
-{
-"kind": "boulder_0",
-"pos": [
-177,
-296
-],
-"cell": [
-5,
-9
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-224,
-462
-],
-"cell": [
-7,
-14
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-452,
-154
-],
-"cell": [
-14,
-4
-],
-"flip": false
-},
-{
-"kind": "bones",
-"pos": [
-22,
-174
-],
-"cell": [
-0,
-5
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-722,
-22
-],
-"cell": [
-22,
-0
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-729,
-374
-],
-"cell": [
-22,
-11
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-582,
-124
-],
-"cell": [
-18,
-3
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-528,
-59
-],
-"cell": [
-16,
-1
-],
-"flip": false
-},
-{
-"kind": "cactus_1",
-"pos": [
-10,
-333
-],
-"cell": [
-0,
-10
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-16,
-258
-],
-"cell": [
-0,
-8
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-622,
-357
-],
-"cell": [
-19,
-11
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-696,
-205
-],
-"cell": [
-21,
-6
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-649,
-413
-],
-"cell": [
-20,
-12
-],
-"flip": false
-},
-{
-"kind": "cactus_0",
-"pos": [
-144,
-264
-],
-"cell": [
-4,
-8
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-49,
-400
-],
-"cell": [
-1,
-12
-],
-"flip": false
-},
-{
-"kind": "boulder_1",
-"pos": [
-157,
-229
-],
-"cell": [
-4,
-7
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-614,
-424
-],
-"cell": [
-19,
-13
-],
-"flip": true
-},
-{
-"kind": "cactus_1",
-"pos": [
-95,
-299
-],
-"cell": [
-2,
-9
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-656,
-354
-],
-"cell": [
-20,
-11
-],
-"flip": true
-},
-{
-"kind": "boulder_0",
-"pos": [
-483,
-38
-],
-"cell": [
-15,
-1
-],
-"flip": false
-},
-{
-"kind": "boulder_1",
-"pos": [
-360,
-59
-],
-"cell": [
-11,
-1
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-247,
-452
-],
-"cell": [
-7,
-14
-],
-"flip": true
-},
-{
-"kind": "boulder_1",
-"pos": [
-271,
-366
-],
-"cell": [
-8,
-11
-],
-"flip": false
-},
-{
-"kind": "cactus_0",
-"pos": [
-150,
-363
-],
-"cell": [
-4,
-11
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-626,
-350
-],
-"cell": [
-19,
-10
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-718,
-386
-],
-"cell": [
-22,
-12
-],
-"flip": true
-},
-{
-"kind": "boulder_0",
-"pos": [
-455,
-190
-],
-"cell": [
-14,
-5
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-171,
-389
-],
-"cell": [
-5,
-12
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-690,
-102
-],
-"cell": [
-21,
-3
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-666,
-120
-],
-"cell": [
-20,
-3
-],
-"flip": true
-},
-{
-"kind": "cactus_0",
-"pos": [
-434,
-433
-],
-"cell": [
-13,
-13
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-494,
-160
-],
-"cell": [
-15,
-4
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-644,
-316
-],
-"cell": [
-20,
-9
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-384,
-49
-],
-"cell": [
-12,
-1
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-553,
-18
-],
-"cell": [
-17,
-0
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-16,
-323
-],
-"cell": [
-0,
-10
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-156,
-297
-],
-"cell": [
-4,
-9
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-247,
-438
-],
-"cell": [
-7,
-13
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-476,
-26
-],
-"cell": [
-14,
-0
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-11,
-354
-],
-"cell": [
-0,
-11
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-193,
-440
-],
-"cell": [
-6,
-13
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-362,
-8
-],
-"cell": [
-11,
-0
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-115,
-453
-],
-"cell": [
-3,
-14
-],
-"flip": true
-},
-{
-"kind": "cactus_0",
-"pos": [
-149,
-467
-],
-"cell": [
-4,
-14
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-140,
-388
-],
-"cell": [
-4,
-12
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-273,
-462
-],
-"cell": [
-8,
-14
-],
-"flip": false
-},
-{
-"kind": "cactus_0",
-"pos": [
-16,
-65
-],
-"cell": [
-0,
-2
-],
-"flip": true
-},
-{
-"kind": "cactus_1",
-"pos": [
-464,
-58
-],
-"cell": [
-14,
-1
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-511,
-194
-],
-"cell": [
-15,
-6
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-607,
-26
-],
-"cell": [
-18,
-0
-],
-"flip": true
-},
-{
-"kind": "boulder_0",
-"pos": [
-480,
-236
-],
-"cell": [
-15,
-7
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-368,
-49
-],
-"cell": [
-11,
-1
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-446,
 177
 ],
 "cell": [
-13,
+18,
+5
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+775,
+88
+],
+"cell": [
+24,
+2
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+218,
+181
+],
+"cell": [
+6,
 5
 ],
 "flip": true
@@ -2048,467 +6608,611 @@
 {
 "kind": "dry_tuft_1",
 "pos": [
-379,
-445
+1044,
+810
 ],
 "cell": [
-11,
-13
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-655,
-428
-],
-"cell": [
-20,
-13
-],
-"flip": false
-},
-{
-"kind": "cactus_0",
-"pos": [
-31,
-157
-],
-"cell": [
-0,
-4
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-469,
-464
-],
-"cell": [
-14,
-14
+32,
+25
 ],
 "flip": true
 },
 {
 "kind": "dry_tuft_0",
 "pos": [
-149,
-414
+360,
+75
 ],
 "cell": [
-4,
-12
-],
-"flip": true
-},
-{
-"kind": "bones",
-"pos": [
-243,
-98
-],
-"cell": [
-7,
-3
+11,
+2
 ],
 "flip": false
 },
 {
 "kind": "cactus_1",
 "pos": [
-245,
-438
+630,
+304
 ],
 "cell": [
-7,
-13
+19,
+9
 ],
 "flip": false
 },
 {
 "kind": "dry_tuft_1",
 "pos": [
-182,
-150
+1105,
+599
 ],
 "cell": [
-5,
+34,
+18
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+529,
+152
+],
+"cell": [
+16,
 4
 ],
 "flip": true
 },
 {
-"kind": "dry_tuft_0",
+"kind": "boulder_1",
 "pos": [
-593,
-384
+1267,
+186
 ],
 "cell": [
-18,
-11
+39,
+5
 ],
 "flip": true
 },
 {
-"kind": "dry_tuft_0",
+"kind": "cactus_0",
 "pos": [
-65,
-196
+673,
+383
 ],
 "cell": [
-2,
-6
+21,
+11
 ],
-"flip": true
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1265,
+679
+],
+"cell": [
+39,
+21
+],
+"flip": false
 },
 {
 "kind": "dry_tuft_1",
 "pos": [
-132,
-402
+1051,
+556
 ],
 "cell": [
-4,
-12
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-432,
-165
-],
-"cell": [
-13,
-5
+32,
+17
 ],
 "flip": false
 },
 {
 "kind": "dry_tuft_0",
 "pos": [
-49,
-374
+924,
+704
 ],
 "cell": [
-1,
-11
+28,
+21
 ],
-"flip": true
+"flip": false
 },
 {
 "kind": "bones",
 "pos": [
-750,
-386
+885,
+774
 ],
 "cell": [
-23,
-12
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-625,
-124
-],
-"cell": [
-19,
-3
+27,
+24
 ],
 "flip": false
 },
 {
-"kind": "dry_tuft_1",
+"kind": "cactus_0",
 "pos": [
-311,
-140
+313,
+809
 ],
 "cell": [
 9,
-4
-],
-"flip": true
-},
-{
-"kind": "cactus_0",
-"pos": [
-676,
-330
-],
-"cell": [
-21,
-10
+25
 ],
 "flip": false
 },
 {
 "kind": "boulder_0",
 "pos": [
-328,
-325
+731,
+55
 ],
 "cell": [
-10,
+22,
+1
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+248,
+493
+],
+"cell": [
+7,
+15
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+104,
+821
+],
+"cell": [
+3,
+25
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+358,
+666
+],
+"cell": [
+11,
+20
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+225,
+221
+],
+"cell": [
+7,
+6
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+261,
+345
+],
+"cell": [
+8,
 10
 ],
 "flip": true
 },
 {
-"kind": "dry_tuft_1",
+"kind": "boulder_0",
 "pos": [
-592,
-68
+1071,
+762
 ],
 "cell": [
-18,
-2
+33,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+463,
+504
+],
+"cell": [
+14,
+15
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+1260,
+234
+],
+"cell": [
+39,
+7
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+57,
+692
+],
+"cell": [
+1,
+21
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+1306,
+245
+],
+"cell": [
+40,
+7
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+188,
+654
+],
+"cell": [
+5,
+20
 ],
 "flip": true
 },
 {
 "kind": "dry_tuft_0",
 "pos": [
-261,
-445
-],
-"cell": [
-8,
-13
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-47,
-447
-],
-"cell": [
-1,
-13
-],
-"flip": true
-},
-{
-"kind": "dry_tuft_1",
-"pos": [
-689,
-392
+693,
+241
 ],
 "cell": [
 21,
-12
+7
 ],
 "flip": true
 },
 {
 "kind": "dry_tuft_1",
 "pos": [
-434,
-373
+66,
+28
 ],
 "cell": [
-13,
-11
+2,
+0
 ],
 "flip": false
 },
 {
-"kind": "cactus_0",
+"kind": "dry_tuft_0",
 "pos": [
-350,
-478
+538,
+43
 ],
 "cell": [
-10,
-14
-],
-"flip": false
-},
-{
-"kind": "cactus_0",
-"pos": [
-597,
-57
-],
-"cell": [
-18,
+16,
 1
 ],
 "flip": false
 },
 {
-"kind": "dry_tuft_1",
+"kind": "boulder_1",
 "pos": [
-229,
-161
+382,
+95
 ],
 "cell": [
-7,
-5
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-143,
-410
-],
-"cell": [
-4,
-12
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-237,
-314
-],
-"cell": [
-7,
-9
-],
-"flip": false
-},
-{
-"kind": "dry_tuft_0",
-"pos": [
-686,
-241
-],
-"cell": [
-21,
-7
-],
-"flip": false
-},
-{
-"kind": "boulder_0",
-"pos": [
-681,
-239
-],
-"cell": [
-21,
-7
+11,
+2
 ],
 "flip": true
 },
 {
-"kind": "dry_tuft_1",
+"kind": "dry_tuft_0",
 "pos": [
-48,
-268
+442,
+41
 ],
 "cell": [
-1,
-8
+13,
+1
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+195,
+761
+],
+"cell": [
+6,
+23
 ],
 "flip": false
 },
 {
 "kind": "dry_tuft_0",
 "pos": [
-761,
-173
+699,
+82
 ],
 "cell": [
-23,
-5
+21,
+2
 ],
 "flip": true
 },
 {
+"kind": "bones",
+"pos": [
+1059,
+762
+],
+"cell": [
+33,
+23
+],
+"flip": false
+},
+{
 "kind": "boulder_0",
 "pos": [
-259,
-466
+583,
+569
+],
+"cell": [
+18,
+17
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1038,
+86
+],
+"cell": [
+32,
+2
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1008,
+156
+],
+"cell": [
+31,
+4
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+618,
+729
+],
+"cell": [
+19,
+22
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+804,
+94
+],
+"cell": [
+25,
+2
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1303,
+555
+],
+"cell": [
+40,
+17
+],
+"flip": false
+},
+{
+"kind": "bones",
+"pos": [
+898,
+91
+],
+"cell": [
+28,
+2
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+390,
+647
+],
+"cell": [
+12,
+20
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+275,
+462
 ],
 "cell": [
 8,
 14
 ],
-"flip": false
-},
-{
-"kind": "cactus_1",
-"pos": [
-139,
-283
-],
-"cell": [
-4,
-8
-],
 "flip": true
 },
 {
-"kind": "boulder_0",
+"kind": "boulder_1",
 "pos": [
-626,
-403
+927,
+702
 ],
 "cell": [
-19,
-12
+28,
+21
 ],
 "flip": false
 },
 {
 "kind": "dry_tuft_0",
 "pos": [
-128,
-384
+31,
+208
 ],
 "cell": [
-3,
+0,
+6
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+232,
+362
+],
+"cell": [
+7,
 11
 ],
 "flip": true
 },
 {
-"kind": "cactus_1",
+"kind": "boulder_1",
 "pos": [
-240,
-241
+482,
+776
 ],
 "cell": [
-7,
-7
+15,
+24
 ],
 "flip": false
 },
 {
-"kind": "dry_tuft_1",
+"kind": "cactus_0",
 "pos": [
-386,
-294
+1039,
+284
 ],
 "cell": [
-12,
+32,
+8
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+310,
+647
+],
+"cell": [
+9,
+20
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+975,
+311
+],
+"cell": [
+30,
 9
 ],
 "flip": false
 },
 {
-"kind": "dry_tuft_1",
+"kind": "cactus_0",
 "pos": [
-668,
-84
+687,
+528
+],
+"cell": [
+21,
+16
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+645,
+444
 ],
 "cell": [
 20,
+13
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+718,
+82
+],
+"cell": [
+22,
 2
 ],
 "flip": false
@@ -2516,12 +7220,816 @@
 {
 "kind": "dry_tuft_1",
 "pos": [
-49,
-238
+968,
+75
+],
+"cell": [
+30,
+2
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+498,
+506
+],
+"cell": [
+15,
+15
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+1286,
+735
+],
+"cell": [
+40,
+22
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1278,
+616
+],
+"cell": [
+39,
+19
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+99,
+119
+],
+"cell": [
+3,
+3
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+252,
+548
+],
+"cell": [
+7,
+17
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+439,
+755
+],
+"cell": [
+13,
+23
+],
+"flip": false
+},
+{
+"kind": "bones",
+"pos": [
+951,
+567
+],
+"cell": [
+29,
+17
+],
+"flip": false
+},
+{
+"kind": "bones",
+"pos": [
+1265,
+361
+],
+"cell": [
+39,
+11
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+740,
+47
+],
+"cell": [
+23,
+1
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+339,
+78
+],
+"cell": [
+10,
+2
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+15,
+768
+],
+"cell": [
+0,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+515,
+421
+],
+"cell": [
+16,
+13
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+654,
+427
+],
+"cell": [
+20,
+13
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+464,
+647
+],
+"cell": [
+14,
+20
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+15,
+263
+],
+"cell": [
+0,
+8
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+434,
+215
+],
+"cell": [
+13,
+6
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+670,
+160
+],
+"cell": [
+20,
+4
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+229,
+139
+],
+"cell": [
+7,
+4
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+154,
+749
+],
+"cell": [
+4,
+23
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+743,
+723
+],
+"cell": [
+23,
+22
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+33,
+728
 ],
 "cell": [
 1,
+22
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+925,
+362
+],
+"cell": [
+28,
+11
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1166,
+468
+],
+"cell": [
+36,
+14
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+1327,
+104
+],
+"cell": [
+41,
+3
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+539,
+585
+],
+"cell": [
+16,
+18
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1259,
+559
+],
+"cell": [
+39,
+17
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+371,
+317
+],
+"cell": [
+11,
+9
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+980,
+405
+],
+"cell": [
+30,
+12
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+645,
+433
+],
+"cell": [
+20,
+13
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+701,
+754
+],
+"cell": [
+21,
+23
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+867,
+443
+],
+"cell": [
+27,
+13
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1114,
+588
+],
+"cell": [
+34,
+18
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+804,
+470
+],
+"cell": [
+25,
+14
+],
+"flip": false
+},
+{
+"kind": "bones",
+"pos": [
+79,
+533
+],
+"cell": [
+2,
+16
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+433,
+304
+],
+"cell": [
+13,
+9
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1292,
+769
+],
+"cell": [
+40,
+24
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1214,
+78
+],
+"cell": [
+37,
+2
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1019,
+441
+],
+"cell": [
+31,
+13
+],
+"flip": true
+},
+{
+"kind": "cactus_1",
+"pos": [
+1028,
+188
+],
+"cell": [
+32,
+5
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+167,
+335
+],
+"cell": [
+5,
+10
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+73,
+80
+],
+"cell": [
+2,
+2
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+1250,
+375
+],
+"cell": [
+39,
+11
+],
+"flip": true
+},
+{
+"kind": "boulder_1",
+"pos": [
+111,
+91
+],
+"cell": [
+3,
+2
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+622,
+701
+],
+"cell": [
+19,
+21
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1118,
+46
+],
+"cell": [
+34,
+1
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+610,
+713
+],
+"cell": [
+19,
+22
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+458,
+159
+],
+"cell": [
+14,
+4
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+599,
+268
+],
+"cell": [
+18,
+8
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1104,
+319
+],
+"cell": [
+34,
+9
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+650,
+388
+],
+"cell": [
+20,
+12
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+694,
+242
+],
+"cell": [
+21,
 7
+],
+"flip": false
+},
+{
+"kind": "cactus_0",
+"pos": [
+155,
+688
+],
+"cell": [
+4,
+21
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+759,
+253
+],
+"cell": [
+23,
+7
+],
+"flip": false
+},
+{
+"kind": "cactus_1",
+"pos": [
+1147,
+448
+],
+"cell": [
+35,
+13
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+1060,
+751
+],
+"cell": [
+33,
+23
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1012,
+387
+],
+"cell": [
+31,
+12
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+683,
+759
+],
+"cell": [
+21,
+23
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_1",
+"pos": [
+1192,
+768
+],
+"cell": [
+37,
+23
+],
+"flip": false
+},
+{
+"kind": "boulder_1",
+"pos": [
+765,
+448
+],
+"cell": [
+23,
+14
+],
+"flip": true
+},
+{
+"kind": "cactus_0",
+"pos": [
+195,
+792
+],
+"cell": [
+6,
+24
+],
+"flip": false
+},
+{
+"kind": "boulder_0",
+"pos": [
+1274,
+515
+],
+"cell": [
+39,
+16
+],
+"flip": true
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+1281,
+209
+],
+"cell": [
+40,
+6
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+1033,
+818
+],
+"cell": [
+32,
+25
+],
+"flip": false
+},
+{
+"kind": "dry_tuft_0",
+"pos": [
+217,
+744
+],
+"cell": [
+6,
+23
+],
+"flip": true
+},
+{
+"kind": "bones",
+"pos": [
+1185,
+389
+],
+"cell": [
+37,
+12
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+725,
+183
+],
+"cell": [
+22,
+5
+],
+"flip": true
+},
+{
+"kind": "boulder_0",
+"pos": [
+224,
+70
+],
+"cell": [
+6,
+2
 ],
 "flip": false
 }

@@ -1,8 +1,10 @@
 extends GutTest
 ## The skills the player casts during a wave: how they open, what each one does and how they cool down.
 
+const TEST_ROAD := preload("res://tests/support/test_road.tres")
+
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
-const MAP := &"switchback"
+const MAP := &"test_road"
 ## A buildable cell far from every stretch of road, so a tower there never ends the wave early.
 const FAR_CELL := Vector2i(0, 14)
 
@@ -12,6 +14,8 @@ var registry: Node
 func before_each() -> void:
 	registry = autofree(DataRegistryScript.new())
 	registry.reload()
+	# The small 24 x 15 road these tests were written against (the real maps are bigger and curved).
+	registry.maps[&"test_road"] = TEST_ROAD
 
 
 ## A run with plenty of points and these skill web nodes taken.

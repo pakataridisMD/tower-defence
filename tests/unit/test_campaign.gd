@@ -1,6 +1,8 @@
 extends GutTest
 ## The campaign: its data, the order stages open in, stars, rewards, stage rules and saves.
 
+const TEST_ROAD := preload("res://tests/support/test_road.tres")
+
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
 const ELEMENT_CAMPAIGNS: Array[StringName] = [
 	&"ember_reach", &"thunder_steppe", &"verdant_deep", &"frostmere", &"sunscar_canyon", &"hollow_rift",
@@ -12,6 +14,8 @@ var registry: Node
 func before_each() -> void:
 	registry = autofree(DataRegistryScript.new())
 	registry.reload()
+	# The small 24 x 15 road these tests were written against (the real maps are bigger and curved).
+	registry.maps[&"test_road"] = TEST_ROAD
 
 
 func _meta(profile: PlayerProfile = null) -> MetaProgress:
@@ -186,8 +190,13 @@ func test_stage_rules_change_the_run() -> void:
 	var meta := _meta()
 	var sim := RunSim.new(meta.stage_config(&"ember_1"))
 	sim.tree.points = 10
-	var brazier := sim.place_tower(&"fire_brazier", Vector2i(5, 4))
-	var plain := RunSim.new(RunConfig.from_registry(registry, &"switchback"))
+	var free := Vector2i(-1, -1)
+	for x in sim.config.map.grid_size.x:
+		for y in sim.config.map.grid_size.y:
+			if free.x < 0 and sim.can_place(&"fire_brazier", Vector2i(x, y)):
+				free = Vector2i(x, y)
+	var brazier := sim.place_tower(&"fire_brazier", free)
+	var plain := RunSim.new(RunConfig.from_registry(registry, &"test_road"))
 	plain.allocate_node(&"fire_entry")
 	plain.gold = 1000
 	var other := plain.place_tower(&"fire_brazier", Vector2i(5, 4))

@@ -7,6 +7,7 @@ extends Node
 ##   --autoplay     the scripted AutoPlayer plays the run at top speed, for footage and smoke tests.
 ##   --quit-at-end  quit shortly after the run ends. Used with --autoplay by the CI smoke test.
 
+## Where the board sat before maps could be bigger than the screen. BoardCamera places it now.
 const BOARD_OFFSET := Vector2(24, 96)
 const SPEEDS: Array[int] = [1, 2, 3]
 ## Most simulation steps in one frame. A frame that needs more drops the rest, so one slow
@@ -21,6 +22,8 @@ const BOT_WEB_SHOW := 1.2
 
 var sim: RunSim
 var board: BoardView
+## Pans and zooms the board.
+var camera: BoardCamera
 var hud: Hud
 var web: SkillWebView
 var story: Story
@@ -70,10 +73,15 @@ func _build_views() -> void:
 	board.position = BOARD_OFFSET
 	board.setup(sim)
 	add_child(board)
+	camera = BoardCamera.new()
+	add_child(camera)
+	camera.setup(board, sim.config.map.size_in_pixels())
+	board.view_rect = BoardCamera.VIEW_RECT
 
 	audio = GameAudio.new()
 	add_child(audio)
 	audio.setup(sim, BOARD_OFFSET)
+	audio.board = board
 	music = BattleMusic.new()
 	add_child(music)
 	music.setup(sim)
@@ -139,6 +147,7 @@ func _connect_signals() -> void:
 	board.selection_changed.connect(func(tower: SimTower) -> void: hud.selected = tower)
 	board.placement_failed.connect(func(reason: String) -> void: hud.show_message(reason, UiStyle.BAD))
 	board.skill_aimed.connect(_cast_skill)
+	camera.blocked_when = _board_frozen
 	web.close_requested.connect(_close_web)
 	web.node_clicked.connect(func(id: StringName) -> void: sim.allocate_node(id))
 	web.node_refund_requested.connect(func(id: StringName) -> void: sim.refund_node(id))
@@ -238,6 +247,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 # --- Actions -------------------------------------------------------------------
+
+## True while something covers the board, so the camera leaves it where it is.
+func _board_frozen() -> bool:
+	return web.visible or pause_menu.visible or audio_panel.visible or cinematic != null
+
 
 func _start_wave() -> void:
 	if sim.start_next_wave():
