@@ -1,0 +1,128 @@
+{
+ "comet": {
+  "size": [
+   56,
+   26
+  ],
+  "frames": 4,
+  "fps": 12,
+  "glow": true
+ },
+ "comet_impact": {
+  "size": [
+   128,
+   112
+  ],
+  "frames": 13,
+  "fps": 15,
+  "glow": true
+ },
+ "crater": {
+  "size": [
+   72,
+   36
+  ],
+  "frames": 1,
+  "fps": 1,
+  "glow": true
+ },
+ "ground_fire": {
+  "size": [
+   22,
+   30
+  ],
+  "frames": 6,
+  "fps": 12,
+  "glow": true
+ },
+ "tsunami": {
+  "size": [
+   84,
+   96
+  ],
+  "frames": 8,
+  "fps": 12,
+  "glow": true
+ },
+ "wave_spray": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 7,
+  "fps": 16,
+  "glow": true
+ },
+ "rock_spike": {
+  "size": [
+   36,
+   48
+  ],
+  "frames": 10,
+  "fps": 14,
+  "glow": true
+ },
+ "boulder": {
+  "size": [
+   26,
+   26
+  ],
+  "frames": 4,
+  "fps": 12,
+  "glow": false
+ },
+ "dust_cloud": {
+  "size": [
+   64,
+   40
+  ],
+  "frames": 9,
+  "fps": 12,
+  "glow": false
+ },
+ "vines": {
+  "size": [
+   56,
+   64
+  ],
+  "frames": 12,
+  "fps": 14,
+  "glow": true
+ },
+ "bramble": {
+  "size": [
+   28,
+   22
+  ],
+  "frames": 4,
+  "fps": 6,
+  "glow": true
+ },
+ "lightning": {
+  "size": [
+   48,
+   208
+  ],
+  "frames": 6,
+  "fps": 20,
+  "glow": true
+ },
+ "void_rift": {
+  "size": [
+   96,
+   52
+  ],
+  "frames": 8,
+  "fps": 10,
+  "glow": true
+ },
+ "void_collapse": {
+  "size": [
+   120,
+   120
+  ],
+  "frames": 11,
+  "fps": 14,
+  "glow": true
+ }
+}

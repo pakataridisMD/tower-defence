@@ -3,12 +3,60 @@
 [ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_skill"]
 [ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
 [ext_resource type="Script" path="res://scripts/data/modifier.gd" id="3_mod"]
+[ext_resource type="Script" path="res://scripts/data/skill_rank.gd" id="4_rank"]
 
 [sub_resource type="Resource" id="Effect_0"]
 script = ExtResource("2_status")
 kind = &"curse"
 damage_taken = 0.2
 duration = 4.0
+
+[sub_resource type="Resource" id="Rank_1"]
+script = ExtResource("4_rank")
+
+[sub_resource type="Resource" id="Rank_2"]
+script = ExtResource("4_rank")
+title = "Deep Doom"
+description = "Enemies take 30% more damage, for 5 seconds."
+cost = 120
+power = 1.5
+reach = 1.1
+hold = 1.25
+
+[sub_resource type="Resource" id="Rank_3"]
+script = ExtResource("4_rank")
+title = "Singularity"
+description = "The rift drags enemies in and holds them for a second."
+cost = 220
+power = 1.5
+reach = 1.2
+hold = 1.25
+launch = 1.2
+
+[sub_resource type="Resource" id="Rank_4"]
+script = ExtResource("4_rank")
+title = "Event Horizon"
+description = "The rift stays open for 4 seconds, dooming all who come near."
+cost = 360
+power = 1.7
+reach = 1.25
+hold = 1.5
+launch = 1.2
+zone_time = 4.0
+zone_damage = 6.0
+
+[sub_resource type="Resource" id="Rank_5"]
+script = ExtResource("4_rank")
+title = "Collapse"
+description = "When the rift closes it collapses, crushing what is inside."
+cost = 550
+power = 2.0
+reach = 1.35
+hold = 1.6
+launch = 1.5
+zone_time = 4.0
+zone_damage = 8.0
+finale_damage = 60.0
 
 [resource]
 script = ExtResource("1_skill")
@@ -20,3 +68,4 @@ requires_node = &"void_entry"
 cooldown = 60.0
 radius = 100.0
 status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0")])
+ranks = Array[ExtResource("4_rank")]([SubResource("Rank_1"), SubResource("Rank_2"), SubResource("Rank_3"), SubResource("Rank_4"), SubResource("Rank_5")])

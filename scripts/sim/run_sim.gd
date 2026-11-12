@@ -21,6 +21,12 @@ signal run_ended(won: bool)
 ## A skill was cast. `at` is the point picked on the board, or the board's centre for a skill
 ## that reaches everything.
 signal skill_used(skill: SkillData, at: Vector2)
+## A skill set off: the cast holds every blow still to land, so the board can draw what is coming.
+signal skill_cast(cast: SimSkillCast)
+## One blow of a cast landed (a strike, a stretch of a sweep, a bolt or a field closing) on `hit`.
+signal skill_struck(cast: SimSkillCast, blow: SimSkillCast.Blow, hit: Array[SimEnemy])
+## A skill was taken to a new level with gold.
+signal skill_upgraded(skill: SkillData, level: int)
 ## A boss came onto the board, walking in or released by another enemy.
 signal boss_arrived(enemy: SimEnemy)
 ## A boss used one of its abilities: &"heal", &"shield", &"shield_break", &"bind" (targets: the towers
@@ -162,6 +168,12 @@ var _arrivals: Array[SimEnemy] = []
 var _skill_cooldowns: Dictionary[StringName, float] = {}
 ## Seconds left on each skill whose modifiers are still running, by skill id.
 var _skill_time: Dictionary[StringName, float] = {}
+## The modifiers a running boon lends, scaled to the level it was cast at, by skill id.
+var _skill_mods: Dictionary[StringName, Array] = {}
+## Each skill's level in this run, by skill id (1 when it has not been raised).
+var skill_levels: Dictionary[StringName, int] = {}
+## Casts still landing.
+var _casts: Array[SimSkillCast] = []
 ## Roads whose gate has fallen in an assault: nothing more comes down them.
 var _closed_lanes: Dictionary[int, bool] = {}
 var _structure_cells: Dictionary[Vector2i, SimEnemy] = {}
@@ -529,49 +541,339 @@ func skill_error(skill_id: StringName) -> String:
 	return ""
 
 
+## The level a skill is at in this run, from 1.
+func skill_level(skill_id: StringName) -> int:
+	return skill_levels.get(skill_id, 1)
+
+
+## How far an aimed skill reaches at its level now, in board pixels.
+func skill_radius(skill_id: StringName) -> float:
+	var skill: SkillData = config.skills.get(skill_id)
+	if skill == null:
+		return 0.0
+	return skill.radius * skill.rank(skill_level(skill_id)).reach
+
+
+## Gold to take the skill to its next level, or -1 when it is at its last.
+func skill_upgrade_cost(skill_id: StringName) -> int:
+	var skill: SkillData = config.skills.get(skill_id)
+	if skill == null or skill_level(skill_id) >= skill.max_level():
+		return -1
+	return skill.rank(skill_level(skill_id) + 1).cost
+
+
+## Why a skill cannot be taken to its next level now, or an empty string if it can.
+func skill_upgrade_error(skill_id: StringName) -> String:
+	var skill: SkillData = config.skills.get(skill_id)
+	if skill == null:
+		return "Unknown skill"
+	if is_over():
+		return "The run is over"
+	if skill_level(skill_id) >= skill.max_level():
+		return "%s is at its last level" % skill.title_at(skill_level(skill_id))
+	if not is_skill_unlocked(skill_id):
+		return "Open %s in the skill web first" % skill.display_name
+	if gold < skill_upgrade_cost(skill_id):
+		return "Not enough gold"
+	return ""
+
+
+## Spends gold to take a skill to its next level. Returns false and does nothing if it cannot.
+func upgrade_skill(skill_id: StringName) -> bool:
+	if not skill_upgrade_error(skill_id).is_empty():
+		return false
+	gold -= skill_upgrade_cost(skill_id)
+	skill_levels[skill_id] = skill_level(skill_id) + 1
+	if _skill_time.has(skill_id):
+		# A boon that is running takes the new level at once.
+		_skill_mods[skill_id] = _scaled_modifiers(config.skills[skill_id], skill_level(skill_id))
+		_refresh_modifiers()
+	skill_upgraded.emit(config.skills[skill_id], skill_level(skill_id))
+	changed.emit()
+	return true
+
+
+## Skills that are still landing: meteors falling, waves crossing, fields burning.
+func skill_casts() -> Array[SimSkillCast]:
+	return _casts
+
+
 ## Casts a skill at a point on the board (ignored by skills that reach everything). Returns false
-## and does nothing if it cannot be cast now.
+## and does nothing if it cannot be cast now. What lands at once lands before it returns; the rest
+## (a falling meteor, a wave crossing the board) lands over the next steps.
 func use_skill(skill_id: StringName, at: Vector2 = Vector2.ZERO) -> bool:
 	if not skill_error(skill_id).is_empty():
 		return false
 	var skill: SkillData = config.skills[skill_id]
 	_skill_cooldowns[skill_id] = skill_cooldown(skill_id)
-	var elements: Array[int] = []
-	if config.element_index(skill.element) >= 0:
-		elements.append(config.element_index(skill.element))
-	# Skill damage keeps pace with enemy health, wave by wave.
-	var growth := health_growth()
-	var damage := StatCalculator.compute(&"skill_damage", skill.damage, _modifiers, skill.all_tags()) * growth
-	var effects: Array[StatusEffectData] = []
-	for spec in skill.status_effects:
-		var scaled := spec.duplicate() as StatusEffectData
-		scaled.damage_per_second *= growth
-		effects.append(scaled)
-	var targets: Array[SimEnemy] = enemies.duplicate()
-	for structure in structures:
-		if is_vulnerable(structure) and towers_besiege():
-			targets.append(structure)
-	for enemy in targets:
-		if not enemy.alive or (skill.is_targeted() and enemy.position.distance_to(at) > skill.radius):
-			continue
-		var multiplier := enemy.element_multiplier(elements)
-		if multiplier <= 0.0:
-			enemy_immune.emit(enemy, null)
-			continue
-		if damage > 0.0:
-			_damage(enemy, CombatMath.hit_damage(damage, multiplier, enemy.effective_armour(), enemy.damage_taken_bonus()) * _spread_cut(enemy), null)
-		if not enemy.alive:
-			continue
-		for spec in effects:
-			enemy.apply_status(spec, null, multiplier)
-		if skill.knockback > 0.0 and enemy.knock_back(skill.knockback) > 0.0:
-			enemy.position = lane_curves[enemy.lane].sample_baked(enemy.progress)
+	var cast := _plan_cast(skill, at)
 	if skill.duration > 0.0 and not skill.modifiers.is_empty():
-		_skill_time[skill_id] = skill.duration
+		_skill_time[skill_id] = skill.duration * cast.rank.hold
+		_skill_mods[skill_id] = _scaled_modifiers(skill, cast.level)
 		_refresh_modifiers()
-	skill_used.emit(skill, at if skill.is_targeted() else config.map.size_in_pixels() * 0.5)
+	skill_used.emit(skill, cast.at)
+	skill_cast.emit(cast)
+	_advance_cast(cast, 0.0)
+	if not cast.is_finished():
+		_casts.append(cast)
 	changed.emit()
 	return true
+
+
+## Works out every blow of a cast: where and when each lands and how hard it hits at this wave.
+func _plan_cast(skill: SkillData, at: Vector2) -> SimSkillCast:
+	var cast := SimSkillCast.new()
+	cast.skill = skill
+	cast.level = skill_level(skill.id)
+	var rank := skill.rank(cast.level)
+	cast.rank = rank
+	var board := config.map.size_in_pixels()
+	cast.at = at if skill.is_targeted() else board * 0.5
+	if config.element_index(skill.element) >= 0:
+		cast.elements.append(config.element_index(skill.element))
+	# Skill damage keeps pace with enemy health, wave by wave.
+	var growth := health_growth()
+	var tags := skill.all_tags()
+	cast.damage = StatCalculator.compute(&"skill_damage", skill.damage + rank.damage_bonus, _modifiers, tags) * rank.power * growth
+	cast.radius = skill.radius * rank.reach
+	cast.knockback = (skill.knockback + rank.knockback_bonus) * rank.reach
+	cast.launch = rank.launch
+	for spec in skill.status_effects:
+		var scaled := spec.duplicate() as StatusEffectData
+		scaled.damage_per_second *= growth * rank.power
+		scaled.damage_taken *= rank.power
+		scaled.armour_reduction *= rank.power
+		scaled.duration *= rank.hold
+		cast.effects.append(scaled)
+	var strikes := maxi(1, rank.strikes)
+	if skill.is_targeted():
+		for i in strikes:
+			var blow := SimSkillCast.Blow.new()
+			blow.kind = &"strike"
+			blow.time = skill.impact_delay + skill.strike_gap * i
+			blow.main = i == 0
+			blow.at = cast.at
+			blow.radius = cast.radius
+			blow.damage = cast.damage
+			if i > 0:
+				# The rest come down in a ring round the first, smaller, each a little further round.
+				var angle := float(i) * 2.39996
+				blow.at = cast.at + Vector2(cos(angle), sin(angle) * 0.8) * cast.radius * (0.7 + 0.25 * float(i % 2))
+				blow.radius = cast.radius * 0.65
+				blow.damage = cast.damage * 0.6
+			cast.blows.append(blow)
+	else:
+		# Waves come from the side of the board where the roads end, so they push back toward the gates.
+		var ends_right := _roads_end_right()
+		for i in strikes:
+			var blow := SimSkillCast.Blow.new()
+			blow.time = skill.impact_delay + skill.strike_gap * i
+			blow.damage = cast.damage
+			blow.main = i == 0
+			if skill.sweep_time > 0.0:
+				blow.kind = &"sweep"
+				blow.at = Vector2(board.x + 40.0 if ends_right else -40.0, board.y * 0.5)
+				blow.to_x = -40.0 if ends_right else board.x + 40.0
+				blow.front = blow.at.x
+				blow.sweep_time = skill.sweep_time
+			else:
+				blow.kind = &"strike"
+				blow.at = cast.at
+			cast.blows.append(blow)
+	for i in rank.bolts:
+		var bolt := SimSkillCast.Blow.new()
+		bolt.kind = &"bolt"
+		bolt.time = skill.impact_delay + 0.15 + skill.bolt_time * float(i) / maxf(1.0, float(rank.bolts))
+		bolt.radius = SimSkillCast.BOLT_RADIUS
+		bolt.damage = rank.bolt_damage * rank.power * growth
+		cast.blows.append(bolt)
+	return cast
+
+
+## True when the roads run toward the right side of the board (their ends are right of their starts).
+func _roads_end_right() -> bool:
+	var drift := 0.0
+	for curve in lane_curves:
+		if curve.point_count >= 2:
+			drift += curve.get_point_position(curve.point_count - 1).x - curve.get_point_position(0).x
+	return drift >= 0.0
+
+
+## A skill's modifiers at a level: its power scales what they give.
+func _scaled_modifiers(skill: SkillData, level: int) -> Array[Modifier]:
+	var result: Array[Modifier] = []
+	var power := skill.rank(level).power
+	for modifier in skill.modifiers:
+		var scaled := modifier.duplicate() as Modifier
+		scaled.value *= power
+		result.append(scaled)
+	return result
+
+
+## Lands what is due of every cast still playing out, and lets their fields burn.
+func _advance_casts(delta: float) -> void:
+	if _casts.is_empty():
+		return
+	var live: Array[SimSkillCast] = []
+	for cast in _casts:
+		_advance_cast(cast, delta)
+		if not cast.is_finished():
+			live.append(cast)
+	_casts = live
+
+
+func _advance_cast(cast: SimSkillCast, delta: float) -> void:
+	cast.age += delta
+	for blow in cast.blows:
+		if blow.done or cast.age < blow.time:
+			continue
+		match blow.kind:
+			&"sweep":
+				_advance_sweep(cast, blow)
+			&"bolt":
+				_land_bolt(cast, blow)
+			_:
+				_land_strike(cast, blow)
+	for zone in cast.zones.duplicate():
+		zone.time_left -= delta
+		zone.tick -= delta
+		if zone.tick <= 0.0 and zone.time_left > 0.0:
+			zone.tick += SimSkillCast.ZONE_TICK
+			var hit := _skill_targets(zone.at, zone.radius)
+			for enemy in hit:
+				_skill_hit(cast, enemy, zone.damage_per_second * SimSkillCast.ZONE_TICK, false, 0.0)
+		if zone.time_left <= 0.0:
+			cast.zones.erase(zone)
+			if zone.finale_damage > 0.0:
+				var finale := SimSkillCast.Blow.new()
+				finale.kind = &"finale"
+				finale.at = zone.at
+				finale.radius = zone.radius
+				finale.damage = zone.finale_damage
+				finale.time = cast.age
+				finale.done = true
+				cast.blows.append(finale)
+				var hit := _skill_targets(zone.at, zone.radius)
+				for enemy in hit:
+					_skill_hit(cast, enemy, finale.damage, false, cast.launch)
+				skill_struck.emit(cast, finale, hit)
+
+
+## Everything a skill can hit within `radius` of a point (0 reaches the whole board).
+func _skill_targets(at: Vector2, radius: float) -> Array[SimEnemy]:
+	var result: Array[SimEnemy] = []
+	var pool: Array[SimEnemy] = enemies.duplicate()
+	for structure in structures:
+		if is_vulnerable(structure) and towers_besiege():
+			pool.append(structure)
+	for enemy in pool:
+		if enemy.alive and (radius <= 0.0 or enemy.position.distance_to(at) <= radius):
+			result.append(enemy)
+	return result
+
+
+func _land_strike(cast: SimSkillCast, blow: SimSkillCast.Blow) -> void:
+	blow.done = true
+	# A boon for the towers (Surge) lands on no enemy.
+	var harms := blow.damage > 0.0 or not cast.effects.is_empty() or cast.knockback > 0.0
+	var hit: Array[SimEnemy] = []
+	if harms:
+		hit = _skill_targets(blow.at, blow.radius)
+	for enemy in hit:
+		_skill_hit(cast, enemy, blow.damage, true, cast.launch)
+	if blow.main and cast.rank.zone_time > 0.0:
+		var zone := SimSkillCast.Zone.new()
+		zone.at = blow.at
+		zone.radius = maxf(blow.radius, 60.0) if blow.radius > 0.0 else 0.0
+		zone.duration = cast.rank.zone_time
+		zone.time_left = cast.rank.zone_time
+		zone.tick = SimSkillCast.ZONE_TICK
+		var growth := health_growth()
+		zone.damage_per_second = cast.rank.zone_damage * cast.rank.power * growth
+		zone.finale_damage = cast.rank.finale_damage * cast.rank.power * growth
+		cast.zones.append(zone)
+	skill_struck.emit(cast, blow, hit)
+
+
+## A sweep moves its front on and hits everything it has passed since the last step.
+func _advance_sweep(cast: SimSkillCast, blow: SimSkillCast.Blow) -> void:
+	var front := blow.front_at(cast.age)
+	var low := minf(blow.front, front)
+	var high := maxf(blow.front, front)
+	blow.front = front
+	var hit: Array[SimEnemy] = []
+	for enemy in _skill_targets(Vector2.ZERO, 0.0):
+		if blow.swept.has(enemy.id) or enemy.position.x < low - 1.0 or enemy.position.x > high + 1.0:
+			continue
+		blow.swept[enemy.id] = true
+		hit.append(enemy)
+		_skill_hit(cast, enemy, blow.damage, true, cast.launch)
+	if is_equal_approx(front, blow.to_x):
+		blow.done = true
+	if not hit.is_empty() or blow.done:
+		skill_struck.emit(cast, blow, hit)
+
+
+## A bolt falls on the enemy furthest along the road that this cast has not struck yet.
+func _land_bolt(cast: SimSkillCast, blow: SimSkillCast.Blow) -> void:
+	blow.done = true
+	var struck: Dictionary[int, bool] = {}
+	for other in cast.blows_of(&"bolt"):
+		if other.target != null:
+			struck[other.target.id] = true
+	var best: SimEnemy = null
+	var best_left := INF
+	for enemy in enemies:
+		if not enemy.alive or enemy.untouchable() or struck.has(enemy.id):
+			continue
+		var left := lane_lengths[enemy.lane] - enemy.progress if enemy.lane < lane_lengths.size() else 0.0
+		if left < best_left:
+			best_left = left
+			best = enemy
+	if best == null:
+		for enemy in enemies:
+			if enemy.alive and not enemy.untouchable():
+				best = enemy
+				break
+	if best == null:
+		return
+	blow.target = best
+	blow.at = best.position
+	var hit := _skill_targets(blow.at, blow.radius)
+	for enemy in hit:
+		_skill_hit(cast, enemy, blow.damage if enemy == best else blow.damage * 0.5, false, cast.launch * 0.5)
+	skill_struck.emit(cast, blow, hit)
+
+
+## One enemy takes a skill's blow: its damage, its effects if `with_effects`, a throw off its feet
+## and a push back along the road.
+func _skill_hit(cast: SimSkillCast, enemy: SimEnemy, damage: float, with_effects: bool, launch: float) -> void:
+	if not enemy.alive:
+		return
+	var multiplier := enemy.element_multiplier(cast.elements)
+	if multiplier <= 0.0:
+		if with_effects:
+			enemy_immune.emit(enemy, null)
+		return
+	if damage > 0.0:
+		_damage(enemy, CombatMath.hit_damage(damage, multiplier, enemy.effective_armour(), enemy.damage_taken_bonus()) * _spread_cut(enemy), null)
+	if not enemy.alive:
+		return
+	# A field re-applies the skill's effects to whatever walks in.
+	for spec in cast.effects:
+		if with_effects or not enemy.has_status(spec.kind):
+			enemy.apply_status(spec, null, multiplier)
+	if launch > 0.0 and with_effects:
+		enemy.apply_status(_launch_spec(launch), null, multiplier)
+	if with_effects and cast.knockback > 0.0 and enemy.knock_back(cast.knockback) > 0.0:
+		enemy.position = lane_curves[enemy.lane].sample_baked(enemy.progress)
+
+
+func _launch_spec(seconds: float) -> StatusEffectData:
+	var spec := StatusEffectData.new()
+	spec.kind = &"stun"
+	spec.duration = seconds
+	return spec
 
 
 func _tick_skills(delta: float) -> void:
@@ -582,6 +884,7 @@ func _tick_skills(delta: float) -> void:
 		_skill_time[skill_id] -= delta
 		if _skill_time[skill_id] <= 0.0:
 			_skill_time.erase(skill_id)
+			_skill_mods.erase(skill_id)
 			ended = true
 	if ended:
 		_refresh_modifiers()
@@ -981,6 +1284,7 @@ func step(delta: float) -> void:
 	_move_enemies(delta)
 	if state != State.WAVE:
 		return
+	_advance_casts(delta)
 	_tick_statuses(delta)
 	_tick_traits(delta)
 	_rebuild_hash()
@@ -1705,6 +2009,7 @@ func _finish_wave() -> void:
 	var rewards := _pay_wave(finished)
 	projectiles.clear()
 	_bursts.clear()
+	_casts.clear()
 	boss_powers.clear()
 	if wave_index >= total_waves() and not is_assault() and not is_endless():
 		_end_run(true)
@@ -1764,7 +2069,7 @@ func _refresh_modifiers() -> void:
 	for skill_id: StringName in _skill_time:
 		var skill: SkillData = config.skills.get(skill_id)
 		if skill != null:
-			_modifiers.append_array(skill.modifiers)
+			_modifiers.append_array(_skill_mods.get(skill_id, skill.modifiers))
 	for effect in _hero_effects:
 		_modifiers.append_array((effect[0] as HeroAbility).modifiers)
 	_recompute_towers()

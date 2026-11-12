@@ -802,13 +802,14 @@ func _draw_aim() -> void:
 		return
 	var at := _mouse
 	var color := sim.config.element_color(skill.element).lightened(0.25)
-	draw_circle(at, skill.radius, Color(color, 0.12))
-	draw_arc(at, skill.radius, 0.0, TAU, 72, Color(color, 0.95), 3.0, true)
-	draw_arc(at, skill.radius - 5.0, 0.0, TAU, 72, Color(0, 0, 0, 0.35), 2.0, true)
+	var radius := sim.skill_radius(aiming)
+	draw_circle(at, radius, Color(color, 0.12))
+	draw_arc(at, radius, 0.0, TAU, 72, Color(color, 0.95), 3.0, true)
+	draw_arc(at, radius - 5.0, 0.0, TAU, 72, Color(0, 0, 0, 0.35), 2.0, true)
 	for offset: Vector2 in [Vector2(1, 0), Vector2(0, 1), Vector2(-1, 0), Vector2(0, -1)]:
 		draw_line(at + offset * 6.0, at + offset * 16.0, Color(1, 1, 1, 0.9), 2.0)
 	for enemy in sim.enemies:
-		if enemy.alive and enemy.position.distance_to(at) <= skill.radius:
+		if enemy.alive and enemy.position.distance_to(at) <= radius:
 			draw_arc(enemy.position, _enemy_radius(enemy) + 5.0, 0.0, TAU, 20, Color(1, 1, 1, 0.8), 2.0, true)
 
 

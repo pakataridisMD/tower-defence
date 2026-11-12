@@ -247,6 +247,7 @@ func _connect_signals() -> void:
 	_autosave()
 	hud.tower_chosen.connect(_choose_tower)
 	hud.skill_pressed.connect(_skill_button)
+	hud.skill_upgrade_pressed.connect(_upgrade_skill)
 	hud.sell_pressed.connect(_sell_selected)
 	hud.level_up_pressed.connect(_level_up_selected)
 	hud.ascend_pressed.connect(_ascend_selected)
@@ -320,9 +321,9 @@ func _input(event: InputEvent) -> void:
 
 ## Keys: Space starts the wave, T opens the skill web, F changes speed, P pauses, O opens the audio
 ## settings, M mutes everything, Esc backs out and then opens the pause menu,
-## 1-9 pick a tower from the open shop page (Tab turns the page), Q W E A S D cast the skills,
-## F1 to F4 summon the heroes and then use their abilities, Z X C V B N press the selected tower's
-## upgrade buttons, and Delete sells it.
+## 1-9 pick a tower from the open shop page (Tab turns the page), Q W E A S D cast the skills
+## (Shift with them buys the skill's next level), F1 to F4 summon the heroes and then use their
+## abilities, Z X C V B N press the selected tower's upgrade buttons, and Delete sells it.
 func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
 	if key == null or not key.pressed or key.echo or cinematic != null or audio_panel.visible:
@@ -374,7 +375,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			var action := Hud.ACTION_KEYS.find(key.keycode)
 			if web.visible or (skill < 0 and action < 0):
 				return
-			if skill >= 0:
+			if skill >= 0 and key.shift_pressed:
+				_upgrade_skill(hud.skill_for_hotkey(skill))
+			elif skill >= 0:
 				_skill_key(hud.skill_for_hotkey(skill))
 			elif board.selected != null:
 				hud.press_action(action)
@@ -644,6 +647,21 @@ func _skill_key(skill_id: StringName) -> void:
 		_begin_skill(skill_id)
 
 
+## Buys a skill's next level, or says why it cannot.
+func _upgrade_skill(skill_id: StringName) -> void:
+	if skill_id.is_empty():
+		return
+	var error := sim.skill_upgrade_error(skill_id)
+	if not error.is_empty():
+		hud.show_message(error, UiStyle.BAD)
+		return
+	sim.upgrade_skill(skill_id)
+	var skill: SkillData = sim.config.skills[skill_id]
+	var level := sim.skill_level(skill_id)
+	SoundPlayer.sfx(&"tower_level_up")
+	hud.show_message("%s: level %d" % [skill.title_at(level), level], sim.config.element_color(skill.element).lightened(0.35))
+
+
 func _begin_skill(skill_id: StringName) -> void:
 	var error := sim.skill_error(skill_id)
 	if not error.is_empty():
@@ -653,7 +671,7 @@ func _begin_skill(skill_id: StringName) -> void:
 	if skill.is_targeted():
 		board.begin_aiming(skill_id)
 		SoundPlayer.sfx(&"skill_aim")
-		hud.show_message("%s: click where it should land" % skill.display_name)
+		hud.show_message("%s: click where it should land" % skill.title_at(sim.skill_level(skill_id)))
 	else:
 		_cast_skill(skill_id, Vector2.ZERO)
 
@@ -665,7 +683,7 @@ func _cast_skill(skill_id: StringName, at: Vector2) -> void:
 		hud.show_message(error, UiStyle.BAD)
 	elif sim.use_skill(skill_id, at):
 		var skill: SkillData = sim.config.skills[skill_id]
-		hud.show_message(skill.display_name, sim.config.element_color(skill.element).lightened(0.35))
+		hud.show_message(skill.title_at(sim.skill_level(skill_id)), sim.config.element_color(skill.element).lightened(0.35))
 
 
 ## A hero's portrait: summons the hero if it is not on the field yet, else uses its ability.

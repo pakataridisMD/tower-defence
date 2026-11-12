@@ -3,12 +3,59 @@
 [ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_skill"]
 [ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
 [ext_resource type="Script" path="res://scripts/data/modifier.gd" id="3_mod"]
+[ext_resource type="Script" path="res://scripts/data/skill_rank.gd" id="4_rank"]
 
 [sub_resource type="Resource" id="Effect_0"]
 script = ExtResource("2_status")
 kind = &"burn"
 damage_per_second = 3.0
 duration = 4.0
+
+[sub_resource type="Resource" id="Rank_1"]
+script = ExtResource("4_rank")
+
+[sub_resource type="Resource" id="Rank_2"]
+script = ExtResource("4_rank")
+title = "Blazing Meteor"
+description = "Hits harder and wider, and throws what it hits off its feet."
+cost = 120
+power = 1.3
+reach = 1.1
+launch = 0.5
+
+[sub_resource type="Resource" id="Rank_3"]
+script = ExtResource("4_rank")
+title = "Comet Shower"
+description = "Three smaller comets come down round the first."
+cost = 220
+power = 1.4
+reach = 1.1
+launch = 0.5
+strikes = 4
+
+[sub_resource type="Resource" id="Rank_4"]
+script = ExtResource("4_rank")
+title = "Firestorm"
+description = "The ground where it lands burns for 4 seconds."
+cost = 360
+power = 1.6
+reach = 1.2
+launch = 0.6
+strikes = 4
+zone_time = 4.0
+zone_damage = 8.0
+
+[sub_resource type="Resource" id="Rank_5"]
+script = ExtResource("4_rank")
+title = "Cataclysm"
+description = "A hail of six comets, and a firestorm that burns for 5 seconds."
+cost = 550
+power = 1.9
+reach = 1.35
+launch = 0.8
+strikes = 6
+zone_time = 5.0
+zone_damage = 12.0
 
 [resource]
 script = ExtResource("1_skill")
@@ -21,3 +68,6 @@ cooldown = 45.0
 radius = 90.0
 damage = 28.0
 status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0")])
+impact_delay = 0.35
+strike_gap = 0.22
+ranks = Array[ExtResource("4_rank")]([SubResource("Rank_1"), SubResource("Rank_2"), SubResource("Rank_3"), SubResource("Rank_4"), SubResource("Rank_5")])
