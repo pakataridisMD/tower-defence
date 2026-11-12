@@ -15,6 +15,8 @@ extends Node
 ## the closest zoom, and the Heartland and the citadel once every other stage is won.
 ## Add --powers to film the horde's powers: a wave of every kind of the rank and file and the Warden
 ## against the bot's towers, saved as numbered frames in <out>/powers/ (make a GIF from them).
+## Add --landmarks to take the enemy war camps and the defended cities at the road ends in every land,
+## by day, at night and burning, plus frames for short clips (<out>/clips/<name>/NNN.png).
 ## Add --story to take the cinematic player, a Herald's boss banner, the assault on the citadel and
 ## the campaign map with the citadel on it.
 
@@ -39,6 +41,7 @@ var _heroes := false
 var _menu := false
 var _map := false
 var _powers := false
+var _landmarks := false
 
 
 func _ready() -> void:
@@ -62,12 +65,16 @@ func _ready() -> void:
 			_map = true
 		elif arg == "--powers":
 			_powers = true
+		elif arg == "--landmarks":
+			_landmarks = true
 	DirAccess.make_dir_recursive_absolute(_out)
 	Progress.use_memory_profile(_demo_profile())
 	# The map's glide down from the whole world would still be moving in the first shots.
 	CampaignScreen.intro_played = true
 	if _powers:
 		_run_powers()
+	elif _landmarks:
+		_run_landmarks()
 	elif _menu:
 		_run_menu()
 	elif _map:
@@ -512,6 +519,89 @@ func _hover(at: Vector2) -> void:
 	motion.position = at
 	motion.global_position = at
 	Input.parse_input_event(motion)
+
+
+## Stages whose camps and cities are shot, one per land, and the clip stages.
+const LANDMARK_STAGES: Array[StringName] = [&"ember_1", &"storm_2", &"nature_1", &"water_1", &"earth_3", &"void_1", &"converge_1"]
+const LANDMARK_CLIPS: Array[StringName] = [&"ember_1", &"water_1"]
+
+
+func _run_landmarks() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	for stage: StringName in LANDMARK_STAGES:
+		Progress.active_stage = stage
+		var game := GAME_SCENE.instantiate() as Game
+		game.autoplay = true
+		add_child(game)
+		await _wait(0.2)
+		var sim := game.sim
+		var art := game.board.art
+		_light(art, DayNight.DAY)
+		sim.wave_index = 3
+		sim.gold = 3000
+		sim.tree.points = 10
+		await _until(func() -> bool: return sim.state == RunSim.State.WAVE and sim.time_in_wave > 4.0 or sim.is_over())
+		await _shot("landmarks_%s" % stage)
+		for site in sim.landmarks:
+			await _crop("landmark_%s_%s_%d" % [stage, site.kind, site.anchor.x + site.anchor.y * 100], game, site)
+		if stage in LANDMARK_CLIPS:
+			for site in sim.landmarks:
+				await _clip("%s_%s_day" % [stage, site.kind], game, site, 40)
+		_light(art, DayNight.NIGHT)
+		await _wait(1.0)
+		for site in sim.landmarks:
+			if site.kind == &"city":
+				await _crop("landmark_%s_city_night" % stage, game, site)
+		if stage in LANDMARK_CLIPS:
+			for site in sim.landmarks:
+				await _clip("%s_%s_night" % [stage, site.kind], game, site, 40)
+		sim.lives = maxi(1, roundi(sim.starting_lives * 0.55))
+		await _wait(1.0)
+		for site in sim.landmarks:
+			if site.kind == &"city":
+				await _crop("landmark_%s_city_burning" % stage, game, site)
+				if stage == LANDMARK_CLIPS[0]:
+					await _clip("%s_city_burning" % stage, game, site, 40)
+		game.free()
+		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+## Holds the light at a time of day (the campaign profile has reached the Long Night).
+func _light(art: BoardArt, time: float) -> void:
+	art.light_override = time
+	art.day_night.clock = floorf(art.day_night.clock) + time
+	art.day_night.set_target(art.day_night.clock)
+
+
+## The screen around a camp or city, three cells on each side.
+func _site_region(game: Game, site: Landmarks.Site) -> Rect2i:
+	var map := game.sim.config.map
+	var rect := Rect2(map.cell_center(site.anchor), Vector2.ZERO)
+	for cell in site.cells:
+		rect = rect.expand(map.cell_center(cell))
+	rect = game.board.get_global_transform_with_canvas() * rect.grow(map.cell_size * 2.2)
+	var screen := Rect2(Vector2.ZERO, get_viewport().get_visible_rect().size)
+	return Rect2i(rect.intersection(screen))
+
+
+func _crop(shot_name: String, game: Game, site: Landmarks.Site) -> void:
+	await RenderingServer.frame_post_draw
+	var image := get_viewport().get_texture().get_image().get_region(_site_region(game, site))
+	var path := _out.path_join(shot_name + ".png")
+	print("Saved %s (%s)" % [path, error_string(image.save_png(path))])
+
+
+func _clip(clip_name: String, game: Game, site: Landmarks.Site, frames: int) -> void:
+	var folder := _out.path_join("clips").path_join(clip_name)
+	DirAccess.make_dir_recursive_absolute(folder)
+	var region := _site_region(game, site)
+	for i in frames:
+		await _wait(0.08)
+		await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().get_region(region).save_png(folder.path_join("%03d.png" % i))
+	print("Saved clip ", folder)
 
 
 func _wait(seconds: float) -> void:

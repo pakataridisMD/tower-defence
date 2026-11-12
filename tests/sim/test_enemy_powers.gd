@@ -41,6 +41,10 @@ func _spawn_all(sim: RunSim) -> void:
 	sim.start_next_wave()
 	for i in 120:
 		sim._spawn(RunSim.STEP)
+	# Only a share of some kinds carry their power, picked by id; the enemies under test all do.
+	for enemy in sim.enemies:
+		enemy.has_power = true
+		enemy.shield_up = enemy.data.power == &"block"
 
 
 func _effect(kind: StringName) -> StatusEffectData:

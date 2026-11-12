@@ -127,7 +127,7 @@ func test_groups_can_carry_their_own_element() -> void:
 func test_damage_uses_each_enemys_element() -> void:
 	var sim := _sim([_group(&"grunt", 1, &"water"), _group(&"grunt", 1, &"fire")], &"switchback", &"storm")
 	sim.allocate_node(&"fire_entry")
-	var tower := sim.place_tower(&"fire_brazier", Vector2i(2, 3))
+	var tower := sim.place_tower(&"fire_brazier", Vector2i(3, 3))
 	_spawn_all(sim)
 	sim.enemies.sort_custom(func(a: SimEnemy, b: SimEnemy) -> bool: return a.element < b.element)
 	var fire_enemy := sim.enemies[0]
