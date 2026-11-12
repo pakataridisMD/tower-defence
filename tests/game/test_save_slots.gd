@@ -141,15 +141,15 @@ func test_overwriting_and_loading_ask_first() -> void:
 	assert_true(page.is_asking(), "a full slot asks before it is written over")
 	assert_true(page.handle_key(KEY_ESCAPE))
 	assert_false(page.is_asking())
-	var loads: Array[int] = []
-	page.load_confirmed.connect(func(slot: int) -> void: loads.append(slot))
+	var loads: Array[String] = []
+	page.load_confirmed.connect(func(key: String) -> void: loads.append(key))
 	page.show_mode(&"load")
 	assert_true(page.rows[1].action_button.disabled, "an empty slot cannot be loaded")
 	_press(page.rows[0].action_button)
 	assert_true(page.is_asking())
-	assert_eq(loads, [] as Array[int], "nothing loads before yes")
+	assert_eq(loads, [] as Array[String], "nothing loads before yes")
 	page.handle_key(KEY_ENTER)
-	assert_eq(loads, [1] as Array[int])
+	assert_eq(loads, ["slot_01"] as Array[String])
 
 
 func test_esc_closes_the_saves_and_goes_back_to_the_menu() -> void:
@@ -183,10 +183,68 @@ func test_the_main_menu_lists_the_slots_and_deletes_one() -> void:
 
 
 func test_number_keys_pick_slots() -> void:
-	var menu := await _menu()
-	menu.open_saves(&"save")
-	var page := menu.pages[&"saves"] as SavesPage
+	await _start_game()
+	game.open_saves(&"save")
+	var page := game.saves_page
 	page.handle_key(KEY_0)
 	assert_true(Progress.has_slot(10), "0 is slot 10")
 	page.handle_key(KEY_5)
 	assert_true(Progress.has_slot(5))
+
+
+func test_the_title_screen_only_loads() -> void:
+	var menu := await _menu()
+	menu.open_saves(&"save")
+	var page := menu.pages[&"saves"] as SavesPage
+	assert_eq(page.mode, &"load", "saving happens in battle, and by itself")
+	assert_false(page.save_tab.visible)
+
+
+func test_a_new_game_is_a_playthrough_of_its_own_and_the_old_one_keeps_its_autosave() -> void:
+	Progress.meta.profile.stage_stars[&"ember_1"] = 3
+	Progress.select_difficulty(Progress.meta.selected_difficulty)
+	Progress.autosave()
+	assert_eq(Progress.meta.profile.playthrough_name, "Game 1")
+	Progress.new_game()
+	assert_eq(Progress.meta.profile.playthrough_id, 2)
+	assert_eq(Progress.meta.profile.playthrough_name, "Game 2")
+	assert_true(Progress.meta.profile.stage_stars.is_empty(), "a new game starts from nothing")
+	assert_eq(Progress.slots.autosave_ids(), [2, 1] as Array[int], "both games have an autosave, newest first")
+	assert_false(Progress.load_autosave(1), "Game 1 was between battles")
+	assert_eq(Progress.meta.profile.playthrough_id, 1)
+	assert_eq(Progress.meta.profile.stage_stars.get(&"ember_1", 0), 3, "Game 1 is back")
+	Progress.new_game()
+	assert_eq(Progress.meta.profile.playthrough_id, 3, "numbers are never reused")
+
+
+func test_a_battle_autosaves_at_every_break_and_continue_goes_back_into_it() -> void:
+	await _start_game()
+	var key := Progress.continue_key()
+	assert_eq(key, SaveSlots.auto_key(1), "the battle autosaves as it opens")
+	var tower := _build_something(game.sim)
+	game._start_wave()
+	var t := 0.0
+	while game.sim.state == RunSim.State.WAVE and t < 300.0:
+		game.sim.step(0.05)
+		t += 0.05
+	assert_eq(game.sim.state, RunSim.State.BUILDING)
+	var info := Progress.slots.info_key(key)
+	assert_eq(info["kind"], "run")
+	assert_eq(info["wave"], 2, "saved at the break after wave 1")
+	var menu := await _menu()
+	assert_eq(menu.continue_save, key, "Continue goes back into the battle")
+	assert_true(menu.buttons.has(&"continue"))
+	assert_true(Progress.load_save(key))
+	assert_eq(int(Progress.pending_run["wave_index"]), 1)
+	var cells: Array = []
+	for entry: Dictionary in Progress.pending_run["towers"]:
+		cells.append(entry["cell"])
+	assert_has(cells, [tower.cell.x, tower.cell.y])
+
+
+func test_a_finished_run_leaves_the_autosave_between_battles() -> void:
+	await _start_game()
+	game.sim.lives = 1
+	game.sim._end_run(false)
+	var info := Progress.slots.info_key(Progress.continue_key())
+	assert_eq(info["kind"], "progress")
