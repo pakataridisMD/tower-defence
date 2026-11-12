@@ -93,6 +93,15 @@ var blocked_by: SimAlly
 ## Seconds until it can strike the unit holding it, and until a building's defences fire again.
 var attack_timer := 0.0
 var bolt_timer := 0.0
+# A boss's own abilities (see EnemyData "Boss abilities" and BossAbilities).
+## Seconds until it next heals, raises its barrier, binds towers and hurls a fireball.
+var heal_timer := 0.0
+var shield_timer := 0.0
+var bind_timer := 0.0
+var doom_timer := 0.0
+## What is left of its barrier, and seconds until the barrier fades.
+var barrier := 0.0
+var barrier_left := 0.0
 
 
 func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
@@ -118,6 +127,7 @@ func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
 	armour = p_data.armour
 	base_speed = p_data.speed
 	bolt_timer = p_data.bolt_interval
+	_start_boss_timers()
 
 
 ## Turns it into another kind of enemy at the same strength: a boss's next form. It comes back at the
@@ -137,6 +147,18 @@ func become(p_data: EnemyData, seconds: float) -> void:
 	knockback_taken = 0.0
 	form += 1
 	transforming = maxf(0.1, seconds)
+	_start_boss_timers()
+
+
+## A boss's abilities start part way through their intervals, so a fresh boss shows them soon, but
+## not all at once. A new form drops the old form's barrier.
+func _start_boss_timers() -> void:
+	heal_timer = data.heal_interval * 0.6
+	shield_timer = data.shield_interval * 0.35
+	bind_timer = data.bind_interval * 0.5
+	doom_timer = data.doom_interval * 0.5
+	barrier = 0.0
+	barrier_left = 0.0
 
 
 func speed() -> float:

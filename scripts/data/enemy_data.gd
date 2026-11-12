@@ -54,6 +54,28 @@ extends Resource
 ## paying no bounty. 0 never escapes.
 @export var escape_below: float = 0.0
 
+@export_group("Boss abilities")
+## The bosses' own abilities (see BossAbilities). Each one is off while its interval is 0.
+## Every heal_interval seconds it heals heal_amount of its max health. Burning or poisoned, half as much.
+@export var heal_interval: float = 0.0
+@export var heal_amount: float = 0.0
+## Every shield_interval seconds it raises a barrier worth shield_amount of its max health that soaks
+## up damage for shield_duration seconds, then fades.
+@export var shield_interval: float = 0.0
+@export var shield_amount: float = 0.0
+@export var shield_duration: float = 0.0
+## Every bind_interval seconds it binds the bind_count strongest towers within bind_radius pixels:
+## they cannot attack for bind_duration seconds.
+@export var bind_interval: float = 0.0
+@export var bind_count: int = 1
+@export var bind_duration: float = 0.0
+@export var bind_radius: float = 0.0
+## Every doom_interval seconds it hurls a fireball at the strongest tower (not a hero) within
+## doom_radius pixels (0 is anywhere on the board). The tower is destroyed, and its burning ruin
+## blocks the cell until the wave ends.
+@export var doom_interval: float = 0.0
+@export var doom_radius: float = 0.0
+
 @export_group("Power")
 ## The rank and file's own power, one per kind of enemy (see RunSim._tick_powers):
 ## &"rise" - the first time it dies it falls in a heap for power_duration seconds, beyond reach, then
@@ -237,6 +259,23 @@ func power_text() -> String:
 	return ""
 
 
+## A line on each of a boss's abilities for the codex, empty if it has none.
+func boss_text() -> String:
+	var lines: PackedStringArray = []
+	if heal_interval > 0.0 and heal_amount > 0.0:
+		lines.append("Every %.0f s it heals %d%% of its life (half as much while burning or poisoned)." % [heal_interval, roundi(heal_amount * 100.0)])
+	if shield_interval > 0.0 and shield_amount > 0.0:
+		lines.append("Every %.0f s it raises a barrier worth %d%% of its life for %.0f s." % [shield_interval, roundi(shield_amount * 100.0), shield_duration])
+	if bind_interval > 0.0 and bind_duration > 0.0:
+		var towers := "tower" if bind_count == 1 else "%d towers" % bind_count
+		lines.append("Every %.0f s it binds the strongest %s near it: they cannot fire for %.1f s." % [bind_interval, towers, bind_duration])
+	if silence_interval > 0.0 and silence_radius > 0.0:
+		lines.append("Every %.0f s it silences every tower near it for %.1f s." % [silence_interval, silence_duration])
+	if doom_interval > 0.0:
+		lines.append("Every %.0f s it hurls a fireball that destroys a tower. Its ruin burns until the wave ends." % doom_interval)
+	return "\n".join(lines)
+
+
 ## Short words for the traits, for tooltips and the campaign screen.
 func trait_words() -> PackedStringArray:
 	var words: PackedStringArray = []
@@ -264,6 +303,14 @@ func trait_words() -> PackedStringArray:
 		words.append("changes form")
 	if flee_when_beaten:
 		words.append("flees when beaten")
+	if heal_interval > 0.0 and heal_amount > 0.0:
+		words.append("heals itself")
+	if shield_interval > 0.0 and shield_amount > 0.0:
+		words.append("raises a barrier")
+	if bind_interval > 0.0 and bind_duration > 0.0:
+		words.append("binds towers")
+	if doom_interval > 0.0:
+		words.append("destroys towers")
 	match power:
 		&"rise":
 			words.append("rises once")
