@@ -71,7 +71,7 @@ HEROES = [
         barks=["Ride!", "Thunderclap, with me!", "We don't ride backwards."],
     ),
     dict(
-        id="sylvaine", name="Sylvaine Thornwhisper", title="Warden-Archer of the Deep", element="nature", joins="nature_2",
+        id="sylvaine", name="Sylvaine Thornwhisper", title="Bow of the Deep", element="nature", joins="nature_2",
         blurb="Three hundred years old, she held Elderhollow alone for nine days.",
         attack=dict(desc="Very long range arrows that poison. Poison jumps on when an enemy dies.", elements=["nature"],
                     damage=7.0, aps=1.0, range=220.0, projectile_speed=900.0, poison_spread=1,
@@ -115,7 +115,7 @@ HEROES = [
         barks=["Hold.", "No more rings.", "Stone doesn't move. Neither do I."],
     ),
     dict(
-        id="corvin", name="Corvin the Uncrowned", title="Ranger-King of the Rift", element="void", joins="void_2",
+        id="corvin", name="Corvin the Uncrowned", title="Ranger of the Rift", element="void", joins="void_2",
         blurb="The exiled heir of the Veilwalkers, who was right about the Regent all along.",
         attack=dict(desc="A blade of star-glass that curses: cursed enemies take 12% more damage.", elements=["void"],
                     damage=10.0, aps=1.1, range=170.0, effects=[fx("curse", damage_taken=0.12, duration=3.0)]),
