@@ -1442,7 +1442,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"earth"
 is_boss = true
-health_multiplier = 1.42
+health_multiplier = 1.5
 description = "A marching column, brutes under escort, Mender packs, a pincer, Wardeds in a line, runner packs, a flank attack and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r158"), SubResource("r159"), SubResource("r160"), SubResource("r161"), SubResource("r162"), SubResource("r163"), SubResource("r164"), SubResource("r165"), SubResource("r166"), SubResource("r167"), SubResource("r168"), SubResource("r169"), SubResource("r170"), SubResource("r171"), SubResource("r172"), SubResource("r173")])
 
@@ -1451,5 +1451,5 @@ script = ExtResource("1_s")
 id = &"c_nature_3"
 display_name = "Bramble Maze"
 health_growth = 1.1
-health_scale = 0.89
+health_scale = 1.49
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r15"), SubResource("r25"), SubResource("r35"), SubResource("r44"), SubResource("r58"), SubResource("r69"), SubResource("r82"), SubResource("r97"), SubResource("r111"), SubResource("r125"), SubResource("r142"), SubResource("r157"), SubResource("r174")])

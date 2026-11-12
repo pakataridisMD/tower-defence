@@ -1926,7 +1926,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"water"
 is_boss = true
-health_multiplier = 0.53
+health_multiplier = 0.32
 description = "A marching column, runner packs, Warded packs, a flank attack, a mixed swarm, brutes under escort, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r190"), SubResource("r191"), SubResource("r192"), SubResource("r193"), SubResource("r194"), SubResource("r195"), SubResource("r196"), SubResource("r197"), SubResource("r198"), SubResource("r199"), SubResource("r200"), SubResource("r201"), SubResource("r202"), SubResource("r203"), SubResource("r204"), SubResource("r205"), SubResource("r206")])
 
@@ -1935,5 +1935,5 @@ script = ExtResource("1_s")
 id = &"c_converge_1"
 display_name = "Shattered Crossroads"
 health_growth = 1.1
-health_scale = 1.53
+health_scale = 2.11
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r14"), SubResource("r24"), SubResource("r33"), SubResource("r44"), SubResource("r56"), SubResource("r68"), SubResource("r79"), SubResource("r94"), SubResource("r108"), SubResource("r122"), SubResource("r138"), SubResource("r154"), SubResource("r170"), SubResource("r189"), SubResource("r207")])

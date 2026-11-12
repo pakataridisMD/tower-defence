@@ -50,10 +50,11 @@ jobs:
       - name: Tune the campaign
         if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
         # One stage per process, four at a time, on each of four runners: the long waves on the big
-        # maps make a single pass take well over an hour.
+        # maps make a single pass take well over an hour. The shards rotate, so the slow last stage of
+        # each campaign does not all land on one runner.
         run: |
           /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --list 2>/dev/null | sed -n 's/^STAGE //p' \
-            | awk -v shard=${{ matrix.shard }} '(NR - 1) % 4 == shard' > stages.txt
+            | awk -v shard=${{ matrix.shard }} '(NR - 1 + int((NR - 1) / 4)) % 4 == shard' > stages.txt
           cat stages.txt
           xargs -P4 -I{} sh -c '/tmp/godot/godot --headless -s tools/campaign_balance.gd -- --tune --stage={} 2>&1 | grep -E "TUNING|ERROR"' < stages.txt
 

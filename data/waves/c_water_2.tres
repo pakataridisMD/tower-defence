@@ -945,7 +945,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 1.29
+health_multiplier = 0.47
 description = "Stragglers, a flank attack, runner packs, brutes under escort, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r98"), SubResource("r99"), SubResource("r100"), SubResource("r101"), SubResource("r102"), SubResource("r103"), SubResource("r104"), SubResource("r105"), SubResource("r106"), SubResource("r107"), SubResource("r108"), SubResource("r109"), SubResource("r110"), SubResource("r111")])
 
@@ -954,5 +954,5 @@ script = ExtResource("1_s")
 id = &"c_water_2"
 display_name = "Saltmarsh Bends"
 health_growth = 1.1
-health_scale = 0.87
+health_scale = 2.6
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r11"), SubResource("r19"), SubResource("r26"), SubResource("r34"), SubResource("r44"), SubResource("r53"), SubResource("r62"), SubResource("r74"), SubResource("r86"), SubResource("r97"), SubResource("r112")])
