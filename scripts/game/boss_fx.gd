@@ -188,7 +188,8 @@ func _draw_barrier(enemy: SimEnemy) -> void:
 	var full := enemy.max_health * maxf(enemy.data.shield_amount, 0.01)
 	var left := clampf(enemy.barrier / full, 0.0, 1.0)
 	var fading := clampf(enemy.barrier_left / 0.6, 0.0, 1.0)
-	var radius := Vector2(size.x * 0.62, size.y * 0.62)
+	# The sprite's frame has room round the body, so the shell sits a little inside it.
+	var radius := Vector2(size.x * 0.4, size.y * 0.46)
 	var wobble := 1.0 + 0.03 * sin(_time * 5.0)
 	var points := PackedVector2Array()
 	for i in 49:
@@ -213,36 +214,38 @@ func _hexagon(at: Vector2, radius: float, color: Color) -> void:
 	draw_polyline(points, color, 1.0)
 
 
-## Dark chains from the ground round a bound tower, pulled tight, with a violet seal under it.
+## Dark chains from the ground round a bound tower, pulled tight over it, with a violet seal under it.
 func _draw_chains(tower: SimTower, left: float) -> void:
 	var base := _tower_base(tower)
 	var fade := clampf(left * 4.0, 0.0, 1.0)
-	# The seal turns under the tower.
-	for i in 6:
-		var angle := TAU * float(i) / 6.0 + _time * 1.4
-		var at := base + Vector2(cos(angle) * 15.0, sin(angle) * 6.0)
-		draw_rect(Rect2(at.floor() - Vector2.ONE, Vector2(2, 2)), Color(CHAIN.lerp(Color.WHITE, 0.3), 0.9 * fade))
-	_draw_ellipse(base, Vector2(15, 6), Color(CHAIN, 0.7 * fade))
+	var glow := 0.6 + 0.4 * sin(_time * 6.0)
+	_draw_ellipse(base, Vector2(22, 9), Color(CHAIN, 0.8 * fade), 2.0)
+	_draw_ellipse(base, Vector2(16, 6), Color(CHAIN.lerp(Color.WHITE, 0.4), 0.5 * fade * glow), 1.0)
+	# Runes turn round the seal.
+	for i in 8:
+		var angle := TAU * float(i) / 8.0 + _time * 1.4
+		var at := base + Vector2(cos(angle) * 22.0, sin(angle) * 9.0)
+		draw_rect(Rect2(at.floor() - Vector2(1, 2), Vector2(3, 4)), Color(CHAIN.lerp(Color.WHITE, 0.5), 0.95 * fade))
 	for k in 4:
 		var angle := TAU * float(k) / 4.0 + PI * 0.25
-		var anchor := base + Vector2(cos(angle) * 18.0, sin(angle) * 7.0)
-		var grip := base + Vector2(cos(angle) * 5.0, -16.0 + sin(angle) * 2.0)
-		var shake := Vector2(sin(_time * 30.0 + k) * 0.5, 0)
-		var links := 7
+		var anchor := base + Vector2(cos(angle) * 26.0, sin(angle) * 10.0)
+		var grip := base + Vector2(cos(angle) * 4.0, -26.0 + sin(angle) * 3.0)
+		var shake := Vector2(sin(_time * 30.0 + k) * 0.6, 0)
+		var links := 9
 		for j in links:
 			var t := float(j) / float(links - 1)
 			var at := anchor.lerp(grip, t) + shake
-			var link := Vector2(2, 3) if j % 2 == 0 else Vector2(3, 2)
-			draw_rect(Rect2(at.floor() - Vector2(1, 1), link), Color(CHAIN_DARK, 0.95 * fade))
-			draw_rect(Rect2(at.floor() - Vector2(1, 1), Vector2(1, 1)), Color(CHAIN, 0.9 * fade))
+			var link := Vector2(3, 4) if j % 2 == 0 else Vector2(4, 3)
+			draw_rect(Rect2(at.floor() - Vector2(2, 2), link + Vector2(1, 1)), Color(CHAIN_DARK, 0.95 * fade))
+			draw_rect(Rect2(at.floor() - Vector2(1, 1), link - Vector2(1, 1)), Color(CHAIN.lerp(Color.WHITE, 0.25 * glow), 0.95 * fade))
 
 
-func _draw_ellipse(center: Vector2, radius: Vector2, color: Color) -> void:
+func _draw_ellipse(center: Vector2, radius: Vector2, color: Color, width := 1.0) -> void:
 	var points := PackedVector2Array()
 	for i in 33:
 		var angle := TAU * float(i) / 32.0
 		points.append(center + Vector2(cos(angle) * radius.x, sin(angle) * radius.y))
-	draw_polyline(points, color, 1.0)
+	draw_polyline(points, color, width)
 
 
 ## A red mark that tightens on the doomed tower while the fireball flies: sell it now or lose it.
@@ -251,10 +254,12 @@ func _draw_target(tower: SimTower, left: float) -> void:
 		return
 	var base := _tower_base(tower)
 	var t := clampf(left / BossAbilities.FIREBALL_FLIGHT, 0.0, 1.0)
-	var radius := Vector2(10.0 + 14.0 * t, 4.0 + 6.0 * t)
+	var radius := Vector2(16.0 + 18.0 * t, 7.0 + 8.0 * t)
 	var pulse := 0.6 + 0.4 * sin(_time * 18.0)
-	_draw_ellipse(base, radius, Color(1.0, 0.15, 0.08, pulse))
-	_draw_ellipse(base, radius * 0.6, Color(1.0, 0.5, 0.2, pulse * 0.7))
+	_draw_ellipse(base, radius, Color(1.0, 0.15, 0.08, pulse), 2.0)
+	_draw_ellipse(base, radius * 0.6, Color(1.0, 0.5, 0.2, pulse * 0.7), 1.0)
+	# A column of red light over the doomed tower.
+	draw_rect(Rect2(base + Vector2(-1.5, -60), Vector2(3, 60)), Color(1.0, 0.2, 0.1, 0.25 * pulse))
 	for i in 4:
 		var angle := TAU * float(i) / 4.0 + _time * 2.0
 		var tick := base + Vector2(cos(angle) * radius.x, sin(angle) * radius.y)
@@ -263,14 +268,18 @@ func _draw_target(tower: SimTower, left: float) -> void:
 
 func _draw_fireball(at: Vector2) -> void:
 	var flicker := 1.0 + 0.12 * sin(_time * 40.0)
-	draw_circle(at, 9.0 * flicker, Color(EMBER, 0.35))
-	draw_circle(at, 6.5 * flicker, Color(FIRE, 0.85))
-	draw_circle(at, 4.0, Color(1.0, 0.75, 0.3))
-	draw_circle(at + Vector2(-1, -1), 2.2, FIRE_CORE)
+	draw_circle(at, 22.0 * flicker, Color(EMBER, 0.12))
+	draw_circle(at, 15.0 * flicker, Color(EMBER, 0.3))
+	draw_circle(at, 11.0 * flicker, Color(FIRE, 0.85))
+	draw_circle(at, 7.0, Color(1.0, 0.75, 0.3))
+	draw_circle(at + Vector2(-2, -2), 4.0, FIRE_CORE)
 
 
 ## A heap of broken stone where the tower stood, burning, with smoke rising from it.
-func _draw_ruin(base: Vector2, salt: int) -> void:
+func _draw_ruin(where: Vector2, salt: int) -> void:
+	# Drawn half as big again round its base, so the ruin fills the cell.
+	draw_set_transform(where, 0.0, Vector2(1.5, 1.5))
+	var base := Vector2.ZERO
 	var rng := RandomNumberGenerator.new()
 	rng.seed = salt
 	draw_rect(Rect2(base + Vector2(-13, -3), Vector2(26, 6)), Color(0.08, 0.06, 0.06, 0.8))
@@ -293,3 +302,4 @@ func _draw_ruin(base: Vector2, salt: int) -> void:
 		var at := base + Vector2(sin(rise * 5.0 + float(i)) * 4.0 + rise * 8.0, -16.0 - rise * 40.0)
 		var radius := 2.0 + rise * 5.0
 		draw_circle(at, radius, Color(0.12, 0.1, 0.1, 0.45 * (1.0 - rise)))
+	draw_set_transform(Vector2.ZERO)

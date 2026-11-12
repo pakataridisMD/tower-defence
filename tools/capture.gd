@@ -615,7 +615,16 @@ func _boss_fight(stage: StringName, boss_id: StringName) -> void:
 			if tower.position.distance_to(boss.position) < 260.0:
 				return true
 		return false
-	var follow := func() -> void: game.camera.set_view(2.0, boss.position + Vector2(0, -60))
+	# The camera keeps the boss in view, or frames it with the towers it last went for.
+	var aim: Array = [null]
+	game.sim.boss_ability.connect(func(_b: SimEnemy, ability: StringName, targets: Array) -> void:
+		if ability in [&"bind", &"fireball"] and not targets.is_empty():
+			aim[0] = (targets[0] as SimTower).position)
+	var follow := func() -> void:
+		var at := boss.position + Vector2(0, -60)
+		if aim[0] != null:
+			at = at.lerp(aim[0], 0.6)
+		game.camera.set_view(1.25, at)
 	_film_dir = _out.path_join("bosses").path_join(String(boss_id))
 	_film_count = 0
 	DirAccess.make_dir_recursive_absolute(_film_dir)
@@ -639,12 +648,16 @@ func _boss_fight(stage: StringName, boss_id: StringName) -> void:
 		await _shot("bosses_%s_barrier" % boss_name)
 	if boss.data.bind_interval > 0.0:
 		boss.bind_timer = 0.0
-		await _wait(0.45)
+		await _wait(0.1)
 		boss.bind_timer = 999.0
+		follow.call()
+		await _wait(0.4)
 		await _shot("bosses_%s_bind" % boss_name)
+		aim[0] = null
 	if boss.data.doom_interval > 0.0:
 		boss.doom_timer = 0.0
-		await _wait(0.1)
+		await get_tree().process_frame
+		await get_tree().process_frame
 		boss.doom_timer = 999.0
 		await _film(follow, BossAbilities.FIREBALL_FLIGHT * 0.5)
 		await _shot("bosses_%s_fireball" % boss_name)
@@ -662,11 +675,11 @@ var _film_count := 0
 
 ## Saves every other frame to _film_dir for `seconds`, calling `follow` to keep the camera on the action.
 func _film(follow: Callable, seconds: float) -> void:
-	var until := Time.get_ticks_msec() + int(seconds * 1000.0)
-	while Time.get_ticks_msec() < until:
+	# Counted in frames, not the clock: the capture runs at a fixed 30 frames a second of game time.
+	for frame in roundi(seconds * 30.0):
 		follow.call()
 		await RenderingServer.frame_post_draw
-		if Engine.get_process_frames() % 2 == 0:
+		if frame % 2 == 0:
 			get_viewport().get_texture().get_image().save_png(_film_dir.path_join("f_%04d.png" % _film_count))
 			_film_count += 1
 		await get_tree().process_frame
