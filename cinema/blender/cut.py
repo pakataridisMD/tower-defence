@@ -13,6 +13,19 @@ VOICE = json.load(open(os.path.join(HERE, "story", "voice.json")))
 REUSE = json.load(open(os.path.join(HERE, "story", "reuse.json")))
 
 
+def srt(text, dur, path, speaker):
+    """Captions for a line not voiced yet: its sentences shown one after another, timed by length."""
+    import re
+    parts = [p.strip() for p in re.split(r"(?<=[.!?])\s+|\n\n|\s/\s", text) if p.strip()]
+    total = sum(len(p) for p in parts) or 1; t = 0.25; out = []
+    for i, p in enumerate(parts):
+        d = (dur - 0.5) * len(p) / total
+        f = lambda x: "%02d:%02d:%02d,%03d" % (x // 3600, x % 3600 // 60, x % 60, (x - int(x)) * 1000)
+        who = "" if speaker == "narrator" else speaker.replace("_", " ").title() + ": "
+        out.append("%d\n%s --> %s\n%s%s\n" % (i + 1, f(t), f(t + d), who if i == 0 else "", p)); t += d
+    open(path, "w").write("\n".join(out))
+
+
 def frames_for(film, n, renders, trailer, step, fps):
     """The frame files for shot n (and the step they were rendered at), or None when the shot doesn't exist."""
     d = os.path.join(renders, "%s_%d" % (film, n))
@@ -57,8 +70,13 @@ def main():
         line = VOICE.get(film, {}).get("%02d" % n)
         clip = os.path.join(tmp, "s%02d.mp4" % n)
         cmd = ["ffmpeg", "-y", "-loglevel", "error", "-framerate", "%f" % (fps / st), "-i", os.path.join(seq, "f%05d.png")]
-        if line:
-            cmd += ["-i", os.path.join(REPO, line["file"]), "-filter_complex",
+        if line and not line.get("file"):   # rewritten line, not re-voiced yet: show it as captions over silence
+            sub = os.path.join(tmp, "s%02d.srt" % n); srt(line["text"], dur, sub, line["speaker"])
+            cmd += ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-filter_complex",
+                    "[0:v]fps=%d,scale=%d:-2,subtitles=%s:force_style='FontName=DejaVu Sans,FontSize=16,Outline=1,MarginV=18'[v]" % (fps, width, sub),
+                    "-map", "[v]", "-map", "1:a"]
+        elif line:
+            cmd += ["-i", os.path.join(arg("--root", REPO), line["file"]), "-filter_complex",
                     "[1:a]adelay=250|250,apad,atrim=0:%f[a];[0:v]fps=%d,scale=%d:-2[v]" % (dur, fps, width),
                     "-map", "[v]", "-map", "[a]"]
         else:

@@ -15,7 +15,7 @@ def aim(t, pos, target, roll=0.0):
 
 
 def _at(S, p):
-    return S["marks"]["hero"] + Vector(p)
+    return S["here"] + Vector(p)
 
 
 def stones(S, centre=(0, 30, 0), n=11, r=9.0, h=(3.0, 5.5), seed=3):
@@ -178,7 +178,7 @@ def drift(a, b, target, target2=None, lens=30, **kw):
 
 def doors(S, y=9.0, half=4.0, h=9.0, t0=2.0, t1=11.0, opening=False, rgb=(0.36, 0.22, 0.16), braziers=True):
     """A pair of great stone (or wooden) doors across +Y at `y`, swinging shut (or open) between t0 and t1."""
-    m = S["marks"]["hero"]; STONE = W.mountain_stone("big_door", rgb, moss=0.0)
+    m = S["here"]; STONE = W.mountain_stone("big_door", rgb, moss=0.0)
     for sx in (-1, 1):
         hinge = bpy.data.objects.new("door_hinge", None); C.sc.collection.objects.link(hinge)
         hinge.location = (m.x + sx * half, m.y + y, m.z)
@@ -194,7 +194,7 @@ def doors(S, y=9.0, half=4.0, h=9.0, t0=2.0, t1=11.0, opening=False, rgb=(0.36, 
 
 def darkness(S, rise=(2.0, 20.0), at=(0, 260, 0), width=900):
     """A wall of black rolling up out of the eastern horizon and over the sky."""
-    m = S["marks"]["hero"] if "hero" in S["marks"] else Vector((0, 0, 0))
+    m = S["here"]
     bpy.ops.mesh.primitive_cube_add(size=1, location=(m.x + at[0], m.y - at[1], -60))
     o = bpy.context.object; o.name = "dark_wall"; o.scale = (width, 120, 140)
     mt = bpy.data.materials.new("dark_wall"); mt.use_nodes = True; nt = mt.node_tree
@@ -224,7 +224,7 @@ def sundered_heart(rigs, who="cassivane_ash", n=60, r=2.2, seed=12):
 
 def falling_stars(S, n=30, start=1.0, seed=13):
     """Burning pieces of the Sunstone falling across the city."""
-    R = random.Random(seed); m = S["marks"]["hero"] if "hero" in S["marks"] else Vector((0, 0, 0))
+    R = random.Random(seed); m = S["here"]
     G = C.mat("sun_shard", (1, 0.9, 0.6), 0.2, emit=(1.0, 0.8, 0.45), strength=40)
     for i in range(n):
         p = Vector((R.uniform(-60, 60), R.uniform(-60, 60), 80 + R.uniform(-5, 10)))
@@ -238,3 +238,103 @@ def falling_stars(S, n=30, start=1.0, seed=13):
 def silent(seconds=6.0):
     """A shot with no voice line."""
     return dict(seconds=seconds)
+
+
+# ------------------------------------------------------------------ the land hordes (each land turned on its own people)
+def bird_circle(S, rigs, centre=(0, 30, 18), r=14.0, secs=24.0, rider="vholt"):
+    """Vholt on his black thunderbird, circling high overhead (the rider is cast with Sit_Chair_Idle)."""
+    import heralds
+    c = S["here"] + Vector(centre)
+    root, saddle = heralds.thunderbird(loc=(0, 0, 0), span=8.0)   # flaps (and bobs) inside a mover that flies the circle
+    mover = bpy.data.objects.new("bird_path", None); C.sc.collection.objects.link(mover); root.parent = mover
+    if rider in rigs:
+        heralds.mount(rigs[rider], saddle)
+    for k in range(9):
+        a = math.pi * 0.2 + k * (math.pi * 0.9 / 8); t = secs * k / 8
+        mover.location = (c.x + math.cos(a) * r, c.y + math.sin(a) * r * 0.6, c.z + math.sin(k) * 1.5)
+        mover.rotation_euler = (0, -0.25, a + math.pi)   # banking into the turn, beak along the path
+        mover.keyframe_insert("location", frame=C.sec(t)); mover.keyframe_insert("rotation_euler", frame=C.sec(t))
+
+
+def bird_down(S, rigs, at=(2.5, 3.5, 0)):
+    """The thunderbird crashed on the ground, wings spread, still smoking."""
+    import heralds
+    root, _ = heralds.thunderbird(loc=tuple(S["here"] + Vector(at) + Vector((0, 0, 0.9))), span=8.0, flap=0)
+    root.rotation_euler = (0.25, 0.15, 2.4)
+
+
+def walking_tree(S, start=(6, 26, 0), speed=0.5, sway=0.05, scale=1.6, seed=3):
+    """An ancient oak torn out of the ground, walking toward the camera (-Y), rocking side to side."""
+    o = sets.tree(tuple(S["here"] + Vector(start)), 0.4, scale, "broad")
+    o.keyframe_insert("location", frame=1)
+    end = C.sc.frame_end
+    o.location.y -= speed * (end - 1) / C.FPS; o.keyframe_insert("location", frame=end)
+    for f in range(1, end + 1, 18):
+        o.rotation_euler.y = sway * (1 if (f // 18) % 2 else -1); o.keyframe_insert("rotation_euler", index=1, frame=f)
+    return o
+
+
+def fallen_tree(S, at=(2.5, 3.0, 0), scale=1.2):
+    """A felled oak lying on its side."""
+    o = sets.tree(tuple(S["here"] + Vector(at)), 0.0, scale, "broad")
+    o.rotation_euler = (0, math.radians(84), 0.5)
+    return o
+
+
+def walking_rocks(S, n=7, centre=(0, 24, 0), spread=10, speed=0.45, seed=4):
+    """Boulders standing up off the canyon floor and lumbering toward the camera."""
+    R = random.Random(seed); c = S["here"] + Vector(centre)
+    for i in range(n):
+        p = c + Vector((R.uniform(-spread, spread), R.uniform(-spread / 2, spread / 2), 0))
+        o = sets.rock(tuple(p), R.uniform(0, 6), R.uniform(0.5, 0.9))
+        o.keyframe_insert("location", frame=1)
+        for f in range(1, C.sc.frame_end + 1, 14):   # a heavy step every 14 frames
+            o.location.y = p.y - speed * f / C.FPS; o.location.z = p.z + (0.25 if (f // 14) % 2 else 0)
+            o.keyframe_insert("location", frame=f)
+
+
+def chains(S, at=(0.4, 0.8, 0), n=5, seed=6):
+    """Broken iron chains on the floor of a cold forge, and an anvil."""
+    import bmesh
+    R = random.Random(seed); c = S["here"] + Vector(at); IRON = C.M("iron")
+    C.box("anvil", tuple(c + Vector((0.9, 0.6, 0.35))), (0.8, 0.35, 0.7), IRON, bevel=0.03)
+    for k in range(n):
+        p = c + Vector((R.uniform(-1.2, 1.2), R.uniform(-0.8, 0.8), 0.04)); a = R.uniform(0, 6.3)
+        for j in range(R.randint(5, 10)):
+            bpy.ops.mesh.primitive_torus_add(major_radius=0.05, minor_radius=0.014,
+                                            location=(p.x + math.cos(a) * j * 0.08, p.y + math.sin(a) * j * 0.08, 0.03),
+                                            rotation=(math.pi / 2 * (j % 2), 0, a))
+            bpy.context.object.data.materials.append(IRON)
+
+
+def cart(S, at=(1.4, 0.8, 0), plan=True):
+    """A handcart with a tower plan pinned on top (Fennick's)."""
+    c = S["here"] + Vector(at); WOOD = C.mat("cart_wood", (0.22, 0.14, 0.08), 0.8)
+    C.box("cart_bed", tuple(c + Vector((0, 0, 0.75))), (1.4, 0.9, 0.12), WOOD, bevel=0.01)
+    for sx in (-1, 1):
+        bpy.ops.mesh.primitive_cylinder_add(radius=0.38, depth=0.06, location=(c.x + sx * 0.5, c.y - 0.5, c.z + 0.38), rotation=(0, math.pi / 2, math.pi / 2))
+        bpy.context.object.data.materials.append(WOOD)
+    if plan:
+        bpy.ops.mesh.primitive_plane_add(size=0.7, location=tuple(c + Vector((0, 0, 0.82))))
+        p = bpy.context.object; p.scale = (1.2, 0.8, 1); p.rotation_euler = (0.05, 0, 0.1)
+        p.data.materials.append(C.mat("plan_paper", (0.75, 0.68, 0.5), 0.9))
+
+
+def ice_holes(S, n=10, area=(14, 26), centre=(0, 14, 0), seed=7, freeze=None):
+    """Black holes broken up through the sea ice (the drowned climb out of them). `freeze`: (t0, t1) when they ice over."""
+    import heralds
+    R = random.Random(seed); c = S["here"] + Vector(centre); BW = heralds.black_water("hole_water")
+    for i in range(n):
+        p = c + Vector((R.uniform(-area[0], area[0]), R.uniform(-area[1] / 2, area[1] / 2), 0.03))
+        bpy.ops.mesh.primitive_circle_add(vertices=9, radius=R.uniform(0.8, 2.2), fill_type="NGON", location=p)
+        o = bpy.context.object; o.data.materials.append(BW); o.scale = (1, R.uniform(0.6, 1.0), 1)
+        if freeze:
+            o.keyframe_insert("scale", frame=C.sec(freeze[0])); o.scale = (0.01, 0.01, 1); o.keyframe_insert("scale", frame=C.sec(freeze[1]))
+
+
+def floodwater(S, r=7.0, centre=(0, 2, 0)):
+    """A pool of black floodwater around a point (the ice tower stands in it)."""
+    import heralds
+    c = S["here"] + Vector(centre)
+    bpy.ops.mesh.primitive_circle_add(vertices=48, radius=r, fill_type="NGON", location=(c.x, c.y, c.z + 0.04))
+    bpy.context.object.data.materials.append(heralds.black_water("floodwater"))

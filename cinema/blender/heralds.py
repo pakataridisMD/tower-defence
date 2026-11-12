@@ -327,12 +327,13 @@ def thunderbird(name="thunderbird", loc=(0, 0, 3.0), span=7.0, flap=24):
         w.modifiers.new("sub", "SUBSURF").levels = 2
         W.lumpy(w, 0.2, 0.06 * s)
         w.data.materials.append(CLOUD); w.parent = piv; parts.append(w)
-        for fr in range(C.sc.frame_start - flap, C.sc.frame_end + flap * 2, flap // 2):
+        piv.rotation_euler = (0, sx * math.radians(6), 0)   # flap=0: wings spread flat (grounded)
+        for fr in (range(C.sc.frame_start - flap, C.sc.frame_end + flap * 2, flap // 2) if flap else ()):
             up = ((fr - C.sc.frame_start) // (flap // 2)) % 2 == 0
             piv.rotation_euler = (0, sx * math.radians(-32 if up else 18), 0)
             piv.keyframe_insert("rotation_euler", frame=fr)
     # the body rises and falls with the beat
-    for fr in range(C.sc.frame_start - flap, C.sc.frame_end + flap * 2, flap // 2):
+    for fr in (range(C.sc.frame_start - flap, C.sc.frame_end + flap * 2, flap // 2) if flap else ()):
         up = ((fr - C.sc.frame_start) // (flap // 2)) % 2 == 0
         root.location = (loc[0], loc[1], loc[2] + (0.12 if not up else -0.08) * s)
         root.keyframe_insert("location", frame=fr)

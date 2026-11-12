@@ -193,7 +193,7 @@ class Gate:
         self.slit = box("gap_light", (0, y - 45, 30 * G), (0.01, 0.5, 60 * G), M("gap"))
         self.light = bpy.data.objects.new("gaplight", bpy.data.lights.new("gaplight", "AREA")); sc.collection.objects.link(self.light)
         L = self.light.data; L.energy = 0; L.color = (0.7, 0.74, 0.85); L.shape = "RECTANGLE"; L.size = 2; L.size_y = 50 * G
-        self.light.location = (0, y - 3, 30 * G); self.light.rotation_euler = (math.radians(-90), 0, 0)
+        self.light.location = (0, y - 3, 30 * G); self.light.rotation_euler = (math.radians(90), 0, 0)   # shines out through the gap, toward the camera (+Y)
 
     def open_to(self, frame, gap, interp="BEZIER"):
         """Key the gap between the doors (metres) at `frame`; 0 = shut."""

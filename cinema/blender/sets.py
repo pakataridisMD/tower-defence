@@ -409,6 +409,7 @@ def tree(loc, rot_z=0.0, scale=1.0, kind="pine", dead=False, mat=None):
             else:
                 bpy.ops.mesh.primitive_ico_sphere_add(radius=2.2 * s, subdivisions=3, location=(l[0] + random.uniform(-1, 1) * s, l[1] + random.uniform(-1, 1) * s, l[2] + (7 + k) * s))
             c = bpy.context.object; c.data.materials.append(LEAF)
+            c.parent = t; c.location = c.location - t.location   # crowns ride on the trunk (walking trees)
             tx = bpy.data.textures.new("crown", "CLOUDS"); tx.noise_scale = 0.4
             d = c.modifiers.new("d", "DISPLACE"); d.texture = tx; d.strength = 0.6 * s
         return t
@@ -446,7 +447,8 @@ def earth(seed=5):
     for i in range(10):
         rock((R.uniform(-12, 12), R.uniform(10, 60), 0), R.uniform(0, 6.3), R.uniform(0.6, 1.6), RED)
     sky("satara_night", 0.4, 0.004, (0.7, 0.5, 0.45), (0.02, 0.012, 0.01))
-    C.moon(1.5, rot=(40, 0, 160))
+    C.moon(4.0, rot=(40, 0, 160))
+    C.light("AREA", (2, -4, 9), (20, 0, 10), 1500, (1.0, 0.6, 0.3), 8, "stage_torchlight")   # torchlight pooled on the stage
     return {"marks": {"hero": Vector((0, 0, 0))},
             "cams": {"wide": [(0, (5, -16, 4), (82, 0, 16))], "close": [(0, (2.5, -6.5, 1.8), (88, 0, 20))]}}
 
@@ -533,9 +535,11 @@ def void(seed=21):
         if R.random() < 0.35:
             bpy.ops.mesh.primitive_uv_sphere_add(radius=0.25, location=(x, y, z + 2)); bpy.context.object.data.materials.append(VIO)
             C.light("POINT", (x, y, z + 2.3), (0, 0, 0), 600, (0.7, 0.45, 1.0), 0.3, "void_lantern")
-    for sx in (-1, 1):
-        bpy.ops.mesh.primitive_uv_sphere_add(radius=0.3, location=(sx * 3, 3, 2.2)); bpy.context.object.data.materials.append(VIO)
-        C.light("POINT", (sx * 3, 2.6, 2.4), (0, 0, 0), 400, (0.7, 0.45, 1.0), 0.3, "void_lantern")
+    VIO_NEAR = C.mat("void_lantern_near", (0.8, 0.6, 1.0), 0.3, emit=(0.7, 0.45, 1.0), strength=1.2)
+    for sx in (-1, 1):   # two lanterns on posts at the back of the landing
+        bpy.ops.mesh.primitive_cylinder_add(radius=0.05, depth=2.4, location=(sx * 5, 7, 1.2)); bpy.context.object.data.materials.append(C.M("iron"))
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=0.18, location=(sx * 5, 7, 2.5)); bpy.context.object.data.materials.append(VIO_NEAR)
+        C.light("POINT", (sx * 5, 6.7, 2.5), (0, 0, 0), 300, (0.7, 0.45, 1.0), 0.3, "void_lantern")
     C.world(density=0.006, sky=0.0, colour=(0.012, 0.006, 0.025))
     vol = C.sc.world.node_tree.nodes.get("Principled Volume")
     if vol:
@@ -577,8 +581,9 @@ def hollow(seed=31):
 def rift():
     """The Rift and the Black Gate: the canyon from the trailer (cine3d.canyon)."""
     C.canyon()
-    C.world(density=0.01, sky=0.03)
-    C.moon(2.0)
+    C.world(density=0.0015, sky=0.25)
+    C.moon(9.0, rot=(28, -35, 120))
+    C.light("AREA", (25, -25, 200), (-45, 0, -10), 400000, (0.55, 0.62, 0.85), 80, "wash")   # as the trailer's s01
     return {"marks": {"hero": Vector((0, 0, 0))}, "cams": {"wide": [(0, (5, -16, 3), (84, 0, 16))]}}
 
 
