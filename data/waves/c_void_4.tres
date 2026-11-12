@@ -54,7 +54,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r7"]
 script = ExtResource("3_s")
-element = &"water"
+element = &"fire"
 description = "A marching column, runner packs, stragglers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2"), SubResource("r3"), SubResource("r4"), SubResource("r5"), SubResource("r6")])
 
@@ -93,20 +93,17 @@ start_delay = 13.73
 
 [sub_resource type="Resource" id="r12"]
 script = ExtResource("2_s")
-enemy = &"briarling"
-count = 12
-spawn_interval = 0.525
+enemy = &"lightdrinker"
+count = 4
+spawn_interval = 1.0
 start_delay = 18.54
-pattern = 1
-pack_size = 6
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r13"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 7
 spawn_interval = 0.7
-start_delay = 26.62
+start_delay = 22.29
 pattern = 2
 
 [sub_resource type="Resource" id="r14"]
@@ -114,13 +111,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 4
 spawn_interval = 0.55
-start_delay = 28.62
+start_delay = 24.29
 pattern = 2
 
 [sub_resource type="Resource" id="r15"]
 script = ExtResource("3_s")
-element = &"nature"
-description = "A marching column, runner packs, Warded packs, Briarlings and a closing surge."
+element = &"void"
+description = "A marching column, runner packs, Warded packs, Lightdrinkers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r8"), SubResource("r9"), SubResource("r10"), SubResource("r11"), SubResource("r12"), SubResource("r13"), SubResource("r14")])
 
 [sub_resource type="Resource" id="r16"]
@@ -167,9 +164,9 @@ start_delay = 17.92
 
 [sub_resource type="Resource" id="r21"]
 script = ExtResource("2_s")
-enemy = &"barkhulk"
-count = 2
-spawn_interval = 2.6
+enemy = &"voidmaw"
+count = 3
+spawn_interval = 1.8
 start_delay = 22.73
 
 [sub_resource type="Resource" id="r22"]
@@ -177,7 +174,7 @@ script = ExtResource("2_s")
 enemy = &"grunt"
 count = 8
 spawn_interval = 0.7
-start_delay = 26.18
+start_delay = 26.93
 pattern = 2
 
 [sub_resource type="Resource" id="r23"]
@@ -185,13 +182,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 4
 spawn_interval = 0.55
-start_delay = 28.18
+start_delay = 28.93
 pattern = 2
 
 [sub_resource type="Resource" id="r24"]
 script = ExtResource("3_s")
-element = &"nature"
-description = "Stragglers, runner packs, Warded packs, Barkhulks and a closing surge."
+element = &"void"
+description = "Stragglers, runner packs, Warded packs, Voidmaws and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r16"), SubResource("r17"), SubResource("r18"), SubResource("r19"), SubResource("r20"), SubResource("r21"), SubResource("r22"), SubResource("r23")])
 
 [sub_resource type="Resource" id="r25"]
@@ -263,7 +260,7 @@ pattern = 3
 
 [sub_resource type="Resource" id="r33"]
 script = ExtResource("2_s")
-enemy = &"greenwitch"
+enemy = &"gravecaller"
 count = 5
 spawn_interval = 1.0
 start_delay = 23.78
@@ -286,8 +283,8 @@ pattern = 2
 
 [sub_resource type="Resource" id="r36"]
 script = ExtResource("3_s")
-element = &"nature"
-description = "A marching column, a pincer, Warded packs, Menders in a line, Greenwitches and a closing surge."
+element = &"void"
+description = "A marching column, a pincer, Warded packs, Menders in a line, Gravecallers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r25"), SubResource("r26"), SubResource("r27"), SubResource("r28"), SubResource("r29"), SubResource("r30"), SubResource("r31"), SubResource("r32"), SubResource("r33"), SubResource("r34"), SubResource("r35")])
 
 [sub_resource type="Resource" id="r37"]
@@ -317,7 +314,7 @@ pack_gap = 3.0
 
 [sub_resource type="Resource" id="r40"]
 script = ExtResource("2_s")
-enemy = &"barkhulk"
+enemy = &"voidmaw"
 count = 2
 spawn_interval = 4.5
 start_delay = 14.77
@@ -350,17 +347,20 @@ start_delay = 20.65
 
 [sub_resource type="Resource" id="r44"]
 script = ExtResource("2_s")
-enemy = &"briar_stag"
-count = 5
-spawn_interval = 1.0
+enemy = &"wailing_widow"
+count = 8
+spawn_interval = 0.5
 start_delay = 28.12
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r45"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 11
 spawn_interval = 0.7
-start_delay = 32.62
+start_delay = 34.5
 pattern = 2
 
 [sub_resource type="Resource" id="r46"]
@@ -368,13 +368,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 5
 spawn_interval = 0.55
-start_delay = 34.62
+start_delay = 36.5
 pattern = 2
 
 [sub_resource type="Resource" id="r47"]
 script = ExtResource("3_s")
-element = &"storm"
-description = "A marching column, a flank attack, Hulking Barkhulks, Warded packs, Briar Stags and a closing surge."
+element = &"earth"
+description = "A marching column, a flank attack, Hulking Voidmaws, Warded packs, Wailing Widows and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r37"), SubResource("r38"), SubResource("r39"), SubResource("r40"), SubResource("r41"), SubResource("r42"), SubResource("r43"), SubResource("r44"), SubResource("r45"), SubResource("r46")])
 
 [sub_resource type="Resource" id="r48"]
@@ -455,27 +455,24 @@ pattern = 3
 
 [sub_resource type="Resource" id="r57"]
 script = ExtResource("2_s")
-enemy = &"barkhulk"
-count = 3
-spawn_interval = 2.6
+enemy = &"voidmaw"
+count = 4
+spawn_interval = 1.8
 start_delay = 25.84
 
 [sub_resource type="Resource" id="r58"]
 script = ExtResource("2_s")
-enemy = &"briarling"
-count = 18
-spawn_interval = 0.3
+enemy = &"lightdrinker"
+count = 6
+spawn_interval = 1.0
 start_delay = 28.34
-pattern = 1
-pack_size = 6
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r59"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 11
 spawn_interval = 0.7
-start_delay = 37.54
+start_delay = 32.96
 pattern = 2
 
 [sub_resource type="Resource" id="r60"]
@@ -483,13 +480,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 6
 spawn_interval = 0.55
-start_delay = 39.54
+start_delay = 34.96
 pattern = 2
 
 [sub_resource type="Resource" id="r61"]
 script = ExtResource("3_s")
-element = &"nature"
-description = "Stragglers, a pincer, Warded packs, Menders in a line, Barkhulks and Briarlings and a closing surge."
+element = &"void"
+description = "Stragglers, a pincer, Warded packs, Menders in a line, Voidmaws and Lightdrinkers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r48"), SubResource("r49"), SubResource("r50"), SubResource("r51"), SubResource("r52"), SubResource("r53"), SubResource("r54"), SubResource("r55"), SubResource("r56"), SubResource("r57"), SubResource("r58"), SubResource("r59"), SubResource("r60")])
 
 [sub_resource type="Resource" id="r62"]
@@ -553,27 +550,27 @@ pack_gap = 1.9500000000000002
 
 [sub_resource type="Resource" id="r69"]
 script = ExtResource("2_s")
-enemy = &"briarling"
-count = 18
-spawn_interval = 0.3
+enemy = &"lightdrinker"
+count = 6
+spawn_interval = 1.0
 start_delay = 28.54
-pattern = 1
-pack_size = 6
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r70"]
 script = ExtResource("2_s")
-enemy = &"seedsower"
-count = 6
-spawn_interval = 1.0
+enemy = &"umbral_stalker"
+count = 10
+spawn_interval = 0.5
 start_delay = 31.04
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r71"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 12
 spawn_interval = 0.7
-start_delay = 38.37
+start_delay = 39.79
 pattern = 2
 
 [sub_resource type="Resource" id="r72"]
@@ -581,13 +578,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 6
 spawn_interval = 0.55
-start_delay = 40.37
+start_delay = 41.79
 pattern = 2
 
 [sub_resource type="Resource" id="r73"]
 script = ExtResource("3_s")
-element = &"nature"
-description = "A marching column, a flank attack, Warded packs, brutes under escort, Briarlings and Seedsowers and a closing surge."
+element = &"void"
+description = "A marching column, a flank attack, Warded packs, brutes under escort, Lightdrinkers and Umbral Stalkers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r62"), SubResource("r63"), SubResource("r64"), SubResource("r65"), SubResource("r66"), SubResource("r67"), SubResource("r68"), SubResource("r69"), SubResource("r70"), SubResource("r71"), SubResource("r72")])
 
 [sub_resource type="Resource" id="r74"]
@@ -659,14 +656,17 @@ pattern = 3
 
 [sub_resource type="Resource" id="r82"]
 script = ExtResource("2_s")
-enemy = &"seedsower"
-count = 6
-spawn_interval = 1.0
+enemy = &"umbral_stalker"
+count = 10
+spawn_interval = 0.5
 start_delay = 27.08
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r83"]
 script = ExtResource("2_s")
-enemy = &"greenwitch"
+enemy = &"gravecaller"
 count = 6
 spawn_interval = 1.0
 start_delay = 29.58
@@ -676,7 +676,7 @@ script = ExtResource("2_s")
 enemy = &"grunt"
 count = 12
 spawn_interval = 0.7
-start_delay = 34.2
+start_delay = 36.45
 pattern = 2
 
 [sub_resource type="Resource" id="r85"]
@@ -684,13 +684,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 6
 spawn_interval = 0.55
-start_delay = 36.2
+start_delay = 38.45
 pattern = 2
 
 [sub_resource type="Resource" id="r86"]
 script = ExtResource("3_s")
-element = &"nature"
-description = "A marching column, a pincer, Warded packs, Menders in a line, Seedsowers and Greenwitches and a closing surge."
+element = &"void"
+description = "A marching column, a pincer, Warded packs, Menders in a line, Umbral Stalkers and Gravecallers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r74"), SubResource("r75"), SubResource("r76"), SubResource("r77"), SubResource("r78"), SubResource("r79"), SubResource("r80"), SubResource("r81"), SubResource("r82"), SubResource("r83"), SubResource("r84"), SubResource("r85")])
 
 [sub_resource type="Resource" id="r87"]
@@ -746,7 +746,7 @@ start_delay = 15.77
 
 [sub_resource type="Resource" id="r93"]
 script = ExtResource("2_s")
-enemy = &"barkhulk"
+enemy = &"voidmaw"
 count = 2
 spawn_interval = 4.5
 start_delay = 24.07
@@ -779,24 +779,27 @@ pack_gap = 1.9500000000000002
 
 [sub_resource type="Resource" id="r97"]
 script = ExtResource("2_s")
-enemy = &"barkhulk"
-count = 3
-spawn_interval = 2.6
+enemy = &"voidmaw"
+count = 4
+spawn_interval = 1.8
 start_delay = 35.47
 
 [sub_resource type="Resource" id="r98"]
 script = ExtResource("2_s")
-enemy = &"briar_stag"
-count = 7
-spawn_interval = 1.0
+enemy = &"wailing_widow"
+count = 11
+spawn_interval = 0.5
 start_delay = 37.97
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r99"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 8
 spawn_interval = 0.3
-start_delay = 43.35
+start_delay = 47.1
 lane = 0
 pattern = 1
 pack_size = 4
@@ -807,7 +810,7 @@ script = ExtResource("2_s")
 enemy = &"grunt"
 count = 8
 spawn_interval = 0.3
-start_delay = 43.35
+start_delay = 47.1
 lane = 1
 pattern = 1
 pack_size = 4
@@ -818,14 +821,14 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 6
 spawn_interval = 0.4
-start_delay = 45.35
+start_delay = 49.1
 
 [sub_resource type="Resource" id="r102"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 13
 spawn_interval = 0.7
-start_delay = 48.67
+start_delay = 52.42
 pattern = 2
 
 [sub_resource type="Resource" id="r103"]
@@ -833,13 +836,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 6
 spawn_interval = 0.55
-start_delay = 50.67
+start_delay = 54.42
 pattern = 2
 
 [sub_resource type="Resource" id="r104"]
 script = ExtResource("3_s")
-element = &"water"
-description = "Stragglers, a flank attack, Warded packs, Hulking Barkhulks, brutes under escort, Barkhulks and Briar Stags, a pincer and a closing surge."
+element = &"fire"
+description = "Stragglers, a flank attack, Warded packs, Hulking Voidmaws, brutes under escort, Voidmaws and Wailing Widows, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r87"), SubResource("r88"), SubResource("r89"), SubResource("r90"), SubResource("r91"), SubResource("r92"), SubResource("r93"), SubResource("r94"), SubResource("r95"), SubResource("r96"), SubResource("r97"), SubResource("r98"), SubResource("r99"), SubResource("r100"), SubResource("r101"), SubResource("r102"), SubResource("r103")])
 
 [sub_resource type="Resource" id="r105"]
@@ -921,16 +924,19 @@ pattern = 3
 
 [sub_resource type="Resource" id="r114"]
 script = ExtResource("2_s")
-enemy = &"briar_stag"
-count = 7
-spawn_interval = 1.0
+enemy = &"wailing_widow"
+count = 11
+spawn_interval = 0.5
 start_delay = 41.4
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r115"]
 script = ExtResource("2_s")
-enemy = &"barkhulk"
-count = 3
-spawn_interval = 2.6
+enemy = &"voidmaw"
+count = 4
+spawn_interval = 1.8
 start_delay = 43.9
 
 [sub_resource type="Resource" id="r116"]
@@ -938,7 +944,7 @@ script = ExtResource("2_s")
 enemy = &"grunt"
 count = 13
 spawn_interval = 0.7
-start_delay = 48.68
+start_delay = 51.15
 pattern = 2
 
 [sub_resource type="Resource" id="r117"]
@@ -946,13 +952,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 7
 spawn_interval = 0.55
-start_delay = 50.68
+start_delay = 53.15
 pattern = 2
 
 [sub_resource type="Resource" id="r118"]
 script = ExtResource("3_s")
-element = &"nature"
-description = "A marching column, a pincer, Warded packs, runner packs, Menders in a line, Briar Stags and Barkhulks and a closing surge."
+element = &"void"
+description = "A marching column, a pincer, Warded packs, runner packs, Menders in a line, Wailing Widows and Voidmaws and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r105"), SubResource("r106"), SubResource("r107"), SubResource("r108"), SubResource("r109"), SubResource("r110"), SubResource("r111"), SubResource("r112"), SubResource("r113"), SubResource("r114"), SubResource("r115"), SubResource("r116"), SubResource("r117")])
 
 [sub_resource type="Resource" id="r119"]
@@ -1016,27 +1022,24 @@ pack_gap = 1.9500000000000002
 
 [sub_resource type="Resource" id="r126"]
 script = ExtResource("2_s")
-enemy = &"barkhulk"
-count = 3
-spawn_interval = 2.6
+enemy = &"voidmaw"
+count = 4
+spawn_interval = 1.8
 start_delay = 35.06
 
 [sub_resource type="Resource" id="r127"]
 script = ExtResource("2_s")
-enemy = &"briarling"
-count = 20
-spawn_interval = 0.3
+enemy = &"lightdrinker"
+count = 7
+spawn_interval = 1.0
 start_delay = 37.56
-pattern = 1
-pack_size = 6
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r128"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 8
 spawn_interval = 0.3
-start_delay = 49.46
+start_delay = 42.93
 lane = 2
 pattern = 1
 pack_size = 4
@@ -1047,7 +1050,7 @@ script = ExtResource("2_s")
 enemy = &"grunt"
 count = 8
 spawn_interval = 0.3
-start_delay = 49.46
+start_delay = 42.93
 lane = 0
 pattern = 1
 pack_size = 4
@@ -1058,14 +1061,14 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 6
 spawn_interval = 0.4
-start_delay = 51.46
+start_delay = 44.93
 
 [sub_resource type="Resource" id="r131"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 14
 spawn_interval = 0.7
-start_delay = 54.78
+start_delay = 48.26
 pattern = 2
 
 [sub_resource type="Resource" id="r132"]
@@ -1073,13 +1076,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 7
 spawn_interval = 0.55
-start_delay = 56.78
+start_delay = 50.26
 pattern = 2
 
 [sub_resource type="Resource" id="r133"]
 script = ExtResource("3_s")
-element = &"nature"
-description = "A marching column, a flank attack, Warded packs, brutes under escort, Barkhulks and Briarlings, a pincer and a closing surge."
+element = &"void"
+description = "A marching column, a flank attack, Warded packs, brutes under escort, Voidmaws and Lightdrinkers, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r119"), SubResource("r120"), SubResource("r121"), SubResource("r122"), SubResource("r123"), SubResource("r124"), SubResource("r125"), SubResource("r126"), SubResource("r127"), SubResource("r128"), SubResource("r129"), SubResource("r130"), SubResource("r131"), SubResource("r132")])
 
 [sub_resource type="Resource" id="r134"]
@@ -1189,24 +1192,27 @@ pack_gap = 3.0
 
 [sub_resource type="Resource" id="r146"]
 script = ExtResource("2_s")
-enemy = &"barkhulk"
-count = 4
-spawn_interval = 2.6
+enemy = &"voidmaw"
+count = 5
+spawn_interval = 1.8
 start_delay = 49.77
 
 [sub_resource type="Resource" id="r147"]
 script = ExtResource("2_s")
-enemy = &"seedsower"
-count = 8
-spawn_interval = 1.0
+enemy = &"umbral_stalker"
+count = 13
+spawn_interval = 0.5
 start_delay = 52.27
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r148"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 14
 spawn_interval = 0.7
-start_delay = 58.4
+start_delay = 64.4
 pattern = 2
 
 [sub_resource type="Resource" id="r149"]
@@ -1214,13 +1220,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 7
 spawn_interval = 0.55
-start_delay = 60.4
+start_delay = 66.4
 pattern = 2
 
 [sub_resource type="Resource" id="r150"]
 script = ExtResource("3_s")
-element = &"nature"
-description = "Stragglers, a pincer, Warded packs, runner packs, Menders in a line, a flank attack, Barkhulks and Seedsowers and a closing surge."
+element = &"void"
+description = "Stragglers, a pincer, Warded packs, runner packs, Menders in a line, a flank attack, Voidmaws and Umbral Stalkers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r134"), SubResource("r135"), SubResource("r136"), SubResource("r137"), SubResource("r138"), SubResource("r139"), SubResource("r140"), SubResource("r141"), SubResource("r142"), SubResource("r143"), SubResource("r144"), SubResource("r145"), SubResource("r146"), SubResource("r147"), SubResource("r148"), SubResource("r149")])
 
 [sub_resource type="Resource" id="r151"]
@@ -1284,7 +1290,7 @@ pack_gap = 1.9500000000000002
 
 [sub_resource type="Resource" id="r158"]
 script = ExtResource("2_s")
-enemy = &"barkhulk"
+enemy = &"voidmaw"
 count = 3
 spawn_interval = 4.5
 start_delay = 35.78
@@ -1300,14 +1306,17 @@ pattern = 3
 
 [sub_resource type="Resource" id="r160"]
 script = ExtResource("2_s")
-enemy = &"seedsower"
-count = 8
-spawn_interval = 1.0
+enemy = &"umbral_stalker"
+count = 13
+spawn_interval = 0.5
 start_delay = 44.03
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r161"]
 script = ExtResource("2_s")
-enemy = &"greenwitch"
+enemy = &"gravecaller"
 count = 8
 spawn_interval = 1.0
 start_delay = 46.53
@@ -1317,7 +1326,7 @@ script = ExtResource("2_s")
 enemy = &"grunt"
 count = 8
 spawn_interval = 0.3
-start_delay = 52.65
+start_delay = 56.78
 lane = 1
 pattern = 1
 pack_size = 4
@@ -1328,7 +1337,7 @@ script = ExtResource("2_s")
 enemy = &"grunt"
 count = 8
 spawn_interval = 0.3
-start_delay = 52.65
+start_delay = 56.78
 lane = 2
 pattern = 1
 pack_size = 4
@@ -1339,14 +1348,14 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 7
 spawn_interval = 0.4
-start_delay = 54.65
+start_delay = 58.78
 
 [sub_resource type="Resource" id="r165"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 18
 spawn_interval = 0.28
-start_delay = 57.98
+start_delay = 62.1
 pattern = 1
 pack_size = 6
 pack_gap = 3.5
@@ -1356,7 +1365,7 @@ script = ExtResource("2_s")
 enemy = &"grunt"
 count = 14
 spawn_interval = 0.7
-start_delay = 68.3
+start_delay = 72.42
 pattern = 2
 
 [sub_resource type="Resource" id="r167"]
@@ -1364,13 +1373,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 7
 spawn_interval = 0.55
-start_delay = 70.3
+start_delay = 74.42
 pattern = 2
 
 [sub_resource type="Resource" id="r168"]
 script = ExtResource("3_s")
-element = &"storm"
-description = "A marching column, a flank attack, Warded packs, brutes under escort, Hulking Barkhulks, Seedsowers and Greenwitches, a pincer, runner packs and a closing surge."
+element = &"earth"
+description = "A marching column, a flank attack, Warded packs, brutes under escort, Hulking Voidmaws, Umbral Stalkers and Gravecallers, a pincer, runner packs and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r151"), SubResource("r152"), SubResource("r153"), SubResource("r154"), SubResource("r155"), SubResource("r156"), SubResource("r157"), SubResource("r158"), SubResource("r159"), SubResource("r160"), SubResource("r161"), SubResource("r162"), SubResource("r163"), SubResource("r164"), SubResource("r165"), SubResource("r166"), SubResource("r167")])
 
 [sub_resource type="Resource" id="r169"]
@@ -1471,24 +1480,27 @@ pack_gap = 3.0
 
 [sub_resource type="Resource" id="r180"]
 script = ExtResource("2_s")
-enemy = &"greenwitch"
+enemy = &"gravecaller"
 count = 8
 spawn_interval = 1.0
 start_delay = 51.9
 
 [sub_resource type="Resource" id="r181"]
 script = ExtResource("2_s")
-enemy = &"briar_stag"
-count = 8
-spawn_interval = 1.0
+enemy = &"wailing_widow"
+count = 13
+spawn_interval = 0.5
 start_delay = 54.4
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
 
 [sub_resource type="Resource" id="r182"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 15
 spawn_interval = 0.7
-start_delay = 60.53
+start_delay = 66.53
 pattern = 2
 
 [sub_resource type="Resource" id="r183"]
@@ -1496,13 +1508,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 7
 spawn_interval = 0.55
-start_delay = 62.53
+start_delay = 68.53
 pattern = 2
 
 [sub_resource type="Resource" id="r184"]
 script = ExtResource("3_s")
-element = &"nature"
-description = "A marching column, a pincer, Warded packs, runner packs, Menders in a line, a flank attack, Greenwitches and Briar Stags and a closing surge."
+element = &"void"
+description = "A marching column, a pincer, Warded packs, runner packs, Menders in a line, a flank attack, Gravecallers and Wailing Widows and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r169"), SubResource("r170"), SubResource("r171"), SubResource("r172"), SubResource("r173"), SubResource("r174"), SubResource("r175"), SubResource("r176"), SubResource("r177"), SubResource("r178"), SubResource("r179"), SubResource("r180"), SubResource("r181"), SubResource("r182"), SubResource("r183")])
 
 [sub_resource type="Resource" id="r185"]
@@ -1554,9 +1566,9 @@ start_delay = 21.43
 
 [sub_resource type="Resource" id="r191"]
 script = ExtResource("2_s")
-enemy = &"barkhulk"
-count = 4
-spawn_interval = 2.6
+enemy = &"voidmaw"
+count = 6
+spawn_interval = 1.8
 start_delay = 33.22
 
 [sub_resource type="Resource" id="r192"]
@@ -1564,7 +1576,7 @@ script = ExtResource("2_s")
 enemy = &"grunt"
 count = 10
 spawn_interval = 0.9
-start_delay = 40.57
+start_delay = 41.47
 lane = 0
 
 [sub_resource type="Resource" id="r193"]
@@ -1572,7 +1584,7 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 10
 spawn_interval = 0.3
-start_delay = 42.57
+start_delay = 43.47
 lane = 2
 pattern = 1
 pack_size = 5
@@ -1583,7 +1595,7 @@ script = ExtResource("2_s")
 enemy = &"grunt"
 count = 15
 spawn_interval = 0.7
-start_delay = 48.14
+start_delay = 49.04
 pattern = 2
 
 [sub_resource type="Resource" id="r195"]
@@ -1591,15 +1603,15 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 8
 spawn_interval = 0.55
-start_delay = 50.14
+start_delay = 51.04
 pattern = 2
 
 [sub_resource type="Resource" id="r196"]
 script = ExtResource("3_s")
-element = &"nature"
+element = &"void"
 is_boss = true
 health_multiplier = 0.59
-description = "A marching column, brutes under escort, Warded packs, Barkhulks, a flank attack and a closing surge."
+description = "A marching column, brutes under escort, Warded packs, Voidmaws, a flank attack and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r185"), SubResource("r186"), SubResource("r187"), SubResource("r188"), SubResource("r189"), SubResource("r190"), SubResource("r191"), SubResource("r192"), SubResource("r193"), SubResource("r194"), SubResource("r195")])
 
 [resource]

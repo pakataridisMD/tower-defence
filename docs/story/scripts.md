@@ -946,29 +946,29 @@ Shown after each stage win as "<town> is saved. <line>" (the Lumen Gate: "has fa
 
 | Stage | Town | Line |
 |---|---|---|
-| ember_1 | Kethra | The sea stopped at the edge of town. Its forges never went out. |
-| ember_2 | Brazier Hold | The Saltmother is dead, and her cage is open. |
+| ember_1 | Kethra | The fire stopped at the edge of town. Its forges never went out. |
+| ember_2 | Brazier Hold | Ashwick is dead, and his cage is open. |
 | ember_3 | Vitrea | Not one glass tower cracked. |
-| ember_4 | Pyrrhenhall | Ignar is awake, and the sea is draining off the mountain. |
+| ember_4 | Pyrrhenhall | Ignar is awake, and the mountain's fire is his again. |
 | storm_1 | Stonering Camp | The standing stones still stand. |
-| storm_2 | Highwind | Gorrath is broken. Kaela Stormrider rides with us. |
+| storm_2 | Highwind | Vholt is broken. Kaela Stormrider rides with us. |
 | storm_3 | Tarrow's Rest | The horses are safe in their pens. |
 | storm_4 | Aurvanis | Aurath is awake, and the sky is moving again. |
 | nature_1 | Fernholt | Its people are back in the branches. |
-| nature_2 | Elderhollow | The Pale Vesper is silent. Sylvaine Thornwhisper fights with us. |
-| nature_3 | Thornwall | The dead under its trees lie still again. |
-| nature_4 | Sylvanmere | Elowen is awake, and the Hollow is leaving the forest. |
+| nature_2 | Elderhollow | Mother Briar is silent. Sylvaine Thornwhisper fights with us. |
+| nature_3 | Thornwall | The thorns round its trees lie still again. |
+| nature_4 | Sylvanmere | Elowen is awake, and the forest is quiet again. |
 | water_1 | Netmend | The ice under it held. |
-| water_2 | Reedhaven | Ashwick is dead. Mirelle and forty children walked out of the ice. |
-| water_3 | Glasswater | The lake froze over again behind the last runner. |
+| water_2 | Reedhaven | The Saltmother is dead. Mirelle and forty children walked out of the ice. |
+| water_3 | Glasswater | The lake froze over again behind the last of the drowned. |
 | water_4 | Pearlhaven | Thalassa is awake, and the sea is freezing over. |
-| earth_1 | Dustmark | The storm broke on its walls. |
-| earth_2 | The Kharum Terraces | Vholt is dead. Gorrim Stonebeard fights with us. |
-| earth_3 | Mesa Kharn | The lightning never reached the mesa. |
-| earth_4 | Grundhallow | Orrok is awake, and the storm is leaving the canyon. |
+| earth_1 | Dustmark | The rockslide broke on its walls. |
+| earth_2 | The Kharum Terraces | Gorrath is dead. Gorrim Stonebeard fights with us. |
+| earth_3 | Mesa Kharn | The quarried dead never reached the mesa. |
+| earth_4 | Grundhallow | Orrok is awake, and the stone lies still. |
 | void_1 | Lamplight | Its lamps are still burning. |
-| void_2 | Vesperhold | Mother Briar is dead. Corvin is free. |
-| void_3 | Twinmoor | The thorns are dying back. |
+| void_2 | Vesperhold | The Pale Vesper is dead. Corvin is free. |
+| void_3 | Twinmoor | The shades are gone from its moor. |
 | void_4 | Umbrael | Nyxara is awake. All six Wardens are free. |
 | converge_1 | Crossmere | Cassivane has fallen back, and left his daughter behind. |
 | converge_2 | The Lumen Gate | Solenne's outer wall is down. The other five still stand. |

@@ -16,9 +16,9 @@ id = &"void_1"
 display_name = "Starless Path"
 description = "No stars over this road. The grass glows faintly purple."
 map = &"c_void_1"
-horde_element = &"nature"
+horde_element = &"void"
 modifiers = Array[ExtResource("2_s")]([SubResource("r1")])
-rule_text = PackedStringArray("The horde here is Nature: find the element it fears. Every element can be drafted, and you start with one more skill point.")
+rule_text = PackedStringArray("The horde here is Void: find the element it fears. Every element can be drafted, and you start with one more skill point.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r3"]
@@ -39,9 +39,9 @@ id = &"void_2"
 display_name = "Fractured Steps"
 description = "The ground is broken into floating steps."
 map = &"c_void_2"
-horde_element = &"nature"
+horde_element = &"void"
 modifiers = Array[ExtResource("2_s")]([SubResource("r3"), SubResource("r4")])
-rule_text = PackedStringArray("The horde here is Nature: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The last wave is led by Mother Briar, the Thorn Herald (immune to effects, shields the horde, chokes towers).", "Soul tithe: +1 gold for every kill.")
+rule_text = PackedStringArray("The horde here is Void: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The last wave is led by the Pale Vesper, the Hollow Herald (raises shades, blinks down the road).", "Soul tithe: +1 gold for every kill.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r6"]
@@ -62,9 +62,9 @@ id = &"void_3"
 display_name = "Mirror Rift"
 description = "The road comes in at the top and leaves an arm's length away, the long way round."
 map = &"c_void_3"
-horde_element = &"nature"
+horde_element = &"void"
 modifiers = Array[ExtResource("2_s")]([SubResource("r6"), SubResource("r7")])
-rule_text = PackedStringArray("The horde here is Nature: find the element it fears. Every element can be drafted, and you start with one more skill point.", "Thin veil: towers have 10% more range.")
+rule_text = PackedStringArray("The horde here is Void: find the element it fears. Every element can be drafted, and you start with one more skill point.", "Thin veil: towers have 10% more range.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r9"]
@@ -80,9 +80,9 @@ display_name = "Throne of the Hollow King"
 description = "The Hollow King rules the rift. Strike him down and he splits in two."
 map = &"c_void_4"
 is_guardian = true
-horde_element = &"nature"
+horde_element = &"void"
 modifiers = Array[ExtResource("2_s")]([SubResource("r9")])
-rule_text = PackedStringArray("The horde here is Nature: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The Warden is Void, and fears Nature.")
+rule_text = PackedStringArray("The horde here is Void: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The Warden is Void, and fears Nature.")
 first_clear_points = 6
 
 [sub_resource type="Resource" id="r11"]
@@ -98,8 +98,8 @@ id = &"hollow_rift"
 display_name = "The Hollow Rift"
 order = 5
 element = &"void"
-tagline = "The Grove against the Dark"
-description = "The rift where the ring cracked first. Nature's horde grows wild here, warded in bark, and only the Void's curses and auras can tear it down."
+tagline = "The Hollow turned on its own rift"
+description = "The rift where the ring cracked first. The Hollow's own dead and shades pour out of it, and the Void does nothing to them. Nature fills the hollow."
 requires_campaigns = Array[StringName]([&"sunscar_canyon"])
 stages = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r5"), SubResource("r8"), SubResource("r10")])
 reward_name = "Sigil of the Hollow"

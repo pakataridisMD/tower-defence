@@ -16,9 +16,9 @@ id = &"storm_1"
 display_name = "Windswept Pass"
 description = "A narrow pass between standing stones. Thunder is waiting to be called."
 map = &"c_storm_1"
-horde_element = &"earth"
+horde_element = &"storm"
 modifiers = Array[ExtResource("2_s")]([SubResource("r1")])
-rule_text = PackedStringArray("The horde here is Earth: find the element it fears. Every element can be drafted, and you start with one more skill point.")
+rule_text = PackedStringArray("The horde here is Storm: find the element it fears. Every element can be drafted, and you start with one more skill point.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r3"]
@@ -39,9 +39,9 @@ id = &"storm_2"
 display_name = "Galeback Ridge"
 description = "Splitters crack open on the ridge. Chain lightning loves a crowd."
 map = &"c_storm_2"
-horde_element = &"earth"
+horde_element = &"storm"
 modifiers = Array[ExtResource("2_s")]([SubResource("r3"), SubResource("r4")])
-rule_text = PackedStringArray("The horde here is Earth: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The last wave is led by Gorrath the Quarried, the Stone Herald (armoured, charges when wounded, breaks into boulders).", "Tailwind: towers attack 10% faster.")
+rule_text = PackedStringArray("The horde here is Storm: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The last wave is led by Vholt Stormcrown, the Sky Herald (blinks, silences towers).", "Tailwind: towers attack 10% faster.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r6"]
@@ -62,9 +62,9 @@ id = &"storm_3"
 display_name = "The Long Squall"
 description = "The road dives down and climbs back up three times. Long, but never far from a spire."
 map = &"c_storm_3"
-horde_element = &"earth"
+horde_element = &"storm"
 modifiers = Array[ExtResource("2_s")]([SubResource("r6"), SubResource("r7")])
-rule_text = PackedStringArray("The horde here is Earth: find the element it fears. Every element can be drafted, and you start with one more skill point.", "Thin air: towers cost 15% more.")
+rule_text = PackedStringArray("The horde here is Storm: find the element it fears. Every element can be drafted, and you start with one more skill point.", "Thin air: towers cost 15% more.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r9"]
@@ -77,12 +77,12 @@ value = 1.0
 script = ExtResource("3_s")
 id = &"storm_4"
 display_name = "Eye of the Storm"
-description = "The Thunderhead spins at the centre of the last storm. Nothing slows it, and lightning only tickles. Fire and Nature will have to do."
+description = "The Thunderhead spins at the centre of the last storm. Nothing slows it, and lightning only tickles. Bring Earth."
 map = &"c_storm_4"
 is_guardian = true
-horde_element = &"earth"
+horde_element = &"storm"
 modifiers = Array[ExtResource("2_s")]([SubResource("r9")])
-rule_text = PackedStringArray("The horde here is Earth: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The Warden is Storm, and fears Earth.")
+rule_text = PackedStringArray("The horde here is Storm: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The Warden is Storm, and fears Earth.")
 first_clear_points = 6
 
 [sub_resource type="Resource" id="r11"]
@@ -98,8 +98,8 @@ id = &"thunder_steppe"
 display_name = "The Thunder Steppe"
 order = 1
 element = &"storm"
-tagline = "The Stone against the Sky"
-description = "The high grass is flattened and the storms have stopped. Earth's horde climbs the plateau, and the Splitters break into swarms that only lightning can catch."
+tagline = "The Sky turned on its own plains"
+description = "The high grass is flattened and the storms run wild. The Sky's own horde rides the plateau, and lightning only tickles it. Earth grounds a storm."
 requires_campaigns = Array[StringName]([&"ember_reach"])
 stages = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r5"), SubResource("r8"), SubResource("r10")])
 reward_name = "Sigil of Thunder"

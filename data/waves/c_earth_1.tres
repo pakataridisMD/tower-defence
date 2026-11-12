@@ -44,7 +44,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r6"]
 script = ExtResource("3_s")
-element = &"storm"
+element = &"earth"
 description = "A marching column, stragglers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2"), SubResource("r3"), SubResource("r4"), SubResource("r5")])
 
@@ -72,20 +72,17 @@ pattern = 3
 
 [sub_resource type="Resource" id="r10"]
 script = ExtResource("2_s")
-enemy = &"gale_harpy"
-count = 3
-spawn_interval = 0.575
+enemy = &"oathbroken"
+count = 1
+spawn_interval = 1.8
 start_delay = 8.47
-pattern = 1
-pack_size = 4
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r11"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 5
 spawn_interval = 0.7
-start_delay = 10.83
+start_delay = 9.97
 pattern = 2
 
 [sub_resource type="Resource" id="r12"]
@@ -93,13 +90,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 3
 spawn_interval = 0.55
-start_delay = 12.83
+start_delay = 11.97
 pattern = 2
 
 [sub_resource type="Resource" id="r13"]
 script = ExtResource("3_s")
-element = &"storm"
-description = "A marching column, stragglers, Gale Harpys and a closing surge."
+element = &"earth"
+description = "A marching column, stragglers, the Oathbroken and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r7"), SubResource("r8"), SubResource("r9"), SubResource("r10"), SubResource("r11"), SubResource("r12")])
 
 [sub_resource type="Resource" id="r14"]
@@ -129,20 +126,17 @@ pack_gap = 3.5
 
 [sub_resource type="Resource" id="r17"]
 script = ExtResource("2_s")
-enemy = &"spark_wisp"
-count = 8
-spawn_interval = 0.45
+enemy = &"quarry_hound"
+count = 3
+spawn_interval = 1.0
 start_delay = 11.01
-pattern = 1
-pack_size = 6
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r18"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 6
 spawn_interval = 0.7
-start_delay = 17.12
+start_delay = 14.01
 pattern = 2
 
 [sub_resource type="Resource" id="r19"]
@@ -150,13 +144,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 3
 spawn_interval = 0.55
-start_delay = 19.12
+start_delay = 16.01
 pattern = 2
 
 [sub_resource type="Resource" id="r20"]
 script = ExtResource("3_s")
-element = &"storm"
-description = "Stragglers, runner packs, Spark Wisps and a closing surge."
+element = &"earth"
+description = "Stragglers, runner packs, Quarry Hounds and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r14"), SubResource("r15"), SubResource("r16"), SubResource("r17"), SubResource("r18"), SubResource("r19")])
 
 [sub_resource type="Resource" id="r21"]
@@ -177,20 +171,17 @@ pack_gap = 3.5
 
 [sub_resource type="Resource" id="r23"]
 script = ExtResource("2_s")
-enemy = &"gale_harpy"
-count = 4
-spawn_interval = 0.525
+enemy = &"oathbroken"
+count = 2
+spawn_interval = 1.8
 start_delay = 11.66
-pattern = 1
-pack_size = 4
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r24"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 7
 spawn_interval = 0.7
-start_delay = 14.34
+start_delay = 14.51
 pattern = 2
 
 [sub_resource type="Resource" id="r25"]
@@ -198,13 +189,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 3
 spawn_interval = 0.55
-start_delay = 16.34
+start_delay = 16.51
 pattern = 2
 
 [sub_resource type="Resource" id="r26"]
 script = ExtResource("3_s")
-element = &"nature"
-description = "A marching column, runner packs, Gale Harpys and a closing surge."
+element = &"void"
+description = "A marching column, runner packs, the Oathbroken and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r21"), SubResource("r22"), SubResource("r23"), SubResource("r24"), SubResource("r25")])
 
 [sub_resource type="Resource" id="r27"]
@@ -232,20 +223,17 @@ pack_gap = 1.9500000000000002
 
 [sub_resource type="Resource" id="r30"]
 script = ExtResource("2_s")
-enemy = &"spark_wisp"
-count = 8
-spawn_interval = 0.3
+enemy = &"quarry_hound"
+count = 3
+spawn_interval = 1.0
 start_delay = 9.98
-pattern = 1
-pack_size = 6
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r31"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 8
 spawn_interval = 0.7
-start_delay = 15.3
+start_delay = 12.98
 pattern = 2
 
 [sub_resource type="Resource" id="r32"]
@@ -253,13 +241,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 4
 spawn_interval = 0.55
-start_delay = 17.3
+start_delay = 14.98
 pattern = 2
 
 [sub_resource type="Resource" id="r33"]
 script = ExtResource("3_s")
-element = &"storm"
-description = "A marching column, brutes under escort, Spark Wisps and a closing surge."
+element = &"earth"
+description = "A marching column, brutes under escort, Quarry Hounds and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r27"), SubResource("r28"), SubResource("r29"), SubResource("r30"), SubResource("r31"), SubResource("r32")])
 
 [sub_resource type="Resource" id="r34"]
@@ -289,30 +277,24 @@ pack_gap = 3.5
 
 [sub_resource type="Resource" id="r37"]
 script = ExtResource("2_s")
-enemy = &"gale_harpy"
-count = 6
-spawn_interval = 0.5
+enemy = &"oathbroken"
+count = 2
+spawn_interval = 1.8
 start_delay = 15.24
-pattern = 1
-pack_size = 4
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r38"]
 script = ExtResource("2_s")
-enemy = &"spark_wisp"
-count = 10
-spawn_interval = 0.3
+enemy = &"quarry_hound"
+count = 4
+spawn_interval = 1.0
 start_delay = 17.74
-pattern = 1
-pack_size = 6
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r39"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 6
 spawn_interval = 0.9
-start_delay = 22.89
+start_delay = 20.86
 lane = 0
 
 [sub_resource type="Resource" id="r40"]
@@ -320,7 +302,7 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 5
 spawn_interval = 0.3
-start_delay = 24.89
+start_delay = 22.86
 lane = 1
 pattern = 1
 pack_size = 5
@@ -331,7 +313,7 @@ script = ExtResource("2_s")
 enemy = &"grunt"
 count = 8
 spawn_interval = 0.7
-start_delay = 27.77
+start_delay = 25.74
 pattern = 2
 
 [sub_resource type="Resource" id="r42"]
@@ -339,13 +321,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 4
 spawn_interval = 0.55
-start_delay = 29.77
+start_delay = 27.74
 pattern = 2
 
 [sub_resource type="Resource" id="r43"]
 script = ExtResource("3_s")
-element = &"storm"
-description = "Stragglers, runner packs, Gale Harpys and Spark Wisps, a flank attack and a closing surge."
+element = &"earth"
+description = "Stragglers, runner packs, the Oathbroken and Quarry Hounds, a flank attack and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r34"), SubResource("r35"), SubResource("r36"), SubResource("r37"), SubResource("r38"), SubResource("r39"), SubResource("r40"), SubResource("r41"), SubResource("r42")])
 
 [sub_resource type="Resource" id="r44"]
@@ -390,30 +372,24 @@ start_delay = 11.57
 
 [sub_resource type="Resource" id="r49"]
 script = ExtResource("2_s")
-enemy = &"spark_wisp"
-count = 10
-spawn_interval = 0.3
+enemy = &"quarry_hound"
+count = 4
+spawn_interval = 1.0
 start_delay = 15.97
-pattern = 1
-pack_size = 6
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r50"]
 script = ExtResource("2_s")
-enemy = &"gale_harpy"
-count = 6
-spawn_interval = 0.5
+enemy = &"oathbroken"
+count = 2
+spawn_interval = 1.8
 start_delay = 18.47
-pattern = 1
-pack_size = 4
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r51"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 9
 spawn_interval = 0.7
-start_delay = 23.47
+start_delay = 20.7
 pattern = 2
 
 [sub_resource type="Resource" id="r52"]
@@ -421,13 +397,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 4
 spawn_interval = 0.55
-start_delay = 25.47
+start_delay = 22.7
 pattern = 2
 
 [sub_resource type="Resource" id="r53"]
 script = ExtResource("3_s")
-element = &"storm"
-description = "A marching column, brutes under escort, Brute packs, Spark Wisps and Gale Harpys and a closing surge."
+element = &"earth"
+description = "A marching column, brutes under escort, Brute packs, Quarry Hounds and the Oathbroken and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r44"), SubResource("r45"), SubResource("r46"), SubResource("r47"), SubResource("r48"), SubResource("r49"), SubResource("r50"), SubResource("r51"), SubResource("r52")])
 
 [sub_resource type="Resource" id="r54"]
@@ -465,30 +441,24 @@ start_delay = 16.99
 
 [sub_resource type="Resource" id="r58"]
 script = ExtResource("2_s")
-enemy = &"gale_harpy"
-count = 6
-spawn_interval = 0.5
+enemy = &"oathbroken"
+count = 2
+spawn_interval = 1.8
 start_delay = 21.8
-pattern = 1
-pack_size = 4
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r59"]
 script = ExtResource("2_s")
-enemy = &"spark_wisp"
-count = 10
-spawn_interval = 0.3
+enemy = &"quarry_hound"
+count = 4
+spawn_interval = 1.0
 start_delay = 24.3
-pattern = 1
-pack_size = 6
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r60"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 9
 spawn_interval = 0.7
-start_delay = 29.45
+start_delay = 27.43
 pattern = 2
 
 [sub_resource type="Resource" id="r61"]
@@ -496,13 +466,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 5
 spawn_interval = 0.55
-start_delay = 31.45
+start_delay = 29.43
 pattern = 2
 
 [sub_resource type="Resource" id="r62"]
 script = ExtResource("3_s")
-element = &"fire"
-description = "A marching column, runner packs, Brute packs, Gale Harpys and Spark Wisps and a closing surge."
+element = &"water"
+description = "A marching column, runner packs, Brute packs, the Oathbroken and Quarry Hounds and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r54"), SubResource("r55"), SubResource("r56"), SubResource("r57"), SubResource("r58"), SubResource("r59"), SubResource("r60"), SubResource("r61")])
 
 [sub_resource type="Resource" id="r63"]
@@ -556,7 +526,7 @@ start_delay = 11.8
 
 [sub_resource type="Resource" id="r69"]
 script = ExtResource("2_s")
-enemy = &"brute"
+enemy = &"oathbroken"
 count = 1
 spawn_interval = 4.5
 start_delay = 16.61
@@ -601,30 +571,24 @@ start_delay = 22.66
 
 [sub_resource type="Resource" id="r74"]
 script = ExtResource("2_s")
-enemy = &"spark_wisp"
-count = 12
-spawn_interval = 0.3
+enemy = &"quarry_hound"
+count = 4
+spawn_interval = 1.0
 start_delay = 25.76
-pattern = 1
-pack_size = 6
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r75"]
 script = ExtResource("2_s")
-enemy = &"gale_harpy"
-count = 7
-spawn_interval = 0.5
+enemy = &"oathbroken"
+count = 3
+spawn_interval = 1.8
 start_delay = 28.26
-pattern = 1
-pack_size = 4
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r76"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 10
 spawn_interval = 0.7
-start_delay = 33.64
+start_delay = 31.84
 pattern = 2
 
 [sub_resource type="Resource" id="r77"]
@@ -632,13 +596,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 5
 spawn_interval = 0.55
-start_delay = 35.64
+start_delay = 33.84
 pattern = 2
 
 [sub_resource type="Resource" id="r78"]
 script = ExtResource("3_s")
-element = &"storm"
-description = "Stragglers, brutes under escort, Brute packs, Hulking Brutes, a pincer, Spark Wisps and Gale Harpys and a closing surge."
+element = &"earth"
+description = "Stragglers, brutes under escort, Brute packs, Hulking the Oathbroken, a pincer, Quarry Hounds and the Oathbroken and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r63"), SubResource("r64"), SubResource("r65"), SubResource("r66"), SubResource("r67"), SubResource("r68"), SubResource("r69"), SubResource("r70"), SubResource("r71"), SubResource("r72"), SubResource("r73"), SubResource("r74"), SubResource("r75"), SubResource("r76"), SubResource("r77")])
 
 [sub_resource type="Resource" id="r79"]
@@ -695,30 +659,24 @@ pack_gap = 3.0
 
 [sub_resource type="Resource" id="r85"]
 script = ExtResource("2_s")
-enemy = &"gale_harpy"
-count = 7
-spawn_interval = 0.5
+enemy = &"oathbroken"
+count = 3
+spawn_interval = 1.8
 start_delay = 32.34
-pattern = 1
-pack_size = 4
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r86"]
 script = ExtResource("2_s")
-enemy = &"spark_wisp"
-count = 12
-spawn_interval = 0.3
+enemy = &"quarry_hound"
+count = 4
+spawn_interval = 1.0
 start_delay = 34.84
-pattern = 1
-pack_size = 6
-pack_gap = 3.0
 
 [sub_resource type="Resource" id="r87"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 10
 spawn_interval = 0.7
-start_delay = 40.44
+start_delay = 37.97
 pattern = 2
 
 [sub_resource type="Resource" id="r88"]
@@ -726,13 +684,13 @@ script = ExtResource("2_s")
 enemy = &"runner"
 count = 5
 spawn_interval = 0.55
-start_delay = 42.44
+start_delay = 39.97
 pattern = 2
 
 [sub_resource type="Resource" id="r89"]
 script = ExtResource("3_s")
-element = &"storm"
-description = "A marching column, runner packs, Brute packs, a flank attack, Gale Harpys and Spark Wisps and a closing surge."
+element = &"earth"
+description = "A marching column, runner packs, Brute packs, a flank attack, the Oathbroken and Quarry Hounds and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r79"), SubResource("r80"), SubResource("r81"), SubResource("r82"), SubResource("r83"), SubResource("r84"), SubResource("r85"), SubResource("r86"), SubResource("r87"), SubResource("r88")])
 
 [resource]

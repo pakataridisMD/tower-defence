@@ -16,17 +16,17 @@ import os
 
 # Which land each horde invades (bible section 5), the Herald who leads it, and the art it was made by.
 HOSTS = {
-    "tide": {"name": "the Tide", "element": "water", "campaign": "ember_reach", "art": "Tidelore",
+    "tide": {"name": "the Tide", "element": "water", "campaign": "frostmere", "art": "Tidelore",
              "herald": "Saltmother Ourra"},
-    "stone": {"name": "the Stone", "element": "earth", "campaign": "thunder_steppe", "art": "Runecarving",
+    "stone": {"name": "the Stone", "element": "earth", "campaign": "sunscar_canyon", "art": "Runecarving",
               "herald": "Gorrath the Quarried"},
-    "hollow": {"name": "the Hollow", "element": "void", "campaign": "verdant_deep", "art": "Starcraft",
+    "hollow": {"name": "the Hollow", "element": "void", "campaign": "hollow_rift", "art": "Starcraft",
                "herald": "the Pale Vesper"},
-    "flame": {"name": "the Flame", "element": "fire", "campaign": "frostmere", "art": "Kindling",
+    "flame": {"name": "the Flame", "element": "fire", "campaign": "ember_reach", "art": "Kindling",
               "herald": "Ashwick the Kindled"},
-    "sky": {"name": "the Sky", "element": "storm", "campaign": "sunscar_canyon", "art": "Stormsong",
+    "sky": {"name": "the Sky", "element": "storm", "campaign": "thunder_steppe", "art": "Stormsong",
             "herald": "Vholt Stormcrown"},
-    "grove": {"name": "the Grove", "element": "nature", "campaign": "hollow_rift", "art": "Rootcraft",
+    "grove": {"name": "the Grove", "element": "nature", "campaign": "verdant_deep", "art": "Rootcraft",
               "herald": "Mother Briar"},
 }
 
