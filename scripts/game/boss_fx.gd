@@ -185,7 +185,7 @@ func _draw() -> void:
 func _draw_barrier(enemy: SimEnemy) -> void:
 	var size := _size(enemy)
 	var center := _chest(enemy)
-	var full := enemy.max_health * maxf(enemy.data.shield_amount, 0.01)
+	var full := enemy.max_health * maxf(enemy.data.shield_amount * enemy.boss_power, 0.001)
 	var left := clampf(enemy.barrier / full, 0.0, 1.0)
 	var fading := clampf(enemy.barrier_left / 0.6, 0.0, 1.0)
 	# The sprite's frame has room round the body, so the shell sits a little inside it.
