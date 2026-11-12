@@ -1,18 +1,20 @@
 class_name SavesPage
 extends MenuPage
-## Saved games: ten slots, each with when it was saved, where (the stage or skirmish map), the wave,
-## gold, lives, difficulty and the campaign's stars. The Save tab writes into a slot (asking before
-## writing over one), the Load tab loads one (asking first, since it replaces the progress the player
-## has now) or deletes it.
+## Saved games, Fallout style: one autosave for each playthrough (each New Game), which the game keeps
+## up to date by itself, and ten slots the player saves into by hand. Each row shows the game ("Game
+## 2"), where (the stage or skirmish map), the wave, gold, lives, difficulty, the campaign's stars and
+## when it was saved. The Save tab writes into a slot (asking before writing over one); the Load tab
+## loads a save (asking first) or deletes it.
 ##
-## The main menu opens it to save or load campaign progress. During a run the Esc menu opens it, and
-## a save also keeps the run: as it is in a break, or as it was when the wave being fought began.
+## The title screen opens it on Load only (can_save false). During a run the Esc menu opens it with
+## both tabs, and a save keeps the run: as it is in a break, or as it was in the break before the wave
+## being fought.
 ## Keys: Esc closes the question or the page, Enter says yes, Tab switches between Save and Load,
 ## and 1 to 9 and 0 pick slots 1 to 10.
 
-## The player picked a slot to load and said yes. The page has loaded nothing yet: the owner calls
-## Progress.load_from_slot and changes scene.
-signal load_confirmed(slot: int)
+## The player picked a save to load (a SaveSlots key) and said yes. The page has loaded nothing yet:
+## the owner calls Progress.load_save and changes scene.
+signal load_confirmed(key: String)
 ## A slot was written.
 signal saved(slot: int)
 
@@ -23,24 +25,36 @@ const DELETE_WIDTH := 170.0
 
 ## &"save" or &"load".
 var mode: StringName = &"load"
+## False hides the Save tab (the title screen: saving happens in a battle, and by itself).
+var can_save := true:
+	set(value):
+		can_save = value
+		if save_tab != null:
+			save_tab.visible = value
+			load_tab.visible = value
 ## Returns the run to keep with a save (a RunSnapshot), or an empty dictionary outside a run. Set by
 ## Game; the main menu leaves it empty.
 var run_source: Callable
 ## Shown under the title: what a save keeps from here.
 var save_note := "Saving keeps your campaign stars, talents and heroes."
-var load_note := "Loading replaces the progress you have now with the saved one."
+var load_note := "Every game you start keeps its own autosave (A)."
 
 var save_tab: Button
 var load_tab: Button
 var note_label: Label
-## One row per slot, slot 1 first.
+## One row per manual slot, slot 1 first.
 var rows: Array[SlotRow] = []
+## One row per playthrough's autosave, the newest first. Rebuilt on refresh; shown on the Load tab.
+var auto_rows: Array[SlotRow] = []
 var dialog: Control
 var dialog_title: Label
 var dialog_text: Label
 var dialog_yes: MenuItemButton
-## The question being asked: [action, slot], action &"save", &"load" or &"delete". Empty when none.
+## The question being asked: [action, key], action &"save", &"load" or &"delete". Empty when none.
 var pending: Array = []
+
+var _column: VBoxContainer
+var _scroll: ScrollContainer
 
 
 func _init() -> void:
@@ -63,19 +77,30 @@ func _init() -> void:
 		if on:
 			show_mode(&"load"))
 	add_child(load_tab)
-	var column := VBoxContainer.new()
-	column.add_theme_constant_override("separation", 6)
-	column.position = Vector2.ZERO
-	column.size = Vector2(body.size.x, 0)
-	body.add_child(column)
+	_scroll = ScrollContainer.new()
+	_scroll.position = Vector2.ZERO
+	_scroll.size = body.size
+	_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_scroll.mouse_filter = Control.MOUSE_FILTER_PASS
+	body.add_child(_scroll)
+	_column = VBoxContainer.new()
+	_column.add_theme_constant_override("separation", 6)
+	_column.custom_minimum_size = Vector2(body.size.x - 16, 0)
+	_scroll.add_child(_column)
 	for slot in range(1, SaveSlots.COUNT + 1):
-		var row := SlotRow.new(slot)
-		row.custom_minimum_size = Vector2(body.size.x, ROW_HEIGHT)
-		row.action_button.pressed.connect(_act.bind(slot))
-		row.delete_button.pressed.connect(ask.bind(&"delete", slot))
-		column.add_child(row)
+		var row := _make_row(SaveSlots.slot_key(slot), str(slot))
+		row.slot = slot
 		rows.append(row)
 	_build_dialog()
+
+
+func _make_row(key: String, number: String) -> SlotRow:
+	var row := SlotRow.new(key, number)
+	row.custom_minimum_size = Vector2(body.size.x - 16, ROW_HEIGHT)
+	row.action_button.pressed.connect(_act.bind(key))
+	row.delete_button.pressed.connect(ask.bind(&"delete", key))
+	_column.add_child(row)
+	return row
 
 
 ## Shows the page on a tab: &"save" or &"load".
@@ -85,35 +110,53 @@ func open(on_mode: StringName) -> void:
 
 
 func show_mode(on_mode: StringName) -> void:
-	mode = on_mode
+	mode = on_mode if can_save else &"load"
+	# With nothing to switch to, the tabs go.
+	save_tab.visible = can_save
+	load_tab.visible = can_save
 	save_tab.set_pressed_no_signal(mode == &"save")
 	load_tab.set_pressed_no_signal(mode == &"load")
 	close_dialog()
 	refresh()
+	_scroll.scroll_vertical = 0
 
 
 func refresh() -> void:
 	note_label.text = save_note if mode == &"save" else load_note
 	note_label.add_theme_color_override("font_color", UiStyle.MENU_DIM)
-	for row in rows:
-		row.show_slot(Progress.slots.info(row.slot) if Progress.has_slot(row.slot) else {}, mode)
+	# The autosaves, newest first, above the slots on the Load tab.
+	for row in auto_rows:
+		_column.remove_child(row)
+		row.queue_free()
+	auto_rows.clear()
+	if mode == &"load":
+		var index := 0
+		for id in Progress.slots.autosave_ids():
+			var row := _make_row(SaveSlots.auto_key(id), "A")
+			_column.move_child(row, index)
+			auto_rows.append(row)
+			index += 1
+	var playing := Progress.meta.profile.playthrough_id
+	for row in auto_rows + rows:
+		var info := Progress.slots.info_key(row.key)
+		row.show_slot(info, mode, int(info.get("game_id", 0)) == playing)
 
 
 ## Saves at once into an empty slot, and asks first before writing over one. Loads after asking.
-func _act(slot: int) -> void:
+func _act(key: String) -> void:
 	if mode == &"save":
-		if Progress.has_slot(slot):
-			ask(&"save", slot)
+		if Progress.slots.has_key(key):
+			ask(&"save", key)
 		else:
-			save_into(slot)
-	elif Progress.has_slot(slot):
-		ask(&"load", slot)
+			save_into(key.trim_prefix("slot_").to_int())
+	elif Progress.slots.has_key(key):
+		ask(&"load", key)
 
 
 ## Picks a slot from the keyboard: the same as pressing its button.
 func pick(slot: int) -> void:
 	if SaveSlots.is_valid_slot(slot) and not rows[slot - 1].action_button.disabled:
-		_act(slot)
+		_act(SaveSlots.slot_key(slot))
 
 
 func save_into(slot: int) -> void:
@@ -174,26 +217,30 @@ func _build_dialog() -> void:
 	row.add_child(dialog_yes)
 
 
-## Asks before writing over a slot, loading one or deleting one.
-func ask(action: StringName, slot: int) -> void:
-	var info := Progress.slots.info(slot)
-	var name := "Slot %d: %s" % [slot, info.get("title", "")]
+## Asks before writing over a slot, loading a save or deleting one. `target` is a slot number or a
+## SaveSlots key.
+func ask(action: StringName, target: Variant) -> void:
+	var key: String = SaveSlots.slot_key(target) if target is int else str(target)
+	var info := Progress.slots.info_key(key)
+	var auto := key.begins_with("auto_")
+	var label := ("%s's autosave" % info.get("game", "Game")) if auto else "Slot %s" % key.trim_prefix("slot_").to_int()
+	var name := "%s: %s, %s" % [label, info.get("title", ""), SaveSlots.date_text(int(info.get("saved_at", 0)))]
 	match action:
 		&"save":
-			dialog_title.text = "Overwrite slot %d?" % slot
-			dialog_text.text = "%s, saved %s, will be replaced." % [name, SaveSlots.date_text(int(info.get("saved_at", 0)))]
+			dialog_title.text = "Overwrite %s?" % label.to_lower()
+			dialog_text.text = "%s will be replaced." % name
 			dialog_yes.text = "Overwrite"
 		&"load":
-			dialog_title.text = "Load slot %d?" % slot
-			dialog_text.text = "%s.\n%s Anything not saved in a slot is lost." % [name, load_note]
+			dialog_title.text = "Load %s?" % ("autosave" if auto else label.to_lower())
+			dialog_text.text = "%s.\nAnything since your game's last autosave is lost." % name
 			dialog_yes.text = "Load"
 		&"delete":
-			dialog_title.text = "Delete slot %d?" % slot
+			dialog_title.text = "Delete %s?" % ("autosave" if auto else label.to_lower())
 			dialog_text.text = "%s will be gone for good." % name
 			dialog_yes.text = "Delete"
 		_:
 			return
-	pending = [action, slot]
+	pending = [action, key]
 	dialog.show()
 
 
@@ -212,17 +259,17 @@ func confirm() -> void:
 	if not is_asking():
 		return
 	var action: StringName = pending[0]
-	var slot: int = pending[1]
+	var key: String = pending[1]
 	close_dialog()
 	match action:
 		&"save":
-			save_into(slot)
+			save_into(key.trim_prefix("slot_").to_int())
 		&"load":
-			load_confirmed.emit(slot)
+			load_confirmed.emit(key)
 		&"delete":
-			Progress.delete_slot(slot)
+			Progress.slots.erase_key(key)
 			refresh()
-			note_label.text = "Slot %d deleted." % slot
+			note_label.text = "Deleted."
 
 
 ## Keys on this page. Returns true when the key was used; Esc with no question open is left to the
@@ -237,7 +284,8 @@ func handle_key(keycode: Key) -> bool:
 		return true
 	match keycode:
 		KEY_TAB:
-			show_mode(&"load" if mode == &"save" else &"save")
+			if can_save:
+				show_mode(&"load" if mode == &"save" else &"save")
 			return true
 		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9:
 			pick(keycode - KEY_0)
@@ -248,28 +296,32 @@ func handle_key(keycode: Key) -> bool:
 	return false
 
 
-## One slot in the list: its number, what is in it, when it was saved and its buttons.
+## One save in the list: its number (A for an autosave), what is in it, when it was saved and its
+## buttons.
 class SlotRow:
 	extends PanelContainer
 
-	var slot: int
+	## The SaveSlots key, and the slot number (0 for an autosave).
+	var key: String
+	var slot := 0
+	var number_label: Label
 	var title_label: Label
 	var detail_label: Label
 	var date_label: Label
 	var action_button: Button
 	var delete_button: Button
 
-	func _init(p_slot: int) -> void:
-		slot = p_slot
+	func _init(p_key: String, number: String) -> void:
+		key = p_key
 		add_theme_stylebox_override("panel", UiStyle.menu_panel_box(20, 4, false))
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 20)
 		add_child(row)
-		var number := UiStyle.menu_title(str(slot), 56)
-		number.custom_minimum_size = Vector2(64, 0)
-		number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		number.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		row.add_child(number)
+		number_label = UiStyle.menu_title(number, 56)
+		number_label.custom_minimum_size = Vector2(64, 0)
+		number_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		number_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		row.add_child(number_label)
 		var text := VBoxContainer.new()
 		# The button font's line has room under the letters: pull the details line up into it.
 		text.add_theme_constant_override("separation", -8)
@@ -297,12 +349,17 @@ class SlotRow:
 		delete_button.add_theme_color_override("font_hover_color", UiStyle.LIFE)
 		row.add_child(delete_button)
 
-	## Fills the row from a slot's info (empty for an empty slot), for the Save or Load tab.
-	func show_slot(info: Dictionary, mode: StringName) -> void:
+	func is_autosave() -> bool:
+		return key.begins_with("auto_")
+
+	## Fills the row from a save's info (empty for an empty slot), for the Save or Load tab. `playing`
+	## marks a save of the game being played.
+	func show_slot(info: Dictionary, mode: StringName, playing: bool = false) -> void:
 		var empty := info.is_empty()
 		title_label.text = "Empty slot" if empty else str(info.get("title", "Saved game"))
 		title_label.add_theme_color_override("font_color", UiStyle.MENU_DIM if empty else UiStyle.MENU_TEXT)
-		detail_label.text = "" if empty else SlotRow.details(info).to_upper()
+		detail_label.text = "" if empty else SlotRow.details(info, is_autosave()).to_upper()
+		detail_label.add_theme_color_override("font_color", UiStyle.MENU_GOLD if playing and not empty else UiStyle.MENU_DIM)
 		date_label.text = "" if empty else SaveSlots.date_text(int(info.get("saved_at", 0))).to_upper()
 		if mode == &"save":
 			action_button.text = "Save" if empty else "Overwrite"
@@ -316,9 +373,12 @@ class SlotRow:
 		delete_button.modulate.a = 1.0 if can_delete else 0.0
 		delete_button.mouse_filter = Control.MOUSE_FILTER_STOP if can_delete else Control.MOUSE_FILTER_IGNORE
 
-	## The line under the title: where, which wave, gold, lives, difficulty and stars.
-	static func details(info: Dictionary) -> String:
+	## The line under the title: which game, where, which wave, gold, lives, difficulty and stars.
+	static func details(info: Dictionary, autosave: bool = false) -> String:
 		var parts: Array[String] = []
+		var game := str(info.get("game", ""))
+		if not game.is_empty():
+			parts.append("%s autosave" % game if autosave else game)
 		var where := str(info.get("where", ""))
 		if not where.is_empty():
 			parts.append(where)
