@@ -87,8 +87,6 @@ const COUNTER_LOOP_GAP := 4.0
 const COUNTER_LOOP_GROWTH := 0.06
 ## A blow at least does this share of its damage, whatever the armour.
 const ALLY_MIN_DAMAGE := 0.2
-## Endless skirmish: every this many waves the horde doubles, in numbers and in health.
-const ENDLESS_STEP := 5
 ## Endless skirmish: past the wave set, its last this many waves come round again and again.
 const ENDLESS_LOOP := 5
 ## No wave brings more enemies than this, however hard the difficulty: past it, a bigger horde comes
@@ -246,7 +244,7 @@ func wave_number() -> int:
 	return mini(wave_index + 1, total_waves())
 
 
-## True for an endless skirmish: no last wave, and the horde doubles every ENDLESS_STEP waves.
+## True for an endless skirmish: no last wave, and the horde grows a little every wave.
 func is_endless() -> bool:
 	return config.endless and config.stage == null and not is_assault()
 
@@ -261,22 +259,18 @@ func _set_index(index: int) -> int:
 	return count - loop + (index - count) % loop
 
 
-## How many times the horde has doubled in an endless run by this wave (1-based): 0 for waves 1 to
-## ENDLESS_STEP, 1 for the next ENDLESS_STEP, and so on. Always 0 outside endless.
-func endless_round(number: int = -1) -> int:
-	if not is_endless():
-		return 0
-	var n := wave_number() if number < 0 else number
-	return maxi(n - 1, 0) / ENDLESS_STEP
-
-
-## How much bigger and stronger an endless run has made the horde by this wave: 2 to the round.
+## How strong an endless run has made the horde by this wave (1-based), in numbers and in health
+## each: it starts at RunConfig.endless_start and grows by RunConfig.endless_growth every wave.
+## Always 1 outside endless.
 func endless_multiplier(number: int = -1) -> float:
-	return pow(2.0, endless_round(number))
+	if not is_endless():
+		return 1.0
+	var n := wave_number() if number < 0 else number
+	return config.endless_start * pow(config.endless_growth, maxi(n - 1, 0))
 
 
 ## How many times as many enemies the wave brings as the wave set says: the difficulty's multiplier,
-## doubled every round of an endless run.
+## times the endless run's.
 func enemy_count_multiplier(number: int = -1) -> float:
 	return config.enemy_count_multiplier() * endless_multiplier(number)
 
