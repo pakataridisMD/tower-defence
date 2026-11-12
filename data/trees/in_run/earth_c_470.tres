@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"shatter_strength"
+kind = 1
+value = 0.05
+required_tags = Array[StringName]([&"earth"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"earth_c_470"
+display_name = "Fault Line III"
+description = "Shatter from earth towers is 5% stronger."
+kind = 2
+region = &"earth"
+cost = 2
+position = Vector2(-407, 235)
+links = Array[StringName]([&"earth_core"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

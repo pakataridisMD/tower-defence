@@ -1330,7 +1330,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"void"
 is_boss = true
-health_multiplier = 0.21
+health_multiplier = 0.28
 description = "A marching column, brutes under escort, Splitter packs, Menhir Walkers, an ambush and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r159"), SubResource("r160"), SubResource("r161"), SubResource("r162"), SubResource("r163"), SubResource("r164"), SubResource("r165"), SubResource("r166"), SubResource("r167"), SubResource("r168")])
 
@@ -1339,5 +1339,5 @@ script = ExtResource("1_s")
 id = &"c_storm_4"
 display_name = "Eye of the Storm"
 health_growth = 1.1
-health_scale = 15.42
+health_scale = 13.49
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r15"), SubResource("r24"), SubResource("r35"), SubResource("r43"), SubResource("r55"), SubResource("r66"), SubResource("r77"), SubResource("r90"), SubResource("r103"), SubResource("r115"), SubResource("r130"), SubResource("r144"), SubResource("r158"), SubResource("r169")])

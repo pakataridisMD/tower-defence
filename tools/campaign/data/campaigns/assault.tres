@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="CampaignData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/campaign_data.gd" id="1_s"]
+[ext_resource type="Script" path="res://scripts/data/structure_spec.gd" id="2_s"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="3_s"]
+[ext_resource type="Script" path="res://scripts/data/stage_data.gd" id="4_s"]
+
+[sub_resource type="Resource" id="r1"]
+script = ExtResource("2_s")
+enemy = &"nhal_vorath"
+cell = Vector2i(36, 12)
+phase = 3
+lane = 0
+footprint = Rect2i(31, 2, 11, 22)
+
+[sub_resource type="Resource" id="r2"]
+script = ExtResource("4_s")
+id = &"assault_1"
+display_name = "Nhal Vorath"
+description = "The citadel's three gates open toward our camp. Hold the roads until the Sunderer comes, break him, then muster the army and take the citadel down."
+map = &"c_assault_1"
+is_guardian = true
+modifiers = Array[ExtResource("3_s")]([])
+rule_text = PackedStringArray("Every element can be drafted. The horde pours out of the citadel's three gates.", "Waves 1 to 38: hold the roads. Nothing you build can touch the citadel.", "Wave 39: Vael-Orrun comes himself. Break him three times, in three forms, before he reaches your camp.", "Wave 40: the counter-attack. Muster soldiers, war machines and every hero onto the roads to take the citadel down. Your towers hold the camp; the garrison keeps coming until the citadel falls.", "Waves start on their own 8 seconds after the last one (Space calls the next one early).")
+starting_lives = 30
+first_clear_points = 20
+structures = Array[ExtResource("2_s")]([SubResource("r1")])
+build_columns = PackedInt32Array(28, 28, 28)
+auto_wave_delay = 8.0
+boss_wave = 39
+counter_wave = 40
+war_chest = 1500
+counter_income = 14.0
+
+[sub_resource type="Resource" id="r3"]
+script = ExtResource("3_s")
+stat = &"damage"
+kind = 2
+value = 0.05
+
+[sub_resource type="Resource" id="r4"]
+script = ExtResource("3_s")
+stat = &"cost"
+kind = 1
+value = -0.05
+
+[resource]
+script = ExtResource("1_s")
+id = &"assault"
+display_name = "The Crownless Citadel"
+order = 7
+element = &""
+tagline = "Through the Crack, into Nhal Vorath"
+description = "Solenne held. Now we stop running. Through the Crack lies Nhal Vorath, the Crownless Citadel, the root of every horde. Hold its roads, break the Sunderer when he comes, then march on it with every soldier and hero we have."
+requires_campaigns = Array[StringName]([&"convergence"])
+stages = Array[ExtResource("4_s")]([SubResource("r2")])
+reward_name = "Lantern of the White Order"
+reward_description = "Every tower deals 5% more damage and costs 5% less in every run."
+reward_modifiers = Array[ExtResource("3_s")]([SubResource("r3"), SubResource("r4")])

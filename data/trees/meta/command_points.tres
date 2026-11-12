@@ -7,13 +7,13 @@
 script = ExtResource("1_mod")
 stat = &"starting_tree_points"
 kind = 0
-value = 1.0
+value = 3.0
 
 [resource]
 script = ExtResource("2_node")
 id = &"command_points"
 display_name = "Head Start"
-description = "Start every run with 1 more skill point."
+description = "Start every run with 3 more skill points."
 kind = 5
 region = &"command"
 cost = 15

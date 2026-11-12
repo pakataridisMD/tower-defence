@@ -4,4 +4,7 @@
 
 [resource]
 script = ExtResource("1_p2ixy")
+starting_tree_points = 3
+tree_points_per_wave = 3
 waves_per_tree_point = 1
+tree_points_per_boss = 3
