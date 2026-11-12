@@ -442,6 +442,8 @@ def build(name, loc=(0, 0, 0), rot_z=0.0, action="Idle", phase=0.0):
     reshape(rig, j)
     parts = maker(rig, j)
     rig.location = loc; rig.rotation_euler = (0, 0, rot_z)
+    sc = SCALE.get(name, 1.0)   # giants are built at human size (so face and hair recipes fit) and scaled up whole
+    rig.scale = (sc, sc, sc)
     rig["meshes"] = [p.name for p in parts]
     C.play(rig, action, phase)
     relax_arms(rig)
@@ -844,6 +846,7 @@ def tamsin_mh(rig, body, ex, J):
 
 
 POSTURES = {}
+SCALE = {}
 HUMANS = {"tamsin": (dict(height=2.1, gender=0.0, muscle=0.8, weight=0.4, tall=0.3,
                           targets={"nose/nose-hump-incr": 0.6}), tamsin_mh)}
 
@@ -875,6 +878,8 @@ def build_human(name, loc=(0, 0, 0), rot_z=0.0, action="Idle", phase=0.0, soft=N
     mh_weights(body, rig)
     parts = maker(rig, body, ex, J)
     rig.location = loc; rig.rotation_euler = (0, 0, rot_z)
+    sc = SCALE.get(name, 1.0)   # giants are built at human size (so face and hair recipes fit) and scaled up whole
+    rig.scale = (sc, sc, sc)
     rig["meshes"] = [p.name for p in parts]
     if soft is None:
         soft = 0.65 if action.startswith(("Walking", "Running")) else 1.0

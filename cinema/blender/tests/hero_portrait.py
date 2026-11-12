@@ -2,7 +2,7 @@
 -- OUT --hero tamsin --shot close|full --frames N N"""
 import sys, os, math
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-import bpy, cine3d as C, hero, cast
+import bpy, cine3d as C, hero, cast, wardens
 name = C.opt("--hero", "tamsin"); shot = C.opt("--shot", "close")
 C.setup(2.0)
 g = C.box("ground", (0, 0, -0.05), (60, 60, 0.1), C.M("mud"))
@@ -13,7 +13,7 @@ C.light("AREA", (1.5, 3.5, 3.2), (-45, 0, 160), 900, (0.55, 0.68, 1.0), 2.5, "ri
 C.light("AREA", (-3.5, -2.5, 2.2), (70, 0, -55), 120, (0.4, 0.5, 0.8), 3, "fill")
 C.light("AREA", (2.5, -2.0, 2.0), (70, 0, 50), 220, (1.0, 0.78, 0.6), 1.0, "warm_key")
 rig = hero.build_human(name, (0, 0, 0), -0.35, "Idle")
-k = hero.HUMANS[name][0].get("height", 2.1) / 2.1   # frame taller heroes the same way
+k = hero.HUMANS[name][0].get("height", 2.1) * hero.SCALE.get(name, 1.0) / 2.1   # frame taller heroes the same way
 if shot == "close":
     cam = C.camera(70, 2.8, 2.6 * k)
     C.key_cam(cam, [(0, (0.9 * k, -2.5 * k, 1.85 * k), (90, 0, 20))])

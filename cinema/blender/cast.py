@@ -169,12 +169,12 @@ def beard(f, length=0.12, count=14000, name="beard", moustache=True, push=0.12, 
                           radius=0.0014, push=0.2, wrap_above=99.0, **colour))
 
 
-def stubble(f, **colour):
+def stubble(f, length=0.004, count=9000, radius=0.0007, **colour):
     mz = f.mouth.z; ax = Fig.ax
     jaw = lambda c: (c.y < f.J["head"].y - 0.0 and f.jaw.z - 0.06 < c.z < mz + 0.02 and ax(c) < 0.075
                      and not (abs(c.z - mz) < 0.008 and ax(c) < 0.025))
-    f.add(H.comb_hair(f.rig, H.scalp_points(f.body, jaw, 9000, seed=11), f.hc, "stubble", 0.004, (0, 0, -1), segs=3,
-                      lift=0.0, jitter=0.3, radius=0.0007, wrap_above=99.0, **colour))
+    f.add(H.comb_hair(f.rig, H.scalp_points(f.body, jaw, count, seed=11), f.hc, "stubble", length, (0, 0, -1), segs=3,
+                      lift=0.0, jitter=0.3, radius=radius, wrap_above=99.0, **colour))
 
 
 def brows(f, count=350, length=0.013, **colour):
@@ -510,3 +510,307 @@ H.HUMANS["gorrim"] = (dict(height=1.75, gender=1.0, muscle=0.9, weight=0.85, tal
 H.POSTURES["gorrim"] = dict(H.HUMAN_POSTURE, upperarm=(48.0, (0, 1, 0)))
 H.HUMANS["corvin"] = (dict(height=2.25, gender=1.0, muscle=0.6, weight=0.25, tall=0.85, age=0.55,
                            targets={"cheek/l-cheek-bones-incr": 0.5, "cheek/r-cheek-bones-incr": 0.5}), corvin)
+
+
+# ------------------------------------------------------------------ batch 2 props
+def longbow(f, side=".l", leaves=True):
+    """Sylvaine's longbow of pale white wood that has sprouted leaves."""
+    WOOD = C.mat("pale_wood", (0.75, 0.72, 0.62), 0.5)
+    LEAF = H.cloth("bow_leaf", (0.12, 0.3, 0.06), 0.5)
+    bpy.ops.mesh.primitive_torus_add(major_radius=0.9, minor_radius=0.016, major_segments=64, minor_segments=8)
+    b = bpy.context.object
+    bm = bmesh.new(); bm.from_mesh(b.data)
+    bmesh.ops.delete(bm, geom=[v for v in bm.verts if v.co.x < 0.62], context="VERTS"); bm.to_mesh(b.data); bm.free()
+    b.data.transform(Matrix.Translation((-0.62, 0, 0))); b.rotation_euler.x = math.radians(90)
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+    b.data.materials.append(WOOD)
+    parts = [b]
+    if leaves:
+        random.seed(12)
+        for i in range(14):
+            t = random.uniform(-0.6, 0.6); z = t * 1.2
+            bpy.ops.mesh.primitive_plane_add(size=0.06, location=(0.28 * (1 - (t / 0.65) ** 2) + 0.01, 0, z))
+            l = bpy.context.object; l.scale = (1, 0.5, 1); l.rotation_euler = (random.uniform(0, 3), random.uniform(0, 3), random.uniform(0, 3))
+            l.data.materials.append(LEAF); parts.append(l)
+    bw = _join(parts, "leaf_bow")
+    st = _cyl(0.002, 1.4, 0); st.data.materials.append(C.mat("bowstring", (0.7, 0.7, 0.65), 0.6)); st.name = "bowstring"
+    bw = _join([bw, st], "leaf_bow")
+    H.hold(bw, f.rig, side, 0.0)
+    f.add(bw)
+
+
+def ice_staff(f, side=".r", length=1.9):
+    """Mirelle's staff of clear ice with a fish skeleton frozen inside."""
+    ICE = C.mat("ice", (0.75, 0.9, 0.95), 0.05)
+    b = ICE.node_tree.nodes["Principled BSDF"]; b.inputs["Transmission Weight"].default_value = 0.9; b.inputs["IOR"].default_value = 1.31
+    st = _cyl(0.035, length, 0, 8); st.data.materials.append(ICE)
+    tx = bpy.data.textures.new("ice_facets", "VORONOI"); tx.noise_scale = 0.08
+    d = st.modifiers.new("facets", "DISPLACE"); d.texture = tx; d.strength = 0.01
+    bones = []
+    spine = _cyl(0.003, 0.32, 0, 6); bones.append(spine)
+    for k in range(9):
+        r = _cyl(0.0018, 0.06 - abs(k - 4) * 0.008, -0.13 + k * 0.032, 4); r.rotation_euler.y = math.radians(90)
+        bpy.ops.object.transform_apply(location=False, rotation=True, scale=False); bones.append(r)
+    fish = _join(bones, "frozen_fish", C.mat("fishbone", (0.85, 0.82, 0.75), 0.5))
+    H.hold(st, f.rig, side, length * 0.25); H.hold(fish, f.rig, side, length * 0.62)
+    li = bpy.data.lights.new("ice_glow", "POINT"); li.energy = 6; li.color = (0.5, 0.9, 1.0)
+    lo = bpy.data.objects.new("ice_glow", li); C.sc.collection.objects.link(lo); H.hold(lo, f.rig, side, length * 0.7)
+    f.add(st, fish, lo)
+
+
+def astrolabe(f, side=".l"):
+    """Ilyra's broken astrolabe on a chain, hanging from her hand."""
+    BR = C.mat("astro_brass", (0.6, 0.45, 0.2), 0.35, metal=1.0)
+    rings = []
+    for k, (r, rot) in enumerate(((0.06, (90, 0, 0)), (0.05, (90, 0, 50)), (0.042, (20, 70, 0)))):
+        bpy.ops.mesh.primitive_torus_add(major_radius=r, minor_radius=0.004, location=(0, 0, -0.16))
+        o = bpy.context.object; o.rotation_euler = tuple(math.radians(a) for a in rot)
+        if k == 2:   # broken: a third of the inner ring missing
+            bm = bmesh.new(); bm.from_mesh(o.data)
+            bmesh.ops.delete(bm, geom=[v for v in bm.verts if v.co.x > 0.02 and v.co.y > 0], context="VERTS"); bm.to_mesh(o.data); bm.free()
+        rings.append(o)
+    ch = _cyl(0.0015, 0.14, -0.07, 4); rings.append(ch)
+    a = _join(rings, "astrolabe", BR)
+    for p in a.data.polygons:
+        p.use_smooth = True
+    H.hold(a, f.rig, side, 0.0)
+    f.add(a)
+
+
+def glass_greatsword(f, side=".r", length=1.5):
+    """Seraphel's greatsword whose blade is a sliver of Sunstone glass, glowing like a dawn."""
+    GL = C.mat("sunglass", (1.0, 0.9, 0.7), 0.05)
+    b = GL.node_tree.nodes["Principled BSDF"]
+    b.inputs["Transmission Weight"].default_value = 0.6; b.inputs["Emission Color"].default_value = (1.0, 0.78, 0.45, 1)
+    b.inputs["Emission Strength"].default_value = 4
+    bl = _box(0.08, 0.014, length, length / 2 + 0.16)
+    sd = bl.modifiers.new("sub", "SUBSURF"); sd.levels = 3; sd.subdivision_type = "SIMPLE"
+    tp = bl.modifiers.new("taper", "SIMPLE_DEFORM"); tp.deform_method = "TAPER"; tp.deform_axis = "Z"; tp.factor = -0.5
+    bl.data.materials.append(GL)
+    GOLD = C.mat("white_gold", (0.9, 0.82, 0.62), 0.25, metal=1.0)
+    gd = _bevel(_box(0.34, 0.04, 0.04, 0.14)); gd.data.materials.append(GOLD)
+    hi = _cyl(0.02, 0.3, 0.0); hi.data.materials.append(leather("sword_grip", (0.08, 0.05, 0.03)))
+    for p in (bl, gd, hi):
+        p.data.transform(Matrix.Translation(p.location)); p.location = (0, 0, 0)
+    sw = _join([hi, gd], "greatsword_hilt")
+    H.hold(sw, f.rig, side, 0.0); H.hold(bl, f.rig, side, 0.0)
+    li = bpy.data.lights.new("dawn_blade", "POINT"); li.energy = 40; li.color = (1.0, 0.8, 0.5); li.shadow_soft_size = 0.3
+    lo = bpy.data.objects.new("dawn_blade", li); C.sc.collection.objects.link(lo); H.hold(lo, f.rig, side, length * 0.6)
+    f.add(sw, bl, lo)
+
+
+def measuring_rod(f, side=".r", length=1.2):
+    BR = C.mat("rod_brass", (0.7, 0.5, 0.2), 0.3, metal=1.0)
+    r = _cyl(0.012, length, 0, 8); r.data.materials.append(BR)
+    for k in range(8):
+        t = _cyl(0.0135, 0.004, -length / 2 + (k + 1) * length / 9, 8); t.data.materials.append(C.mat("rod_mark", (0.05, 0.04, 0.03), 0.5))
+        t.data.transform(Matrix.Translation(t.location)); t.location = (0, 0, 0)
+        r = _join([r, t], "measuring_rod")
+    H.hold(r, f.rig, side, length * 0.35)
+    f.add(r)
+
+
+def locket(f, side=".l"):
+    GOLD = C.mat("locket_gold", (0.85, 0.62, 0.25), 0.25, metal=1.0)
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=0.025, location=(0, 0, 0)); l = bpy.context.object; l.scale = (1, 0.4, 1.2)
+    l.data.materials.append(GOLD); bpy.ops.object.shade_smooth()
+    H.hold(l, f.rig, side, -0.02)
+    f.add(l)
+
+
+# ------------------------------------------------------------------ batch 2
+def sylvaine(rig, body, ex, J):
+    """Sylvaine Thornwhisper, Bow of the Deep. 300 (looks 30), tall, slender. Green and bark-brown layered leathers, a
+    cloak of living moss, longbow of pale white wood that has sprouted leaves, gold freckles that glow faintly."""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.58, 0.4, 0.3), iris=(0.2, 0.32, 0.08))
+    GREEN = leather("sylvaine_green", (0.06, 0.12, 0.04))
+    BARK = leather("sylvaine_bark", (0.1, 0.065, 0.035))
+    MOSS = H.robe_cloth("moss", (0.05, 0.11, 0.03), rough=1.0, sheen=0.6)
+    ax = Fig.ax
+    f.add(H.wear(body, "leathers", lambda c: f.torso(f.pel - 0.15, f.neck - 0.05, 0.02)(c) or f.sleeves(0.04)(c), GREEN, 0.014, 0.008, smooth=8))
+    f.add(H.wear(body, "bark_layers", lambda c: f.s4 - 0.05 < c.z < f.s2 and ax(c) < f.sh.x, BARK, 0.03, 0.01, smooth=12))
+    f.add(H.wear(body, "leggings", lambda c: f.an + 0.1 < c.z < f.pel + 0.02 and ax(c) < 0.4, BARK, 0.01, 0.006))
+    cp = back_cape(f, MOSS, length=(f.sh.z - f.an) - 0.05, width=0.68, name="moss_cloak")
+    tx = bpy.data.textures.new("moss_tufts", "CLOUDS"); tx.noise_scale = 0.02
+    dm = cp.modifiers.new("tufts", "DISPLACE"); dm.texture = tx; dm.strength = 0.02
+    f.add(H.wear(body, "freckles", lambda c: c.y < f.eye.y + 0.02 and f.mouth.z < c.z < f.eye.z and ax(c) < 0.07,
+                 rune_overlay("gold_freckles", (1.0, 0.75, 0.3), 160, 1.5, 0.03), 0.001, 0.0))
+    boots(f, BARK)
+    hair(f, 0.55, 20000, comb_front=(0, 1, 0.05), comb_back=(0, 0.45, -1), hang_below=f.eye.z - 0.03, melanin=0.35, redness=0.55)
+    brows(f, 250, 0.011, melanin=0.35, redness=0.55)
+    longbow(f)
+    return [body] + f.parts
+
+
+def mirelle(rig, body, ex, J):
+    """Mirelle the Tide-Seer. 19, small, pale. Layers of white and teal sea-wool, pearls sewn on everything, milky blind
+    eyes, a staff of clear ice with a fish skeleton frozen inside; barefoot."""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.68, 0.52, 0.45), iris=(0.55, 0.62, 0.62))
+    WOOL = H.robe_cloth("sea_wool", (0.62, 0.66, 0.64), rough=0.95, sheen=0.4)
+    TEAL = H.robe_cloth("teal_wool", (0.04, 0.2, 0.2), rough=0.95, sheen=0.4)
+    PEARL = C.mat("pearl", (0.85, 0.83, 0.8), 0.15)
+    PEARL.node_tree.nodes["Principled BSDF"].inputs["Coat Weight"].default_value = 1.0
+    f.add(H.wear(body, "wool_top", lambda c: f.torso(f.pel - 0.1, f.neck - 0.03, 0.03)(c) or f.sleeves(0.02)(c), WOOL, 0.025, 0.01, smooth=14))
+    f.add(H.wear(body, "teal_wrap", lambda c: f.s2 - 0.02 < c.z < f.neck + 0.0 and abs(c.x) < f.sh.x + 0.1, TEAL, 0.045, 0.012, smooth=14))
+    f.add(H.skirt("wool_skirt", J, f.s4 + 0.02, f.an + 0.05, 0.17, 0.36, TEAL, rig, folds=0.03))
+    f.add(H.skirt("wool_underskirt", J, f.s4 - 0.1, f.an - 0.02, 0.16, 0.3, WOOL, rig, folds=0.02))
+    random.seed(21)
+    for i in range(40):   # pearls on the wrap and skirt
+        a = random.uniform(0, 2 * math.pi); z = random.uniform(f.kn, f.neck - 0.04)
+        r = 0.2 if z < f.s4 else 0.17
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=0.008, location=(math.cos(a) * r, J["pelvis"].y + math.sin(a) * r * 0.85, z))
+        p = bpy.context.object; p.data.materials.append(PEARL)
+        H.on_bone(p, rig, "hips" if z < f.s4 else "chest"); f.add(p)
+    H.hide_under(body, lambda c: (c.z < f.pel - 0.06 and abs(c.x) < 0.4 and c.z > f.an + 0.03))   # barefoot: feet show
+    hair(f, 0.35, 18000, comb_front=(0, 1, 0.0), comb_back=(0, 0.4, -1), hang_below=f.eye.z - 0.04, colour=(0.75, 0.73, 0.68))
+    brows(f, 200, 0.01, colour=(0.7, 0.68, 0.62))
+    ice_staff(f)
+    return [body] + f.parts
+
+
+def ilyra(rig, body, ex, J):
+    """Ilyra the Unbroken. 22, thin, hollow-cheeked, intense. Torn dark-blue Veilwalker student robes, bare arms with
+    black veins, white hair, a broken astrolabe on a chain."""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.6, 0.45, 0.4), iris=(0.22, 0.24, 0.3))
+    ROBE = H.robe_cloth("veil_robe", (0.025, 0.035, 0.08), patches=0.06)
+    ax = Fig.ax
+    f.add(H.wear(body, "robe_top", f.torso(f.pel - 0.1, f.neck - 0.03, 0.025), ROBE, 0.018, 0.008, smooth=12))
+    sk = H.skirt("robe_skirt", J, f.s4 + 0.02, 0.02, 0.17, 0.38, ROBE, rig, folds=0.035)
+    tx = bpy.data.textures.new("torn_hem", "CLOUDS"); tx.noise_scale = 0.06
+    f.add(sk)
+    f.add(H.wear(body, "veins", lambda c: abs(c.x) > f.sh.x + 0.03 and abs(c.x) < f.wr.x and c.z > f.neck - 0.4,
+                 rune_overlay("black_veins", (0.02, 0.0, 0.03), 40, 0, 0.025), 0.0015, 0.0))
+    f.hide_legs()
+    hair(f, 0.3, 18000, comb_front=(0, 1, -0.2), comb_back=(0, 0.5, -1), hang_below=f.eye.z - 0.03, jitter=0.3, colour=(0.85, 0.85, 0.84))
+    brows(f, 220, 0.011, colour=(0.75, 0.75, 0.74))
+    astrolabe(f)
+    return [body] + f.parts
+
+
+def seraphel(rig, body, ex, J, dim=0.0):
+    """Seraphel the Dawnblade, Knight of the Sunstone. Looks 40, tall, broad-shouldered, grave. White-gold plate etched
+    with six colours (dim 0 = bright, 1 = nearly grey), a greatsword of Sunstone glass, gold eyes, cropped grey hair."""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.55, 0.36, 0.27), iris=(0.75, 0.55, 0.15))
+    PL = H.steel("white_gold_plate", 0.03)
+    b = PL.node_tree.nodes["Principled BSDF"]; b.inputs["Base Color"].default_value = (0.9, 0.84, 0.68, 1)
+    plate_set(f, PL, pauldron=1.2, chest=0.04)
+    f.add(H.wear(body, "underlayer", f.sleeves(0.05), H.quilted("seraphel_under", (0.25, 0.22, 0.18)), 0.014, 0.01))
+    f.add(H.wear(body, "etch", lambda c: abs(c.x) < f.sh.x - 0.05 and f.s2 < c.z < f.neck - 0.1 and c.y < J["spine-1"].y,
+                 rune_overlay("six_etch", (0.9, 0.7, 0.4), 22, 3 * (1 - dim), 0.02), 0.05, 0.0))
+    boots(f, H.steel("sabatons", 0.03), high=False)
+    hair(f, 0.03, 14000, colour=(0.45, 0.44, 0.42))
+    stubble(f, colour=(0.4, 0.38, 0.36))
+    brows(f, 300, 0.012, colour=(0.4, 0.38, 0.36))
+    back_cape(f, H.robe_cloth("seraphel_cape", (0.55, 0.5, 0.4), rough=0.8), length=(f.sh.z - f.kn) + 0.1, width=0.75)
+    glass_greatsword(f)
+    return [body] + f.parts
+
+
+def fennick(rig, body, ex, J):
+    """Master Tobias Fennick, Chief Tower-Wright. 70, short, stout, red-faced, bald with huge white side-whiskers.
+    Brass-buttoned waistcoat over a stained shirt, magnifying spectacles pushed up on his head, a tool belt, a brass
+    measuring rod."""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.62, 0.33, 0.25), iris=(0.2, 0.25, 0.3))
+    SHIRT = H.robe_cloth("fennick_shirt", (0.36, 0.32, 0.25), patches=0.12)
+    VEST = H.robe_cloth("fennick_waistcoat", (0.12, 0.06, 0.04), rough=0.6, sheen=0.3)
+    BRASS = C.mat("fennick_brass", (0.75, 0.52, 0.2), 0.3, metal=1.0)
+    ax = Fig.ax
+    f.add(H.wear(body, "shirt", lambda c: f.torso(f.pel - 0.05, f.neck - 0.02, 0.02)(c) or f.sleeves(0.04)(c), SHIRT, 0.012, 0.006, smooth=8))
+    f.add(H.wear(body, "waistcoat", f.torso(f.pel - 0.03, f.neck - 0.07, -0.02), VEST, 0.03, 0.01, smooth=14))
+    f.add(H.wear(body, "breeches", lambda c: f.kn - 0.05 < c.z < f.pel + 0.02 and ax(c) < 0.4, H.cloth("fennick_breeches", (0.1, 0.08, 0.06)), 0.014, 0.008))
+    f.add(H.wear(body, "toolbelt", lambda c: f.pel - 0.02 < c.z < f.pel + 0.05 and ax(c) < 0.3, leather("toolbelt", (0.12, 0.07, 0.035)), 0.05, 0.012))
+    for k in range(5):   # brass buttons down the waistcoat
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=0.009, location=(0, J["spine-2"].y - 0.2, f.s4 + 0.04 + k * 0.06))
+        bt = bpy.context.object; bt.data.materials.append(BRASS); H.on_bone(bt, rig, "chest" if k > 2 else "spine"); f.add(bt)
+    boots(f, leather("fennick_boots", (0.06, 0.04, 0.03)), high=False)
+    f.add(H.wear(body, "stockings", lambda c: f.an + 0.03 < c.z < f.kn - 0.03 and ax(c) < 0.4, H.cloth("stockings", (0.22, 0.2, 0.17)), 0.006, 0.004))
+    # side-whiskers: big white mutton-chops from the cheeks and jaw
+    mz = f.mouth.z
+    chops = lambda c: (0.04 < ax(c) < 0.085 and f.jaw.z - 0.02 < c.z < f.eye.z - 0.02 and c.y < J["head"].y + 0.02)
+    f.add(H.comb_hair(rig, H.scalp_points(body, chops, 12000, seed=14), f.hc, "whiskers", 0.04,
+                      lambda p: (0.5 * p.x / max(abs(p.x), 1e-3), -0.2, -1.0), segs=6, lift=0.0, jitter=0.25, radius=0.0012,
+                      push=0.15, wrap_above=99.0, colour=(0.85, 0.84, 0.8)))
+    side = lambda c: abs(c.x) > 0.06 and c.z < f.eye.z + 0.05 and c.y > f.eye.y + 0.05 and f.scalp(c)
+    hair(f, 0.025, 6000, keep=side, colour=(0.85, 0.84, 0.8))
+    brows(f, 500, 0.018, colour=(0.85, 0.84, 0.8))
+    # magnifying spectacles pushed up on the bald head
+    for sx in (-1, 1):
+        bpy.ops.mesh.primitive_torus_add(major_radius=0.022, minor_radius=0.003, location=(sx * 0.03, J["head"].y - 0.06, f.eye.z + 0.1))
+        g = bpy.context.object; g.rotation_euler.x = math.radians(60); g.data.materials.append(BRASS); H.on_bone(g, rig, "head"); f.add(g)
+        bpy.ops.mesh.primitive_cylinder_add(radius=0.02, depth=0.004, location=(sx * 0.03, J["head"].y - 0.06, f.eye.z + 0.1))
+        l = bpy.context.object; l.rotation_euler.x = math.radians(60)
+        gl = C.mat("lens", (0.9, 0.9, 0.9), 0.02); gl.node_tree.nodes["Principled BSDF"].inputs["Transmission Weight"].default_value = 1.0
+        l.data.materials.append(gl); H.on_bone(l, rig, "head"); f.add(l)
+    measuring_rod(f)
+    return [body] + f.parts
+
+
+def cassivane(rig, body, ex, J, ashen=False):
+    """Cassivane Dral, the Lord Marshal. 55, tall, handsome, broad, grey at the temples. Polished steel and red-enamel
+    plate, a red cloak, a short silver beard, a gold locket always in his hand. (ashen: the armour blackened and flaking,
+    ash drifting off him, Heartstone shards growing from his shoulders, eyes grey.)"""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.5, 0.33, 0.25) if not ashen else (0.36, 0.33, 0.32), iris=(0.25, 0.18, 0.1) if not ashen else (0.6, 0.6, 0.62))
+    if ashen:
+        PL = enamel_plate("burned_plate", (0.03, 0.025, 0.025), dent=0.4)
+        PL.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.85
+    else:
+        PL = enamel_plate("marshal_plate", (0.38, 0.05, 0.04), dent=0.03)
+    plate_set(f, PL, pauldron=1.1)
+    f.add(H.wear(body, "arming_coat", f.sleeves(0.05), H.quilted("marshal_under", (0.1, 0.03, 0.03)), 0.014, 0.01))
+    boots(f, H.steel("marshal_sabatons", 0.04), high=False)
+    cape = back_cape(f, H.robe_cloth("marshal_cloak", (0.28, 0.02, 0.02) if not ashen else (0.04, 0.03, 0.03), rough=0.8),
+                     length=(f.sh.z - f.an) - 0.05, width=0.8, name="marshal_cloak")
+    TEMPLE = dict(colour=(0.18, 0.15, 0.13))
+    hair(f, 0.06, 16000, **TEMPLE)
+    stubble(f, 0.012, 16000, 0.0009, colour=(0.62, 0.62, 0.6))   # a short, trimmed silver beard
+    brows(f, 300, 0.013, **TEMPLE)
+    locket(f)
+    if ashen:
+        H.grey_dust(cape, 700, (0.3, 0.29, 0.28))
+        SH = H.glow_mat("heartstone_shard", (0.85, 0.55, 1.0), 6)
+        random.seed(31)
+        for side in (1, -1):
+            for k in range(5):
+                bpy.ops.mesh.primitive_cone_add(radius1=0.03, radius2=0.0, depth=random.uniform(0.15, 0.32), vertices=5,
+                                                location=(side * (f.sh.x + random.uniform(-0.05, 0.08)), J["spine-1"].y + random.uniform(-0.05, 0.08), f.sh.z + 0.06))
+                s = bpy.context.object; s.rotation_euler = (random.uniform(-0.6, 0.6), side * random.uniform(0.2, 0.8), 0)
+                s.data.materials.append(SH); H.on_bone(s, rig, "upperarm" + (".l" if side > 0 else ".r")); f.add(s)
+    return [body] + f.parts
+
+
+def keeper(rig, body, ex, J):
+    """Vael-Orrun as the Keeper of the Crossroads (the painted memory in the_truth): about 40, kind-faced, plain grey
+    robes, no crown, ink on his fingers, a Tidefolk wedding ring, warm brown eyes."""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.55, 0.38, 0.28), iris=(0.22, 0.12, 0.05))
+    ROBE = H.robe_cloth("keeper_robe", (0.16, 0.16, 0.15))
+    f.add(H.wear(body, "robe_top", lambda c: f.torso(f.pel - 0.1, f.neck - 0.02, 0.025)(c) or f.sleeves(0.02)(c), ROBE, 0.02, 0.01, smooth=14))
+    f.add(H.skirt("robe_skirt", J, f.s4 + 0.02, 0.03, 0.19, 0.4, ROBE, rig, folds=0.03))
+    f.hide_legs()
+    f.add(H.wear(body, "ink", lambda c: abs(c.x) > J["l-finger-3-1"].x - 0.02, rune_overlay("ink", (0.02, 0.02, 0.04), 60, 0, 0.12), 0.001, 0.0))
+    hair(f, 0.07, 18000, melanin=0.85, redness=0.3)
+    stubble(f, 0.01, 15000, 0.0009, melanin=0.85, redness=0.3)
+    brows(f, 300, 0.012, melanin=0.85, redness=0.3)
+    return [body] + f.parts
+
+
+H.HUMANS["sylvaine"] = (dict(height=2.3, gender=0.0, muscle=0.45, weight=0.15, tall=0.95, age=0.55,
+                             targets={"ears/l-ear-shape-pointed": 1.0, "ears/r-ear-shape-pointed": 1.0}), sylvaine)
+H.HUMANS["mirelle"] = (dict(height=1.85, gender=0.0, muscle=0.2, weight=0.2, tall=0.15, age=0.45), mirelle)
+H.POSTURES["mirelle"] = H.POSTURES["ysolde"]
+H.HUMANS["ilyra"] = (dict(height=2.0, gender=0.0, muscle=0.2, weight=0.0, tall=0.5, age=0.49,
+                          targets={"cheek/l-cheek-volume-decr": 1.0, "cheek/r-cheek-volume-decr": 1.0}), ilyra)
+H.HUMANS["seraphel"] = (dict(height=2.4, gender=1.0, muscle=0.85, weight=0.5, tall=0.9, age=0.6), seraphel)
+H.HUMANS["fennick"] = (dict(height=1.8, gender=1.0, muscle=0.3, weight=0.95, tall=0.0, age=0.85), fennick)
+H.HUMANS["cassivane"] = (dict(height=2.35, gender=1.0, muscle=0.7, weight=0.55, tall=0.85, age=0.68), cassivane)
+H.HUMANS["cassivane_ash"] = (H.HUMANS["cassivane"][0], lambda r, b, e, j: cassivane(r, b, e, j, ashen=True))
+H.HUMANS["keeper"] = (dict(height=2.2, gender=1.0, muscle=0.45, weight=0.45, tall=0.7, age=0.62), keeper)
+H.HUMANS["ysolde_blind"] = (H.HUMANS["ysolde"][0], lambda r, b, e, j: H.ysolde_mh(r, b, e, j, blind=True))
+H.POSTURES["ysolde_blind"] = H.POSTURES["ysolde"]
+H.HUMANS["seraphel_grey"] = (H.HUMANS["seraphel"][0], lambda r, b, e, j: seraphel(r, b, e, j, dim=1.0))
