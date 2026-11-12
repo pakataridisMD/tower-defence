@@ -77,6 +77,8 @@ const BUILDING_REACH := 150.0
 ## A unit this many pixels from the start of its road (a gate of the citadel), plus its reach,
 ## strikes the citadel.
 const GATE_REACH := 30.0
+## Minor enemies in the campaign have this share of their health (bosses and skirmish keep all).
+const CAMPAIGN_MINOR_HEALTH := 0.5
 ## A beaten boss flees this many times as fast as it walked.
 const FLEE_SPEED := 3.0
 ## In the counter-attack the horde keeps coming: the wave starts again this many seconds after its
@@ -860,11 +862,24 @@ func _open_lane(lane: int) -> int:
 ## A new enemy on a lane. An enemy with its own element keeps it whatever the wave.
 func _make_enemy(data: EnemyData, multiplier: float, lane: int, element: int, progress: float) -> SimEnemy:
 	var enemy := SimEnemy.new(_new_id(), data, multiplier)
+	var share := minor_health_share(data)
+	if share != 1.0:
+		enemy.max_health *= share
+		enemy.health = enemy.max_health
+		enemy.shell *= share
 	enemy.lane = lane
 	enemy.element = config.element_index(data.element) if not data.element.is_empty() else element
 	enemy.progress = maxf(0.0, progress)
 	enemy.position = lane_curves[lane].sample_baked(enemy.progress)
 	return enemy
+
+
+## Share of its health a minor enemy (not a boss or a building) keeps in the campaign. Skirmish
+## enemies and bosses keep all of it.
+func minor_health_share(data: EnemyData) -> float:
+	if config.stage == null or data.tags.has(&"boss") or data.tags.has(&"structure"):
+		return 1.0
+	return CAMPAIGN_MINOR_HEALTH
 
 
 ## Enemies that come out of another: splitting on death, or summoned by a boss. They appear a little
@@ -2126,7 +2141,7 @@ func _use_horde_power(enemy: SimEnemy) -> void:
 		&"grow":
 			if enemy.stacks < int(data.power_limit):
 				enemy.stacks += 1
-				var more := data.max_health * enemy.health_multiplier * data.power_amount
+				var more := data.max_health * enemy.health_multiplier * data.power_amount * minor_health_share(data)
 				enemy.max_health += more
 				enemy.health += more
 				enemy.power_timer = data.power_interval
