@@ -470,7 +470,7 @@ func shop_tier() -> int:
 	return _shop_tier
 
 
-## Base towers first in ring order, then duals, then triples.
+## Base towers first in ring order, then the long-range towers, then duals, then triples.
 func _shop_order() -> Array[StringName]:
 	var ids: Array[StringName] = []
 	ids.assign(sim.config.towers.keys())
@@ -482,6 +482,8 @@ func _shop_order() -> Array[StringName]:
 		indices.sort()
 		var weights: Array[int] = [100, 10, 1]
 		var value := data.elements.size() * 1000
+		if data.is_longshot():
+			value += 600
 		for i in indices.size():
 			value += indices[i] * weights[i]
 		return value

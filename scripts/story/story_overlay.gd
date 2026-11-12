@@ -29,6 +29,11 @@ var _headline := ""
 var _subline := ""
 var _headline_color := UiStyle.GOLD
 var _headline_time := 0.0
+## The citadel's bar in the counter-attack: the share of health shown by the pale trail behind the red
+## (it eases down after each blow, so the damage shows), and a flash when it is struck.
+var _citadel_trail := 1.0
+var _citadel_last := 1.0
+var _citadel_flash := 0.0
 
 
 func setup(p_sim: RunSim, p_story: Story) -> void:
@@ -100,6 +105,14 @@ func _process(delta: float) -> void:
 		_banner_time -= delta
 		if _banner_time <= 0.0:
 			_banner = null
+	var citadel := citadel_under_attack()
+	if citadel != null:
+		var share := clampf(citadel.health / citadel.max_health, 0.0, 1.0)
+		if share < _citadel_last - 0.0001:
+			_citadel_flash = 1.0
+		_citadel_last = share
+		_citadel_trail = maxf(share, move_toward(_citadel_trail, share, delta * 0.1))
+		_citadel_flash = maxf(0.0, _citadel_flash - delta * 3.0)
 	if _banner == null and not _banners.is_empty():
 		_banner = _banners.pop_front()
 		_load_banner_picture()
@@ -113,6 +126,7 @@ func _draw() -> void:
 	if sim == null:
 		return
 	_draw_boss_bar()
+	_draw_citadel_bar()
 	if sim.is_assault() and not sim.is_over():
 		_draw_objective()
 	if _headline_time > 0.0 and _banner == null:
@@ -171,6 +185,61 @@ func _draw_boss_bar() -> void:
 	draw_string(_font, Vector2(left + BAR_WIDTH - 50, top + 16), percent, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, UiStyle.TEXT_DIM)
 
 
+## The citadel the army is breaking in the counter-attack, or null before it can be hurt or once it falls.
+func citadel_under_attack() -> SimEnemy:
+	if not sim.is_counter_assault() or sim.is_over():
+		return null
+	for structure in sim.structures:
+		if structure.alive and sim.is_vulnerable(structure):
+			return structure
+	return null
+
+
+## A long bar across the top of the board for the citadel while the army breaks it: its name, its
+## health in numbers, a notch every quarter, the damage just done in a pale trail, and a flash when
+## it is struck. The boss bar takes the place when a boss is on the board.
+func _draw_citadel_bar() -> void:
+	var citadel := citadel_under_attack()
+	if citadel == null or sim.strongest_boss() != null:
+		return
+	var width := BAR_WIDTH + 120.0
+	var left := BOARD_LEFT + (1536.0 - width) * 0.5
+	var top := BOARD_TOP + 10.0
+	var share := clampf(citadel.health / citadel.max_health, 0.0, 1.0)
+	var shake := Vector2(sin(Time.get_ticks_msec() * 0.09) * 2.0 * _citadel_flash, 0)
+	var frame := Rect2(Vector2(left - 6, top - 6) + shake, Vector2(width + 12, 58))
+	draw_rect(frame, Color(0.03, 0.02, 0.05, 0.78))
+	draw_rect(frame, Color(0.75, 0.22, 0.28, 0.85), false, 2.0)
+	var bar := Rect2(Vector2(left, top + 26) + shake, Vector2(width, 18))
+	draw_rect(bar, Color(0.16, 0.08, 0.12))
+	draw_rect(Rect2(bar.position, Vector2(width * _citadel_trail, bar.size.y)), Color(1.0, 0.86, 0.75, 0.75))
+	var red := UiStyle.BAD.lerp(Color(1.0, 0.95, 0.9), _citadel_flash * 0.6)
+	draw_rect(Rect2(bar.position, Vector2(width * share, bar.size.y)), red)
+	draw_rect(Rect2(bar.position, Vector2(width * share, 4)), Color(1, 1, 1, 0.18))
+	for q in [0.25, 0.5, 0.75]:
+		draw_rect(Rect2(bar.position + Vector2(width * q - 1, 0), Vector2(2, bar.size.y)), Color(0, 0, 0, 0.6))
+	var name := citadel.data.display_name.to_upper()
+	draw_string_outline(_font, Vector2(left, top + 17) + shake, name, HORIZONTAL_ALIGNMENT_LEFT, -1, 20, 4, Color.BLACK)
+	draw_string(_font, Vector2(left, top + 17) + shake, name, HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color(1.0, 0.82, 0.78))
+	var army := 0
+	for ally in sim.allies:
+		if ally.alive:
+			army += 1
+	var numbers := "Your army: %d     %s / %s   %d%%" % [army, _thousands(ceili(maxf(0.0, citadel.health))),
+		_thousands(ceili(citadel.max_health)), ceili(share * 100.0)]
+	var numbers_width := _font.get_string_size(numbers, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
+	draw_string(_font, Vector2(left + width - numbers_width, top + 17) + shake, numbers, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, UiStyle.TEXT)
+
+
+static func _thousands(value: int) -> String:
+	var text := str(value)
+	var out := ""
+	while text.length() > 3:
+		out = "," + text.right(3) + out
+		text = text.left(text.length() - 3)
+	return text + out
+
+
 func _draw_objective() -> void:
 	var movement := story.assault_movement(sim.structure_phase)
 	var lines: PackedStringArray = []
@@ -187,7 +256,7 @@ func _draw_objective() -> void:
 		lines.append("Next wave in %d s (Space: now)" % ceili(sim.break_time_left))
 	elif sim.state == RunSim.State.WAVE and sim.rolls_on() and sim.next_wave_in() > 0.0:
 		lines.append("Next wave in %d s" % ceili(sim.next_wave_in()))
-	var top := BOARD_TOP + (64.0 if sim.strongest_boss() != null else 12.0)
+	var top := BOARD_TOP + (64.0 if sim.strongest_boss() != null or citadel_under_attack() != null else 12.0)
 	var height := 12.0 + lines.size() * 26.0
 	draw_rect(Rect2(BOARD_LEFT + 12, top, 470, height), Color(0, 0, 0, 0.55))
 	for i in lines.size():

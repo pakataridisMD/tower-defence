@@ -11,3 +11,6 @@ var source: SimTower
 var damage := 0.0
 var splash_radius := 0.0
 var done := false
+## Damage this shot has promised its target, so towers that pick off the weakest enemy do not all
+## fire at one that is already as good as dead (see SimEnemy.incoming).
+var reserved := 0.0

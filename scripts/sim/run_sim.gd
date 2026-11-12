@@ -618,10 +618,13 @@ func hybrid_options(tower: SimTower) -> Array[StringName]:
 	var result: Array[StringName] = []
 	if tower == null or tower.ascendancy != null or tower.is_hero():
 		return result
+	# Long-range towers are a line of their own: they never fuse, and nothing fuses into them.
+	if tower.data.is_longshot():
+		return result
 	var own := tower.data.elements
 	for id: StringName in config.towers:
 		var data: TowerData = config.towers[id]
-		if data.elements.size() != own.size() + 1 or not is_unlocked(id):
+		if data.elements.size() != own.size() + 1 or data.is_longshot() or not is_unlocked(id):
 			continue
 		if own.all(func(element_id: StringName) -> bool: return data.elements.has(element_id)):
 			result.append(id)
@@ -1266,12 +1269,19 @@ func _find_target(tower: SimTower) -> SimEnemy:
 	var best: SimEnemy = null
 	var best_left := INF
 	var reach := tower.range_now()
+	var weakest := tower.data.targeting == TowerData.Targeting.WEAKEST
 	for enemy in _hash.query(tower.position, reach):
 		# An Umbral Stalker is only seen up close.
 		if enemy.has_power and enemy.data.power == &"stalk" \
 				and enemy.position.distance_to(tower.position) > reach * enemy.data.power_amount:
 			continue
 		var left := distance_to_exit(enemy) if not enemy.structure else 1.0e9 + enemy.health
+		if weakest and not enemy.structure:
+			# Skip one the shots already flying at it will finish.
+			if enemy.incoming >= enemy.health:
+				continue
+			# Least health first; of equals, the one nearer the exit.
+			left = enemy.health * 1.0e5 + distance_to_exit(enemy)
 		if left < best_left:
 			best_left = left
 			best = enemy
@@ -1291,6 +1301,9 @@ func _attack(tower: SimTower, target: SimEnemy) -> void:
 	shot.source = tower
 	shot.damage = tower.damage_now()
 	shot.splash_radius = tower.splash_radius
+	if tower.data.targeting == TowerData.Targeting.WEAKEST:
+		shot.reserved = shot.damage
+		target.incoming += shot.reserved
 	projectiles.append(shot)
 
 
@@ -1336,6 +1349,8 @@ func _update_projectiles(delta: float) -> void:
 
 func _land(shot: SimProjectile) -> void:
 	shot.done = true
+	if shot.reserved > 0.0 and shot.target != null:
+		shot.target.incoming = maxf(0.0, shot.target.incoming - shot.reserved)
 	if shot.splash_radius > 0.0:
 		for enemy in _hash.query(shot.position, shot.splash_radius):
 			_hit(shot.source, enemy, shot.damage)
