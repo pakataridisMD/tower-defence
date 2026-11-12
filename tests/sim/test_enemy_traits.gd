@@ -105,10 +105,11 @@ func test_bosses_summon_on_a_timer() -> void:
 	_spawn_all(sim)
 	var mother := sim.enemies[0]
 	mother.progress = 400.0
-	sim._tick_traits(2.4)
+	var every := mother.data.summon_interval
+	sim._tick_traits(every - 0.1)
 	assert_true(sim._arrivals.is_empty())
 	sim._tick_traits(0.2)
-	assert_eq(sim._arrivals.size(), 2, "two shardlings every 2.5 seconds")
+	assert_eq(sim._arrivals.size(), 2, "two shardlings every %.1f seconds" % every)
 	assert_eq(sim._arrivals[0].data.id, &"shardling")
 
 

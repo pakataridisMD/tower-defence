@@ -218,7 +218,7 @@ func test_vael_orrun_fireball_destroys_a_tower_and_leaves_a_ruin() -> void:
 	assert_eq(_named(used, &"destroy_tower").size(), 1)
 	assert_true(sim.boss_powers.is_ruin(Vector2i(10, 4)))
 	assert_eq(sim.placement_error(&"fire_brazier", Vector2i(10, 4)), "The ruin still burns: build here once the wave is over")
-	assert_almost_eq(boss.doom_timer, 20.0 - BossAbilities.FIREBALL_FLIGHT - 0.1, 0.1, "the next comes 20 s after")
+	assert_almost_eq(boss.doom_timer, boss.data.doom_interval - BossAbilities.FIREBALL_FLIGHT - 0.1, 0.1, "the next comes a full interval after")
 	sim.boss_powers.clear()
 	assert_true(sim.placement_error(&"fire_brazier", Vector2i(10, 4)).is_empty(), "the ruin is cleared after the wave")
 
