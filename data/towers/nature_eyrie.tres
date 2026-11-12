@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Asc_bounty_hunter_m0"]
+script = ExtResource("mod_script")
+stat = &"bounty_bonus"
+value = 2.0
+
+[sub_resource type="Resource" id="Asc_bounty_hunter"]
+script = ExtResource("asc_script")
+id = &"bounty_hunter"
+display_name = "Bounty Hunter"
+description = "Every kill pays 2 more gold."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_bounty_hunter_m0")])
+
+[sub_resource type="Resource" id="Asc_volley_m0"]
+script = ExtResource("mod_script")
+stat = &"attacks_per_second"
+kind = 2
+value = 0.6
+
+[sub_resource type="Resource" id="Asc_volley"]
+script = ExtResource("asc_script")
+id = &"volley"
+display_name = "Volley"
+description = "Shoots 60% faster."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_volley_m0")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"nature_eyrie"
+display_name = "Eyrie"
+description = "Long range. Archers in a tall lookout shoot the weakest enemy anywhere in sight, finishing off stragglers and swarms. Light arrows."
+elements = Array[StringName]([&"nature"])
+cost = 110
+requires_nodes = Array[StringName]([&"nature_core"])
+tags = Array[StringName]([&"longshot"])
+targeting = 1
+damage = 4.0
+attacks_per_second = 2.5
+attack_range = 1300.0
+projectile_speed = 2400.0
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_bounty_hunter"), SubResource("Asc_volley")])

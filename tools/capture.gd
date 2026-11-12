@@ -61,6 +61,8 @@ var _horde := &""
 var _look: PackedStringArray = []
 ## With --look: shoot the towers' effects in a fight (shots, hits, a Meteor and a Doom) instead of the look shots.
 var _fx_shots := false
+## --longshot: the three long-range towers built in the middle of a map, firing across it.
+var _longshot := false
 
 
 func _ready() -> void:
@@ -94,6 +96,8 @@ func _ready() -> void:
 			_horde = StringName(arg.trim_prefix("--horde="))
 		elif arg == "--fx":
 			_fx_shots = true
+		elif arg == "--longshot":
+			_longshot = true
 		elif arg.begins_with("--look"):
 			_look = arg.trim_prefix("--look").trim_prefix("=").split(",", false)
 			if _look.is_empty():
@@ -104,6 +108,8 @@ func _ready() -> void:
 	CampaignScreen.intro_played = true
 	if not _look.is_empty():
 		_run_look()
+	elif _longshot:
+		_run_longshot()
 	elif _powers:
 		_run_powers()
 	elif _landmarks:
@@ -373,6 +379,64 @@ func _run_look() -> void:
 		await _shot("look_%s_night" % stage)
 		game.free()
 		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+const LONGSHOT_TOWERS: Array[StringName] = [&"storm_skyneedle", &"nature_eyrie", &"fire_flare_battery"]
+
+
+## The long-range towers: built near the middle of a map in a wave, the whole board with the
+## Skyneedle's range showing, then closer looks at the towers and their shots.
+func _run_longshot() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	Progress.active_stage = &"storm_2"
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.2)
+	var sim := game.sim
+	sim.tree.points = 30
+	for element in ["storm", "nature", "fire"]:
+		sim.allocate_node(StringName("%s_entry" % element))
+		sim.allocate_node(StringName("%s_core" % element))
+	sim.gold = 9000
+	sim.lives = 9999
+	var map := sim.config.map
+	var middle := map.cell_center(map.grid_size / 2)
+	var cells: Array[Vector2i] = []
+	for y in map.grid_size.y:
+		for x in map.grid_size.x:
+			cells.append(Vector2i(x, y))
+	cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		return map.cell_center(a).distance_to(middle) < map.cell_center(b).distance_to(middle))
+	var built: Array[SimTower] = []
+	for tower_id in LONGSHOT_TOWERS:
+		for cell in cells:
+			if sim.can_place(tower_id, cell) and (built.is_empty() or built.all(
+					func(t: SimTower) -> bool: return absi(t.cell.x - cell.x) + absi(t.cell.y - cell.y) >= 4)):
+				built.append(sim.place_tower(tower_id, cell))
+				break
+	var centre := Vector2.ZERO
+	for tower in built:
+		centre += tower.position
+	centre /= maxf(built.size(), 1.0)
+	_light(game.board.art, DayNight.DAY)
+	sim.wave_index = 4
+	sim.start_next_wave()
+	await _until(func() -> bool: return sim.time_in_wave > 16.0 or sim.is_over())
+	game.board.select(built[0])
+	await _wait(0.3)
+	await _shot("longshot_whole_skyneedle_range")
+	game.board.select(null)
+	game.camera.set_view(1.0, centre)
+	await _wait(0.5)
+	await _shot("longshot_x1")
+	game.camera.set_view(2.0, centre)
+	await _wait(0.4)
+	await _shot("longshot_x2")
+	await _wait(0.25)
+	await _shot("longshot_x2_b")
+	game.free()
 	print("Screenshots saved to ", _out)
 	get_tree().quit()
 
