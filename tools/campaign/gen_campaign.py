@@ -38,6 +38,13 @@ def neighbours(e):
     return [RING[(i + 1) % 6], RING[(i - 1) % 6]]
 
 
+def boss_life(tune):
+    """The stage's bosses' own health scale (WaveSet.boss_health_scale), only where it is not 1."""
+    if tune.get("boss_life", 1.0) == 1.0:
+        return []
+    return [f"boss_health_scale = {tune['boss_life']}"]
+
+
 # ------------------------------------------------------------------------------------ campaigns
 # Each stage: id, name, story, waypoints (or lanes), waves, health scale, twist (stat, kind, value,
 # tags, text) or None, and extra stage settings.
@@ -766,7 +773,7 @@ def write_waves(campaign, stage_index, stage_id, name, n, extra, lanes=1):
     t.write(f"data/waves/{wave_set}.tres", [
         f"script = {script}", f"id = {sn(wave_set)}", f"display_name = {string(name)}",
         f"health_growth = {tune.get('growth', 1.1)}", f"health_scale = {tune.get('health', 1.0)}",
-        f"waves = {typed(t, WAVE, refs)}"])
+        *boss_life(tune), f"waves = {typed(t, WAVE, refs)}"])
     return wave_set
 
 
@@ -916,7 +923,7 @@ def write_skirmish(sk):
     t.write(f"data/waves/{sk['id']}.tres", [
         f"script = {script}", f"id = {sn(sk['id'])}", f"display_name = {string(sk['name'])}",
         f"health_growth = {tune.get('growth', sk['growth'])}", f"health_scale = {tune.get('health', 1.0)}",
-        f"waves = {typed(t, WAVE, refs)}"])
+        *boss_life(tune), f"waves = {typed(t, WAVE, refs)}"])
 
 
 STRUCTURE = "res://scripts/data/structure_spec.gd"
@@ -936,7 +943,7 @@ def write_assault(order, c):
     t.write(f"data/waves/{wave_set}.tres", [
         f"script = {script}", f"id = {sn(wave_set)}", f"display_name = {string(st['name'])}",
         f"health_growth = {tune.get('growth', 1.09)}", f"health_scale = {tune.get('health', 1.0)}",
-        f"waves = {typed(t, WAVE, refs)}"])
+        *boss_life(tune), f"waves = {typed(t, WAVE, refs)}"])
     enemy, (x, y), phase, ((ax, ay), (bx, by)) = st["citadel"]
     with maps.reserve_right(st["reserve"]):
         write_map(sid, st["name"], {"lanes": st["lanes"]}, 100 + order * 10, "void", wave_set, jitter=False)

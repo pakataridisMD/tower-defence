@@ -859,9 +859,10 @@ func _spawn(delta: float) -> void:
 		var element := _wave_element
 		if not group.element.is_empty():
 			element = config.element_index(group.element)
-		var enemy := _make_enemy(data, multiplier, lane, element, 0.0)
+		var boss := data.tags.has(&"boss")
+		var enemy := _make_enemy(data, multiplier * (config.wave_set.boss_health_scale if boss else 1.0), lane, element, 0.0)
 		enemies.append(enemy)
-		if data.tags.has(&"boss"):
+		if boss:
 			boss_arrived.emit(enemy)
 
 
