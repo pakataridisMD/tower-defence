@@ -2,6 +2,8 @@
 # Render a film in parallel chunks with Movie Maker, then join, add bloom and the sound.
 # usage: cinema/render.sh OUT.mp4 AUDIO [CINE] [chunk boundaries in seconds...]
 #   AUDIO is a finished mix, or "auto" to build one from the film's own cues (music + voice lines).
+#   OUT.ogv makes a Theora film for the game (assets/story/video/<id>.ogv) plus <id>.json with the shot start
+#   times, so the game's player draws the subtitles; the film itself is rendered without them.
 #   Cutscenes: SCENE=earth_herald cinema/render.sh out.mp4 auto cutscene   (STORY_ROOT=<checkout> for another branch)
 # Needs GODOT (path to a Godot 4.7 binary) and ffmpeg. In a headless Linux box it runs under xvfb-run.
 set -e
@@ -13,9 +15,11 @@ CUTS=("$@")
 GODOT=${GODOT:-godot}; JOBS=${JOBS:-4}
 cd "$(dirname "$0")"
 W=$(mktemp -d)
+case $OUT in *.ogv) export SUBS=0 ;; esac
 
 # The film's length and sound cues.
-CUES_OUT=$W/cues.tsv "$GODOT" --headless --path . > $W/cues.log 2>&1 || true
+CUES_OUT=$W/cues.tsv "$GODOT" --headless --path . --quit-after 600 > $W/cues.log 2>&1 || true
+touch $W/cues.tsv
 LEN=$(awk -F'\t' '$1 == "length" { print $3 }' $W/cues.tsv)
 [ -z "$LEN" ] && { cat $W/cues.log; echo "could not read the film's length"; exit 1; }
 
@@ -79,8 +83,16 @@ grep -h "SCRIPT ERROR\|^ERROR" $W/[0-9][0-9].log | sort | uniq -c | head -20 || 
 for d in $(ls -d $W/[0-9][0-9] | sort); do
   for f in $(ls $d/f*.png | sort); do echo "file '$f'" >> $W/list.txt; done
 done
-ffmpeg -loglevel error -y -r 30 -f concat -safe 0 -i $W/list.txt -i "$AUDIO" -filter_complex \
-  "[0:v]settb=1/30,setpts=N,format=gbrp,split[a][b];[b]curves=all='0/0 0.6/0 1/1',gblur=sigma=16[g];[a][g]blend=all_mode=screen:all_opacity=0.45,format=yuv420p[v]" \
-  -map "[v]" -map 1:a -r 30 -c:v libx264 -preset slow -crf 19 -c:a aac -b:a 256k -shortest -movflags +faststart "$OUT"
+BLOOM="[0:v]settb=1/30,setpts=N,format=gbrp,split[a][b];[b]curves=all='0/0 0.6/0 1/1',gblur=sigma=16[g];[a][g]blend=all_mode=screen:all_opacity=0.45,format=yuv420p[v]"
+case $OUT in
+  *.ogv)
+    ffmpeg -loglevel error -y -r 30 -f concat -safe 0 -i $W/list.txt -i "$AUDIO" -filter_complex "$BLOOM" \
+      -map "[v]" -map 1:a -r 30 -c:v libtheora -b:v 5M -c:a libvorbis -q:a 6 -shortest "$OUT"
+    awk -F'\t' 'BEGIN { printf "{\"shots\": [" } $1 == "shot" { printf "%s%.2f", n++ ? ", " : "", $3 } END { print "]}" }' \
+      $W/cues.tsv > "${OUT%.ogv}.json" ;;
+  *)
+    ffmpeg -loglevel error -y -r 30 -f concat -safe 0 -i $W/list.txt -i "$AUDIO" -filter_complex "$BLOOM" \
+      -map "[v]" -map 1:a -r 30 -c:v libx264 -preset slow -crf 19 -c:a aac -b:a 256k -shortest -movflags +faststart "$OUT" ;;
+esac
 echo "frames: $(wc -l < $W/list.txt)  ->  $OUT"
 [ -n "$KEEP" ] && echo "kept $W" || rm -rf $W

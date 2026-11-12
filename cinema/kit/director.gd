@@ -34,6 +34,11 @@ func _ready() -> void:
 		name = "seven_crowns"
 	film = load("res://films/%s.gd" % name).new()
 	edit = film.edit()
+	if edit.is_empty():
+		push_error("The film '%s' has no shots (check CINE / SCENE / STORY_ROOT)." % name)
+		get_tree().quit(1)
+		set_process(false)
+		return
 	t_end = edit[-1][1]
 	if OS.get_environment("CUES_OUT") != "":
 		_write_cues(OS.get_environment("CUES_OUT"))
@@ -152,6 +157,8 @@ func _process(_delta: float) -> void:
 func _write_cues(path: String) -> void:
 	var f := FileAccess.open(path, FileAccess.WRITE)
 	f.store_line("length\t\t%.4f" % t_end)
+	for e in edit:
+		f.store_line("shot\t\t%.4f" % e[0])
 	if film.has_method("audio"):
 		for c in film.audio():
 			f.store_line("%s\t%s\t%.4f" % [c[0], c[1], c[2]])

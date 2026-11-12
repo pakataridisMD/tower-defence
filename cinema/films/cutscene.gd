@@ -7,6 +7,7 @@ extends RefCounted
 ## in the scene's element, low fog, and the line as a subtitle. A scene can stage any shot by hand in
 ## films/scenes/<SCENE>.gd with `func shot_<NN>(st, init, info)`; it then replaces the default for that shot.
 ##
+## SUBS=0 leaves the subtitles out, for a film the game's player draws them over (render.sh does this for .ogv).
 ## SCENE picks the cutscene. STORY_ROOT points at the checkout that holds data/ and assets/ (default: the repo this
 ## cinema folder lives in), so a scene can be rendered from another branch's story and voices.
 
@@ -33,11 +34,14 @@ var _textures := {}
 
 func _init() -> void:
 	id = OS.get_environment("SCENE")
-	assert(id != "", "Set SCENE to a cinematic id, e.g. SCENE=earth_herald")
 	root = OS.get_environment("STORY_ROOT")
 	if root == "":
 		root = ProjectSettings.globalize_path("res://").path_join("..").simplify_path()
-	var data: Dictionary = _json("data/story/cinematics/%s.json" % id)
+	var found: Variant = _json("data/story/cinematics/%s.json" % id)
+	if id == "" or not found is Dictionary:
+		push_error("No cinematic '%s' under %s/data/story/cinematics (set SCENE and STORY_ROOT)." % [id, root])
+		return
+	var data: Dictionary = found
 	title = str(data.get("title", ""))
 	element = ELEMENT.get(id.get_slice("_", 0), "")
 	music = _music_path(data)
@@ -104,7 +108,7 @@ func _shot(st, init: bool, s: Dictionary) -> void:
 	# Subtitle, fades and title are shared by every shot.
 	var a0 := _lead(s)
 	var a1: float = minf(a0 + maxf(s["voice_len"] - 0.4, 2.5), st.T - 0.15)
-	if s["text"] != "":
+	if s["text"] != "" and OS.get_environment("SUBS") != "0":
 		st.subtitle(s["text"], a0, a1)
 	if s["index"] == 0:
 		st.fade = maxf(st.fade, 1.0 - st.ease_out(st.t / 1.0))
@@ -174,7 +178,8 @@ func _texture(path: String) -> Texture2D:
 
 
 func _json(rel: String) -> Variant:
-	return JSON.parse_string(FileAccess.get_file_as_string(root.path_join(rel)))
+	var path := root.path_join(rel)
+	return JSON.parse_string(FileAccess.get_file_as_string(path)) if FileAccess.file_exists(path) else null
 
 
 func _music_path(data: Dictionary) -> String:
