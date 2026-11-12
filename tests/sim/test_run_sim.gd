@@ -6,7 +6,7 @@ const TEST_ROAD := preload("res://tests/support/test_road.tres")
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
 const MAP := &"test_road"
 ## A buildable cell next to the first stretch of path.
-const CELL := Vector2i(2, 3)
+const CELL := Vector2i(3, 3)
 
 var registry: Node
 
@@ -81,7 +81,7 @@ func test_not_enough_gold() -> void:
 	var sim := _sim()
 	sim.allocate_node(&"fire_entry")
 	for x in 3:
-		sim.place_tower(&"fire_brazier", Vector2i(x, 0))
+		sim.place_tower(&"fire_brazier", Vector2i(x + 5, 0))
 	assert_eq(sim.gold, 0)
 	assert_string_contains(sim.placement_error(&"fire_brazier", CELL), "gold")
 

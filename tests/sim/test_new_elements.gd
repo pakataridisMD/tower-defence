@@ -7,8 +7,8 @@ const TEST_ROAD := preload("res://tests/support/test_road.tres")
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
 const MAP := &"test_road"
 ## Buildable cells next to the first stretch of path.
-const CELL := Vector2i(2, 3)
-const NEXT_CELL := Vector2i(3, 3)
+const CELL := Vector2i(3, 3)
+const NEXT_CELL := Vector2i(4, 3)
 
 var registry: Node
 

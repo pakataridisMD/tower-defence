@@ -19,16 +19,20 @@ func before_each() -> void:
 
 func _find_cells() -> void:
 	var map := game.sim.config.map
+	# The first stretch of road past the war camp, with open grass beside it.
 	for point in map.path_points(0):
 		var cell := map.cell_at(point)
-		if map.is_inside(cell) and cell.x >= 2 and cell.y >= 2:
+		if not map.is_inside(cell) or game.sim.landmark_at(cell) != null:
+			continue
+		for reach in range(1, 4):
+			for offset: Vector2i in [Vector2i(0, reach), Vector2i(0, -reach), Vector2i(reach, 0), Vector2i(-reach, 0)]:
+				var beside := cell + offset
+				if grass_cell.x < 0 and map.is_inside(beside) and not game.sim.is_path(beside) \
+						and game.sim.landmark_at(beside) == null:
+					grass_cell = beside
+		if grass_cell.x >= 0:
 			path_cell = cell
 			break
-	for reach in range(1, 4):
-		for offset: Vector2i in [Vector2i(0, reach), Vector2i(0, -reach), Vector2i(reach, 0), Vector2i(-reach, 0)]:
-			var cell := path_cell + offset
-			if grass_cell.x < 0 and map.is_inside(cell) and not game.sim.is_path(cell):
-				grass_cell = cell
 	assert_true(game.sim.is_path(path_cell), "found the road")
 	assert_true(grass_cell.x >= 0, "found grass beside it")
 
