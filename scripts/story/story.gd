@@ -16,6 +16,10 @@ const IMAGE_PATH := "res://assets/story/images/%s/%02d.png"
 const VOICE_PATH := "res://assets/story/voice/%s/%02d.ogg"
 const PORTRAIT_PATH := "res://assets/story/portraits/%s.png"
 const MUSIC_PATH := "res://assets/story/music/%s.ogg"
+## A finished, pre-rendered film of a whole cinematic (picture, voice and music mixed in). When one
+## exists it plays instead of the stills. Its <id>.json may list when each shot starts, in seconds,
+## as {"shots": [0.0, 6.2, ...]}, so the player can show the subtitles over it.
+const VIDEO_PATH := "res://assets/story/video/%s.ogv"
 ## The music thread's map of which cue plays under each cinematic: {"cinematics": {id: cue}}.
 const MUSIC_MAP := "res://assets/story/music/cinematic_music.json"
 ## Words a narrator reads per second, to time a shot that has no voice line yet.
@@ -42,6 +46,8 @@ var assault: Dictionary = {}
 var cities: Dictionary = {}
 ## Characters by id.
 var characters: Dictionary = {}
+## Where the cinematics' films are looked for (tests point it elsewhere).
+var video_path := VIDEO_PATH
 ## Cinematics by id, each {id, title, music, shots: [{text, speaker, art_note, image, voice, duration}]}.
 var cinematics: Dictionary = {}
 ## Problems found while reading the files, as readable lines.
@@ -161,6 +167,26 @@ func has_cinematic(id: StringName) -> bool:
 
 
 ## The music file for a cinematic, or "" when it has none or the file is not there yet.
+func video_for(id: StringName) -> String:
+	var path := video_path % id
+	return path if ResourceLoader.exists(path) else ""
+
+
+## When each shot starts in the cinematic's film, from the film's sidecar <id>.json; empty without one
+## (the film then carries its own subtitles, if any).
+func video_shot_times(id: StringName) -> PackedFloat32Array:
+	var times := PackedFloat32Array()
+	var path := (video_path % id).get_basename() + ".json"
+	if not FileAccess.file_exists(path):
+		return times
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if data is Dictionary and (data as Dictionary).get("shots") is Array:
+		for t: Variant in (data as Dictionary)["shots"]:
+			if t is float or t is int:
+				times.append(float(t))
+	return times
+
+
 func music_for(id: StringName) -> String:
 	var cue := str(cinematic(id).get("music", ""))
 	if cue.is_empty():
@@ -308,6 +334,15 @@ func city(stage_id: StringName) -> Dictionary:
 
 
 ## The character who is this boss enemy, or an empty dictionary.
+## The name to show above a line: the character's name from characters.json (hidden characters keep
+## theirs, "???"), or the id itself for a speaker who is not a character, such as the narrator.
+func speaker_name(speaker: StringName) -> String:
+	if speaker.is_empty():
+		return ""
+	var person: Dictionary = characters.get(speaker, {})
+	return str(person.get("name", speaker))
+
+
 func character_for_enemy(enemy_id: StringName) -> Dictionary:
 	for person: Dictionary in characters.values():
 		if StringName(str(person.get("boss_enemy", ""))) == enemy_id:

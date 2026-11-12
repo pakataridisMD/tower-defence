@@ -249,6 +249,16 @@ func test_winning_a_stage_saves_its_town() -> void:
 	assert_true(bool(story.city(&"converge_3").get("capital", false)))
 
 
+func test_the_hush_stays_out_of_sight_until_its_own_scene() -> void:
+	var story := Story.load_from("res://data/story")
+	assert_eq(story.speaker_name(&"the_hush"), "???", "its name stays hidden in the subtitles")
+	assert_eq(story.speaker_name(&"vael_orrun"), "Vael-Orrun")
+	for shot: Dictionary in story.cinematic(&"epilogue")["shots"]:
+		assert_ne(str(shot.get("speaker", "")), "the_hush", "the epilogue itself does not reveal it")
+	for shot: Dictionary in story.cinematic(&"the_hush")["shots"]:
+		assert_true(str(shot.get("speaker", "")) in ["the_hush", "narrator"], "only the Hush speaks")
+
+
 # --- Saving ----------------------------------------------------------------------
 
 func test_seen_cinematics_survive_a_save() -> void:
@@ -293,3 +303,21 @@ func test_shots_keep_their_own_timing_without_music_markers() -> void:
 	else:
 		# Herald music is not written shot by shot, so its markers are not used for timing.
 		assert_ne(story.shot_markers(&"ember_herald").size(), 3)
+
+
+func test_a_finished_film_plays_instead_of_the_stills() -> void:
+	var player := CinematicPlayer.new()
+	player.story = Story.load_from("res://data/story")
+	player.story.video_path = "res://tests/fixtures/video/%s.ogv"
+	assert_eq(player.story.video_shot_times(&"the_hush"), PackedFloat32Array([0.0, 1.0, 2.0]))
+	assert_eq(Story.load_from("res://data/story").video_for(&"the_hush"), "", "no film yet in the game")
+	player.queue = [&"the_hush"] as Array[StringName]
+	player.change_scene_when_done = false
+	player.mark_seen = false
+	add_child_autofree(player)
+	assert_not_null(player._video, "the film plays")
+	assert_eq(player.current_shot(), 0, "no title card before a film")
+	watch_signals(player)
+	player.skip_cinematic()
+	assert_true(player.is_done())
+	assert_signal_emitted(player, "finished")
