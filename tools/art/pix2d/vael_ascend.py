@@ -681,8 +681,6 @@ def vael_unmade(pose=None, pad=0):
     smoke = s.ellipse(150, 168, 30, 42) & dith                                                   # a dithered smoke where the gut was
     s.fill(smoke, VOID[1])
     s.a |= smoke
-    _wisps(s, 140, 196, 70, 5)
-    _wisps(s, 160, 196, 60, 6)
     # ---- legs of bone
     for grp, sub, (hx, hy), (kx, ky), (ax, ay), fs in (("leg_f", "shin_f", (138, 216), (129, 284), (125, 338), -1),
                                                        ("leg_n", "shin_n", (162, 216), (170, 282), (168, 336), 1)):
