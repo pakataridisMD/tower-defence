@@ -606,7 +606,7 @@ func _hero_info(tower: SimTower) -> String:
 func _refresh() -> void:
 	_gold.text = "%d" % sim.gold
 	_lives.text = "%d" % sim.lives
-	_wave.text = "Wave %d / %d" % [sim.wave_number(), sim.total_waves()]
+	_wave.text = "Wave %d / %d" % [mini(sim.wave_number(), sim.total_waves()), sim.total_waves()]
 	var where: PackedStringArray = []
 	var difficulty := sim.config.difficulty
 	if difficulty != null and difficulty.order > 0:

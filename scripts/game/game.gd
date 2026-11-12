@@ -759,6 +759,7 @@ func _drive_bot(delta: float) -> void:
 		_bot_wait = BOT_BREAK
 		if not paused and not web.visible:
 			_bot.use_skills()
+			_bot.play_wave_step()
 		return
 	_bot_wait -= delta
 	if _bot_wait > 0.0:

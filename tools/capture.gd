@@ -381,6 +381,8 @@ func _run_story() -> void:
 	await _until(func() -> bool: return assault.sim.wave_number() >= 4 and assault.sim.time_in_wave > 8.0 \
 			or assault.sim.is_over())
 	await _shot("story_assault_gate")
+	# The turning's own scene would hold the battle still: this picture is of the fight after it.
+	Progress.mark_seen(&"the_turning")
 	assault.sim.enemies.clear()
 	assault.sim.wave_index = assault.sim.config.stage.counter_wave - 1
 	assault.sim.start_next_wave()
@@ -388,8 +390,8 @@ func _run_story() -> void:
 	# No towers were built in the waves skipped: keep the run alive for the picture.
 	assault.sim.lives = 9999
 	Engine.time_scale = 4.0
-	await _until(func() -> bool: return assault.sim.allies.size() >= 24 and assault.sim.time_in_wave > 40.0 \
-			or assault.sim.is_over())
+	var citadel: SimEnemy = assault.sim.structures[0]
+	await _until(func() -> bool: return citadel.health < 0.8 * citadel.max_health or assault.sim.is_over())
 	Engine.time_scale = 1.0
 	await _wait(1.0)
 	await _shot("story_counter_attack")

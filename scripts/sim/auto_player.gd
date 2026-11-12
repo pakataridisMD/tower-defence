@@ -171,14 +171,22 @@ func act() -> void:
 		play_build_phase()
 	elif sim.state == RunSim.State.WAVE:
 		use_skills()
-		muster_army()
-		# The final assault's waves roll into each other with no break: build while they come.
-		if sim.rolls_on():
-			_build_wait -= 1
-			if _build_wait <= 0:
-				_build_wait = BUILD_IN_WAVE_STEPS
-				spend_points()
-				build_towers()
+		play_wave_step()
+
+
+## What the bot does in a wave besides its skills: in the final level it builds while the waves roll
+## in and musters its army in the counter-attack. Cheap to call every step.
+func play_wave_step() -> void:
+	if sim.state != RunSim.State.WAVE:
+		return
+	muster_army()
+	# The final assault's waves roll into each other with no break: build while they come.
+	if sim.rolls_on():
+		_build_wait -= 1
+		if _build_wait <= 0:
+			_build_wait = BUILD_IN_WAVE_STEPS
+			spend_points()
+			build_towers()
 
 
 ## In the counter-attack: musters every champion who is ready, then troops in the plan's order.
