@@ -15,6 +15,8 @@ var _tab_buttons: Array[Button] = []
 var developer_label: Label
 ## Turns the title screen's music on and off (on when pressed).
 var menu_music: CheckBox
+## The Full screen and Windowed picks, in that order.
+var _mode_buttons: Array[Button] = []
 
 
 func _init() -> void:
@@ -64,6 +66,13 @@ func refresh() -> void:
 		mutes[bus].set_pressed_no_signal(AudioSettings.is_muted(bus))
 		_show(bus)
 	menu_music.set_pressed_no_signal(AudioSettings.menu_music_on())
+	_show_window_mode()
+
+
+## Full screen / Windowed picks follow F11 and the title screen button.
+func _show_window_mode(_on: bool = false) -> void:
+	for i in _mode_buttons.size():
+		_mode_buttons[i].set_pressed_no_signal((i == 0) == VideoSettings.fullscreen)
 
 
 func _sound() -> Control:
@@ -130,6 +139,7 @@ func _video() -> Control:
 	label.custom_minimum_size = Vector2(240, 0)
 	row.add_child(label)
 	var group := ButtonGroup.new()
+	_mode_buttons.clear()
 	for i in VideoSettings.MODES.size():
 		var b := UiStyle.menu_choice(VideoSettings.MODES[i], group, 40)
 		b.custom_minimum_size = Vector2(260, 56)
@@ -139,6 +149,11 @@ func _video() -> Control:
 			if on:
 				VideoSettings.set_fullscreen(full))
 		row.add_child(b)
+		_mode_buttons.append(b)
+	var hint := UiStyle.menu_label("%s switches any time" % VideoSettings.key_name().to_upper(), "small", 16, UiStyle.MENU_DIM)
+	hint.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(hint)
+	FullscreenKey.watch(_show_window_mode)
 	column.add_child(row)
 	var vsync := UiStyle.menu_switch()
 	vsync.text = "V-Sync (no tearing; caps the frame rate to the screen)"

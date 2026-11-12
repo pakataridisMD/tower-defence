@@ -22,6 +22,8 @@ var pages: Dictionary[StringName, MenuPage] = {}
 var page: StringName = &""
 var buttons: Dictionary[StringName, MenuItemButton] = {}
 var quit_dialog: Control
+## The small button in the top right corner that switches full screen on and off (F11).
+var fullscreen_button: Button
 var _home: Control
 ## The stage Continue plays, or empty when there is none.
 var continue_stage: StringName = &""
@@ -47,6 +49,7 @@ func _ready() -> void:
 	_build_title()
 	_build_menu()
 	_build_story_card()
+	_build_fullscreen_button()
 	_build_quit_dialog()
 	music = MenuMusic.new()
 	add_child(music)
@@ -151,6 +154,23 @@ func _add(column: VBoxContainer, id: StringName, text: String, key: String, icon
 	button.pressed.connect(action)
 	column.add_child(button)
 	buttons[id] = button
+
+
+## Top right of the title screen: "Full screen" in a window, "Exit full screen" in full screen.
+func _build_fullscreen_button() -> void:
+	fullscreen_button = UiStyle.menu_button(VideoSettings.toggle_text(), 32)
+	fullscreen_button.custom_minimum_size = Vector2(0, 56)
+	fullscreen_button.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT, Control.PRESET_MODE_MINSIZE, 32)
+	fullscreen_button.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	fullscreen_button.tooltip_text = "Switch between full screen and a window"
+	fullscreen_button.pressed.connect(VideoSettings.toggle_fullscreen)
+	_home.add_child(fullscreen_button)
+	FullscreenKey.watch(_show_fullscreen)
+
+
+func _show_fullscreen(_on: bool = false) -> void:
+	if is_instance_valid(fullscreen_button):
+		fullscreen_button.text = VideoSettings.toggle_text()
 
 
 ## A card in the corner that says what comes next in the story.

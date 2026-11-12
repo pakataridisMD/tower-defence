@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 DataRegistry="*res://scripts/core/data_registry.gd"
 Progress="*res://scripts/core/progress.gd"
 Sfx="*res://scripts/core/sound_player.gd"
+FullscreenHotkey="*res://scripts/core/fullscreen_key.gd"
 
 [audio]
 
