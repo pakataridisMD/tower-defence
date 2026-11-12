@@ -119,6 +119,19 @@ def kneel_pose(name="cassivane"):
     return p
 
 
+def kneel_robed(sc, name, x, ground, light=(1, 1, 1), flip=False):
+    """A robed figure on its knees: head and shoulders bowed, the robe pooled on the ground (robes have no leg joints)."""
+    im, fx, fy = arr_of(name, pose={"body": (0.12, 1, 0), "head": (0.28, 0, 0)}, flip=flip, light=light)
+    cut = fy - 15
+    rows = im[cut - 1, :, :]
+    solid = rows[..., 3] > 200
+    col = tuple(rows[solid][:, :3].mean(0)) if solid.any() else (90, 90, 96)
+    im[cut:, :, 3] = 0
+    paste(sc, im, x, ground + 15, fx, fy)
+    sc.poly([(x - 13, ground + 1), (x - 8, ground - 6), (x + 8, ground - 6), (x + 14, ground + 1)], col)
+    sc.line(x - 13, ground + 1, x + 14, ground + 1, tuple(c * 0.5 for c in col))
+
+
 def dust(sc, n, x0, x1, y0, y1, base=(74, 66, 62), seed=0):
     """A cloud of dust as overlapping lumps, each lit from the upper left."""
     rng = np.random.default_rng(seed)
@@ -1525,11 +1538,10 @@ def convergence_intro_05():
         sc.line(x + 3, 110, x + 5, 100, (180, 180, 190))
     sc.bands("3a2a24", "1a1210", 120, y1, n=3)
     sc.particles(140, [(90, 80, 76), (60, 50, 46), (255, 140, 50)], 120, y1, x0, x1)
-    im, fx, fy = arr_of("vael_orrun_young", pose=kneel_pose("vael_orrun_young"), light=(1.0, 0.8, 0.7))
     sc.glow(160, 130, 30, (255, 140, 60), 0.4)
-    paste(sc, im, 160, 152, fx, fy)
-    sc.glow(176, 126, 6, GOLD, 0.8)
-    sc.c[125:128, 175:178] = (255, 220, 120)
+    kneel_robed(sc, "vael_orrun_young", 160, 152, light=(1.0, 0.8, 0.7))
+    sc.glow(170, 132, 6, GOLD, 0.8)
+    sc.c[131:134, 169:172] = (255, 220, 120)
     fresco(sc, x0, y0, x1, y1, seed=5, burn=0.14)
     sc.vignette(0.5)
     return sc
@@ -1642,6 +1654,163 @@ def _portrait(cid):
     import portraits
     return portraits.portrait(cid) if cid in portraits.PEOPLE or cid in portraits.HEADS else people.portrait(cid).image()
 
+# ---- the post-credits scene: the_hush (the Hush itself is never drawn, only an eye of no colour in 06) -------------
+NOCOLOUR = (176, 176, 176)
+people.SPECS["vael_orrun_greying"] = dict(people.SPECS["vael_orrun_young"], name="Vael-Orrun in the vault", eye=(150, 150, 156))
+creatures.CREATURES["vael_orrun_greying"] = people._make("vael_orrun_greying")
+
+
+def _hall_night(sc):
+    hall(sc, dim=0.5, throne=False)
+    sc.blend(np.ones((H, W), bool), (4, 4, 6), 0.55)
+
+
+def _colourless_eye(sc, cx, cy, rx, ry):
+    eye = ((sc.xs - cx) / rx) ** 2 + ((sc.ys - cy) / ry) ** 2 < 1
+    sc.c[eye] = NOCOLOUR
+    sc.c[(np.hypot(sc.xs - cx, (sc.ys - cy) * rx / ry) < rx * 0.25) & eye] = (12, 12, 12)
+    return eye
+
+
+def the_hush_01():
+    """After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six colours... then,
+    faintly, a seventh. Ilyra, alone, leans in to look."""
+    sc = Scene(401)
+    _hall_night(sc)
+    heartstone(sc, 182, 92, 2.4, seventh=True)
+    sc.put("ilyra", 132, 170, pose={"body": (0.22, 2, 2), "head": (0.15, 0, 0)}, light=(0.85, 0.85, 0.95),
+           rim=(230, 220, 255))
+    sc.vignette(0.8)
+    return sc
+
+
+def the_hush_02():
+    """Two thousand years ago: the vault under burning Vael. The young Keeper, Vael-Orrun, kneels in the dark with his
+    wife's ring in his fist, listening. Grey creeps into his eyes from the edges."""
+    sc = Scene(402)
+    sc.c[:] = (6, 5, 7)
+    for k, x in enumerate(range(-10, W + 40, 46)):                    # the vault's ribs, barely seen
+        sc.poly([(x, H), (x + 8, H), (x + 30, 30), (x + 160 - k * 4, 0), (x + 150 - k * 4, 0), (x + 22, 30)], (16, 13, 16))
+    for x in (96, 210, 260):                                          # firelight leaking through cracks in the ceiling
+        m = sc.poly([(x, 0), (x + 3, 0), (x + 30, 150), (x + 14, 150)], None)
+        sc.blend(m, (200, 90, 40), 0.18)
+        sc.line(x, 0, x + 2, 4, (255, 140, 50))
+    sc.particles(40, [(255, 120, 40), (180, 70, 30)], 0, 120, 80, 300)
+    sc.bands("1a1214", "0a0708", 150, H, n=3)
+    sc.glow(160, 140, 46, (120, 60, 40), 0.35)
+    kneel_robed(sc, "vael_orrun_greying", 160, 166, light=(0.75, 0.6, 0.55))
+    sc.glow(170, 146, 5, GOLD, 0.7)
+    sc.c[145:147, 169:171] = (255, 220, 120)
+    d = np.hypot(sc.xs - 160, (sc.ys - 130) * 1.2)                     # the dark pressing in, and listening
+    sc.blend(d > 70, (2, 2, 3), np.clip((d - 70) / 80, 0, 1) * 0.9, steps=5)
+    return sc
+
+
+def the_hush_03():
+    """Six years ago: Cassivane at his daughter's grave in the rain. Above him, a thin crack of starless dark opens in
+    the night sky."""
+    sc = Scene(403)
+    sky(sc, "night")
+    sc.bands("10121c", "1e2232", 0, 130, n=6)
+    sc.stars(70, 120)
+    crack = [(196, 6), (192, 18), (199, 30), (194, 44), (201, 58), (197, 68)]
+    for (x0, y0), (x1, y1) in zip(crack, crack[1:]):                  # a hairline with nothing in it, not even stars
+        for w in (-1, 0, 1):
+            sc.line(x0 + w, y0, x1 + w, y1, (0, 0, 0))
+    sc.ridge(128, 4, "1a1c22", 61, freq=0.9)
+    sc.bands("1e2028", "0c0d12", 128, H, n=4)
+    sc.rect(176, 126, 196, 160, (70, 72, 80))                          # the headstone
+    sc.disc(186, 126, 10, (70, 72, 80), squash=0.7)
+    sc.rect(176, 120, 178, 160, (110, 112, 120))
+    sc.poly([(170, 160), (206, 160), (210, 166), (166, 166)], (40, 34, 30))
+    for k in range(3):                                                 # flowers on the grave
+        sc.c[160, 182 + k * 4] = (200, 190, 220)
+    im, fx, fy = arr_of("cassivane_marshal", pose={"head": (0.3, 0, 0), "body": (0.08, 0, 1)}, light=(0.6, 0.62, 0.75))
+    paste(sc, im, 140, 168, fx, fy)
+    rng = np.random.default_rng(31)
+    for _ in range(260):                                               # rain
+        x, y = int(rng.integers(0, W + 20)), int(rng.integers(-6, H))
+        sc.line(x, y, x - 2, y + 5, (110, 118, 140))
+    sc.vignette(0.55)
+    return sc
+
+
+def the_hush_04():
+    """The Crack in the Hollow Rift seen from the far side, from the Outer Hollow: wide open where the Concord marched
+    through. The six Wardens' light spills in from the world beyond it."""
+    sc = Scene(404)
+    sc.bands("060508", "141218", 0, H, n=5)
+    sc.stars(30, H, cols=((60, 60, 70), (40, 40, 50)))
+    edge = [(150, 0), (142, 30), (132, 60), (120, 100), (104, 140), (92, 180)]
+    edge2 = [(176, 0), (186, 30), (198, 60), (214, 100), (232, 140), (250, 180)]
+    rift = sc.poly(edge + edge2[::-1], None)
+    sc.bands("6a8ac0", "f0d8a0", 0, H, n=6, mask=rift)                 # the world beyond, at dawn
+    sc.ridge(150, 6, "4a5a3a", 71, freq=1.6)
+    sc.c[~rift & (sc.ys >= 140)] = 0
+    sc.bands("141218", "060508", 140, H, n=3, mask=~rift)
+    for i, c in enumerate(RINGC):                                      # six beams spilling in
+        a = math.radians(-60 + i * 24)
+        x0, y0 = 170, 110
+        m = sc.poly([(x0, y0), (x0 + math.sin(a - 0.08) * 400, y0 + math.cos(a - 0.08) * 400 - 260),
+                     (x0 + math.sin(a + 0.08) * 400, y0 + math.cos(a + 0.08) * 400 - 260)], None)
+        sc.blend(m & ~rift, c, 0.22)
+    for p in (edge, edge2):                                            # the lips of the Crack, lit
+        for (x0, y0), (x1, y1) in zip(p, p[1:]):
+            sc.line(x0, y0, x1, y1, (230, 220, 200))
+    tiny_army(sc, 30, 110, 176, 10, (40, 44, 60), rows=2)             # what the Concord left on this side: tracks, a banner
+    sc.rect(60, 150, 62, 172, (50, 40, 30))
+    sc.poly([(62, 150), (78, 154), (62, 158)], (52, 80, 138))
+    sc.vignette(0.5)
+    return sc
+
+
+def the_hush_05():
+    """Ilyra, frozen in front of the Heartstone. Reflected in both her eyes, very small, something with no colour at all."""
+    sc = Scene(405)
+    skin = hx("dcc4b8")
+    sc.c[:] = skin * 0.62
+    sc.bands("6a5a58", "8a7672", 0, H, n=5)                            # an extreme close-up: the band of her face
+    sc.glow(160, 90, 200, (220, 200, 210), 0.35)
+    for x in (12, 300):                                               # black veins running up from her temples
+        for k in range(4):
+            sc.line(x, 180 - k * 30, x + (6 if x < 100 else -6), 150 - k * 30, (40, 30, 50))
+    for cx in (96, 224):
+        sc.poly([(cx - 60, 76), (cx - 20, 64), (cx + 30, 66), (cx + 62, 80), (cx + 30, 72), (cx - 20, 70)], (90, 70, 66))   # brow shadow
+        sc.c[((sc.xs - cx) / 52) ** 2 + ((sc.ys - 100) / 24) ** 2 < 1] = (236, 230, 228)                                    # the eye
+        sc.disc(cx, 100, 21, (122, 112, 204))                                                                             # iris
+        sc.disc(cx, 100, 15, (90, 80, 170))
+        sc.disc(cx, 100, 9, (8, 6, 12))                                                                                   # pupil
+        for k, c in enumerate(RINGC):                                  # the Heartstone's six colours caught in the iris
+            a = k / 6 * math.pi * 2
+            sc.c[int(100 + math.sin(a) * 18), int(cx + math.cos(a) * 18)] = c
+        sc.rect(cx - 2, 98, cx + 3, 101, NOCOLOUR)                     # something with no colour at all
+        sc.c[99, cx] = (12, 12, 12)
+        sc.rect(cx - 11, 92, cx - 8, 95, (255, 255, 255))               # catchlight
+        lid = ((sc.xs - cx) / 52) ** 2 + ((sc.ys - 100) / 24) ** 2
+        sc.c[(lid >= 1) & (lid < 1.18) & (sc.ys < 100)] = (40, 26, 26)  # upper lid line and lashes
+        sc.c[(lid >= 1) & (lid < 1.08) & (sc.ys >= 100)] = (120, 90, 86)
+        for k in range(9):
+            x = cx - 44 + k * 11
+            sc.line(x, 78 + abs(k - 4) * 1.4, x - 3, 72 + abs(k - 4) * 1.4, (30, 20, 22))
+    sc.vignette(0.5)
+    return sc
+
+
+def the_hush_06():
+    """Deep inside the seventh colour of the Heartstone, something with no colour at all opens, like an eye."""
+    sc = Scene(406)
+    sc.c[:] = (4, 4, 6)
+    heartstone(sc, 160, 90, 4.0, seventh=True)
+    sc.disc(160, 90, 14, (196, 204, 188))
+    _colourless_eye(sc, 160, 90, 13, 4.5)
+    sc.vignette(0.9)
+    return sc
+
+
+def the_hush_07():
+    """Black. No sound at all for a moment before the voice, and none after. Title card: TO BE CONTINUED."""
+    return epilogue_10()
+
 
 CINEMATICS.update({
     "regents_counsel": [regents_counsel_01, regents_counsel_02, regents_counsel_03, regents_counsel_04],
@@ -1660,5 +1829,6 @@ CINEMATICS.update({
     "mirror_spire": [mirror_spire_01, mirror_spire_02, mirror_spire_03],
     "crownless_throne": [crownless_throne_01, crownless_throne_02, crownless_throne_03],
     "epilogue": [epilogue_01, epilogue_02, epilogue_03_young, epilogue_04_past, epilogue_05_thalassa, epilogue_03, epilogue_04,
-                 epilogue_05, epilogue_09, epilogue_10],
+                 epilogue_05],
+    "the_hush": [the_hush_01, the_hush_02, the_hush_03, the_hush_04, the_hush_05, the_hush_06, the_hush_07],
 })
