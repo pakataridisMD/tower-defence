@@ -4341,4 +4341,5 @@ id = &"c_assault_1"
 display_name = "Nhal Vorath"
 health_growth = 1.09
 health_scale = 2.3
+boss_health_scale = 0.45
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r11"), SubResource("r21"), SubResource("r30"), SubResource("r40"), SubResource("r54"), SubResource("r65"), SubResource("r75"), SubResource("r89"), SubResource("r99"), SubResource("r110"), SubResource("r125"), SubResource("r136"), SubResource("r146"), SubResource("r162"), SubResource("r172"), SubResource("r185"), SubResource("r199"), SubResource("r212"), SubResource("r222"), SubResource("r238"), SubResource("r248"), SubResource("r261"), SubResource("r277"), SubResource("r290"), SubResource("r300"), SubResource("r316"), SubResource("r326"), SubResource("r339"), SubResource("r355"), SubResource("r368"), SubResource("r378"), SubResource("r394"), SubResource("r404"), SubResource("r417"), SubResource("r433"), SubResource("r446"), SubResource("r456"), SubResource("r473"), SubResource("r481")])

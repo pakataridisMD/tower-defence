@@ -1,6 +1,6 @@
 extends GutTest
 ## The difficulty ladder (each level doubles the one before in numbers and health) and the endless
-## skirmish (the horde doubles every RunSim.ENDLESS_STEP waves).
+## skirmish (the horde starts at half strength and grows a little every wave).
 
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
 const MAP := &"switchback"
@@ -146,25 +146,26 @@ func test_an_endless_skirmish_goes_on_past_the_last_wave() -> void:
 	assert_true(sim.config.wave_set.waves[count - 1].is_boss)
 
 
-func test_the_endless_horde_doubles_every_five_waves() -> void:
+func test_the_endless_horde_starts_at_half_and_grows_slowly() -> void:
 	var sim := _sim(&"normal", true)
-	assert_eq(RunSim.ENDLESS_STEP, 5)
-	assert_eq(sim.endless_multiplier(1), 1.0)
-	assert_eq(sim.endless_multiplier(5), 1.0)
-	assert_eq(sim.endless_multiplier(6), 2.0)
-	assert_eq(sim.endless_multiplier(11), 4.0)
-	assert_eq(sim.endless_multiplier(21), 16.0)
+	assert_almost_eq(sim.endless_multiplier(1), 0.5, 0.001)
+	assert_almost_eq(sim.endless_multiplier(2), 0.5 * RunConfig.ENDLESS_GROWTH, 0.001)
+	assert_almost_eq(sim.endless_multiplier(11), 0.5 * pow(RunConfig.ENDLESS_GROWTH, 10), 0.001)
+	assert_between(RunConfig.ENDLESS_GROWTH, 1.01, 1.05, "slow geometric growth")
 	var plain := _sim()
 	sim.wave_index = 5
 	plain.wave_index = 5
-	assert_almost_eq(sim.health_growth(), plain.health_growth() * 2.0, 0.001, "wave 6: twice the health")
-	assert_eq(sim.wave_as_it_comes().enemy_count(), plain.current_wave().enemy_count() * 2, "and twice the enemies")
+	var m := sim.endless_multiplier()
+	assert_almost_eq(sim.health_growth(), plain.health_growth() * m, 0.001, "health grows with it")
+	assert_almost_eq(float(sim.wave_as_it_comes().enemy_count()), plain.current_wave().enemy_count() * m,
+			float(plain.current_wave().groups.size()), "and numbers")
+	assert_eq(_sim().endless_multiplier(30), 1.0, "only in endless")
 
 
 func test_endless_stacks_with_the_difficulty() -> void:
 	var sim := _sim(&"hard", true)
 	sim.wave_index = 5
-	assert_almost_eq(sim.enemy_count_multiplier(), 4.0, 0.001)
+	assert_almost_eq(sim.enemy_count_multiplier(), 2.0 * sim.endless_multiplier(), 0.001)
 
 
 func test_campaign_stages_are_never_endless() -> void:

@@ -14,6 +14,8 @@ const SPEEDS: Array[int] = [1, 2, 3]
 ## frame cannot snowball into a slower one.
 const MAX_STEPS_PER_FRAME := 12
 const MENU_SCENE := "res://scenes/main.tscn"
+## The skill web's ring threads, drawn as dotted circles behind its nodes (see tools/web/gen_skill_web.py).
+const WEB_RING_RADII: Array[float] = [385.0, 640.0, 895.0, 1150.0]
 const CAMPAIGN_SCENE := "res://scenes/campaign/campaign_map.tscn"
 ## Seconds the autoplayer waits at each point of a break, so footage shows the build phase.
 const BOT_BREAK := 1.5
@@ -131,6 +133,9 @@ func _build_views() -> void:
 	add_child(camera)
 	camera.setup(board, sim.config.map.size_in_pixels())
 	board.view_rect = BoardCamera.VIEW_RECT
+	if board.art != null:
+		BossFx.new().setup(sim, board.art)
+	sim.boss_ability.connect(_on_boss_ability)
 
 	audio = GameAudio.new()
 	add_child(audio)
@@ -169,10 +174,20 @@ func _build_views() -> void:
 	add_child(web_layer)
 	web = SkillWebView.new()
 	web.title = "Skill web"
-	web.subtitle = "Take nodes to unlock towers and make them stronger. You earn a point for every wave you clear. " + \
-		"The core nodes of two elements unlock their dual tower, and of three their triple. " + \
-		"Right-click refunds a node taken in this break, until you start the next wave."
+	var rules := sim.config.rules
+	web.subtitle = ("Take nodes to unlock towers and make them stronger. Every wave you clear pays %d points, and " +
+		"nodes cost more the further out they are. Click a far node to take the whole way to it. The core nodes of " +
+		"two elements unlock their dual tower, and of three their triple. Right-click refunds a node taken in this " +
+		"break, from the tip inward.") % rules.tree_points_per_wave
+	web.navigable = true
+	web.takes_paths = true
+	web.ring_radii = WEB_RING_RADII
+	web.count_noun = "nodes"
+	web.close_text = "Close (T)"
 	web.can_refund = sim.can_refund_node
+	var whole_web := UiStyle.button("Whole web (F)", 20)
+	whole_web.pressed.connect(func() -> void: web.show_whole_tree())
+	web.add_header_button(whole_web)
 	web.hide()
 	web_layer.add_child(web)
 
@@ -233,7 +248,7 @@ func _connect_signals() -> void:
 	hud.level_up_pressed.connect(_level_up_selected)
 	hud.ascend_pressed.connect(_ascend_selected)
 	hud.hybrid_pressed.connect(_hybrid_selected)
-	hud.play_again_pressed.connect(func() -> void: get_tree().reload_current_scene())
+	hud.play_again_pressed.connect(restart_level)
 	hud.menu_pressed.connect(func() -> void: _leave(MENU_SCENE))
 	hud.campaign_pressed.connect(func() -> void: _leave(CAMPAIGN_SCENE))
 	hud.next_stage_pressed.connect(_play_next_stage)
@@ -475,7 +490,7 @@ func close_pause_menu() -> void:
 
 
 ## Keys while the menu is open: Esc resumes (or steps back from "Leave the run?"), Enter says yes
-## to leaving, O opens the audio settings and M mutes. Every other key waits until the menu closes.
+## to leaving, R asks to restart the level, O opens the audio settings and M mutes. Every other key waits until the menu closes.
 func _pause_menu_key(keycode: Key) -> void:
 	match keycode:
 		KEY_ESCAPE:
@@ -494,6 +509,9 @@ func _pause_menu_key(keycode: Key) -> void:
 		KEY_L:
 			if not pause_menu.is_confirming():
 				open_saves(&"load")
+		KEY_R:
+			if not pause_menu.is_confirming():
+				pause_menu.ask_to_leave(&"restart")
 		KEY_M:
 			_toggle_mute()
 
@@ -516,6 +534,13 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	get_tree().set_auto_accept_quit(true)
+
+
+## Restart level: the same stage (or map) again from wave 1, with the party and skill points as
+## they are now. Saved games are left alone; the new battle's first break becomes the autosave.
+func restart_level() -> void:
+	Progress.pending_run = {}
+	get_tree().reload_current_scene()
 
 
 # --- Saved games -----------------------------------------------------------------
@@ -559,6 +584,8 @@ func _leave_from_menu(scene: StringName) -> void:
 	match scene:
 		&"quit":
 			get_tree().quit()
+		&"restart":
+			restart_level()
 		&"campaign":
 			_leave(CAMPAIGN_SCENE)
 		_:
@@ -703,6 +730,21 @@ func _move_selected() -> void:
 		return
 	board.begin_moving(tower)
 	hud.show_message("%s: click a free tile to march to" % tower.hero.display_name)
+
+
+## Tells the player when a boss binds or burns down their towers, and lets go of a destroyed one.
+func _on_boss_ability(boss: SimEnemy, ability: StringName, targets: Array) -> void:
+	match ability:
+		&"fireball":
+			hud.show_message("%s hurls fire at your %s! Sell it now or lose it." % [boss.data.display_name,
+					(targets[0] as SimTower).data.display_name], UiStyle.BAD)
+		&"destroy_tower":
+			var tower: SimTower = targets[0]
+			if board.selected == tower:
+				board.select(null)
+			hud.show_message("%s destroyed your %s" % [boss.data.display_name, tower.data.display_name], UiStyle.BAD)
+		&"bind":
+			hud.show_message("%s binds %d of your towers" % [boss.data.display_name, targets.size()], UiStyle.BAD)
 
 
 func _on_hero_summoned(tower: SimTower) -> void:

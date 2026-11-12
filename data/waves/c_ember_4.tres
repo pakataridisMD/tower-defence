@@ -1562,7 +1562,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"earth"
 is_boss = true
-health_multiplier = 0.45
+health_multiplier = 0.33
 description = "A marching column, brutes under escort, Mender packs, Rimebacks, a flank attack and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r179"), SubResource("r180"), SubResource("r181"), SubResource("r182"), SubResource("r183"), SubResource("r184"), SubResource("r185"), SubResource("r186"), SubResource("r187"), SubResource("r188"), SubResource("r189")])
 
@@ -1571,5 +1571,5 @@ script = ExtResource("1_s")
 id = &"c_ember_4"
 display_name = "Throne of Cinders"
 health_growth = 1.1
-health_scale = 5.71
+health_scale = 6.0
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r15"), SubResource("r24"), SubResource("r36"), SubResource("r45"), SubResource("r59"), SubResource("r71"), SubResource("r84"), SubResource("r100"), SubResource("r114"), SubResource("r129"), SubResource("r146"), SubResource("r162"), SubResource("r178"), SubResource("r190")])

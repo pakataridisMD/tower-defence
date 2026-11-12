@@ -22,7 +22,7 @@ func before_each() -> void:
 
 func _sim() -> RunSim:
 	var sim := RunSim.new(RunConfig.from_registry(registry, MAP))
-	sim.tree.points = 20
+	sim.tree.points = 200
 	sim.gold = 5000
 	return sim
 
@@ -118,7 +118,7 @@ func test_strength_nodes_scale_slows() -> void:
 	var before := tower.effect_spec(&"slow").slow
 	sim.allocate_node(&"water_core")
 	sim.allocate_node(&"water_notable")
-	assert_almost_eq(tower.effect_spec(&"slow").slow, before * 1.3, 0.0001, "Deep Freeze")
+	assert_almost_eq(tower.effect_spec(&"slow").slow, before * 1.15, 0.0001, "Glacier")
 
 
 func test_void_auras_boost_neighbours_but_not_themselves() -> void:
@@ -309,7 +309,7 @@ func test_far_hybrids_fight_a_wave() -> void:
 	for tower_id: StringName in [&"hybrid_wildfire", &"hybrid_squall", &"hybrid_ironbark", &"hybrid_abyss", &"hybrid_magma",
 			&"hybrid_riftstorm", &"hybrid_steam", &"hybrid_lodestone", &"hybrid_blightroot"]:
 		var sim := RunSim.new(RunConfig.from_registry(registry, MAP))
-		sim.tree.points = 20
+		sim.tree.points = 200
 		sim.gold = 1000
 		var data: TowerData = registry.towers[tower_id]
 		for element_id in data.elements:

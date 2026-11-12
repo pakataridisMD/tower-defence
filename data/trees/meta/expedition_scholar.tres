@@ -7,7 +7,7 @@
 script = ExtResource("1_mod")
 stat = &"starting_tree_points"
 kind = 0
-value = 1.0
+value = 3.0
 
 [sub_resource type="Resource" id="Resource_m1"]
 script = ExtResource("1_mod")
@@ -19,7 +19,7 @@ value = -0.25
 script = ExtResource("2_node")
 id = &"expedition_scholar"
 display_name = "Scholar's Path"
-description = "Start every run with 1 more skill point. Start every run with 25% less gold. Pick one: closes Spoils of War."
+description = "Start every run with 3 more skill points. Start every run with 25% less gold. Pick one: closes Spoils of War."
 kind = 5
 region = &"expeditions"
 cost = 12

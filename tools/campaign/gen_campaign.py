@@ -38,6 +38,13 @@ def neighbours(e):
     return [RING[(i + 1) % 6], RING[(i - 1) % 6]]
 
 
+def boss_life(tune):
+    """The stage's bosses' own health scale (WaveSet.boss_health_scale), only where it is not 1."""
+    if tune.get("boss_life", 1.0) == 1.0:
+        return []
+    return [f"boss_health_scale = {tune['boss_life']}"]
+
+
 # ------------------------------------------------------------------------------------ campaigns
 # Each stage: id, name, story, waypoints (or lanes), waves, health scale, twist (stat, kind, value,
 # tags, text) or None, and extra stage settings.
@@ -189,8 +196,8 @@ CAMPAIGNS = [
                        "elements are yours again, and every horde comes at once.",
         "requires": ["ember_reach", "thunder_steppe", "verdant_deep", "frostmere", "sunscar_canyon", "hollow_rift"],
         "signature": "warded", "second": "splitter",
-        "reward": ("Crown of the Ring", "One more skill point at the start of every run, and every tower deals 5% more damage.",
-                   [("starting_tree_points", 0, 1, []), ("damage", 2, 0.05, [])]),
+        "reward": ("Crown of the Ring", "Three more skill points at the start of every run, and every tower deals 5% more damage.",
+                   [("starting_tree_points", 0, 3, []), ("damage", 2, 0.05, [])]),
         "stages": [
             ("converge_1", "Shattered Crossroads", "Two roads meet at the edge of the heartland. Two hordes walk them.",
              {"lanes": [[(-1, 2), (13, 2), (13, 9), (18, 9), (18, 5), (24, 5)],
@@ -780,7 +787,7 @@ def write_waves(campaign, stage_index, stage_id, name, n, extra, lanes=1):
     t.write(f"data/waves/{wave_set}.tres", [
         f"script = {script}", f"id = {sn(wave_set)}", f"display_name = {string(name)}",
         f"health_growth = {tune.get('growth', 1.1)}", f"health_scale = {tune.get('health', 1.0)}",
-        f"waves = {typed(t, WAVE, refs)}"])
+        *boss_life(tune), f"waves = {typed(t, WAVE, refs)}"])
     return wave_set
 
 
@@ -958,7 +965,7 @@ def write_skirmish(sk):
         f"script = {script}", f"id = {sn(sk['id'])}", f"display_name = {string(sk['name'])}",
         f"health_growth = {tune.get('growth', sk['growth'])}",
         f"health_scale = {round(tune.get('health', 1.0) * SKIRMISH_HARDNESS, 3)}",
-        f"waves = {typed(t, WAVE, refs)}"])
+        *boss_life(tune), f"waves = {typed(t, WAVE, refs)}"])
 
 
 STRUCTURE = "res://scripts/data/structure_spec.gd"
@@ -978,7 +985,7 @@ def write_assault(order, c):
     t.write(f"data/waves/{wave_set}.tres", [
         f"script = {script}", f"id = {sn(wave_set)}", f"display_name = {string(st['name'])}",
         f"health_growth = {tune.get('growth', 1.09)}", f"health_scale = {tune.get('health', 1.0)}",
-        f"waves = {typed(t, WAVE, refs)}"])
+        *boss_life(tune), f"waves = {typed(t, WAVE, refs)}"])
     enemy, (x, y), phase, ((ax, ay), (bx, by)) = st["citadel"]
     with maps.reserve_right(st["reserve"]):
         write_map(sid, st["name"], {"lanes": st["lanes"]}, 100 + order * 10, "void", wave_set, jitter=False)

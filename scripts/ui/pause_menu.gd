@@ -1,7 +1,7 @@
 class_name PauseMenu
 extends Control
 ## The menu Esc opens during a run: resume, save or load a game (Game opens Saved games over it),
-## exit to the main menu, exit to the campaign map (in a campaign stage), the audio settings, or quit
+## restart the level from wave 1, exit to the main menu, exit to the campaign map (in a campaign stage), the audio settings, or quit
 ## to the desktop. The run waits while it is open
 ## (Game pauses it). Leaving a run that is still going asks once first, because the run is lost;
 ## Enter confirms and Esc steps back.
@@ -10,25 +10,30 @@ signal resume_requested
 signal audio_requested
 ## Save game or Load game: `mode` is &"save" or &"load".
 signal saves_requested(mode: StringName)
-## `scene` is &"menu", &"campaign" or &"quit".
+## `scene` is &"restart" (this level again from wave 1), &"menu", &"campaign" or &"quit".
 signal leave_requested(scene: StringName)
 
 const BUTTON_SIZE := Vector2(420, 62)
 const LEAVE_TEXT: Dictionary[StringName, String] = {
+	&"restart": "Restart this level?",
 	&"menu": "Exit to the main menu?",
 	&"campaign": "Exit to the campaign map?",
 	&"quit": "Quit to the desktop?",
 }
 ## The confirm button for each way out.
 const LEAVE_BUTTON: Dictionary[StringName, String] = {
+	&"restart": "Restart level  (Enter)",
 	&"menu": "Exit to main menu  (Enter)",
 	&"campaign": "Exit to campaign map  (Enter)",
 	&"quit": "Quit to desktop  (Enter)",
 }
+const KEEP_TEXT := "Your progress is kept. Continue on the title screen picks this battle up again from its last break."
+const RESTART_TEXT := "The battle starts again from wave 1: its towers, gold and waves are lost. Your campaign progress, skill points and saved games are kept."
 
 var resume_button: Button
 var save_button: Button
 var load_button: Button
+var restart_button: Button
 var audio_button: Button
 var fullscreen_button: Button
 var campaign_button: Button
@@ -45,6 +50,7 @@ var _subtitle: Label
 var _choices: VBoxContainer
 var _confirm: VBoxContainer
 var _confirm_title: Label
+var _confirm_note: Label
 
 
 func _init() -> void:
@@ -83,6 +89,7 @@ func _init() -> void:
 	resume_button = _add_button(_choices, "Resume  (Esc)", func() -> void: resume_requested.emit())
 	save_button = _add_button(_choices, "Save game  (S)", func() -> void: saves_requested.emit(&"save"))
 	load_button = _add_button(_choices, "Load game  (L)", func() -> void: saves_requested.emit(&"load"))
+	restart_button = _add_button(_choices, "Restart level  (R)", func() -> void: ask_to_leave(&"restart"))
 	menu_button = _add_button(_choices, "Exit to main menu", func() -> void: ask_to_leave(&"menu"))
 	campaign_button = _add_button(_choices, "Exit to campaign map", func() -> void: ask_to_leave(&"campaign"))
 	audio_button = _add_button(_choices, "Audio settings  (O)", func() -> void: audio_requested.emit())
@@ -97,12 +104,11 @@ func _init() -> void:
 	_confirm_title = UiStyle.label("", 28)
 	_confirm_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_confirm.add_child(_confirm_title)
-	var warning := UiStyle.label("Your progress is kept. Continue on the title screen picks this battle up again from its last break.", 19,
-			UiStyle.TEXT_DIM)
-	warning.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	warning.custom_minimum_size = Vector2(BUTTON_SIZE.x, 0)
-	_confirm.add_child(warning)
+	_confirm_note = UiStyle.label(KEEP_TEXT, 19, UiStyle.TEXT_DIM)
+	_confirm_note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_confirm_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_confirm_note.custom_minimum_size = Vector2(BUTTON_SIZE.x, 0)
+	_confirm.add_child(_confirm_note)
 	leave_button = _add_button(_confirm, "", confirm)
 	leave_button.add_theme_color_override("font_color", UiStyle.BAD)
 	leave_button.add_theme_color_override("font_hover_color", UiStyle.LIFE)
@@ -139,6 +145,7 @@ func ask_to_leave(scene: StringName) -> void:
 		return
 	pending = scene
 	_confirm_title.text = LEAVE_TEXT[scene]
+	_confirm_note.text = RESTART_TEXT if scene == &"restart" else KEEP_TEXT
 	leave_button.text = LEAVE_BUTTON[scene]
 	_choices.hide()
 	_confirm.show()

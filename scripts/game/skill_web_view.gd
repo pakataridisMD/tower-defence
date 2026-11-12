@@ -73,6 +73,9 @@ var taken_text := "Taken."
 var navigable := false
 ## Dotted circles drawn around the start, in tree units.
 var ring_radii: Array[float] = [130.0, 255.0, 380.0]
+## Clicking a node further out takes the nodes on the way too (RunSim.allocate_node does), so the
+## tooltip offers that.
+var takes_paths := false
 ## Words for the nodes in the "12 of 170 talents taken" count. Empty hides the count.
 var count_noun := ""
 
@@ -144,7 +147,10 @@ func _ready() -> void:
 	_layout()
 
 
+## Shows a tree. A navigable tree opens at its starting view the first time and keeps where the
+## player left it when the same tree is shown again.
 func show_tree(p_tree: TreeState, p_regions: Dictionary[StringName, Region]) -> void:
+	var same_tree := p_tree == tree
 	tree = p_tree
 	regions = p_regions
 	_hovered = &""
@@ -152,7 +158,7 @@ func show_tree(p_tree: TreeState, p_regions: Dictionary[StringName, Region]) -> 
 	_taken_before = _taken_now()
 	show()
 	_layout()
-	if navigable:
+	if navigable and not same_tree:
 		reset_view()
 	queue_redraw()
 
@@ -884,6 +890,12 @@ func _status(data: TreeNodeData, path: Array[StringName]) -> String:
 		for i in range(1, path.size()):
 			total += tree.graph.node(path[i]).cost
 		var steps := path.size() - 2
+		if takes_paths and total <= tree.points:
+			return "Click to take it and the %d node%s on the way (%s in all)." % [steps, "" if steps == 1 else "s",
+					_points(total)]
+		if takes_paths:
+			return "Needs %s with the %d node%s on the way: you have %d." % [_points(total), steps,
+					"" if steps == 1 else "s", tree.points]
 		return "Take %d node%s on the way first: %s in all." % [steps, "" if steps == 1 else "s", _points(total)]
 	if path.size() == 2:
 		return "Needs %s." % _points(data.cost)

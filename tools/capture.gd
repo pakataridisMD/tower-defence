@@ -29,6 +29,9 @@ extends Node
 ##   frames of a gust bowing the trees (in <out>/gust).
 ## Add --edge to film the edge pan: zoomed in on a battle, the mouse is pushed against each edge of the
 ## screen in turn, saved as numbered frames in <out>/edge/ (make a clip from them).
+## Add --bosses to take the bosses' abilities: the red glow on boss stages on the map, a boss healing, raising
+## its barrier and binding towers, and Vael-Orrun's fireball burning a tower down, plus frames for clips
+## (<out>/bosses/<boss>/NNNN.png).
 ## Add --skirmish to take the Skirmish page (a hard level and Endless picked), a battle on each land
 ## skirmish map on Merciless, and an endless run once the horde has doubled three times.
 ## Add --saves to take the saved games: the title screen with Continue and New game, the new game
@@ -61,6 +64,7 @@ var _quick := false
 var _campaign := false
 var _ui := false
 var _story := false
+var _bosses := false
 var _heroes := false
 var _menu := false
 var _saves := false
@@ -109,6 +113,8 @@ func _ready() -> void:
 			_ui = true
 		elif arg == "--edge":
 			_edge = true
+		elif arg == "--bosses":
+			_bosses = true
 		elif arg == "--story":
 			_story = true
 		elif arg == "--heroes":
@@ -185,6 +191,8 @@ func _ready() -> void:
 		_run_edge()
 	elif _story:
 		_run_story()
+	elif _bosses:
+		_run_bosses()
 	elif _heroes:
 		_run_heroes()
 	elif _ui:
@@ -853,6 +861,132 @@ func _run_story() -> void:
 	get_tree().quit()
 
 
+func _run_bosses() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	var screen := CAMPAIGN_SCENE.instantiate() as CampaignScreen
+	add_child(screen)
+	await _wait(0.6)
+	screen.show_whole_world()
+	await _wait(1.0)
+	await _shot("bosses_map_world")
+	screen.select(&"ember_2")
+	await _wait(0.9)
+	await _shot("bosses_map_stage")
+	screen.free()
+	for entry: Array in [[&"void_4", &"hollow_king"], [&"water_4", &"leviathan"], [&"assault_1", &"vael_orrun"]]:
+		await _boss_fight(entry[0], entry[1])
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+## A wave of the boss alone against the bot's towers, with each of its abilities called on cue.
+func _boss_fight(stage: StringName, boss_id: StringName) -> void:
+	Progress.active_stage = stage
+	var game := GAME_SCENE.instantiate() as Game
+	game.autoplay = true
+	add_child(game)
+	await _wait(0.2)
+	game._speed_index = 0
+	game.hud.speed = Game.SPEEDS[0]
+	game.sim.gold = 8000
+	game.sim.tree.points = 16
+	game.sim.lives = 9999
+	var group := SpawnGroup.new()
+	group.enemy = boss_id
+	group.count = 1
+	var wave := WaveData.new()
+	wave.is_boss = true
+	wave.groups = [group] as Array[SpawnGroup]
+	var waves := WaveSet.new()
+	waves.id = &"bosses"
+	waves.health_growth = 1.0
+	waves.waves = [wave, wave] as Array[WaveData]
+	game.sim.config.wave_set = waves
+	await _until(func() -> bool: return game.sim.strongest_boss() != null)
+	var boss := game.sim.strongest_boss()
+	# Its own timers wait: each ability is called on cue below.
+	var hold := func() -> void:
+		boss.heal_timer = 999.0
+		boss.shield_timer = 999.0
+		boss.bind_timer = 999.0
+		boss.doom_timer = 999.0
+		boss.silence_timer = 999.0
+	hold.call()
+	var near := func() -> bool:
+		for tower in game.sim.towers:
+			if tower.position.distance_to(boss.position) < 260.0:
+				return true
+		return false
+	# The camera keeps the boss in view, or frames it with the towers it last went for.
+	var aim: Array = [null]
+	game.sim.boss_ability.connect(func(_b: SimEnemy, ability: StringName, targets: Array) -> void:
+		if ability in [&"bind", &"fireball"] and not targets.is_empty():
+			aim[0] = (targets[0] as SimTower).position)
+	var follow := func() -> void:
+		var at := boss.position + Vector2(0, -60)
+		if aim[0] != null:
+			at = at.lerp(aim[0], 0.6)
+		game.camera.set_view(1.25, at)
+	_film_dir = _out.path_join("bosses").path_join(String(boss_id))
+	_film_count = 0
+	DirAccess.make_dir_recursive_absolute(_film_dir)
+	while not near.call() and boss.alive:
+		follow.call()
+		hold.call()
+		await get_tree().process_frame
+	follow.call()
+	await _wait(0.3)
+	var boss_name := String(boss_id)
+	if boss.data.heal_interval > 0.0:
+		boss.health = boss.max_health * 0.6
+		boss.heal_timer = 0.0
+		await _wait(0.25)
+		await _shot("bosses_%s_heal" % boss_name)
+		boss.heal_timer = 999.0
+	if boss.data.shield_interval > 0.0:
+		boss.shield_timer = 0.0
+		await _wait(0.6)
+		boss.shield_timer = 999.0
+		await _shot("bosses_%s_barrier" % boss_name)
+	if boss.data.bind_interval > 0.0:
+		boss.bind_timer = 0.0
+		await _wait(0.1)
+		boss.bind_timer = 999.0
+		follow.call()
+		await _wait(0.4)
+		await _shot("bosses_%s_bind" % boss_name)
+		aim[0] = null
+	if boss.data.doom_interval > 0.0:
+		boss.doom_timer = 0.0
+		await get_tree().process_frame
+		await get_tree().process_frame
+		boss.doom_timer = 999.0
+		await _film(follow, BossAbilities.FIREBALL_FLIGHT * 0.5)
+		await _shot("bosses_%s_fireball" % boss_name)
+		await _film(follow, BossAbilities.FIREBALL_FLIGHT * 0.5 + 0.15)
+		await _shot("bosses_%s_tower_destroyed" % boss_name)
+		await _film(follow, 2.0)
+		await _shot("bosses_%s_ruin" % boss_name)
+	game.free()
+	await _wait(0.1)
+
+
+var _film_dir := ""
+var _film_count := 0
+
+
+## Saves every other frame to _film_dir for `seconds`, calling `follow` to keep the camera on the action.
+func _film(follow: Callable, seconds: float) -> void:
+	# Counted in frames, not the clock: the capture runs at a fixed 30 frames a second of game time.
+	for frame in roundi(seconds * 30.0):
+		follow.call()
+		await RenderingServer.frame_post_draw
+		if frame % 2 == 0:
+			get_viewport().get_texture().get_image().save_png(_film_dir.path_join("f_%04d.png" % _film_count))
+			_film_count += 1
+		await get_tree().process_frame
+
+
 ## A player some way into the campaign: the storm land done, part of the economy wing and one
 ## map unlocked, a few points left to spend.
 static func _demo_profile() -> PlayerProfile:
@@ -998,6 +1132,16 @@ func _run() -> void:
 		_hover(game.web.screen_position(&"bridge_plasma"))
 		await _wait(0.2)
 		await _shot("skill_web_start")
+		game.web.show_whole_tree()
+		await _wait(0.3)
+		await _shot("skill_web_whole")
+		game.web.reset_view()
+		game.web.zoom_by(0.7, game.web.screen_position(&"start"))
+		game.web.pan_by(game.web.screen_position(&"start") - game.web.screen_position(&"fire_notable"))
+		await _wait(0.2)
+		_hover(game.web.screen_position(&"fire_notable"))
+		await _wait(0.2)
+		await _shot("skill_web_far")
 		print("Screenshots saved to ", _out)
 		get_tree().quit()
 		return

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"attack_range"
+kind = 1
+value = 0.03
+required_tags = Array[StringName]([&"nature"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"nature_o_l3_895"
+display_name = "Tall Canopy VIII"
+description = "Nature towers have 3% more range."
+kind = 2
+region = &"nature"
+cost = 3
+position = Vector2(890, 94)
+links = Array[StringName]([&"nature_o_l3_810", &"nature_o_l2_895"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

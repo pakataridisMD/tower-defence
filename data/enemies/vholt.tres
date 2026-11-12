@@ -6,12 +6,15 @@
 script = ExtResource("1_enemy")
 id = &"vholt"
 display_name = "Vholt Stormcrown"
-max_health = 1400.0
+max_health = 5600.0
 speed = 46.0
 armour = 5.0
 bounty = 60
 leak_damage = 15
 tags = Array[StringName]([&"boss"])
+shield_interval = 16.0
+shield_amount = 0.1
+shield_duration = 5.0
 description = "The Sky Herald. Rides a thunderbird two cells forward every 7 seconds, and calls lightning down on the towers near him: they stop firing for 3 seconds, every 10."
 element = &"storm"
 blink_interval = 7.0
