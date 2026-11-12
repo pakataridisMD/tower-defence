@@ -6,226 +6,82 @@
 "biome": "water",
 "props": [
 {
-"kind": "reed_0",
+"kind": "snow_pine",
 "pos": [
-1265,
-149
-],
-"cell": [
-39,
-4
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-888,
-723
-],
-"cell": [
-27,
-22
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-881,
-647
-],
-"cell": [
-27,
-20
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-418,
-255
-],
-"cell": [
-13,
-7
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-1324,
-390
-],
-"cell": [
-41,
-12
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-62,
-682
+36,
+565
 ],
 "cell": [
 1,
-21
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-867,
-330
-],
-"cell": [
-27,
-10
+17
 ],
 "flip": false
 },
 {
-"kind": "reed_1",
+"kind": "snow_pine",
 "pos": [
-729,
-497
+459,
+72
 ],
 "cell": [
-22,
-15
+14,
+2
 ],
 "flip": false
 },
 {
-"kind": "frozen_shrub",
+"kind": "snow_pine",
 "pos": [
-380,
-195
+1321,
+194
 ],
 "cell": [
-11,
+41,
 6
 ],
 "flip": true
 },
 {
-"kind": "reed_0",
+"kind": "snow_pine",
 "pos": [
-648,
-273
+248,
+210
 ],
 "cell": [
-20,
-8
+7,
+6
 ],
-"flip": true
+"flip": false
 },
 {
-"kind": "reed_0",
+"kind": "ice_spire",
 "pos": [
-321,
-143
-],
-"cell": [
-10,
-4
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-463,
-776
-],
-"cell": [
-14,
-24
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-733,
-146
-],
-"cell": [
-22,
-4
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-995,
-136
+1017,
+731
 ],
 "cell": [
 31,
-4
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-907,
-662
-],
-"cell": [
-28,
-20
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-52,
-792
-],
-"cell": [
-1,
-24
+22
 ],
 "flip": false
 },
 {
-"kind": "reed_1",
+"kind": "snow_pine",
 "pos": [
-697,
-232
+853,
+816
 ],
 "cell": [
-21,
-7
+26,
+25
 ],
 "flip": false
 },
 {
-"kind": "reed_0",
+"kind": "snow_pine",
 "pos": [
-535,
-783
-],
-"cell": [
-16,
-24
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1286,
-242
+1289,
+227
 ],
 "cell": [
 40,
@@ -234,286 +90,454 @@
 "flip": false
 },
 {
-"kind": "reed_1",
+"kind": "ice_spire",
 "pos": [
-954,
-773
+411,
+815
 ],
 "cell": [
-29,
-24
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1173,
-328
-],
-"cell": [
-36,
-10
+12,
+25
 ],
 "flip": true
 },
 {
-"kind": "frozen_shrub",
+"kind": "snow_pine",
 "pos": [
-597,
-709
+488,
+103
 ],
 "cell": [
-18,
+15,
+3
+],
+"flip": false
+},
+{
+"kind": "ice_spire",
+"pos": [
+703,
+617
+],
+"cell": [
+21,
+19
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+78,
+717
+],
+"cell": [
+2,
 22
 ],
 "flip": true
 },
 {
-"kind": "reed_0",
+"kind": "ice_spire",
 "pos": [
-9,
-294
+185,
+105
 ],
 "cell": [
-0,
-9
+5,
+3
+],
+"flip": false
+},
+{
+"kind": "ice_spire",
+"pos": [
+435,
+272
+],
+"cell": [
+13,
+8
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+1241,
+808
+],
+"cell": [
+38,
+25
 ],
 "flip": true
 },
 {
-"kind": "reed_1",
+"kind": "ice_spire",
 "pos": [
-355,
-486
+18,
+447
 ],
 "cell": [
-11,
+0,
+13
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+445,
+487
+],
+"cell": [
+13,
 15
 ],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-1158,
-534
-],
-"cell": [
-36,
-16
-],
 "flip": false
 },
 {
-"kind": "reed_0",
+"kind": "snow_pine",
 "pos": [
-159,
-747
+782,
+202
 ],
 "cell": [
-4,
-23
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-479,
-293
-],
-"cell": [
-14,
-9
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-405,
-45
-],
-"cell": [
-12,
-1
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-11,
-740
-],
-"cell": [
-0,
-23
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1114,
-243
-],
-"cell": [
-34,
-7
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-851,
-311
-],
-"cell": [
-26,
-9
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-723,
-221
-],
-"cell": [
-22,
+24,
 6
 ],
 "flip": true
 },
 {
-"kind": "ice_1",
+"kind": "snow_pine",
 "pos": [
-1145,
-179
+1227,
+827
 ],
 "cell": [
-35,
-5
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-788,
-444
-],
-"cell": [
-24,
-13
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-611,
-35
-],
-"cell": [
-19,
-1
+38,
+25
 ],
 "flip": false
 },
 {
-"kind": "ice_1",
+"kind": "snow_pine",
 "pos": [
-183,
-779
+427,
+337
 ],
 "cell": [
-5,
-24
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-561,
-12
-],
-"cell": [
-17,
-0
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-161,
-355
-],
-"cell": [
-5,
-11
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-745,
-254
-],
-"cell": [
-23,
-7
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-619,
-232
-],
-"cell": [
-19,
-7
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1157,
-444
-],
-"cell": [
-36,
-13
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-148,
-333
-],
-"cell": [
-4,
+13,
 10
 ],
 "flip": false
 },
 {
-"kind": "reed_0",
+"kind": "snow_pine",
 "pos": [
-821,
-296
+198,
+40
+],
+"cell": [
+6,
+1
+],
+"flip": true
+},
+{
+"kind": "ice_spire",
+"pos": [
+1033,
+32
+],
+"cell": [
+32,
+1
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+1309,
+688
+],
+"cell": [
+40,
+21
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+307,
+792
+],
+"cell": [
+9,
+24
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+571,
+101
+],
+"cell": [
+17,
+3
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+67,
+453
+],
+"cell": [
+2,
+14
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+441,
+38
+],
+"cell": [
+13,
+1
+],
+"flip": true
+},
+{
+"kind": "ice_spire",
+"pos": [
+911,
+817
+],
+"cell": [
+28,
+25
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+587,
+794
+],
+"cell": [
+18,
+24
+],
+"flip": true
+},
+{
+"kind": "ice_spire",
+"pos": [
+321,
+825
+],
+"cell": [
+10,
+25
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+366,
+318
+],
+"cell": [
+11,
+9
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+475,
+504
+],
+"cell": [
+14,
+15
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+1321,
+249
+],
+"cell": [
+41,
+7
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+740,
+517
+],
+"cell": [
+23,
+16
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+46,
+656
+],
+"cell": [
+1,
+20
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+1281,
+39
+],
+"cell": [
+40,
+1
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+470,
+252
+],
+"cell": [
+14,
+7
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+652,
+807
+],
+"cell": [
+20,
+25
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+296,
+120
+],
+"cell": [
+9,
+3
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+1072,
+759
+],
+"cell": [
+33,
+23
+],
+"flip": false
+},
+{
+"kind": "ice_spire",
+"pos": [
+410,
+138
+],
+"cell": [
+12,
+4
+],
+"flip": false
+},
+{
+"kind": "ice_spire",
+"pos": [
+131,
+729
+],
+"cell": [
+4,
+22
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+498,
+353
+],
+"cell": [
+15,
+11
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+1320,
+147
+],
+"cell": [
+41,
+4
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+464,
+517
+],
+"cell": [
+14,
+16
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+803,
+295
 ],
 "cell": [
 25,
@@ -522,37 +546,589 @@
 "flip": false
 },
 {
-"kind": "ice_0",
+"kind": "snow_pine",
 "pos": [
-711,
-43
+465,
+338
 ],
 "cell": [
-22,
-1
+14,
+10
 ],
 "flip": false
 },
 {
-"kind": "ice_0",
+"kind": "snow_pine",
 "pos": [
-983,
-698
+172,
+789
 ],
 "cell": [
-30,
+5,
+24
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+788,
+816
+],
+"cell": [
+24,
+25
+],
+"flip": true
+},
+{
+"kind": "ice_spire",
+"pos": [
+844,
+449
+],
+"cell": [
+26,
+14
+],
+"flip": false
+},
+{
+"kind": "ice_spire",
+"pos": [
+361,
+506
+],
+"cell": [
+11,
+15
+],
+"flip": true
+},
+{
+"kind": "ice_spire",
+"pos": [
+17,
+310
+],
+"cell": [
+0,
+9
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+799,
+487
+],
+"cell": [
+24,
+15
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+234,
+88
+],
+"cell": [
+7,
+2
+],
+"flip": true
+},
+{
+"kind": "ice_spire",
+"pos": [
+423,
+75
+],
+"cell": [
+13,
+2
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+215,
+79
+],
+"cell": [
+6,
+2
+],
+"flip": false
+},
+{
+"kind": "ice_spire",
+"pos": [
+1316,
+296
+],
+"cell": [
+41,
+9
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+730,
+223
+],
+"cell": [
+22,
+6
+],
+"flip": false
+},
+{
+"kind": "ice_spire",
+"pos": [
+509,
+489
+],
+"cell": [
+15,
+15
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+33,
+782
+],
+"cell": [
+1,
+24
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+510,
+818
+],
+"cell": [
+15,
+25
+],
+"flip": true
+},
+{
+"kind": "snow_pine",
+"pos": [
+1027,
+697
+],
+"cell": [
+32,
 21
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+1308,
+747
+],
+"cell": [
+40,
+23
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+726,
+304
+],
+"cell": [
+22,
+9
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+278,
+80
+],
+"cell": [
+8,
+2
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+1283,
+795
+],
+"cell": [
+40,
+24
+],
+"flip": false
+},
+{
+"kind": "snow_pine",
+"pos": [
+98,
+532
+],
+"cell": [
+3,
+16
+],
+"flip": false
+},
+{
+"kind": "ice_spire",
+"pos": [
+247,
+197
+],
+"cell": [
+7,
+6
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+747,
+72
+],
+"cell": [
+23,
+2
 ],
 "flip": false
 },
 {
 "kind": "reed_1",
 "pos": [
-1329,
-530
+1104,
+140
 ],
 "cell": [
-41,
+34,
+4
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+87,
+519
+],
+"cell": [
+2,
+16
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+419,
+67
+],
+"cell": [
+13,
+2
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+783,
+596
+],
+"cell": [
+24,
+18
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+455,
+629
+],
+"cell": [
+14,
+19
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+348,
+713
+],
+"cell": [
+10,
+22
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+936,
+29
+],
+"cell": [
+29,
+0
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+205,
+377
+],
+"cell": [
+6,
+11
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+110,
+434
+],
+"cell": [
+3,
+13
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+620,
+686
+],
+"cell": [
+19,
+21
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+417,
+733
+],
+"cell": [
+13,
+22
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+642,
+482
+],
+"cell": [
+20,
+15
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+195,
+399
+],
+"cell": [
+6,
+12
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1178,
+311
+],
+"cell": [
+36,
+9
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+871,
+278
+],
+"cell": [
+27,
+8
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+944,
+525
+],
+"cell": [
+29,
+16
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+350,
+252
+],
+"cell": [
+10,
+7
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+678,
+153
+],
+"cell": [
+21,
+4
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+975,
+501
+],
+"cell": [
+30,
+15
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+585,
+740
+],
+"cell": [
+18,
+23
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+245,
+785
+],
+"cell": [
+7,
+24
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+902,
+575
+],
+"cell": [
+28,
+17
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+35,
+374
+],
+"cell": [
+1,
+11
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+145,
+412
+],
+"cell": [
+4,
+12
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+525,
+238
+],
+"cell": [
+16,
+7
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+907,
+525
+],
+"cell": [
+28,
 16
 ],
 "flip": false
@@ -560,44 +1136,764 @@
 {
 "kind": "reed_1",
 "pos": [
-712,
-603
+1261,
+458
 ],
 "cell": [
-22,
-18
+39,
+14
 ],
 "flip": false
 },
 {
-"kind": "reed_1",
+"kind": "snow_bush",
 "pos": [
-891,
-408
+997,
+299
 ],
 "cell": [
-27,
+31,
+9
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1266,
+126
+],
+"cell": [
+39,
+3
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+909,
+414
+],
+"cell": [
+28,
 12
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-237,
-801
-],
-"cell": [
-7,
-25
 ],
 "flip": false
 },
 {
 "kind": "reed_0",
 "pos": [
+174,
+153
+],
+"cell": [
+5,
+4
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+1143,
+565
+],
+"cell": [
+35,
+17
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+70,
+218
+],
+"cell": [
+2,
+6
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+607,
+460
+],
+"cell": [
+18,
+14
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+628,
+632
+],
+"cell": [
+19,
+19
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+600,
+632
+],
+"cell": [
+18,
+19
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+915,
+650
+],
+"cell": [
+28,
+20
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+580,
+802
+],
+"cell": [
+18,
+25
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+126,
+238
+],
+"cell": [
+3,
+7
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+495,
+547
+],
+"cell": [
+15,
+17
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+576,
+665
+],
+"cell": [
+18,
+20
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+699,
+268
+],
+"cell": [
+21,
+8
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+632,
+662
+],
+"cell": [
+19,
+20
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1238,
+646
+],
+"cell": [
+38,
+20
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+477,
+651
+],
+"cell": [
+14,
+20
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+758,
+36
+],
+"cell": [
+23,
+1
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+397,
+546
+],
+"cell": [
+12,
+17
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+755,
+455
+],
+"cell": [
+23,
+14
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+982,
+752
+],
+"cell": [
+30,
+23
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+827,
+769
+],
+"cell": [
+25,
+24
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+429,
+485
+],
+"cell": [
+13,
+15
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+190,
+271
+],
+"cell": [
+5,
+8
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+97,
+614
+],
+"cell": [
+3,
+19
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+949,
+514
+],
+"cell": [
+29,
+16
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+548,
+51
+],
+"cell": [
+17,
+1
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+893,
+301
+],
+"cell": [
+27,
+9
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+36,
+654
+],
+"cell": [
+1,
+20
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+535,
+721
+],
+"cell": [
+16,
+22
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+539,
+802
+],
+"cell": [
+16,
+25
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1204,
+500
+],
+"cell": [
+37,
+15
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+1220,
+260
+],
+"cell": [
+38,
+8
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+743,
+236
+],
+"cell": [
+23,
+7
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1250,
+74
+],
+"cell": [
+39,
+2
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+709,
+623
+],
+"cell": [
+22,
+19
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+932,
+742
+],
+"cell": [
+29,
+23
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+839,
+480
+],
+"cell": [
+26,
+15
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+614,
+512
+],
+"cell": [
+19,
+16
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1324,
+182
+],
+"cell": [
 41,
-325
+5
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+837,
+37
+],
+"cell": [
+26,
+1
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1160,
+27
+],
+"cell": [
+36,
+0
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1147,
+461
+],
+"cell": [
+35,
+14
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+825,
+780
+],
+"cell": [
+25,
+24
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1105,
+200
+],
+"cell": [
+34,
+6
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1147,
+269
+],
+"cell": [
+35,
+8
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1044,
+470
+],
+"cell": [
+32,
+14
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+748,
+759
+],
+"cell": [
+23,
+23
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+207,
+84
+],
+"cell": [
+6,
+2
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+277,
+214
+],
+"cell": [
+8,
+6
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1163,
+309
+],
+"cell": [
+36,
+9
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1304,
+283
+],
+"cell": [
+40,
+8
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+785,
+45
+],
+"cell": [
+24,
+1
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1142,
+490
+],
+"cell": [
+35,
+15
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+275,
+583
+],
+"cell": [
+8,
+18
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+239,
+128
+],
+"cell": [
+7,
+3
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+625,
+757
+],
+"cell": [
+19,
+23
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+206,
+345
+],
+"cell": [
+6,
+10
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+921,
+207
+],
+"cell": [
+28,
+6
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1071,
+592
+],
+"cell": [
+33,
+18
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+697,
+803
+],
+"cell": [
+21,
+25
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+45,
+341
 ],
 "cell": [
 1,
@@ -606,49 +1902,517 @@
 "flip": false
 },
 {
-"kind": "frozen_shrub",
+"kind": "ice_chunk",
 "pos": [
-26,
-337
+1311,
+121
 ],
 "cell": [
-0,
-10
+40,
+3
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+855,
+457
+],
+"cell": [
+26,
+14
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+473,
+791
+],
+"cell": [
+14,
+24
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+392,
+166
+],
+"cell": [
+12,
+5
 ],
 "flip": true
 },
 {
 "kind": "reed_0",
 "pos": [
-1168,
-672
+51,
+36
 ],
 "cell": [
-36,
-21
+1,
+1
 ],
 "flip": false
 },
 {
 "kind": "reed_1",
 "pos": [
-967,
-431
+263,
+92
 ],
 "cell": [
-30,
-13
+8,
+2
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+313,
+245
+],
+"cell": [
+9,
+7
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+708,
+759
+],
+"cell": [
+22,
+23
 ],
 "flip": true
 },
 {
 "kind": "reed_1",
 "pos": [
-510,
-814
+195,
+349
 ],
 "cell": [
-15,
+6,
+10
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+926,
+26
+],
+"cell": [
+28,
+0
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+1204,
+520
+],
+"cell": [
+37,
+16
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+965,
+808
+],
+"cell": [
+30,
+25
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+114,
+652
+],
+"cell": [
+3,
+20
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+748,
+759
+],
+"cell": [
+23,
+23
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+381,
+387
+],
+"cell": [
+11,
+12
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1262,
+182
+],
+"cell": [
+39,
+5
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+426,
+395
+],
+"cell": [
+13,
+12
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+845,
+453
+],
+"cell": [
+26,
+14
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+670,
+33
+],
+"cell": [
+20,
+1
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+949,
+382
+],
+"cell": [
+29,
+11
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1208,
+658
+],
+"cell": [
+37,
+20
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+1222,
+585
+],
+"cell": [
+38,
+18
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+932,
+743
+],
+"cell": [
+29,
+23
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1197,
+729
+],
+"cell": [
+37,
+22
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+587,
+341
+],
+"cell": [
+18,
+10
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+374,
+509
+],
+"cell": [
+11,
+15
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+715,
+637
+],
+"cell": [
+22,
+19
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+824,
+256
+],
+"cell": [
+25,
+8
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+563,
+191
+],
+"cell": [
+17,
+5
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+157,
+370
+],
+"cell": [
+4,
+11
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+663,
+773
+],
+"cell": [
+20,
+24
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+956,
+489
+],
+"cell": [
+29,
+15
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+911,
+113
+],
+"cell": [
+28,
+3
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+993,
+166
+],
+"cell": [
+31,
+5
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+569,
+484
+],
+"cell": [
+17,
+15
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+109,
+547
+],
+"cell": [
+3,
+17
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1264,
+822
+],
+"cell": [
+39,
+25
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1272,
+713
+],
+"cell": [
+39,
+22
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+519,
+153
+],
+"cell": [
+16,
+4
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+596,
+336
+],
+"cell": [
+18,
+10
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+1291,
+95
+],
+"cell": [
+40,
+2
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1038,
+124
+],
+"cell": [
+32,
+3
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+961,
+830
+],
+"cell": [
+30,
 25
 ],
 "flip": false
@@ -656,20 +2420,728 @@
 {
 "kind": "reed_1",
 "pos": [
-1071,
-72
+1097,
+32
 ],
 "cell": [
-33,
+34,
+1
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+584,
+107
+],
+"cell": [
+18,
+3
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+574,
+731
+],
+"cell": [
+17,
+22
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+389,
+395
+],
+"cell": [
+12,
+12
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+1267,
+793
+],
+"cell": [
+39,
+24
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+950,
+722
+],
+"cell": [
+29,
+22
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+190,
+248
+],
+"cell": [
+5,
+7
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1178,
+318
+],
+"cell": [
+36,
+9
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+164,
+235
+],
+"cell": [
+5,
+7
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+580,
+208
+],
+"cell": [
+18,
+6
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+593,
+604
+],
+"cell": [
+18,
+18
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+912,
+542
+],
+"cell": [
+28,
+16
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+953,
+673
+],
+"cell": [
+29,
+21
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+952,
+93
+],
+"cell": [
+29,
 2
 ],
 "flip": true
 },
 {
-"kind": "ice_0",
+"kind": "reed_1",
 "pos": [
-173,
-429
+505,
+242
+],
+"cell": [
+15,
+7
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+242,
+696
+],
+"cell": [
+7,
+21
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+955,
+683
+],
+"cell": [
+29,
+21
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+203,
+64
+],
+"cell": [
+6,
+2
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+388,
+396
+],
+"cell": [
+12,
+12
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+441,
+765
+],
+"cell": [
+13,
+23
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+401,
+463
+],
+"cell": [
+12,
+14
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1122,
+393
+],
+"cell": [
+35,
+12
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+660,
+368
+],
+"cell": [
+20,
+11
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+58,
+54
+],
+"cell": [
+1,
+1
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+75,
+167
+],
+"cell": [
+2,
+5
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+1044,
+58
+],
+"cell": [
+32,
+1
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+685,
+520
+],
+"cell": [
+21,
+16
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1170,
+828
+],
+"cell": [
+36,
+25
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+881,
+506
+],
+"cell": [
+27,
+15
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1250,
+60
+],
+"cell": [
+39,
+1
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1228,
+754
+],
+"cell": [
+38,
+23
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+860,
+802
+],
+"cell": [
+26,
+25
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+764,
+297
+],
+"cell": [
+23,
+9
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+724,
+15
+],
+"cell": [
+22,
+0
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+474,
+210
+],
+"cell": [
+14,
+6
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+351,
+779
+],
+"cell": [
+10,
+24
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+996,
+187
+],
+"cell": [
+31,
+5
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+990,
+399
+],
+"cell": [
+30,
+12
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+662,
+216
+],
+"cell": [
+20,
+6
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+481,
+482
+],
+"cell": [
+15,
+15
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+333,
+245
+],
+"cell": [
+10,
+7
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+654,
+727
+],
+"cell": [
+20,
+22
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+954,
+75
+],
+"cell": [
+29,
+2
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+218,
+827
+],
+"cell": [
+6,
+25
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+656,
+666
+],
+"cell": [
+20,
+20
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1012,
+794
+],
+"cell": [
+31,
+24
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+402,
+90
+],
+"cell": [
+12,
+2
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1167,
+512
+],
+"cell": [
+36,
+16
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+257,
+782
+],
+"cell": [
+8,
+24
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+795,
+146
+],
+"cell": [
+24,
+4
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+79,
+736
+],
+"cell": [
+2,
+22
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1115,
+824
+],
+"cell": [
+34,
+25
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+1180,
+665
+],
+"cell": [
+36,
+20
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1071,
+727
+],
+"cell": [
+33,
+22
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+904,
+636
+],
+"cell": [
+28,
+19
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1218,
+685
+],
+"cell": [
+38,
+21
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+90,
+262
+],
+"cell": [
+2,
+8
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+904,
+645
+],
+"cell": [
+28,
+20
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+14,
+177
+],
+"cell": [
+0,
+5
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+905,
+665
+],
+"cell": [
+28,
+20
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+163,
+441
 ],
 "cell": [
 5,
@@ -678,34 +3150,46 @@
 "flip": true
 },
 {
-"kind": "reed_1",
+"kind": "snow_rock_0",
 "pos": [
-419,
-496
+204,
+608
 ],
 "cell": [
-13,
-15
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-679,
-737
-],
-"cell": [
-21,
-23
+6,
+19
 ],
 "flip": false
 },
 {
-"kind": "snow_rock",
+"kind": "reed_0",
 "pos": [
-16,
-322
+304,
+453
+],
+"cell": [
+9,
+14
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+568,
+411
+],
+"cell": [
+17,
+12
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+31,
+327
 ],
 "cell": [
 0,
@@ -714,177 +3198,21 @@
 "flip": true
 },
 {
-"kind": "ice_0",
+"kind": "ice_chunk",
 "pos": [
-1121,
-140
+621,
+296
 ],
 "cell": [
-35,
-4
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-750,
-188
-],
-"cell": [
-23,
-5
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-114,
-221
-],
-"cell": [
-3,
-6
+19,
+9
 ],
 "flip": false
 },
 {
 "kind": "reed_0",
 "pos": [
-844,
-236
-],
-"cell": [
-26,
-7
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-291,
-480
-],
-"cell": [
-9,
-14
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1081,
-123
-],
-"cell": [
-33,
-3
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-41,
-369
-],
-"cell": [
-1,
-11
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-1054,
-807
-],
-"cell": [
-32,
-25
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-128,
-75
-],
-"cell": [
-4,
-2
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-423,
-27
-],
-"cell": [
-13,
-0
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-1274,
-206
-],
-"cell": [
-39,
-6
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-835,
-523
-],
-"cell": [
-26,
-16
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-907,
-70
-],
-"cell": [
-28,
-2
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-409,
-762
-],
-"cell": [
-12,
-23
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1292,
+1290,
 598
 ],
 "cell": [
@@ -894,217 +3222,337 @@
 "flip": false
 },
 {
-"kind": "snow_rock",
+"kind": "reed_0",
 "pos": [
-885,
-564
+324,
+549
 ],
 "cell": [
-27,
+10,
 17
 ],
-"flip": true
+"flip": false
 },
 {
-"kind": "snow_rock",
+"kind": "snow_rock_0",
 "pos": [
-939,
-679
+1121,
+275
 ],
 "cell": [
-29,
-21
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1065,
-266
-],
-"cell": [
-33,
+35,
 8
 ],
 "flip": false
 },
 {
-"kind": "frozen_shrub",
+"kind": "snow_rock_0",
 "pos": [
-1003,
-159
+931,
+374
 ],
 "cell": [
-31,
-4
+29,
+11
 ],
 "flip": true
 },
 {
 "kind": "reed_0",
 "pos": [
-623,
-312
-],
-"cell": [
-19,
-9
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-135,
-316
-],
-"cell": [
-4,
-9
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-864,
-236
+875,
+75
 ],
 "cell": [
 27,
-7
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-320,
-80
-],
-"cell": [
-9,
 2
 ],
 "flip": false
 },
 {
-"kind": "reed_1",
+"kind": "snow_rock_0",
 "pos": [
-952,
-645
+305,
+210
 ],
 "cell": [
-29,
-20
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-599,
-244
-],
-"cell": [
-18,
-7
+9,
+6
 ],
 "flip": false
 },
 {
-"kind": "reed_0",
+"kind": "snow_rock_1",
 "pos": [
-73,
-298
+346,
+353
 ],
 "cell": [
-2,
-9
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-462,
-467
-],
-"cell": [
-14,
-14
+10,
+11
 ],
 "flip": false
 },
 {
-"kind": "snow_rock",
+"kind": "snow_bush",
 "pos": [
-1321,
-166
+525,
+364
 ],
 "cell": [
-41,
-5
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-441,
-719
-],
-"cell": [
-13,
-22
+16,
+11
 ],
 "flip": true
 },
 {
-"kind": "ice_0",
+"kind": "ice_chunk",
 "pos": [
-500,
-782
+96,
+775
 ],
 "cell": [
-15,
+3,
 24
 ],
 "flip": false
 },
 {
-"kind": "frozen_shrub",
+"kind": "snow_bush",
 "pos": [
-369,
-251
+1275,
+28
 ],
 "cell": [
-11,
-7
+39,
+0
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1319,
+446
+],
+"cell": [
+41,
+13
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+191,
+567
+],
+"cell": [
+5,
+17
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1221,
+412
+],
+"cell": [
+38,
+12
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1218,
+613
+],
+"cell": [
+38,
+19
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1040,
+191
+],
+"cell": [
+32,
+5
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+344,
+370
+],
+"cell": [
+10,
+11
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+131,
+98
+],
+"cell": [
+4,
+3
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+469,
+508
+],
+"cell": [
+14,
+15
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+203,
+353
+],
+"cell": [
+6,
+11
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+532,
+129
+],
+"cell": [
+16,
+4
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+719,
+294
+],
+"cell": [
+22,
+9
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+502,
+560
+],
+"cell": [
+15,
+17
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+348,
+96
+],
+"cell": [
+10,
+3
 ],
 "flip": false
 },
 {
 "kind": "reed_1",
 "pos": [
-1151,
-453
+718,
+530
 ],
 "cell": [
-35,
+22,
+16
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+477,
+96
+],
+"cell": [
+14,
+2
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+921,
+436
+],
+"cell": [
+28,
+13
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+641,
+454
+],
+"cell": [
+20,
 14
 ],
 "flip": true
 },
 {
-"kind": "reed_1",
+"kind": "snow_rock_0",
 "pos": [
-622,
-536
+808,
+789
 ],
 "cell": [
-19,
+25,
+24
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+392,
+517
+],
+"cell": [
+12,
 16
 ],
 "flip": true
@@ -1112,240 +3560,264 @@
 {
 "kind": "reed_0",
 "pos": [
-683,
-214
+1212,
+704
 ],
 "cell": [
-21,
-6
+37,
+22
 ],
 "flip": false
 },
 {
-"kind": "frozen_shrub",
+"kind": "reed_1",
 "pos": [
-611,
-326
+1262,
+201
 ],
 "cell": [
-19,
+39,
+6
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1124,
+348
+],
+"cell": [
+35,
 10
 ],
 "flip": true
 },
 {
-"kind": "snow_rock",
+"kind": "snow_rock_0",
 "pos": [
-1031,
-743
+391,
+803
 ],
 "cell": [
-32,
-23
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-119,
-312
-],
-"cell": [
-3,
-9
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-628,
-374
-],
-"cell": [
-19,
-11
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-492,
-716
-],
-"cell": [
-15,
-22
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-341,
-819
-],
-"cell": [
-10,
-25
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1069,
-717
-],
-"cell": [
-33,
-22
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
 12,
-651
-],
-"cell": [
-0,
-20
+25
 ],
 "flip": false
 },
 {
 "kind": "reed_1",
 "pos": [
-872,
-696
+887,
+50
 ],
 "cell": [
 27,
-21
+1
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1029,
+118
+],
+"cell": [
+32,
+3
 ],
 "flip": false
 },
 {
-"kind": "frozen_shrub",
+"kind": "snow_bush",
 "pos": [
-952,
-673
+324,
+564
 ],
 "cell": [
-29,
-21
+10,
+17
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+314,
+308
+],
+"cell": [
+9,
+9
 ],
 "flip": false
 },
 {
 "kind": "reed_0",
 "pos": [
-136,
-32
+596,
+804
 ],
 "cell": [
-4,
-0
+18,
+25
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+84,
+57
+],
+"cell": [
+2,
+1
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+952,
+287
+],
+"cell": [
+29,
+8
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+1071,
+95
+],
+"cell": [
+33,
+2
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+985,
+170
+],
+"cell": [
+30,
+5
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+815,
+632
+],
+"cell": [
+25,
+19
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+217,
+703
+],
+"cell": [
+6,
+21
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+811,
+455
+],
+"cell": [
+25,
+14
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+568,
+718
+],
+"cell": [
+17,
+22
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1137,
+705
+],
+"cell": [
+35,
+22
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+306,
+549
+],
+"cell": [
+9,
+17
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+70,
+722
+],
+"cell": [
+2,
+22
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1310,
+83
+],
+"cell": [
+40,
+2
 ],
 "flip": true
 },
 {
 "kind": "reed_1",
 "pos": [
-767,
-439
-],
-"cell": [
-23,
-13
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-317,
-131
-],
-"cell": [
-9,
-4
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-435,
-809
-],
-"cell": [
-13,
-25
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1292,
-504
-],
-"cell": [
-40,
-15
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-754,
-674
-],
-"cell": [
-23,
-21
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-460,
-669
+477,
+41
 ],
 "cell": [
 14,
-20
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-901,
-823
-],
-"cell": [
-28,
-25
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-729,
-741
-],
-"cell": [
-22,
-23
+1
 ],
 "flip": false
 },
@@ -1353,7 +3825,127 @@
 "kind": "reed_0",
 "pos": [
 1052,
-488
+281
+],
+"cell": [
+32,
+8
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+901,
+625
+],
+"cell": [
+28,
+19
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1293,
+183
+],
+"cell": [
+40,
+5
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+933,
+690
+],
+"cell": [
+29,
+21
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1177,
+228
+],
+"cell": [
+36,
+7
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+946,
+685
+],
+"cell": [
+29,
+21
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+1172,
+591
+],
+"cell": [
+36,
+18
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+730,
+157
+],
+"cell": [
+22,
+4
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+1221,
+669
+],
+"cell": [
+38,
+20
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+370,
+561
+],
+"cell": [
+11,
+17
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1044,
+500
 ],
 "cell": [
 32,
@@ -1362,154 +3954,406 @@
 "flip": false
 },
 {
-"kind": "reed_1",
+"kind": "snow_bush",
 "pos": [
-1116,
-701
+1142,
+130
 ],
 "cell": [
-34,
-21
+35,
+4
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+229,
+454
+],
+"cell": [
+7,
+14
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+258,
+405
+],
+"cell": [
+8,
+12
 ],
 "flip": true
 },
 {
-"kind": "frozen_shrub",
+"kind": "reed_1",
 "pos": [
-601,
-421
+400,
+502
+],
+"cell": [
+12,
+15
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1076,
+425
+],
+"cell": [
+33,
+13
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+593,
+589
 ],
 "cell": [
 18,
-13
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-686,
-296
-],
-"cell": [
-21,
-9
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-624,
-292
-],
-"cell": [
-19,
-9
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-560,
-73
-],
-"cell": [
-17,
-2
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-31,
-291
-],
-"cell": [
-0,
-9
+18
 ],
 "flip": false
 },
 {
 "kind": "reed_0",
 "pos": [
-695,
-303
+1119,
+337
 ],
 "cell": [
-21,
-9
+34,
+10
 ],
 "flip": false
 },
 {
-"kind": "reed_0",
+"kind": "snow_rock_0",
 "pos": [
-569,
-773
+329,
+582
 ],
 "cell": [
-17,
-24
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-644,
-601
-],
-"cell": [
-20,
+10,
 18
 ],
 "flip": true
 },
 {
-"kind": "ice_1",
+"kind": "snow_bush",
 "pos": [
-431,
+764,
 243
 ],
 "cell": [
-13,
+23,
 7
 ],
-"flip": false
+"flip": true
 },
 {
-"kind": "ice_0",
+"kind": "reed_1",
 "pos": [
-1310,
-645
+339,
+597
 ],
 "cell": [
-40,
-20
+10,
+18
 ],
 "flip": false
 },
 {
 "kind": "reed_1",
 "pos": [
-931,
-57
+181,
+399
+],
+"cell": [
+5,
+12
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+448,
+334
+],
+"cell": [
+14,
+10
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1060,
+500
+],
+"cell": [
+33,
+15
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+77,
+553
+],
+"cell": [
+2,
+17
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+81,
+250
+],
+"cell": [
+2,
+7
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+936,
+714
 ],
 "cell": [
 29,
+22
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+1333,
+161
+],
+"cell": [
+41,
+5
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+470,
+558
+],
+"cell": [
+14,
+17
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+426,
+518
+],
+"cell": [
+13,
+16
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+21,
+411
+],
+"cell": [
+0,
+12
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+782,
+152
+],
+"cell": [
+24,
+4
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+644,
+355
+],
+"cell": [
+20,
+11
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+933,
+742
+],
+"cell": [
+29,
+23
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+645,
+787
+],
+"cell": [
+20,
+24
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+485,
+94
+],
+"cell": [
+15,
+2
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1280,
+316
+],
+"cell": [
+40,
+9
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+119,
+342
+],
+"cell": [
+3,
+10
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+909,
+417
+],
+"cell": [
+28,
+13
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+96,
+78
+],
+"cell": [
+3,
+2
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+152,
+38
+],
+"cell": [
+4,
 1
 ],
 "flip": true
 },
 {
-"kind": "snow_rock",
+"kind": "snow_bush",
 "pos": [
-479,
-52
+83,
+704
+],
+"cell": [
+2,
+22
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+914,
+300
+],
+"cell": [
+28,
+9
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1249,
+720
+],
+"cell": [
+39,
+22
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+472,
+42
 ],
 "cell": [
 14,
@@ -1518,9 +4362,2265 @@
 "flip": true
 },
 {
+"kind": "snow_rock_0",
+"pos": [
+1168,
+505
+],
+"cell": [
+36,
+15
+],
+"flip": true
+},
+{
 "kind": "reed_0",
 "pos": [
-203,
+82,
+507
+],
+"cell": [
+2,
+15
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+771,
+306
+],
+"cell": [
+24,
+9
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+240,
+451
+],
+"cell": [
+7,
+14
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1114,
+618
+],
+"cell": [
+34,
+19
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+462,
+768
+],
+"cell": [
+14,
+23
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+803,
+712
+],
+"cell": [
+25,
+22
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1235,
+788
+],
+"cell": [
+38,
+24
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+472,
+534
+],
+"cell": [
+14,
+16
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1034,
+104
+],
+"cell": [
+32,
+3
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+180,
+12
+],
+"cell": [
+5,
+0
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+534,
+453
+],
+"cell": [
+16,
+14
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+837,
+822
+],
+"cell": [
+26,
+25
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+139,
+273
+],
+"cell": [
+4,
+8
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1272,
+434
+],
+"cell": [
+39,
+13
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1140,
+255
+],
+"cell": [
+35,
+7
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+1054,
+342
+],
+"cell": [
+32,
+10
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+457,
+225
+],
+"cell": [
+14,
+7
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+981,
+159
+],
+"cell": [
+30,
+4
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+167,
+780
+],
+"cell": [
+5,
+24
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+328,
+588
+],
+"cell": [
+10,
+18
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+1142,
+123
+],
+"cell": [
+35,
+3
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+1143,
+38
+],
+"cell": [
+35,
+1
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+614,
+427
+],
+"cell": [
+19,
+13
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+847,
+497
+],
+"cell": [
+26,
+15
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+744,
+607
+],
+"cell": [
+23,
+18
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+803,
+139
+],
+"cell": [
+25,
+4
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1251,
+306
+],
+"cell": [
+39,
+9
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+697,
+461
+],
+"cell": [
+21,
+14
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+292,
+396
+],
+"cell": [
+9,
+12
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+322,
+759
+],
+"cell": [
+10,
+23
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+890,
+163
+],
+"cell": [
+27,
+5
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+664,
+312
+],
+"cell": [
+20,
+9
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+152,
+384
+],
+"cell": [
+4,
+12
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+1039,
+749
+],
+"cell": [
+32,
+23
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+407,
+32
+],
+"cell": [
+12,
+0
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+723,
+24
+],
+"cell": [
+22,
+0
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+196,
+84
+],
+"cell": [
+6,
+2
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1177,
+746
+],
+"cell": [
+36,
+23
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+774,
+509
+],
+"cell": [
+24,
+15
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+786,
+423
+],
+"cell": [
+24,
+13
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+786,
+277
+],
+"cell": [
+24,
+8
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+474,
+547
+],
+"cell": [
+14,
+17
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+762,
+814
+],
+"cell": [
+23,
+25
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+531,
+370
+],
+"cell": [
+16,
+11
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+691,
+323
+],
+"cell": [
+21,
+10
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1147,
+297
+],
+"cell": [
+35,
+9
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+722,
+213
+],
+"cell": [
+22,
+6
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1108,
+239
+],
+"cell": [
+34,
+7
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+893,
+219
+],
+"cell": [
+27,
+6
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+488,
+326
+],
+"cell": [
+15,
+10
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+402,
+533
+],
+"cell": [
+12,
+16
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+6,
+293
+],
+"cell": [
+0,
+9
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+416,
+13
+],
+"cell": [
+12,
+0
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1200,
+85
+],
+"cell": [
+37,
+2
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+154,
+745
+],
+"cell": [
+4,
+23
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1055,
+690
+],
+"cell": [
+32,
+21
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+438,
+792
+],
+"cell": [
+13,
+24
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+190,
+51
+],
+"cell": [
+5,
+1
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+965,
+154
+],
+"cell": [
+30,
+4
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+415,
+647
+],
+"cell": [
+12,
+20
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+283,
+751
+],
+"cell": [
+8,
+23
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+48,
+716
+],
+"cell": [
+1,
+22
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+1323,
+584
+],
+"cell": [
+41,
+18
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+327,
+317
+],
+"cell": [
+10,
+9
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+108,
+12
+],
+"cell": [
+3,
+0
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+9,
+234
+],
+"cell": [
+0,
+7
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+745,
+339
+],
+"cell": [
+23,
+10
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+504,
+533
+],
+"cell": [
+15,
+16
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+427,
+688
+],
+"cell": [
+13,
+21
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+611,
+377
+],
+"cell": [
+19,
+11
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+895,
+318
+],
+"cell": [
+27,
+9
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1019,
+130
+],
+"cell": [
+31,
+4
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1018,
+786
+],
+"cell": [
+31,
+24
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+19,
+825
+],
+"cell": [
+0,
+25
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+322,
+408
+],
+"cell": [
+10,
+12
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+778,
+166
+],
+"cell": [
+24,
+5
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+1165,
+173
+],
+"cell": [
+36,
+5
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1290,
+25
+],
+"cell": [
+40,
+0
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+1054,
+202
+],
+"cell": [
+32,
+6
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+68,
+241
+],
+"cell": [
+2,
+7
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+595,
+227
+],
+"cell": [
+18,
+7
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+116,
+778
+],
+"cell": [
+3,
+24
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+199,
+342
+],
+"cell": [
+6,
+10
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1309,
+821
+],
+"cell": [
+40,
+25
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1217,
+652
+],
+"cell": [
+38,
+20
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+672,
+31
+],
+"cell": [
+21,
+0
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+81,
+651
+],
+"cell": [
+2,
+20
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+1096,
+360
+],
+"cell": [
+34,
+11
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+375,
+11
+],
+"cell": [
+11,
+0
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+984,
+329
+],
+"cell": [
+30,
+10
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1273,
+491
+],
+"cell": [
+39,
+15
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+842,
+352
+],
+"cell": [
+26,
+10
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+985,
+770
+],
+"cell": [
+30,
+24
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+411,
+702
+],
+"cell": [
+12,
+21
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+947,
+725
+],
+"cell": [
+29,
+22
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+889,
+636
+],
+"cell": [
+27,
+19
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1231,
+22
+],
+"cell": [
+38,
+0
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+953,
+235
+],
+"cell": [
+29,
+7
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+910,
+772
+],
+"cell": [
+28,
+24
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1214,
+126
+],
+"cell": [
+37,
+3
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+619,
+232
+],
+"cell": [
+19,
+7
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+772,
+434
+],
+"cell": [
+24,
+13
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+215,
+202
+],
+"cell": [
+6,
+6
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+67,
+450
+],
+"cell": [
+2,
+14
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+16,
+67
+],
+"cell": [
+0,
+2
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+703,
+656
+],
+"cell": [
+21,
+20
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+253,
+460
+],
+"cell": [
+7,
+14
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1022,
+428
+],
+"cell": [
+31,
+13
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1027,
+702
+],
+"cell": [
+32,
+21
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1042,
+236
+],
+"cell": [
+32,
+7
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+399,
+54
+],
+"cell": [
+12,
+1
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+65,
+320
+],
+"cell": [
+2,
+10
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+295,
+29
+],
+"cell": [
+9,
+0
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+417,
+252
+],
+"cell": [
+13,
+7
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+210,
+290
+],
+"cell": [
+6,
+9
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+983,
+45
+],
+"cell": [
+30,
+1
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1053,
+467
+],
+"cell": [
+32,
+14
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+685,
+602
+],
+"cell": [
+21,
+18
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+229,
+827
+],
+"cell": [
+7,
+25
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+549,
+605
+],
+"cell": [
+17,
+18
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+568,
+779
+],
+"cell": [
+17,
+24
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+346,
+199
+],
+"cell": [
+10,
+6
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+100,
+64
+],
+"cell": [
+3,
+1
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+253,
+255
+],
+"cell": [
+7,
+7
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+778,
+352
+],
+"cell": [
+24,
+11
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+209,
+74
+],
+"cell": [
+6,
+2
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+463,
+295
+],
+"cell": [
+14,
+9
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+724,
+373
+],
+"cell": [
+22,
+11
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+284,
+258
+],
+"cell": [
+8,
+8
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+582,
+39
+],
+"cell": [
+18,
+1
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+115,
+464
+],
+"cell": [
+3,
+14
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1001,
+52
+],
+"cell": [
+31,
+1
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+554,
+659
+],
+"cell": [
+17,
+20
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+358,
+128
+],
+"cell": [
+11,
+4
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+163,
+726
+],
+"cell": [
+5,
+22
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1241,
+87
+],
+"cell": [
+38,
+2
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+679,
+764
+],
+"cell": [
+21,
+23
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+1059,
+214
+],
+"cell": [
+33,
+6
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+985,
+459
+],
+"cell": [
+30,
+14
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1212,
+130
+],
+"cell": [
+37,
+4
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1226,
+605
+],
+"cell": [
+38,
+18
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+265,
+352
+],
+"cell": [
+8,
+10
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+174,
+784
+],
+"cell": [
+5,
+24
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+165,
+363
+],
+"cell": [
+5,
+11
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+645,
+662
+],
+"cell": [
+20,
+20
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1274,
+447
+],
+"cell": [
+39,
+13
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1135,
+757
+],
+"cell": [
+35,
+23
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+493,
+269
+],
+"cell": [
+15,
+8
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1243,
+503
+],
+"cell": [
+38,
+15
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+758,
+114
+],
+"cell": [
+23,
+3
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+461,
+353
+],
+"cell": [
+14,
+11
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+410,
+182
+],
+"cell": [
+12,
+5
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+901,
+500
+],
+"cell": [
+28,
+15
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+864,
+801
+],
+"cell": [
+26,
+25
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1307,
+99
+],
+"cell": [
+40,
+3
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+35,
+522
+],
+"cell": [
+1,
+16
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+268,
+388
+],
+"cell": [
+8,
+12
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+304,
+305
+],
+"cell": [
+9,
+9
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+291,
+383
+],
+"cell": [
+9,
+11
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+878,
+260
+],
+"cell": [
+27,
+8
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+289,
+760
+],
+"cell": [
+9,
+23
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+675,
+364
+],
+"cell": [
+21,
+11
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1221,
+332
+],
+"cell": [
+38,
+10
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+914,
+340
+],
+"cell": [
+28,
+10
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1151,
+488
+],
+"cell": [
+35,
+15
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+241,
+420
+],
+"cell": [
+7,
+13
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+773,
+260
+],
+"cell": [
+24,
+8
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+141,
+322
+],
+"cell": [
+4,
+10
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+962,
+118
+],
+"cell": [
+30,
+3
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1071,
+442
+],
+"cell": [
+33,
+13
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+134,
+304
+],
+"cell": [
+4,
+9
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+620,
+92
+],
+"cell": [
+19,
+2
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+15,
+653
+],
+"cell": [
+0,
+20
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+815,
+432
+],
+"cell": [
+25,
+13
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1274,
+275
+],
+"cell": [
+39,
+8
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+463,
+817
+],
+"cell": [
+14,
+25
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+295,
+457
+],
+"cell": [
+9,
+14
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+590,
+101
+],
+"cell": [
+18,
+3
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+58,
+684
+],
+"cell": [
+1,
+21
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1247,
+53
+],
+"cell": [
+38,
+1
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+324,
+45
+],
+"cell": [
+10,
+1
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+516,
+824
+],
+"cell": [
+16,
+25
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+788,
+825
+],
+"cell": [
+24,
+25
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+472,
+499
+],
+"cell": [
+14,
+15
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1272,
+164
+],
+"cell": [
+39,
+5
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+263,
+285
+],
+"cell": [
+8,
+8
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+545,
+328
+],
+"cell": [
+17,
+10
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+223,
 498
 ],
 "cell": [
@@ -1530,73 +6630,13 @@
 "flip": false
 },
 {
-"kind": "reed_1",
+"kind": "snow_rock_0",
 "pos": [
-1007,
-102
+552,
+96
 ],
 "cell": [
-31,
-3
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-62,
-753
-],
-"cell": [
-1,
-23
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-701,
-803
-],
-"cell": [
-21,
-25
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-295,
-246
-],
-"cell": [
-9,
-7
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-224,
-783
-],
-"cell": [
-6,
-24
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-672,
-72
-],
-"cell": [
-20,
+17,
 2
 ],
 "flip": true
@@ -1604,1091 +6644,275 @@
 {
 "kind": "reed_0",
 "pos": [
-710,
-339
+230,
+773
 ],
 "cell": [
-22,
-10
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-911,
-379
-],
-"cell": [
-28,
-11
+7,
+24
 ],
 "flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+965,
+391
+],
+"cell": [
+30,
+12
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+762,
+212
+],
+"cell": [
+23,
+6
+],
+"flip": true
 },
 {
 "kind": "reed_1",
 "pos": [
-1180,
-115
-],
-"cell": [
-36,
-3
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-954,
-47
-],
-"cell": [
-29,
-1
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-797,
-258
-],
-"cell": [
-24,
-8
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-1150,
-226
-],
-"cell": [
-35,
-7
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-653,
+15,
 74
 ],
 "cell": [
-20,
+0,
 2
 ],
 "flip": true
 },
 {
-"kind": "frozen_shrub",
-"pos": [
-447,
-270
-],
-"cell": [
-13,
-8
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-27,
-818
-],
-"cell": [
-0,
-25
-],
-"flip": false
-},
-{
 "kind": "reed_0",
 "pos": [
-1047,
-243
+698,
+792
 ],
 "cell": [
-32,
-7
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-880,
-326
-],
-"cell": [
-27,
-10
+21,
+24
 ],
 "flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-604,
-809
-],
-"cell": [
-18,
-25
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1040,
-543
-],
-"cell": [
-32,
-16
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-776,
-119
-],
-"cell": [
-24,
-3
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-813,
-162
-],
-"cell": [
-25,
-5
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-515,
-663
-],
-"cell": [
-16,
-20
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-1258,
-582
-],
-"cell": [
-39,
-18
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-824,
-682
-],
-"cell": [
-25,
-21
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-331,
-814
-],
-"cell": [
-10,
-25
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-664,
-62
-],
-"cell": [
-20,
-1
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-831,
-559
-],
-"cell": [
-25,
-17
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1264,
-736
-],
-"cell": [
-39,
-23
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1229,
-658
-],
-"cell": [
-38,
-20
-],
-"flip": false
 },
 {
 "kind": "reed_0",
 "pos": [
 1249,
-744
+276
 ],
 "cell": [
 39,
-23
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-115,
-588
-],
-"cell": [
-3,
-18
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-887,
-449
-],
-"cell": [
-27,
-14
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-683,
-467
-],
-"cell": [
-21,
-14
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-376,
-729
-],
-"cell": [
-11,
-22
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-647,
-163
-],
-"cell": [
-20,
-5
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-1210,
-406
-],
-"cell": [
-37,
-12
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-562,
-739
-],
-"cell": [
-17,
-23
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-523,
-604
-],
-"cell": [
-16,
-18
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-362,
-518
-],
-"cell": [
-11,
-16
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-328,
-203
-],
-"cell": [
-10,
-6
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-317,
-254
-],
-"cell": [
-9,
-7
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1289,
-101
-],
-"cell": [
-40,
-3
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-700,
-167
-],
-"cell": [
-21,
-5
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-296,
-189
-],
-"cell": [
-9,
-5
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-413,
-108
-],
-"cell": [
-12,
-3
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-876,
-635
-],
-"cell": [
-27,
-19
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-408,
-763
-],
-"cell": [
-12,
-23
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-477,
-820
-],
-"cell": [
-14,
-25
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-222,
-66
-],
-"cell": [
-6,
-2
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-1241,
-34
-],
-"cell": [
-38,
-1
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-575,
-768
-],
-"cell": [
-17,
-23
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-618,
-298
-],
-"cell": [
-19,
-9
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-211,
-805
-],
-"cell": [
-6,
-25
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-695,
-118
-],
-"cell": [
-21,
-3
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-139,
-407
-],
-"cell": [
-4,
-12
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-327,
-684
-],
-"cell": [
-10,
-21
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-939,
-185
-],
-"cell": [
-29,
-5
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-104,
-645
-],
-"cell": [
-3,
-20
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-364,
-197
-],
-"cell": [
-11,
-6
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1240,
-615
-],
-"cell": [
-38,
-19
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1004,
-312
-],
-"cell": [
-31,
-9
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1078,
-582
-],
-"cell": [
-33,
-18
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-672,
-72
-],
-"cell": [
-21,
-2
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-1126,
-97
-],
-"cell": [
-35,
-3
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-104,
-729
-],
-"cell": [
-3,
-22
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-1015,
-523
-],
-"cell": [
-31,
-16
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-671,
-311
-],
-"cell": [
-20,
-9
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1332,
-471
-],
-"cell": [
-41,
-14
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-209,
-357
-],
-"cell": [
-6,
-11
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1058,
-735
-],
-"cell": [
-33,
-22
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-1098,
-812
-],
-"cell": [
-34,
-25
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-1131,
-804
-],
-"cell": [
-35,
-25
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-368,
-331
-],
-"cell": [
-11,
-10
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-121,
-644
-],
-"cell": [
-3,
-20
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-813,
-468
-],
-"cell": [
-25,
-14
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-72,
-665
-],
-"cell": [
-2,
-20
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-260,
-155
-],
-"cell": [
-8,
-4
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-1004,
-111
-],
-"cell": [
-31,
-3
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-247,
-699
-],
-"cell": [
-7,
-21
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-322,
-261
-],
-"cell": [
-10,
 8
 ],
 "flip": true
 },
 {
-"kind": "frozen_shrub",
+"kind": "snow_rock_0",
 "pos": [
-524,
-97
+352,
+38
 ],
 "cell": [
-16,
-3
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1106,
-94
-],
-"cell": [
-34,
-2
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-269,
-318
-],
-"cell": [
-8,
-9
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-57,
-514
-],
-"cell": [
-1,
-16
+10,
+1
 ],
 "flip": false
 },
 {
-"kind": "ice_1",
+"kind": "ice_chunk",
 "pos": [
-1167,
-823
+255,
+138
 ],
 "cell": [
-36,
-25
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-893,
-443
-],
-"cell": [
-27,
-13
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-750,
-781
-],
-"cell": [
-23,
-24
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-887,
-116
-],
-"cell": [
-27,
-3
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-390,
-574
-],
-"cell": [
-12,
-17
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-100,
-362
-],
-"cell": [
-3,
-11
+7,
+4
 ],
 "flip": false
 },
 {
 "kind": "reed_0",
 "pos": [
-288,
-469
+571,
+14
+],
+"cell": [
+17,
+0
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+651,
+659
+],
+"cell": [
+20,
+20
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+309,
+54
 ],
 "cell": [
 9,
-14
+1
 ],
 "flip": false
 },
 {
-"kind": "reed_0",
+"kind": "snow_bush",
 "pos": [
-998,
-714
-],
-"cell": [
-31,
-22
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-63,
-243
+53,
+226
 ],
 "cell": [
 1,
 7
 ],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1106,
+270
+],
+"cell": [
+34,
+8
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+993,
+512
+],
+"cell": [
+31,
+15
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1198,
+827
+],
+"cell": [
+37,
+25
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+373,
+205
+],
+"cell": [
+11,
+6
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1217,
+16
+],
+"cell": [
+38,
+0
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+64,
+632
+],
+"cell": [
+2,
+19
+],
 "flip": true
 },
 {
 "kind": "reed_0",
 "pos": [
-886,
-441
+222,
+790
 ],
 "cell": [
-27,
+6,
+24
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1334,
+668
+],
+"cell": [
+41,
+20
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+171,
+436
+],
+"cell": [
+5,
 13
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1247,
+510
+],
+"cell": [
+38,
+15
 ],
 "flip": false
 },
 {
-"kind": "ice_0",
+"kind": "snow_bush",
 "pos": [
-1107,
-178
+379,
+715
 ],
 "cell": [
-34,
-5
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-440,
-370
-],
-"cell": [
-13,
-11
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1282,
-712
-],
-"cell": [
-40,
+11,
 22
 ],
 "flip": true
@@ -2696,8 +6920,8 @@
 {
 "kind": "reed_0",
 "pos": [
-663,
-339
+664,
+324
 ],
 "cell": [
 20,
@@ -2706,5578 +6930,370 @@
 "flip": true
 },
 {
-"kind": "frozen_shrub",
+"kind": "snow_rock_1",
 "pos": [
-388,
-385
+792,
+155
 ],
 "cell": [
-12,
-12
+24,
+4
 ],
 "flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+288,
+47
+],
+"cell": [
+9,
+1
+],
+"flip": false
 },
 {
 "kind": "reed_1",
 "pos": [
 1110,
-111
+356
 ],
 "cell": [
 34,
-3
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-594,
-92
-],
-"cell": [
-18,
-2
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-664,
-12
-],
-"cell": [
-20,
-0
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-982,
-790
-],
-"cell": [
-30,
-24
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-18,
-183
-],
-"cell": [
-0,
-5
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-29,
-365
-],
-"cell": [
-0,
-11
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-313,
-254
-],
-"cell": [
-9,
-7
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-786,
-373
-],
-"cell": [
-24,
 11
 ],
 "flip": true
 },
 {
-"kind": "ice_1",
+"kind": "ice_chunk",
 "pos": [
-664,
-804
-],
-"cell": [
-20,
-25
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-484,
-249
-],
-"cell": [
-15,
-7
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-272,
-9
-],
-"cell": [
-8,
-0
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-912,
-187
-],
-"cell": [
-28,
-5
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1042,
-591
-],
-"cell": [
-32,
-18
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1151,
-811
-],
-"cell": [
-35,
-25
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-256,
-565
-],
-"cell": [
-8,
-17
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-285,
-614
-],
-"cell": [
-8,
-19
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-259,
-392
-],
-"cell": [
-8,
-12
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-990,
-337
-],
-"cell": [
-30,
-10
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1155,
-113
-],
-"cell": [
-36,
-3
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-499,
-77
-],
-"cell": [
-15,
-2
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-733,
-21
-],
-"cell": [
-22,
-0
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-471,
-507
-],
-"cell": [
-14,
-15
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-995,
-577
-],
-"cell": [
-31,
-18
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-850,
-617
-],
-"cell": [
-26,
-19
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-761,
-533
+760,
+122
 ],
 "cell": [
 23,
-16
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1263,
-154
-],
-"cell": [
-39,
-4
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-730,
-250
-],
-"cell": [
-22,
-7
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-85,
-575
-],
-"cell": [
-2,
-17
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-584,
-511
-],
-"cell": [
-18,
-15
+3
 ],
 "flip": false
 },
 {
-"kind": "frozen_shrub",
+"kind": "snow_bush",
 "pos": [
-390,
-801
+1079,
+576
 ],
 "cell": [
-12,
-25
+33,
+18
 ],
 "flip": true
 },
 {
-"kind": "reed_0",
+"kind": "snow_bush",
 "pos": [
-1191,
-170
+1077,
+751
 ],
 "cell": [
-37,
-5
+33,
+23
 ],
 "flip": false
 },
 {
-"kind": "reed_0",
+"kind": "snow_bush",
 "pos": [
-841,
-248
+1044,
+441
 ],
 "cell": [
-26,
-7
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-333,
-172
-],
-"cell": [
-10,
-5
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-893,
-489
-],
-"cell": [
-27,
-15
+32,
+13
 ],
 "flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-499,
-294
-],
-"cell": [
-15,
-9
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-709,
-358
-],
-"cell": [
-22,
-11
-],
-"flip": true
 },
 {
 "kind": "reed_0",
 "pos": [
 1316,
-405
+132
 ],
 "cell": [
 41,
-12
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-772,
-313
-],
-"cell": [
-24,
-9
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1273,
-114
-],
-"cell": [
-39,
-3
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-176,
-578
-],
-"cell": [
-5,
-18
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-1191,
-286
-],
-"cell": [
-37,
-8
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-606,
-470
-],
-"cell": [
-18,
-14
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-1254,
-550
-],
-"cell": [
-39,
-17
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-730,
-678
-],
-"cell": [
-22,
-21
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-351,
-502
-],
-"cell": [
-10,
-15
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-828,
-46
-],
-"cell": [
-25,
-1
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-1120,
-696
-],
-"cell": [
-35,
-21
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1263,
-32
-],
-"cell": [
-39,
-0
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-797,
-8
-],
-"cell": [
-24,
-0
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1281,
-675
-],
-"cell": [
-40,
-21
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-193,
-172
-],
-"cell": [
-6,
-5
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-874,
-637
-],
-"cell": [
-27,
-19
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1322,
-401
-],
-"cell": [
-41,
-12
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-298,
-691
-],
-"cell": [
-9,
-21
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-625,
-281
-],
-"cell": [
-19,
-8
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-597,
-474
-],
-"cell": [
-18,
-14
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-603,
-807
-],
-"cell": [
-18,
-25
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-948,
-157
-],
-"cell": [
-29,
-4
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-1201,
-601
-],
-"cell": [
-37,
-18
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1019,
-154
-],
-"cell": [
-31,
 4
 ],
 "flip": true
 },
 {
-"kind": "ice_1",
+"kind": "snow_bush",
 "pos": [
-556,
-460
-],
-"cell": [
-17,
-14
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-1053,
-374
-],
-"cell": [
-32,
-11
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-337,
-275
-],
-"cell": [
-10,
-8
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-691,
-677
-],
-"cell": [
-21,
-21
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-417,
-233
-],
-"cell": [
-13,
-7
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-411,
+949,
 671
 ],
 "cell": [
-12,
+29,
 20
 ],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-1199,
-566
-],
-"cell": [
-37,
-17
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-376,
-337
-],
-"cell": [
-11,
-10
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-107,
-264
-],
-"cell": [
-3,
-8
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-884,
-385
-],
-"cell": [
-27,
-12
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-268,
-744
-],
-"cell": [
-8,
-23
-],
 "flip": false
 },
 {
 "kind": "reed_1",
 "pos": [
-926,
-35
+646,
+188
 ],
 "cell": [
-28,
-1
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-1012,
-403
-],
-"cell": [
-31,
-12
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-348,
-582
-],
-"cell": [
-10,
-18
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-794,
-329
-],
-"cell": [
-24,
-10
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-799,
-765
-],
-"cell": [
-24,
-23
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-1053,
-249
-],
-"cell": [
-32,
-7
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-37,
-825
-],
-"cell": [
-1,
-25
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-820,
-64
-],
-"cell": [
-25,
-1
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-549,
-689
-],
-"cell": [
-17,
-21
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-608,
-614
-],
-"cell": [
-18,
-19
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-5,
-788
-],
-"cell": [
-0,
-24
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1323,
-246
-],
-"cell": [
-41,
-7
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1301,
-205
-],
-"cell": [
-40,
-6
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-631,
-176
-],
-"cell": [
-19,
+20,
 5
 ],
 "flip": false
 },
 {
-"kind": "reed_0",
+"kind": "snow_rock_0",
 "pos": [
-625,
-374
-],
-"cell": [
-19,
-11
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-42,
-47
-],
-"cell": [
-1,
-1
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-590,
-677
-],
-"cell": [
-18,
-21
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-713,
-431
-],
-"cell": [
-22,
-13
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1269,
-459
-],
-"cell": [
-39,
-14
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1155,
-122
-],
-"cell": [
-36,
-3
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-1184,
-650
-],
-"cell": [
-36,
-20
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-407,
-228
-],
-"cell": [
-12,
-7
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-551,
-544
-],
-"cell": [
-17,
-16
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1045,
-592
-],
-"cell": [
-32,
-18
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-800,
-107
-],
-"cell": [
-25,
-3
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1030,
-202
-],
-"cell": [
-32,
-6
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-698,
-109
-],
-"cell": [
-21,
-3
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-419,
-656
-],
-"cell": [
-13,
-20
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-517,
-766
-],
-"cell": [
-16,
-23
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-66,
-209
-],
-"cell": [
-2,
-6
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1167,
-271
-],
-"cell": [
-36,
-8
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-547,
-394
-],
-"cell": [
-17,
-12
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-141,
-678
-],
-"cell": [
-4,
-21
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-741,
-105
-],
-"cell": [
-23,
-3
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-313,
-569
-],
-"cell": [
-9,
-17
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-831,
-749
-],
-"cell": [
-25,
-23
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-743,
-332
-],
-"cell": [
-23,
-10
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1218,
+737,
 759
 ],
 "cell": [
-38,
-23
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1002,
-369
-],
-"cell": [
-31,
-11
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-1293,
-490
-],
-"cell": [
-40,
-15
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-893,
-369
-],
-"cell": [
-27,
-11
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-484,
-642
-],
-"cell": [
-15,
-20
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1045,
-600
-],
-"cell": [
-32,
-18
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1262,
-382
-],
-"cell": [
-39,
-11
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-197,
-702
-],
-"cell": [
-6,
-21
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-307,
-577
-],
-"cell": [
-9,
-18
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-723,
-411
-],
-"cell": [
-22,
-12
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-106,
-318
-],
-"cell": [
-3,
-9
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-173,
-595
-],
-"cell": [
-5,
-18
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-293,
-244
-],
-"cell": [
-9,
-7
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-975,
-212
-],
-"cell": [
-30,
-6
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1234,
-715
-],
-"cell": [
-38,
-22
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-548,
-199
-],
-"cell": [
-17,
-6
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-898,
-554
-],
-"cell": [
-28,
-17
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-229,
-730
-],
-"cell": [
-7,
-22
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-516,
-712
-],
-"cell": [
-16,
-22
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-49,
-376
-],
-"cell": [
-1,
-11
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-286,
-155
-],
-"cell": [
-8,
-4
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-1117,
-149
-],
-"cell": [
-34,
-4
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-692,
-580
-],
-"cell": [
-21,
-18
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-528,
-747
-],
-"cell": [
-16,
-23
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-848,
-371
-],
-"cell": [
-26,
-11
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-755,
-230
-],
-"cell": [
 23,
-7
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-403,
-775
-],
-"cell": [
-12,
-24
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-904,
-634
-],
-"cell": [
-28,
-19
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-875,
-212
-],
-"cell": [
-27,
-6
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-994,
-535
-],
-"cell": [
-31,
-16
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-91,
-507
-],
-"cell": [
-2,
-15
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-259,
-740
-],
-"cell": [
-8,
-23
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1329,
-595
-],
-"cell": [
-41,
-18
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-723,
-592
-],
-"cell": [
-22,
-18
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-421,
-764
-],
-"cell": [
-13,
 23
 ],
 "flip": true
 },
 {
-"kind": "reed_0",
+"kind": "snow_bush",
 "pos": [
-273,
-764
-],
-"cell": [
-8,
-23
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-635,
-288
-],
-"cell": [
-19,
-9
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-734,
-273
-],
-"cell": [
-22,
-8
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1126,
-766
-],
-"cell": [
-35,
-23
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-754,
-406
-],
-"cell": [
-23,
-12
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-659,
-594
-],
-"cell": [
-20,
-18
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-602,
-406
-],
-"cell": [
-18,
-12
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-924,
-694
-],
-"cell": [
-28,
-21
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-511,
-248
-],
-"cell": [
-15,
-7
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-445,
-504
-],
-"cell": [
-13,
-15
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-838,
-253
-],
-"cell": [
-26,
-7
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-398,
-706
-],
-"cell": [
-12,
-22
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1230,
-152
-],
-"cell": [
-38,
-4
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-891,
-399
-],
-"cell": [
-27,
-12
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-695,
-452
-],
-"cell": [
-21,
-14
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-859,
-534
-],
-"cell": [
-26,
-16
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-713,
-215
-],
-"cell": [
-22,
-6
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-1280,
-563
-],
-"cell": [
-39,
-17
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-39,
-281
-],
-"cell": [
-1,
-8
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-562,
-210
-],
-"cell": [
-17,
-6
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-939,
-109
-],
-"cell": [
-29,
-3
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-142,
-199
-],
-"cell": [
-4,
-6
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-46,
-690
-],
-"cell": [
-1,
-21
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-588,
-101
-],
-"cell": [
-18,
-3
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-949,
-91
-],
-"cell": [
-29,
-2
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1304,
-463
-],
-"cell": [
-40,
-14
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-551,
-141
-],
-"cell": [
-17,
-4
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1111,
-636
-],
-"cell": [
-34,
-19
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-674,
-396
-],
-"cell": [
-21,
-12
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-310,
-593
-],
-"cell": [
-9,
-18
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-1334,
-46
-],
-"cell": [
-41,
-1
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-624,
-9
-],
-"cell": [
-19,
-0
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-251,
-760
-],
-"cell": [
-7,
-23
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-947,
-17
-],
-"cell": [
-29,
-0
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-978,
-705
-],
-"cell": [
-30,
-22
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-137,
-676
-],
-"cell": [
-4,
-21
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-555,
-292
-],
-"cell": [
-17,
-9
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-475,
-535
-],
-"cell": [
-14,
-16
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-130,
-337
-],
-"cell": [
-4,
-10
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-408,
-260
-],
-"cell": [
-12,
-8
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-1263,
-113
-],
-"cell": [
-39,
-3
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-926,
-681
-],
-"cell": [
-28,
-21
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-974,
-596
-],
-"cell": [
-30,
-18
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-966,
-558
-],
-"cell": [
-30,
-17
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-198,
-577
-],
-"cell": [
-6,
-18
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-931,
-444
-],
-"cell": [
-29,
-13
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-339,
-47
-],
-"cell": [
-10,
-1
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1259,
-314
-],
-"cell": [
-39,
-9
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-611,
-429
-],
-"cell": [
-19,
-13
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-1195,
-807
-],
-"cell": [
-37,
-25
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-896,
-271
-],
-"cell": [
-27,
-8
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-688,
-181
-],
-"cell": [
-21,
-5
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-760,
-228
-],
-"cell": [
-23,
-7
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-840,
-356
-],
-"cell": [
-26,
-11
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1202,
-260
-],
-"cell": [
-37,
-8
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-1329,
-659
-],
-"cell": [
-41,
-20
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1238,
-543
-],
-"cell": [
-38,
-16
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-312,
-264
-],
-"cell": [
-9,
-8
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1250,
-577
-],
-"cell": [
-39,
-18
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-304,
+558,
 719
 ],
 "cell": [
-9,
+17,
 22
 ],
-"flip": false
+"flip": true
 },
 {
-"kind": "reed_0",
+"kind": "ice_chunk",
 "pos": [
-347,
-548
+33,
+562
 ],
 "cell": [
-10,
+1,
 17
 ],
 "flip": false
 },
 {
-"kind": "snow_rock",
-"pos": [
-730,
-763
-],
-"cell": [
-22,
-23
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-407,
-677
-],
-"cell": [
-12,
-21
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-313,
-150
-],
-"cell": [
-9,
-4
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-1066,
-610
-],
-"cell": [
-33,
-19
-],
-"flip": true
-},
-{
 "kind": "reed_1",
 "pos": [
-287,
-459
+76,
+585
 ],
 "cell": [
-8,
-14
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-294,
-746
-],
-"cell": [
-9,
-23
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-505,
-344
-],
-"cell": [
-15,
-10
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1236,
-821
-],
-"cell": [
-38,
-25
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-17,
-467
-],
-"cell": [
-0,
-14
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-968,
-189
-],
-"cell": [
-30,
-5
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-486,
-316
-],
-"cell": [
-15,
-9
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-576,
-93
-],
-"cell": [
-17,
-2
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-729,
-414
-],
-"cell": [
-22,
-12
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-636,
-506
-],
-"cell": [
-19,
-15
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-608,
-210
-],
-"cell": [
-18,
-6
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-614,
-581
-],
-"cell": [
-19,
+2,
 18
 ],
 "flip": false
 },
 {
-"kind": "snow_rock",
+"kind": "reed_0",
 "pos": [
-894,
+204,
+309
+],
+"cell": [
+6,
+9
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+547,
+174
+],
+"cell": [
+17,
+5
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+279,
+593
+],
+"cell": [
+8,
+18
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+785,
+243
+],
+"cell": [
+24,
+7
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+930,
 88
 ],
 "cell": [
-27,
+29,
 2
 ],
 "flip": true
 },
 {
-"kind": "reed_0",
+"kind": "snow_rock_1",
 "pos": [
-263,
-583
+667,
+336
 ],
 "cell": [
-8,
-18
+20,
+10
 ],
 "flip": false
 },
 {
-"kind": "reed_0",
+"kind": "snow_rock_0",
 "pos": [
-1130,
-265
+523,
+736
 ],
 "cell": [
-35,
-8
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-783,
-523
-],
-"cell": [
-24,
-16
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-628,
-68
-],
-"cell": [
-19,
-2
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1051,
+16,
 23
 ],
-"cell": [
-32,
-0
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-84,
-580
-],
-"cell": [
-2,
-18
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-1045,
-265
-],
-"cell": [
-32,
-8
-],
 "flip": false
 },
 {
 "kind": "reed_0",
 "pos": [
-1062,
-694
+16,
+133
 ],
 "cell": [
-33,
-21
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-1140,
-148
-],
-"cell": [
-35,
+0,
 4
 ],
 "flip": true
 },
 {
-"kind": "reed_0",
+"kind": "ice_chunk",
 "pos": [
-157,
-683
-],
-"cell": [
-4,
-21
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-1200,
-621
-],
-"cell": [
-37,
-19
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-430,
-454
-],
-"cell": [
-13,
-14
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-480,
-714
-],
-"cell": [
-14,
-22
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-985,
-22
-],
-"cell": [
-30,
-0
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-676,
-289
-],
-"cell": [
-21,
-9
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-1065,
-532
-],
-"cell": [
-33,
-16
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1245,
-551
-],
-"cell": [
-38,
-17
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-370,
-19
-],
-"cell": [
-11,
-0
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-341,
-829
-],
-"cell": [
-10,
-25
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-177,
-302
-],
-"cell": [
-5,
-9
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-1016,
-356
-],
-"cell": [
-31,
-11
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-150,
-207
-],
-"cell": [
-4,
-6
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-134,
-195
-],
-"cell": [
-4,
-6
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-1056,
-728
-],
-"cell": [
-33,
-22
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-1114,
-72
-],
-"cell": [
-34,
-2
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-1223,
-65
-],
-"cell": [
-38,
-2
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-854,
+102,
 308
 ],
 "cell": [
-26,
-9
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-948,
-690
-],
-"cell": [
-29,
-21
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-1094,
-18
-],
-"cell": [
-34,
-0
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-425,
-253
-],
-"cell": [
-13,
-7
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-41,
-237
-],
-"cell": [
-1,
-7
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-1211,
-300
-],
-"cell": [
-37,
-9
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-446,
-564
-],
-"cell": [
-13,
-17
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-159,
-40
-],
-"cell": [
-4,
-1
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-125,
-557
-],
-"cell": [
 3,
-17
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-429,
-658
-],
-"cell": [
-13,
-20
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-1006,
-693
-],
-"cell": [
-31,
-21
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-131,
-778
-],
-"cell": [
-4,
-24
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-315,
-204
-],
-"cell": [
-9,
-6
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-1141,
-535
-],
-"cell": [
-35,
-16
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-651,
-515
-],
-"cell": [
-20,
-16
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-741,
-364
-],
-"cell": [
-23,
-11
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-437,
-288
-],
-"cell": [
-13,
-8
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-874,
-482
-],
-"cell": [
-27,
-15
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-632,
-309
-],
-"cell": [
-19,
 9
 ],
 "flip": true
 },
 {
-"kind": "ice_0",
-"pos": [
-54,
-626
-],
-"cell": [
-1,
-19
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1046,
-227
-],
-"cell": [
-32,
-7
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-368,
-161
-],
-"cell": [
-11,
-5
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-54,
-258
-],
-"cell": [
-1,
-8
-],
-"flip": false
-},
-{
 "kind": "reed_0",
-"pos": [
-1099,
-591
-],
-"cell": [
-34,
-18
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-605,
-296
-],
-"cell": [
-18,
-9
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1076,
-524
-],
-"cell": [
-33,
-16
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-24,
-362
-],
-"cell": [
-0,
-11
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-445,
-280
-],
-"cell": [
-13,
-8
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-913,
-664
-],
-"cell": [
-28,
-20
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-960,
-12
-],
-"cell": [
-29,
-0
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-117,
-658
-],
-"cell": [
-3,
-20
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-819,
-757
-],
-"cell": [
-25,
-23
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-1050,
-65
-],
-"cell": [
-32,
-2
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-764,
-437
-],
-"cell": [
-23,
-13
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-448,
-233
-],
-"cell": [
-14,
-7
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-416,
-242
-],
-"cell": [
-13,
-7
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-834,
-143
-],
-"cell": [
-26,
-4
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1003,
-820
-],
-"cell": [
-31,
-25
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1323,
-438
-],
-"cell": [
-41,
-13
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-898,
-380
-],
-"cell": [
-28,
-11
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-821,
-36
-],
-"cell": [
-25,
-1
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-12,
-190
-],
-"cell": [
-0,
-5
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-885,
-154
-],
-"cell": [
-27,
-4
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-393,
-150
-],
-"cell": [
-12,
-4
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1009,
-275
-],
-"cell": [
-31,
-8
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-44,
-40
-],
-"cell": [
-1,
-1
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-462,
-729
-],
-"cell": [
-14,
-22
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-100,
-71
-],
-"cell": [
-3,
-2
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-87,
-762
-],
-"cell": [
-2,
-23
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-789,
-101
-],
-"cell": [
-24,
-3
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-435,
-489
-],
-"cell": [
-13,
-15
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-861,
-48
-],
-"cell": [
-26,
-1
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-81,
-421
-],
-"cell": [
-2,
-13
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-425,
-104
-],
-"cell": [
-13,
-3
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-1178,
-465
-],
-"cell": [
-36,
-14
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1143,
-304
-],
-"cell": [
-35,
-9
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-358,
-691
-],
-"cell": [
-11,
-21
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-112,
-373
-],
-"cell": [
-3,
-11
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1162,
-684
-],
-"cell": [
-36,
-21
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-381,
-535
-],
-"cell": [
-11,
-16
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-591,
-93
-],
-"cell": [
-18,
-2
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-97,
-321
-],
-"cell": [
-3,
-10
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-1191,
-326
-],
-"cell": [
-37,
-10
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-441,
-235
-],
-"cell": [
-13,
-7
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1128,
-629
-],
-"cell": [
-35,
-19
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-761,
-433
-],
-"cell": [
-23,
-13
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-33,
-440
-],
-"cell": [
-1,
-13
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-236,
-571
-],
-"cell": [
-7,
-17
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1183,
-576
-],
-"cell": [
-36,
-17
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-945,
-758
-],
-"cell": [
-29,
-23
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1060,
-123
-],
-"cell": [
-33,
-3
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-889,
-479
-],
-"cell": [
-27,
-14
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-937,
-412
-],
-"cell": [
-29,
-12
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-287,
-605
-],
-"cell": [
-8,
-18
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-548,
-130
-],
-"cell": [
-17,
-4
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-347,
-701
-],
-"cell": [
-10,
-21
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-39,
-76
-],
-"cell": [
-1,
-2
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-817,
-700
-],
-"cell": [
-25,
-21
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-1204,
-720
-],
-"cell": [
-37,
-22
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
 "pos": [
 1012,
-813
-],
-"cell": [
-31,
-25
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-783,
-705
-],
-"cell": [
-24,
-22
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-393,
-197
-],
-"cell": [
-12,
-6
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-150,
-267
-],
-"cell": [
-4,
-8
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-1124,
-617
-],
-"cell": [
-35,
-19
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-1198,
-473
-],
-"cell": [
-37,
-14
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-702,
-311
-],
-"cell": [
-21,
-9
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-50,
-10
-],
-"cell": [
-1,
-0
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-1141,
-310
-],
-"cell": [
-35,
-9
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-389,
-547
-],
-"cell": [
-12,
-17
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1125,
-120
-],
-"cell": [
-35,
-3
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-950,
-87
-],
-"cell": [
-29,
-2
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1036,
-580
-],
-"cell": [
-32,
-18
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-342,
-551
-],
-"cell": [
-10,
-17
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-745,
-382
-],
-"cell": [
-23,
-11
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-803,
-724
-],
-"cell": [
-25,
-22
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-617,
-490
-],
-"cell": [
-19,
-15
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-288,
-215
-],
-"cell": [
-9,
-6
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1257,
-266
-],
-"cell": [
-39,
-8
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-782,
-623
-],
-"cell": [
-24,
-19
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-37,
-446
-],
-"cell": [
-1,
-13
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-508,
-532
-],
-"cell": [
-15,
-16
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-334,
-204
-],
-"cell": [
-10,
-6
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-1126,
-56
-],
-"cell": [
-35,
-1
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-892,
-483
-],
-"cell": [
-27,
-15
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-927,
-350
-],
-"cell": [
-28,
-10
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-750,
-363
-],
-"cell": [
-23,
-11
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-36,
-181
-],
-"cell": [
-1,
-5
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-847,
-37
-],
-"cell": [
-26,
-1
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-920,
-450
-],
-"cell": [
-28,
-14
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-418,
-818
-],
-"cell": [
-13,
-25
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-662,
-343
-],
-"cell": [
-20,
-10
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-904,
-785
-],
-"cell": [
-28,
-24
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-732,
-78
-],
-"cell": [
-22,
-2
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-1055,
-723
-],
-"cell": [
-32,
-22
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-1210,
-281
-],
-"cell": [
-37,
-8
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-497,
-223
-],
-"cell": [
-15,
-6
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1338,
-57
-],
-"cell": [
-41,
-1
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-1307,
-424
-],
-"cell": [
-40,
-13
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-615,
-34
-],
-"cell": [
-19,
-1
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-122,
-656
-],
-"cell": [
-3,
-20
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-115,
-343
-],
-"cell": [
-3,
-10
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-377,
-553
-],
-"cell": [
-11,
-17
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-120,
-698
-],
-"cell": [
-3,
-21
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-214,
-8
-],
-"cell": [
-6,
-0
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-916,
-788
-],
-"cell": [
-28,
-24
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1056,
-158
-],
-"cell": [
-33,
-4
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-222,
-757
-],
-"cell": [
-6,
-23
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-888,
-659
-],
-"cell": [
-27,
-20
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-296,
-180
-],
-"cell": [
-9,
-5
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-418,
-452
-],
-"cell": [
-13,
-14
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1265,
-390
-],
-"cell": [
-39,
-12
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-579,
-109
-],
-"cell": [
-18,
-3
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-801,
-616
-],
-"cell": [
-25,
-19
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-852,
-447
-],
-"cell": [
-26,
-13
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-164,
-83
-],
-"cell": [
-5,
-2
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-1020,
-806
-],
-"cell": [
-31,
-25
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-748,
-322
-],
-"cell": [
-23,
-10
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-249,
-797
-],
-"cell": [
-7,
-24
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-344,
-219
-],
-"cell": [
-10,
-6
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-840,
-205
-],
-"cell": [
-26,
-6
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-262,
-778
-],
-"cell": [
-8,
-24
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-151,
-418
-],
-"cell": [
-4,
-13
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-636,
-183
-],
-"cell": [
-19,
-5
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-59,
-30
-],
-"cell": [
-1,
-0
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-665,
-453
-],
-"cell": [
-20,
-14
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-1318,
-625
-],
-"cell": [
-41,
-19
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-539,
-140
-],
-"cell": [
-16,
-4
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-896,
-796
-],
-"cell": [
-27,
-24
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-1229,
-782
-],
-"cell": [
-38,
-24
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-795,
-661
-],
-"cell": [
-24,
-20
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-1338,
-30
-],
-"cell": [
-41,
-0
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-1031,
-97
-],
-"cell": [
-32,
-3
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-258,
-47
-],
-"cell": [
-8,
-1
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-802,
-362
-],
-"cell": [
-25,
-11
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-898,
-378
-],
-"cell": [
-28,
-11
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-607,
-84
-],
-"cell": [
-18,
-2
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-847,
-607
-],
-"cell": [
-26,
-18
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-856,
-47
-],
-"cell": [
-26,
-1
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-369,
-201
-],
-"cell": [
-11,
-6
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-346,
-747
-],
-"cell": [
-10,
-23
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-251,
-809
-],
-"cell": [
-7,
-25
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-651,
-294
-],
-"cell": [
-20,
-9
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-43,
-472
-],
-"cell": [
-1,
-14
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-903,
-21
-],
-"cell": [
-28,
-0
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-651,
-513
-],
-"cell": [
-20,
-16
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1229,
-407
-],
-"cell": [
-38,
-12
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-246,
-410
-],
-"cell": [
-7,
-12
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-336,
-396
-],
-"cell": [
-10,
-12
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-1255,
-179
-],
-"cell": [
-39,
-5
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-361,
-213
-],
-"cell": [
-11,
-6
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1177,
-672
-],
-"cell": [
-36,
-20
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-203,
-589
-],
-"cell": [
-6,
-18
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-1165,
-167
-],
-"cell": [
-36,
-5
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-262,
-228
-],
-"cell": [
-8,
-7
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-659,
-339
-],
-"cell": [
-20,
-10
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-963,
-380
-],
-"cell": [
-30,
-11
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1155,
-687
-],
-"cell": [
-36,
-21
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-158,
-770
-],
-"cell": [
-4,
-24
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-948,
-16
-],
-"cell": [
-29,
-0
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-99,
-245
-],
-"cell": [
-3,
-7
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-481,
-328
-],
-"cell": [
-15,
-10
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-692,
-501
-],
-"cell": [
-21,
-15
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-810,
-325
-],
-"cell": [
-25,
-10
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-749,
-739
-],
-"cell": [
-23,
-23
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-489,
-215
-],
-"cell": [
-15,
-6
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1293,
-479
-],
-"cell": [
-40,
-14
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1283,
-527
-],
-"cell": [
-40,
-16
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-980,
-262
-],
-"cell": [
-30,
-8
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-721,
-476
-],
-"cell": [
-22,
-14
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-863,
-507
-],
-"cell": [
-26,
-15
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-750,
-613
-],
-"cell": [
-23,
-19
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-413,
-221
-],
-"cell": [
-12,
-6
-],
-"flip": false
-},
-{
-"kind": "snow_rock",
-"pos": [
-668,
-138
-],
-"cell": [
-20,
-4
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-713,
-383
-],
-"cell": [
-22,
-11
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-717,
-90
-],
-"cell": [
-22,
-2
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-879,
-643
-],
-"cell": [
-27,
-20
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-1102,
-795
-],
-"cell": [
-34,
-24
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-377,
-526
-],
-"cell": [
-11,
-16
-],
-"flip": true
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-243,
 102
 ],
 "cell": [
-7,
+31,
 3
 ],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-210,
-744
-],
-"cell": [
-6,
-23
-],
 "flip": true
 },
 {
-"kind": "frozen_shrub",
+"kind": "snow_rock_0",
 "pos": [
-229,
-588
+322,
+192
 ],
 "cell": [
-7,
-18
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-754,
-94
-],
-"cell": [
-23,
-2
+10,
+5
 ],
 "flip": false
 },
 {
 "kind": "reed_0",
 "pos": [
-1166,
-278
+1041,
+326
 ],
 "cell": [
-36,
-8
+32,
+10
 ],
 "flip": false
 },
 {
-"kind": "frozen_shrub",
+"kind": "ice_chunk",
 "pos": [
-682,
-686
+465,
+166
 ],
 "cell": [
-21,
-21
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-1333,
-684
-],
-"cell": [
-41,
-21
+14,
+5
 ],
 "flip": false
 },
 {
-"kind": "reed_0",
+"kind": "ice_chunk",
 "pos": [
-791,
-465
+1072,
+156
 ],
 "cell": [
-24,
-14
+33,
+4
 ],
-"flip": true
+"flip": false
 },
 {
 "kind": "reed_1",
 "pos": [
-715,
-583
-],
-"cell": [
-22,
-18
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-250,
-90
-],
-"cell": [
-7,
-2
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-945,
-799
+934,
+392
 ],
 "cell": [
 29,
-24
+12
 ],
 "flip": true
 },
 {
-"kind": "ice_1",
+"kind": "reed_1",
 "pos": [
-882,
-56
+806,
+498
 ],
 "cell": [
-27,
-1
+25,
+15
 ],
 "flip": false
 },
 {
-"kind": "reed_0",
+"kind": "snow_rock_1",
 "pos": [
-1129,
-265
-],
-"cell": [
-35,
-8
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-683,
-210
-],
-"cell": [
-21,
-6
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-401,
-92
-],
-"cell": [
-12,
-2
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-326,
-808
-],
-"cell": [
-10,
-25
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1310,
-126
-],
-"cell": [
-40,
-3
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-328,
-261
-],
-"cell": [
-10,
-8
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-487,
-118
+492,
+105
 ],
 "cell": [
 15,
@@ -8286,458 +7302,50 @@
 "flip": false
 },
 {
-"kind": "ice_1",
+"kind": "snow_bush",
 "pos": [
-246,
-105
+219,
+153
 ],
 "cell": [
-7,
-3
+6,
+4
 ],
 "flip": false
 },
 {
-"kind": "ice_1",
+"kind": "snow_rock_1",
 "pos": [
-589,
-128
-],
-"cell": [
-18,
-3
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-722,
-10
-],
-"cell": [
-22,
-0
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-654,
-756
-],
-"cell": [
-20,
-23
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-132,
-744
-],
-"cell": [
-4,
-23
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-521,
-232
-],
-"cell": [
-16,
-7
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-12,
+446,
 737
 ],
 "cell": [
-0,
-23
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-58,
-248
-],
-"cell": [
-1,
-7
-],
-"flip": false
-},
-{
-"kind": "frozen_shrub",
-"pos": [
-147,
-205
-],
-"cell": [
-4,
-6
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-267,
-789
-],
-"cell": [
-8,
-24
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-607,
-358
-],
-"cell": [
-18,
-11
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-1234,
-426
-],
-"cell": [
-38,
-13
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1212,
-20
-],
-"cell": [
-37,
-0
-],
-"flip": true
-},
-{
-"kind": "ice_1",
-"pos": [
-1280,
-474
-],
-"cell": [
-40,
-14
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1055,
-549
-],
-"cell": [
-32,
-17
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-872,
-478
-],
-"cell": [
-27,
-14
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-749,
-38
-],
-"cell": [
-23,
-1
-],
-"flip": true
-},
-{
-"kind": "reed_1",
-"pos": [
-323,
-765
-],
-"cell": [
-10,
-23
-],
-"flip": false
-},
-{
-"kind": "ice_1",
-"pos": [
-647,
-169
-],
-"cell": [
-20,
-5
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-568,
-311
-],
-"cell": [
-17,
-9
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-828,
-642
-],
-"cell": [
-25,
-20
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1285,
-555
-],
-"cell": [
-40,
-17
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-998,
-359
-],
-"cell": [
-31,
-11
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-422,
-453
-],
-"cell": [
 13,
-14
+23
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+199,
+624
+],
+"cell": [
+6,
+19
 ],
 "flip": true
 },
 {
 "kind": "reed_0",
 "pos": [
-1275,
-78
-],
-"cell": [
-39,
-2
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-795,
-607
-],
-"cell": [
-24,
-18
-],
-"flip": false
-},
-{
-"kind": "reed_0",
-"pos": [
-972,
-443
-],
-"cell": [
-30,
-13
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-1018,
-500
-],
-"cell": [
-31,
-15
-],
-"flip": true
-},
-{
-"kind": "snow_rock",
-"pos": [
-36,
-291
-],
-"cell": [
-1,
-9
-],
-"flip": false
-},
-{
-"kind": "ice_0",
-"pos": [
-1278,
-111
-],
-"cell": [
-39,
-3
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-1080,
-282
+1068,
+593
 ],
 "cell": [
 33,
-8
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-996,
-374
-],
-"cell": [
-31,
-11
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-590,
-306
-],
-"cell": [
-18,
-9
-],
-"flip": false
-},
-{
-"kind": "reed_1",
-"pos": [
-411,
-309
-],
-"cell": [
-12,
-9
-],
-"flip": true
-},
-{
-"kind": "ice_0",
-"pos": [
-1176,
-543
-],
-"cell": [
-36,
-16
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-533,
-386
-],
-"cell": [
-16,
-12
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-1015,
-380
-],
-"cell": [
-31,
-11
-],
-"flip": true
-},
-{
-"kind": "reed_0",
-"pos": [
-417,
-296
-],
-"cell": [
-13,
-9
+18
 ],
 "flip": false
 },
@@ -8745,11 +7353,479 @@
 "kind": "reed_0",
 "pos": [
 253,
-774
+582
 ],
 "cell": [
 7,
+18
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1327,
+716
+],
+"cell": [
+41,
+22
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+604,
+237
+],
+"cell": [
+18,
+7
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+840,
+388
+],
+"cell": [
+26,
+12
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+1083,
+580
+],
+"cell": [
+33,
+18
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+462,
+259
+],
+"cell": [
+14,
+8
+],
+"flip": false
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1297,
+661
+],
+"cell": [
+40,
+20
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+890,
+551
+],
+"cell": [
+27,
+17
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+819,
+123
+],
+"cell": [
+25,
+3
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+367,
+730
+],
+"cell": [
+11,
+22
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+838,
+475
+],
+"cell": [
+26,
+14
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+406,
+474
+],
+"cell": [
+12,
+14
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+815,
+44
+],
+"cell": [
+25,
+1
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+640,
+473
+],
+"cell": [
+19,
+14
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+660,
+198
+],
+"cell": [
+20,
+6
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+57,
+616
+],
+"cell": [
+1,
+19
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+103,
+342
+],
+"cell": [
+3,
+10
+],
+"flip": true
+},
+{
+"kind": "snow_bush",
+"pos": [
+1183,
+122
+],
+"cell": [
+36,
+3
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1324,
+109
+],
+"cell": [
+41,
+3
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1337,
+271
+],
+"cell": [
+41,
+8
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1037,
+745
+],
+"cell": [
+32,
+23
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+885,
+751
+],
+"cell": [
+27,
+23
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1301,
+637
+],
+"cell": [
+40,
+19
+],
+"flip": true
+},
+{
+"kind": "ice_chunk",
+"pos": [
+1093,
+697
+],
+"cell": [
+34,
+21
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+363,
+83
+],
+"cell": [
+11,
+2
+],
+"flip": false
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+193,
+313
+],
+"cell": [
+6,
+9
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+242,
+434
+],
+"cell": [
+7,
+13
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+1262,
+298
+],
+"cell": [
+39,
+9
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+102,
+823
+],
+"cell": [
+3,
+25
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+119,
+404
+],
+"cell": [
+3,
+12
+],
+"flip": false
+},
+{
+"kind": "reed_1",
+"pos": [
+930,
+73
+],
+"cell": [
+29,
+2
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+529,
+274
+],
+"cell": [
+16,
+8
+],
+"flip": true
+},
+{
+"kind": "snow_rock_1",
+"pos": [
+267,
+813
+],
+"cell": [
+8,
+25
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+168,
+806
+],
+"cell": [
+5,
+25
+],
+"flip": false
+},
+{
+"kind": "ice_chunk",
+"pos": [
+685,
+209
+],
+"cell": [
+21,
+6
+],
+"flip": false
+},
+{
+"kind": "reed_0",
+"pos": [
+1293,
+742
+],
+"cell": [
+40,
+23
+],
+"flip": true
+},
+{
+"kind": "reed_0",
+"pos": [
+656,
+738
+],
+"cell": [
+20,
+23
+],
+"flip": true
+},
+{
+"kind": "reed_1",
+"pos": [
+347,
+566
+],
+"cell": [
+10,
+17
+],
+"flip": false
+},
+{
+"kind": "snow_bush",
+"pos": [
+161,
+777
+],
+"cell": [
+5,
 24
+],
+"flip": true
+},
+{
+"kind": "snow_rock_0",
+"pos": [
+1107,
+134
+],
+"cell": [
+34,
+4
 ],
 "flip": false
 }

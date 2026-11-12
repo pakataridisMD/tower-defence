@@ -6,802 +6,394 @@
 "biome": "heart",
 "props": [
 {
-"kind": "prism_1",
+"kind": "marble_pillar",
 "pos": [
-784,
-237
-],
-"cell": [
-24,
-7
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-506,
-32
-],
-"cell": [
-15,
-1
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-137,
-489
-],
-"cell": [
-4,
-15
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-552,
-578
-],
-"cell": [
-17,
-18
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-944,
-326
-],
-"cell": [
-29,
-10
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-315,
-713
-],
-"cell": [
-9,
-22
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-823,
-424
-],
-"cell": [
-25,
-13
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-959,
-497
-],
-"cell": [
-29,
-15
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1295,
-656
-],
-"cell": [
-40,
-20
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-62,
-356
-],
-"cell": [
-1,
-11
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1067,
-329
-],
-"cell": [
-33,
-10
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-806,
-441
-],
-"cell": [
-25,
-13
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1199,
-57
-],
-"cell": [
-37,
-1
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1084,
-604
-],
-"cell": [
-33,
-18
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-443,
-244
+425,
+797
 ],
 "cell": [
 13,
-7
+24
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_0",
+"kind": "marble_pillar",
 "pos": [
-599,
-589
-],
-"cell": [
-18,
-18
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-48,
-656
-],
-"cell": [
-1,
-20
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-717,
-584
-],
-"cell": [
-22,
-18
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-436,
-366
-],
-"cell": [
-13,
-11
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-1003,
-264
-],
-"cell": [
-31,
-8
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-919,
-285
-],
-"cell": [
-28,
-8
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1173,
-601
-],
-"cell": [
-36,
-18
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-1115,
-400
+1088,
+606
 ],
 "cell": [
 34,
-12
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-819,
-552
-],
-"cell": [
-25,
-17
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-369,
-337
-],
-"cell": [
-11,
-10
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1193,
-808
-],
-"cell": [
-37,
-25
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1241,
-33
-],
-"cell": [
-38,
-1
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-820,
-92
-],
-"cell": [
-25,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-130,
-86
-],
-"cell": [
-4,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-800,
-630
-],
-"cell": [
-24,
-19
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-110,
-180
-],
-"cell": [
-3,
-5
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-495,
-9
-],
-"cell": [
-15,
-0
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-337,
-124
-],
-"cell": [
-10,
-3
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-706,
-608
-],
-"cell": [
-22,
 18
 ],
 "flip": true
 },
 {
-"kind": "pale_tuft_0",
+"kind": "oak_1",
 "pos": [
-505,
-231
-],
-"cell": [
-15,
-7
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-8,
-254
-],
-"cell": [
-0,
-7
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1253,
-742
-],
-"cell": [
-39,
-23
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-1298,
-295
-],
-"cell": [
-40,
-9
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-289,
-121
-],
-"cell": [
-9,
-3
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-535,
-744
-],
-"cell": [
-16,
-23
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1325,
-119
-],
-"cell": [
-41,
-3
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-378,
-92
-],
-"cell": [
-11,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1153,
-591
-],
-"cell": [
-36,
-18
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-623,
-222
-],
-"cell": [
-19,
-6
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-78,
-575
-],
-"cell": [
-2,
-17
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-975,
-313
-],
-"cell": [
-30,
-9
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-393,
-741
-],
-"cell": [
-12,
-23
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1148,
-266
-],
-"cell": [
-35,
-8
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-932,
-235
-],
-"cell": [
-29,
-7
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-130,
-373
-],
-"cell": [
-4,
-11
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-152,
-508
-],
-"cell": [
-4,
-15
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-900,
-198
-],
-"cell": [
-28,
-6
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1245,
-325
-],
-"cell": [
-38,
-10
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-807,
-767
+810,
+793
 ],
 "cell": [
 25,
-23
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-185,
-224
-],
-"cell": [
-5,
-6
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-264,
-74
-],
-"cell": [
-8,
-2
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1103,
-346
-],
-"cell": [
-34,
-10
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-183,
-486
-],
-"cell": [
-5,
-15
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1137,
-483
-],
-"cell": [
-35,
-15
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-315,
-272
-],
-"cell": [
-9,
-8
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-132,
-516
-],
-"cell": [
-4,
-16
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-636,
-522
-],
-"cell": [
-19,
-16
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-702,
-410
-],
-"cell": [
-21,
-12
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-805,
-742
-],
-"cell": [
-25,
-23
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-1110,
-300
-],
-"cell": [
-34,
-9
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-695,
-792
-],
-"cell": [
-21,
 24
 ],
 "flip": true
 },
 {
-"kind": "pale_tuft_1",
+"kind": "marble_pillar",
 "pos": [
-1069,
-337
+13,
+269
+],
+"cell": [
+0,
+8
+],
+"flip": true
+},
+{
+"kind": "marble_pillar",
+"pos": [
+179,
+791
+],
+"cell": [
+5,
+24
+],
+"flip": false
+},
+{
+"kind": "marble_pillar",
+"pos": [
+21,
+384
+],
+"cell": [
+0,
+11
+],
+"flip": true
+},
+{
+"kind": "oak_1",
+"pos": [
+12,
+590
+],
+"cell": [
+0,
+18
+],
+"flip": true
+},
+{
+"kind": "marble_pillar",
+"pos": [
+819,
+824
+],
+"cell": [
+25,
+25
+],
+"flip": true
+},
+{
+"kind": "oak_1",
+"pos": [
+116,
+366
+],
+"cell": [
+3,
+11
+],
+"flip": false
+},
+{
+"kind": "marble_pillar",
+"pos": [
+33,
+209
+],
+"cell": [
+1,
+6
+],
+"flip": true
+},
+{
+"kind": "marble_pillar",
+"pos": [
+1307,
+78
+],
+"cell": [
+40,
+2
+],
+"flip": false
+},
+{
+"kind": "oak_1",
+"pos": [
+260,
+801
+],
+"cell": [
+8,
+25
+],
+"flip": false
+},
+{
+"kind": "oak_1",
+"pos": [
+1244,
+38
+],
+"cell": [
+38,
+1
+],
+"flip": false
+},
+{
+"kind": "oak_1",
+"pos": [
+1333,
+80
+],
+"cell": [
+41,
+2
+],
+"flip": true
+},
+{
+"kind": "marble_pillar",
+"pos": [
+1193,
+265
+],
+"cell": [
+37,
+8
+],
+"flip": false
+},
+{
+"kind": "marble_pillar",
+"pos": [
+1181,
+336
+],
+"cell": [
+36,
+10
+],
+"flip": true
+},
+{
+"kind": "marble_pillar",
+"pos": [
+1126,
+756
+],
+"cell": [
+35,
+23
+],
+"flip": true
+},
+{
+"kind": "oak_1",
+"pos": [
+615,
+497
+],
+"cell": [
+19,
+15
+],
+"flip": true
+},
+{
+"kind": "marble_pillar",
+"pos": [
+38,
+361
+],
+"cell": [
+1,
+11
+],
+"flip": true
+},
+{
+"kind": "oak_1",
+"pos": [
+626,
+37
+],
+"cell": [
+19,
+1
+],
+"flip": true
+},
+{
+"kind": "oak_1",
+"pos": [
+576,
+803
+],
+"cell": [
+17,
+25
+],
+"flip": false
+},
+{
+"kind": "marble_pillar",
+"pos": [
+1218,
+37
+],
+"cell": [
+38,
+1
+],
+"flip": true
+},
+{
+"kind": "marble_pillar",
+"pos": [
+1127,
+665
+],
+"cell": [
+35,
+20
+],
+"flip": false
+},
+{
+"kind": "oak_1",
+"pos": [
+1149,
+253
+],
+"cell": [
+35,
+7
+],
+"flip": true
+},
+{
+"kind": "oak_1",
+"pos": [
+146,
+824
+],
+"cell": [
+4,
+25
+],
+"flip": false
+},
+{
+"kind": "marble_pillar",
+"pos": [
+302,
+824
+],
+"cell": [
+9,
+25
+],
+"flip": true
+},
+{
+"kind": "oak_1",
+"pos": [
+1300,
+810
+],
+"cell": [
+40,
+25
+],
+"flip": false
+},
+{
+"kind": "marble_pillar",
+"pos": [
+1321,
+464
+],
+"cell": [
+41,
+14
+],
+"flip": false
+},
+{
+"kind": "oak_1",
+"pos": [
+464,
+389
+],
+"cell": [
+14,
+12
+],
+"flip": true
+},
+{
+"kind": "marble_pillar",
+"pos": [
+14,
+801
+],
+"cell": [
+0,
+25
+],
+"flip": false
+},
+{
+"kind": "oak_1",
+"pos": [
+22,
+775
+],
+"cell": [
+0,
+24
+],
+"flip": false
+},
+{
+"kind": "oak_1",
+"pos": [
+450,
+369
+],
+"cell": [
+14,
+11
+],
+"flip": false
+},
+{
+"kind": "oak_1",
+"pos": [
+1065,
+347
 ],
 "cell": [
 33,
@@ -810,14 +402,242 @@
 "flip": false
 },
 {
-"kind": "prism_0",
+"kind": "marble_pillar",
 "pos": [
-84,
-511
+558,
+813
 ],
 "cell": [
-2,
-15
+17,
+25
+],
+"flip": true
+},
+{
+"kind": "oak_1",
+"pos": [
+151,
+364
+],
+"cell": [
+4,
+11
+],
+"flip": false
+},
+{
+"kind": "marble_pillar",
+"pos": [
+650,
+119
+],
+"cell": [
+20,
+3
+],
+"flip": true
+},
+{
+"kind": "marble_pillar",
+"pos": [
+147,
+797
+],
+"cell": [
+4,
+24
+],
+"flip": true
+},
+{
+"kind": "oak_1",
+"pos": [
+1319,
+522
+],
+"cell": [
+41,
+16
+],
+"flip": false
+},
+{
+"kind": "marble_pillar",
+"pos": [
+952,
+444
+],
+"cell": [
+29,
+13
+],
+"flip": true
+},
+{
+"kind": "marble_pillar",
+"pos": [
+1242,
+794
+],
+"cell": [
+38,
+24
+],
+"flip": false
+},
+{
+"kind": "marble_pillar",
+"pos": [
+11,
+746
+],
+"cell": [
+0,
+23
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+50,
+627
+],
+"cell": [
+1,
+19
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+544,
+680
+],
+"cell": [
+16,
+21
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+507,
+467
+],
+"cell": [
+15,
+14
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+1230,
+616
+],
+"cell": [
+38,
+19
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+1152,
+262
+],
+"cell": [
+36,
+8
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+815,
+418
+],
+"cell": [
+25,
+13
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1295,
+478
+],
+"cell": [
+40,
+14
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1260,
+316
+],
+"cell": [
+39,
+9
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+926,
+640
+],
+"cell": [
+28,
+19
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+819,
+55
+],
+"cell": [
+25,
+1
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1081,
+419
+],
+"cell": [
+33,
+13
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1041,
+82
+],
+"cell": [
+32,
+2
 ],
 "flip": false
 },
@@ -825,538 +645,190 @@
 "kind": "pale_tuft_0",
 "pos": [
 1279,
-740
+236
 ],
 "cell": [
 39,
-23
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-644,
-608
-],
-"cell": [
-20,
-18
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1301,
-651
-],
-"cell": [
-40,
-20
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1048,
-401
-],
-"cell": [
-32,
-12
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-284,
-302
-],
-"cell": [
-8,
-9
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1113,
-253
-],
-"cell": [
-34,
 7
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_1",
+"kind": "flowers_1",
 "pos": [
-827,
-563
+477,
+484
 ],
 "cell": [
-25,
-17
+14,
+15
 ],
-"flip": false
+"flip": true
 },
 {
 "kind": "pale_tuft_1",
 "pos": [
-1147,
-411
+683,
+528
 ],
 "cell": [
-35,
-12
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1095,
-743
-],
-"cell": [
-34,
-23
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-546,
-525
-],
-"cell": [
-17,
+21,
 16
 ],
 "flip": true
 },
 {
-"kind": "pale_tuft_0",
+"kind": "rock_0",
 "pos": [
-645,
-748
+669,
+696
 ],
 "cell": [
 20,
+21
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+133,
+758
+],
+"cell": [
+4,
 23
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_1",
-"pos": [
-1260,
-228
-],
-"cell": [
-39,
-7
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-1321,
-128
-],
-"cell": [
-41,
-4
-],
-"flip": false
-},
-{
 "kind": "pale_tuft_0",
 "pos": [
-1239,
-71
+837,
+721
 ],
 "cell": [
-38,
-2
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-291,
-586
-],
-"cell": [
-9,
-18
+26,
+22
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_0",
+"kind": "flowers_0",
 "pos": [
-522,
-476
-],
-"cell": [
-16,
-14
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1284,
-396
-],
-"cell": [
-40,
-12
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-492,
-148
+495,
+813
 ],
 "cell": [
 15,
-4
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1290,
-499
-],
-"cell": [
-40,
-15
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-603,
-783
-],
-"cell": [
-18,
-24
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1098,
-599
-],
-"cell": [
-34,
-18
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-703,
-735
-],
-"cell": [
-21,
-22
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-126,
-197
-],
-"cell": [
-3,
-6
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-791,
-790
-],
-"cell": [
-24,
-24
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-109,
-622
-],
-"cell": [
-3,
-19
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-475,
-79
-],
-"cell": [
-14,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-18,
-676
-],
-"cell": [
-0,
-21
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-318,
-603
-],
-"cell": [
-9,
-18
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-991,
-219
-],
-"cell": [
-30,
-6
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-732,
-677
-],
-"cell": [
-22,
-21
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-592,
-824
-],
-"cell": [
-18,
 25
 ],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-755,
-725
-],
-"cell": [
-23,
-22
-],
 "flip": false
 },
 {
-"kind": "pale_tuft_1",
+"kind": "rock_0",
 "pos": [
-628,
-62
+161,
+108
 ],
 "cell": [
-19,
-1
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-294,
-62
-],
-"cell": [
-9,
-1
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-1180,
-76
-],
-"cell": [
-36,
-2
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-375,
-115
-],
-"cell": [
-11,
+5,
 3
 ],
 "flip": false
 },
 {
-"kind": "ruin_pillar",
+"kind": "bush_round",
 "pos": [
-736,
-608
+356,
+622
 ],
 "cell": [
-23,
-18
+11,
+19
 ],
 "flip": false
 },
 {
-"kind": "prism_1",
+"kind": "flowers_1",
 "pos": [
-497,
-27
+169,
+738
 ],
 "cell": [
-15,
-0
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1002,
-211
-],
-"cell": [
-31,
-6
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-297,
-589
-],
-"cell": [
-9,
-18
+5,
+23
 ],
 "flip": true
 },
 {
-"kind": "pale_tuft_1",
+"kind": "pale_tuft_0",
 "pos": [
-366,
-595
+35,
+322
 ],
 "cell": [
-11,
-18
+1,
+10
 ],
 "flip": false
 },
 {
 "kind": "pale_tuft_1",
 "pos": [
-831,
-822
+17,
+691
 ],
 "cell": [
-25,
-25
+0,
+21
 ],
-"flip": false
+"flip": true
 },
 {
-"kind": "pale_tuft_1",
+"kind": "rock_0",
 "pos": [
-488,
-741
+836,
+765
 ],
 "cell": [
-15,
+26,
 23
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_0",
+"kind": "flowers_0",
 "pos": [
-22,
-529
+1068,
+816
 ],
 "cell": [
-0,
-16
+33,
+25
 ],
 "flip": true
 },
 {
-"kind": "prism_0",
+"kind": "flowers_0",
 "pos": [
-296,
-75
+1177,
+102
 ],
 "cell": [
-9,
+36,
+3
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+403,
+90
+],
+"cell": [
+12,
 2
 ],
 "flip": false
@@ -1364,71 +836,275 @@
 {
 "kind": "pale_tuft_1",
 "pos": [
-713,
-773
+914,
+289
 ],
 "cell": [
-22,
-24
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1108,
-150
-],
-"cell": [
-34,
-4
+28,
+9
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_0",
+"kind": "prism_shard",
 "pos": [
-171,
-204
+1159,
+487
 ],
 "cell": [
-5,
-6
+36,
+15
 ],
 "flip": true
 },
 {
-"kind": "prism_1",
+"kind": "flowers_1",
 "pos": [
-472,
-284
+732,
+809
 ],
 "cell": [
-14,
-8
+22,
+25
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+126,
+425
+],
+"cell": [
+3,
+13
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+422,
+392
+],
+"cell": [
+13,
+12
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+537,
+151
+],
+"cell": [
+16,
+4
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+511,
+234
+],
+"cell": [
+15,
+7
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1130,
+233
+],
+"cell": [
+35,
+7
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+136,
+355
+],
+"cell": [
+4,
+11
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+237,
+312
+],
+"cell": [
+7,
+9
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+782,
+706
+],
+"cell": [
+24,
+22
 ],
 "flip": true
 },
 {
 "kind": "pale_tuft_1",
 "pos": [
-1305,
-594
+824,
+725
 ],
 "cell": [
-40,
-18
+25,
+22
 ],
 "flip": true
 },
 {
-"kind": "pale_tuft_0",
+"kind": "flowers_0",
 "pos": [
-908,
-822
+336,
+414
 ],
 "cell": [
-28,
+10,
+12
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+860,
+768
+],
+"cell": [
+26,
+23
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+52,
+365
+],
+"cell": [
+1,
+11
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+857,
+827
+],
+"cell": [
+26,
+25
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+638,
+113
+],
+"cell": [
+19,
+3
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+608,
+760
+],
+"cell": [
+18,
+23
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+580,
+478
+],
+"cell": [
+18,
+14
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+173,
+214
+],
+"cell": [
+5,
+6
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+690,
+775
+],
+"cell": [
+21,
+24
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+1243,
+317
+],
+"cell": [
+38,
+9
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+435,
+807
+],
+"cell": [
+13,
 25
 ],
 "flip": true
@@ -1436,8 +1112,92 @@
 {
 "kind": "pale_tuft_1",
 "pos": [
-33,
-444
+350,
+474
+],
+"cell": [
+10,
+14
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1139,
+65
+],
+"cell": [
+35,
+2
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1306,
+423
+],
+"cell": [
+40,
+13
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1160,
+411
+],
+"cell": [
+36,
+12
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+686,
+315
+],
+"cell": [
+21,
+9
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+947,
+326
+],
+"cell": [
+29,
+10
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1225,
+737
+],
+"cell": [
+38,
+23
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+58,
+439
 ],
 "cell": [
 1,
@@ -1446,86 +1206,542 @@
 "flip": true
 },
 {
-"kind": "pale_tuft_1",
+"kind": "bush_round",
 "pos": [
-396,
-93
+1114,
+138
+],
+"cell": [
+34,
+4
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+389,
+16
 ],
 "cell": [
 12,
+0
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+535,
+76
+],
+"cell": [
+16,
+2
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+355,
+89
+],
+"cell": [
+11,
 2
 ],
 "flip": false
 },
 {
-"kind": "ruin_pillar",
+"kind": "bush_round",
 "pos": [
-481,
-637
+247,
+740
 ],
 "cell": [
-15,
-19
+7,
+23
 ],
 "flip": true
 },
 {
 "kind": "pale_tuft_0",
 "pos": [
-780,
-222
+28,
+290
 ],
 "cell": [
-24,
-6
+0,
+9
 ],
 "flip": false
 },
 {
-"kind": "prism_0",
+"kind": "pale_tuft_1",
 "pos": [
-1061,
-338
+237,
+132
 ],
 "cell": [
-33,
-10
+7,
+4
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+861,
+26
+],
+"cell": [
+26,
+0
 ],
 "flip": false
 },
 {
-"kind": "prism_1",
+"kind": "rock_0",
 "pos": [
-460,
-668
+638,
+493
 ],
 "cell": [
-14,
+19,
+15
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+650,
+770
+],
+"cell": [
+20,
+24
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+391,
+670
+],
+"cell": [
+12,
 20
 ],
 "flip": true
 },
 {
-"kind": "prism_0",
+"kind": "pale_tuft_0",
 "pos": [
-385,
-773
+392,
+420
 ],
 "cell": [
 12,
+13
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+639,
+186
+],
+"cell": [
+19,
+5
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+765,
+65
+],
+"cell": [
+23,
+2
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+941,
+35
+],
+"cell": [
+29,
+1
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1290,
+780
+],
+"cell": [
+40,
+24
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+382,
+726
+],
+"cell": [
+11,
+22
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+877,
+795
+],
+"cell": [
+27,
 24
 ],
 "flip": true
 },
 {
-"kind": "prism_0",
+"kind": "flowers_0",
 "pos": [
-132,
-760
+242,
+795
+],
+"cell": [
+7,
+24
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+910,
+819
+],
+"cell": [
+28,
+25
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+120,
+362
+],
+"cell": [
+3,
+11
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+133,
+56
 ],
 "cell": [
 4,
+1
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+238,
+446
+],
+"cell": [
+7,
+13
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+940,
+421
+],
+"cell": [
+29,
+13
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1235,
+499
+],
+"cell": [
+38,
+15
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+333,
+765
+],
+"cell": [
+10,
 23
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+360,
+590
+],
+"cell": [
+11,
+18
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+927,
+287
+],
+"cell": [
+28,
+8
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+173,
+83
+],
+"cell": [
+5,
+2
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+397,
+435
+],
+"cell": [
+12,
+13
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+295,
+806
+],
+"cell": [
+9,
+25
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1214,
+78
+],
+"cell": [
+37,
+2
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+277,
+399
+],
+"cell": [
+8,
+12
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1261,
+168
+],
+"cell": [
+39,
+5
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+578,
+478
+],
+"cell": [
+18,
+14
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+838,
+791
+],
+"cell": [
+26,
+24
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+415,
+408
+],
+"cell": [
+12,
+12
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+54,
+300
+],
+"cell": [
+1,
+9
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1097,
+479
+],
+"cell": [
+34,
+14
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+864,
+164
+],
+"cell": [
+26,
+5
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+137,
+148
+],
+"cell": [
+4,
+4
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+793,
+605
+],
+"cell": [
+24,
+18
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+927,
+516
+],
+"cell": [
+28,
+16
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+926,
+155
+],
+"cell": [
+28,
+4
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+37,
+98
+],
+"cell": [
+1,
+3
 ],
 "flip": true
 },
@@ -1533,631 +1749,295 @@
 "kind": "pale_tuft_0",
 "pos": [
 768,
-517
-],
-"cell": [
-23,
-16
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-33,
-581
-],
-"cell": [
-1,
-18
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-353,
-110
-],
-"cell": [
-11,
-3
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-271,
-161
-],
-"cell": [
-8,
-5
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1082,
-823
-],
-"cell": [
-33,
-25
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-85,
-608
-],
-"cell": [
-2,
-19
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-326,
-168
-],
-"cell": [
-10,
-5
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-726,
-391
-],
-"cell": [
-22,
-12
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-981,
-121
-],
-"cell": [
-30,
-3
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1049,
-589
-],
-"cell": [
-32,
-18
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-249,
-88
-],
-"cell": [
-7,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1126,
-446
-],
-"cell": [
-35,
-13
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-981,
-499
-],
-"cell": [
-30,
-15
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-744,
-588
-],
-"cell": [
-23,
-18
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1335,
-198
-],
-"cell": [
-41,
-6
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-494,
-212
-],
-"cell": [
-15,
-6
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1269,
-109
-],
-"cell": [
-39,
-3
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-351,
-535
-],
-"cell": [
-10,
-16
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1131,
-641
-],
-"cell": [
-35,
-20
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-836,
-37
-],
-"cell": [
-26,
-1
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1009,
-259
-],
-"cell": [
-31,
-8
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-685,
-674
-],
-"cell": [
-21,
-21
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-475,
-537
-],
-"cell": [
-14,
-16
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1088,
-621
-],
-"cell": [
-34,
-19
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-282,
-751
-],
-"cell": [
-8,
-23
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-366,
-500
-],
-"cell": [
-11,
-15
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-971,
-249
-],
-"cell": [
-30,
-7
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-438,
-359
-],
-"cell": [
-13,
-11
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1125,
-343
-],
-"cell": [
-35,
-10
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-66,
-416
-],
-"cell": [
-2,
-12
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-770,
-742
+476
 ],
 "cell": [
 24,
-23
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-500,
-795
-],
-"cell": [
-15,
-24
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-822,
-483
-],
-"cell": [
-25,
-15
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-797,
-301
-],
-"cell": [
-24,
-9
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-1169,
-255
-],
-"cell": [
-36,
-7
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-950,
-796
-],
-"cell": [
-29,
-24
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-439,
-644
-],
-"cell": [
-13,
-20
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1054,
-87
-],
-"cell": [
-32,
-2
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-8,
-440
-],
-"cell": [
-0,
-13
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1076,
-504
-],
-"cell": [
-33,
-15
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-255,
-587
-],
-"cell": [
-7,
-18
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1302,
-622
-],
-"cell": [
-40,
-19
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-494,
-378
-],
-"cell": [
-15,
-11
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1318,
-652
-],
-"cell": [
-41,
-20
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-627,
-84
-],
-"cell": [
-19,
-2
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1104,
-416
-],
-"cell": [
-34,
-12
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1122,
-273
-],
-"cell": [
-35,
-8
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-828,
-436
-],
-"cell": [
-25,
-13
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-133,
-648
-],
-"cell": [
-4,
-20
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1245,
-473
-],
-"cell": [
-38,
 14
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_0",
+"kind": "rock_0",
 "pos": [
-478,
-144
+442,
+14
 ],
 "cell": [
-14,
-4
+13,
+0
 ],
 "flip": true
 },
 {
-"kind": "prism_0",
+"kind": "pale_tuft_0",
 "pos": [
-937,
-333
+201,
+493
 ],
 "cell": [
-29,
+6,
+15
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1034,
+779
+],
+"cell": [
+32,
+24
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1240,
+237
+],
+"cell": [
+38,
+7
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1289,
+642
+],
+"cell": [
+40,
+20
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+680,
+524
+],
+"cell": [
+21,
+16
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+645,
+197
+],
+"cell": [
+20,
+6
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+488,
+647
+],
+"cell": [
+15,
+20
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+182,
+792
+],
+"cell": [
+5,
+24
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+1323,
+746
+],
+"cell": [
+41,
+23
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+800,
+208
+],
+"cell": [
+24,
+6
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+344,
+739
+],
+"cell": [
+10,
+23
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+1094,
+26
+],
+"cell": [
+34,
+0
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1062,
+644
+],
+"cell": [
+33,
+20
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+323,
+301
+],
+"cell": [
+10,
+9
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+613,
+632
+],
+"cell": [
+19,
+19
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+162,
+688
+],
+"cell": [
+5,
+21
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+1123,
+802
+],
+"cell": [
+35,
+25
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+514,
+137
+],
+"cell": [
+16,
+4
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+747,
+343
+],
+"cell": [
+23,
 10
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_0",
+"kind": "pale_tuft_1",
 "pos": [
-889,
-221
+524,
+797
+],
+"cell": [
+16,
+24
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+234,
+206
+],
+"cell": [
+7,
+6
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+188,
+224
+],
+"cell": [
+5,
+7
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+875,
+204
 ],
 "cell": [
 27,
@@ -2166,169 +2046,709 @@
 "flip": true
 },
 {
-"kind": "ruin_pillar",
+"kind": "flowers_0",
 "pos": [
-64,
-155
+1137,
+544
 ],
 "cell": [
-1,
+35,
+17
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+762,
+780
+],
+"cell": [
+23,
+24
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+876,
+133
+],
+"cell": [
+27,
 4
 ],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+666,
+707
+],
+"cell": [
+20,
+22
+],
 "flip": false
 },
 {
-"kind": "pale_tuft_1",
+"kind": "flowers_1",
 "pos": [
-87,
-560
+216,
+174
 ],
 "cell": [
-2,
-17
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-639,
-360
-],
-"cell": [
-19,
-11
+6,
+5
 ],
 "flip": true
 },
 {
-"kind": "prism_1",
+"kind": "flowers_0",
 "pos": [
-284,
-342
+482,
+775
 ],
 "cell": [
-8,
-10
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-74,
-553
-],
-"cell": [
-2,
-17
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-937,
-479
-],
-"cell": [
-29,
-14
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-606,
-770
-],
-"cell": [
-18,
+15,
 24
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_0",
+"kind": "pale_tuft_1",
 "pos": [
-814,
-251
+652,
+313
 ],
 "cell": [
-25,
-7
+20,
+9
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+891,
+12
+],
+"cell": [
+27,
+0
 ],
 "flip": true
 },
 {
-"kind": "marble_0",
+"kind": "rock_0",
 "pos": [
-377,
-440
+1021,
+127
 ],
 "cell": [
-11,
+31,
+3
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+932,
+583
+],
+"cell": [
+29,
+18
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+539,
+645
+],
+"cell": [
+16,
+20
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+509,
+429
+],
+"cell": [
+15,
 13
 ],
 "flip": true
 },
 {
-"kind": "prism_1",
+"kind": "flowers_0",
 "pos": [
-755,
-805
+327,
+110
 ],
 "cell": [
-23,
-25
+10,
+3
 ],
 "flip": false
 },
 {
-"kind": "marble_0",
+"kind": "pale_tuft_1",
 "pos": [
-111,
-593
+369,
+724
 ],
 "cell": [
-3,
-18
+11,
+22
 ],
 "flip": true
 },
 {
-"kind": "marble_0",
+"kind": "pale_tuft_0",
 "pos": [
-469,
-473
+805,
+636
 ],
 "cell": [
-14,
+25,
+19
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+604,
+478
+],
+"cell": [
+18,
 14
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1019,
+446
+],
+"cell": [
+31,
+13
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+259,
+819
+],
+"cell": [
+8,
+25
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+735,
+685
+],
+"cell": [
+22,
+21
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+512,
+411
+],
+"cell": [
+16,
+12
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+1102,
+381
+],
+"cell": [
+34,
+11
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1047,
+188
+],
+"cell": [
+32,
+5
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+372,
+306
+],
+"cell": [
+11,
+9
 ],
 "flip": true
 },
 {
 "kind": "pale_tuft_1",
 "pos": [
-570,
-528
+1259,
+81
 ],
 "cell": [
-17,
+39,
+2
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+698,
+387
+],
+"cell": [
+21,
+12
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+63,
+77
+],
+"cell": [
+1,
+2
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+1327,
+143
+],
+"cell": [
+41,
+4
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1091,
+624
+],
+"cell": [
+34,
+19
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+630,
+756
+],
+"cell": [
+19,
+23
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+785,
+730
+],
+"cell": [
+24,
+22
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+34,
+376
+],
+"cell": [
+1,
+11
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+1228,
+287
+],
+"cell": [
+38,
+8
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+479,
+589
+],
+"cell": [
+14,
+18
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+353,
+65
+],
+"cell": [
+11,
+2
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+908,
+280
+],
+"cell": [
+28,
+8
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+166,
+458
+],
+"cell": [
+5,
+14
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+237,
+567
+],
+"cell": [
+7,
+17
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+391,
+590
+],
+"cell": [
+12,
+18
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+269,
+114
+],
+"cell": [
+8,
+3
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+504,
+800
+],
+"cell": [
+15,
+25
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+331,
+101
+],
+"cell": [
+10,
+3
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+431,
+743
+],
+"cell": [
+13,
+23
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+435,
+409
+],
+"cell": [
+13,
+12
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+117,
+74
+],
+"cell": [
+3,
+2
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+465,
+276
+],
+"cell": [
+14,
+8
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+398,
+480
+],
+"cell": [
+12,
+15
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+263,
+324
+],
+"cell": [
+8,
+10
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+1068,
+482
+],
+"cell": [
+33,
+15
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+674,
+521
+],
+"cell": [
+21,
 16
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+63,
+595
+],
+"cell": [
+1,
+18
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+743,
+64
+],
+"cell": [
+23,
+1
 ],
 "flip": true
 },
 {
 "kind": "pale_tuft_0",
 "pos": [
-983,
-350
+835,
+540
 ],
 "cell": [
-30,
+26,
+16
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+613,
+128
+],
+"cell": [
+19,
+4
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1172,
+187
+],
+"cell": [
+36,
+5
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1259,
+783
+],
+"cell": [
+39,
+24
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+712,
+308
+],
+"cell": [
+22,
+9
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+577,
+605
+],
+"cell": [
+18,
+18
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+336,
+607
+],
+"cell": [
+10,
+18
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+708,
+334
+],
+"cell": [
+22,
 10
 ],
 "flip": false
@@ -2336,71 +2756,431 @@
 {
 "kind": "pale_tuft_1",
 "pos": [
-990,
-825
+177,
+708
 ],
 "cell": [
-30,
+5,
+22
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+346,
+47
+],
+"cell": [
+10,
+1
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+779,
+804
+],
+"cell": [
+24,
 25
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+782,
+713
+],
+"cell": [
+24,
+22
 ],
 "flip": true
 },
 {
-"kind": "ruin_pillar",
+"kind": "pale_tuft_1",
 "pos": [
-1154,
-740
+1122,
+240
 ],
 "cell": [
-36,
+35,
+7
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+524,
+242
+],
+"cell": [
+16,
+7
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+1274,
+205
+],
+"cell": [
+39,
+6
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+195,
+183
+],
+"cell": [
+6,
+5
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+745,
+672
+],
+"cell": [
+23,
+20
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1254,
+44
+],
+"cell": [
+39,
+1
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+790,
+472
+],
+"cell": [
+24,
+14
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+524,
+659
+],
+"cell": [
+16,
+20
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+499,
+787
+],
+"cell": [
+15,
+24
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+909,
+16
+],
+"cell": [
+28,
+0
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+214,
+448
+],
+"cell": [
+6,
+14
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+598,
+472
+],
+"cell": [
+18,
+14
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1187,
+360
+],
+"cell": [
+37,
+11
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1150,
+639
+],
+"cell": [
+35,
+19
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+626,
+622
+],
+"cell": [
+19,
+19
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+721,
+674
+],
+"cell": [
+22,
+21
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+609,
+443
+],
+"cell": [
+19,
+13
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+927,
+433
+],
+"cell": [
+28,
+13
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+508,
+571
+],
+"cell": [
+15,
+17
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+662,
+403
+],
+"cell": [
+20,
+12
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+713,
+673
+],
+"cell": [
+22,
+21
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+41,
+525
+],
+"cell": [
+1,
+16
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+383,
+508
+],
+"cell": [
+11,
+15
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+262,
+516
+],
+"cell": [
+8,
+16
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+884,
+829
+],
+"cell": [
+27,
+25
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1210,
+738
+],
+"cell": [
+37,
 23
 ],
 "flip": false
 },
 {
-"kind": "marble_0",
+"kind": "flowers_0",
 "pos": [
-430,
-497
+807,
+631
 ],
 "cell": [
-13,
-15
+25,
+19
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+752,
+577
+],
+"cell": [
+23,
+18
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_1",
+"kind": "prism_shard",
 "pos": [
-1279,
-153
+1069,
+801
 ],
 "cell": [
-39,
-4
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-192,
-823
-],
-"cell": [
-6,
+33,
 25
 ],
 "flip": false
 },
 {
-"kind": "marble_0",
+"kind": "flowers_0",
 "pos": [
-74,
-399
+831,
+310
 ],
 "cell": [
-2,
+25,
+9
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+308,
+483
+],
+"cell": [
+9,
+15
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+717,
+384
+],
+"cell": [
+22,
 12
 ],
 "flip": true
@@ -2408,8 +3188,1352 @@
 {
 "kind": "pale_tuft_0",
 "pos": [
-115,
-471
+1260,
+330
+],
+"cell": [
+39,
+10
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+149,
+729
+],
+"cell": [
+4,
+22
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+114,
+739
+],
+"cell": [
+3,
+23
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+262,
+439
+],
+"cell": [
+8,
+13
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+485,
+165
+],
+"cell": [
+15,
+5
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1318,
+712
+],
+"cell": [
+41,
+22
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+560,
+254
+],
+"cell": [
+17,
+7
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+87,
+589
+],
+"cell": [
+2,
+18
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+346,
+67
+],
+"cell": [
+10,
+2
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+374,
+566
+],
+"cell": [
+11,
+17
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+920,
+168
+],
+"cell": [
+28,
+5
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+923,
+183
+],
+"cell": [
+28,
+5
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+770,
+394
+],
+"cell": [
+24,
+12
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+716,
+459
+],
+"cell": [
+22,
+14
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+1238,
+615
+],
+"cell": [
+38,
+19
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+45,
+420
+],
+"cell": [
+1,
+13
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+438,
+312
+],
+"cell": [
+13,
+9
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+1268,
+417
+],
+"cell": [
+39,
+13
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+1123,
+424
+],
+"cell": [
+35,
+13
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+176,
+106
+],
+"cell": [
+5,
+3
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+164,
+81
+],
+"cell": [
+5,
+2
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+419,
+126
+],
+"cell": [
+13,
+3
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+478,
+44
+],
+"cell": [
+14,
+1
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+803,
+592
+],
+"cell": [
+25,
+18
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+219,
+417
+],
+"cell": [
+6,
+13
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+556,
+90
+],
+"cell": [
+17,
+2
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+83,
+430
+],
+"cell": [
+2,
+13
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+85,
+298
+],
+"cell": [
+2,
+9
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+825,
+259
+],
+"cell": [
+25,
+8
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+460,
+316
+],
+"cell": [
+14,
+9
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+13,
+343
+],
+"cell": [
+0,
+10
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+353,
+176
+],
+"cell": [
+11,
+5
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+665,
+389
+],
+"cell": [
+20,
+12
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+114,
+383
+],
+"cell": [
+3,
+11
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+526,
+756
+],
+"cell": [
+16,
+23
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+496,
+530
+],
+"cell": [
+15,
+16
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+35,
+628
+],
+"cell": [
+1,
+19
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+312,
+610
+],
+"cell": [
+9,
+19
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1003,
+472
+],
+"cell": [
+31,
+14
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+20,
+410
+],
+"cell": [
+0,
+12
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+848,
+132
+],
+"cell": [
+26,
+4
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1101,
+604
+],
+"cell": [
+34,
+18
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+893,
+241
+],
+"cell": [
+27,
+7
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+294,
+567
+],
+"cell": [
+9,
+17
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+10,
+705
+],
+"cell": [
+0,
+22
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+336,
+255
+],
+"cell": [
+10,
+7
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+912,
+407
+],
+"cell": [
+28,
+12
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+843,
+811
+],
+"cell": [
+26,
+25
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+293,
+128
+],
+"cell": [
+9,
+4
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+357,
+284
+],
+"cell": [
+11,
+8
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1088,
+283
+],
+"cell": [
+34,
+8
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+512,
+632
+],
+"cell": [
+16,
+19
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+14,
+423
+],
+"cell": [
+0,
+13
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+1009,
+313
+],
+"cell": [
+31,
+9
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+206,
+59
+],
+"cell": [
+6,
+1
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+1306,
+751
+],
+"cell": [
+40,
+23
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+758,
+767
+],
+"cell": [
+23,
+23
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+985,
+109
+],
+"cell": [
+30,
+3
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+697,
+690
+],
+"cell": [
+21,
+21
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+380,
+59
+],
+"cell": [
+11,
+1
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1252,
+429
+],
+"cell": [
+39,
+13
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+841,
+146
+],
+"cell": [
+26,
+4
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+376,
+549
+],
+"cell": [
+11,
+17
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+701,
+780
+],
+"cell": [
+21,
+24
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+508,
+94
+],
+"cell": [
+15,
+2
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+963,
+623
+],
+"cell": [
+30,
+19
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+661,
+440
+],
+"cell": [
+20,
+13
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1027,
+52
+],
+"cell": [
+32,
+1
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+725,
+109
+],
+"cell": [
+22,
+3
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+979,
+466
+],
+"cell": [
+30,
+14
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1067,
+338
+],
+"cell": [
+33,
+10
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+307,
+455
+],
+"cell": [
+9,
+14
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+924,
+135
+],
+"cell": [
+28,
+4
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+83,
+469
+],
+"cell": [
+2,
+14
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+577,
+651
+],
+"cell": [
+18,
+20
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+142,
+107
+],
+"cell": [
+4,
+3
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+87,
+336
+],
+"cell": [
+2,
+10
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+205,
+425
+],
+"cell": [
+6,
+13
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+1186,
+753
+],
+"cell": [
+37,
+23
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+609,
+772
+],
+"cell": [
+19,
+24
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+569,
+629
+],
+"cell": [
+17,
+19
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+167,
+746
+],
+"cell": [
+5,
+23
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+416,
+39
+],
+"cell": [
+12,
+1
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+714,
+319
+],
+"cell": [
+22,
+9
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+954,
+59
+],
+"cell": [
+29,
+1
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+1050,
+97
+],
+"cell": [
+32,
+3
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+857,
+653
+],
+"cell": [
+26,
+20
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+954,
+145
+],
+"cell": [
+29,
+4
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+700,
+90
+],
+"cell": [
+21,
+2
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+151,
+431
+],
+"cell": [
+4,
+13
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+459,
+643
+],
+"cell": [
+14,
+20
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+6,
+26
+],
+"cell": [
+0,
+0
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+813,
+581
+],
+"cell": [
+25,
+18
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1171,
+780
+],
+"cell": [
+36,
+24
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+864,
+55
+],
+"cell": [
+26,
+1
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+99,
+162
+],
+"cell": [
+3,
+5
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1267,
+823
+],
+"cell": [
+39,
+25
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+1248,
+58
+],
+"cell": [
+38,
+1
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+266,
+60
+],
+"cell": [
+8,
+1
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+1269,
+66
+],
+"cell": [
+39,
+2
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1327,
+636
+],
+"cell": [
+41,
+19
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+150,
+50
+],
+"cell": [
+4,
+1
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+845,
+797
+],
+"cell": [
+26,
+24
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+261,
+678
+],
+"cell": [
+8,
+21
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+758,
+779
+],
+"cell": [
+23,
+24
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+1323,
+163
+],
+"cell": [
+41,
+5
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+535,
+608
+],
+"cell": [
+16,
+19
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+338,
+421
+],
+"cell": [
+10,
+13
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+173,
+776
+],
+"cell": [
+5,
+24
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+985,
+505
+],
+"cell": [
+30,
+15
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+943,
+729
+],
+"cell": [
+29,
+22
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+596,
+123
+],
+"cell": [
+18,
+3
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+111,
+479
 ],
 "cell": [
 3,
@@ -2418,565 +4542,157 @@
 "flip": true
 },
 {
-"kind": "marble_0",
+"kind": "pale_tuft_1",
 "pos": [
-1311,
+1230,
+230
+],
+"cell": [
+38,
+7
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+520,
+358
+],
+"cell": [
+16,
+11
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+488,
+755
+],
+"cell": [
+15,
+23
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+1298,
 412
 ],
 "cell": [
 40,
 12
 ],
-"flip": true
+"flip": false
 },
 {
-"kind": "prism_0",
+"kind": "bush_round",
 "pos": [
-363,
-721
+874,
+171
 ],
 "cell": [
-11,
-22
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-590,
-795
-],
-"cell": [
-18,
-24
+27,
+5
 ],
 "flip": true
 },
 {
-"kind": "prism_0",
+"kind": "rock_0",
 "pos": [
-332,
-753
-],
-"cell": [
-10,
-23
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1071,
-361
-],
-"cell": [
-33,
-11
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-722,
-133
-],
-"cell": [
-22,
-4
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-564,
-105
-],
-"cell": [
-17,
-3
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-936,
-419
-],
-"cell": [
-29,
-13
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-745,
-81
-],
-"cell": [
-23,
-2
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-696,
-549
-],
-"cell": [
-21,
-17
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-122,
-436
-],
-"cell": [
-3,
-13
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-749,
-398
-],
-"cell": [
-23,
-12
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-694,
-394
-],
-"cell": [
-21,
-12
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-905,
-266
-],
-"cell": [
-28,
-8
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-1224,
-541
-],
-"cell": [
-38,
-16
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-1297,
-657
-],
-"cell": [
-40,
-20
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-159,
-779
+147,
+223
 ],
 "cell": [
 4,
-24
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1281,
-159
-],
-"cell": [
-40,
-4
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-344,
-195
-],
-"cell": [
-10,
 6
 ],
 "flip": true
 },
 {
-"kind": "prism_1",
+"kind": "flowers_0",
 "pos": [
-17,
-106
+20,
+369
 ],
 "cell": [
 0,
-3
+11
 ],
 "flip": true
 },
 {
-"kind": "ruin_pillar",
+"kind": "bush_round",
 "pos": [
-980,
-402
+1157,
+449
+],
+"cell": [
+36,
+14
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+990,
+540
 ],
 "cell": [
 30,
-12
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-400,
-73
-],
-"cell": [
-12,
-2
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1266,
-442
-],
-"cell": [
-39,
-13
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-26,
-526
-],
-"cell": [
-0,
-16
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-108,
-414
-],
-"cell": [
-3,
-12
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1197,
-226
-],
-"cell": [
-37,
-7
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-309,
-161
-],
-"cell": [
-9,
-5
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1155,
-520
-],
-"cell": [
-36,
 16
 ],
 "flip": true
 },
 {
-"kind": "prism_0",
-"pos": [
-745,
-381
-],
-"cell": [
-23,
-11
-],
-"flip": false
-},
-{
 "kind": "pale_tuft_0",
 "pos": [
-315,
-753
+932,
+277
 ],
 "cell": [
-9,
-23
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-1128,
-810
-],
-"cell": [
-35,
-25
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-907,
-177
-],
-"cell": [
-28,
-5
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-174,
-345
-],
-"cell": [
-5,
-10
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1121,
-825
-],
-"cell": [
-35,
-25
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1093,
-581
-],
-"cell": [
-34,
-18
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-824,
-517
-],
-"cell": [
-25,
-16
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-562,
-210
-],
-"cell": [
-17,
-6
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1181,
-215
-],
-"cell": [
-36,
-6
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1335,
-280
-],
-"cell": [
-41,
+29,
 8
 ],
 "flip": true
 },
 {
-"kind": "prism_0",
+"kind": "bush_round",
 "pos": [
-837,
-22
+192,
+184
 ],
 "cell": [
-26,
-0
+6,
+5
 ],
 "flip": true
 },
 {
 "kind": "pale_tuft_1",
 "pos": [
-17,
-238
+979,
+452
 ],
 "cell": [
-0,
-7
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-462,
-549
-],
-"cell": [
-14,
-17
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-920,
-456
-],
-"cell": [
-28,
+30,
 14
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-745,
-102
-],
-"cell": [
-23,
-3
 ],
 "flip": false
 },
 {
-"kind": "prism_1",
+"kind": "rock_0",
 "pos": [
-413,
-473
-],
-"cell": [
-12,
-14
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-313,
-67
+312,
+56
 ],
 "cell": [
 9,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-457,
-46
-],
-"cell": [
-14,
 1
 ],
 "flip": true
@@ -2984,155 +4700,611 @@
 {
 "kind": "pale_tuft_0",
 "pos": [
-161,
-344
-],
-"cell": [
-5,
-10
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1089,
-341
-],
-"cell": [
-34,
-10
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-560,
-650
+557,
+757
 ],
 "cell": [
 17,
-20
+23
 ],
-"flip": false
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+580,
+127
+],
+"cell": [
+18,
+3
+],
+"flip": true
 },
 {
 "kind": "pale_tuft_0",
 "pos": [
-533,
-76
+1329,
+62
 ],
 "cell": [
-16,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-109,
-437
-],
-"cell": [
-3,
-13
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1153,
-624
-],
-"cell": [
-36,
-19
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-342,
-792
-],
-"cell": [
-10,
-24
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-677,
-708
-],
-"cell": [
-21,
-22
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-119,
-461
-],
-"cell": [
-3,
-14
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1146,
-60
-],
-"cell": [
-35,
+41,
 1
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_1",
+"kind": "rock_0",
 "pos": [
-74,
-252
-],
-"cell": [
-2,
-7
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-487,
-235
-],
-"cell": [
-15,
-7
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-769,
+214,
 745
 ],
 "cell": [
-24,
+6,
+23
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+1066,
+410
+],
+"cell": [
+33,
+12
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+758,
+783
+],
+"cell": [
+23,
+24
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+803,
+480
+],
+"cell": [
+25,
+14
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+70,
+57
+],
+"cell": [
+2,
+1
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+272,
+205
+],
+"cell": [
+8,
+6
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+1044,
+803
+],
+"cell": [
+32,
+25
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+361,
+472
+],
+"cell": [
+11,
+14
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+932,
+320
+],
+"cell": [
+29,
+10
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+677,
+81
+],
+"cell": [
+21,
+2
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+377,
+307
+],
+"cell": [
+11,
+9
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+478,
+341
+],
+"cell": [
+14,
+10
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+869,
+46
+],
+"cell": [
+27,
+1
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+695,
+602
+],
+"cell": [
+21,
+18
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+1300,
+162
+],
+"cell": [
+40,
+5
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+711,
+182
+],
+"cell": [
+22,
+5
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+359,
+636
+],
+"cell": [
+11,
+19
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1066,
+454
+],
+"cell": [
+33,
+14
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+958,
+504
+],
+"cell": [
+29,
+15
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+169,
+826
+],
+"cell": [
+5,
+25
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+1221,
+114
+],
+"cell": [
+38,
+3
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+198,
+403
+],
+"cell": [
+6,
+12
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+509,
+374
+],
+"cell": [
+15,
+11
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+458,
+119
+],
+"cell": [
+14,
+3
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+271,
+334
+],
+"cell": [
+8,
+10
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+296,
+459
+],
+"cell": [
+9,
+14
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+239,
+167
+],
+"cell": [
+7,
+5
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+1110,
+140
+],
+"cell": [
+34,
+4
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+320,
+439
+],
+"cell": [
+10,
+13
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+565,
+31
+],
+"cell": [
+17,
+0
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+496,
+108
+],
+"cell": [
+15,
+3
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+448,
+780
+],
+"cell": [
+14,
+24
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+630,
+625
+],
+"cell": [
+19,
+19
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+1201,
+231
+],
+"cell": [
+37,
+7
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1082,
+584
+],
+"cell": [
+33,
+18
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+962,
+450
+],
+"cell": [
+30,
+14
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+519,
+22
+],
+"cell": [
+16,
+0
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+1319,
+100
+],
+"cell": [
+41,
+3
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+876,
+767
+],
+"cell": [
+27,
+23
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+762,
+797
+],
+"cell": [
+23,
+24
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+809,
+108
+],
+"cell": [
+25,
+3
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+191,
+425
+],
+"cell": [
+5,
+13
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+1043,
+505
+],
+"cell": [
+32,
+15
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+595,
+15
+],
+"cell": [
+18,
+0
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+1003,
+382
+],
+"cell": [
+31,
+11
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+975,
+230
+],
+"cell": [
+30,
+7
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+118,
+377
+],
+"cell": [
+3,
+11
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+298,
+743
+],
+"cell": [
+9,
 23
 ],
 "flip": false
@@ -3140,536 +5312,8 @@
 {
 "kind": "pale_tuft_0",
 "pos": [
-1039,
-187
-],
-"cell": [
-32,
-5
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-225,
-584
-],
-"cell": [
-7,
-18
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-714,
-432
-],
-"cell": [
-22,
-13
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-487,
-293
-],
-"cell": [
-15,
-9
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1100,
-387
-],
-"cell": [
-34,
-12
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1062,
-88
-],
-"cell": [
-33,
-2
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-470,
-380
-],
-"cell": [
-14,
-11
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-120,
-653
-],
-"cell": [
-3,
-20
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-483,
-265
-],
-"cell": [
-15,
-8
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-69,
-615
-],
-"cell": [
-2,
-19
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1160,
-231
-],
-"cell": [
-36,
-7
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1160,
-571
-],
-"cell": [
-36,
-17
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-779,
-97
-],
-"cell": [
-24,
-3
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-1120,
-405
-],
-"cell": [
-34,
-12
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-271,
-47
-],
-"cell": [
-8,
-1
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-549,
-202
-],
-"cell": [
-17,
-6
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-188,
-712
-],
-"cell": [
-5,
-22
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1005,
-198
-],
-"cell": [
-31,
-6
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-923,
-779
-],
-"cell": [
-28,
-24
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-14,
-71
-],
-"cell": [
-0,
-2
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1038,
-121
-],
-"cell": [
-32,
-3
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-620,
-786
-],
-"cell": [
-19,
-24
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-816,
-702
-],
-"cell": [
-25,
-21
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-154,
-558
-],
-"cell": [
-4,
-17
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-569,
-230
-],
-"cell": [
-17,
-7
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-522,
-365
-],
-"cell": [
-16,
-11
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-122,
-44
-],
-"cell": [
-3,
-1
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1107,
-117
-],
-"cell": [
-34,
-3
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-284,
-614
-],
-"cell": [
-8,
-19
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-641,
-697
-],
-"cell": [
-20,
-21
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-589,
-627
-],
-"cell": [
-18,
-19
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1286,
-582
-],
-"cell": [
-40,
-18
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1323,
-143
-],
-"cell": [
-41,
-4
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-939,
-267
-],
-"cell": [
-29,
-8
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-349,
-10
-],
-"cell": [
-10,
-0
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-163,
-51
-],
-"cell": [
-5,
-1
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-209,
-296
-],
-"cell": [
-6,
-9
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-107,
-476
-],
-"cell": [
-3,
-14
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-718,
-323
-],
-"cell": [
-22,
-10
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-608,
-805
-],
-"cell": [
-19,
-25
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-392,
-249
-],
-"cell": [
-12,
-7
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1038,
-654
-],
-"cell": [
-32,
-20
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-458,
-384
-],
-"cell": [
-14,
-12
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-739,
-466
-],
-"cell": [
-23,
-14
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-741,
-211
+756,
+212
 ],
 "cell": [
 23,
@@ -3678,973 +5322,109 @@
 "flip": true
 },
 {
-"kind": "prism_0",
-"pos": [
-1086,
-330
-],
-"cell": [
-33,
-10
-],
-"flip": false
-},
-{
 "kind": "pale_tuft_0",
 "pos": [
-14,
-562
-],
-"cell": [
-0,
-17
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-716,
-546
-],
-"cell": [
-22,
-17
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-1053,
-229
-],
-"cell": [
-32,
-7
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-1034,
-557
-],
-"cell": [
-32,
-17
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-32,
-571
-],
-"cell": [
-0,
-17
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-791,
-814
-],
-"cell": [
-24,
-25
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-910,
-339
-],
-"cell": [
-28,
-10
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-253,
-384
-],
-"cell": [
-7,
-11
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-559,
-193
-],
-"cell": [
-17,
-6
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1246,
-655
-],
-"cell": [
-38,
-20
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-102,
-280
-],
-"cell": [
-3,
-8
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-695,
-432
-],
-"cell": [
-21,
-13
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-230,
-108
-],
-"cell": [
-7,
-3
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-1245,
-249
-],
-"cell": [
-38,
-7
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1108,
-55
-],
-"cell": [
-34,
-1
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1235,
-818
-],
-"cell": [
-38,
-25
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1245,
-675
-],
-"cell": [
-38,
-21
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1159,
-351
-],
-"cell": [
-36,
-10
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1244,
-784
-],
-"cell": [
-38,
-24
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-381,
-58
+382,
+397
 ],
 "cell": [
 11,
-1
+12
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_1",
+"kind": "bush_round",
 "pos": [
-1182,
-187
-],
-"cell": [
-36,
-5
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-996,
-609
-],
-"cell": [
-31,
-19
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-463,
-658
-],
-"cell": [
-14,
-20
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-986,
-610
-],
-"cell": [
-30,
-19
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1124,
-360
-],
-"cell": [
-35,
-11
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-239,
-76
-],
-"cell": [
-7,
-2
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1102,
-301
-],
-"cell": [
-34,
-9
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-442,
-48
-],
-"cell": [
-13,
-1
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-817,
-305
-],
-"cell": [
-25,
-9
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-195,
-429
-],
-"cell": [
-6,
-13
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1055,
-72
-],
-"cell": [
-32,
-2
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-485,
-804
-],
-"cell": [
-15,
-25
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-549,
-106
-],
-"cell": [
-17,
-3
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-774,
-736
-],
-"cell": [
-24,
-22
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-569,
-480
-],
-"cell": [
-17,
-15
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-937,
-379
-],
-"cell": [
-29,
-11
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-1314,
-147
-],
-"cell": [
-41,
-4
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1194,
-373
-],
-"cell": [
-37,
-11
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1165,
-214
-],
-"cell": [
-36,
-6
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1043,
-489
-],
-"cell": [
-32,
-15
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1139,
-179
-],
-"cell": [
-35,
-5
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-639,
-305
-],
-"cell": [
-19,
-9
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-908,
-541
-],
-"cell": [
-28,
-16
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-80,
-668
-],
-"cell": [
-2,
-20
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-511,
-445
-],
-"cell": [
-15,
-13
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-801,
-269
-],
-"cell": [
-25,
-8
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-493,
-780
-],
-"cell": [
-15,
-24
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-153,
-815
-],
-"cell": [
-4,
-25
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-324,
-426
-],
-"cell": [
-10,
-13
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-816,
-82
-],
-"cell": [
-25,
-2
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-388,
-418
-],
-"cell": [
-12,
-13
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1202,
-290
-],
-"cell": [
-37,
-9
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1077,
-105
+1064,
+288
 ],
 "cell": [
 33,
-3
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-642,
-226
-],
-"cell": [
-20,
-7
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-286,
-401
-],
-"cell": [
-8,
-12
+8
 ],
 "flip": true
 },
 {
 "kind": "pale_tuft_1",
 "pos": [
-1105,
-819
-],
-"cell": [
-34,
-25
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1303,
-102
-],
-"cell": [
-40,
-3
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-507,
-648
-],
-"cell": [
-15,
-20
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-407,
-292
-],
-"cell": [
-12,
-9
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1028,
-143
-],
-"cell": [
-32,
-4
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-293,
-399
-],
-"cell": [
-9,
-12
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-776,
-327
-],
-"cell": [
-24,
-10
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1319,
-194
-],
-"cell": [
-41,
-6
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1156,
-525
+1169,
+657
 ],
 "cell": [
 36,
-16
+20
 ],
 "flip": false
 },
 {
-"kind": "prism_0",
+"kind": "flowers_0",
 "pos": [
-1263,
-555
+1093,
+536
 ],
 "cell": [
-39,
-17
+34,
+16
 ],
 "flip": true
 },
 {
-"kind": "pale_tuft_0",
+"kind": "pale_tuft_1",
 "pos": [
-1266,
-312
+1164,
+764
 ],
 "cell": [
-39,
-9
+36,
+23
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+253,
+589
+],
+"cell": [
+7,
+18
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_1",
+"kind": "rock_0",
 "pos": [
-126,
-500
+587,
+509
 ],
 "cell": [
-3,
+18,
 15
 ],
 "flip": true
 },
 {
-"kind": "ruin_pillar",
+"kind": "prism_shard",
 "pos": [
-482,
-592
-],
-"cell": [
-15,
-18
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-265,
-82
-],
-"cell": [
-8,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-91,
-342
-],
-"cell": [
-2,
-10
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-188,
-719
-],
-"cell": [
-5,
-22
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-631,
-724
-],
-"cell": [
-19,
-22
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1221,
-11
-],
-"cell": [
-38,
-0
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-157,
-715
-],
-"cell": [
-4,
-22
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-243,
-408
-],
-"cell": [
-7,
-12
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-302,
-362
-],
-"cell": [
-9,
-11
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-342,
-300
+336,
+39
 ],
 "cell": [
 10,
-9
+1
 ],
 "flip": true
 },
 {
-"kind": "pale_tuft_1",
+"kind": "rock_0",
 "pos": [
-1302,
-446
+37,
+135
 ],
 "cell": [
-40,
-13
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1005,
-380
-],
-"cell": [
-31,
-11
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1314,
-134
-],
-"cell": [
-41,
+1,
 4
 ],
 "flip": true
@@ -4652,12 +5432,156 @@
 {
 "kind": "pale_tuft_1",
 "pos": [
-692,
-539
+605,
+526
 ],
 "cell": [
-21,
+18,
 16
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1245,
+435
+],
+"cell": [
+38,
+13
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+204,
+530
+],
+"cell": [
+6,
+16
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1140,
+252
+],
+"cell": [
+35,
+7
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1103,
+781
+],
+"cell": [
+34,
+24
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+163,
+480
+],
+"cell": [
+5,
+15
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+1094,
+476
+],
+"cell": [
+34,
+14
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+112,
+373
+],
+"cell": [
+3,
+11
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+65,
+488
+],
+"cell": [
+2,
+15
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+196,
+309
+],
+"cell": [
+6,
+9
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+239,
+186
+],
+"cell": [
+7,
+5
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1161,
+162
+],
+"cell": [
+36,
+5
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+299,
+773
+],
+"cell": [
+9,
+24
 ],
 "flip": false
 },
@@ -4665,467 +5589,779 @@
 "kind": "pale_tuft_1",
 "pos": [
 719,
-366
+766
 ],
 "cell": [
 22,
-11
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-58,
-43
-],
-"cell": [
-1,
-1
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1245,
-609
-],
-"cell": [
-38,
-19
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-237,
-314
-],
-"cell": [
-7,
-9
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-721,
-322
-],
-"cell": [
-22,
-10
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-59,
-576
-],
-"cell": [
-1,
-18
+23
 ],
 "flip": false
 },
 {
-"kind": "marble_0",
+"kind": "rock_0",
 "pos": [
-106,
-205
+545,
+810
 ],
 "cell": [
-3,
-6
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-665,
-446
-],
-"cell": [
-20,
-13
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1214,
-24
-],
-"cell": [
-37,
-0
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-992,
-637
-],
-"cell": [
-31,
-19
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-391,
-642
-],
-"cell": [
-12,
-20
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-811,
-469
-],
-"cell": [
-25,
-14
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-281,
-332
-],
-"cell": [
-8,
-10
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-347,
-43
-],
-"cell": [
-10,
-1
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-964,
-178
-],
-"cell": [
-30,
-5
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-1002,
-442
-],
-"cell": [
-31,
-13
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-579,
-519
-],
-"cell": [
-18,
-16
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1163,
-75
-],
-"cell": [
-36,
-2
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1265,
-531
-],
-"cell": [
-39,
-16
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-637,
-79
-],
-"cell": [
-19,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-594,
-367
-],
-"cell": [
-18,
-11
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1202,
-136
-],
-"cell": [
-37,
-4
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-751,
-725
-],
-"cell": [
-23,
-22
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1040,
-122
-],
-"cell": [
-32,
-3
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-722,
-223
-],
-"cell": [
-22,
-6
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-963,
-417
-],
-"cell": [
-30,
-13
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1130,
-88
-],
-"cell": [
-35,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-158,
-830
-],
-"cell": [
-4,
+17,
 25
 ],
 "flip": true
 },
 {
-"kind": "prism_1",
+"kind": "pale_tuft_1",
 "pos": [
-651,
-398
+726,
+512
 ],
 "cell": [
-20,
-12
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-500,
-393
-],
-"cell": [
-15,
-12
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-994,
-77
-],
-"cell": [
-31,
-2
+22,
+15
 ],
 "flip": false
 },
 {
-"kind": "prism_0",
+"kind": "pale_tuft_0",
 "pos": [
-785,
-593
+1335,
+269
 ],
 "cell": [
-24,
-18
+41,
+8
 ],
 "flip": true
 },
 {
 "kind": "pale_tuft_1",
 "pos": [
-1056,
-409
+178,
+405
 ],
 "cell": [
-33,
+5,
 12
 ],
 "flip": true
 },
 {
-"kind": "marble_0",
+"kind": "flowers_0",
 "pos": [
-951,
-775
+21,
+116
 ],
 "cell": [
-29,
-24
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-510,
-624
-],
-"cell": [
-15,
-19
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-844,
-117
-],
-"cell": [
-26,
+0,
 3
 ],
 "flip": true
 },
 {
-"kind": "pale_tuft_1",
+"kind": "pale_tuft_0",
 "pos": [
-1157,
-386
+127,
+351
 ],
 "cell": [
-36,
+3,
+10
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1021,
+16
+],
+"cell": [
+31,
+0
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+631,
+499
+],
+"cell": [
+19,
+15
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1237,
+207
+],
+"cell": [
+38,
+6
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+177,
+532
+],
+"cell": [
+5,
+16
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+1063,
+20
+],
+"cell": [
+33,
+0
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+277,
+34
+],
+"cell": [
+8,
+1
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+662,
+37
+],
+"cell": [
+20,
+1
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1053,
+37
+],
+"cell": [
+32,
+1
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+338,
+354
+],
+"cell": [
+10,
+11
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+46,
+434
+],
+"cell": [
+1,
+13
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1272,
+603
+],
+"cell": [
+39,
+18
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+67,
+461
+],
+"cell": [
+2,
+14
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+205,
+389
+],
+"cell": [
+6,
 12
 ],
 "flip": true
 },
 {
-"kind": "ruin_pillar",
+"kind": "flowers_0",
 "pos": [
-1329,
-139
+1012,
+249
 ],
 "cell": [
-41,
+31,
+7
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+910,
+226
+],
+"cell": [
+28,
+7
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1187,
+422
+],
+"cell": [
+37,
+13
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+300,
+706
+],
+"cell": [
+9,
+22
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+402,
+69
+],
+"cell": [
+12,
+2
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1052,
+776
+],
+"cell": [
+32,
+24
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+604,
+256
+],
+"cell": [
+18,
+8
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+449,
+219
+],
+"cell": [
+14,
+6
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+474,
+547
+],
+"cell": [
+14,
+17
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+45,
+663
+],
+"cell": [
+1,
+20
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+357,
+771
+],
+"cell": [
+11,
+24
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1167,
+108
+],
+"cell": [
+36,
+3
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+171,
+138
+],
+"cell": [
+5,
+4
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+547,
+272
+],
+"cell": [
+17,
+8
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1183,
+160
+],
+"cell": [
+36,
+4
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+599,
+268
+],
+"cell": [
+18,
+8
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1305,
+343
+],
+"cell": [
+40,
+10
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+38,
+48
+],
+"cell": [
+1,
+1
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+1002,
+387
+],
+"cell": [
+31,
+12
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+511,
+265
+],
+"cell": [
+15,
+8
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1014,
+149
+],
+"cell": [
+31,
 4
 ],
 "flip": false
 },
 {
-"kind": "marble_0",
+"kind": "pale_tuft_1",
 "pos": [
-168,
-208
+187,
+767
 ],
 "cell": [
 5,
+23
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+607,
+202
+],
+"cell": [
+18,
 6
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+427,
+496
+],
+"cell": [
+13,
+15
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+519,
+631
+],
+"cell": [
+16,
+19
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+986,
+535
+],
+"cell": [
+30,
+16
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1246,
+419
+],
+"cell": [
+38,
+13
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+942,
+456
+],
+"cell": [
+29,
+14
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+951,
+755
+],
+"cell": [
+29,
+23
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+720,
+307
+],
+"cell": [
+22,
+9
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+586,
+381
+],
+"cell": [
+18,
+11
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+816,
+497
+],
+"cell": [
+25,
+15
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1172,
+432
+],
+"cell": [
+36,
+13
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1230,
+170
+],
+"cell": [
+38,
+5
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+1116,
+500
+],
+"cell": [
+34,
+15
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+1019,
+210
+],
+"cell": [
+31,
+6
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+171,
+579
+],
+"cell": [
+5,
+18
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+987,
+551
+],
+"cell": [
+30,
+17
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+1215,
+105
+],
+"cell": [
+37,
+3
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+258,
+362
+],
+"cell": [
+8,
+11
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1313,
+322
+],
+"cell": [
+41,
+10
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+903,
+94
+],
+"cell": [
+28,
+2
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+464,
+341
+],
+"cell": [
+14,
+10
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+135,
+712
+],
+"cell": [
+4,
+22
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+839,
+424
+],
+"cell": [
+26,
+13
 ],
 "flip": false
 },
@@ -5133,11 +6369,107 @@
 "kind": "pale_tuft_1",
 "pos": [
 210,
-65
+610
 ],
 "cell": [
 6,
-2
+19
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+1030,
+536
+],
+"cell": [
+32,
+16
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1174,
+486
+],
+"cell": [
+36,
+15
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+316,
+711
+],
+"cell": [
+9,
+22
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+381,
+371
+],
+"cell": [
+11,
+11
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+706,
+822
+],
+"cell": [
+22,
+25
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+315,
+740
+],
+"cell": [
+9,
+23
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+442,
+793
+],
+"cell": [
+13,
+24
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+433,
+365
+],
+"cell": [
+13,
+11
 ],
 "flip": true
 },
@@ -5145,142 +6477,22 @@
 "kind": "pale_tuft_1",
 "pos": [
 780,
-500
+829
 ],
 "cell": [
 24,
-15
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-516,
-135
-],
-"cell": [
-16,
-4
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-308,
-360
-],
-"cell": [
-9,
-11
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1080,
-583
-],
-"cell": [
-33,
-18
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-992,
-656
-],
-"cell": [
-31,
-20
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-144,
-622
-],
-"cell": [
-4,
-19
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-656,
-98
-],
-"cell": [
-20,
-3
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-167,
-113
-],
-"cell": [
-5,
-3
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1065,
-808
-],
-"cell": [
-33,
 25
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_1",
+"kind": "flowers_1",
 "pos": [
-1283,
-247
+642,
+704
 ],
 "cell": [
-40,
-7
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-158,
-225
-],
-"cell": [
-4,
-7
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-673,
-702
-],
-"cell": [
-21,
+20,
 21
 ],
 "flip": true
@@ -5288,188 +6500,44 @@
 {
 "kind": "pale_tuft_0",
 "pos": [
-606,
-438
-],
-"cell": [
-18,
-13
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1042,
-192
-],
-"cell": [
-32,
-5
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-850,
-819
-],
-"cell": [
-26,
-25
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-328,
-805
+330,
+773
 ],
 "cell": [
 10,
-25
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-434,
-613
-],
-"cell": [
-13,
-19
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-42,
-238
-],
-"cell": [
-1,
-7
+24
 ],
 "flip": true
 },
 {
 "kind": "pale_tuft_1",
 "pos": [
-311,
-358
-],
-"cell": [
-9,
-11
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-87,
-569
+71,
+114
 ],
 "cell": [
 2,
-17
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-996,
-345
-],
-"cell": [
-31,
-10
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-137,
-539
-],
-"cell": [
-4,
-16
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-288,
-48
-],
-"cell": [
-8,
-1
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-651,
-808
-],
-"cell": [
-20,
-25
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-393,
-342
-],
-"cell": [
-12,
-10
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-638,
-388
-],
-"cell": [
-19,
-12
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-381,
-99
-],
-"cell": [
-11,
 3
 ],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+808,
+480
+],
+"cell": [
+25,
+14
+],
 "flip": false
 },
 {
-"kind": "pale_tuft_0",
+"kind": "flowers_1",
 "pos": [
-356,
-490
+371,
+506
 ],
 "cell": [
 11,
@@ -5481,2050 +6549,418 @@
 "kind": "pale_tuft_0",
 "pos": [
 1081,
-296
+597
 ],
 "cell": [
 33,
-9
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-910,
-379
-],
-"cell": [
-28,
-11
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-274,
-706
-],
-"cell": [
-8,
-22
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-464,
-609
-],
-"cell": [
-14,
-19
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-508,
-300
-],
-"cell": [
-15,
-9
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-1061,
-750
-],
-"cell": [
-33,
-23
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-490,
-738
-],
-"cell": [
-15,
-23
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-111,
-436
-],
-"cell": [
-3,
-13
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1278,
-286
-],
-"cell": [
-39,
-8
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-561,
-628
-],
-"cell": [
-17,
-19
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-732,
-598
-],
-"cell": [
-22,
 18
 ],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-771,
-110
-],
-"cell": [
-24,
-3
-],
 "flip": false
 },
 {
-"kind": "pale_tuft_0",
+"kind": "bush_round",
 "pos": [
-465,
-411
+1096,
+442
 ],
 "cell": [
-14,
-12
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-954,
-66
-],
-"cell": [
-29,
-2
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-536,
-827
-],
-"cell": [
-16,
-25
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-776,
-393
-],
-"cell": [
-24,
-12
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-923,
-417
-],
-"cell": [
-28,
+34,
 13
 ],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1070,
-649
-],
-"cell": [
-33,
-20
-],
 "flip": true
 },
 {
-"kind": "pale_tuft_1",
+"kind": "pale_tuft_0",
 "pos": [
-754,
-813
-],
-"cell": [
-23,
-25
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1019,
-305
-],
-"cell": [
-31,
-9
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-140,
+964,
 169
 ],
 "cell": [
-4,
+30,
 5
 ],
 "flip": true
 },
 {
-"kind": "marble_0",
+"kind": "flowers_0",
 "pos": [
-1319,
-253
-],
-"cell": [
-41,
-7
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1073,
-314
-],
-"cell": [
-33,
-9
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1275,
-151
-],
-"cell": [
-39,
-4
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-463,
-249
-],
-"cell": [
-14,
-7
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-748,
-378
-],
-"cell": [
-23,
-11
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-1030,
-231
-],
-"cell": [
-32,
-7
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-82,
-601
-],
-"cell": [
-2,
-18
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-21,
-332
-],
-"cell": [
-0,
-10
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-335,
-505
-],
-"cell": [
-10,
-15
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-991,
-419
-],
-"cell": [
-30,
-13
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-377,
-789
-],
-"cell": [
-11,
-24
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-1129,
-273
-],
-"cell": [
-35,
-8
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1233,
-26
-],
-"cell": [
-38,
-0
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-1083,
-55
-],
-"cell": [
-33,
-1
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-511,
-498
-],
-"cell": [
-15,
-15
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1235,
-293
-],
-"cell": [
-38,
-9
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-460,
-429
-],
-"cell": [
-14,
-13
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-386,
-159
-],
-"cell": [
-12,
-4
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-18,
-66
-],
-"cell": [
-0,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1122,
-276
-],
-"cell": [
-35,
-8
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1231,
-733
-],
-"cell": [
-38,
-22
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1034,
-577
-],
-"cell": [
-32,
-18
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-425,
-488
-],
-"cell": [
-13,
-15
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-244,
-393
-],
-"cell": [
-7,
-12
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-422,
-569
-],
-"cell": [
-13,
-17
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-267,
-616
-],
-"cell": [
-8,
-19
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1145,
-620
-],
-"cell": [
-35,
-19
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1339,
-48
-],
-"cell": [
-41,
-1
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-437,
-54
-],
-"cell": [
-13,
-1
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-416,
-434
-],
-"cell": [
-13,
-13
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-471,
-82
-],
-"cell": [
-14,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-412,
-429
-],
-"cell": [
-12,
-13
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-643,
-604
+645,
+524
 ],
 "cell": [
 20,
-18
+16
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_1",
+"kind": "flowers_1",
 "pos": [
-1009,
-272
-],
-"cell": [
-31,
-8
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-402,
-89
-],
-"cell": [
-12,
-2
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-724,
-189
-],
-"cell": [
-22,
-5
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-1062,
-564
-],
-"cell": [
-33,
-17
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1100,
-11
-],
-"cell": [
-34,
-0
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-623,
-477
-],
-"cell": [
-19,
-14
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-1140,
-39
-],
-"cell": [
-35,
-1
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1290,
-125
-],
-"cell": [
-40,
-3
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-493,
-616
-],
-"cell": [
-15,
-19
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1013,
-826
-],
-"cell": [
-31,
-25
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-754,
-225
-],
-"cell": [
-23,
-7
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-92,
-380
-],
-"cell": [
-2,
-11
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-766,
-79
-],
-"cell": [
-23,
-2
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-947,
-637
-],
-"cell": [
-29,
-19
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-885,
-768
+886,
+722
 ],
 "cell": [
 27,
-23
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-309,
-504
-],
-"cell": [
-9,
-15
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1085,
-32
-],
-"cell": [
-33,
-0
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-229,
-811
-],
-"cell": [
-7,
-25
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1310,
-651
-],
-"cell": [
-40,
-20
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-344,
-193
-],
-"cell": [
-10,
-6
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-229,
-429
-],
-"cell": [
-7,
-13
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-509,
-737
-],
-"cell": [
-15,
-23
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1008,
-583
-],
-"cell": [
-31,
-18
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-790,
-537
-],
-"cell": [
-24,
-16
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-999,
-332
-],
-"cell": [
-31,
-10
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-785,
-368
-],
-"cell": [
-24,
-11
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-203,
-385
-],
-"cell": [
-6,
-12
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1039,
-85
-],
-"cell": [
-32,
-2
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-212,
-54
-],
-"cell": [
-6,
-1
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-556,
-214
-],
-"cell": [
-17,
-6
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1319,
-642
-],
-"cell": [
-41,
-20
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-1089,
-528
-],
-"cell": [
-34,
-16
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-667,
-308
-],
-"cell": [
-20,
-9
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-691,
-809
-],
-"cell": [
-21,
-25
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1035,
-118
-],
-"cell": [
-32,
-3
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-612,
-643
-],
-"cell": [
-19,
-20
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-1234,
-282
-],
-"cell": [
-38,
-8
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-27,
-70
-],
-"cell": [
-0,
-2
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-763,
-363
-],
-"cell": [
-23,
-11
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-129,
-755
-],
-"cell": [
-4,
-23
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-1140,
-20
-],
-"cell": [
-35,
-0
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-230,
-271
-],
-"cell": [
-7,
-8
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-681,
-420
-],
-"cell": [
-21,
-13
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-419,
-585
-],
-"cell": [
-13,
-18
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-8,
-796
-],
-"cell": [
-0,
-24
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-256,
-368
-],
-"cell": [
-7,
-11
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-192,
-124
-],
-"cell": [
-6,
-3
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-597,
-478
-],
-"cell": [
-18,
-14
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-363,
-632
-],
-"cell": [
-11,
-19
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1003,
-356
-],
-"cell": [
-31,
-11
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1054,
-189
-],
-"cell": [
-32,
-5
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-1193,
-774
-],
-"cell": [
-37,
-24
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-472,
-568
-],
-"cell": [
-14,
-17
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-82,
-134
-],
-"cell": [
-2,
-4
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-609,
-741
-],
-"cell": [
-19,
-23
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1227,
-100
-],
-"cell": [
-38,
-3
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-181,
-299
-],
-"cell": [
-5,
-9
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1051,
-500
-],
-"cell": [
-32,
-15
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-1083,
-141
-],
-"cell": [
-33,
-4
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-1125,
-654
-],
-"cell": [
-35,
-20
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1324,
-585
-],
-"cell": [
-41,
-18
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-805,
-218
-],
-"cell": [
-25,
-6
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-184,
-307
-],
-"cell": [
-5,
-9
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1300,
-614
-],
-"cell": [
-40,
-19
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-520,
-53
-],
-"cell": [
-16,
-1
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-809,
-536
-],
-"cell": [
-25,
-16
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-172,
-750
-],
-"cell": [
-5,
-23
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-468,
-407
-],
-"cell": [
-14,
-12
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-799,
-27
-],
-"cell": [
-24,
-0
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-204,
-418
-],
-"cell": [
-6,
-13
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1279,
-393
-],
-"cell": [
-39,
-12
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-57,
-777
-],
-"cell": [
-1,
-24
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-42,
-208
-],
-"cell": [
-1,
-6
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-553,
-521
-],
-"cell": [
-17,
-16
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-687,
-710
-],
-"cell": [
-21,
-22
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-805,
-341
-],
-"cell": [
-25,
-10
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-387,
-116
-],
-"cell": [
-12,
-3
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-919,
-165
-],
-"cell": [
-28,
-5
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1113,
-626
-],
-"cell": [
-34,
-19
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-697,
-249
-],
-"cell": [
-21,
-7
-],
-"flip": false
-},
-{
-"kind": "prism_1",
-"pos": [
-753,
-275
-],
-"cell": [
-23,
-8
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-515,
-738
-],
-"cell": [
-16,
-23
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-976,
-515
-],
-"cell": [
-30,
-16
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-622,
-237
-],
-"cell": [
-19,
-7
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1238,
-158
-],
-"cell": [
-38,
-4
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-656,
-620
-],
-"cell": [
-20,
-19
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1017,
-441
-],
-"cell": [
-31,
-13
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-130,
-532
-],
-"cell": [
-4,
-16
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-213,
-42
-],
-"cell": [
-6,
-1
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-928,
-86
-],
-"cell": [
-29,
-2
-],
-"flip": true
-},
-{
-"kind": "marble_0",
-"pos": [
-675,
-518
-],
-"cell": [
-21,
-16
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-904,
-92
-],
-"cell": [
-28,
-2
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-414,
-461
-],
-"cell": [
-12,
-14
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-358,
-127
-],
-"cell": [
-11,
-3
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-750,
-247
-],
-"cell": [
-23,
-7
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-478,
-792
-],
-"cell": [
-14,
-24
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-936,
-235
-],
-"cell": [
-29,
-7
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-703,
-408
-],
-"cell": [
-21,
-12
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-600,
-735
-],
-"cell": [
-18,
 22
 ],
 "flip": true
 },
 {
-"kind": "pale_tuft_1",
+"kind": "bush_round",
 "pos": [
-818,
-291
-],
-"cell": [
-25,
-9
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-379,
-133
-],
-"cell": [
-11,
-4
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-75,
-335
-],
-"cell": [
-2,
-10
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-70,
-331
-],
-"cell": [
-2,
-10
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1157,
-551
-],
-"cell": [
-36,
-17
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-567,
-755
-],
-"cell": [
-17,
-23
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-655,
-292
-],
-"cell": [
-20,
-9
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-694,
-520
-],
-"cell": [
-21,
-16
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1139,
-574
-],
-"cell": [
-35,
-17
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-323,
-715
-],
-"cell": [
-10,
-22
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-544,
+960,
 241
 ],
 "cell": [
-17,
-7
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1174,
-228
-],
-"cell": [
-36,
-7
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-443,
-803
-],
-"cell": [
-13,
-25
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-773,
-119
-],
-"cell": [
-24,
-3
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-973,
-117
-],
-"cell": [
 30,
-3
+7
 ],
 "flip": true
 },
 {
-"kind": "marble_0",
+"kind": "flowers_1",
 "pos": [
-890,
-304
+1009,
+242
 ],
 "cell": [
-27,
-9
+31,
+7
 ],
 "flip": false
 },
 {
-"kind": "prism_1",
+"kind": "pale_tuft_0",
 "pos": [
-1135,
-821
+481,
+518
+],
+"cell": [
+15,
+16
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+1272,
+573
+],
+"cell": [
+39,
+17
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+142,
+458
+],
+"cell": [
+4,
+14
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1132,
+462
 ],
 "cell": [
 35,
-25
+14
 ],
 "flip": false
 },
 {
 "kind": "pale_tuft_1",
 "pos": [
-968,
-159
+900,
+76
+],
+"cell": [
+28,
+2
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+740,
+340
+],
+"cell": [
+23,
+10
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+673,
+496
+],
+"cell": [
+21,
+15
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+607,
+461
+],
+"cell": [
+18,
+14
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+1051,
+414
+],
+"cell": [
+32,
+12
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+524,
+616
+],
+"cell": [
+16,
+19
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+673,
+284
+],
+"cell": [
+21,
+8
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+1319,
+625
+],
+"cell": [
+41,
+19
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+153,
+505
+],
+"cell": [
+4,
+15
+],
+"flip": true
+},
+{
+"kind": "rock_0",
+"pos": [
+200,
+314
+],
+"cell": [
+6,
+9
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+837,
+729
+],
+"cell": [
+26,
+22
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1120,
+385
+],
+"cell": [
+35,
+12
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+901,
+574
+],
+"cell": [
+28,
+17
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+1008,
+557
+],
+"cell": [
+31,
+17
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+977,
+195
 ],
 "cell": [
 30,
+6
+],
+"flip": false
+},
+{
+"kind": "pale_tuft_0",
+"pos": [
+5,
+712
+],
+"cell": [
+0,
+22
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+441,
+498
+],
+"cell": [
+13,
+15
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+259,
+462
+],
+"cell": [
+8,
+14
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+284,
+278
+],
+"cell": [
+8,
+8
+],
+"flip": true
+},
+{
+"kind": "prism_shard",
+"pos": [
+126,
+268
+],
+"cell": [
+3,
+8
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+677,
+275
+],
+"cell": [
+21,
+8
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+557,
+576
+],
+"cell": [
+17,
+18
+],
+"flip": false
+},
+{
+"kind": "rock_0",
+"pos": [
+1103,
+759
+],
+"cell": [
+34,
+23
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1290,
+154
+],
+"cell": [
+40,
 4
 ],
 "flip": true
@@ -7532,24 +6968,108 @@
 {
 "kind": "pale_tuft_0",
 "pos": [
-48,
-796
+135,
+486
+],
+"cell": [
+4,
+15
+],
+"flip": true
+},
+{
+"kind": "pale_tuft_1",
+"pos": [
+43,
+331
 ],
 "cell": [
 1,
-24
+10
 ],
 "flip": false
 },
 {
-"kind": "marble_0",
+"kind": "flowers_1",
 "pos": [
-1126,
-244
+1338,
+513
 ],
 "cell": [
-35,
-7
+41,
+16
+],
+"flip": true
+},
+{
+"kind": "flowers_0",
+"pos": [
+717,
+490
+],
+"cell": [
+22,
+15
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+152,
+161
+],
+"cell": [
+4,
+5
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+69,
+287
+],
+"cell": [
+2,
+8
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+110,
+501
+],
+"cell": [
+3,
+15
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+535,
+670
+],
+"cell": [
+16,
+20
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+89,
+423
+],
+"cell": [
+2,
+13
 ],
 "flip": false
 },
@@ -7557,454 +7077,142 @@
 "kind": "pale_tuft_0",
 "pos": [
 845,
-519
+545
 ],
 "cell": [
 26,
-16
+17
 ],
 "flip": true
 },
 {
-"kind": "prism_0",
+"kind": "pale_tuft_0",
 "pos": [
-556,
-226
+974,
+346
 ],
 "cell": [
-17,
-7
+30,
+10
+],
+"flip": false
+},
+{
+"kind": "prism_shard",
+"pos": [
+657,
+376
+],
+"cell": [
+20,
+11
+],
+"flip": false
+},
+{
+"kind": "flowers_0",
+"pos": [
+204,
+523
+],
+"cell": [
+6,
+16
 ],
 "flip": true
 },
 {
 "kind": "pale_tuft_1",
 "pos": [
-1041,
-388
+372,
+770
 ],
 "cell": [
-32,
-12
+11,
+24
 ],
 "flip": true
 },
 {
-"kind": "marble_0",
+"kind": "flowers_1",
 "pos": [
-652,
-69
+1333,
+77
 ],
 "cell": [
-20,
+41,
 2
 ],
 "flip": false
 },
 {
-"kind": "prism_1",
-"pos": [
-1141,
-24
-],
-"cell": [
-35,
-0
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-67,
-347
-],
-"cell": [
-2,
-10
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1122,
-348
-],
-"cell": [
-35,
-10
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-1132,
-807
-],
-"cell": [
-35,
-25
-],
-"flip": false
-},
-{
 "kind": "pale_tuft_1",
-"pos": [
-82,
-321
-],
-"cell": [
-2,
-10
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1143,
-399
-],
-"cell": [
-35,
-12
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-697,
-232
-],
-"cell": [
-21,
-7
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-841,
-799
-],
-"cell": [
-26,
-24
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-611,
-645
-],
-"cell": [
-19,
-20
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-165,
-739
-],
-"cell": [
-5,
-23
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-1171,
-759
-],
-"cell": [
-36,
-23
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-1020,
-610
-],
-"cell": [
-31,
-19
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-63,
-118
-],
-"cell": [
-1,
-3
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-560,
-43
-],
-"cell": [
-17,
-1
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
 "pos": [
 1064,
-283
+132
 ],
 "cell": [
 33,
-8
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-951,
-188
-],
-"cell": [
-29,
-5
+4
 ],
 "flip": true
 },
 {
-"kind": "pale_tuft_1",
+"kind": "pale_tuft_0",
 "pos": [
-428,
-391
+423,
+581
 ],
 "cell": [
 13,
-12
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1065,
-790
-],
-"cell": [
-33,
-24
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-728,
-814
-],
-"cell": [
-22,
-25
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-657,
-593
-],
-"cell": [
-20,
 18
 ],
 "flip": true
 },
 {
-"kind": "prism_0",
+"kind": "flowers_1",
 "pos": [
-564,
-477
+748,
+308
 ],
 "cell": [
-17,
-14
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-30,
-421
-],
-"cell": [
-0,
-13
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1156,
-786
-],
-"cell": [
-36,
-24
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-709,
-526
-],
-"cell": [
-22,
-16
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1228,
-262
-],
-"cell": [
-38,
-8
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-791,
-392
-],
-"cell": [
-24,
-12
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1318,
-577
-],
-"cell": [
-41,
-18
-],
-"flip": false
-},
-{
-"kind": "prism_0",
-"pos": [
-320,
-318
-],
-"cell": [
-10,
+23,
 9
 ],
 "flip": true
 },
 {
-"kind": "pale_tuft_1",
+"kind": "flowers_0",
 "pos": [
-916,
-481
+1119,
+674
 ],
 "cell": [
-28,
-15
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-188,
-828
-],
-"cell": [
-5,
-25
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-272,
-678
-],
-"cell": [
-8,
+34,
 21
 ],
 "flip": true
 },
 {
-"kind": "prism_0",
+"kind": "flowers_0",
 "pos": [
-1159,
-216
+1064,
+148
 ],
 "cell": [
-36,
-6
+33,
+4
 ],
-"flip": true
+"flip": false
 },
 {
-"kind": "pale_tuft_1",
+"kind": "bush_round",
 "pos": [
-378,
-456
+1038,
+128
 ],
 "cell": [
-11,
-14
-],
-"flip": true
-},
-{
-"kind": "prism_1",
-"pos": [
-255,
-124
-],
-"cell": [
-7,
+32,
 3
 ],
 "flip": false
@@ -8012,288 +7220,72 @@
 {
 "kind": "pale_tuft_1",
 "pos": [
-955,
-504
+310,
+339
 ],
 "cell": [
-29,
-15
+9,
+10
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_1",
+"kind": "flowers_1",
 "pos": [
-503,
-15
-],
-"cell": [
-15,
-0
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-1316,
-469
-],
-"cell": [
-41,
-14
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-132,
-647
-],
-"cell": [
-4,
-20
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-1233,
-708
+1241,
+820
 ],
 "cell": [
 38,
-22
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-301,
-479
-],
-"cell": [
-9,
-14
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-880,
-777
-],
-"cell": [
-27,
-24
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-525,
-563
-],
-"cell": [
-16,
-17
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-228,
-749
-],
-"cell": [
-7,
-23
+25
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_1",
+"kind": "prism_shard",
 "pos": [
-795,
-635
+588,
+191
 ],
 "cell": [
-24,
-19
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-124,
-613
-],
-"cell": [
-3,
-19
+18,
+5
 ],
 "flip": false
 },
 {
-"kind": "pale_tuft_0",
+"kind": "flowers_0",
 "pos": [
-792,
-625
+1316,
+202
 ],
 "cell": [
-24,
-19
+41,
+6
 ],
 "flip": true
 },
 {
-"kind": "pale_tuft_1",
+"kind": "flowers_0",
 "pos": [
-685,
-738
+466,
+685
 ],
 "cell": [
-21,
-23
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-446,
-620
-],
-"cell": [
-13,
-19
+14,
+21
 ],
 "flip": false
 },
 {
-"kind": "ruin_pillar",
+"kind": "prism_shard",
 "pos": [
-297,
-556
+1313,
+146
 ],
 "cell": [
-9,
-17
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_0",
-"pos": [
-445,
-389
-],
-"cell": [
-13,
-12
-],
-"flip": true
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-261,
-420
-],
-"cell": [
-8,
-13
-],
-"flip": false
-},
-{
-"kind": "ruin_pillar",
-"pos": [
-887,
-758
-],
-"cell": [
-27,
-23
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-225,
-588
-],
-"cell": [
-7,
-18
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-120,
-75
-],
-"cell": [
-3,
-2
-],
-"flip": false
-},
-{
-"kind": "marble_0",
-"pos": [
-430,
-471
-],
-"cell": [
-13,
-14
-],
-"flip": true
-},
-{
-"kind": "prism_0",
-"pos": [
-722,
-393
-],
-"cell": [
-22,
-12
-],
-"flip": true
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-313,
-420
-],
-"cell": [
-9,
-13
-],
-"flip": false
-},
-{
-"kind": "pale_tuft_1",
-"pos": [
-994,
-287
-],
-"cell": [
-31,
-8
+41,
+4
 ],
 "flip": false
 }

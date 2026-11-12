@@ -19,6 +19,9 @@ extends Node
 ## against the bot's towers, saved as numbered frames in <out>/powers/ (make a GIF from them).
 ## Add --landmarks to take the enemy war camps and the defended cities at the road ends in every land,
 ## by day, at night and burning, plus frames for short clips (<out>/clips/<name>/NNN.png).
+## Add --look[=stage,stage] for the graphics look test: in each stage (the fire and jungle lands by default)
+## one of each base tower is built in a row by the road, then the whole map, the row up close at x1
+## and x2, and the same row at night are taken.
 ## Add --story to take the cinematic player, a Herald's boss banner, the assault on the citadel and
 ## the campaign map with the citadel on it.
 
@@ -49,6 +52,9 @@ var _map := false
 var _bigmaps := false
 var _powers := false
 var _landmarks := false
+var _look: PackedStringArray = []
+## With --look: shoot the towers' effects in a fight (shots, hits, a Meteor and a Doom) instead of the look shots.
+var _fx_shots := false
 
 
 func _ready() -> void:
@@ -76,11 +82,19 @@ func _ready() -> void:
 			_powers = true
 		elif arg == "--landmarks":
 			_landmarks = true
+		elif arg == "--fx":
+			_fx_shots = true
+		elif arg.begins_with("--look"):
+			_look = arg.trim_prefix("--look").trim_prefix("=").split(",", false)
+			if _look.is_empty():
+				_look = PackedStringArray(["ember_4", "nature_2"])
 	DirAccess.make_dir_recursive_absolute(_out)
 	Progress.use_memory_profile(_demo_profile())
 	# The map's glide down from the whole world would still be moving in the first shots.
 	CampaignScreen.intro_played = true
-	if _powers:
+	if not _look.is_empty():
+		_run_look()
+	elif _powers:
 		_run_powers()
 	elif _landmarks:
 		_run_landmarks()
@@ -303,6 +317,117 @@ func _run_campaign() -> void:
 		await _wait(0.1)
 	print("Screenshots saved to ", _out)
 	get_tree().quit()
+
+
+const LOOK_TOWERS: Array[StringName] = [&"fire_brazier", &"storm_spire", &"nature_thornbush",
+		&"water_wellspring", &"earth_monolith", &"void_obelisk"]
+
+
+func _run_look() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	for stage in _look:
+		if stage == "skirmish":
+			Progress.play_skirmish()
+		else:
+			Progress.active_stage = StringName(stage)
+		var game := GAME_SCENE.instantiate() as Game
+		game.autoplay = true
+		add_child(game)
+		await _wait(0.2)
+		var sim := game.sim
+		sim.tree.points = 30
+		for id: StringName in [&"fire_entry", &"storm_entry", &"nature_entry", &"water_entry", &"earth_entry", &"void_entry"]:
+			sim.allocate_node(id)
+		sim.gold = 9000
+		var row := _look_row(game)
+		sim.wave_index = 6
+		_light(game.board.art, DayNight.DAY)
+		if _fx_shots:
+			await _fx_fight(game, stage, row)
+			game.free()
+			await _wait(0.1)
+			continue
+		await _until(func() -> bool: return sim.state == RunSim.State.WAVE and sim.time_in_wave > 9.0 or sim.is_over())
+		await _shot("look_%s_whole" % stage)
+		game.camera.set_view(1.0, row)
+		await _wait(0.4)
+		await _shot("look_%s_x1" % stage)
+		game.camera.set_view(2.0, row)
+		await _wait(0.4)
+		await _shot("look_%s_x2" % stage)
+		_light(game.board.art, DayNight.NIGHT)
+		game.camera.set_view(1.0, row)
+		await _wait(2.5)
+		await _shot("look_%s_night" % stage)
+		game.free()
+		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+## Close shots of a fight: the enemy with the most towers around it, the shots flying at it, then a
+## Meteor and a Doom cast on it.
+func _fx_fight(game: Game, stage: String, _row: Vector2) -> void:
+	var sim := game.sim
+	var hottest := func() -> SimEnemy:
+		var best: SimEnemy = null
+		var best_count := 0
+		for enemy in sim.enemies:
+			if not enemy.alive:
+				continue
+			var count := 0
+			for tower in sim.towers:
+				if tower.position.distance_to(enemy.position) < 260.0:
+					count += 1
+			if count > best_count:
+				best = enemy
+				best_count = count
+		return best
+	await _until(func() -> bool: return sim.state == RunSim.State.WAVE and sim.time_in_wave > 14.0 or sim.is_over())
+	var target: SimEnemy = hottest.call()
+	if target == null:
+		push_warning("Capture: no fight to shoot")
+		return
+	game.camera.set_view(2.0, target.position)
+	await _wait(0.5)
+	await _shot("fx_%s_1" % stage)
+	await _wait(0.3)
+	await _shot("fx_%s_2" % stage)
+	for skill_id: StringName in [&"meteor", &"doom"]:
+		target = hottest.call()
+		if target != null:
+			game.camera.set_view(2.0, target.position)
+			sim.use_skill(skill_id, target.position)
+		await _wait(0.15)
+		await _shot("fx_%s_%s" % [stage, skill_id])
+		await _wait(0.8)
+
+
+## Builds one of each base tower in free cells next to the road, a third of the way along, and returns
+## the board point in the middle of them.
+func _look_row(game: Game) -> Vector2:
+	var sim := game.sim
+	var map := sim.config.map
+	var path := map.path_points(0)
+	var target := path[int(path.size() * 0.35)]
+	var cells: Array[Vector2i] = []
+	for y in map.grid_size.y:
+		for x in map.grid_size.x:
+			cells.append(Vector2i(x, y))
+	cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		return map.cell_center(a).distance_to(target) < map.cell_center(b).distance_to(target))
+	var built: Array[Vector2] = []
+	for tower_id in LOOK_TOWERS:
+		for cell in cells:
+			if sim.can_place(tower_id, cell):
+				sim.gold = maxi(sim.gold, 2000)
+				if sim.place_tower(tower_id, cell) != null:
+					built.append(map.cell_center(cell))
+				break
+	var middle := Vector2.ZERO
+	for p in built:
+		middle += p
+	return middle / maxf(built.size(), 1.0) if not built.is_empty() else target
 
 
 func _run_big_maps() -> void:
