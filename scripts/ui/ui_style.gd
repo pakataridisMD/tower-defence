@@ -348,3 +348,86 @@ static func menu_switch() -> CheckBox:
 	result.add_theme_color_override("font_pressed_color", MENU_GOLD_LIGHT)
 	result.add_theme_color_override("font_hover_pressed_color", MENU_GOLD_LIGHT)
 	return result
+
+
+# --- The in-game HUD in the menu look ----------------------------------------------------------
+# The battle HUD wears the menu's stone-and-gold frames and pixel fonts. Its code still asks for plain
+# font sizes; pixel_fonts() swaps each control to the pixel font and the nearest size that keeps it crisp.
+
+## The HUD theme: menu frames (plain for the slim bars, ornate for big panels), pixel body text.
+static func hud_theme() -> Theme:
+	var theme := make_theme()
+	var body := font("body")
+	if body != null:
+		theme.default_font = body
+	theme.default_font_size = 16
+	theme.set_stylebox("panel", "PanelContainer", menu_panel_box(28, 24))
+	theme.set_stylebox("panel", "SlimPanel", menu_panel_box(10, 12, false))
+	for state: String in ["normal", "hover", "pressed", "disabled"]:
+		theme.set_stylebox(state, "Button", menu_button_box(state, 12, 4))
+		theme.set_stylebox(state, "CompactButton", menu_button_box(state, 5, 4))
+	theme.set_stylebox("hover_pressed", "Button", menu_button_box("picked", 12, 4))
+	var button_font := font("button")
+	if button_font != null:
+		theme.set_font("font", "Button", button_font)
+		theme.set_font("font", "CompactButton", button_font)
+	theme.set_color("font_color", "Button", MENU_TEXT)
+	theme.set_color("font_hover_color", "Button", Color("fff6d8"))
+	theme.set_color("font_pressed_color", "Button", Color("fff6d8"))
+	theme.set_color("font_disabled_color", "Button", Color("6e6678"))
+	theme.set_color("font_color", "Label", MENU_TEXT)
+	theme.set_color("default_color", "RichTextLabel", MENU_TEXT)
+	theme.set_stylebox("panel", "TooltipPanel", menu_panel_box(14, 10, false))
+	theme.set_color("font_color", "TooltipLabel", MENU_TEXT)
+	theme.set_font_size("font_size", "TooltipLabel", 16)
+	if body != null:
+		theme.set_font("font", "TooltipLabel", body)
+	return theme
+
+
+## Puts a control (and everything under it) in the pixel fonts: buttons and big numbers in the button
+## font at 20, 24, 30 or 40, titles in the title font, the rest in the body font at 16 (or 32 when big).
+static func pixel_fonts(node: Node) -> void:
+	# A control that already chose its font (a menu title, or one done before) keeps it.
+	var chosen := node is Control and ((node as Control).has_theme_font_override("font") \
+			or (node as Control).has_theme_font_override("normal_font"))
+	if chosen:
+		pass
+	elif node is Button:
+		_pixel_size(node as Control, "font_size", "button", [20, 24, 30, 40], 20)
+	elif node is Label:
+		var label := node as Label
+		var asked := label.get_theme_font_size("font_size")
+		if asked >= 44:
+			_set_font(label, "font", "title", 64)
+		elif asked >= 23:
+			_pixel_size(label, "font_size", "button", [30, 40], 30)
+		else:
+			_set_font(label, "font", "body", 16)
+	elif node is RichTextLabel:
+		var rich := node as RichTextLabel
+		var asked := rich.get_theme_font_size("normal_font_size")
+		var big := asked >= 20
+		_set_font(rich, "normal_font", "body", 32 if big else 16, "normal_font_size")
+		_set_font(rich, "italics_font", "body", 32 if big else 16, "italics_font_size")
+		_set_font(rich, "bold_font", "button", 40 if big else 20, "bold_font_size")
+	for child in node.get_children():
+		pixel_fonts(child)
+
+
+static func _pixel_size(control: Control, size_name: String, kind: String, sizes: Array, fallback: int) -> void:
+	var asked := control.get_theme_font_size(size_name)
+	var pick: int = fallback
+	for candidate: int in sizes:
+		# Pixel fonts look larger than the old font at the same size, so round down a little.
+		if asked >= candidate - 2:
+			pick = candidate
+	_set_font(control, "font", kind, pick, size_name)
+
+
+static func _set_font(control: Control, font_name: String, kind: String, size: int, size_name := "font_size") -> void:
+	var f := font(kind)
+	if f == null:
+		return
+	control.add_theme_font_override(font_name, f)
+	control.add_theme_font_size_override(size_name, size)

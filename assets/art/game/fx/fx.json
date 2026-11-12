@@ -1,0 +1,227 @@
+{
+ "shot_fire": {
+  "size": [
+   16,
+   9
+  ],
+  "frames": 4,
+  "fps": 12,
+  "glow": true
+ },
+ "shot_fire_heavy": {
+  "size": [
+   24,
+   14
+  ],
+  "frames": 4,
+  "fps": 12,
+  "glow": true
+ },
+ "shot_storm": {
+  "size": [
+   18,
+   9
+  ],
+  "frames": 4,
+  "fps": 16,
+  "glow": true
+ },
+ "shot_storm_heavy": {
+  "size": [
+   17,
+   17
+  ],
+  "frames": 4,
+  "fps": 14,
+  "glow": true
+ },
+ "shot_nature": {
+  "size": [
+   14,
+   7
+  ],
+  "frames": 2,
+  "fps": 8,
+  "glow": true
+ },
+ "shot_nature_heavy": {
+  "size": [
+   15,
+   15
+  ],
+  "frames": 4,
+  "fps": 10,
+  "glow": true
+ },
+ "shot_water": {
+  "size": [
+   15,
+   9
+  ],
+  "frames": 3,
+  "fps": 10,
+  "glow": true
+ },
+ "shot_water_heavy": {
+  "size": [
+   21,
+   13
+  ],
+  "frames": 3,
+  "fps": 10,
+  "glow": true
+ },
+ "shot_earth": {
+  "size": [
+   10,
+   10
+  ],
+  "frames": 4,
+  "fps": 10,
+  "glow": false
+ },
+ "shot_earth_heavy": {
+  "size": [
+   15,
+   15
+  ],
+  "frames": 4,
+  "fps": 10,
+  "glow": false
+ },
+ "shot_void": {
+  "size": [
+   11,
+   11
+  ],
+  "frames": 4,
+  "fps": 10,
+  "glow": true
+ },
+ "shot_void_heavy": {
+  "size": [
+   16,
+   16
+  ],
+  "frames": 4,
+  "fps": 10,
+  "glow": true
+ },
+ "hit_fire": {
+  "size": [
+   17,
+   17
+  ],
+  "frames": 5,
+  "fps": 18,
+  "glow": true
+ },
+ "hit_storm": {
+  "size": [
+   17,
+   17
+  ],
+  "frames": 5,
+  "fps": 18,
+  "glow": true
+ },
+ "hit_nature": {
+  "size": [
+   17,
+   17
+  ],
+  "frames": 5,
+  "fps": 18,
+  "glow": true
+ },
+ "hit_water": {
+  "size": [
+   17,
+   17
+  ],
+  "frames": 5,
+  "fps": 18,
+  "glow": true
+ },
+ "hit_earth": {
+  "size": [
+   17,
+   17
+  ],
+  "frames": 5,
+  "fps": 18,
+  "glow": true
+ },
+ "hit_void": {
+  "size": [
+   17,
+   17
+  ],
+  "frames": 5,
+  "fps": 18,
+  "glow": true
+ },
+ "blast_fire": {
+  "size": [
+   64,
+   64
+  ],
+  "frames": 9,
+  "fps": 16,
+  "glow": true
+ },
+ "blast_storm": {
+  "size": [
+   64,
+   64
+  ],
+  "frames": 7,
+  "fps": 18,
+  "glow": true
+ },
+ "blast_water": {
+  "size": [
+   64,
+   64
+  ],
+  "frames": 8,
+  "fps": 14,
+  "glow": false
+ },
+ "blast_earth": {
+  "size": [
+   64,
+   64
+  ],
+  "frames": 8,
+  "fps": 14,
+  "glow": true
+ },
+ "blast_nature": {
+  "size": [
+   64,
+   64
+  ],
+  "frames": 8,
+  "fps": 14,
+  "glow": true
+ },
+ "blast_void": {
+  "size": [
+   64,
+   64
+  ],
+  "frames": 9,
+  "fps": 14,
+  "glow": true
+ },
+ "death_puff": {
+  "size": [
+   36,
+   32
+  ],
+  "frames": 7,
+  "fps": 12,
+  "glow": false
+ }
+}
