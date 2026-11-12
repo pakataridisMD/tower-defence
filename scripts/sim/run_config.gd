@@ -31,6 +31,12 @@ var heroes: Array[HeroData] = []
 var allies: Dictionary[StringName, AllyData] = {}
 ## Heroes who arrive during this run at a wave (HeroData.arrives_at_wave) and join the party then.
 var arriving_heroes: Array[HeroData] = []
+## Enemy caves break open every few waves (see Caves). Tests that count lanes turn them off.
+var caves := true
+## Where the caves open is random, from this seed. 0 picks a seed from the map and stage, so the same
+## stage always gets the same caves (the balance check and tests rely on that); the game sets a new
+## one for each run.
+var cave_seed := 0
 
 
 ## Config for a map using the data loaded by a DataRegistry.

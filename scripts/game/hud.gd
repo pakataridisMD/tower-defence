@@ -974,6 +974,12 @@ func _on_wave_cleared(number: int, points: int, gold: int) -> void:
 	var text := "Wave %d cleared  ·  +%d gold" % [number, gold]
 	if points > 0:
 		text += "  ·  +%d skill point%s" % [points, "" if points == 1 else "s"]
+	if not sim.caves.is_empty() and sim.caves[-1].wave == number + 1:
+		# A cave broke open in this break: say so, and keep the message up a while.
+		text += "\nThe ground splits open: a new enemy cave! From the next wave the horde pours out of it too."
+		show_message(text, UiStyle.LIFE)
+		_message_time = 6.0
+		return
 	show_message(text, UiStyle.GOOD)
 
 
