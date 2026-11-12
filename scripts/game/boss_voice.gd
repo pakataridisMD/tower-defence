@@ -11,6 +11,8 @@ const LINES_FILE := "res://assets/audio/voice/bosses/lines.json"
 const VOICE_DIR := "res://assets/audio/voice/bosses/"
 ## Kinds that cut in over whatever is being said.
 const URGENT: Array[StringName] = [&"arrive", &"enrage", &"transform", &"flee", &"death", &"destroy"]
+## Last words: they cut in over anything, even another urgent line.
+const LAST_WORDS: Array[StringName] = [&"transform", &"flee", &"death"]
 ## The music sinks this far under a boss's words.
 const DUCK_DB := -7.0
 ## Each kind of line, from the same boss, at most this often (seconds of real time).
@@ -22,6 +24,8 @@ static var _loaded := false
 
 ## Every line started, newest last (as "<boss>/<kind>"), for tests: kept even when silent.
 var history: Array[String] = []
+## The file of the line started last, under VOICE_DIR (for tools/capture.gd's boss film).
+var last_file := ""
 var _player: AudioStreamPlayer
 var _silent := false
 var _speaking_until := 0.0
@@ -53,16 +57,17 @@ static func _load() -> void:
 ## The lines a boss has of one kind, its own first, then those of the boss it shares with.
 static func lines_of(boss_id: StringName, kind: StringName) -> Array:
 	_load()
+	var only: Array = (_lines.get(String(boss_id), {}) as Dictionary).get("only", [])
+	if not only.is_empty() and not only.has(String(kind)):
+		return []
 	var seen := {}
 	var id := String(boss_id)
 	while not id.is_empty() and not seen.has(id):
 		seen[id] = true
 		var entry: Dictionary = _lines.get(id, {})
-		var only: Array = entry.get("only", [])
-		if only.is_empty() or only.has(String(kind)):
-			var own: Array = (entry.get("lines", {}) as Dictionary).get(String(kind), [])
-			if not own.is_empty():
-				return own
+		var own: Array = (entry.get("lines", {}) as Dictionary).get(String(kind), [])
+		if not own.is_empty():
+			return own
 		id = entry.get("share", "")
 	return []
 
@@ -89,7 +94,7 @@ func say(boss_id: StringName, kind: StringName) -> float:
 	var key := "%s/%s" % [boss_id, kind]
 	if not urgent and now - float(_last_kind.get(key, -100.0)) < KIND_GAP:
 		return 0.0
-	if now < _speaking_until and (not urgent or _speaking_urgent):
+	if now < _speaking_until and (not urgent or _speaking_urgent) and kind not in LAST_WORDS:
 		return 0.0
 	var index := (int(_last_index.get(key, -1)) + 1) % lines.size()
 	_last_index[key] = index
@@ -101,6 +106,7 @@ func say(boss_id: StringName, kind: StringName) -> float:
 	_speaking_until = now + voiced + 0.8
 	_speaking_urgent = urgent
 	history.append(key)
+	last_file = String(line["file"])
 	if history.size() > 64:
 		history.remove_at(0)
 	if not _silent:
