@@ -133,7 +133,9 @@ def record(names: list[str], force: bool) -> None:
     missing = sorted({who for who, _, _ in all_lines(data) if who not in ids})
     if missing:
         print("No voice yet for:", ", ".join(missing), "- run --find first, or add them to", VOICES)
-    durations = {}
+    durations_file = OUT / "durations.json"
+    # A run for only some voices keeps the others' lengths.
+    durations = json.loads(durations_file.read_text()) if durations_file.exists() else {}
     for who, kind, entry in all_lines(data):
         if names and who not in names or who not in ids:
             continue
@@ -145,7 +147,7 @@ def record(names: list[str], force: bool) -> None:
         samples, sr = el.decode(mp3)
         durations[entry["id"]] = round(master(samples, sr, ids[who]["style"], out), 2)
         print(f"{entry['id']:28s} {durations[entry['id']]:5.2f}s  {entry['text']}")
-    (OUT / "durations.json").write_text(json.dumps(dict(sorted(durations.items())), indent=1) + "\n")
+    durations_file.write_text(json.dumps(dict(sorted(durations.items())), indent=1) + "\n")
 
 
 def find() -> None:
