@@ -266,9 +266,9 @@ func power_text() -> String:
 func boss_text() -> String:
 	var lines: PackedStringArray = []
 	if heal_interval > 0.0 and heal_amount > 0.0:
-		lines.append("Every %.0f s it heals %s%% of its life, but not while burning or poisoned." % [heal_interval, String.num(heal_amount * 100.0, 1)])
+		lines.append("Every %.0f s it heals %s%% of its life, but not while burning or poisoned." % [heal_interval, String.num(heal_amount * 100.0, 2)])
 	if shield_interval > 0.0 and shield_amount > 0.0:
-		lines.append("Every %.0f s it raises a barrier worth %d%% of its life for %.0f s." % [shield_interval, roundi(shield_amount * 100.0), shield_duration])
+		lines.append("Every %.0f s it raises a barrier worth %s%% of its life for %.0f s." % [shield_interval, String.num(shield_amount * 100.0, 1), shield_duration])
 	if bind_interval > 0.0 and bind_duration > 0.0:
 		var towers := "tower" if bind_count == 1 else "%d towers" % bind_count
 		lines.append("Every %.0f s it binds the strongest %s near it: they cannot fire for %.1f s." % [bind_interval, towers, bind_duration])
