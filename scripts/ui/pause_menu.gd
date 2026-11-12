@@ -1,8 +1,9 @@
 class_name PauseMenu
 extends Control
-## The menu Esc opens during a run: resume, the audio settings, the campaign map (in a campaign
-## stage), the main menu, or quit the game. The run waits while it is open (Game pauses it).
-## Leaving a run that is still going asks once first, because the run itself is lost.
+## The menu Esc opens during a run: resume, exit to the main menu, exit to the campaign map (in a
+## campaign stage), the audio settings, or quit to the desktop. The run waits while it is open
+## (Game pauses it). Leaving a run that is still going asks once first, because the run is lost;
+## Enter confirms and Esc steps back.
 
 signal resume_requested
 signal audio_requested
@@ -11,9 +12,15 @@ signal leave_requested(scene: StringName)
 
 const BUTTON_SIZE := Vector2(420, 62)
 const LEAVE_TEXT: Dictionary[StringName, String] = {
-	&"menu": "Return to the main menu?",
-	&"campaign": "Return to the campaign map?",
-	&"quit": "Quit the game?",
+	&"menu": "Exit to the main menu?",
+	&"campaign": "Exit to the campaign map?",
+	&"quit": "Quit to the desktop?",
+}
+## The confirm button for each way out.
+const LEAVE_BUTTON: Dictionary[StringName, String] = {
+	&"menu": "Exit to main menu  (Enter)",
+	&"campaign": "Exit to campaign map  (Enter)",
+	&"quit": "Quit to desktop  (Enter)",
 }
 
 var resume_button: Button
@@ -68,10 +75,10 @@ func _init() -> void:
 	_choices.add_theme_constant_override("separation", 12)
 	column.add_child(_choices)
 	resume_button = _add_button(_choices, "Resume  (Esc)", func() -> void: resume_requested.emit())
+	menu_button = _add_button(_choices, "Exit to main menu", func() -> void: ask_to_leave(&"menu"))
+	campaign_button = _add_button(_choices, "Exit to campaign map", func() -> void: ask_to_leave(&"campaign"))
 	audio_button = _add_button(_choices, "Audio settings  (O)", func() -> void: audio_requested.emit())
-	campaign_button = _add_button(_choices, "Campaign map", func() -> void: ask_to_leave(&"campaign"))
-	menu_button = _add_button(_choices, "Main menu", func() -> void: ask_to_leave(&"menu"))
-	quit_button = _add_button(_choices, "Quit game", func() -> void: ask_to_leave(&"quit"))
+	quit_button = _add_button(_choices, "Quit to desktop", func() -> void: ask_to_leave(&"quit"))
 
 	_confirm = VBoxContainer.new()
 	_confirm.add_theme_constant_override("separation", 12)
@@ -86,7 +93,7 @@ func _init() -> void:
 	warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	warning.custom_minimum_size = Vector2(BUTTON_SIZE.x, 0)
 	_confirm.add_child(warning)
-	leave_button = _add_button(_confirm, "Leave", func() -> void: _leave(pending))
+	leave_button = _add_button(_confirm, "", confirm)
 	leave_button.add_theme_color_override("font_color", UiStyle.BAD)
 	leave_button.add_theme_color_override("font_hover_color", UiStyle.LIFE)
 	stay_button = _add_button(_confirm, "Stay  (Esc)", back)
@@ -117,6 +124,7 @@ func ask_to_leave(scene: StringName) -> void:
 		return
 	pending = scene
 	_confirm_title.text = LEAVE_TEXT[scene]
+	leave_button.text = LEAVE_BUTTON[scene]
 	_choices.hide()
 	_confirm.show()
 
@@ -130,6 +138,12 @@ func back() -> void:
 
 func is_confirming() -> bool:
 	return not pending.is_empty()
+
+
+## "Yes, leave": goes the way that was asked about.
+func confirm() -> void:
+	if is_confirming():
+		_leave(pending)
 
 
 func _leave(scene: StringName) -> void:

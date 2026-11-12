@@ -174,7 +174,7 @@ func _build_top_bar() -> void:
 	_wave_button.pressed.connect(func() -> void: start_wave_pressed.emit())
 	_menu_button = _bar_button(row, 128)
 	_menu_button.text = "Menu (Esc)"
-	_menu_button.tooltip_text = "Pause, audio settings, back to the main menu, or quit the game."
+	_menu_button.tooltip_text = "Pause the run: resume, exit to the main menu, audio settings, or quit to the desktop."
 	_menu_button.pressed.connect(func() -> void: pause_menu_pressed.emit())
 
 
@@ -816,7 +816,7 @@ func _help_text() -> String:
 	var keys: Array[Array] = [
 		["T", "skill web"], ["F1 F2 F3", "heroes"], ["1-9", "pick a tower"], ["Tab", "next tower page"], ["Q W E  A S D", "skills"],
 		["Z X C V", "upgrade the tower"], ["Del", "sell the tower"], ["Space", "start the wave"],
-		["F", "speed"], ["P", "pause"], ["O", "audio"], ["M", "mute"], ["Esc", "back"],
+		["F", "speed"], ["P", "pause"], ["O", "audio"], ["M", "mute"], ["Esc", "menu, exit"],
 	]
 	var lines: PackedStringArray = []
 	lines.append("[b]How to play[/b]")
