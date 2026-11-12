@@ -148,7 +148,7 @@ Files are found by name when a shot leaves `image` or `voice` empty:
 
 A shot with no picture shows a card with its art note, and a shot with no voice is timed from its words, so
 the whole story can be played before its art and voice exist. In a cinematic, Space, Enter, a click or the
-right arrow moves on and Esc skips. Each cinematic plays on its own once; the save (version 3) remembers which.
+right arrow moves on and Esc skips. Each cinematic plays on its own once; the save remembers which.
 When exporting the game, add `data/story/*.json` and `assets/story/music/*.json` to the export's
 "Filters to export non-resource files".
 
@@ -157,10 +157,16 @@ screenshots of the cinematic player, two Herald fights, the assault and the camp
 
 ## Meta tree and saves
 
-Every run pays **meta points**, won or lost: one for each wave cleared and two more for a win, times the
-difficulty level's multiplier (Hard pays 1.5x, Nightmare 2x), plus a bonus the first time a campaign stage is
-won. Spend them in the **meta tree** (Talents on the main menu). It is a wheel of 172 talents, built to fill
-across the whole campaign: it costs about 760 points, and a clean first pass through the campaign pays about 550.
+Runs pay **meta points** for records. Each campaign stage and skirmish map keeps the best score reached on it:
+one point for each wave cleared and two more for a win, times the difficulty level's multiplier (Hard 1.5x,
+Nightmare 2x). A run pays only the part of its score above that record, so clearing more waves, winning, or
+winning on a harder level pays, and repeating the same result does not. A won replay that sets no record pays
+one point, three times per stage or map, and nothing after that. The first win of a campaign stage also pays its
+bonus once. Saves from before records existed (version 3 and older) get their records rebuilt from the stages
+they have won, and any points above what that progress is worth are taken back; talents that no longer fit are
+refunded. Spend the points in the **meta tree** (Talents on the main menu). It is a wheel of 172 talents, built
+to fill across the whole campaign: it costs about 760 points, and a clean first pass through the campaign pays
+about 550.
 
 - Four inner wings: **Arsenal** (tower damage and speed, armour piercing, the Thornstorm bridge and the skill
   web keystones), **Command** (starting gold and lives, gold per wave, cheaper towers, a starting skill point),

@@ -38,17 +38,30 @@ const BRANCH_COLORS: Dictionary[StringName, Color] = {
 	&"void": Color("8e5cd9"),
 }
 
+## Meta points are paid for records, not for playing: each campaign stage and each skirmish map
+## keeps the best score reached on it (waves cleared plus the win bonus, times the difficulty's
+## multiplier), and a run pays only the part of its score above that record. So a stage is worth
+## a fixed amount on each difficulty however often it is played. A won replay that sets no record
+## pays REPLAY_WIN_POINTS, at most REPLAY_LIMIT times per stage or map.
+const REPLAY_WIN_POINTS := 1
+const REPLAY_LIMIT := 3
+
 ## A DataRegistry, or a node with the same fields in tests.
 var registry: Node
 var profile: PlayerProfile
 var tree: TreeState
 var selected_map: StringName = &""
 var selected_difficulty: StringName = &""
+## What the last recorded run paid for, for the end screen: a new record, a replay reward, or
+## nothing new.
+var last_run_note := ""
 
 
 func _init(p_registry: Node, p_profile: PlayerProfile) -> void:
 	registry = p_registry
 	profile = p_profile
+	if profile.needs_records:
+		_rebuild_records()
 	tree = TreeState.new(TreeGraph.new(registry.meta_tree_nodes), profile.meta_points_earned)
 	tree.restore(profile.meta_nodes)
 	selected_map = profile.last_map
@@ -159,17 +172,51 @@ func run_config() -> RunConfig:
 	return config
 
 
-## Meta points a finished run pays: per wave cleared, plus a bonus for winning, times the
-## difficulty's multiplier.
-static func meta_points_for(sim: RunSim) -> int:
+## A finished run's score: a point per wave cleared, plus a bonus for winning, times the
+## difficulty's multiplier. A run pays meta points only for beating the record on its stage or map.
+static func run_score(sim: RunSim) -> int:
 	var won := sim.state == RunSim.State.WON
 	var multiplier := sim.config.difficulty.meta_point_multiplier if sim.config.difficulty != null else 1.0
 	return roundi(sim.config.rules.meta_points_after_run(sim.wave_index, won) * multiplier)
 
 
+## The key a run's record is kept under: the campaign stage, or the skirmish map.
+static func record_key(sim: RunSim) -> StringName:
+	if sim.config.stage != null:
+		return sim.config.stage.id
+	return StringName("skirmish:%s" % (sim.config.map.id if sim.config.map != null else &""))
+
+
+## Meta points a finished run would pay, without recording it.
+func meta_points_for(sim: RunSim) -> int:
+	var key := record_key(sim)
+	var best: int = profile.run_records.get(key, 0)
+	var score := run_score(sim)
+	if score > best:
+		return score - best
+	if sim.state == RunSim.State.WON and profile.replays_paid.get(key, 0) < REPLAY_LIMIT:
+		return REPLAY_WIN_POINTS
+	return 0
+
+
 ## Pays a finished run's meta points and updates the records. Returns the points earned.
 func record_run(sim: RunSim) -> int:
+	var key := record_key(sim)
+	var best: int = profile.run_records.get(key, 0)
+	var score := run_score(sim)
 	var earned := meta_points_for(sim)
+	if score > best:
+		profile.run_records[key] = score
+		last_run_note = "New record here: %d, up from %d." % [score, best] if best > 0 else ""
+	elif earned > 0:
+		profile.replays_paid[key] = profile.replays_paid.get(key, 0) + 1
+		var left: int = REPLAY_LIMIT - profile.replays_paid[key]
+		if left > 0:
+			last_run_note = "No new record, so a small replay reward (%d more here)." % left
+		else:
+			last_run_note = "No new record, so a small replay reward, the last one here. Only a new record or a harder level pays from now on."
+	else:
+		last_run_note = "No new record (best %d). Clear more waves, win, or play a harder level to earn more here." % best
 	profile.meta_points_earned += earned
 	tree.points += earned
 	profile.runs_played += 1
@@ -462,6 +509,38 @@ func add_heroes(config: RunConfig) -> RunConfig:
 
 
 # --- Internals -------------------------------------------------------------------
+
+## For saves from before records: every stage won counts as won on Normal, every skirmish map as
+## played to the best wave count, and the meta points are capped at what that progress is worth
+## now. Points farmed by replaying under the old rules go; the nodes they bought are refunded.
+func _rebuild_records() -> void:
+	profile.needs_records = false
+	var rules: RunRules = registry.run_rules
+	var worth := 0
+	for stage: StageData in registry.stages.values():
+		if profile.stage_stars.get(stage.id, 0) <= 0:
+			continue
+		var wave_set := stage.wave_set
+		if wave_set.is_empty() and registry.maps.has(stage.map):
+			wave_set = registry.maps[stage.map].wave_set
+		var waves := _wave_count(wave_set)
+		var score := rules.meta_points_after_run(waves, true) if rules != null else 0
+		profile.run_records[stage.id] = maxi(profile.run_records.get(stage.id, 0), score)
+		worth += profile.run_records[stage.id] + stage.first_clear_points
+	if profile.best_waves > 0:
+		for map in maps_in_order():
+			var waves := mini(profile.best_waves, _wave_count(map.wave_set))
+			var won := profile.runs_won > 0 and waves >= _wave_count(map.wave_set)
+			var key := StringName("skirmish:%s" % map.id)
+			var score := rules.meta_points_after_run(waves, won) if rules != null else 0
+			profile.run_records[key] = maxi(profile.run_records.get(key, 0), score)
+			worth += profile.run_records[key]
+	profile.meta_points_earned = mini(profile.meta_points_earned, worth)
+
+
+func _wave_count(wave_set_id: StringName) -> int:
+	var wave_set: WaveSet = registry.wave_sets.get(wave_set_id)
+	return wave_set.waves.size() if wave_set != null else 0
 
 ## Copies the tree and the choices back into the profile, and moves a choice that is no longer
 ## unlocked (after a refund, or a save from an older version) back to the first open option.
