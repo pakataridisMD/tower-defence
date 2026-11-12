@@ -1571,10 +1571,5 @@ script = ExtResource("1_s")
 id = &"c_ember_4"
 display_name = "Throne of Cinders"
 health_growth = 1.1
-<<<<<<< HEAD
-health_scale = 5.71
-boss_health_scale = 0.16
-=======
 health_scale = 6.0
->>>>>>> 01ce19b5c3aa1c8530c86e5587a52595af319b23
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r15"), SubResource("r24"), SubResource("r36"), SubResource("r45"), SubResource("r59"), SubResource("r71"), SubResource("r84"), SubResource("r100"), SubResource("r114"), SubResource("r129"), SubResource("r146"), SubResource("r162"), SubResource("r178"), SubResource("r190")])
