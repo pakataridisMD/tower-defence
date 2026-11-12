@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"rimeback"
+display_name = "Rimeback"
+max_health = 120.0
+speed = 50.0
+armour = 3.0
+bounty = 7
+leak_damage = 2
+tags = Array[StringName]([&"armoured"])
+description = "Wild. A crab the size of a cart, crusted in old ice. Its rime shell soaks up blows until it breaks, then grows back."
+element = &"water"
+power = &"rime_shell"
+power_interval = 8.0
+power_amount = 0.4
+horde = &"tide"
+lore = "Dragged up from under Frostmere's ice by the mad Sea-Queen's voice, the Rimebacks carry a winter on their backs. Break the crust and the cold grows it back over them, layer on layer, the way the lake freezes a little more each night."

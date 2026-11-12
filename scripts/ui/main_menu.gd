@@ -4,7 +4,8 @@ extends Control
 ## the menu on the left: Continue, Campaign, Skirmish, Heroes, Talents, Codex, Settings, Credits
 ## and Quit, each with its key. Skirmish, Heroes, Codex, Settings and Credits open as pages over the
 ## picture; Campaign and Talents open their own screens. Esc goes back from a page, and on the
-## title screen asks before quitting.
+## title screen asks before quitting. Music plays behind it all (MenuMusic). When the game opens,
+## the studio splash (StudioSplash, scenes/splash.tscn) plays first.
 ##
 ## Starts a run straight away when the game is launched with --autoplay (add --stage=<id> to play a
 ## campaign stage, open or not).
@@ -24,6 +25,8 @@ var quit_dialog: Control
 var _home: Control
 ## The stage Continue plays, or empty when there is none.
 var continue_stage: StringName = &""
+## The title screen's music (off in Settings > Sound > Menu music).
+var music: MenuMusic
 
 
 func _ready() -> void:
@@ -45,6 +48,23 @@ func _ready() -> void:
 	_build_menu()
 	_build_story_card()
 	_build_quit_dialog()
+	music = MenuMusic.new()
+	add_child(music)
+	if StudioSplash.fade_into_menu:
+		StudioSplash.fade_into_menu = false
+		_fade_in_from_black()
+
+
+## After the studio splash: the title screen rises out of the splash's black.
+func _fade_in_from_black() -> void:
+	var black := ColorRect.new()
+	black.color = Color(0, 0, 0, 1)
+	black.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	black.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(black)
+	var tween := black.create_tween()
+	tween.tween_property(black, "color:a", 0.0, 1.2).set_ease(Tween.EASE_OUT)
+	tween.tween_callback(black.queue_free)
 
 
 # --- The title screen --------------------------------------------------------------

@@ -17,6 +17,8 @@ extends Node
 ## battle zoomed in on a spawn hole.
 ## Add --powers to film the horde's powers: a wave of every kind of the rank and file and the Warden
 ## against the bot's towers, saved as numbered frames in <out>/powers/ (make a GIF from them).
+## Add --horde=<tide|stone|hollow|flame|sky|grove> with --powers to film that horde's five kinds instead,
+## with the camera close and following them.
 ## Add --landmarks to take the enemy war camps and the defended cities at the road ends in every land,
 ## by day, at night and burning, plus frames for short clips (<out>/clips/<name>/NNN.png).
 ## Add --look[=stage,stage] for the graphics look test: in each stage (the fire and jungle lands by default)
@@ -52,6 +54,7 @@ var _map := false
 var _bigmaps := false
 var _powers := false
 var _landmarks := false
+var _horde := &""
 var _look: PackedStringArray = []
 ## With --look: shoot the towers' effects in a fight (shots, hits, a Meteor and a Doom) instead of the look shots.
 var _fx_shots := false
@@ -82,6 +85,8 @@ func _ready() -> void:
 			_powers = true
 		elif arg == "--landmarks":
 			_landmarks = true
+		elif arg.begins_with("--horde="):
+			_horde = StringName(arg.trim_prefix("--horde="))
 		elif arg == "--fx":
 			_fx_shots = true
 		elif arg.begins_with("--look"):
@@ -666,6 +671,8 @@ func _run_powers() -> void:
 		group.spawn_interval = entry[2]
 		group.start_delay = entry[3]
 		groups.append(group)
+	if not _horde.is_empty():
+		groups = _horde_groups(_horde)
 	wave.groups = groups
 	var waves := WaveSet.new()
 	waves.id = &"powers"
@@ -678,7 +685,10 @@ func _run_powers() -> void:
 	var count := [0]
 	game.sim.enemy_power.connect(func(enemy: SimEnemy, power: StringName, _t: Array) -> void:
 		print("frame %d: %s %s" % [count[0], enemy.data.id, power]))
+	var follow := Vector2.INF
 	while game.sim.state == RunSim.State.WAVE and count[0] < 900:
+		if not _horde.is_empty():
+			follow = _follow_horde(game, follow)
 		await RenderingServer.frame_post_draw
 		if Engine.get_process_frames() % 2 == 0:
 			var image := get_viewport().get_texture().get_image()
@@ -687,6 +697,41 @@ func _run_powers() -> void:
 		await get_tree().process_frame
 	print("Saved %d frames to %s" % [count[0], folder])
 	get_tree().quit()
+
+
+## One group for each kind of a horde, in the order its land meets them, a few seconds apart.
+func _horde_groups(horde: StringName) -> Array[SpawnGroup]:
+	var kinds: Array[EnemyData] = []
+	for data: EnemyData in DataRegistry.enemies.values():
+		if data.horde == horde:
+			kinds.append(data)
+	var groups: Array[SpawnGroup] = []
+	for i in kinds.size():
+		var group := SpawnGroup.new()
+		group.enemy = kinds[i].id
+		group.count = 6 if kinds[i].power == &"swarm" else 3
+		group.spawn_interval = 0.8
+		group.start_delay = 1.5 * float(i)
+		groups.append(group)
+	return groups
+
+
+## Keeps the camera close on the middle of the horde, easing after it. Every kind carries its power.
+func _follow_horde(game: Game, follow: Vector2) -> Vector2:
+	var sum := Vector2.ZERO
+	var n := 0
+	for enemy in game.sim.enemies:
+		if enemy.alive and not enemy.structure:
+			if not enemy.raised:
+				enemy.has_power = true
+			sum += enemy.position
+			n += 1
+	if n == 0:
+		return follow
+	var middle := sum / float(n)
+	follow = middle if follow == Vector2.INF else follow.lerp(middle, 0.04)
+	game.camera.set_view(1.5, follow)
+	return follow
 
 
 func _hover(at: Vector2) -> void:

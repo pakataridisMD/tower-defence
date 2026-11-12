@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"cinderhound"
+display_name = "Cinderhound"
+max_health = 50.0
+speed = 104.0
+bounty = 4
+leak_damage = 1
+tags = Array[StringName]([&"fast"])
+description = "Wild. A hound of living cinder. Burns heal it instead of hurting it, and frost melts off it twice as fast."
+element = &"fire"
+power = &"fireborn"
+power_amount = 2.0
+horde = &"flame"
+lore = "The Forge-King's hunting dogs lay down in his forges when he slept and got up when he went mad. Their ribs glow through the cinder of their hides. Feed them fire and they only run harder."
