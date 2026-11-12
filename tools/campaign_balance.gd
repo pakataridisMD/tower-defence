@@ -264,10 +264,15 @@ func _compare_skill_levels(meta: MetaProgress, only: String) -> void:
 			var line := "%-12s" % stage.id
 			var spent := 0
 			for i in 2:
-				var sim := RunSim.new(meta.stage_config(stage.id))
+				var sim := RunSim.new(_config(meta, stage))
 				var bot := AutoPlayer.for_sim(sim)
 				bot.skill_upgrades = i == 1
-				line += " %12s" % _run_bot(sim, bot)
+				var elapsed := 0.0
+				while not sim.is_over() and elapsed < 8000.0:
+					bot.act()
+					sim.step(RunSim.STEP)
+					elapsed += RunSim.STEP
+				line += " %12s" % ("%3d%%" % roundi(100.0 * sim.lives / sim.starting_lives) if sim.state == RunSim.State.WON else " w%-2d" % sim.wave_index)
 				spent = bot.skill_gold
 				if sim.state == RunSim.State.WON:
 					wins[i] += 1
