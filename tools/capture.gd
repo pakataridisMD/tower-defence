@@ -750,7 +750,14 @@ func _run_bosses() -> void:
 		await _until(func() -> bool: return not game.sim.enemies.is_empty())
 		var boss: SimEnemy = game.sim.enemies[0]
 		# Far enough along the road to be in the open.
-		boss.progress = game.sim.lane_lengths[boss.lane] * 0.45
+		# The lowest point of the middle of its road, so a tall boss has the whole map above it.
+		var length: float = game.sim.lane_lengths[boss.lane]
+		var best := length * 0.45
+		for k in 25:
+			var at := length * (0.2 + 0.025 * k)
+			if game.sim.lane_curves[boss.lane].sample_baked(at).y > game.sim.lane_curves[boss.lane].sample_baked(best).y:
+				best = at
+		boss.progress = best
 		boss.position = game.sim.lane_curves[boss.lane].sample_baked(boss.progress)
 		var tall := BoardArt.enemy_height(boss.data.id)
 		var zoom := 0.75 if tall > 300.0 else 1.0 if tall > 200.0 else 1.5
