@@ -97,7 +97,7 @@ func _init() -> void:
 	_confirm_title = UiStyle.label("", 28)
 	_confirm_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_confirm.add_child(_confirm_title)
-	var warning := UiStyle.label("This run will be lost. Your campaign progress and talents are kept.", 19,
+	var warning := UiStyle.label("Your progress is kept. Continue on the title screen picks this battle up again from its last break.", 19,
 			UiStyle.TEXT_DIM)
 	warning.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

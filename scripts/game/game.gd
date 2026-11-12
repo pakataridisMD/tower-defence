@@ -102,6 +102,15 @@ func run_snapshot() -> Dictionary:
 	return break_snapshot
 
 
+## Autosaves the run as it is at the start of a break (and when the battle opens), with the progress.
+## Continue on the title screen picks it up from there. The bot's runs keep theirs in memory.
+func _autosave() -> void:
+	if sim.state != RunSim.State.BUILDING or sim.is_over():
+		return
+	Progress.autosave_run = RunSnapshot.capture(sim)
+	Progress.autosave()
+
+
 ## Keeps the run as it is after every change made in a break, so the last one is at hand once the
 ## wave has started.
 func _remember_break() -> void:
@@ -203,9 +212,11 @@ func _connect_signals() -> void:
 	pause_menu.leave_requested.connect(_leave_from_menu)
 	pause_menu.saves_requested.connect(open_saves)
 	saves_page.back_requested.connect(close_saves)
-	saves_page.load_confirmed.connect(_load_slot)
+	saves_page.load_confirmed.connect(_load_save)
 	sim.changed.connect(_remember_break)
 	_remember_break()
+	sim.wave_cleared.connect(func(_n: int, _p: int, _g: int) -> void: _autosave())
+	_autosave()
 	hud.tower_chosen.connect(_choose_tower)
 	hud.skill_pressed.connect(_skill_button)
 	hud.sell_pressed.connect(_sell_selected)
@@ -523,14 +534,14 @@ func close_saves() -> void:
 	SoundPlayer.sfx(&"ui_close")
 
 
-## Loads a slot the player said yes to: a saved run starts the battle again where it was saved, and
-## a save without a run goes to the title screen.
-func _load_slot(slot: int) -> void:
-	if not Progress.has_slot(slot):
+## Loads a save the player said yes to (a SaveSlots key): a saved run starts the battle again where
+## it was saved, and a save without a run goes to the title screen.
+func _load_save(key: String) -> void:
+	if not Progress.slots.has_key(key):
 		return
-	var has_run := Progress.load_from_slot(slot)
+	var has_run := Progress.load_save(key)
 	if not has_run:
-		MainMenu.notice = "Loaded slot %d." % slot
+		MainMenu.notice = "Loaded %s." % Progress.meta.profile.playthrough_name
 	get_tree().change_scene_to_file(scene_file_path if has_run and not scene_file_path.is_empty() else MENU_SCENE)
 
 

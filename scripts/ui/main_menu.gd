@@ -1,9 +1,11 @@
 class_name MainMenu
 extends Control
 ## The title screen: what the player sees when the game opens. A painted dusk view of Solenne with
-## the menu on the left: Continue, Campaign, Skirmish, Saved games, Heroes, Talents, Codex, Settings,
-## Credits and Quit, each with its key. Skirmish, Saved games, Heroes, Codex, Settings and Credits open
-## as pages over the picture; Campaign and Talents open their own screens. Esc goes back from a page, and on the
+## the menu on the left: Continue, New game, Load game, Campaign, Skirmish, Heroes, Talents, Codex,
+## Settings, Credits and Quit, each with its key. Like Fallout: Continue picks up the game being played
+## from its autosave (back into the battle, if one was going), New game starts another playthrough and
+## Load game lists the autosaves and the ten slots. Skirmish, Load game, Heroes, Codex, Settings and
+## Credits open as pages over the picture; Campaign and Talents open their own screens. Esc goes back from a page, and on the
 ## title screen asks before quitting. Music plays behind it all (MenuMusic). When the game opens,
 ## the studio splash (StudioSplash, scenes/splash.tscn) plays first.
 ##
@@ -28,6 +30,10 @@ var fullscreen_button: Button
 var _home: Control
 ## The stage Continue plays, or empty when there is none.
 var continue_stage: StringName = &""
+## The autosave Continue loads to go back into a battle, or empty when there is no battle to go back to.
+var continue_save := ""
+## "Start a new game?"
+var new_game_dialog: Control
 ## The title screen's music (off in Settings > Sound > Menu music).
 var music: MenuMusic
 ## A line to show once when the title screen opens, such as "Loaded slot 3". Set before reloading.
@@ -54,6 +60,7 @@ func _ready() -> void:
 	_build_story_card()
 	_build_fullscreen_button()
 	_build_quit_dialog()
+	_build_new_game_dialog()
 	music = MenuMusic.new()
 	add_child(music)
 	if StudioSplash.fade_into_menu:
@@ -141,13 +148,15 @@ func _build_menu() -> void:
 	panel.add_child(column)
 
 	continue_stage = next_story_stage()
-	if not continue_stage.is_empty():
-		_add(column, &"continue", "Continue", "Enter", "continue", "", continue_story, 78)
-		column.add_child(MenuPage.Divider.new())
+	continue_save = _battle_to_continue()
+	if not continue_stage.is_empty() or not continue_save.is_empty():
+		_add(column, &"continue", "Continue", "Enter", "continue", _continue_note(), continue_game, 72)
+	_add(column, &"new_game", "New game", "N", "new_game", "", ask_new_game)
+	_add(column, &"saves", "Load game", "L", "saves", _saves_note(), open_saves.bind(&"load"))
+	column.add_child(MenuPage.Divider.new())
 	var stars := _campaign_stars()
 	_add(column, &"campaign", "Campaign", "C", "campaign", stars, open_campaign)
 	_add(column, &"skirmish", "Skirmish", "S", "skirmish", "", open_page.bind(&"skirmish"))
-	_add(column, &"saves", "Saved games", "L", "saves", _saves_note(), open_saves.bind(&"load"))
 	var joined := meta.joined_heroes().size()
 	_add(column, &"heroes", "Heroes", "H", "heroes", "%d of %d" % [joined, meta.heroes_in_order().size()],
 			open_page.bind(&"heroes"))
@@ -166,10 +175,10 @@ func _build_menu() -> void:
 
 
 func _add(column: VBoxContainer, id: StringName, text: String, key: String, icon_name: String, note: String,
-		action: Callable, height: float = 64.0) -> void:
+		action: Callable, height: float = 56.0) -> void:
 	var button := MenuItemButton.new(text, key, icon_name, note)
 	button.custom_minimum_size = Vector2(0, height)
-	if height > 70.0:
+	if height > 64.0:
 		button.add_theme_font_size_override("font_size", 50)
 	button.pressed.connect(action)
 	column.add_child(button)
@@ -193,14 +202,26 @@ func _show_fullscreen(_on: bool = false) -> void:
 		fullscreen_button.text = VideoSettings.toggle_text()
 
 
-## A card in the corner that says what comes next in the story.
+## A card in the corner that says what Continue does: back into the battle, or what comes next in
+## the story.
 func _build_story_card() -> void:
-	if continue_stage.is_empty():
-		return
-	var stage: StageData = DataRegistry.stages.get(continue_stage)
-	var campaign: CampaignData = DataRegistry.campaign_of(continue_stage)
-	if stage == null or campaign == null:
-		return
+	var heading := "NEXT IN THE STORY"
+	var name := ""
+	var line := ""
+	if not continue_save.is_empty():
+		var info := Progress.slots.info_key(continue_save)
+		heading = "BACK INTO BATTLE  -  %s" % str(info.get("game", "")).to_upper()
+		name = str(info.get("title", ""))
+		var wave := int(info.get("wave", 0))
+		var waves := int(info.get("waves", 0))
+		line = ("%s  -  wave %d%s" % [info.get("where", ""), wave,
+				(" of %d" % waves) if waves > 0 and info.get("assault", false) != true else ""]).to_upper()
+	else:
+		var stage: StageData = DataRegistry.stages.get(continue_stage)
+		if stage == null or DataRegistry.campaign_of(continue_stage) == null:
+			return
+		name = stage.display_name
+		line = _stage_note(stage).to_upper()
 	var card := PanelContainer.new()
 	card.add_theme_stylebox_override("panel", UiStyle.menu_panel_box(28, 20, false))
 	card.custom_minimum_size = Vector2(600, 0)
@@ -209,9 +230,9 @@ func _build_story_card() -> void:
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 2)
 	card.add_child(column)
-	column.add_child(UiStyle.menu_label("NEXT IN THE STORY", "small", 16, UiStyle.MENU_GOLD))
-	column.add_child(UiStyle.menu_label(stage.display_name, "button", 40))
-	column.add_child(UiStyle.menu_label(_stage_note(stage).to_upper(), "small", 16, UiStyle.MENU_DIM))
+	column.add_child(UiStyle.menu_label(heading, "small", 16, UiStyle.MENU_GOLD))
+	column.add_child(UiStyle.menu_label(name, "button", 40))
+	column.add_child(UiStyle.menu_label(line, "small", 16, UiStyle.MENU_DIM))
 
 
 ## The stage Continue plays: the next open stage of the land the player is furthest into, or empty
@@ -248,13 +269,28 @@ func _campaign_stars() -> String:
 	return "%d / %d stars" % [earned, total] if earned > 0 else ""
 
 
-## "3 saved" next to Saved games, or nothing before the first save.
+## "3 saved" next to Load game: the slots used, or nothing before the first save.
 func _saves_note() -> String:
 	var count := 0
 	for slot in range(1, SaveSlots.COUNT + 1):
 		if Progress.has_slot(slot):
 			count += 1
 	return "%d saved" % count if count > 0 else ""
+
+
+## This game's autosave when it holds a battle to go back to, else empty.
+func _battle_to_continue() -> String:
+	var key := Progress.continue_key()
+	if key.is_empty() or not Progress.slots.read_key(key).get("run") is Dictionary:
+		return ""
+	return key
+
+
+## Next to Continue: the battle's wave, when it goes back into one (the card says the rest).
+func _continue_note() -> String:
+	if not continue_save.is_empty():
+		return "WAVE %d" % int(Progress.slots.info_key(continue_save).get("wave", 0))
+	return ""
 
 
 func _records_text() -> String:
@@ -307,8 +343,8 @@ func _page(id: StringName) -> MenuPage:
 			made = CreditsPage.new()
 		&"saves":
 			var saves := SavesPage.new()
-			saves.load_confirmed.connect(load_slot)
-			saves.saved.connect(func(_slot: int) -> void: buttons[&"saves"].note = _saves_note())
+			saves.can_save = false
+			saves.load_confirmed.connect(load_save)
 			made = saves
 	if made == null:
 		return null
@@ -316,6 +352,7 @@ func _page(id: StringName) -> MenuPage:
 	made.back_requested.connect(close_page)
 	add_child(made)
 	move_child(quit_dialog, -1)
+	move_child(new_game_dialog, -1)
 	pages[id] = made
 	return made
 
@@ -328,16 +365,38 @@ func open_saves(on_mode: StringName) -> void:
 		saves.show_mode(on_mode)
 
 
-## Loads a slot the player said yes to: a saved run opens the battle where it was, a save of
-## progress only brings the title screen back with it.
-func load_slot(slot: int) -> void:
-	if not Progress.has_slot(slot):
+## Loads a save the player said yes to (a SaveSlots key): a saved run opens the battle where it was,
+## a save of progress only brings the title screen back with it.
+func load_save(key: String) -> void:
+	if not Progress.slots.has_key(key):
 		return
-	if Progress.load_from_slot(slot):
+	if Progress.load_save(key):
 		get_tree().change_scene_to_file(GAME_SCENE)
 		return
-	notice = "Loaded slot %d." % slot
+	notice = "Loaded %s." % Progress.meta.profile.playthrough_name
 	get_tree().change_scene_to_file(MENU_SCENE)
+
+
+## Continue: back into the battle this game was in (from its autosave), or on with the story.
+func continue_game() -> void:
+	if not continue_save.is_empty():
+		load_save(continue_save)
+	elif not continue_stage.is_empty():
+		continue_story()
+	else:
+		open_campaign()
+
+
+## Starts another playthrough and opens the campaign with its prologue. The game being played keeps
+## its autosave, so Load game brings it back.
+func start_new_game() -> void:
+	new_game_dialog.hide()
+	Progress.new_game()
+	open_campaign()
+
+
+func ask_new_game() -> void:
+	new_game_dialog.show()
 
 
 func continue_story() -> void:
@@ -378,6 +437,53 @@ static func unlock_hint(field: StringName, id: StringName) -> String:
 
 
 # --- Quitting ----------------------------------------------------------------------
+
+func _build_new_game_dialog() -> void:
+	new_game_dialog = _dialog("Start a new game?",
+			"A fresh campaign with no stars, talents or heroes.\n%s keeps its autosave in Load game." %
+					Progress.meta.profile.playthrough_name,
+			MenuItemButton.new("Start", "Enter"), start_new_game)
+
+
+## A question over the title screen: a title, a line, Back (Esc) and a yes button.
+func _dialog(title_text: String, line: String, yes: MenuItemButton, on_yes: Callable) -> Control:
+	var dialog := Control.new()
+	dialog.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	dialog.mouse_filter = Control.MOUSE_FILTER_STOP
+	dialog.hide()
+	add_child(dialog)
+	var shade := ColorRect.new()
+	shade.color = Color(0.02, 0.02, 0.04, 0.6)
+	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	dialog.add_child(shade)
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	dialog.add_child(center)
+	var panel := PanelContainer.new()
+	panel.add_theme_stylebox_override("panel", UiStyle.menu_panel_box(48, 32))
+	center.add_child(panel)
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation", 18)
+	panel.add_child(column)
+	var title := UiStyle.menu_title(title_text, 72)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	column.add_child(title)
+	var text := UiStyle.menu_label(line, "body", 32, UiStyle.MENU_DIM)
+	text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	column.add_child(text)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 24)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	column.add_child(row)
+	var back := MenuItemButton.new("Back", "Esc")
+	back.custom_minimum_size = Vector2(280, 64)
+	back.pressed.connect(dialog.hide)
+	row.add_child(back)
+	yes.custom_minimum_size = Vector2(280, 64)
+	yes.pressed.connect(on_yes)
+	row.add_child(yes)
+	return dialog
+
 
 func _build_quit_dialog() -> void:
 	quit_dialog = Control.new()
@@ -431,6 +537,19 @@ func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
 	if key == null or not key.pressed or key.echo:
 		return
+	if new_game_dialog.visible:
+		match key.keycode:
+			KEY_ESCAPE, KEY_BACKSPACE:
+				new_game_dialog.hide()
+			KEY_ENTER, KEY_KP_ENTER, KEY_N:
+				# Handled first: a new game leaves this scene.
+				get_viewport().set_input_as_handled()
+				start_new_game()
+				return
+			_:
+				return
+		get_viewport().set_input_as_handled()
+		return
 	if quit_dialog.visible:
 		match key.keycode:
 			KEY_ESCAPE:
@@ -464,10 +583,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	match key.keycode:
 		KEY_ENTER, KEY_KP_ENTER:
-			if continue_stage.is_empty():
-				open_campaign()
-			else:
-				continue_story()
+			# Handled first: Continue leaves this scene.
+			get_viewport().set_input_as_handled()
+			continue_game()
+			return
+		KEY_N:
+			ask_new_game()
 		KEY_C:
 			open_campaign()
 		KEY_S:

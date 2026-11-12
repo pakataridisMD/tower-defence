@@ -26,9 +26,9 @@ extends Node
 ## and x2, and the same row at night are taken.
 ## Add --edge to film the edge pan: zoomed in on a battle, the mouse is pushed against each edge of the
 ## screen in turn, saved as numbered frames in <out>/edge/ (make a clip from them).
-## Add --saves to take the save slots: the title screen, Saved games (Load and Save tabs, an overwrite
-## question), the Esc menu during a campaign battle with its Save and Load buttons, and the battle
-## loaded back from a slot.
+## Add --saves to take the saved games: the title screen with Continue and New game, the new game
+## question, Load game with two games' autosaves and the slots, the Esc menu during a campaign battle
+## with its Save and Load buttons, Save game there with an overwrite question, and a battle loaded back.
 ## Add --story to take the cinematic player, a Herald's boss banner, the final level's defence and counter-attack and
 ## the campaign map with the citadel on it.
 
@@ -700,24 +700,31 @@ func _run_saves() -> void:
 			sim.step(RunSim.STEP)
 			elapsed += RunSim.STEP
 		Progress.save_to_slot(spec[0], RunSnapshot.capture(sim))
+		# Game 1 left its last battle in the middle: its autosave holds it.
+		Progress.autosave_run = RunSnapshot.capture(sim)
+		Progress.autosave()
 	Progress.save_to_slot(7)
+	# A second game, started and played a little, then back to Game 1.
+	Progress.new_game()
+	Progress.meta.profile.stage_stars[first.stages[0].id] = 1
+	Progress.autosave()
+	Progress.load_autosave(1)
+	Progress.pending_run = {}
 	Progress.play_skirmish()
 	var menu := MENU_SCENE.instantiate()
 	add_child(menu)
 	await _wait(0.5)
-	_hover(menu.buttons[&"saves"].get_global_rect().get_center())
+	_hover(menu.buttons[&"continue"].get_global_rect().get_center())
 	await _wait(0.2)
 	await _shot("saves_title")
+	menu.ask_new_game()
+	await _wait(0.3)
+	await _shot("saves_new_game")
+	menu.new_game_dialog.hide()
 	menu.open_saves(&"load")
 	_hover(Vector2(4, 4))
 	await _wait(0.3)
 	await _shot("saves_load")
-	menu.open_saves(&"save")
-	await _wait(0.3)
-	await _shot("saves_save")
-	menu.pages[&"saves"].ask(&"save", 1)
-	await _wait(0.3)
-	await _shot("saves_overwrite")
 	menu.free()
 
 	# Load the first slot: the battle comes back where it was saved.
@@ -735,6 +742,9 @@ func _run_saves() -> void:
 	game.open_saves(&"save")
 	await _wait(0.3)
 	await _shot("saves_in_battle")
+	game.saves_page.ask(&"save", 1)
+	await _wait(0.3)
+	await _shot("saves_overwrite")
 	print("Screenshots saved to ", _out)
 	get_tree().quit()
 
