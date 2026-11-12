@@ -1038,13 +1038,13 @@ def oswin_mh(rig, body, ex, J):
     parts.append(wear(body, "robe_top", lambda c: (ax(c) < sh.x + 0.02 and pel - 0.12 < c.z < neck - 0.02)
                       or (ax(c) >= sh.x + 0.02 and ax(c) < wr.x - 0.02 and c.z > neck - 0.4), GREY, 0.025, 0.01, smooth=20))
     parts.append(skirt("robe_skirt", J, s4 + 0.02, 0.03, 0.2, 0.44, GREY, rig, folds=0.035, leg_share=0.7))
-    parts.append(wear(body, "trousers", lambda c: c.z < pel and c.z > an + 0.1, cloth("oswin_hose", (0.05, 0.05, 0.05)), 0.008, 0.006))
     belt = plate("rope_belt", (0.36, 0.28, 0.035), (0, J["pelvis"].y, s4 + 0.03), LEATHER, 0.01, 0.8); on_bone(belt, rig, "hips"); parts.append(belt)
     for side, sd in ((".l", 1), (".r", -1)):
         S = lambda c, sd=sd: c.x * sd > 0
         parts.append(hull_plate(body, rig, "boot" + side, lambda c, S=S: S(c) and c.z < an + 0.05 and ax(c) < 0.4,
                                 LEATHER, "foot" + side, 0.02, voxel=0.02, scale=(1.05, 1.05, 1.1)))
     hide_under(body, lambda c: c.z < an + 0.07)
+    hide_under(body, lambda c: c.z < an + 0.07 or (c.z < pel - 0.06 and abs(c.x) < 0.4))   # legs live inside the long skirt
     parts += wide_hat(rig, J, FELT)
     scalp, hc = face_and_hair_points(J)
     WHITE = (0.82, 0.8, 0.76)
@@ -1196,6 +1196,7 @@ def ysolde_mh(rig, body, ex, J, blind=False):
         parts.append(hull_plate(body, rig, "slipper" + side, lambda c, S=S: S(c) and c.z < an + 0.04 and ax(c) < 0.4,
                                 C.mat("slipper", (0.6, 0.45, 0.2), 0.4, metal=0.6), "foot" + side, 0.008, voxel=0.012))
     hide_under(body, lambda c: c.z < an + 0.05)
+    hide_under(body, lambda c: c.z < an + 0.07 or (c.z < pel - 0.06 and abs(c.x) < 0.4))   # legs live inside the long skirt
     scalp, hc = face_and_hair_points(J)
     DARK = dict(melanin=0.92, redness=0.25)
     parts.append(comb_hair(rig, scalp_points(body, scalp, 20000), hc, "ysolde_hair", 0.11,
@@ -1332,6 +1333,7 @@ def vesper_mh(rig, body, ex, J):
     parts.append(sk)
     parts.append(head_veil(rig, J, VEIL, drop=1.0))
     hide_under(body, lambda c: c.z < an + 0.05)
+    hide_under(body, lambda c: c.z < an + 0.07 or (c.z < pel - 0.06 and abs(c.x) < 0.4))   # legs live inside the long skirt
     # empty grey light where the eyes and mouth should be
     for h in ex:
         vs = [h.matrix_world @ v.co for v in h.data.vertices]
