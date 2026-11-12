@@ -12,7 +12,7 @@ Led by Saltmother Ourra. Element: Water.
 
 Tidefolk priests are drowned under the ice to be initiated and brought back up by their own people. These were brought back by the Saltmother instead. They came up still praying, salt in their mouths, ladling the cold sea over anything that burns.
 
-Health 70, speed 66, armour 0, bounty 5, lives 1. Power: `douse`.
+Health 70, speed 66, armour 0, bounty 5, lives 1. Power: `douse`. Affinity: attuned.
 
 ### Drowned Netcaster
 
@@ -36,7 +36,7 @@ Health 46, speed 92, armour 0, bounty 4, lives 1. Power: `submerge`.
 
 The great seers of the Tide Throne paid for every vision with a memory. The Fogwives paid with all of them, their names, their faces, their children. What is left breathes the fog of a sea that has forgotten where the shore is.
 
-Health 55, speed 70, armour 0, bounty 5, lives 1. Power: `fog`.
+Health 55, speed 70, armour 0, bounty 5, lives 1. Power: `fog`. Affinity: warded.
 
 ### Rimeback
 
@@ -44,7 +44,7 @@ Health 55, speed 70, armour 0, bounty 5, lives 1. Power: `fog`.
 
 Dragged up from under Frostmere's ice by the mad Sea-Queen's voice, the Rimebacks carry a winter on their backs. Break the crust and the cold grows it back over them, layer on layer, the way the lake freezes a little more each night.
 
-Health 120, speed 50, armour 3, bounty 7, lives 2. Power: `rime_shell`.
+Health 120, speed 50, armour 3, bounty 7, lives 2. Power: `rime_shell`. Affinity: tank.
 
 ## The Stone (Runecarving), invading Thunder Steppe
 
@@ -64,7 +64,7 @@ Health 110, speed 58, armour 1, bounty 6, lives 1. Power: `accrete`.
 
 Runewrights of the Deep Halls carved hounds to run down oath-breakers, and an oath of pursuit gave them legs. Orrok's madness pointed them at the Steppe. When one catches the scent it charges, and nothing short of a mountain slows it.
 
-Health 70, speed 82, armour 1, bounty 5, lives 1. Power: `charge`.
+Health 70, speed 82, armour 1, bounty 5, lives 1. Power: `charge`. Affinity: attuned.
 
 ### Runebearer
 
@@ -72,7 +72,7 @@ Health 70, speed 82, armour 1, bounty 5, lives 1. Power: `charge`.
 
 Oath-keepers carry the great vows of Kharum carved in standing stones, so that whole companies can swear by them. The runes still burn. Every Stoneborn within sight of one stands as if the mountain stood behind it.
 
-Health 140, speed 50, armour 3, bounty 8, lives 2. Power: `bulwark`.
+Health 140, speed 50, armour 3, bounty 8, lives 2. Power: `bulwark`. Affinity: warded.
 
 ### Geode Brute
 
@@ -88,7 +88,7 @@ Health 160, speed 50, armour 2, bounty 9, lives 2. Power: `facets`.
 
 The standing stones of the Thunder Steppe were set by the Galeborn to hold the sky still for a moment of prayer. Someone carved a king's face into one. Now it walks, and where it stands the ground holds fast: frost, tide and thunder cannot move what walks beside it.
 
-Health 200, speed 42, armour 4, bounty 10, lives 2. Power: `steadfast`.
+Health 200, speed 42, armour 4, bounty 10, lives 2. Power: `steadfast`. Affinity: tank.
 
 ## The Hollow (Starcraft), invading Verdant Deep
 
@@ -100,7 +100,7 @@ Led by the Pale Vesper. Element: Void.
 
 Every spell of starcraft darkens something of the caster: hair, eyes, shadow. Lightdrinkers kept casting after the light ran out, and now they borrow it. Her lantern burns black, and towers in its gloom strike like men fighting in the dark.
 
-Health 65, speed 68, armour 0, bounty 5, lives 1. Power: `eclipse`.
+Health 65, speed 68, armour 0, bounty 5, lives 1. Power: `eclipse`. Affinity: attuned.
 
 ### Umbral Stalker
 
@@ -124,7 +124,7 @@ Health 80, speed 60, armour 0, bounty 6, lives 1. Power: `raise`.
 
 She would not let him walk the road alone. Nyxara's madness opened it, and she went down it after him, and found it empty. She has been screaming ever since. Struck down, the scream breaks loose, and nothing near her can work its art until it fades.
 
-Health 60, speed 70, armour 0, bounty 5, lives 1. Power: `wail`.
+Health 60, speed 70, armour 0, bounty 5, lives 1. Power: `wail`. Affinity: warded.
 
 ### Voidmaw
 
@@ -132,7 +132,7 @@ Health 60, speed 70, armour 0, bounty 5, lives 1. Power: `wail`.
 
 Something grew in the dark at the bottom of the Rift while the Veilwalkers mapped the stars above it. It has a crown of eyes and a mouth full of other stars, and it follows the horde for what falls.
 
-Health 130, speed 55, armour 2, bounty 8, lives 2. Power: `devour`.
+Health 130, speed 55, armour 2, bounty 8, lives 2. Power: `devour`. Affinity: tank.
 
 ## The Flame (Kindling), invading Frostmere
 
@@ -144,7 +144,7 @@ Led by Ashwick the Kindled. Element: Fire.
 
 The Forge-King's hunting dogs lay down in his forges when he slept and got up when he went mad. Their ribs glow through the cinder of their hides. Feed them fire and they only run harder.
 
-Health 50, speed 104, armour 0, bounty 4, lives 1. Power: `fireborn`.
+Health 50, speed 104, armour 0, bounty 4, lives 1. Power: `fireborn`. Affinity: attuned.
 
 ### Smoke Wraith
 
@@ -160,7 +160,7 @@ Health 50, speed 86, armour 0, bounty 5, lives 1. Power: `smoke`.
 
 Kindlers pay with their own heat. The Glass-Singers sang sand into glass until they had none left: their arms are blue, their rune tattoos still glowing. Their song hangs panes of ringing glass before the horde, and each one stops a single blow before it shatters.
 
-Health 65, speed 66, armour 0, bounty 6, lives 1. Power: `glass_ward`.
+Health 65, speed 66, armour 0, bounty 6, lives 1. Power: `glass_ward`. Affinity: warded.
 
 ### Slagwalker
 
@@ -176,7 +176,7 @@ Health 120, speed 50, armour 12, bounty 8, lives 2. Power: `meltdown`.
 
 Siege engines of the Ember Throne, fed on coal and kindled runes, built to batter down the gates of Pearlhaven. The Forge-King's madness woke the fires in their bellies. They start slow. Left alone, they do not stay slow.
 
-Health 220, speed 40, armour 5, bounty 12, lives 3. Power: `momentum`.
+Health 220, speed 40, armour 5, bounty 12, lives 3. Power: `momentum`. Affinity: tank.
 
 ## The Sky (Stormsong), invading Sunscar Canyon
 
@@ -196,7 +196,7 @@ Health 45, speed 98, armour 0, bounty 4, lives 1. Power: `tailwind`.
 
 A stormsinger's last note does not end when the singer does. On the Steppe they drift in shoals, skulls of white light inside balls of lightning, and they give the shock back to whatever puts them out.
 
-Health 28, speed 118, armour 0, bounty 3, lives 1. Power: `static`.
+Health 28, speed 118, armour 0, bounty 3, lives 1. Power: `static`. Affinity: attuned.
 
 ### Voiceless
 
@@ -204,7 +204,7 @@ Health 28, speed 118, armour 0, bounty 3, lives 1. Power: `static`.
 
 Stormsong costs the singer's breath and voice. The Voiceless sang until both were gone and kept on singing, mouths sewn shut, hands conducting. Where they walk, the towers' arts fall as silent as they are.
 
-Health 70, speed 64, armour 0, bounty 6, lives 1. Power: `hush`.
+Health 70, speed 64, armour 0, bounty 6, lives 1. Power: `hush`. Affinity: warded.
 
 ### Stormrider
 
@@ -240,7 +240,7 @@ Health 26, speed 100, armour 0, bounty 2, lives 1. Power: `swarm`.
 
 Rootcraft is planted, not cast, and grows into its effect. The Seedsowers have been sowing for three hundred years and no longer remember what they meant to grow. What comes up has thorns.
 
-Health 90, speed 58, armour 0, bounty 6, lives 1. Power: `sow`.
+Health 90, speed 58, armour 0, bounty 6, lives 1. Power: `sow`. Affinity: warded.
 
 ### Greenwitch
 
@@ -248,7 +248,7 @@ Health 90, speed 58, armour 0, bounty 6, lives 1. Power: `sow`.
 
 Healing and poison are the same craft in the Green Realm, a matter of dose. The Greenwitches never forgot it. Around her, the venom of Nature's own towers turns to medicine.
 
-Health 70, speed 64, armour 0, bounty 6, lives 1. Power: `remedy`.
+Health 70, speed 64, armour 0, bounty 6, lives 1. Power: `remedy`. Affinity: attuned.
 
 ### Briar Stag
 
@@ -264,4 +264,4 @@ Health 75, speed 86, armour 0, bounty 6, lives 1. Power: `bound`.
 
 Rootcraft costs time, and the Barkhulks are made of it: oaks older than the Concord, torn up by the roots when the Green Queen's madness called them. They keep growing as they walk. The longer one lives, the bigger it gets.
 
-Health 180, speed 42, armour 3, bounty 11, lives 3. Power: `grow`.
+Health 180, speed 42, armour 3, bounty 11, lives 3. Power: `grow`. Affinity: tank.

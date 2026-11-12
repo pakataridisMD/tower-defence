@@ -6,6 +6,13 @@ extends RefCounted
 const STUN_IMMUNITY := 1.0
 ## Pixels of knockback one enemy can take in total.
 const MAX_KNOCKBACK := 240.0
+## A Hulking elite (SpawnGroup.elite): health and bounty times these, plus armour, slower, and more
+## lives lost if it gets through.
+const ELITE_HEALTH := 5.0
+const ELITE_ARMOUR := 5.0
+const ELITE_SPEED := 0.75
+const ELITE_BOUNTY := 5
+const ELITE_LEAK := 3
 
 var id: int
 var data: EnemyData
@@ -15,6 +22,10 @@ var health_multiplier := 1.0
 var lane := 0
 ## Ring index of its element, or -1 when unaligned. Damage from towers depends on it.
 var element := -1
+## How it takes damage from each element (ElementRules.PROFILES): its kind's, or tank for an elite.
+var affinity: StringName
+## A Hulking elite (see SpawnGroup.elite).
+var elite := false
 var max_health: float
 var health: float
 var armour: float
@@ -120,6 +131,45 @@ func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
 	armour = p_data.armour
 	base_speed = p_data.speed
 	bolt_timer = p_data.bolt_interval
+	affinity = p_data.affinity
+
+
+## Makes it a Hulking elite: far tougher and slower, and only its opposite element hurts it much.
+func make_elite() -> void:
+	if elite:
+		return
+	elite = true
+	max_health *= ELITE_HEALTH
+	health = max_health
+	shell *= ELITE_HEALTH
+	armour += ELITE_ARMOUR
+	base_speed *= ELITE_SPEED
+	affinity = ElementRules.TANK
+
+
+## Gold paid for killing it.
+func bounty() -> int:
+	return data.bounty * (ELITE_BOUNTY if elite else 1)
+
+
+## Lives lost if it reaches the exit.
+func leak_damage() -> int:
+	return data.leak_damage * (ELITE_LEAK if elite else 1)
+
+
+## Its name on the board: "Hulking Brute" for an elite.
+func display_name() -> String:
+	return "Hulking " + data.display_name if elite else data.display_name
+
+
+## Damage factor of a tower (or skill, or unit) of these elements against it.
+func element_multiplier(elements: Array[int]) -> float:
+	return ElementRules.damage_multiplier(elements, element, affinity)
+
+
+## The factor of a hit that always finds its weak spot (prismatic heroes, champions).
+func weakness_multiplier() -> float:
+	return ElementRules.weakness_multiplier(element, affinity)
 
 
 ## Turns it into another kind of enemy at the same strength: a boss's next form. It comes back at the
@@ -128,8 +178,9 @@ func become(p_data: EnemyData, seconds: float) -> void:
 	data = p_data
 	max_health = p_data.max_health * health_multiplier
 	health = max_health
-	armour = p_data.armour
-	base_speed = p_data.speed
+	armour = p_data.armour + (ELITE_ARMOUR if elite else 0.0)
+	base_speed = p_data.speed * (ELITE_SPEED if elite else 1.0)
+	affinity = ElementRules.TANK if elite else p_data.affinity
 	summon_timer = p_data.summon_interval
 	prism_timer = p_data.prismatic_interval
 	blink_timer = p_data.blink_interval

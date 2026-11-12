@@ -675,15 +675,23 @@ func _wave_text() -> String:
 	if wave == null:
 		return ""
 	var element: ElementData = sim.config.elements.get(wave.element)
-	var counts: Dictionary[StringName, int] = {}
+	var counts: Dictionary[String, int] = {}
 	var mixed := false
 	for group in wave.groups:
-		counts[group.enemy] = counts.get(group.enemy, 0) + group.count
+		var key := String(group.enemy) + ("|elite" if group.elite else "")
+		counts[key] = counts.get(key, 0) + group.count
 		mixed = mixed or (not group.element.is_empty() and group.element != wave.element)
 	var parts: PackedStringArray = []
-	for enemy_id in counts:
+	for key in counts:
+		var enemy_id := StringName(key.get_slice("|", 0))
+		var elite := key.ends_with("|elite")
 		var enemy: EnemyData = sim.config.enemies.get(enemy_id)
-		var part := "%d %s" % [counts[enemy_id], enemy.display_name if enemy else String(enemy_id)]
+		var name := enemy.display_name if enemy else String(enemy_id)
+		var part := "%d %s" % [counts[key], ("Hulking " + name) if elite else name]
+		var affinity := ElementRules.TANK if elite else (enemy.affinity if enemy else &"")
+		if not affinity.is_empty():
+			part += " [color=#%s]%s[/color]" % [_AFFINITY_COLORS.get(affinity, "ffffff"),
+				String(ElementRules.PROFILE_NAMES[affinity]).to_lower()]
 		# Wardens keep their own element whatever the wave, and the Sundered Heart changes its own.
 		var own: ElementData = sim.config.elements.get(enemy.element) if enemy != null else null
 		if own != null:
@@ -703,6 +711,10 @@ func _wave_text() -> String:
 		label, element.color.to_html(false), element.display_name, boss,
 		opposite.color.to_html(false) if opposite else "ffffff", opposite.display_name if opposite else "?",
 		", ".join(parts)]
+
+
+## Colours of the affinity words in the wave line.
+const _AFFINITY_COLORS := {&"attuned": "8fd3ff", &"warded": "d7a6ff", &"tank": "e8c547"}
 
 
 func _element_at(ring_index: int) -> ElementData:
@@ -863,7 +875,8 @@ func _help_text() -> String:
 	lines.append("Take an element in the skill web: it opens that element's tower and its skill.")
 	lines.append("Pick a tower and click a free tile. Shift-click builds several.")
 	lines.append("Click a tower to level it up, to ascend it at level %d or to fuse it." % SimTower.MAX_LEVEL)
-	lines.append("A wave resists its own element and is weak to the opposite one.")
+	lines.append("Enemies resist their own element and are weak to the opposite one.")
+	lines.append("Marked ones are tougher: attuned (diamond) are immune to their element, warded (shield) to it and its neighbours, tanks (plate) shrug off all but the opposite. Hover an enemy to see its card.")
 	lines.append("")
 	var rules := _stage_rules()
 	if not rules.is_empty():

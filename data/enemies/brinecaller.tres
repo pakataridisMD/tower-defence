@@ -12,6 +12,7 @@ bounty = 5
 leak_damage = 1
 description = "Risen. A drowned tide-priest. Its brine puts out burns and washes poison and frost off the horde around it."
 element = &"water"
+affinity = &"attuned"
 power = &"douse"
 power_interval = 6.0
 power_radius = 150.0

@@ -238,6 +238,21 @@ KIND = {
 }
 
 
+# How each kind takes damage from the elements (ElementRules.PROFILES in scripts/core/element_rules.gd):
+# attuned = immune to its own element, double from the opposite; warded = immune to its own and both
+# neighbours, double from the opposite; tank = a quarter from its own, 0.6x from the rest, double from the
+# opposite. The rest are plain (half from its own, 1.5x from the opposite). One of each per horde where
+# it fits, so every land asks for its opposite element and punishes a one-element build.
+AFFINITY = {
+    "brinecaller": "attuned", "fogwife": "warded", "rimeback": "tank",
+    "quarry_hound": "attuned", "runebearer": "warded", "menhir": "tank",
+    "lightdrinker": "attuned", "wailing_widow": "warded", "voidmaw": "tank",
+    "cinderhound": "attuned", "glass_singer": "warded", "brass_juggernaut": "tank",
+    "spark_wisp": "attuned", "voiceless": "warded",
+    "greenwitch": "attuned", "seedsower": "warded", "barkhulk": "tank",
+}
+
+
 def write_enemy(row):
     eid, name, host, hp, speed, armour, bounty, leak, tags, power, nums, desc, lore = row
     h = HOSTS[host]
@@ -252,6 +267,8 @@ def write_enemy(row):
         lines.append("tags = Array[StringName]([%s])" % ", ".join(sn(t) for t in tags))
     lines.append(f"description = {string(KIND[eid] + '. ' + desc)}")
     lines.append(f"element = {sn(h['element'])}")
+    if eid in AFFINITY:
+        lines.append(f"affinity = {sn(AFFINITY[eid])}")
     lines.append(f"power = {sn(power)}")
     for key, field in (("interval", "power_interval"), ("duration", "power_duration"), ("radius", "power_radius"),
                        ("amount", "power_amount"), ("limit", "power_limit")):
@@ -277,13 +294,15 @@ def write_bestiary():
                 continue
             eid, name, _h, hp, speed, armour, bounty, leak, tags, power, nums, desc, lore = row
             out += [f"### {name}", "", f"*{KIND[eid]}. {desc}*", "", lore, "",
-                    f"Health {hp}, speed {speed}, armour {armour}, bounty {bounty}, lives {leak}. Power: `{power}`.", ""]
+                    f"Health {hp}, speed {speed}, armour {armour}, bounty {bounty}, lives {leak}. Power: `{power}`."
+                    + (f" Affinity: {AFFINITY[eid]}." if eid in AFFINITY else ""), ""]
     with open("docs/story/horde.md", "w") as fh:
         fh.write("\n".join(out))
 
 
 def main():
     assert set(KIND) == {r[0] for r in ROSTER}
+    assert set(AFFINITY) <= set(KIND) and set(AFFINITY.values()) <= {"attuned", "warded", "tank"}
     assert len(ROSTER) == 30 and len({r[0] for r in ROSTER}) == 30 and len({r[9] for r in ROSTER}) == 30
     for row in ROSTER:
         write_enemy(row)

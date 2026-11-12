@@ -501,73 +501,89 @@ pack_gap = 2.5
 [sub_resource type="Resource" id="r63"]
 script = ExtResource("2_s")
 enemy = &"brute"
-count = 2
-spawn_interval = 3.0
-start_delay = 23.59
+count = 1
+spawn_interval = 4.5
+start_delay = 22.99
+elite = true
 
 [sub_resource type="Resource" id="r64"]
 script = ExtResource("2_s")
 enemy = &"grunt"
-count = 6
-spawn_interval = 0.35
-start_delay = 22.99
-pattern = 1
-pack_size = 3
-pack_gap = 1.9500000000000002
+count = 5
+spawn_interval = 0.6
+start_delay = 23.99
+pattern = 3
 
 [sub_resource type="Resource" id="r65"]
 script = ExtResource("2_s")
-enemy = &"runner"
-count = 15
-spawn_interval = 0.28
-start_delay = 27.27
-pattern = 1
-pack_size = 5
-pack_gap = 3.5
+enemy = &"brute"
+count = 2
+spawn_interval = 3.0
+start_delay = 27.64
 
 [sub_resource type="Resource" id="r66"]
 script = ExtResource("2_s")
 enemy = &"grunt"
-count = 10
-spawn_interval = 0.7
-start_delay = 36.96
-pattern = 2
+count = 6
+spawn_interval = 0.35
+start_delay = 27.04
+pattern = 1
+pack_size = 3
+pack_gap = 1.9500000000000002
 
 [sub_resource type="Resource" id="r67"]
 script = ExtResource("2_s")
 enemy = &"runner"
-count = 5
-spawn_interval = 0.55
-start_delay = 38.96
-pattern = 2
+count = 15
+spawn_interval = 0.28
+start_delay = 31.32
+pattern = 1
+pack_size = 5
+pack_gap = 3.5
 
 [sub_resource type="Resource" id="r68"]
-script = ExtResource("3_s")
-element = &"nature"
-description = "Stragglers, runner packs, an ambush, brutes under escort and a closing surge."
-groups = Array[ExtResource("2_s")]([SubResource("r59"), SubResource("r60"), SubResource("r61"), SubResource("r62"), SubResource("r63"), SubResource("r64"), SubResource("r65"), SubResource("r66"), SubResource("r67")])
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 10
+spawn_interval = 0.7
+start_delay = 41.01
+pattern = 2
 
 [sub_resource type="Resource" id="r69"]
+script = ExtResource("2_s")
+enemy = &"runner"
+count = 5
+spawn_interval = 0.55
+start_delay = 43.01
+pattern = 2
+
+[sub_resource type="Resource" id="r70"]
+script = ExtResource("3_s")
+element = &"nature"
+description = "Stragglers, runner packs, an ambush, Hulking Brutes, brutes under escort and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r59"), SubResource("r60"), SubResource("r61"), SubResource("r62"), SubResource("r63"), SubResource("r64"), SubResource("r65"), SubResource("r66"), SubResource("r67"), SubResource("r68"), SubResource("r69")])
+
+[sub_resource type="Resource" id="r71"]
 script = ExtResource("2_s")
 enemy = &"warden"
 count = 1
 spawn_interval = 1.0
 start_delay = 31.92
 
-[sub_resource type="Resource" id="r70"]
+[sub_resource type="Resource" id="r72"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 10
 spawn_interval = 0.8
 
-[sub_resource type="Resource" id="r71"]
+[sub_resource type="Resource" id="r73"]
 script = ExtResource("2_s")
 enemy = &"brute"
 count = 2
 spawn_interval = 3.0
 start_delay = 7.5
 
-[sub_resource type="Resource" id="r72"]
+[sub_resource type="Resource" id="r74"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 6
@@ -577,7 +593,7 @@ pattern = 1
 pack_size = 3
 pack_gap = 1.9500000000000002
 
-[sub_resource type="Resource" id="r73"]
+[sub_resource type="Resource" id="r75"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 15
@@ -587,7 +603,7 @@ pattern = 1
 pack_size = 5
 pack_gap = 3.5
 
-[sub_resource type="Resource" id="r74"]
+[sub_resource type="Resource" id="r76"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 11
@@ -597,14 +613,14 @@ pattern = 1
 pack_size = 7
 pack_gap = 2.5
 
-[sub_resource type="Resource" id="r75"]
+[sub_resource type="Resource" id="r77"]
 script = ExtResource("2_s")
 enemy = &"brute"
 count = 2
 spawn_interval = 3.0
 start_delay = 28.24
 
-[sub_resource type="Resource" id="r76"]
+[sub_resource type="Resource" id="r78"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 6
@@ -614,7 +630,7 @@ pattern = 1
 pack_size = 3
 pack_gap = 1.9500000000000002
 
-[sub_resource type="Resource" id="r77"]
+[sub_resource type="Resource" id="r79"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 10
@@ -622,7 +638,7 @@ spawn_interval = 0.7
 start_delay = 35.92
 pattern = 2
 
-[sub_resource type="Resource" id="r78"]
+[sub_resource type="Resource" id="r80"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 5
@@ -630,13 +646,13 @@ spawn_interval = 0.55
 start_delay = 37.92
 pattern = 2
 
-[sub_resource type="Resource" id="r79"]
+[sub_resource type="Resource" id="r81"]
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
 health_multiplier = 1.0
 description = "A marching column, brutes under escort, runner packs, an ambush and a closing surge."
-groups = Array[ExtResource("2_s")]([SubResource("r69"), SubResource("r70"), SubResource("r71"), SubResource("r72"), SubResource("r73"), SubResource("r74"), SubResource("r75"), SubResource("r76"), SubResource("r77"), SubResource("r78")])
+groups = Array[ExtResource("2_s")]([SubResource("r71"), SubResource("r72"), SubResource("r73"), SubResource("r74"), SubResource("r75"), SubResource("r76"), SubResource("r77"), SubResource("r78"), SubResource("r79"), SubResource("r80")])
 
 [resource]
 script = ExtResource("1_s")
@@ -644,4 +660,4 @@ id = &"prototype"
 display_name = "Skirmish waves"
 health_growth = 1.12
 health_scale = 2.55
-waves = Array[ExtResource("3_s")]([SubResource("r6"), SubResource("r12"), SubResource("r19"), SubResource("r26"), SubResource("r33"), SubResource("r42"), SubResource("r50"), SubResource("r58"), SubResource("r68"), SubResource("r79")])
+waves = Array[ExtResource("3_s")]([SubResource("r6"), SubResource("r12"), SubResource("r19"), SubResource("r26"), SubResource("r33"), SubResource("r42"), SubResource("r50"), SubResource("r58"), SubResource("r70"), SubResource("r81")])

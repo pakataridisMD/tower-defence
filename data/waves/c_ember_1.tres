@@ -526,76 +526,92 @@ start_delay = 11.8
 
 [sub_resource type="Resource" id="r69"]
 script = ExtResource("2_s")
+enemy = &"brute"
+count = 1
+spawn_interval = 4.5
+start_delay = 16.61
+elite = true
+
+[sub_resource type="Resource" id="r70"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 5
+spawn_interval = 0.6
+start_delay = 17.61
+pattern = 3
+
+[sub_resource type="Resource" id="r71"]
+script = ExtResource("2_s")
 enemy = &"grunt"
 count = 7
 spawn_interval = 0.3
-start_delay = 16.61
+start_delay = 20.66
 lane = 1
 pattern = 1
 pack_size = 4
 pack_gap = 3.0
 
-[sub_resource type="Resource" id="r70"]
+[sub_resource type="Resource" id="r72"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 7
 spawn_interval = 0.3
-start_delay = 16.61
+start_delay = 20.66
 lane = 0
 pattern = 1
 pack_size = 4
 pack_gap = 3.0
 
-[sub_resource type="Resource" id="r71"]
+[sub_resource type="Resource" id="r73"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 5
 spawn_interval = 0.4
-start_delay = 18.61
+start_delay = 22.66
 
-[sub_resource type="Resource" id="r72"]
+[sub_resource type="Resource" id="r74"]
 script = ExtResource("2_s")
 enemy = &"netcaster"
 count = 4
 spawn_interval = 1.0
-start_delay = 21.71
+start_delay = 25.76
 
-[sub_resource type="Resource" id="r73"]
+[sub_resource type="Resource" id="r75"]
 script = ExtResource("2_s")
 enemy = &"brinecaller"
 count = 4
 spawn_interval = 1.0
-start_delay = 24.21
+start_delay = 28.26
 
-[sub_resource type="Resource" id="r74"]
+[sub_resource type="Resource" id="r76"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 10
 spawn_interval = 0.7
-start_delay = 27.34
+start_delay = 31.39
 pattern = 2
 
-[sub_resource type="Resource" id="r75"]
+[sub_resource type="Resource" id="r77"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 5
 spawn_interval = 0.55
-start_delay = 29.34
+start_delay = 33.39
 pattern = 2
 
-[sub_resource type="Resource" id="r76"]
+[sub_resource type="Resource" id="r78"]
 script = ExtResource("3_s")
 element = &"water"
-description = "Stragglers, brutes under escort, Mender packs, a pincer, Drowned Netcasters and Brinecallers and a closing surge."
-groups = Array[ExtResource("2_s")]([SubResource("r63"), SubResource("r64"), SubResource("r65"), SubResource("r66"), SubResource("r67"), SubResource("r68"), SubResource("r69"), SubResource("r70"), SubResource("r71"), SubResource("r72"), SubResource("r73"), SubResource("r74"), SubResource("r75")])
+description = "Stragglers, brutes under escort, Mender packs, Hulking Brutes, a pincer, Drowned Netcasters and Brinecallers and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r63"), SubResource("r64"), SubResource("r65"), SubResource("r66"), SubResource("r67"), SubResource("r68"), SubResource("r69"), SubResource("r70"), SubResource("r71"), SubResource("r72"), SubResource("r73"), SubResource("r74"), SubResource("r75"), SubResource("r76"), SubResource("r77")])
 
-[sub_resource type="Resource" id="r77"]
+[sub_resource type="Resource" id="r79"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 10
 spawn_interval = 0.8
 
-[sub_resource type="Resource" id="r78"]
+[sub_resource type="Resource" id="r80"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 15
@@ -605,7 +621,7 @@ pattern = 1
 pack_size = 5
 pack_gap = 3.5
 
-[sub_resource type="Resource" id="r79"]
+[sub_resource type="Resource" id="r81"]
 script = ExtResource("2_s")
 enemy = &"mender"
 count = 7
@@ -615,14 +631,14 @@ pattern = 1
 pack_size = 3
 pack_gap = 3.0
 
-[sub_resource type="Resource" id="r80"]
+[sub_resource type="Resource" id="r82"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 5
 spawn_interval = 0.9
 start_delay = 17.59
 
-[sub_resource type="Resource" id="r81"]
+[sub_resource type="Resource" id="r83"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 7
@@ -630,7 +646,7 @@ spawn_interval = 0.9
 start_delay = 25.07
 lane = 0
 
-[sub_resource type="Resource" id="r82"]
+[sub_resource type="Resource" id="r84"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 10
@@ -641,21 +657,21 @@ pattern = 1
 pack_size = 5
 pack_gap = 3.0
 
-[sub_resource type="Resource" id="r83"]
+[sub_resource type="Resource" id="r85"]
 script = ExtResource("2_s")
 enemy = &"brinecaller"
 count = 4
 spawn_interval = 1.0
 start_delay = 32.34
 
-[sub_resource type="Resource" id="r84"]
+[sub_resource type="Resource" id="r86"]
 script = ExtResource("2_s")
 enemy = &"netcaster"
 count = 4
 spawn_interval = 1.0
 start_delay = 34.84
 
-[sub_resource type="Resource" id="r85"]
+[sub_resource type="Resource" id="r87"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 10
@@ -663,7 +679,7 @@ spawn_interval = 0.7
 start_delay = 37.97
 pattern = 2
 
-[sub_resource type="Resource" id="r86"]
+[sub_resource type="Resource" id="r88"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 5
@@ -671,11 +687,11 @@ spawn_interval = 0.55
 start_delay = 39.97
 pattern = 2
 
-[sub_resource type="Resource" id="r87"]
+[sub_resource type="Resource" id="r89"]
 script = ExtResource("3_s")
 element = &"earth"
 description = "A marching column, runner packs, Mender packs, a flank attack, Brinecallers and Drowned Netcasters and a closing surge."
-groups = Array[ExtResource("2_s")]([SubResource("r77"), SubResource("r78"), SubResource("r79"), SubResource("r80"), SubResource("r81"), SubResource("r82"), SubResource("r83"), SubResource("r84"), SubResource("r85"), SubResource("r86")])
+groups = Array[ExtResource("2_s")]([SubResource("r79"), SubResource("r80"), SubResource("r81"), SubResource("r82"), SubResource("r83"), SubResource("r84"), SubResource("r85"), SubResource("r86"), SubResource("r87"), SubResource("r88")])
 
 [resource]
 script = ExtResource("1_s")
@@ -683,4 +699,4 @@ id = &"c_ember_1"
 display_name = "Ashfall Road"
 health_growth = 1.1
 health_scale = 3.05
-waves = Array[ExtResource("3_s")]([SubResource("r6"), SubResource("r13"), SubResource("r20"), SubResource("r26"), SubResource("r33"), SubResource("r43"), SubResource("r53"), SubResource("r62"), SubResource("r76"), SubResource("r87")])
+waves = Array[ExtResource("3_s")]([SubResource("r6"), SubResource("r13"), SubResource("r20"), SubResource("r26"), SubResource("r33"), SubResource("r43"), SubResource("r53"), SubResource("r62"), SubResource("r78"), SubResource("r89")])

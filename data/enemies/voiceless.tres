@@ -12,6 +12,7 @@ bounty = 6
 leak_damage = 1
 description = "Hollowed. A stormsinger who sang her voice away. Towers near her deal damage but their burns, slows and curses do nothing."
 element = &"storm"
+affinity = &"warded"
 power = &"hush"
 power_radius = 160.0
 horde = &"sky"

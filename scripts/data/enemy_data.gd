@@ -19,6 +19,9 @@ extends Resource
 ## Id of an ElementData. A set element overrides the wave's, so a Fire guardian stays Fire in any
 ## wave. Empty takes the spawn group's element, then the wave's.
 @export var element: StringName
+## How it takes damage from each element round the ring from its own: &"" (plain: half from its own,
+## 1.5x from the opposite), &"attuned", &"warded" or &"tank" (see ElementRules.PROFILES).
+@export var affinity: StringName
 
 @export_group("Traits")
 ## Share of max health healed each second. Burning or poisoned enemies do not heal.
@@ -240,6 +243,13 @@ func power_text() -> String:
 ## Short words for the traits, for tooltips and the campaign screen.
 func trait_words() -> PackedStringArray:
 	var words: PackedStringArray = []
+	match affinity:
+		&"attuned":
+			words.append("immune to its element")
+		&"warded":
+			words.append("immune to three elements")
+		&"tank":
+			words.append("tank")
 	if regen_per_second > 0.0:
 		words.append("regenerates")
 	if status_immune:

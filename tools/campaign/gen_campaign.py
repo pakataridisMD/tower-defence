@@ -447,10 +447,11 @@ def horde_kinds(campaign, stage_index):
     return hordes.ids_of(host)[:2 + stage_index]
 
 
-def G(enemy, count, interval, delay=0.0, pattern=STREAM, lane=-1, pack=5, gap=4.0, element=None):
+def G(enemy, count, interval, delay=0.0, pattern=STREAM, lane=-1, pack=5, gap=4.0, element=None, elite=False):
     """One spawn group. Counts are rounded and never below one."""
     return {"enemy": enemy, "count": max(1, int(round(count))), "interval": round(interval, 3),
-            "delay": round(delay, 2), "pattern": pattern, "lane": lane, "pack": pack, "gap": gap, "element": element}
+            "delay": round(delay, 2), "pattern": pattern, "lane": lane, "pack": pack, "gap": gap, "element": element,
+            "elite": elite}
 
 
 def span(g):
@@ -479,6 +480,8 @@ def group(t, g):
         fields.append(f"pattern = {g['pattern']}")
     if g["pattern"] == PACKS:
         fields += [f"pack_size = {g['pack']}", f"pack_gap = {g['gap']}"]
+    if g.get("elite"):
+        fields.append("elite = true")
     return t.sub(GROUP, fields)
 
 
@@ -619,6 +622,22 @@ def plural(name):
     return name + "s"
 
 
+def elite_due(c):
+    """Hulking elites (SpawnGroup.elite) march in every fourth wave from the fifth, from a land's second
+    stage on (only near the end of its first)."""
+    return c["w"] >= 5 and c["w"] % 4 == 1 and (c["stage"] >= 1 or c["w"] >= 9)
+
+
+def beat_juggernauts(w, c):
+    """A few Hulking elites of the heaviest kind about: twice the size, five times the health, and only
+    the opposite element really hurts them."""
+    heavy = [k for k in c.get("horde", []) if HORDE_HEALTH.get(k, 0) >= 110]
+    kind = heavy[(c["w"] // 4) % len(heavy)] if heavy else "brute"
+    n = 1 + (1 if c["stage"] >= 2 else 0) + (1 if c["w"] >= 13 else 0)
+    w.beat("Hulking " + plural(ENEMY_NAMES[kind]), [G(kind, n, 4.5, elite=True),
+                                                   G("grunt", 3 * c["p"], 0.6, 1.0, SCATTER)])
+
+
 def beat_swarm(w, c):
     kind = "splitter" if c["w"] % 2 else "mender"
     w.beat("a mixed swarm", [G(kind, 2 + c["w"] // 3, 1.0, pattern=SCATTER), G("grunt", 3 * c["p"], 0.7, 1.0, SCATTER)])
@@ -650,6 +669,8 @@ def compose(c, required, closer=True):
     middle = []
     for k in range(max(len(picked), len(required))):
         middle += picked[k:k + 1] + required[k:k + 1]
+    if elite_due(c):
+        middle.insert(len(middle) // 2, beat_juggernauts)
     for b in middle:
         b(w, c)
     if closer:

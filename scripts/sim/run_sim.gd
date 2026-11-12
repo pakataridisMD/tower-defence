@@ -8,6 +8,8 @@ signal wave_started(wave_number: int)
 signal wave_cleared(wave_number: int, tree_points: int, gold: int)
 signal enemy_killed(enemy: SimEnemy, killer: SimTower, bounty: int)
 signal enemy_leaked(enemy: SimEnemy)
+## A tower (or a skill, with tower null) struck an enemy immune to its element: no damage, no effects.
+signal enemy_immune(enemy: SimEnemy, tower: SimTower)
 signal chain_fired(tower: SimTower, points: PackedVector2Array)
 ## A tower fired: a shot left it, or its chain jumped. Used for sound.
 signal tower_attacked(tower: SimTower, target: SimEnemy)
@@ -497,7 +499,10 @@ func use_skill(skill_id: StringName, at: Vector2 = Vector2.ZERO) -> bool:
 	for enemy in targets:
 		if not enemy.alive or (skill.is_targeted() and enemy.position.distance_to(at) > skill.radius):
 			continue
-		var multiplier := ElementRules.damage_multiplier(elements, enemy.element)
+		var multiplier := enemy.element_multiplier(elements)
+		if multiplier <= 0.0:
+			enemy_immune.emit(enemy, null)
+			continue
 		if damage > 0.0:
 			_damage(enemy, CombatMath.hit_damage(damage, multiplier, enemy.effective_armour(), enemy.damage_taken_bonus()) * _spread_cut(enemy), null)
 		if not enemy.alive:
@@ -936,6 +941,8 @@ func _spawn(delta: float) -> void:
 		if not group.element.is_empty():
 			element = config.element_index(group.element)
 		var enemy := _make_enemy(data, multiplier, lane, element, 0.0)
+		if group.elite:
+			enemy.make_elite()
 		enemies.append(enemy)
 		if data.tags.has(&"boss"):
 			boss_arrived.emit(enemy)
@@ -1016,7 +1023,7 @@ func _move_enemies(delta: float) -> void:
 			enemy.alive = false
 			enemy.leaked = true
 			leaks += 1
-			lives -= enemy.data.leak_damage
+			lives -= enemy.leak_damage()
 			enemy_leaked.emit(enemy)
 			if lives <= 0:
 				lives = 0
@@ -1290,6 +1297,9 @@ func _find_target(tower: SimTower) -> SimEnemy:
 		if enemy.has_power and enemy.data.power == &"stalk" \
 				and enemy.position.distance_to(tower.position) > reach * enemy.data.power_amount:
 			continue
+		# Towers do not waste shots on what their elements cannot hurt (splash still lands on it).
+		if not enemy.affinity.is_empty() and _element_multiplier(tower, enemy) <= 0.0:
+			continue
 		var left := distance_to_exit(enemy) if not enemy.structure else 1.0e9 + enemy.health
 		if weakest and not enemy.structure:
 			# Skip one the shots already flying at it will finish.
@@ -1393,6 +1403,10 @@ func _hit(tower: SimTower, enemy: SimEnemy, damage: float) -> void:
 			enemy_power.emit(enemy, &"smoke", [tower])
 			return
 	var multiplier := _element_multiplier(tower, enemy)
+	if multiplier <= 0.0:
+		# Immune to every element the tower has: the blow does nothing, effects and pushes included.
+		enemy_immune.emit(enemy, tower)
+		return
 	var armour := enemy.effective_armour() * (1.0 - tower.armour_ignore)
 	var dealt := CombatMath.hit_damage(damage, multiplier, armour, enemy.damage_taken_bonus())
 	if tower.splash_radius > 0.0 or tower.chains():
@@ -1462,7 +1476,7 @@ func _flee(enemy: SimEnemy) -> void:
 	enemy.health = 0.0
 	enemy.fleeing = true
 	enemy.statuses.clear()
-	var bounty := roundi(enemy.data.bounty * gold_multiplier())
+	var bounty := roundi(enemy.bounty() * gold_multiplier())
 	gold += bounty
 	gold_earned += bounty
 	boss_fled.emit(enemy)
@@ -1480,7 +1494,7 @@ func _fall(enemy: SimEnemy) -> void:
 func _kill(enemy: SimEnemy, killer: SimTower) -> void:
 	enemy.alive = false
 	kills += 1
-	var bounty := enemy.data.bounty if not enemy.raised else 0
+	var bounty := enemy.bounty() if not enemy.raised else 0
 	if killer != null:
 		killer.kills += 1
 		bounty += killer.bounty_bonus
@@ -1685,8 +1699,8 @@ func _new_id() -> int:
 ## each enemy is weakest to.
 func _element_multiplier(tower: SimTower, enemy: SimEnemy) -> float:
 	if tower.tags.has(&"prismatic"):
-		return ElementRules.OPPOSITE_ELEMENT_MULTIPLIER if enemy.element >= 0 else 1.0
-	return ElementRules.damage_multiplier(tower.element_indices, enemy.element)
+		return enemy.weakness_multiplier()
+	return enemy.element_multiplier(tower.element_indices)
 
 
 func hero_data(hero_id: StringName) -> HeroData:
@@ -1870,7 +1884,7 @@ func _ability_hit(tower: SimTower, ability: HeroAbility, enemy: SimEnemy) -> int
 		return 1
 	var multiplier := _element_multiplier(tower, enemy)
 	if ability.hits_weakness:
-		multiplier = ElementRules.OPPOSITE_ELEMENT_MULTIPLIER if enemy.element >= 0 else 1.0
+		multiplier = enemy.weakness_multiplier()
 	if ability.damage > 0.0:
 		var damage := ability.damage * _ability_growth() * (ability.boss_damage_multiplier if boss else 1.0)
 		_damage(enemy, CombatMath.hit_damage(damage, multiplier, enemy.effective_armour(), enemy.damage_taken_bonus()), tower)
@@ -2547,10 +2561,10 @@ func _ally_hit(ally: SimAlly, enemy: SimEnemy, share: float) -> void:
 	var elements: Array[int] = []
 	if not ally.data.element.is_empty():
 		elements.append(config.element_index(ally.data.element))
-	var multiplier := ElementRules.damage_multiplier(elements, enemy.element)
+	var multiplier := enemy.element_multiplier(elements)
 	if ally.is_champion() and ally.data.element.is_empty():
 		# Champions of the light strike each foe where it is weakest.
-		multiplier = ElementRules.OPPOSITE_ELEMENT_MULTIPLIER if enemy.element >= 0 else 1.0
+		multiplier = enemy.weakness_multiplier()
 	var amount := ally.damage * share * (1.0 + ally.aura_bonus) * multiplier
 	if enemy.structure:
 		amount *= ally.data.siege_multiplier
@@ -2605,7 +2619,7 @@ func _heal_around(healer: SimAlly) -> void:
 func enemy_attack_damage(enemy: SimEnemy) -> float:
 	var base := enemy.data.attack_damage
 	if base <= 0.0:
-		base = 5.0 + 4.0 * minf(enemy.data.leak_damage, 10)
+		base = 5.0 + 4.0 * minf(enemy.leak_damage(), 10)
 	return base * enemy.health_multiplier
 
 

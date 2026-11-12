@@ -13,6 +13,7 @@ bounty = 5
 leak_damage = 1
 description = "Wild. A hunting hound carved from quarry stone. It charges down the road now and then, too heavy to slow or push."
 element = &"earth"
+affinity = &"attuned"
 power = &"charge"
 power_interval = 7.0
 power_duration = 1.6

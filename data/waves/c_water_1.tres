@@ -535,82 +535,98 @@ pack_gap = 3.0
 
 [sub_resource type="Resource" id="r66"]
 script = ExtResource("2_s")
+enemy = &"brute"
+count = 1
+spawn_interval = 4.5
+start_delay = 18.86
+elite = true
+
+[sub_resource type="Resource" id="r67"]
+script = ExtResource("2_s")
+enemy = &"grunt"
+count = 5
+spawn_interval = 0.6
+start_delay = 19.86
+pattern = 3
+
+[sub_resource type="Resource" id="r68"]
+script = ExtResource("2_s")
 enemy = &"grunt"
 count = 7
 spawn_interval = 0.3
-start_delay = 18.86
+start_delay = 22.91
 lane = 1
 pattern = 1
 pack_size = 4
 pack_gap = 3.0
 
-[sub_resource type="Resource" id="r67"]
+[sub_resource type="Resource" id="r69"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 7
 spawn_interval = 0.3
-start_delay = 18.86
+start_delay = 22.91
 lane = 0
-pattern = 1
-pack_size = 4
-pack_gap = 3.0
-
-[sub_resource type="Resource" id="r68"]
-script = ExtResource("2_s")
-enemy = &"runner"
-count = 5
-spawn_interval = 0.4
-start_delay = 20.86
-
-[sub_resource type="Resource" id="r69"]
-script = ExtResource("2_s")
-enemy = &"smoke_wraith"
-count = 7
-spawn_interval = 0.5
-start_delay = 23.96
 pattern = 1
 pack_size = 4
 pack_gap = 3.0
 
 [sub_resource type="Resource" id="r70"]
 script = ExtResource("2_s")
-enemy = &"cinderhound"
+enemy = &"runner"
+count = 5
+spawn_interval = 0.4
+start_delay = 24.91
+
+[sub_resource type="Resource" id="r71"]
+script = ExtResource("2_s")
+enemy = &"smoke_wraith"
 count = 7
 spawn_interval = 0.5
-start_delay = 26.46
+start_delay = 28.01
 pattern = 1
 pack_size = 4
 pack_gap = 3.0
 
-[sub_resource type="Resource" id="r71"]
+[sub_resource type="Resource" id="r72"]
+script = ExtResource("2_s")
+enemy = &"cinderhound"
+count = 7
+spawn_interval = 0.5
+start_delay = 30.51
+pattern = 1
+pack_size = 4
+pack_gap = 3.0
+
+[sub_resource type="Resource" id="r73"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 10
 spawn_interval = 0.7
-start_delay = 31.84
+start_delay = 35.89
 pattern = 2
 
-[sub_resource type="Resource" id="r72"]
+[sub_resource type="Resource" id="r74"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 5
 spawn_interval = 0.55
-start_delay = 33.84
+start_delay = 37.89
 pattern = 2
 
-[sub_resource type="Resource" id="r73"]
+[sub_resource type="Resource" id="r75"]
 script = ExtResource("3_s")
 element = &"fire"
-description = "Stragglers, brutes under escort, runner packs, a pincer, Smoke Wraiths and Cinderhounds and a closing surge."
-groups = Array[ExtResource("2_s")]([SubResource("r61"), SubResource("r62"), SubResource("r63"), SubResource("r64"), SubResource("r65"), SubResource("r66"), SubResource("r67"), SubResource("r68"), SubResource("r69"), SubResource("r70"), SubResource("r71"), SubResource("r72")])
+description = "Stragglers, brutes under escort, runner packs, Hulking Brutes, a pincer, Smoke Wraiths and Cinderhounds and a closing surge."
+groups = Array[ExtResource("2_s")]([SubResource("r61"), SubResource("r62"), SubResource("r63"), SubResource("r64"), SubResource("r65"), SubResource("r66"), SubResource("r67"), SubResource("r68"), SubResource("r69"), SubResource("r70"), SubResource("r71"), SubResource("r72"), SubResource("r73"), SubResource("r74")])
 
-[sub_resource type="Resource" id="r74"]
+[sub_resource type="Resource" id="r76"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 10
 spawn_interval = 0.8
 
-[sub_resource type="Resource" id="r75"]
+[sub_resource type="Resource" id="r77"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 15
@@ -620,7 +636,7 @@ pattern = 1
 pack_size = 5
 pack_gap = 3.5
 
-[sub_resource type="Resource" id="r76"]
+[sub_resource type="Resource" id="r78"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 14
@@ -630,7 +646,7 @@ pattern = 1
 pack_size = 5
 pack_gap = 3.0
 
-[sub_resource type="Resource" id="r77"]
+[sub_resource type="Resource" id="r79"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 7
@@ -638,7 +654,7 @@ spawn_interval = 0.9
 start_delay = 25.03
 lane = 0
 
-[sub_resource type="Resource" id="r78"]
+[sub_resource type="Resource" id="r80"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 10
@@ -649,7 +665,7 @@ pattern = 1
 pack_size = 5
 pack_gap = 3.0
 
-[sub_resource type="Resource" id="r79"]
+[sub_resource type="Resource" id="r81"]
 script = ExtResource("2_s")
 enemy = &"cinderhound"
 count = 7
@@ -659,7 +675,7 @@ pattern = 1
 pack_size = 4
 pack_gap = 3.0
 
-[sub_resource type="Resource" id="r80"]
+[sub_resource type="Resource" id="r82"]
 script = ExtResource("2_s")
 enemy = &"smoke_wraith"
 count = 7
@@ -669,7 +685,7 @@ pattern = 1
 pack_size = 4
 pack_gap = 3.0
 
-[sub_resource type="Resource" id="r81"]
+[sub_resource type="Resource" id="r83"]
 script = ExtResource("2_s")
 enemy = &"grunt"
 count = 10
@@ -677,7 +693,7 @@ spawn_interval = 0.7
 start_delay = 40.18
 pattern = 2
 
-[sub_resource type="Resource" id="r82"]
+[sub_resource type="Resource" id="r84"]
 script = ExtResource("2_s")
 enemy = &"runner"
 count = 5
@@ -685,11 +701,11 @@ spawn_interval = 0.55
 start_delay = 42.18
 pattern = 2
 
-[sub_resource type="Resource" id="r83"]
+[sub_resource type="Resource" id="r85"]
 script = ExtResource("3_s")
 element = &"storm"
 description = "A marching column, runner packs, a flank attack, Cinderhounds and Smoke Wraiths and a closing surge."
-groups = Array[ExtResource("2_s")]([SubResource("r74"), SubResource("r75"), SubResource("r76"), SubResource("r77"), SubResource("r78"), SubResource("r79"), SubResource("r80"), SubResource("r81"), SubResource("r82")])
+groups = Array[ExtResource("2_s")]([SubResource("r76"), SubResource("r77"), SubResource("r78"), SubResource("r79"), SubResource("r80"), SubResource("r81"), SubResource("r82"), SubResource("r83"), SubResource("r84")])
 
 [resource]
 script = ExtResource("1_s")
@@ -697,4 +713,4 @@ id = &"c_water_1"
 display_name = "Tidepool Shore"
 health_growth = 1.1
 health_scale = 8.96
-waves = Array[ExtResource("3_s")]([SubResource("r6"), SubResource("r13"), SubResource("r20"), SubResource("r26"), SubResource("r33"), SubResource("r43"), SubResource("r52"), SubResource("r60"), SubResource("r73"), SubResource("r83")])
+waves = Array[ExtResource("3_s")]([SubResource("r6"), SubResource("r13"), SubResource("r20"), SubResource("r26"), SubResource("r33"), SubResource("r43"), SubResource("r52"), SubResource("r60"), SubResource("r75"), SubResource("r85")])
