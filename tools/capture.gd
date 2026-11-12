@@ -26,6 +26,9 @@ extends Node
 ## and x2, and the same row at night are taken.
 ## Add --edge to film the edge pan: zoomed in on a battle, the mouse is pushed against each edge of the
 ## screen in turn, saved as numbered frames in <out>/edge/ (make a clip from them).
+## Add --saves to take the save slots: the title screen, Saved games (Load and Save tabs, an overwrite
+## question), the Esc menu during a campaign battle with its Save and Load buttons, and the battle
+## loaded back from a slot.
 ## Add --story to take the cinematic player, a Herald's boss banner, the final level's defence and counter-attack and
 ## the campaign map with the citadel on it.
 
@@ -52,6 +55,7 @@ var _ui := false
 var _story := false
 var _heroes := false
 var _menu := false
+var _saves := false
 var _map := false
 var _bigmaps := false
 var _edge := false
@@ -82,6 +86,8 @@ func _ready() -> void:
 			_heroes = true
 		elif arg == "--menu":
 			_menu = true
+		elif arg == "--saves":
+			_saves = true
 		elif arg == "--map":
 			_map = true
 		elif arg == "--bigmaps":
@@ -110,6 +116,8 @@ func _ready() -> void:
 		_run_landmarks()
 	elif _menu:
 		_run_menu()
+	elif _saves:
+		_run_saves()
 	elif _map:
 		_run_map()
 	elif _bigmaps:
@@ -594,6 +602,63 @@ func _run_menu() -> void:
 	menu.ask_to_quit()
 	await _wait(0.3)
 	await _shot("menu_quit")
+	get_tree().quit()
+
+
+func _run_saves() -> void:
+	var first: CampaignData = Progress.meta.campaigns_in_order()[0]
+	Progress.meta.profile.stage_stars[first.stages[0].id] = 3
+	# A few slots filled: battles the bot played a few waves into, and a save from the menu.
+	for spec: Array in [[1, first.stages[1].id, 5], [2, &"", 3], [4, first.stages[2].id, 8]]:
+		if (spec[1] as StringName).is_empty():
+			Progress.play_skirmish()
+		else:
+			Progress.meta.profile.stage_stars[first.stages[1].id] = 2
+			Progress.play_stage(spec[1])
+		var sim := RunSim.new(Progress.run_config())
+		var bot := AutoPlayer.for_sim(sim)
+		var elapsed := 0.0
+		while not sim.is_over() and elapsed < 4000.0 and not (sim.wave_index >= spec[2] and sim.state == RunSim.State.BUILDING):
+			bot.act()
+			sim.step(RunSim.STEP)
+			elapsed += RunSim.STEP
+		Progress.save_to_slot(spec[0], RunSnapshot.capture(sim))
+	Progress.save_to_slot(7)
+	Progress.play_skirmish()
+	var menu := MENU_SCENE.instantiate()
+	add_child(menu)
+	await _wait(0.5)
+	_hover(menu.buttons[&"saves"].get_global_rect().get_center())
+	await _wait(0.2)
+	await _shot("saves_title")
+	menu.open_saves(&"load")
+	_hover(Vector2(4, 4))
+	await _wait(0.3)
+	await _shot("saves_load")
+	menu.open_saves(&"save")
+	await _wait(0.3)
+	await _shot("saves_save")
+	menu.pages[&"saves"].ask(&"save", 1)
+	await _wait(0.3)
+	await _shot("saves_overwrite")
+	menu.free()
+
+	# Load the first slot: the battle comes back where it was saved.
+	Progress.load_from_slot(1)
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.8)
+	await _shot("saves_loaded_battle")
+	game.open_pause_menu()
+	await _wait(0.3)
+	await _shot("saves_pause_menu")
+	game._start_wave()
+	game.close_pause_menu()
+	await _wait(2.0)
+	game.open_saves(&"save")
+	await _wait(0.3)
+	await _shot("saves_in_battle")
+	print("Screenshots saved to ", _out)
 	get_tree().quit()
 
 
