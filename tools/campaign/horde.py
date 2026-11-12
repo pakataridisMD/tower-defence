@@ -16,17 +16,17 @@ import os
 
 # Which land each horde invades (bible section 5), the Herald who leads it, and the art it was made by.
 HOSTS = {
-    "tide": {"name": "the Tide", "element": "water", "campaign": "ember_reach", "art": "Tidelore",
+    "tide": {"name": "the Tide", "element": "water", "campaign": "frostmere", "art": "Tidelore",
              "herald": "Saltmother Ourra"},
-    "stone": {"name": "the Stone", "element": "earth", "campaign": "thunder_steppe", "art": "Runecarving",
+    "stone": {"name": "the Stone", "element": "earth", "campaign": "sunscar_canyon", "art": "Runecarving",
               "herald": "Gorrath the Quarried"},
-    "hollow": {"name": "the Hollow", "element": "void", "campaign": "verdant_deep", "art": "Starcraft",
+    "hollow": {"name": "the Hollow", "element": "void", "campaign": "hollow_rift", "art": "Starcraft",
                "herald": "the Pale Vesper"},
-    "flame": {"name": "the Flame", "element": "fire", "campaign": "frostmere", "art": "Kindling",
+    "flame": {"name": "the Flame", "element": "fire", "campaign": "ember_reach", "art": "Kindling",
               "herald": "Ashwick the Kindled"},
-    "sky": {"name": "the Sky", "element": "storm", "campaign": "sunscar_canyon", "art": "Stormsong",
+    "sky": {"name": "the Sky", "element": "storm", "campaign": "thunder_steppe", "art": "Stormsong",
             "herald": "Vholt Stormcrown"},
-    "grove": {"name": "the Grove", "element": "nature", "campaign": "hollow_rift", "art": "Rootcraft",
+    "grove": {"name": "the Grove", "element": "nature", "campaign": "verdant_deep", "art": "Rootcraft",
               "herald": "Mother Briar"},
 }
 
@@ -76,7 +76,7 @@ ROSTER = [
      dict(interval=7.0, duration=1.6, amount=1.2),
      "A hunting hound carved from quarry stone. It charges down the road now and then, too heavy to slow or push.",
      "Runewrights of the Deep Halls carved hounds to run down oath-breakers, and an oath of pursuit gave them "
-     "legs. Orrok's madness pointed them at the Steppe. When one catches the scent it charges, and nothing "
+     "legs. Orrok's madness pointed them at his own people. When one catches the scent it charges, and nothing "
      "short of a mountain slows it."),
     ("runebearer", "Runebearer", "stone", 140, 50, 3, 8, 2, ["armoured"], "bulwark",
      dict(radius=140.0, amount=5.0),
@@ -93,8 +93,8 @@ ROSTER = [
     ("menhir", "Menhir Walker", "stone", 200, 42, 4, 10, 2, ["armoured"], "steadfast",
      dict(radius=150.0),
      "A walking standing stone. The horde near it cannot be slowed or pushed back.",
-     "The standing stones of the Thunder Steppe were set by the Galeborn to hold the sky still for a moment "
-     "of prayer. Someone carved a king's face into one. Now it walks, and where it stands the ground holds "
+     "The standing stones of Kharum were set by the first runewrights to hold a whole city to its oaths."
+     " Someone carved a king's face into one. Now it walks, and where it stands the ground holds "
      "fast: frost, tide and thunder cannot move what walks beside it."),
     # ------------------------------------------------------------------------------------ the Hollow
     ("lightdrinker", "Lightdrinker", "hollow", 65, 68, 0, 5, 1, [], "eclipse",
@@ -106,18 +106,18 @@ ROSTER = [
     ("umbral_stalker", "Umbral Stalker", "hollow", 45, 108, 0, 4, 1, ["fast"], "stalk",
      dict(amount=0.5),
      "A great cat made of the dark between stars. Towers only see it when it comes within half their range.",
-     "The Star-Queen's hunters rode cats of living night on the road of the dead. Without their riders they hunt "
+     "The Star-Queen's hunters rode cats of living night along the rim of the Rift. Without their riders they hunt "
      "alone, pelts full of tiny stars. You do not see one coming. You see it arrive."),
     ("gravecaller", "Gravecaller", "hollow", 80, 60, 0, 6, 1, [], "raise",
      dict(interval=8.0, radius=180.0, amount=0.4, limit=2.0),
-     "A deathwalker who walks the road of the dead the wrong way. He calls the horde's fallen back up.",
-     "Veilwalkers walk the dead to the edge of the dark and leave them there. The Gravecallers walk back carrying "
-     "them. Where the horde falls near one, the dead get up again, slower, quieter, still marching."),
+     "A Veilwalker deathwalker who walks the dead back out of their graves. He calls the horde's fallen back up.",
+     "Veilwalkers carry their dead to the edge of the Rift and leave them in the dark. The Gravecallers carry "
+     "them back. Where the horde falls near one, the dead get up again, slower, quieter, still marching."),
     ("wailing_widow", "Wailing Widow", "hollow", 60, 70, 0, 5, 1, [], "wail",
      dict(duration=3.0, radius=160.0),
-     "A widow who followed her husband down the road of the dead. Her dying scream silences the towers near her.",
-     "She would not let him walk the road alone. Nyxara's madness opened it, and she went down it after him, and "
-     "found it empty. She has been screaming ever since. Struck down, the scream breaks loose, and nothing near "
+     "A widow who followed her husband's body into the Rift. Her dying scream silences the towers near her.",
+     "She would not let him lie in the dark alone. When Nyxara's madness raised the dead, she climbed down the "
+     "Rift wall after him, and found his grave empty. She has been screaming ever since. Struck down, the scream breaks loose, and nothing near "
      "her can work its art until it fades."),
     ("voidmaw", "Voidmaw", "hollow", 130, 55, 2, 8, 2, [], "devour",
      dict(radius=160.0, amount=0.15),
@@ -238,6 +238,21 @@ KIND = {
 }
 
 
+# How each kind takes damage from the elements (ElementRules.PROFILES in scripts/core/element_rules.gd):
+# attuned = immune to its own element, double from the opposite; warded = immune to its own, half from both
+# neighbours, double from the opposite; tank = a quarter from its own, 0.6x from the rest, double from the
+# opposite. The rest are plain (half from its own, 1.5x from the opposite). One of each per horde where
+# it fits, so every land asks for its opposite element and punishes a one-element build.
+AFFINITY = {
+    "brinecaller": "attuned", "fogwife": "warded", "rimeback": "tank",
+    "quarry_hound": "attuned", "runebearer": "warded", "menhir": "tank",
+    "lightdrinker": "attuned", "wailing_widow": "warded", "voidmaw": "tank",
+    "cinderhound": "attuned", "glass_singer": "warded", "brass_juggernaut": "tank",
+    "spark_wisp": "attuned", "voiceless": "warded",
+    "greenwitch": "attuned", "seedsower": "warded", "barkhulk": "tank",
+}
+
+
 def write_enemy(row):
     eid, name, host, hp, speed, armour, bounty, leak, tags, power, nums, desc, lore = row
     h = HOSTS[host]
@@ -252,6 +267,8 @@ def write_enemy(row):
         lines.append("tags = Array[StringName]([%s])" % ", ".join(sn(t) for t in tags))
     lines.append(f"description = {string(KIND[eid] + '. ' + desc)}")
     lines.append(f"element = {sn(h['element'])}")
+    if eid in AFFINITY:
+        lines.append(f"affinity = {sn(AFFINITY[eid])}")
     lines.append(f"power = {sn(power)}")
     for key, field in (("interval", "power_interval"), ("duration", "power_duration"), ("radius", "power_radius"),
                        ("amount", "power_amount"), ("limit", "power_limit")):
@@ -266,24 +283,26 @@ def write_enemy(row):
 
 def write_bestiary():
     out = ["# The Unbound: a bestiary of the six hordes", "",
-           "Generated by `tools/campaign/horde.py` (edit the table there, not this file). Each land is invaded by "
-           "the horde from across the ring, led by that horde's Herald. Every kind of the horde "
+           "Generated by `tools/campaign/horde.py` (edit the table there, not this file). Each land is attacked by "
+           "its own element's horde, raised out of the land by its own Herald when its Warden went mad. Every kind of the horde "
            "was shaped by the art of its kingdom, and every one has a power of its own.", ""]
     for host, h in HOSTS.items():
-        out += [f"## {h['name'][0].upper() + h['name'][1:]} ({h['art']}), invading {h['campaign'].replace('_', ' ').title()}",
+        out += [f"## {h['name'][0].upper() + h['name'][1:]} ({h['art']}), rising in {h['campaign'].replace('_', ' ').title()}",
                 "", f"Led by {h['herald']}. Element: {h['element'].title()}.", ""]
         for row in ROSTER:
             if row[2] != host:
                 continue
             eid, name, _h, hp, speed, armour, bounty, leak, tags, power, nums, desc, lore = row
             out += [f"### {name}", "", f"*{KIND[eid]}. {desc}*", "", lore, "",
-                    f"Health {hp}, speed {speed}, armour {armour}, bounty {bounty}, lives {leak}. Power: `{power}`.", ""]
+                    f"Health {hp}, speed {speed}, armour {armour}, bounty {bounty}, lives {leak}. Power: `{power}`."
+                    + (f" Affinity: {AFFINITY[eid]}." if eid in AFFINITY else ""), ""]
     with open("docs/story/horde.md", "w") as fh:
         fh.write("\n".join(out))
 
 
 def main():
     assert set(KIND) == {r[0] for r in ROSTER}
+    assert set(AFFINITY) <= set(KIND) and set(AFFINITY.values()) <= {"attuned", "warded", "tank"}
     assert len(ROSTER) == 30 and len({r[0] for r in ROSTER}) == 30 and len({r[9] for r in ROSTER}) == 30
     for row in ROSTER:
         write_enemy(row)

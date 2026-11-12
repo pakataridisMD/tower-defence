@@ -59,6 +59,12 @@ var _names: Node2D
 var _army_layer: Node2D
 ## Words over units' heads: [ally, text, seconds shown, seconds to show].
 var _speech: Array[Array] = []
+## Last time (in seconds of _clock) each enemy showed "IMMUNE", so a splash storm does not spam it.
+var _immune_shown: Dictionary[int, float] = {}
+var _clock := 0.0
+## The enemy under the mouse, whose card is drawn, or null.
+var hovered_enemy: SimEnemy
+var _card_layer: Node2D
 
 
 ## A short-lived visual: a lightning arc, an explosion, floating gold text or a leak flash.
@@ -103,10 +109,21 @@ func setup(p_sim: RunSim) -> void:
 	_army_layer.material = overlay
 	_army_layer.draw.connect(_draw_army_layer)
 	add_child(_army_layer)
+	# The hovered enemy's card goes over everything on the board, art and actors included.
+	_card_layer = Node2D.new()
+	_card_layer.z_index = 20
+	_card_layer.material = overlay
+	_card_layer.draw.connect(func() -> void:
+		for enemy in sim.enemies:
+			_draw_affinity_badge(_card_layer, enemy)
+		if hovered_enemy != null and hovered_enemy.alive:
+			_draw_enemy_card(_card_layer, hovered_enemy))
+	add_child(_card_layer)
 	sim.chain_fired.connect(_on_chain_fired)
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.enemy_killed.connect(_on_enemy_killed)
 	sim.enemy_leaked.connect(_on_enemy_leaked)
+	sim.enemy_immune.connect(_on_enemy_immune)
 	sim.skill_used.connect(_on_skill_used)
 	sim.hero_ability_used.connect(_on_hero_ability_used)
 
@@ -218,6 +235,8 @@ func _process(delta: float) -> void:
 	if selected != null and not sim.towers.has(selected):
 		select(null)
 	hover_cell = sim.config.map.cell_at(_mouse)
+	_clock += delta
+	hovered_enemy = _enemy_under_mouse()
 	queue_redraw()
 
 
@@ -325,6 +344,7 @@ func _draw() -> void:
 		_draw_road_labels()
 	_draw_effects()
 	_draw_cursor()
+	_card_layer.queue_redraw()
 
 
 ## Small gems under a tower: one per level above the first, gold once it has ascended.
@@ -495,18 +515,26 @@ func _tower_color(data: TowerData, index: int) -> Color:
 
 
 func _enemy_radius(enemy: SimEnemy) -> float:
+	var radius := 11.0
 	if enemy.data.tags.has(&"boss"):
-		return 22.0
-	if enemy.data.tags.has(&"armoured"):
-		return 15.0
-	if enemy.data.tags.has(&"fast"):
-		return 9.0
-	return 11.0
+		radius = 22.0
+	elif enemy.data.tags.has(&"armoured"):
+		radius = 15.0
+	elif enemy.data.tags.has(&"fast"):
+		radius = 9.0
+	return radius * (1.6 if enemy.elite else 1.0)
+
+
+## Height of the enemy's sprite on the board, 0 without art.
+func _art_height(enemy: SimEnemy) -> float:
+	if art == null:
+		return 0.0
+	return BoardArt.enemy_height(enemy.data.id) * (BoardArt.ELITE_SCALE if enemy.elite else 1.0)
 
 
 func _draw_enemy(enemy: SimEnemy) -> void:
 	var radius := _enemy_radius(enemy)
-	var art_height := BoardArt.enemy_height(enemy.data.id) if art != null else 0.0
+	var art_height := _art_height(enemy)
 	if art_height <= 0.0:
 		var aura := sim.config.element_color_at(enemy.element)
 		draw_circle(enemy.position, radius + 3.0, aura)
@@ -903,3 +931,152 @@ func _on_skill_used(skill: SkillData, at: Vector2) -> void:
 
 func _on_enemy_leaked(enemy: SimEnemy) -> void:
 	_add_effect(&"leak", 0.5, enemy.position, UiStyle.BAD)
+
+
+func _on_enemy_immune(enemy: SimEnemy, _tower: SimTower) -> void:
+	if _clock - float(_immune_shown.get(enemy.id, -10.0)) < 1.2:
+		return
+	_immune_shown[enemy.id] = _clock
+	if _immune_shown.size() > 400:
+		_immune_shown.clear()
+	var effect := _add_effect(&"text", 0.9, enemy.position + Vector2(0, -24), Color("c9d1e0"))
+	effect.text = "IMMUNE"
+
+
+# --- Enemy weaknesses ------------------------------------------------------------
+
+## The living enemy nearest the mouse, if the mouse is on it. Not while placing or aiming.
+func _enemy_under_mouse() -> SimEnemy:
+	if not mouse_inside() or not placing.is_empty() or not aiming.is_empty() or has_hero_action():
+		return null
+	var best: SimEnemy = null
+	var best_distance := INF
+	for enemy in sim.enemies:
+		if not enemy.alive or enemy.leaked:
+			continue
+		var reach := _enemy_radius(enemy) + 6.0
+		# Sprites stand on their position, so the body is above it.
+		var body := enemy.position + Vector2(0, -minf(_art_height(enemy) * 0.45, 40.0))
+		var distance := minf(body.distance_to(_mouse), enemy.position.distance_to(_mouse))
+		if distance <= reach and distance < best_distance:
+			best_distance = distance
+			best = enemy
+	return best
+
+
+## A small mark over enemies that are not plain: a diamond (attuned), a shield (warded) or a plate
+## (tank), in the colour of their element, so the player sees at a glance what to bring.
+func _draw_affinity_badge(on: CanvasItem, enemy: SimEnemy) -> void:
+	var radius := _enemy_radius(enemy)
+	var art_height := _art_height(enemy)
+	if enemy.affinity.is_empty() or enemy.element < 0 or not enemy.alive:
+		return
+	var k := label_scale()
+	# Drawn sprites stand in tall frames, so the mark sits over the body by the enemy's size instead.
+	var top := -radius * (3.2 if art_height > 0.0 else 1.0) - 10.0
+	var at := enemy.position + Vector2(0, top - 4.0 * (k - 1.0))
+	var color := sim.config.element_color_at(enemy.element)
+	var s := 5.0 * k
+	var shape := PackedVector2Array()
+	match enemy.affinity:
+		ElementRules.ATTUNED:
+			shape = PackedVector2Array([at + Vector2(0, -s), at + Vector2(s, 0), at + Vector2(0, s), at + Vector2(-s, 0)])
+		ElementRules.WARDED:
+			shape = PackedVector2Array([at + Vector2(-s, -s), at + Vector2(s, -s), at + Vector2(s, s * 0.2),
+				at + Vector2(0, s * 1.2), at + Vector2(-s, s * 0.2)])
+		_:
+			shape = PackedVector2Array([at + Vector2(-s, -s), at + Vector2(s, -s), at + Vector2(s, s), at + Vector2(-s, s)])
+	var outline := shape.duplicate()
+	outline.append(shape[0])
+	on.draw_colored_polygon(shape, Color(0, 0, 0, 0.7))
+	var inner := PackedVector2Array()
+	for point in shape:
+		inner.append(at + (point - at) * 0.6)
+	on.draw_colored_polygon(inner, color)
+	on.draw_polyline(outline, UiStyle.GOLD if enemy.elite else Color(1, 1, 1, 0.85), 1.5 * k, true)
+
+
+## The hovered enemy's card: its name, element and what hurts it.
+func _draw_enemy_card(on: CanvasItem, enemy: SimEnemy) -> void:
+	var lines := enemy_card_lines(enemy)
+	# The same size on screen at any zoom.
+	var k := 1.0 / maxf(global_scale.x, 0.01)
+	var size := roundi(15 * k)
+	var line_height := 19.0 * k
+	var width := 0.0
+	for line in lines:
+		var w := 0.0
+		for part in line:
+			w += _font.get_string_size(String(part[0]), HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
+		width = maxf(width, w)
+	var pad := 8.0 * k
+	var box := Vector2(width + pad * 2.0, line_height * lines.size() + pad * 1.4)
+	var at := enemy.position + Vector2(24.0 * k, -box.y - 20.0 * k)
+	var board := sim.config.map.size_in_pixels()
+	at.x = clampf(at.x, 0.0, maxf(0.0, board.x - box.x))
+	at.y = clampf(at.y, 0.0, maxf(0.0, board.y - box.y))
+	on.draw_rect(Rect2(at, box), Color(0.05, 0.06, 0.09, 0.9))
+	on.draw_rect(Rect2(at, box), UiStyle.GOLD if enemy.elite else Color(1, 1, 1, 0.35), false, 1.5 * k)
+	var y := at.y + pad + line_height * 0.75
+	for line in lines:
+		var x := at.x + pad
+		for part in line:
+			var text := String(part[0])
+			on.draw_string(_font, Vector2(x, y), text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, part[1])
+			x += _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
+		y += line_height
+
+
+## The card as lines of [text, colour] parts. Public so tests can read it.
+func enemy_card_lines(enemy: SimEnemy) -> Array:
+	var dim := UiStyle.TEXT_DIM
+	var lines: Array = []
+	lines.append([[enemy.display_name(), UiStyle.GOLD if enemy.elite else Color.WHITE]])
+	var own := sim.config.element_at(enemy.element)
+	var kind := String(ElementRules.PROFILE_NAMES.get(enemy.affinity, ""))
+	if enemy.elite:
+		kind = "Elite tank"
+	if own != null:
+		var head: Array = [[own.display_name, own.color]]
+		if not kind.is_empty():
+			head.append(["  ·  " + kind, dim])
+		lines.append(head)
+		var opposite := sim.config.element_at(ElementRules.opposite_index(enemy.element))
+		var weak := ElementRules.weakness_multiplier(enemy.element, enemy.affinity)
+		lines.append([["Weak to ", dim], [opposite.display_name if opposite else "?", opposite.color if opposite else Color.WHITE],
+			["  x%s" % _factor(weak), UiStyle.GOOD]])
+		var immune := ElementRules.immunities(enemy.element, enemy.affinity)
+		if not immune.is_empty():
+			var parts: Array = [["Immune to ", dim]]
+			for i in immune.size():
+				var el := sim.config.element_at(immune[i])
+				if i > 0:
+					parts.append([", ", dim])
+				parts.append([el.display_name if el else "?", el.color if el else Color.WHITE])
+			lines.append(parts)
+		var resist: Array = [["Resists ", dim]]
+		var any := false
+		for step in [0, 1, 2]:
+			var factor: float = ElementRules.element_factor((enemy.element + step) % ElementData.RING_SIZE, enemy.element, enemy.affinity)
+			if factor <= 0.0 or factor >= 1.0:
+				continue
+			var names: PackedStringArray = []
+			for side in ([1, -1] if step in [1, 2] else [0]):
+				var el := sim.config.element_at(posmod(enemy.element + step * side, ElementData.RING_SIZE))
+				if el != null:
+					names.append(el.display_name)
+			if any:
+				resist.append([", ", dim])
+			resist.append(["%s x%s" % ["/".join(names), _factor(factor)], UiStyle.BAD])
+			any = true
+		if any:
+			lines.append(resist)
+	elif not kind.is_empty():
+		lines.append([[kind, dim]])
+	lines.append([["Health %d / %d" % [ceili(enemy.health), ceili(enemy.max_health)], dim],
+		["  ·  Armour %d" % roundi(enemy.effective_armour()), dim]])
+	return lines
+
+
+static func _factor(value: float) -> String:
+	return ("%.2f" % value).rstrip("0").rstrip(".")

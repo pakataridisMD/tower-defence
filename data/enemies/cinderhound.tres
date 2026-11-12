@@ -13,6 +13,7 @@ leak_damage = 1
 tags = Array[StringName]([&"fast"])
 description = "Wild. A hound of living cinder. Burns heal it instead of hurting it, and frost melts off it twice as fast."
 element = &"fire"
+affinity = &"attuned"
 power = &"fireborn"
 power_amount = 2.0
 horde = &"flame"

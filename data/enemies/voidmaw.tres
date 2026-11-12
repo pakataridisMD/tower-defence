@@ -13,6 +13,7 @@ bounty = 8
 leak_damage = 2
 description = "Wild. A thing that is nearly all mouth. It heals whenever the horde dies near it."
 element = &"void"
+affinity = &"tank"
 power = &"devour"
 power_radius = 160.0
 power_amount = 0.15

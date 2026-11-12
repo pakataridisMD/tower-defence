@@ -85,7 +85,9 @@ func test_a_click_on_a_far_node_takes_the_way_to_it() -> void:
 
 
 func test_a_stage_closes_the_bridges_of_elements_it_does_not_allow() -> void:
-	var stage: StageData = registry.stages[&"ember_1"]
+	# The lands open every element now, so a stage that limits them is made up here.
+	var stage := StageData.new()
+	stage.allowed_elements = [&"fire", &"storm", &"void"] as Array[StringName]
 	var closed := MetaProgress.new(registry, PlayerProfile.new()).closed_nodes(stage)
 	for id in graph.ids():
 		var data := graph.node(id)

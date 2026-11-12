@@ -12,6 +12,7 @@ bounty = 6
 leak_damage = 1
 description = "Hollowed. A grove-planter flinging glowing seeds. Each seed sprouts two Briarlings on the road a few seconds later."
 element = &"nature"
+affinity = &"warded"
 power = &"sow"
 power_interval = 6.0
 power_duration = 5.0

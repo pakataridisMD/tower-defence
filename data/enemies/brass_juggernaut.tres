@@ -14,6 +14,7 @@ leak_damage = 3
 tags = Array[StringName]([&"armoured"])
 description = "Wild. A walking siege furnace. It gets faster the longer it walks unchecked; a slow, stun or push resets it."
 element = &"fire"
+affinity = &"tank"
 power = &"momentum"
 power_amount = 0.08
 power_limit = 0.8

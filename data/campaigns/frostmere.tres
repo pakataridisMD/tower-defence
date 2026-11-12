@@ -6,29 +6,26 @@
 
 [sub_resource type="Resource" id="r1"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"water"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r2"]
 script = ExtResource("3_s")
 id = &"water_1"
 display_name = "Tidepool Shore"
-description = "Fishing huts and frozen nets. The first sparks skitter across the shingle."
+description = "Fishing huts and frozen nets. The first drowned crawl up the shingle."
 map = &"c_water_1"
-allowed_elements = Array[StringName]([&"water", &"earth", &"nature"])
-starting_nodes = Array[StringName]([&"water_entry"])
+horde_element = &"water"
 modifiers = Array[ExtResource("2_s")]([SubResource("r1")])
-rule_text = PackedStringArray("Home ground: Water towers deal 20% more damage.", "Only Water, Earth and Nature can be drafted. You start with Water.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
+rule_text = PackedStringArray("The horde here is Water: find the element it fears. Every element can be drafted, and you start with one more skill point.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r3"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"water"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r4"]
 script = ExtResource("2_s")
@@ -42,18 +39,16 @@ id = &"water_2"
 display_name = "Saltmarsh Bends"
 description = "Reed beds and narrow causeways. Runners come in long, quick lines."
 map = &"c_water_2"
-allowed_elements = Array[StringName]([&"water", &"earth", &"nature"])
-starting_nodes = Array[StringName]([&"water_entry"])
+horde_element = &"water"
 modifiers = Array[ExtResource("2_s")]([SubResource("r3"), SubResource("r4")])
-rule_text = PackedStringArray("Home ground: Water towers deal 20% more damage.", "Only Water, Earth and Nature can be drafted. You start with Water.", "The last wave is led by Ashwick the Kindled, the Flame Herald (fast, silences towers).", "Fishing fleet: start with 60 more gold.")
+rule_text = PackedStringArray("The horde here is Water: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The last wave is led by Saltmother Ourra, the Drowned Herald (shields the horde).", "Fishing fleet: start with 60 more gold.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r6"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"water"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r7"]
 script = ExtResource("2_s")
@@ -67,30 +62,27 @@ id = &"water_3"
 display_name = "Frozen Causeway"
 description = "The causeway crosses the lake four times. The ice groans under the Warded."
 map = &"c_water_3"
-allowed_elements = Array[StringName]([&"water", &"earth", &"nature"])
-starting_nodes = Array[StringName]([&"water_entry"])
+horde_element = &"water"
 modifiers = Array[ExtResource("2_s")]([SubResource("r6"), SubResource("r7")])
-rule_text = PackedStringArray("Home ground: Water towers deal 20% more damage.", "Only Water, Earth and Nature can be drafted. You start with Water.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.", "Frozen trade: 30% less gold after each wave.")
+rule_text = PackedStringArray("The horde here is Water: find the element it fears. Every element can be drafted, and you start with one more skill point.", "Frozen trade: 30% less gold after each wave.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r9"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"water"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r10"]
 script = ExtResource("3_s")
 id = &"water_4"
 display_name = "The Drowned Throne"
-description = "The Tidal Leviathan rises from the black water: too big to slow, too old to freeze. Nature and Earth must break it."
+description = "The Tidal Leviathan rises from the black water: too big to slow, too old to freeze. Fire must boil it."
 map = &"c_water_4"
 is_guardian = true
-allowed_elements = Array[StringName]([&"water", &"earth", &"nature"])
-starting_nodes = Array[StringName]([&"water_entry"])
+horde_element = &"water"
 modifiers = Array[ExtResource("2_s")]([SubResource("r9")])
-rule_text = PackedStringArray("Home ground: Water towers deal 20% more damage.", "Only Water, Earth and Nature can be drafted. You start with Water.", "The Warden resists Water: bring a neighbour.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
+rule_text = PackedStringArray("The horde here is Water: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The Warden is Water, and fears Fire.")
 first_clear_points = 6
 
 [sub_resource type="Resource" id="r11"]
@@ -106,8 +98,8 @@ id = &"frostmere"
 display_name = "Frostmere"
 order = 3
 element = &"water"
-tagline = "The Flame against the Ice"
-description = "The lake is boiling at the edges. Fire's horde marches across the ice, and its runners are fast. Slow them, freeze them, drown them."
+tagline = "The Tide turned on its own lake"
+description = "The lake has risen against its shores, and the drowned walk across the ice. Water barely wets them. Fire boils the Tide away."
 requires_campaigns = Array[StringName]([&"verdant_deep"])
 stages = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r5"), SubResource("r8"), SubResource("r10")])
 reward_name = "Sigil of the Tide"

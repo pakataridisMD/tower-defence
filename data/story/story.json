@@ -93,24 +93,24 @@
   },
   "night_from_stages_won": 12,
   "stage_bosses": {
-    "ember_2": "saltmother",
-    "storm_2": "gorrath",
-    "nature_2": "pale_vesper",
-    "water_2": "ashwick",
-    "earth_2": "vholt",
-    "void_2": "mother_briar",
+    "ember_2": "ashwick",
+    "storm_2": "vholt",
+    "nature_2": "mother_briar",
+    "water_2": "saltmother",
+    "earth_2": "gorrath",
+    "void_2": "pale_vesper",
     "converge_1": "ashen_regent"
   },
   "cities": {
     "ember_1": {
       "name": "Kethra",
-      "fall_text": "The sea stopped at the edge of town. Its forges never went out.",
+      "fall_text": "The fire stopped at the edge of town. Its forges never went out.",
       "saved": true,
       "capital": false
     },
     "ember_2": {
       "name": "Brazier Hold",
-      "fall_text": "The Saltmother is dead, and her cage is open.",
+      "fall_text": "Ashwick is dead, and his cage is open.",
       "saved": true,
       "capital": false
     },
@@ -122,7 +122,7 @@
     },
     "ember_4": {
       "name": "Pyrrhenhall",
-      "fall_text": "Ignar is awake, and the sea is draining off the mountain.",
+      "fall_text": "Ignar is awake, and the mountain's fire is his again.",
       "saved": true,
       "capital": false
     },
@@ -134,7 +134,7 @@
     },
     "storm_2": {
       "name": "Highwind",
-      "fall_text": "Gorrath is broken. Kaela Stormrider rides with us.",
+      "fall_text": "Vholt is broken. Kaela Stormrider rides with us.",
       "saved": true,
       "capital": false
     },
@@ -158,19 +158,19 @@
     },
     "nature_2": {
       "name": "Elderhollow",
-      "fall_text": "The Pale Vesper is silent. Sylvaine Thornwhisper fights with us.",
+      "fall_text": "Mother Briar is silent. Sylvaine Thornwhisper fights with us.",
       "saved": true,
       "capital": false
     },
     "nature_3": {
       "name": "Thornwall",
-      "fall_text": "The dead under its trees lie still again.",
+      "fall_text": "The thorns round its trees lie still again.",
       "saved": true,
       "capital": false
     },
     "nature_4": {
       "name": "Sylvanmere",
-      "fall_text": "Elowen is awake, and the Hollow is leaving the forest.",
+      "fall_text": "Elowen is awake, and the forest is quiet again.",
       "saved": true,
       "capital": false
     },
@@ -182,13 +182,13 @@
     },
     "water_2": {
       "name": "Reedhaven",
-      "fall_text": "Ashwick is dead. Mirelle and forty children walked out of the ice.",
+      "fall_text": "The Saltmother is dead. Mirelle and forty children walked out of the ice.",
       "saved": true,
       "capital": false
     },
     "water_3": {
       "name": "Glasswater",
-      "fall_text": "The lake froze over again behind the last runner.",
+      "fall_text": "The lake froze over again behind the last of the drowned.",
       "saved": true,
       "capital": false
     },
@@ -200,25 +200,25 @@
     },
     "earth_1": {
       "name": "Dustmark",
-      "fall_text": "The storm broke on its walls.",
+      "fall_text": "The rockslide broke on its walls.",
       "saved": true,
       "capital": false
     },
     "earth_2": {
       "name": "The Kharum Terraces",
-      "fall_text": "Vholt is dead. Gorrim Stonebeard fights with us.",
+      "fall_text": "Gorrath is dead. Gorrim Stonebeard fights with us.",
       "saved": true,
       "capital": false
     },
     "earth_3": {
       "name": "Mesa Kharn",
-      "fall_text": "The lightning never reached the mesa.",
+      "fall_text": "The quarried dead never reached the mesa.",
       "saved": true,
       "capital": false
     },
     "earth_4": {
       "name": "Grundhallow",
-      "fall_text": "Orrok is awake, and the storm is leaving the canyon.",
+      "fall_text": "Orrok is awake, and the stone lies still.",
       "saved": true,
       "capital": false
     },
@@ -230,13 +230,13 @@
     },
     "void_2": {
       "name": "Vesperhold",
-      "fall_text": "Mother Briar is dead. Corvin is free.",
+      "fall_text": "The Pale Vesper is dead. Corvin is free.",
       "saved": true,
       "capital": false
     },
     "void_3": {
       "name": "Twinmoor",
-      "fall_text": "The thorns are dying back.",
+      "fall_text": "The shades are gone from its moor.",
       "saved": true,
       "capital": false
     },

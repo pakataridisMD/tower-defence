@@ -17,7 +17,7 @@
     "side": "hero",
     "element": "fire",
     "joins": "after ember_2",
-    "blurb": "The giant smith who forged Solenne's gates. The Saltmother kept him in a salt cage for nine days to make him forge her chains, and he refused every day. His hammer never cools.",
+    "blurb": "The giant smith who forged Solenne's gates. Ashwick, the boy who once swept his forge, kept him chained in it for nine days to make him forge chains for the horde, and he refused every day. His hammer never cools.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -28,7 +28,7 @@
     "side": "hero",
     "element": "storm",
     "joins": "after storm_2",
-    "blurb": "War-leader of the Galeborn, who fought the Stone alone for eleven days. Lightning lance, and a grey stallion called Thunderclap. The Herald Vholt was her teacher.",
+    "blurb": "War-leader of the Galeborn, who fought the mad storm's army alone for eleven days. Lightning lance, and a grey stallion called Thunderclap. The Herald Vholt was her teacher, and she killed him facing him.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -61,7 +61,7 @@
     "side": "hero",
     "element": "earth",
     "joins": "after earth_2",
-    "blurb": "A Stoneborn shieldmaster with an iron ring in his beard for every friend he has buried. His shield is a carved stone door.",
+    "blurb": "A Stoneborn shieldmaster with an iron ring in his beard for every friend he has buried. He held the Kharum Pass beside Gorrath, and buried him too. His shield is a carved stone door.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -215,7 +215,7 @@
     "side": "herald",
     "element": "water",
     "joins": "",
-    "blurb": "Once the Tidefolk's high priestess, sent to the Rift by Cassivane and sent back empty. Walks inside a column of black seawater. Boss of Brazier Hold.",
+    "blurb": "Once the Tidefolk's high priestess, sent to the Rift under Cassivane's seal and sent back empty to drown her own people. Walks inside a column of black seawater. Boss of Reedhaven.",
     "boss_enemy": "saltmother",
     "hidden": false
   },
@@ -226,7 +226,7 @@
     "side": "herald",
     "element": "earth",
     "joins": "",
-    "blurb": "A Stoneborn general who held the Kharum Pass for a month, sent back from the Rift with a stone for a heart. Breaks into walking boulders. Boss of Highwind.",
+    "blurb": "A Stoneborn general who held the Kharum Pass for a month, sent back from the Rift with a stone for a heart, then sent home to turn the canyon on the Stoneborn. Breaks into walking boulders. Boss of the Kharum Terraces.",
     "boss_enemy": "gorrath",
     "hidden": false
   },
@@ -237,7 +237,7 @@
     "side": "herald",
     "element": "void",
     "joins": "",
-    "blurb": "A Veilwalker singer who sang at funerals, and now sings the dead awake. Dying, she names the Marshal. Boss of Elderhollow.",
+    "blurb": "A Veilwalker singer who sang at funerals, and now sings her own people's dead awake. Boss of Vesperhold.",
     "boss_enemy": "pale_vesper",
     "hidden": false
   },
@@ -248,7 +248,7 @@
     "side": "herald",
     "element": "fire",
     "joins": "",
-    "blurb": "The Concord's youngest messenger, sent to the Rift with a letter under Cassivane's seal. An ever-burning boy who never stops running. Boss of Reedhaven.",
+    "blurb": "Born in Kethra, he swept Brannoc's forge, then became the Concord's youngest messenger and ran to the Rift. An ever-burning boy who never stops running. Boss of Brazier Hold.",
     "boss_enemy": "ashwick",
     "hidden": false
   },
@@ -259,7 +259,7 @@
     "side": "herald",
     "element": "storm",
     "joins": "",
-    "blurb": "Kaela's old teacher, riding a thunderbird of black cloud. Boss of the Kharum Terraces.",
+    "blurb": "The Galeborn warchief who taught Kaela to ride, riding a thunderbird of black cloud. Boss of Highwind.",
     "boss_enemy": "vholt",
     "hidden": false
   },
@@ -270,7 +270,7 @@
     "side": "herald",
     "element": "nature",
     "joins": "",
-    "blurb": "The Deepwood's wisest healer, grown through with thorns. Boss of Vesperhold.",
+    "blurb": "The Deepwood's wisest healer, grown through with thorns. Dying, she names the Marshal. Boss of Elderhollow.",
     "boss_enemy": "mother_briar",
     "hidden": false
   },

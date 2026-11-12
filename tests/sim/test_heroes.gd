@@ -344,5 +344,6 @@ func test_a_full_run_with_heroes_is_won() -> void:
 		else:
 			bot.use_skills()
 			sim.step(RunSim.STEP)
+	gut.p("Run ended %s after %d waves: %d lives" % [RunSim.State.keys()[sim.state], sim.wave_index, sim.lives])
 	assert_eq(sim.state, RunSim.State.WON)
 	assert_not_null(sim.hero_tower(&"tamsin"), "the bot summoned Tamsin")
