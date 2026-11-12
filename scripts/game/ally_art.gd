@@ -21,6 +21,8 @@ const CORPSE_LINGER := 1.6
 const MAX_CORPSES := 40
 ## Board pixels a unit may stand off the middle of its road, either side.
 const SPREAD := 18.0
+## Board pixels from the gate within which the army crowds the wall and its ranks open up.
+const GATE_CROWD := 90.0
 ## Share of its health one blow must take for a unit to flinch, and the least time between flinches.
 const HURT_SHARE := 0.07
 const HURT_REST := 0.9
@@ -256,7 +258,13 @@ func _champion_color(ally: SimAlly) -> Color:
 
 
 func _pos(ally: SimAlly, lateral: float) -> Vector2:
-	var at := ally.position + _across(ally) * lateral
+	# At the gate the whole army reaches the same spot on the road: there the ranks open wider and
+	# stand a few deep, so the crowd at the wall still reads as soldiers.
+	var crowd := clampf(1.0 - ally.progress / GATE_CROWD, 0.0, 1.0)
+	var at := ally.position + _across(ally) * lateral * (1.0 + 1.3 * crowd)
+	if crowd > 0.0 and not ally.is_champion():
+		var back := _art.sim.lane_curves[ally.lane].sample_baked(ally.progress + 40.0) - ally.position
+		at += back.normalized() * fposmod(float(ally.id) * 0.381966, 1.0) * 46.0 * crowd if back.length_squared() > 0.01 else Vector2.ZERO
 	return _art._art_pos(at) + Vector2(0, BoardArt.ENEMY_DROP)
 
 

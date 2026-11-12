@@ -603,7 +603,8 @@ func _draw_army_layer() -> void:
 			for q in [0.25, 0.5, 0.75]:
 				on.draw_rect(Rect2(at + Vector2(width * q - 0.5 * k, 0), Vector2(1.0 * k, tall)), Color(0, 0, 0, 0.55))
 			var size := roundi(13 * k)
-			var label := ally.data.display_name
+			# The first name only: heroes march together, and full names would run into each other.
+			var label := ally.data.display_name.get_slice(" ", 0)
 			var label_width := _font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
 			var spot := Vector2(head.x - label_width * 0.5, at.y - 4.0 * k)
 			on.draw_string_outline(_font, spot, label, HORIZONTAL_ALIGNMENT_LEFT, -1, size, roundi(4 * k), Color(0, 0, 0, 0.85))
