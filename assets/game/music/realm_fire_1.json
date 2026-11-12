@@ -1,0 +1,38 @@
+{
+  "id": "realm_fire_1_calm",
+  "title": "The Burning Road",
+  "duration": 58.1818,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 14.55,
+      "name": "B"
+    },
+    {
+      "time": 29.09,
+      "name": "C"
+    },
+    {
+      "time": 43.64,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 58.1818,
+  "loop_samples": 2565818,
+  "handover_seconds": 58.1818,
+  "bpm": 132,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "realm_fire_1_calm.ogg",
+    "wave": "realm_fire_1_wave.ogg",
+    "boss": "realm_fire_1_boss.ogg"
+  }
+}

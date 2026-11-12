@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Asc_barrage_m0"]
+script = ExtResource("mod_script")
+stat = &"attacks_per_second"
+kind = 2
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_barrage"]
+script = ExtResource("asc_script")
+id = &"barrage"
+display_name = "Barrage"
+description = "Fires 50% faster."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_barrage_m0")])
+
+[sub_resource type="Resource" id="Asc_starburst_m0"]
+script = ExtResource("mod_script")
+stat = &"splash_radius"
+kind = 1
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_starburst_m1"]
+script = ExtResource("mod_script")
+stat = &"damage"
+kind = 2
+value = 0.2
+
+[sub_resource type="Resource" id="Asc_starburst"]
+script = ExtResource("asc_script")
+id = &"starburst"
+display_name = "Starburst"
+description = "Bursts are 50% wider and deal 20% more damage."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_starburst_m0"), SubResource("Asc_starburst_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"fire_flare_battery"
+display_name = "Flare Battery"
+description = "Long range. A rack of flare tubes that rains small fire bursts on enemies across most of the map. Each burst is weak but hits a small crowd."
+elements = Array[StringName]([&"fire"])
+cost = 120
+requires_nodes = Array[StringName]([&"fire_core"])
+tags = Array[StringName]([&"longshot", &"area"])
+damage = 3.0
+attacks_per_second = 2.2
+attack_range = 1150.0
+projectile_speed = 1800.0
+splash_radius = 44.0
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_barrage"), SubResource("Asc_starburst")])

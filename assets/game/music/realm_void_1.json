@@ -1,0 +1,38 @@
+{
+  "id": "realm_void_1_calm",
+  "title": "Nothing Sings",
+  "duration": 87.2727,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 21.82,
+      "name": "B"
+    },
+    {
+      "time": 43.64,
+      "name": "C"
+    },
+    {
+      "time": 65.45,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 87.2727,
+  "loop_samples": 3848727,
+  "handover_seconds": 87.2727,
+  "bpm": 110,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "realm_void_1_calm.ogg",
+    "wave": "realm_void_1_wave.ogg",
+    "boss": "realm_void_1_boss.ogg"
+  }
+}

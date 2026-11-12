@@ -41,8 +41,12 @@ var music: BattleMusic
 var paused := false
 var audio_panel: AudioPanel
 var _paused_before_audio := false
-## The Esc menu: resume, audio, main menu, quit.
+## The Esc menu: resume, save, load, audio, main menu, quit.
 var pause_menu: PauseMenu
+## Saved games, opened from the Esc menu over it.
+var saves_page: SavesPage
+## The run as it was in the last break (see RunSnapshot), for a save made during a wave.
+var break_snapshot: Dictionary = {}
 ## Set before the node enters the tree, or with --autoplay.
 var autoplay := false
 var quit_at_end := false
@@ -63,6 +67,7 @@ func _ready() -> void:
 	autoplay = autoplay or args.has("--autoplay")
 	quit_at_end = quit_at_end or args.has("--quit-at-end")
 	sim = RunSim.new(Progress.run_config())
+	var loaded := _restore_saved_run()
 	story = Story.shared()
 	_build_views()
 	_build_story()
@@ -72,6 +77,38 @@ func _ready() -> void:
 		_speed_index = SPEEDS.size() - 1
 		_max_steps = 600
 		hud.speed = SPEEDS[_speed_index]
+	if loaded:
+		hud.show_message("Game loaded: wave %d. Start the wave when you are ready." % sim.wave_number(), UiStyle.GOLD)
+
+
+## Puts back a run loaded from a save slot (Progress.pending_run), before the views are built.
+func _restore_saved_run() -> bool:
+	if Progress.pending_run.is_empty():
+		return false
+	var run := Progress.pending_run
+	Progress.pending_run = {}
+	var refund := RunSnapshot.restore(sim, run)
+	if refund > 0:
+		push_warning("%d gold paid back for towers that no longer fit the map." % refund)
+	return refund >= 0
+
+
+## The run to keep in a save slot: as it is in a break, or as it was at the end of the last break
+## (the start of this wave, or of the first of the final assault's waves that roll into each other).
+## Empty once the run is over: a save then keeps the campaign progress only.
+func run_snapshot() -> Dictionary:
+	if sim.is_over():
+		return {}
+	if sim.state == RunSim.State.BUILDING:
+		return RunSnapshot.capture(sim)
+	return break_snapshot
+
+
+## Keeps the run as it is after every change made in a break, so the last one is at hand once the
+## wave has started.
+func _remember_break() -> void:
+	if sim.state == RunSim.State.BUILDING:
+		break_snapshot = RunSnapshot.capture(sim)
 
 
 func _build_views() -> void:
@@ -132,6 +169,24 @@ func _build_views() -> void:
 	pause_menu.hide()
 	pause_layer.add_child(pause_menu)
 
+	var saves_layer := CanvasLayer.new()
+	saves_layer.layer = 3
+	add_child(saves_layer)
+	# The battle shows only faintly behind the slots.
+	var saves_shade := ColorRect.new()
+	saves_shade.color = Color(0.03, 0.02, 0.05, 0.82)
+	saves_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	saves_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	saves_shade.hide()
+	saves_layer.add_child(saves_shade)
+	saves_page = SavesPage.new()
+	saves_page.visibility_changed.connect(func() -> void: saves_shade.visible = saves_page.visible)
+	saves_page.theme = UiStyle.menu_theme()
+	saves_page.process_mode = Node.PROCESS_MODE_ALWAYS
+	saves_page.run_source = run_snapshot
+	saves_page.hide()
+	saves_layer.add_child(saves_page)
+
 	# Above the pause menu, which opens it.
 	var audio_layer := CanvasLayer.new()
 	audio_layer.layer = 4
@@ -151,6 +206,11 @@ func _connect_signals() -> void:
 	pause_menu.resume_requested.connect(close_pause_menu)
 	pause_menu.audio_requested.connect(_open_audio)
 	pause_menu.leave_requested.connect(_leave_from_menu)
+	pause_menu.saves_requested.connect(open_saves)
+	saves_page.back_requested.connect(close_saves)
+	saves_page.load_confirmed.connect(_load_slot)
+	sim.changed.connect(_remember_break)
+	_remember_break()
 	hud.tower_chosen.connect(_choose_tower)
 	hud.skill_pressed.connect(_skill_button)
 	hud.sell_pressed.connect(_sell_selected)
@@ -232,6 +292,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
 	if key == null or not key.pressed or key.echo or cinematic != null or audio_panel.visible:
 		return
+	if saves_page.visible:
+		# Handled first: loading a slot takes the game out of the tree.
+		get_viewport().set_input_as_handled()
+		if not saves_page.handle_key(key.keycode) and key.keycode in [KEY_ESCAPE, KEY_BACKSPACE]:
+			close_saves()
+		return
 	if pause_menu.visible:
 		# Handled first: leaving the run takes the game out of the tree (and away from its viewport).
 		get_viewport().set_input_as_handled()
@@ -284,7 +350,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 ## True while something covers the board, so the camera leaves it where it is.
 func _board_frozen() -> bool:
-	return web.visible or pause_menu.visible or audio_panel.visible or cinematic != null
+	return web.visible or pause_menu.visible or saves_page.visible or audio_panel.visible or cinematic != null
 
 
 func _start_wave() -> void:
@@ -406,6 +472,12 @@ func _pause_menu_key(keycode: Key) -> void:
 		KEY_O:
 			if not pause_menu.is_confirming():
 				_open_audio()
+		KEY_S:
+			if not pause_menu.is_confirming():
+				open_saves(&"save")
+		KEY_L:
+			if not pause_menu.is_confirming():
+				open_saves(&"load")
 		KEY_M:
 			_toggle_mute()
 
@@ -428,6 +500,43 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	get_tree().set_auto_accept_quit(true)
+
+
+# --- Saved games -----------------------------------------------------------------
+
+## Opens Saved games over the Esc menu, on its Save or Load tab. The run stays paused.
+func open_saves(mode: StringName) -> void:
+	if not pause_menu.visible:
+		open_pause_menu()
+	var wave := RunSnapshot.wave_number(run_snapshot()) if not sim.is_over() else 0
+	if sim.is_over():
+		saves_page.save_note = "This run is over: a save keeps your campaign progress only."
+	elif sim.state == RunSim.State.BUILDING:
+		saves_page.save_note = "A save keeps this run as it is now, before wave %d." % wave
+	else:
+		saves_page.save_note = "A save keeps this run as it was in the break before wave %d." % wave
+	saves_page.load_note = "Loading leaves this run and replaces your progress with the saved one."
+	saves_page.open(mode)
+	SoundPlayer.sfx(&"ui_open")
+
+
+func close_saves() -> void:
+	if not saves_page.visible:
+		return
+	saves_page.close_dialog()
+	saves_page.hide()
+	SoundPlayer.sfx(&"ui_close")
+
+
+## Loads a slot the player said yes to: a saved run starts the battle again where it was saved, and
+## a save without a run goes to the title screen.
+func _load_slot(slot: int) -> void:
+	if not Progress.has_slot(slot):
+		return
+	var has_run := Progress.load_from_slot(slot)
+	if not has_run:
+		MainMenu.notice = "Loaded slot %d." % slot
+	get_tree().change_scene_to_file(scene_file_path if has_run and not scene_file_path.is_empty() else MENU_SCENE)
 
 
 func _leave_from_menu(scene: StringName) -> void:

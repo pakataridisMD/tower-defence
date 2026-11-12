@@ -2956,6 +2956,54 @@
    "positional": false,
    "priority": 5,
    "volume_db": 0.0
+  },
+  "tower_storm_skyneedle": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_storm_spire_1.ogg",
+    "towers/tower_storm_spire_2.ogg",
+    "towers/tower_storm_spire_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.14,
+   "pitch_jitter": 0.1,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -10.0
+  },
+  "tower_nature_eyrie": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_nature_thornbush_1.ogg",
+    "towers/tower_nature_thornbush_2.ogg",
+    "towers/tower_nature_thornbush_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.14,
+   "pitch_jitter": 0.1,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -10.0
+  },
+  "tower_fire_flare_battery": {
+   "bus": "Sfx",
+   "duck_db": 0.0,
+   "duck_time": 0.0,
+   "files": [
+    "towers/tower_fire_brazier_1.ogg",
+    "towers/tower_fire_brazier_2.ogg",
+    "towers/tower_fire_brazier_3.ogg"
+   ],
+   "max_voices": 2,
+   "min_gap": 0.14,
+   "pitch_jitter": 0.1,
+   "positional": true,
+   "priority": 1,
+   "volume_db": -10.0
   }
  }
 }
