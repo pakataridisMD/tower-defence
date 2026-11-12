@@ -224,7 +224,8 @@ static func lit_texture(path: String) -> CanvasTexture:
 
 func setup(p_sim: RunSim) -> void:
 	sim = p_sim
-	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	# The board's filter is set by BoardCamera (crisp at whole-pixel zooms, smooth in between).
+	texture_filter = CanvasItem.TEXTURE_FILTER_PARENT_NODE
 	_noise.frequency = 2.0
 	_build_resources()
 	_world = Node2D.new()

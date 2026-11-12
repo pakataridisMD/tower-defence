@@ -20,8 +20,12 @@ const BOT_BREAK := 1.5
 const BOT_WEB_OPEN := 0.8
 const BOT_WEB_SHOW := 1.2
 
+## Bloom, grade and vignette over the board, under the HUD.
+const POST_SHADER := preload("res://assets/shaders/board_post.gdshader")
+
 var sim: RunSim
 var board: BoardView
+var post_layer: CanvasLayer
 ## Pans and zooms the board.
 var camera: BoardCamera
 var hud: Hud
@@ -85,6 +89,18 @@ func _build_views() -> void:
 	music = BattleMusic.new()
 	add_child(music)
 	music.setup(sim)
+
+	post_layer = CanvasLayer.new()
+	post_layer.name = "BoardPost"
+	add_child(post_layer)
+	var post := ColorRect.new()
+	post.position = BoardCamera.VIEW_RECT.position
+	post.size = BoardCamera.VIEW_RECT.size
+	post.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var post_material := ShaderMaterial.new()
+	post_material.shader = POST_SHADER
+	post.material = post_material
+	post_layer.add_child(post)
 
 	var hud_layer := CanvasLayer.new()
 	add_child(hud_layer)
