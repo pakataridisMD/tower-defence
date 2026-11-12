@@ -95,7 +95,8 @@ CAST_FILE = Path(__file__).resolve().parent / "cast.json"
 
 # How a character's voice is placed and treated, on top of the narrator's ElevenLabs preset.
 # "layers": extra copies of the voice at [pitch ratio, gain] under the dry voice;
-# "fx": an ffmpeg filter chain run before mastering.
+# "fx": an ffmpeg filter chain run before mastering;
+# "beast": turn the voice into a monster's (see _beast_graph); "highpass": low cut in Hz (default 75).
 STYLES = {
     "mortal": {},                                               # close and dry, like the narrator
     "seer": {"room": 0.1, "rt60": 1.6},                         # a little cold air around her
@@ -109,6 +110,36 @@ STYLES = {
     # darker speaking under it, a little unsteady.
     "corrupted": {"room": 0.12, "rt60": 1.6, "layers": [[0.5, 0.4]],
                   "fx": "chorus=0.6:0.85:30|47:0.25|0.2:0.35|0.6:1.3|1.9"},
+    # Battle styles for the bosses (data/story/boss_lines.json): monsters, not people. See _beast_graph.
+    # Vael-Orrun gets worse with every form he takes.
+    "demon_king": {"room": 0.2, "rt60": 2.4, "highpass": 40,
+                   "beast": {"pitch": -3, "sub": 0.55, "growl": 0.3, "growl_hz": 38}},
+    "demon_wrath": {"room": 0.22, "rt60": 2.6, "highpass": 40,
+                    "beast": {"pitch": -4, "sub": 0.65, "growl": 0.42, "growl_hz": 34, "grit": 3}},
+    "demon_unmade": {"room": 0.24, "rt60": 3.0, "highpass": 40,
+                     "beast": {"pitch": -5, "sub": 0.75, "growl": 0.5, "growl_hz": 30,
+                               "air": 0.14, "legion": 0.3, "grit": 4}},
+    # Cassivane torn open (the Sundered Heart): a man with the demon's voice coming up through his.
+    "torn": {"room": 0.18, "rt60": 2.2, "highpass": 40,
+             "beast": {"pitch": -2, "sub": 0.6, "growl": 0.35, "growl_hz": 42, "legion": 0.25}},
+    # Cassivane still a man (the Ashen Regent): only heavier and darker.
+    "iron": {"room": 0.12, "rt60": 1.8, "highpass": 45,
+             "beast": {"pitch": -1.5, "sub": 0.3, "growl": 0.12, "growl_hz": 44}},
+    # Heralds: hollowed things wearing a person's voice. Men drop deeper; women keep their own pitch on
+    # top so they stay recognisable, with the beast under them and a whisper over them.
+    "herald_beast": {"room": 0.14, "rt60": 1.8, "highpass": 40,
+                     "beast": {"pitch": -3, "sub": 0.5, "growl": 0.35, "growl_hz": 46,
+                               "air": 0.1, "legion": 0.25, "grit": 2}},
+    "herald_witch": {"room": 0.14, "rt60": 1.8, "highpass": 40,
+                     "beast": {"pitch": -1, "sub": 0.7, "growl": 0.4, "growl_hz": 40,
+                               "air": 0.14, "legion": 0.3, "grit": 2}},
+    # Mad Wardens: a god's voice gone wrong, huge and unsteady.
+    "warden_beast": {"room": 0.18, "rt60": 2.4, "highpass": 40,
+                     "beast": {"pitch": -3, "sub": 0.65, "growl": 0.4, "growl_hz": 34,
+                               "legion": 0.3, "grit": 3}},
+    "warden_witch": {"room": 0.18, "rt60": 2.4, "highpass": 40,
+                     "beast": {"pitch": -2, "sub": 0.75, "growl": 0.45, "growl_hz": 36,
+                               "air": 0.1, "legion": 0.3, "grit": 3}},
     # The hidden god. Every word must land: the clean take stays on top at full level,
     # with only a faint octave below and a short, light room. No echo, no lowpass.
     "hush": {"room": 0.06, "rt60": 1.0, "layers": [[0.5, 0.2]], "lufs": -16.0},
@@ -259,6 +290,44 @@ def _room(x: np.ndarray, sr: int, rt60: float = 1.1, wet: float = 0.16) -> np.nd
     return y + tone * np.max(np.abs(x)) * 10 ** (-58 / 20) / (np.std(tone) + 1e-9)
 
 
+def _beast_graph(b: dict) -> str:
+    """An ffmpeg graph that turns an actor's take into a monster without losing the words.
+
+    The take, pitched down with its formants (a bigger throat), stays on top at full level, so
+    every word lands (the Hush lesson: never bury the words). Under it:
+      sub     the take an octave below that, driven into soft distortion and kept under 400 Hz: the
+              chest of something huge (higher up, it buries roared words)
+      growl   a fifth below, chopped at growl_hz (a throat rattle) and distorted
+      legion  a second, slightly lower voice speaking in step: more than one thing is talking
+      air     a thin breathy whisper an octave up, over the top: something wrong is in there
+      grit    a little saturation over the whole voice (dB of drive)
+    """
+    main = 2 ** (b.get("pitch", -3) / 12)
+    rb = "rubberband=pitch={:.4f}:formant=shifted"
+    names, chains = ["main"], [rb.format(main)]
+    if b.get("sub"):
+        names.append("sub")
+        chains.append(f"{rb.format(main * 0.5)},volume={b.get('drive', 6)}dB,asoftclip=type=tanh,"
+                      f"lowpass=f={b.get('sub_lp', 400)},volume={b['sub']}")
+    if b.get("growl"):
+        names.append("growl")
+        chains.append(f"{rb.format(main * 0.667)},tremolo=f={b.get('growl_hz', 38)}:d=0.9,volume=8dB,"
+                      f"asoftclip=type=atan,highpass=f=90,lowpass=f=3000,volume={b['growl']}")
+    if b.get("legion"):
+        names.append("legion")
+        chains.append(f"{rb.format(main * 0.94)},adelay=18,volume={b['legion']}")
+    if b.get("air"):
+        names.append("air")
+        chains.append(f"{rb.format(main * 2)},highpass=f=2500,volume={b['air']}")
+    graph = f"[0:a]asplit={len(names)}{''.join(f'[{n}s]' for n in names)};"
+    graph += "".join(f"[{n}s]{c}[{n}]" + ";" for n, c in zip(names, chains))
+    graph += f"{''.join(f'[{n}]' for n in names)}amix=inputs={len(names)}:normalize=0"
+    graph += ",volume=-6dB"  # the layers add up to about twice the take's peak
+    if b.get("grit"):
+        graph += f",volume={b['grit']}dB,asoftclip=type=tanh,volume=-{b['grit']}dB"
+    return graph
+
+
 def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
     filters = []
     if preset.get("semitones"):  # pitch shifting adds a robotic edge; avoid if possible
@@ -280,7 +349,7 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
         # Movie-trailer narrator: close and dry, big chest, forward and clear,
         # tightly compressed so every word cuts through loud music.
         filters += [
-            "highpass=f=75",
+            f"highpass=f={preset.get('highpass', 75)}",
             "lowshelf=f=140:g=3.5",               # chest
             "equalizer=f=350:t=q:w=1.2:g=-2",     # less boxiness/mud
             "equalizer=f=3000:t=q:w=1.4:g=3",     # presence: intelligibility
@@ -314,6 +383,11 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
                            for n, (ratio, gain) in zip(names, layers))
                  + f"[dry]{''.join(f'[{n}]' for n in names)}amix=inputs={len(layers) + 1}:normalize=0,{graph}")
     with tempfile.TemporaryDirectory() as tmp:
+        if preset.get("beast"):  # build the monster first, then put it in its hall
+            beast = Path(tmp) / "beast.wav"
+            subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(wav_in), "-filter_complex",
+                            _beast_graph(preset["beast"]), "-ac", "1", str(beast)], check=True)
+            wav_in = beast
         x, sr = sf.read(wav_in)
         roomy = Path(tmp) / "room.wav"
         sf.write(roomy, _room(x, sr, rt60=preset.get("rt60", 1.1), wet=preset.get("room", 0.16)),

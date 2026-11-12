@@ -665,6 +665,7 @@ func _hero_info(tower: SimTower) -> String:
 
 func _refresh() -> void:
 	_gold.text = "%d" % sim.gold
+	_gold.get_parent().tooltip_text = _gold_hint()
 	_lives.text = "%d" % sim.lives
 	if sim.is_endless():
 		_wave.text = "Wave %d" % sim.wave_number()
@@ -716,6 +717,24 @@ func _refresh() -> void:
 	_refresh_info()
 
 
+## The gold's tooltip: how the savings bonus works and what the gold held now would earn.
+func _gold_hint() -> String:
+	var rules := sim.config.rules
+	var share := roundi(sim.run_stat(&"savings_bonus", rules.savings_bonus) * 100.0)
+	return "Gold\nSavings bonus: clearing a wave pays %d%% of the gold you kept (at most %d this wave, rising 8%% a wave).\nRight now: +%d gold" % [
+		share, sim.savings_cap_now(), sim.savings_bonus_now()]
+
+
+## "Savings +N" for the top bar while a wave is being fought, or nothing.
+func _savings_text() -> String:
+	if sim.state != RunSim.State.WAVE:
+		return ""
+	var bonus := sim.savings_bonus_now()
+	if bonus <= 0:
+		return ""
+	return "  ·  [color=#%s]Savings +%d[/color]" % [UiStyle.GOLD.to_html(false), bonus]
+
+
 func _wave_text() -> String:
 	var wave := sim.wave_as_it_comes()
 	if wave == null:
@@ -738,7 +757,7 @@ func _wave_text() -> String:
 			part += " (every element)"
 		parts.append(part)
 	var label := "Now" if sim.state == RunSim.State.WAVE else "Next"
-	var boss := " [b][color=#e8c547]BOSS[/color][/b]" if wave.is_boss else ""
+	var boss := (" [b][color=#e8c547]BOSS[/color][/b]" if wave.is_boss else "") + _savings_text()
 	# Two lines: what the wave is, then who is in it.
 	if mixed:
 		return "%s: [b]Mixed wave[/b]%s  ·  every group has its own element\n%s" % [label, boss, ", ".join(parts)]
@@ -1049,6 +1068,8 @@ func _on_wave_cleared(number: int, points: int, gold: int) -> void:
 	if sim.is_over():
 		return
 	var text := "Wave %d cleared  ·  +%d gold" % [number, gold]
+	if sim.last_savings_bonus > 0:
+		text += " (%d savings bonus)" % sim.last_savings_bonus
 	if points > 0:
 		text += "  ·  +%d skill point%s" % [points, "" if points == 1 else "s"]
 	if not sim.caves.is_empty() and sim.caves[-1].wave == number + 1:

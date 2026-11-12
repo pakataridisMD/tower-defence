@@ -207,7 +207,49 @@ func test_meta_bonuses_raise_wave_gold_and_sell_refunds() -> void:
 	AutoPlayer.new(sim).build_towers()
 	sim.start_next_wave()
 	_run_until_building(sim)
-	assert_signal_emitted_with_parameters(sim, "wave_cleared", [1, rules.tree_points_per_wave, rules.gold_per_wave + 10])
+	assert_signal_emitted_with_parameters(sim, "wave_cleared", [1, rules.tree_points_per_wave, rules.gold_per_wave + 10 + sim.last_savings_bonus])
+
+
+func test_kept_gold_earns_a_savings_bonus_at_the_end_of_a_wave() -> void:
+	var rules: RunRules = registry.run_rules
+	assert_eq(rules.savings_bonus, 0.2)
+	var sim := _sim()
+	sim.allocate_node(&"fire_entry")
+	AutoPlayer.new(sim).build_towers()
+	sim.gold = 300
+	watch_signals(sim)
+	sim.start_next_wave()
+	# Whatever the wave pays in bounties, the bonus is 20% of what is held when it ends.
+	var elapsed := 0.0
+	while sim.state == RunSim.State.WAVE and elapsed < 300.0:
+		elapsed += 0.05
+		var expected := mini(floori(sim.gold * 0.2), rules.savings_cap_at(1))
+		sim.step(0.05)
+		if sim.state != RunSim.State.WAVE:
+			assert_eq(sim.last_savings_bonus, expected)
+	assert_true(sim.last_savings_bonus >= 60, "300 gold kept earns at least 60")
+	assert_signal_emitted_with_parameters(sim, "savings_paid", [sim.last_savings_bonus])
+	var cleared: Array = get_signal_parameters(sim, "wave_cleared")
+	assert_eq(cleared[2], rules.gold_per_wave + sim.last_savings_bonus, "the wave's gold includes the bonus")
+
+
+func test_the_savings_bonus_is_capped_and_never_negative() -> void:
+	var rules: RunRules = registry.run_rules
+	assert_eq(rules.savings_bonus_for(0, 0.2), 0)
+	assert_eq(rules.savings_bonus_for(-50, 0.2), 0)
+	assert_eq(rules.savings_bonus_for(99, 0.2), 19)
+	assert_eq(rules.savings_bonus_for(500, 0.2), 100)
+	assert_eq(rules.savings_bonus_for(100000, 0.2), rules.savings_bonus_cap)
+
+
+func test_the_savings_cap_grows_geometrically_from_the_first_wave() -> void:
+	var rules: RunRules = registry.run_rules
+	assert_eq(rules.savings_cap_at(1), 150, "the first wave keeps the base cap")
+	assert_eq(rules.savings_cap_at(2), 162)
+	assert_eq(rules.savings_cap_at(11), roundi(150 * pow(1.08, 10)))
+	assert_eq(rules.savings_bonus_for(100000, 0.2, 11), rules.savings_cap_at(11))
+	for wave in range(1, 60):
+		assert_true(rules.savings_cap_at(wave + 1) > rules.savings_cap_at(wave), "it always rises")
 
 
 func test_sell_refunds_never_pay_more_than_the_price() -> void:

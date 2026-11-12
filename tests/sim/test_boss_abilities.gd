@@ -80,7 +80,7 @@ func test_vael_orrun_has_every_ability_in_every_form() -> void:
 		assert_gt(data.shield_interval, 0.0, "%s shields" % form)
 		assert_gt(data.bind_interval, 0.0, "%s binds" % form)
 		assert_gt(data.silence_interval, 0.0, "%s silences" % form)
-		assert_eq(data.doom_interval, 20.0, "%s hurls a fireball every 20 s" % form)
+		assert_eq(data.doom_interval, 200.0, "%s hurls a fireball every 200 s" % form)
 
 
 func test_a_boss_heals_itself_but_not_while_burning() -> void:
@@ -105,7 +105,7 @@ func test_a_boss_heals_itself_but_not_while_burning() -> void:
 
 
 func test_boss_healing_stays_gentle() -> void:
-	# Doctor Paris found the bosses' healing too strong: no boss heals more than 0.4%
+	# Doctor Paris found the bosses' healing too strong: no boss heals more than 0.04%
 	# of its life a second, from its heal and its regeneration together.
 	for data: EnemyData in registry.enemies.values():
 		if not data.tags.has(&"boss"):
@@ -113,7 +113,25 @@ func test_boss_healing_stays_gentle() -> void:
 		var per_second := data.regen_per_second
 		if data.heal_interval > 0.0:
 			per_second += data.heal_amount / data.heal_interval
-		assert_lte(per_second, 0.004, "%s heals %.2f%% a second" % [data.id, per_second * 100.0])
+		assert_lte(per_second, 0.0004, "%s heals %.3f%% a second" % [data.id, per_second * 100.0])
+
+
+func test_boss_abilities_cut_to_a_tenth() -> void:
+	# Doctor Paris found the bosses too powerful (2026-11-12): every heal, barrier, bind, silence
+	# and ward was cut to a tenth of its strength, and fireballs and summons come ten times slower.
+	for data: EnemyData in registry.enemies.values():
+		if not data.tags.has(&"boss"):
+			continue
+		assert_lte(data.shield_amount, 0.015, "%s barrier" % data.id)
+		assert_lte(data.heal_amount, 0.0025, "%s heal" % data.id)
+		assert_lte(data.bind_duration, 0.3, "%s bind" % data.id)
+		assert_lte(data.silence_duration, 0.3, "%s silence" % data.id)
+		assert_lte(data.ward_reduction, 0.035, "%s ward" % data.id)
+		assert_lte(data.enrage_speed, 1.1, "%s enrage" % data.id)
+		if data.doom_interval > 0.0:
+			assert_gte(data.doom_interval, 200.0, "%s fireball" % data.id)
+		if not data.summon.is_empty():
+			assert_gte(data.summon_interval, 25.0, "%s summons" % data.id)
 
 
 func test_a_full_boss_waits_to_heal() -> void:
@@ -200,7 +218,7 @@ func test_vael_orrun_fireball_destroys_a_tower_and_leaves_a_ruin() -> void:
 	assert_eq(_named(used, &"destroy_tower").size(), 1)
 	assert_true(sim.boss_powers.is_ruin(Vector2i(10, 4)))
 	assert_eq(sim.placement_error(&"fire_brazier", Vector2i(10, 4)), "The ruin still burns: build here once the wave is over")
-	assert_almost_eq(boss.doom_timer, 20.0 - BossAbilities.FIREBALL_FLIGHT - 0.1, 0.1, "the next comes 20 s after")
+	assert_almost_eq(boss.doom_timer, boss.data.doom_interval - BossAbilities.FIREBALL_FLIGHT - 0.1, 0.1, "the next comes a full interval after")
 	sim.boss_powers.clear()
 	assert_true(sim.placement_error(&"fire_brazier", Vector2i(10, 4)).is_empty(), "the ruin is cleared after the wave")
 
