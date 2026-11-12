@@ -122,6 +122,9 @@ func _announce_wave(number: int) -> void:
 	var text := "Wave %d" % number
 	if wave != null and not wave.description.is_empty():
 		text += "\n" + wave.description
+	if sim.is_endless() and number > 1 and (number - 1) % RunSim.ENDLESS_STEP == 0:
+		text += "\nThe horde doubles: x%d enemies, x%d health" % [
+			roundi(sim.endless_multiplier()), roundi(sim.endless_multiplier())]
 	show_message(text)
 	_message_time = 4.0
 
@@ -616,8 +619,13 @@ func _hero_info(tower: SimTower) -> String:
 func _refresh() -> void:
 	_gold.text = "%d" % sim.gold
 	_lives.text = "%d" % sim.lives
-	_wave.text = "Wave %d / %d" % [mini(sim.wave_number(), sim.total_waves()), sim.total_waves()]
+	if sim.is_endless():
+		_wave.text = "Wave %d" % sim.wave_number()
+	else:
+		_wave.text = "Wave %d / %d" % [mini(sim.wave_number(), sim.total_waves()), sim.total_waves()]
 	var where: PackedStringArray = []
+	if sim.is_endless():
+		where.append("Endless x%d" % roundi(sim.endless_multiplier()))
 	var difficulty := sim.config.difficulty
 	if difficulty != null and difficulty.order > 0:
 		where.append(difficulty.display_name)
@@ -661,7 +669,7 @@ func _refresh() -> void:
 
 
 func _wave_text() -> String:
-	var wave := sim.current_wave()
+	var wave := sim.wave_as_it_comes()
 	if wave == null:
 		return ""
 	var element: ElementData = sim.config.elements.get(wave.element)
@@ -1018,8 +1026,11 @@ func show_story_note(text: String) -> void:
 func show_end(won: bool, meta_points: int, note := "") -> void:
 	_end_title.text = "Victory" if won else "Defeat"
 	_end_title.add_theme_color_override("font_color", UiStyle.GOOD if won else UiStyle.BAD)
-	_end_stats.text = "Waves cleared: %d of %d\nEnemies killed: %d\nLives left: %d\nGold earned: %d" % [
-		sim.wave_index, sim.total_waves(), sim.kills, sim.lives, sim.gold_earned]
+	var waves := "%d of %d" % [sim.wave_index, sim.total_waves()]
+	if sim.is_endless():
+		waves = "%d (endless)" % sim.wave_index
+	_end_stats.text = "Waves cleared: %s\nEnemies killed: %d\nLives left: %d\nGold earned: %d" % [
+		waves, sim.kills, sim.lives, sim.gold_earned]
 	_end_meta.text = "+%d meta point%s. Spend them in Talents from the main menu." % [
 		meta_points, "" if meta_points == 1 else "s"]
 	if not note.is_empty():

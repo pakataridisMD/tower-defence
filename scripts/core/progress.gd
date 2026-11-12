@@ -80,6 +80,12 @@ func select_difficulty(id: StringName) -> bool:
 	return _saved(meta.select_difficulty(id))
 
 
+## Makes the next skirmish endless or not, and saves.
+func set_endless(on: bool) -> void:
+	meta.set_endless(on)
+	_saved(true)
+
+
 ## Makes the next run a campaign stage. Returns false if the stage is still locked.
 func play_stage(id: StringName) -> bool:
 	if not meta.is_stage_unlocked(id):

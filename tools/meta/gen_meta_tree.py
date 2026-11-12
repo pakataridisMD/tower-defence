@@ -367,11 +367,13 @@ wing("expeditions", {
     "a3": ("expedition_veterans", "Veteran Officers", KEYSTONE, 14, [flat("starting_tree_points", 1)]),
     "b1": ("expedition_hardened", "Hardened", MINOR, 3, [flat("starting_lives", 2)]),
     "b2": ("expedition_hard", "Hard Mode", NOTABLE, 6, [],
-           {"desc": "Unlocks Hard difficulty: enemies have 40% more health and runs earn 50% more meta points.",
-            "unlocks_difficulties": ["hard"]}),
+           {"desc": "Unlocks the Grim and Merciless difficulties: two and four times the enemies, with two and "
+                    "four times the health. Runs earn 50% and 100% more meta points.",
+            "unlocks_difficulties": ["hard", "merciless"]}),
     "b3": ("expedition_nightmare", "Nightmare", KEYSTONE, 14, [],
-           {"desc": "Unlocks Nightmare difficulty: enemies have 90% more health and runs earn twice the meta points.",
-            "unlocks_difficulties": ["nightmare"]}),
+           {"desc": "Unlocks the Nightmare and Oblivion difficulties: eight and sixteen times the enemies, with "
+                    "eight and sixteen times the health. Runs earn 2.5 and 3 times the meta points.",
+            "unlocks_difficulties": ["nightmare", "oblivion"]}),
     "m1": ("expedition_forage", "Forage", MINOR, 3, [flat("gold_per_wave", 3)]),
     "m2": ("expedition_cartographer", "Cartographer", NOTABLE, 5, [inc("attack_range", 6)]),
     "c1": ("expedition_spoils", "Spoils of War", KEYSTONE, 12, [flat("bounty_bonus", 2), more("starting_lives", -30)],

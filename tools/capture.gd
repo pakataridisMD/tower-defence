@@ -26,6 +26,8 @@ extends Node
 ## and x2, and the same row at night are taken.
 ## Add --edge to film the edge pan: zoomed in on a battle, the mouse is pushed against each edge of the
 ## screen in turn, saved as numbered frames in <out>/edge/ (make a clip from them).
+## Add --skirmish to take the Skirmish page (a hard level and Endless picked), a battle on each land
+## skirmish map on Merciless, and an endless run once the horde has doubled three times.
 ## Add --story to take the cinematic player, a Herald's boss banner, the final level's defence and counter-attack and
 ## the campaign map with the citadel on it.
 
@@ -54,6 +56,7 @@ var _heroes := false
 var _menu := false
 var _map := false
 var _bigmaps := false
+var _skirmish := false
 var _edge := false
 var _powers := false
 var _landmarks := false
@@ -86,6 +89,8 @@ func _ready() -> void:
 			_map = true
 		elif arg == "--bigmaps":
 			_bigmaps = true
+		elif arg == "--skirmish":
+			_skirmish = true
 		elif arg == "--powers":
 			_powers = true
 		elif arg == "--landmarks":
@@ -114,6 +119,8 @@ func _ready() -> void:
 		_run_map()
 	elif _bigmaps:
 		_run_big_maps()
+	elif _skirmish:
+		_run_skirmish()
 	elif _edge:
 		_run_edge()
 	elif _story:
@@ -297,6 +304,58 @@ func _run_map() -> void:
 	screen.free()
 	print("Screenshots saved to ", _out)
 	get_tree().quit()
+
+
+## Land skirmish maps to shoot on Merciless: map, wave to jump to (counted from 0), seconds into it.
+const SKIRMISH_SHOTS := [
+	[&"cinderfall", 5, 12.0], [&"stormcrown", 5, 12.0], [&"thornwild", 5, 12.0], [&"frozen_ford", 5, 12.0],
+	[&"red_gorge", 5, 12.0], [&"riftwalk", 5, 12.0],
+]
+
+
+func _run_skirmish() -> void:
+	var profile := _demo_profile()
+	profile.meta_points_earned = 400
+	profile.meta_nodes.append_array([&"expedition_scouts", &"expedition_hardened", &"expedition_hard",
+			&"expedition_nightmare"])
+	Progress.use_memory_profile(profile)
+	Progress.select_difficulty(&"merciless")
+	Progress.set_endless(true)
+	var menu := MENU_SCENE.instantiate()
+	add_child(menu)
+	await _wait(0.5)
+	menu.open_page(&"skirmish")
+	await _wait(0.4)
+	await _shot("skirmish_page")
+	menu.free()
+	Progress.set_endless(false)
+	for entry: Array in SKIRMISH_SHOTS:
+		Progress.select_map(entry[0])
+		Progress.play_skirmish()
+		await _battle("skirmish_%s" % entry[0], entry[1], entry[2])
+	# Endless on Grim at wave 16: the horde has doubled three times (x8 on top of Grim's x2).
+	Progress.select_map(&"switchback")
+	Progress.select_difficulty(&"hard")
+	Progress.set_endless(true)
+	await _battle("endless_wave16", 15, 10.0)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+## Plays the next run with the bot from a later wave with plenty of gold, and takes one shot.
+func _battle(shot_name: String, wave: int, seconds: float) -> void:
+	var game := GAME_SCENE.instantiate() as Game
+	game.autoplay = true
+	add_child(game)
+	await _wait(0.2)
+	game.sim.wave_index = wave
+	game.sim.gold = 9000
+	game.sim.tree.points = 14
+	await _until(func() -> bool: return game.sim.state == RunSim.State.WAVE and game.sim.time_in_wave > seconds \
+			or game.sim.is_over())
+	await _shot(shot_name)
+	game.free()
+	await _wait(0.1)
 
 
 func _run_campaign() -> void:

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DifficultyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/difficulty_data.gd" id="1_difficulty"]
+
+[resource]
+script = ExtResource("1_difficulty")
+id = &"oblivion"
+display_name = "Oblivion"
+description = "Sixteen times the enemies, sixteen times their health. For the mad. Runs earn three times the meta points."
+order = 4
+enemy_health_multiplier = 16.0
+enemy_count_multiplier = 16.0
+meta_point_multiplier = 3.0
