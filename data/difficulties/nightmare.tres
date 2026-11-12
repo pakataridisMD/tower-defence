@@ -6,7 +6,9 @@
 script = ExtResource("1_difficulty")
 id = &"nightmare"
 display_name = "Nightmare"
-description = "Enemies have 90% more health. Runs earn twice the meta points."
-order = 2
-enemy_health_multiplier = 1.9
-meta_point_multiplier = 2.0
+description = "Eight times the enemies, eight times their health. You start with four times the gold. Runs earn two and a half times the meta points."
+order = 3
+enemy_health_multiplier = 8.0
+enemy_count_multiplier = 8.0
+starting_gold_multiplier = 4.0
+meta_point_multiplier = 2.5

@@ -22,6 +22,10 @@ var best_waves := 0
 var enemies_killed := 0
 var last_map: StringName = &""
 var last_difficulty: StringName = &""
+## True when the last skirmish picked was endless.
+var last_endless := false
+## Most waves cleared in an endless skirmish, by map id.
+var endless_best: Dictionary[StringName, int] = {}
 ## Best stars (1 to 3) for each campaign stage won. A stage that is missing has not been won.
 var stage_stars: Dictionary[StringName, int] = {}
 ## Story cinematics already played, in the order they were seen. Each plays on its own only once;
@@ -65,6 +69,7 @@ func to_dict() -> Dictionary:
 		},
 		"last_map": String(last_map),
 		"last_difficulty": String(last_difficulty),
+		"endless": {"on": last_endless, "best": _string_keys(endless_best)},
 		"campaign": {"stars": stars},
 		"story": {"seen": seen},
 		"heroes": {"party": party},
@@ -113,6 +118,10 @@ static func from_dict(saved: Dictionary) -> PlayerProfile:
 		profile.enemies_killed = maxi(0, _read_int(stats, "enemies_killed"))
 	profile.last_map = StringName(_read_string(data, "last_map"))
 	profile.last_difficulty = StringName(_read_string(data, "last_difficulty"))
+	var endless: Variant = data.get("endless", {})
+	if endless is Dictionary:
+		profile.last_endless = (endless as Dictionary).get("on", false) == true
+		_read_counts((endless as Dictionary).get("best", {}), profile.endless_best)
 	var campaign: Variant = data.get("campaign", {})
 	if campaign is Dictionary:
 		var stars: Variant = (campaign as Dictionary).get("stars", {})

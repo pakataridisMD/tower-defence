@@ -60,6 +60,7 @@ static func capture(sim: RunSim) -> Dictionary:
 		"stage": String(config.stage.id) if config.stage != null else "",
 		"map": String(config.map.id) if config.map != null else "",
 		"difficulty": String(config.difficulty.id) if config.difficulty != null else "",
+		"endless": sim.is_endless(),
 		"wave_index": sim.wave_index,
 		"next_id": sim._next_id,
 		"lane_turn": sim._spawner._lane_turn,

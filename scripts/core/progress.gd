@@ -93,6 +93,12 @@ func select_difficulty(id: StringName) -> bool:
 	return _saved(meta.select_difficulty(id))
 
 
+## Makes the next skirmish endless or not, and saves.
+func set_endless(on: bool) -> void:
+	meta.set_endless(on)
+	_saved(true)
+
+
 ## Makes the next run a campaign stage. Returns false if the stage is still locked.
 func play_stage(id: StringName) -> bool:
 	if not meta.is_stage_unlocked(id):
@@ -231,6 +237,7 @@ func load_save(key: String) -> bool:
 		var difficulty := StringName(str(run.get("difficulty", "")))
 		if DataRegistry.difficulties.has(difficulty) or difficulty.is_empty():
 			meta.selected_difficulty = difficulty
+		meta.endless = run.get("endless", false) == true
 		if not stage.is_empty() and active_stage.is_empty():
 			push_warning("Save %s's stage %s no longer exists; loading its progress only." % [key, stage])
 		else:
@@ -293,6 +300,9 @@ func slot_info(run: Dictionary = {}) -> Dictionary:
 		var map: MapData = DataRegistry.maps.get(StringName(str(run.get("map", ""))))
 		info["title"] = map.display_name if map != null else "Skirmish"
 		info["where"] = "Skirmish"
+		if run.get("endless", false) == true:
+			info["where"] = "Endless skirmish"
+			info["endless"] = true
 		if map != null:
 			wave_set_id = map.wave_set
 	var wave_set: WaveSet = DataRegistry.wave_sets.get(wave_set_id)

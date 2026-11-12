@@ -26,3 +26,16 @@ func spawn_window() -> float:
 	for group in groups:
 		last = maxf(last, group.start_delay + group.duration())
 	return last
+
+
+## A copy of the wave with `multiplier` times as many enemies in each group, except the groups of
+## the enemies in `fixed` (such as bosses), which stay as they are.
+func scaled(multiplier: float, fixed: Dictionary = {}) -> WaveData:
+	if is_equal_approx(multiplier, 1.0):
+		return self
+	var copy := duplicate() as WaveData
+	var groups_copy: Array[SpawnGroup] = []
+	for group in groups:
+		groups_copy.append(group if group == null or fixed.has(group.enemy) else group.scaled(multiplier))
+	copy.groups = groups_copy
+	return copy

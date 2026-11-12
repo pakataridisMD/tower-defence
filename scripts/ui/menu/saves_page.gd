@@ -385,7 +385,7 @@ class SlotRow:
 		if info.get("kind", "") == "run":
 			var wave := int(info.get("wave", 0))
 			var waves := int(info.get("waves", 0))
-			if info.get("assault", false) == true or waves <= 0:
+			if info.get("assault", false) == true or info.get("endless", false) == true or waves <= 0:
 				parts.append("Wave %d" % wave)
 			else:
 				parts.append("Wave %d of %d" % [mini(wave, waves), waves])

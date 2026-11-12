@@ -203,7 +203,7 @@ func _process(delta: float) -> void:
 		return
 	var wave := _sim.current_wave()
 	var boss_wave := wave != null and wave.is_boss
-	var last_wave := _sim.wave_index >= _sim.total_waves() - 1
+	var last_wave := _sim.wave_index >= _sim.total_waves() - 1 and not _sim.is_endless()
 	var boss := boss_fight(_sim.state, boss_wave)
 	_track_rotation(boss_wave)
 	_crossfade(delta)

@@ -1,6 +1,8 @@
 extends GutTest
-## Plays whole runs with the scripted AutoPlayer. These guard the prototype's balance:
-## a sensible strategy should win, and doing nothing should lose.
+## Plays whole runs with the scripted AutoPlayer. These guard the skirmish balance: a sensible
+## strategy should win, and doing nothing should lose. Skirmish is three times as hard as it was
+## tuned (gen_campaign.SKIRMISH_HARDNESS), so the bot plays it as a player who has freed the six
+## lands would: that point's meta tree and sigils, from tools/campaign/meta_profiles.json.
 
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
 const STEP := RunSim.STEP
@@ -15,8 +17,24 @@ func before_each() -> void:
 	registry.reload()
 
 
-func _play(bot_nodes: Array[StringName], bot_towers: Array[StringName]) -> RunSim:
-	var sim := RunSim.new(RunConfig.from_registry(registry, &"switchback"))
+const PROFILES := "res://tools/campaign/meta_profiles.json"
+## The profile before the Convergence's first stage: the six lands freed.
+const VETERAN := "converge_1"
+
+
+func _veteran_config(map_id: StringName) -> RunConfig:
+	var profiles: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(PROFILES))
+	var meta := MetaProgress.new(registry, PlayerProfile.from_dict(profiles[VETERAN]))
+	meta.selected_difficulty = &"normal"
+	meta.endless = false
+	var config := meta.run_config()
+	config.map = registry.maps[map_id]
+	config.wave_set = registry.wave_sets[config.map.wave_set]
+	return config
+
+
+func _play(bot_nodes: Array[StringName], bot_towers: Array[StringName], map_id := &"switchback") -> RunSim:
+	var sim := RunSim.new(_veteran_config(map_id))
 	var bot := AutoPlayer.new(sim, bot_nodes, bot_towers)
 	var elapsed := 0.0
 	while not sim.is_over() and elapsed < MAX_SIM_SECONDS:
@@ -52,3 +70,15 @@ func test_a_water_earth_void_strategy_wins() -> void:
 	]
 	var sim := _play(nodes, towers)
 	assert_eq(sim.state, RunSim.State.WON)
+
+
+## Every land skirmish map, with its own horde and Warden, can be won by the same veteran.
+func test_a_sensible_strategy_wins_every_land_map() -> void:
+	var maps := 0
+	for map: MapData in registry.maps.values():
+		if not map.skirmish or map.wave_set == &"prototype":
+			continue
+		maps += 1
+		var sim := _play(AutoPlayer.DEFAULT_NODES, AutoPlayer.DEFAULT_TOWERS, map.id)
+		assert_eq(sim.state, RunSim.State.WON, String(map.id))
+	assert_gte(maps, 6, "one skirmish map for each land")

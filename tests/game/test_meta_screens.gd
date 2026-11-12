@@ -116,7 +116,9 @@ func test_a_new_player_sees_locked_maps_and_levels() -> void:
 	assert_not_null(serpentine)
 	assert_true(serpentine.disabled)
 	assert_string_contains(serpentine.tooltip_text, "Talents")
-	assert_true(_button_starting_with(menu, "Hard").disabled)
+	assert_true(_button_starting_with(menu, "Grim").disabled)
+	assert_true(_button_starting_with(menu, "Oblivion").disabled)
+	assert_false(_button_starting_with(menu, "Cinderfall").disabled, "the land maps are open from the start")
 	assert_true(_button_starting_with(menu, "Switchback").button_pressed)
 
 
@@ -125,12 +127,16 @@ func test_picking_an_unlocked_map_and_level_sets_up_the_next_run() -> void:
 	var menu = await _open(MENU_SCENE)
 	menu.open_page(&"skirmish")
 	_pick(_button_starting_with(menu, "Serpentine"))
-	_pick(_button_starting_with(menu, "Hard"))
+	_pick(_button_starting_with(menu, "Grim"))
 	assert_false(_button_starting_with(menu, "Switchback").button_pressed, "one map at a time")
 	var config := Progress.run_config()
 	assert_eq(config.map.id, &"serpentine")
 	assert_eq(config.difficulty.id, &"hard")
 	assert_eq(Progress.meta.profile.last_map, &"serpentine")
+	assert_false(config.endless)
+	_pick(_button_starting_with(menu, "Endless"))
+	assert_true(Progress.run_config().endless)
+	assert_true(Progress.meta.profile.last_endless)
 
 
 func test_the_talents_button_shows_unspent_points() -> void:
