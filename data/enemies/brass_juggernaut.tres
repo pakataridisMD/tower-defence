@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"brass_juggernaut"
+display_name = "Brass Juggernaut"
+max_health = 220.0
+speed = 40.0
+armour = 5.0
+bounty = 12
+leak_damage = 3
+tags = Array[StringName]([&"armoured"])
+description = "Wild. A walking siege furnace. It gets faster the longer it walks unchecked; a slow, stun or push resets it."
+element = &"fire"
+power = &"momentum"
+power_amount = 0.08
+power_limit = 0.8
+horde = &"flame"
+lore = "Siege engines of the Ember Throne, fed on coal and kindled runes, built to batter down the gates of Pearlhaven. The Forge-King's madness woke the fires in their bellies. They start slow. Left alone, they do not stay slow."

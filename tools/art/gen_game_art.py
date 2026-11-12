@@ -2414,7 +2414,9 @@ def has_drawn(eid: str) -> bool:
 
 def enemy_art(eid: str) -> dict:
     drawn = drawn_enemy(eid)
-    return drawn if drawn is not None else ENEMIES[eid]()
+    if drawn is not None:
+        return drawn
+    return ENEMIES[eid]() if eid in ENEMIES else None
 
 
 def main() -> None:

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"briar_stag"
+display_name = "Briar Stag"
+max_health = 75.0
+speed = 86.0
+bounty = 6
+leak_damage = 1
+description = "Wild. A great stag grown through with bramble. Slowed or caught, it bounds clear down the road and shakes it off."
+element = &"nature"
+power = &"bound"
+power_interval = 6.0
+power_amount = 90.0
+horde = &"grove"
+lore = "The white stag of the Green Queen's hunts, gone dark and wound with thorns, wearing a crown of blood-red flowers. Frost and mud cannot hold it: catch it and it leaps clear."

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"umbral_stalker"
+display_name = "Umbral Stalker"
+max_health = 45.0
+speed = 108.0
+bounty = 4
+leak_damage = 1
+tags = Array[StringName]([&"fast"])
+description = "Wild. A great cat made of the dark between stars. Towers only see it when it comes within half their range."
+element = &"void"
+power = &"stalk"
+power_amount = 0.5
+horde = &"hollow"
+lore = "The Star-Queen's hunters rode cats of living night on the road of the dead. Without their riders they hunt alone, pelts full of tiny stars. You do not see one coming. You see it arrive."

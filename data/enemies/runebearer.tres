@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"runebearer"
+display_name = "Runebearer"
+max_health = 140.0
+speed = 50.0
+armour = 3.0
+bounty = 8
+leak_damage = 2
+tags = Array[StringName]([&"armoured"])
+description = "Hollowed. Carries a carved oath-stone on its back. Every ally near it gains 5 armour."
+element = &"earth"
+power = &"bulwark"
+power_radius = 140.0
+power_amount = 5.0
+horde = &"stone"
+lore = "Oath-keepers carry the great vows of Kharum carved in standing stones, so that whole companies can swear by them. The runes still burn. Every Stoneborn within sight of one stands as if the mountain stood behind it."

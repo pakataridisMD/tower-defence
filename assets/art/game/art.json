@@ -1719,6 +1719,666 @@
     232,
     392
    ]
+  },
+  "brinecaller": {
+   "size": [
+    108,
+    116
+   ],
+   "anchor": [
+    54,
+    84
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "netcaster": {
+   "size": [
+    112,
+    114
+   ],
+   "anchor": [
+    56,
+    82
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 14,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "mire_eel": {
+   "size": [
+    134,
+    96
+   ],
+   "anchor": [
+    67,
+    64
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 6,
+    "fps": 12,
+    "hold": 5
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "fogwife": {
+   "size": [
+    108,
+    120
+   ],
+   "anchor": [
+    54,
+    88
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 12,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "rimeback": {
+   "size": [
+    134,
+    110
+   ],
+   "anchor": [
+    67,
+    78
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "oathbroken": {
+   "size": [
+    112,
+    112
+   ],
+   "anchor": [
+    56,
+    80
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 12,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "quarry_hound": {
+   "size": [
+    122,
+    104
+   ],
+   "anchor": [
+    61,
+    72
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 14,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "runebearer": {
+   "size": [
+    112,
+    130
+   ],
+   "anchor": [
+    56,
+    98
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "geode": {
+   "size": [
+    126,
+    122
+   ],
+   "anchor": [
+    63,
+    90
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 12,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "menhir": {
+   "size": [
+    108,
+    138
+   ],
+   "anchor": [
+    54,
+    106
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "lightdrinker": {
+   "size": [
+    106,
+    120
+   ],
+   "anchor": [
+    53,
+    88
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "umbral_stalker": {
+   "size": [
+    126,
+    100
+   ],
+   "anchor": [
+    63,
+    68
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 14,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "gravecaller": {
+   "size": [
+    110,
+    118
+   ],
+   "anchor": [
+    55,
+    86
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "wailing_widow": {
+   "size": [
+    106,
+    118
+   ],
+   "anchor": [
+    53,
+    86
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 12,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "voidmaw": {
+   "size": [
+    120,
+    114
+   ],
+   "anchor": [
+    60,
+    82
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 12,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "cinderhound": {
+   "size": [
+    122,
+    102
+   ],
+   "anchor": [
+    61,
+    70
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 12,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "smoke_wraith": {
+   "size": [
+    108,
+    120
+   ],
+   "anchor": [
+    54,
+    88
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 16,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "glass_singer": {
+   "size": [
+    108,
+    116
+   ],
+   "anchor": [
+    54,
+    84
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "slagwalker": {
+   "size": [
+    118,
+    118
+   ],
+   "anchor": [
+    59,
+    86
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 14,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "brass_juggernaut": {
+   "size": [
+    128,
+    130
+   ],
+   "anchor": [
+    64,
+    98
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "gale_harpy": {
+   "size": [
+    122,
+    118
+   ],
+   "anchor": [
+    61,
+    86
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 14,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "spark_wisp": {
+   "size": [
+    92,
+    96
+   ],
+   "anchor": [
+    46,
+    64
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 14,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "voiceless": {
+   "size": [
+    108,
+    116
+   ],
+   "anchor": [
+    54,
+    84
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "stormrider": {
+   "size": [
+    130,
+    122
+   ],
+   "anchor": [
+    65,
+    90
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 14,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "squall_witch": {
+   "size": [
+    114,
+    118
+   ],
+   "anchor": [
+    57,
+    86
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 12,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "briarling": {
+   "size": [
+    92,
+    92
+   ],
+   "anchor": [
+    46,
+    60
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 14,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "seedsower": {
+   "size": [
+    108,
+    116
+   ],
+   "anchor": [
+    54,
+    84
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 12,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "greenwitch": {
+   "size": [
+    108,
+    116
+   ],
+   "anchor": [
+    54,
+    84
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "briar_stag": {
+   "size": [
+    124,
+    120
+   ],
+   "anchor": [
+    62,
+    88
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 14,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
+  },
+  "barkhulk": {
+   "size": [
+    128,
+    142
+   ],
+   "anchor": [
+    64,
+    110
+   ],
+   "frames": 8,
+   "drawn": true,
+   "power": {
+    "frames": 8,
+    "fps": 8,
+    "hold": -1
+   },
+   "death": {
+    "frames": 8,
+    "fps": 10,
+    "hold": -1
+   }
   }
  },
  "props": {

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"quarry_hound"
+display_name = "Quarry Hound"
+max_health = 70.0
+speed = 82.0
+armour = 1.0
+bounty = 5
+leak_damage = 1
+description = "Wild. A hunting hound carved from quarry stone. It charges down the road now and then, too heavy to slow or push."
+element = &"earth"
+power = &"charge"
+power_interval = 7.0
+power_duration = 1.6
+power_amount = 1.2
+horde = &"stone"
+lore = "Runewrights of the Deep Halls carved hounds to run down oath-breakers, and an oath of pursuit gave them legs. Orrok's madness pointed them at the Steppe. When one catches the scent it charges, and nothing short of a mountain slows it."

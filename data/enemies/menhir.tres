@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"menhir"
+display_name = "Menhir Walker"
+max_health = 200.0
+speed = 42.0
+armour = 4.0
+bounty = 10
+leak_damage = 2
+tags = Array[StringName]([&"armoured"])
+description = "Wild. A walking standing stone. The horde near it cannot be slowed or pushed back."
+element = &"earth"
+power = &"steadfast"
+power_radius = 150.0
+horde = &"stone"
+lore = "The standing stones of the Thunder Steppe were set by the Galeborn to hold the sky still for a moment of prayer. Someone carved a king's face into one. Now it walks, and where it stands the ground holds fast: frost, tide and thunder cannot move what walks beside it."

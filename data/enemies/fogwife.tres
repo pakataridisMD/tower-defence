@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"fogwife"
+display_name = "Fogwife"
+max_health = 55.0
+speed = 70.0
+bounty = 5
+leak_damage = 1
+description = "Hollowed. A faceless drowned seer. She breathes sea-fog over the towers near her, and they cannot see as far."
+element = &"water"
+power = &"fog"
+power_interval = 8.0
+power_duration = 4.0
+power_radius = 170.0
+power_amount = 0.3
+horde = &"tide"
+lore = "The great seers of the Tide Throne paid for every vision with a memory. The Fogwives paid with all of them, their names, their faces, their children. What is left breathes the fog of a sea that has forgotten where the shore is."

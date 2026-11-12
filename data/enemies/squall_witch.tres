@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"squall_witch"
+display_name = "Squall Witch"
+max_health = 60.0
+speed = 66.0
+bounty = 6
+leak_damage = 1
+description = "Hollowed. A hag riding a gust. Every few seconds she flings the wind out and blows the towers' shots out of the air."
+element = &"storm"
+power = &"gust"
+power_interval = 6.0
+power_radius = 150.0
+horde = &"sky"
+lore = "She sold her voice to the wind of the high passes for a broom and a bad temper, and the storm took the rest. When she throws out her arm, arrows turn, bolts tumble and fire goes out mid-flight."

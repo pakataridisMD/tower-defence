@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"gale_harpy"
+display_name = "Gale Harpy"
+max_health = 45.0
+speed = 98.0
+bounty = 4
+leak_damage = 1
+tags = Array[StringName]([&"fast"])
+description = "Wild. A storm-winged hunter. Now and then a gust of its wings carries it and the horde near it down the road."
+element = &"storm"
+power = &"tailwind"
+power_interval = 8.0
+power_radius = 130.0
+power_amount = 110.0
+horde = &"sky"
+lore = "Galeborn sky-riders flew with hunting birds the size of men. The mad storm made riders and birds one thing, screaming. When they beat their wings the whole road leans with the wind."

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"briarling"
+display_name = "Briarling"
+max_health = 26.0
+speed = 100.0
+bounty = 2
+leak_damage = 1
+tags = Array[StringName]([&"fast"])
+description = "Wild. A running knot of bramble. Each Briarling near it makes it a little faster."
+element = &"nature"
+power = &"swarm"
+power_radius = 90.0
+power_amount = 0.08
+power_limit = 0.5
+horde = &"grove"
+lore = "What comes up where a Seedsower's seed falls. Knee-high, red berries for eyes, they come in handfuls and run together like a pack of thorny hares."

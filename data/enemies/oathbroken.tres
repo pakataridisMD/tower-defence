@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"oathbroken"
+display_name = "Oathbroken"
+max_health = 110.0
+speed = 58.0
+armour = 1.0
+bounty = 6
+leak_damage = 1
+tags = Array[StringName]([&"armoured"])
+description = "Hollowed. A Stoneborn turning to stone for a broken oath. Every blow it takes grows more stone over it."
+element = &"earth"
+power = &"accrete"
+power_amount = 1.0
+power_limit = 10.0
+horde = &"stone"
+lore = "A rune can never be uncarved, and a Stoneborn who breaks a carved oath turns slowly to stone. The Mountain-King's madness broke every oath in Kharum at once. The Oathbroken march with granite growing through their skin, and hurting them only hurries it."

@@ -190,6 +190,8 @@ class EnemyVisual:
 	## Above 0, it faces its power's target for this many more seconds instead of where it walks.
 	var face_time := 0.0
 	var face_left := false
+	## Seconds until a power that never fires (an aura, a trait) is shown off again.
+	var idle_power := 0.0
 
 
 ## A killed enemy playing out its death where it fell.
@@ -914,6 +916,11 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 	if not enemy.has_status(&"stun"):
 		visual.time += delta * (0.6 + speed_factor * 0.4) * (1.6 if enemy.data.tags.has(&"fast") else 1.0)
 	var frame := int(visual.time * 9.0) % visual.frames.size()
+	if enemy.has_power and PASSIVE_POWERS.has(enemy.data.power) and visual.anim == &"walk" and enemy.downed <= 0.0:
+		visual.idle_power -= delta
+		if visual.idle_power <= 0.0:
+			visual.idle_power = 5.0 + fposmod(float(enemy.id) * 1.618, 1.0) * 4.0
+			_play_power(enemy)
 	visual.body.texture = _enemy_frame(visual, delta, frame)
 	if visual.gear != null:
 		visual.gear.texture = visual.gear_frames[frame]
@@ -959,6 +966,7 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 		color = Color(color.lerp(Color(0.75, 0.95, 1.0), 0.5), 0.42 + 0.12 * sin(_elapsed * 23.0 + float(enemy.id)))
 	if enemy.haste_left > 0.0:
 		color = color.lerp(Color(1.0, 0.55, 0.45), 0.18 + 0.08 * pulse)
+	color = _horde_tint(enemy, color, pulse)
 	visual.body.modulate = color.lerp(Color(1.8, 1.8, 1.8), visual.flash * 0.7)
 	if visual.gear != null:
 		visual.gear.modulate = Color(1, 1, 1).lerp(Color(1.8, 1.8, 1.8), visual.flash * 0.7)
@@ -966,7 +974,8 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 
 ## Enemies take the colour of their element.
 func _enemy_tint(enemy: SimEnemy) -> Color:
-	if enemy.element < 0:
+	# The six hordes are drawn in their own element's colours already.
+	if enemy.element < 0 or not enemy.data.horde.is_empty():
 		return Color.WHITE
 	return sim.config.element_color_at(enemy.element).lerp(Color.WHITE, 0.3)
 
@@ -1177,7 +1186,7 @@ func _enemy_frame(visual: EnemyVisual, delta: float, walk_frame: int) -> CanvasT
 	if count == 0 or visual.anim == &"walk":
 		return visual.frames[walk_frame]
 	var step := int(visual.anim_time * visual.power_fps)
-	var lasting := enemy.is_phased() or enemy.is_hardened()
+	var lasting := enemy.is_phased() or enemy.is_hardened() or enemy.is_submerged() or _is_charging(enemy)
 	if visual.anim == &"power":
 		if visual.power_hold >= 0 and step >= visual.power_hold:
 			if lasting:
@@ -1305,11 +1314,172 @@ func _on_enemy_power(enemy: SimEnemy, power: StringName, targets: Array) -> void
 			_play_power(enemy)
 			if not targets.is_empty():
 				_breathe_fire(enemy, visual, targets[0] as SimTower)
+		_:
+			_on_horde_power(enemy, power, targets, feet, chest, radius, tall)
 
 
 const NECRO := Color(0.62, 0.35, 1.0)
+# The six hordes' colours: brine, ochre stone, the hollow's violet dark, ember, lightning and briar.
+const TIDE := Color(0.32, 0.78, 0.82)
+const STONE := Color(0.9, 0.66, 0.34)
+const HOLLOW := Color(0.5, 0.25, 0.85)
+const FLAME := Color(1.0, 0.45, 0.12)
+const SKY := Color(0.62, 0.82, 1.0)
+const GROVE := Color(0.5, 0.85, 0.3)
+const RIME := Color(0.78, 0.94, 1.0)
+## Powers that never fire as an event: their animation is played now and then to show them.
+const PASSIVE_POWERS: Array[StringName] = [&"bulwark", &"steadfast", &"hush", &"remedy", &"swarm", &"fireborn",
+		&"stalk", &"momentum", &"facets"]
 const HEAL := Color(0.45, 1.0, 0.55)
 const WARD := Color(0.55, 0.8, 1.0)
+
+
+func _is_charging(enemy: SimEnemy) -> bool:
+	return enemy.has_power and enemy.data.power == &"charge" and enemy.power_left > 0.0
+
+
+## How the six hordes' powers colour the body: dim and sunk under the water, a pale stalker, the
+## faded green of the raised dead, an iced shell, a charge's heat and a juggernaut's glowing brass.
+func _horde_tint(enemy: SimEnemy, color: Color, pulse: float) -> Color:
+	if enemy.is_submerged():
+		color = Color(color.lerp(Color(0.12, 0.3, 0.38), 0.6), 0.45)
+	if enemy.has_power and enemy.data.power == &"stalk":
+		color = Color(color.darkened(0.25), 0.6 + 0.15 * pulse)
+	if enemy.raised:
+		color = color.lerp(Color(0.55, 0.75, 0.55), 0.45).darkened(0.1)
+	if enemy.shell > 0.0:
+		color = color.lerp(RIME, 0.3)
+	if _is_charging(enemy):
+		color = color.lerp(Color(1.0, 0.75, 0.45), 0.25 + 0.15 * pulse)
+	if enemy.momentum > 0.0 and enemy.data.power_limit > 0.0:
+		color = color.lerp(Color(1.0, 0.55, 0.2), 0.35 * enemy.momentum / enemy.data.power_limit)
+	if enemy.spur > 0.0:
+		color = color.lerp(SKY, 0.25 * pulse)
+	return color
+
+
+## The six hordes' powers on the board, on top of the creature's own power animation.
+func _on_horde_power(enemy: SimEnemy, power: StringName, targets: Array, feet: Vector2, chest: Vector2,
+		radius: float, tall: float) -> void:
+	match power:
+		&"douse":
+			_play_power(enemy)
+			_ring(feet, TIDE, 3.0, radius, 0.6, 1.0)
+			_burst(chest, TIDE.lerp(Color.WHITE, 0.35), 18, 16.0, false)
+			for ally: SimEnemy in targets:
+				var at := _art_pos(ally.position) + Vector2(0, ENEMY_DROP - 8)
+				_burst(at, Color(0.7, 0.9, 1.0), 8, 8.0, false)
+		&"net":
+			_play_power(enemy)
+			for tower: SimTower in targets:
+				var at := _art_pos(tower.position) + Vector2(0, -8)
+				_beam(chest, at, Color(0.75, 0.7, 0.55), 0.5)
+				_ring(at, Color(0.8, 0.75, 0.6), 12.0, 5.0, 0.45, 1.0)
+		&"submerge":
+			_play_power(enemy)
+			_ring(feet, TIDE, 2.0, 12.0, 0.5)
+			_burst(feet + Vector2(0, -3), TIDE.lerp(Color.WHITE, 0.4), 16, 12.0, false)
+		&"fog":
+			_play_power(enemy)
+			_ring(chest, Color(0.75, 0.82, 0.85), 4.0, radius, 0.9, 2.0)
+			for tower: SimTower in targets:
+				_burst(_art_pos(tower.position) + Vector2(0, -10), Color(0.8, 0.85, 0.88), 14, 12.0, false)
+		&"rime_shell":
+			_play_power(enemy)
+			_ring(chest, RIME, 14.0, 4.0, 0.45, 2.0)
+			_sparks(chest, RIME, 9, 13.0)
+			_pulse_light(chest, RIME, 1.2, 30.0, 0.5)
+		&"shell_break":
+			_burst(chest, RIME, 26, 22.0)
+			_sparks(chest, Color.WHITE, 8, 12.0)
+		&"accrete":
+			_play_power(enemy)
+			_burst(feet + Vector2(0, -4), STONE.darkened(0.3), 14, 12.0, false)
+			_sparks(chest, STONE, 6, 9.0)
+		&"charge":
+			_play_power(enemy)
+			_burst(feet, STONE.darkened(0.35), 20, 18.0, false)
+			_ring(feet, STONE, 3.0, 14.0, 0.35, 2.0)
+		&"eclipse":
+			_play_power(enemy)
+			_ring(chest, HOLLOW, radius, 4.0, 0.8, 2.0)
+			for tower: SimTower in targets:
+				var at := _art_pos(tower.position) + Vector2(0, -10)
+				_beam(at, chest, HOLLOW.lerp(Color.BLACK, 0.3), 0.6, 2.0)
+		&"raise":
+			_play_power(enemy)
+			_ring(feet, NECRO, radius * 0.6, 3.0, 0.7, 1.0)
+			_pulse_light(chest, NECRO, 1.6, radius, 0.7)
+			for child: SimEnemy in targets:
+				var at := _art_pos(child.position) + Vector2(0, ENEMY_DROP)
+				_beam(chest, at + Vector2(0, -6), NECRO, 0.5)
+				_burst(at + Vector2(0, -4), Color(0.5, 0.45, 0.4), 14, 14.0, false)
+				_ring(at, NECRO, 10.0, 2.0, 0.5)
+		&"wail":
+			_ring(chest, HOLLOW.lerp(Color.WHITE, 0.4), 4.0, radius, 0.7, 2.0)
+			_ring(chest, HOLLOW, 2.0, radius * 0.75, 0.55)
+			_pulse_light(chest, HOLLOW, 1.8, radius, 0.6)
+			for tower: SimTower in targets:
+				_sparks(_art_pos(tower.position) + Vector2(0, -12), HOLLOW.lerp(Color.WHITE, 0.4), 6, 9.0)
+		&"devour":
+			_play_power(enemy)
+			for dead: SimEnemy in targets:
+				var at := _art_pos(dead.position) + Vector2(0, ENEMY_DROP - 6)
+				_beam(at, chest, HOLLOW, 0.5, 2.0)
+				_burst(at, HOLLOW.darkened(0.3), 12, 10.0)
+			_pulse_light(chest, HOLLOW, 1.4, 36.0, 0.5)
+		&"smoke":
+			_burst(chest, Color(0.45, 0.42, 0.4), 12, 12.0, false)
+		&"glass_ward":
+			_play_power(enemy)
+			_pulse_light(chest, Color(1.0, 0.7, 0.35), 1.3, radius, 0.5)
+			for ally: SimEnemy in targets:
+				var at := _art_pos(ally.position) + Vector2(0, ENEMY_DROP - 10)
+				_beam(chest, at, Color(1.0, 0.75, 0.4), 0.45)
+				_ring(at, Color(1.0, 0.82, 0.55), 2.0, 11.0, 0.35)
+		&"meltdown":
+			_play_power(enemy)
+			_burst(feet + Vector2(0, -6), FLAME, 22, 16.0)
+			_sparks(chest, Color(1.0, 0.85, 0.4), 8, 12.0)
+			_pulse_light(chest, FLAME, 1.5, 40.0, 0.6)
+		&"tailwind":
+			_play_power(enemy)
+			_ring(chest, SKY, 3.0, radius, 0.5, 1.0)
+			for ally: SimEnemy in targets:
+				var at := _art_pos(ally.position) + Vector2(0, ENEMY_DROP - 6)
+				_burst(at, SKY.lerp(Color.WHITE, 0.4), 6, 10.0, false)
+		&"static":
+			for tower: SimTower in targets:
+				var at := _art_pos(tower.position) + Vector2(0, -10)
+				_beam(chest, at, Color(0.8, 0.92, 1.0), 0.35, 2.0)
+				_sparks(at, SKY.lerp(Color.WHITE, 0.5), 10, 10.0)
+				_pulse_light(at, SKY, 1.6, 30.0, 0.3)
+		&"spur":
+			_play_power(enemy)
+			_sparks(feet + Vector2(0, -4), SKY, 8, 10.0)
+		&"gust":
+			_play_power(enemy)
+			_ring(chest, SKY.lerp(Color.WHITE, 0.3), 4.0, radius, 0.5, 2.0)
+			_burst(chest, Color(0.85, 0.92, 1.0), 20, radius * 0.6, false)
+		&"sow":
+			_play_power(enemy)
+			_burst(feet + Vector2(0, -2), GROVE.darkened(0.3), 10, 10.0, false)
+		&"sprout":
+			for child: SimEnemy in targets:
+				var at := _art_pos(child.position) + Vector2(0, ENEMY_DROP)
+				_burst(at + Vector2(0, -3), GROVE, 14, 12.0, false)
+				_ring(at, GROVE, 2.0, 10.0, 0.45)
+		&"bound":
+			_play_power(enemy)
+			if not targets.is_empty():
+				var from := _art_pos(targets[0] as Vector2) + Vector2(0, ENEMY_DROP)
+				_burst(from, GROVE.darkened(0.4), 12, 10.0, false)
+				_beam(from + Vector2(0, -tall * 0.5), chest, GROVE.lerp(Color.WHITE, 0.3), 0.35)
+			_burst(feet, GROVE.darkened(0.3), 12, 12.0, false)
+		&"grow":
+			_play_power(enemy)
+			_burst(chest, GROVE, 16, 16.0, false)
+			_pulse_light(chest, GROVE, 1.2, 34.0, 0.5)
 
 
 ## A stream of dragon fire from the Warden's jaws to the tower, which burns while it is silenced.
@@ -1763,6 +1933,7 @@ func _draw_marks() -> void:
 	for visual: EnemyVisual in _enemies.values():
 		_draw_enemy_marks(visual)
 	for visual: TowerVisual in _towers.values():
+		_draw_tower_hexes(visual)
 		if visual.tower.silenced > 0.0:
 			# A silenced tower smoulders until it can fire again.
 			var salt := float(visual.tower.id) * 2.3
@@ -1913,6 +2084,76 @@ func _draw_power_marks(visual: EnemyVisual, feet: Vector2, half: float, tall: fl
 			var glint := 0.5 + 0.5 * sin(_elapsed * 7.0 + salt + float(i) * 2.0)
 			var at := feet + Vector2((float(i) - 1.0) * half * 0.8, -tall * (0.3 + 0.2 * float(i % 2)))
 			_dot(_marks, at, Color(0.7, 0.95, 1.0, glint))
+	_draw_horde_marks(visual, feet, half, tall, salt, side)
+
+
+## The hordes' lasting powers: an ice shell, a lent rune of armour, the Menhir's stillness, a
+## Greenwitch's blessing, a pack's thorns, a charge's dust and the raised dead's grave light. Aura
+## bearers show the edge of their reach.
+func _draw_horde_marks(visual: EnemyVisual, feet: Vector2, half: float, tall: float, salt: float, side: float) -> void:
+	var enemy := visual.enemy
+	if enemy.shell > 0.0:
+		for i in 6:
+			var angle := TAU * float(i) / 6.0 + salt
+			var at := feet + Vector2(cos(angle) * (half + 2.0), -tall * 0.45 + sin(angle) * tall * 0.4)
+			_dot(_marks, at, Color(RIME, 0.6 + 0.3 * sin(_elapsed * 5.0 + float(i))))
+	if enemy.bonus_armour > 0.0:
+		var at := (feet + Vector2(0, -tall - 6.0)).floor()
+		var glow := Color(STONE.lerp(Color.WHITE, 0.3), 0.6 + 0.3 * sin(_elapsed * 4.0 + salt))
+		_marks.draw_rect(Rect2(at + Vector2(-1, -1), Vector2(3, 1)), glow)
+		_marks.draw_rect(Rect2(at + Vector2(0, -1), Vector2(1, 3)), glow)
+	if enemy.steady and not (enemy.has_power and enemy.data.power == &"steadfast"):
+		for i in 2:
+			_dot(_marks, feet + Vector2((float(i) * 2.0 - 1.0) * half * 0.7, 1.0), Color(STONE.darkened(0.2), 0.8))
+	if enemy.remedied and enemy.has_status(&"poison"):
+		var rise := fposmod(_elapsed * 0.8 + salt, 1.0)
+		_dot(_marks, feet + Vector2(sin(salt) * half, -tall * 0.4 - rise * 6.0), Color(GROVE.lerp(Color.WHITE, 0.4), 1.0 - rise))
+	if enemy.swarm > 0.0 or _is_charging(enemy) or enemy.momentum > 0.0 or enemy.spur > 0.0:
+		var color := GROVE if enemy.swarm > 0.0 else (SKY if enemy.spur > 0.0 else (FLAME if enemy.momentum > 0.0 else STONE))
+		for i in 3:
+			var trail := fposmod(_elapsed * 3.0 + salt + float(i) * 0.33, 1.0)
+			var at := feet + Vector2(-side * (half * 0.6 + trail * 7.0), -1.0 - float(i) * 2.0)
+			_dot(_marks, at, Color(color, 0.85 * (1.0 - trail)))
+	if enemy.raised:
+		var flicker := 0.6 + 0.3 * sin(_elapsed * 9.0 + salt)
+		_dot(_marks, (feet + Vector2(side * visual.size.x * 0.04, -visual.size.y * 0.42)).floor(), Color(GROVE.lerp(NECRO, 0.5), flicker))
+	if enemy.has_power and enemy.downed <= 0.0 and AURA_COLORS.has(enemy.data.power):
+		var reach := enemy.data.power_radius / SCALE
+		var throb := 0.12 + 0.06 * sin(_elapsed * 2.5 + salt)
+		_draw_ring(feet, reach, clampi(int(reach * 0.8), 24, 96), Color(AURA_COLORS[enemy.data.power], throb), 1.0)
+
+
+const AURA_COLORS := {
+	&"bulwark": Color(0.9, 0.66, 0.34),
+	&"steadfast": Color(0.75, 0.62, 0.45),
+	&"hush": Color(0.55, 0.6, 0.75),
+	&"remedy": Color(0.5, 0.85, 0.3),
+}
+
+
+## What the hordes do to a tower: fog round it, a net over it, an eclipse on it, a hush on its effects.
+func _draw_tower_hexes(visual: TowerVisual) -> void:
+	var tower := visual.tower
+	var base := visual.root.position
+	var salt := float(tower.id) * 1.9
+	if tower.fog_left > 0.0:
+		for i in 8:
+			var drift := fposmod(_elapsed * 0.4 + salt + float(i) * 0.125, 1.0)
+			var at := base + Vector2(cos(TAU * float(i) / 8.0 + drift) * 10.0, -6.0 + sin(TAU * float(i) / 8.0 + drift) * 4.0)
+			_marks.draw_rect(Rect2(at.floor(), Vector2(2, 1)), Color(0.82, 0.86, 0.88, 0.5))
+	if tower.net_left > 0.0:
+		var c := Color(0.78, 0.72, 0.55, 0.85)
+		for i in 3:
+			var x := float(i) * 4.0 - 4.0
+			_marks.draw_line(base + Vector2(x - 4, -18), base + Vector2(x + 4, -2), c, 1.0)
+			_marks.draw_line(base + Vector2(x + 4, -18), base + Vector2(x - 4, -2), c, 1.0)
+	if tower.eclipse_left > 0.0:
+		var throb := 0.5 + 0.3 * sin(_elapsed * 3.0 + salt)
+		_draw_ring(base + Vector2(0, -22), 3.0, 12, Color(HOLLOW, throb), 1.0)
+		_dot(_marks, base + Vector2(0, -22), Color(0.05, 0.02, 0.1, throb))
+	if tower.hushed:
+		for i in 3:
+			_dot(_marks, base + Vector2(float(i) * 3.0 - 3.0, -24.0), Color(0.55, 0.6, 0.75, 0.6))
 
 
 ## Height of an enemy's sprite in board pixels, for placing its health bar. 0 if it has no art.
