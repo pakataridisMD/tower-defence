@@ -62,7 +62,7 @@ func tick(delta: float) -> void:
 			enemy.shield_timer -= delta
 			if enemy.shield_timer <= 0.0:
 				enemy.shield_timer = data.shield_interval
-				enemy.barrier = enemy.max_health * data.shield_amount
+				enemy.barrier = enemy.max_health * data.shield_amount * enemy.boss_power
 				enemy.barrier_left = maxf(0.5, data.shield_duration)
 				_sim.boss_ability.emit(enemy, &"shield", [])
 		if data.bind_interval > 0.0 and data.bind_duration > 0.0 and not held:
@@ -75,7 +75,7 @@ func tick(delta: float) -> void:
 			enemy.doom_timer -= delta
 			if enemy.doom_timer <= 0.0:
 				var target := _doom_target(enemy)
-				enemy.doom_timer = data.doom_interval if target != null else 1.0
+				enemy.doom_timer = enemy.doom_interval() if target != null else 1.0
 				if target != null:
 					_fireballs.append([enemy, target, FIREBALL_FLIGHT])
 					_sim.boss_ability.emit(enemy, &"fireball", [target])
@@ -84,7 +84,7 @@ func tick(delta: float) -> void:
 
 ## Heals a share of its life.
 func _heal(enemy: SimEnemy) -> void:
-	enemy.health = minf(enemy.max_health, enemy.health + enemy.max_health * enemy.data.heal_amount)
+	enemy.health = minf(enemy.max_health, enemy.health + enemy.max_health * enemy.data.heal_amount * enemy.boss_power)
 	_sim.boss_ability.emit(enemy, &"heal", [])
 
 
@@ -99,7 +99,7 @@ func _bind(enemy: SimEnemy) -> Array[SimTower]:
 	free.sort_custom(func(a: SimTower, b: SimTower) -> bool: return _strength(a) > _strength(b))
 	var bound: Array[SimTower] = []
 	for tower in free.slice(0, maxi(1, data.bind_count)):
-		tower.silenced = maxf(tower.silenced, data.bind_duration)
+		tower.silenced = maxf(tower.silenced, data.bind_duration * enemy.boss_power)
 		bound.append(tower)
 	if not bound.is_empty():
 		_sim.boss_ability.emit(enemy, &"bind", bound)
