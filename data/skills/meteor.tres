@@ -68,6 +68,6 @@ cooldown = 45.0
 radius = 90.0
 damage = 28.0
 status_effects = Array[ExtResource("2_status")]([SubResource("Effect_0")])
-impact_delay = 0.6
+impact_delay = 0.35
 strike_gap = 0.22
 ranks = Array[ExtResource("4_rank")]([SubResource("Rank_1"), SubResource("Rank_2"), SubResource("Rank_3"), SubResource("Rank_4"), SubResource("Rank_5")])
