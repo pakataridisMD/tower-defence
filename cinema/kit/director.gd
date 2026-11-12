@@ -12,6 +12,9 @@ var film: Object
 var edit: Array = []
 var g := 0.0
 var t_end := 0.0
+var t_start := 0.0
+var frame := 0
+var frames := 0
 var cur := -1
 var stage: Node2D
 
@@ -33,9 +36,13 @@ func _ready() -> void:
 	edit = film.edit()
 	t_end = edit[-1][1]
 	if OS.get_environment("T0") != "":
-		g = float(OS.get_environment("T0"))
+		t_start = float(OS.get_environment("T0"))
 	if OS.get_environment("T1") != "":
 		t_end = float(OS.get_environment("T1"))
+	# Frame n shows time t_start + n / FPS, for n in [0, frames). Counting whole frames keeps chunks that are
+	# rendered separately exactly back to back, so the joined film stays in sync with the music.
+	frames = maxi(1, roundi((t_end - t_start) * FPS))
+	g = t_start
 
 	modulate_node = CanvasModulate.new()
 	add_child(modulate_node)
@@ -81,9 +88,9 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if g >= t_end:
-		get_tree().quit()
+	if frame >= frames:
 		return
+	g = t_start + frame / FPS
 	var i := 0
 	while i < edit.size() - 1 and g >= edit[i][1]:
 		i += 1
@@ -126,7 +133,10 @@ func _process(_delta: float) -> void:
 	post_mat.set_shader_parameter("impact", 1.0 if st.impact else 0.0)
 	post_mat.set_shader_parameter("aberr", st.aberr)
 	post_mat.set_shader_parameter("fade", clampf(st.fade, 0.0, 1.0))
-	g += 1.0 / FPS
+	frame += 1
+	if frame >= frames:
+		# Movie Maker still writes the frame drawn this iteration, then the tree quits before the next one.
+		get_tree().quit()
 
 
 func Stage_ease(a: float) -> float:
