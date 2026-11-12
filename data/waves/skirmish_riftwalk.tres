@@ -1015,5 +1015,5 @@ script = ExtResource("1_s")
 id = &"skirmish_riftwalk"
 display_name = "Riftwalk waves"
 health_growth = 1.1
-health_scale = 1.47
+health_scale = 1.2
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r13"), SubResource("r23"), SubResource("r32"), SubResource("r44"), SubResource("r54"), SubResource("r65"), SubResource("r75"), SubResource("r89"), SubResource("r101"), SubResource("r113"), SubResource("r125")])

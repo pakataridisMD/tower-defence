@@ -953,5 +953,5 @@ script = ExtResource("1_s")
 id = &"skirmish_frozen_ford"
 display_name = "Frozen Ford waves"
 health_growth = 1.1
-health_scale = 0.96
+health_scale = 1.41
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r12"), SubResource("r21"), SubResource("r29"), SubResource("r40"), SubResource("r49"), SubResource("r59"), SubResource("r68"), SubResource("r81"), SubResource("r92"), SubResource("r103"), SubResource("r114")])

@@ -87,10 +87,10 @@ func _init(
 static func for_sim(p_sim: RunSim) -> AutoPlayer:
 	var stage := p_sim.config.stage
 	var bot: AutoPlayer
-	if stage != null and stage.allowed_elements.is_empty() and not stage.horde_element.is_empty():
-		# Every element is open: build round the one the land's horde fears.
-		var fear := p_sim.config.element_at(ElementRules.opposite_index(p_sim.config.element_index(stage.horde_element)))
-		var counter := plan_for_elements(p_sim.config, fear.id)
+	var main := main_element(p_sim.config)
+	if (stage == null or stage.allowed_elements.is_empty()) and not main.is_empty():
+		# Every element is open and the waves are mostly one: build round the element it fears.
+		var counter := counter_plan(p_sim.config, main)
 		bot = AutoPlayer.new(p_sim, counter[0], counter[1])
 	elif stage == null or stage.allowed_elements.is_empty():
 		bot = AutoPlayer.new(p_sim)
@@ -101,6 +101,38 @@ static func for_sim(p_sim: RunSim) -> AutoPlayer:
 	if p_sim.is_assault():
 		bot.max_towers = 100 if p_sim.is_counter_assault() else 70
 	return bot
+
+
+## The element most of the run's enemies are (a land's horde), or empty when no element has
+## MAIN_SHARE of them. A stage says so itself (StageData.horde_element); a skirmish map's waves are counted.
+static func main_element(config: RunConfig) -> StringName:
+	if config.stage != null and not config.stage.horde_element.is_empty():
+		return config.stage.horde_element
+	if config.wave_set == null:
+		return &""
+	var counts: Dictionary = {}
+	var total := 0
+	for wave in config.wave_set.waves:
+		for group in wave.groups:
+			var data: EnemyData = config.enemies.get(group.enemy)
+			if data == null or data.tags.has(&"boss"):
+				continue
+			var el := data.element if not data.element.is_empty() else (group.element if not group.element.is_empty() else wave.element)
+			counts[el] = counts.get(el, 0) + group.count
+			total += group.count
+	for el: StringName in counts:
+		if not el.is_empty() and float(counts[el]) >= MAIN_SHARE * total:
+			return el
+	return &""
+
+
+const MAIN_SHARE := 0.55
+
+
+## [nodes, towers] built round the element `main` fears and its neighbours.
+static func counter_plan(config: RunConfig, main: StringName) -> Array:
+	var fear := config.element_at(ElementRules.opposite_index(config.element_index(main)))
+	return plan_for_elements(config, fear.id)
 
 
 ## Node and tower priorities built around one home element and its two neighbours on the ring:

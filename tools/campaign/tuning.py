@@ -46,11 +46,12 @@ TUNING["assault_1"] = {"health": 2.3, "boss": 0.04, "lives": 30}
 # little lower.
 TUNING["prototype"] = {"health": 0.85}
 # The land skirmish maps' own waves (data/waves/skirmish_<map>.tres), from
-# `campaign_balance.gd -- --skirmish --map=<map>` with no meta tree, x0.95. gen_campaign.py triples them
+# `campaign_balance.gd -- --skirmish --map=<map>` with no meta tree, x0.95, played by a bot that brings the
+# element the land's horde fears (AutoPlayer.counter_plan). gen_campaign.py triples them
 # (SKIRMISH_HARDNESS), as it does the prototype waves above.
-TUNING["skirmish_cinderfall"] = {"health": 0.3}
-TUNING["skirmish_stormcrown"] = {"health": 0.41}
-TUNING["skirmish_thornwild"] = {"health": 0.55}
-TUNING["skirmish_frozen_ford"] = {"health": 0.32}
-TUNING["skirmish_red_gorge"] = {"health": 0.42}
-TUNING["skirmish_riftwalk"] = {"health": 0.49}
+TUNING["skirmish_cinderfall"] = {"health": 0.39}
+TUNING["skirmish_stormcrown"] = {"health": 0.84}
+TUNING["skirmish_thornwild"] = {"health": 0.64}
+TUNING["skirmish_frozen_ford"] = {"health": 0.47}
+TUNING["skirmish_red_gorge"] = {"health": 0.63}
+TUNING["skirmish_riftwalk"] = {"health": 0.4}

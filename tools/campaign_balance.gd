@@ -332,8 +332,17 @@ func _tune_skirmish(registry: Node) -> void:
 	var high := 5.0
 	for step in 9:
 		waves.health_scale = (low + high) * 0.5
-		var first := _play_skirmish(registry, AutoPlayer.DEFAULT_NODES, AutoPlayer.DEFAULT_TOWERS)
-		var second := _play_skirmish(registry, OTHER_NODES, OTHER_TOWERS)
+		var first := -1.0
+		var second := -1.0
+		var main := AutoPlayer.main_element(config)
+		if main.is_empty():
+			first = _play_skirmish(registry, AutoPlayer.DEFAULT_NODES, AutoPlayer.DEFAULT_TOWERS)
+			second = _play_skirmish(registry, OTHER_NODES, OTHER_TOWERS)
+		else:
+			# A land's map: mostly one element, so it is tuned for the player who brings what it fears.
+			var plan := AutoPlayer.counter_plan(config, main)
+			first = _play_skirmish(registry, plan[0], plan[1])
+			second = first
 		print("skirmish scale %.2f: default plan %.2f, other plan %.2f" % [waves.health_scale, first, second])
 		if minf(first, second) > 0.0 and (first + second) * 0.5 >= SKIRMISH_TARGET:
 			low = waves.health_scale

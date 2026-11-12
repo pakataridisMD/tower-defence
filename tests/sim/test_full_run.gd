@@ -79,6 +79,8 @@ func test_a_sensible_strategy_wins_every_land_map() -> void:
 		if not map.skirmish or map.wave_set == &"prototype":
 			continue
 		maps += 1
-		var sim := _play(AutoPlayer.DEFAULT_NODES, AutoPlayer.DEFAULT_TOWERS, map.id)
+		# Each land's waves are mostly its horde's element: the sensible player brings what it fears.
+		var plan := AutoPlayer.counter_plan(_veteran_config(map.id), AutoPlayer.main_element(_veteran_config(map.id)))
+		var sim := _play(plan[0], plan[1], map.id)
 		assert_eq(sim.state, RunSim.State.WON, String(map.id))
 	assert_gte(maps, 6, "one skirmish map for each land")
