@@ -915,7 +915,7 @@ def skirt(name, J, top_z, bottom_z, r_top, r_bottom, mat, rig, y_off=0.0, leg_sh
         gh.add([v.index], 1 - share, "REPLACE"); gl.add([v.index], share * fl, "REPLACE"); gr.add([v.index], share * (1 - fl), "REPLACE")
     o.parent = rig
     o.modifiers.new("rig", "ARMATURE").object = rig
-    tx = bpy.data.textures.new(name + "_folds", "WOOD"); tx.wood_type = "BANDNOISE"; tx.noise_scale = 0.08; tx.turbulence = 3
+    tx = bpy.data.textures.new(name + "_folds", "WOOD"); tx.wood_type = "BANDNOISE"; tx.noise_scale = 0.05; tx.turbulence = 0.8
     d = o.modifiers.new("folds", "DISPLACE"); d.texture = tx; d.direction = "NORMAL"; d.strength = folds; d.texture_coords = "OBJECT"
     o.modifiers.new("thick", "SOLIDIFY").thickness = 0.008
     o.modifiers.new("sub", "SUBSURF").levels = 1
@@ -1077,3 +1077,289 @@ POSTURES["oswin"] = dict(HUMAN_POSTURE, chest=(10.0, (1, 0, 0)), head=(-6.0, (1,
 HUMANS["oswin"] = (dict(height=2.3, gender=1.0, muscle=0.25, weight=0.2, tall=0.85, age=0.92,
                         targets={"nose/nose-hump-incr": 0.4, "cheek/l-cheek-bones-incr": 0.5, "cheek/r-cheek-bones-incr": 0.5}),
                    oswin_mh)
+
+
+def satin(name, rgb, trims=(), trim_rgb=(0.85, 0.6, 0.2)):
+    """Satin with gold trim bands: `trims` are (z_lo, z_hi) world heights painted gold (hems, waistbands)."""
+    m = C.mat(name, rgb, 0.35)
+    nt = m.node_tree; b = nt.nodes["Principled BSDF"]
+    b.inputs["Sheen Weight"].default_value = 0.6; b.inputs["Sheen Roughness"].default_value = 0.3
+    gold = 0.0
+    if trims:
+        geo = nt.nodes.new("ShaderNodeNewGeometry")
+        sep = nt.nodes.new("ShaderNodeSeparateXYZ"); nt.links.new(geo.outputs["Position"], sep.inputs[0])
+        acc = None
+        for lo, hi in trims:
+            a = nt.nodes.new("ShaderNodeMath"); a.operation = "GREATER_THAN"; a.inputs[1].default_value = lo
+            c = nt.nodes.new("ShaderNodeMath"); c.operation = "LESS_THAN"; c.inputs[1].default_value = hi
+            nt.links.new(sep.outputs["Z"], a.inputs[0]); nt.links.new(sep.outputs["Z"], c.inputs[0])
+            mu = nt.nodes.new("ShaderNodeMath"); mu.operation = "MULTIPLY"
+            nt.links.new(a.outputs[0], mu.inputs[0]); nt.links.new(c.outputs[0], mu.inputs[1])
+            if acc is None:
+                acc = mu.outputs[0]
+            else:
+                mx = nt.nodes.new("ShaderNodeMath"); mx.operation = "MAXIMUM"
+                nt.links.new(acc, mx.inputs[0]); nt.links.new(mu.outputs[0], mx.inputs[1]); acc = mx.outputs[0]
+        col = nt.nodes.new("ShaderNodeMix"); col.data_type = "RGBA"
+        col.inputs[6].default_value = (*rgb, 1); col.inputs[7].default_value = (*trim_rgb, 1)
+        nt.links.new(acc, col.inputs["Factor"]); nt.links.new(col.outputs[2], b.inputs["Base Color"])
+        nt.links.new(acc, b.inputs["Metallic"])
+    return m
+
+
+def six_mail(name="six_mail"):
+    """Fine mail in six sectors around the body, one per element colour (the Queen's collar)."""
+    m = C.mat(name, (0.6, 0.6, 0.6), 0.35, metal=1.0)
+    nt = m.node_tree; b = nt.nodes["Principled BSDF"]
+    tc = nt.nodes.new("ShaderNodeTexCoord")
+    sep = nt.nodes.new("ShaderNodeSeparateXYZ"); nt.links.new(tc.outputs["Object"], sep.inputs[0])
+    at = nt.nodes.new("ShaderNodeMath"); at.operation = "ARCTAN2"
+    nt.links.new(sep.outputs["X"], at.inputs[0]); nt.links.new(sep.outputs["Y"], at.inputs[1])
+    nm = nt.nodes.new("ShaderNodeMapRange"); nm.inputs["From Min"].default_value = -math.pi; nm.inputs["From Max"].default_value = math.pi
+    nt.links.new(at.outputs[0], nm.inputs["Value"])
+    cr = nt.nodes.new("ShaderNodeValToRGB"); cr.color_ramp.interpolation = "CONSTANT"
+    els = cr.color_ramp.elements
+    tint = lambda c: (*[0.62 * 0.75 + x * 0.25 for x in c], 1)   # mostly silver, a breath of each element
+    els[0].position = 0.0; els[0].color = tint(C.ELEMENTS[0])
+    els[1].position = 1 / 6; els[1].color = tint(C.ELEMENTS[1])
+    for i in range(2, 6):
+        e = els.new(i / 6); e.color = tint(C.ELEMENTS[i])
+    nt.links.new(nm.outputs["Result"], cr.inputs["Fac"]); nt.links.new(cr.outputs["Color"], b.inputs["Base Color"])
+    vo = nt.nodes.new("ShaderNodeTexVoronoi"); vo.feature = "DISTANCE_TO_EDGE"; vo.inputs["Scale"].default_value = 260
+    nt.links.new(tc.outputs["Object"], vo.inputs["Vector"])
+    bu = nt.nodes.new("ShaderNodeBump"); bu.inputs["Strength"].default_value = 0.8; bu.invert = True
+    nt.links.new(vo.outputs["Distance"], bu.inputs["Height"]); nt.links.new(bu.outputs["Normal"], b.inputs["Normal"])
+    return m
+
+
+def braid(rig, J, mat, length=0.75, lobes=36, r0=0.028, r1=0.014):
+    """A single long braid from the back of the head down the spine: alternating twisted lobes on a gentle curve."""
+    hy = J["head"].y; top = Vector((0, hy + 0.1, J["l-eye"].z - 0.02))
+    parts = []
+    for i in range(lobes):
+        t = i / (lobes - 1)
+        z = top.z - length * t
+        y = top.y + 0.04 * math.sin(min(1, t * 3) * math.pi / 2) + (0.03 if z < J["neck"].z else 0.0) * min(1, (J["neck"].z - z) * 6)
+        r = r0 + (r1 - r0) * t
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1, segments=16, ring_count=10,
+                                             location=((r * 0.45) * (1 if i % 2 else -1), y, z))
+        o = bpy.context.object; o.scale = (r, r * 0.75, r * 2.1); o.rotation_euler.y = 0.55 * (1 if i % 2 else -1)
+        parts.append(o)
+    for o in parts[1:]:
+        o.select_set(True)
+    bpy.context.view_layer.objects.active = parts[0]; parts[0].select_set(True)
+    bpy.ops.object.join()
+    br = bpy.context.object; br.name = "braid"; br.data.materials.append(mat)
+    bpy.ops.object.shade_smooth()
+    on_bone(br, rig, "head")
+    return br
+
+
+def circlet(rig, J, mat, points=6):
+    """A thin silver circlet with six points around the brow."""
+    eye = J["l-eye"]; hy = J["head"].y
+    z = eye.z + 0.05
+    bpy.ops.mesh.primitive_torus_add(major_radius=0.097, minor_radius=0.0045, major_segments=64, location=(0, hy - 0.005, z))
+    t = bpy.context.object; t.name = "circlet"; t.scale = (1.0, 1.12, 1.0); t.rotation_euler.x = math.radians(-12)
+    t.data.materials.append(mat); bpy.ops.object.shade_smooth(); on_bone(t, rig, "head")
+    out = [t]
+    for k in range(points):
+        a = -math.pi / 2 + (k - (points - 1) / 2) * 0.42   # fanned across the brow and temples
+        x, y = math.cos(a) * 0.097, hy - 0.005 + math.sin(a) * 0.097 * 1.12
+        bpy.ops.mesh.primitive_cone_add(radius1=0.006, radius2=0.0, depth=0.03 if k in (2, 3) else 0.022, vertices=8,
+                                        location=(x, y, z + 0.013 - 0.004 * math.sin(a) * 1.0))
+        p = bpy.context.object; p.name = "circlet_point"; p.data.materials.append(mat); on_bone(p, rig, "head"); out.append(p)
+    return out
+
+
+def ysolde_mh(rig, body, ex, J, blind=False):
+    """Queen Ysolde: 24, slight, very straight-backed, sharp face. White and gold gown under a light six-coloured mail
+    collar; thin silver circlet of six points; dark hair in a single long braid. (blind: black-gold blindfold, braid cut
+    short, grey soldier's cloak.)"""
+    SK = skin_mat_real((0.6, 0.4, 0.31), lips=(0.45, 0.17, 0.16), lids=(0.4, 0.24, 0.21))
+    sh, el, wr = J["l-shoulder"], J["l-elbow"], J["l-hand"]
+    neck, pel, kn, an = J["neck"].z, J["pelvis"].z, J["l-knee"].z, J["l-ankle"].z
+    s4, s1 = J["spine-4"].z, J["spine-1"].z
+    eye = J["l-eye"]
+    ax = lambda c: abs(c.x)
+    body.data.materials.append(SK)
+    GOWN = satin("gown_white", (0.78, 0.76, 0.7), trims=((0.0, 0.07), (s4 + 0.01, s4 + 0.045)))
+    SLEEVE = satin("gown_sleeve", (0.78, 0.76, 0.7), trims=())
+    SILVER = C.mat("silver", (0.85, 0.86, 0.9), 0.18, metal=1.0)
+    parts = []
+    parts.append(wear(body, "bodice", lambda c: (ax(c) < sh.x + 0.02 and pel - 0.08 < c.z < s1 + 0.02)
+                      or (ax(c) >= sh.x + 0.02 and ax(c) < wr.x - 0.03 and c.z > neck - 0.4), GOWN, 0.012, 0.008, smooth=10))
+    parts.append(skirt("gown_skirt", J, s4 + 0.03, 0.005, 0.16, 0.5, GOWN, rig, folds=0.03, leg_share=0.6, rings=34))
+    parts.append(wear(body, "mail_collar", lambda c: ax(c) < sh.x + 0.07 and s1 - 0.04 < c.z < neck - 0.02, six_mail(), 0.022, 0.006, smooth=8))
+    for side, sd in ((".l", 1), (".r", -1)):
+        S = lambda c, sd=sd: c.x * sd > 0
+        parts.append(hull_plate(body, rig, "slipper" + side, lambda c, S=S: S(c) and c.z < an + 0.04 and ax(c) < 0.4,
+                                C.mat("slipper", (0.6, 0.45, 0.2), 0.4, metal=0.6), "foot" + side, 0.008, voxel=0.012))
+    hide_under(body, lambda c: c.z < an + 0.05)
+    scalp, hc = face_and_hair_points(J)
+    DARK = dict(melanin=0.92, redness=0.25)
+    parts.append(comb_hair(rig, scalp_points(body, scalp, 20000), hc, "ysolde_hair", 0.11,
+                           lambda p: (0, 1, 0.1) if p.y < hc.y - 0.02 else (-(p.x) * 4, 1, -0.6), jitter=0.12, lift=0.003, **DARK))
+    HAIRM = hair_mat((0.03, 0.018, 0.012))
+    if not blind:
+        parts.append(braid(rig, J, HAIRM))
+        parts += circlet(rig, J, SILVER)
+    else:
+        parts.append(braid(rig, J, HAIRM, length=0.18, lobes=7))
+        bf = wear(body, "blindfold", lambda c: eye.z - 0.025 < c.z < eye.z + 0.03 and c.z > J["l-upperlid"].z - 0.05 and ax(c) < 0.11
+                  and c.y < J["head"].y + 0.12, satin("blindfold", (0.02, 0.02, 0.025), trims=()), 0.008, 0.004)
+        parts.append(bf)
+    brow = lambda c: eye.z + 0.02 < c.z < eye.z + 0.034 and 0.012 < ax(c) < 0.06 and c.y < eye.y
+    parts.append(comb_hair(rig, scalp_points(body, brow, 300, seed=9), hc, "ysolde_brows", 0.012,
+                           lambda p: (1 if p.x > 0 else -1, -0.2, 0.1), segs=4, jitter=0.1, radius=0.0007, **DARK))
+    for h in ex:
+        parts += eyes_for(rig, h, iris_rgb=(0.16, 0.1, 0.06))
+    return [body] + parts
+
+
+POSTURES["ysolde"] = dict(HUMAN_POSTURE, upperarm=(55.0, (0, 1, 0)), lowerarm=(-35.0, (0, 0, 1)), upperleg=(8.0, (0, 1, 0)))
+HUMANS["ysolde"] = (dict(height=2.05, gender=0.0, muscle=0.3, weight=0.25, tall=0.6,
+                         targets={"chin/chin-prominent-incr": 0.4, "cheek/l-cheek-bones-incr": 0.6, "cheek/r-cheek-bones-incr": 0.6,
+                                  "nose/nose-scale-horiz-decr": 0.4}), ysolde_mh)
+
+
+# ------------------------------------------------------------------ the Unbound: Heralds
+def glow_mat(name, rgb, strength):
+    m = bpy.data.materials.new(name); m.use_nodes = True
+    nt = m.node_tree; out = nt.nodes["Material Output"]
+    for n in list(nt.nodes):
+        if n.type != "OUTPUT_MATERIAL":
+            nt.nodes.remove(n)
+    e = nt.nodes.new("ShaderNodeEmission"); e.inputs["Color"].default_value = (*rgb, 1); e.inputs["Strength"].default_value = strength
+    nt.links.new(e.outputs[0], out.inputs["Surface"])
+    return m
+
+
+def veil_mat(name, rgb, alpha=0.82):
+    m = robe_cloth(name, rgb, rough=0.95, sheen=0.08)
+    b = m.node_tree.nodes["Principled BSDF"]
+    b.inputs["Alpha"].default_value = alpha
+    return m
+
+
+def head_veil(rig, J, mat, drop=0.75, open_front=0.75):
+    """A mourning veil over the head and falling past the shoulders, open in front so the face shows."""
+    top = J["head-2"].z + 0.03; hy = J["head"].y
+    bm = bmesh.new(); rings, segs = 24, 64
+    rows = []
+    for i in range(rings + 1):
+        t = i / rings
+        z = top - drop * t
+        r = 0.02 + 0.12 * min(1, t * 4) ** 0.6 + 0.2 * t ** 1.5
+        row = []
+        for k in range(segs):
+            a = 2 * math.pi * k / segs - math.pi / 2       # a = -pi/2 is the face (-Y)
+            row.append(bm.verts.new((math.cos(a) * r, hy + math.sin(a) * r * 1.05, z)))
+        rows.append(row)
+    keep_face = lambda k: abs(((2 * math.pi * k / segs) + math.pi) % (2 * math.pi) - math.pi) < open_front / 2
+    for i in range(rings):
+        t = i / rings
+        for k in range(segs):
+            if t > 0.12 and keep_face(k) and keep_face((k + 1) % segs):
+                continue
+            bm.faces.new((rows[i][k], rows[i][(k + 1) % segs], rows[i + 1][(k + 1) % segs], rows[i + 1][k]))
+    me = bpy.data.meshes.new("veil"); bm.to_mesh(me); bm.free()
+    o = bpy.data.objects.new("veil", me); C.sc.collection.objects.link(o)
+    tx = bpy.data.textures.new("veil_folds", "WOOD"); tx.wood_type = "BANDNOISE"; tx.noise_scale = 0.04; tx.turbulence = 1
+    d = o.modifiers.new("folds", "DISPLACE"); d.texture = tx; d.strength = 0.02; d.texture_coords = "OBJECT"
+    o.modifiers.new("thick", "SOLIDIFY").thickness = 0.004
+    o.modifiers.new("sub", "SUBSURF").levels = 1
+    o.data.materials.append(mat)
+    for p in me.polygons:
+        p.use_smooth = True
+    on_bone(o, rig, "head")
+    return o
+
+
+def wisps(rig, centre_z, rgb=(0.7, 0.55, 1.0), n=5, radius=0.9, energy=15, seed=4):
+    """Pale ghost-lights that drift around a figure (the Pale Vesper's choir)."""
+    import random as R
+    R.seed(seed)
+    out = []
+    piv = bpy.data.objects.new("wisp_pivot", None); C.sc.collection.objects.link(piv)
+    piv.parent = rig; piv.location = (0, 0, centre_z)
+    piv.rotation_euler.z = 0; piv.keyframe_insert("rotation_euler", frame=1)
+    piv.rotation_euler.z = 2 * math.pi; piv.keyframe_insert("rotation_euler", frame=C.sc.frame_end + 240)
+    M = glow_mat("wisp", rgb, 14)
+    for i in range(n):
+        a = 2 * math.pi * i / n + R.uniform(-0.3, 0.3)
+        r = radius * R.uniform(0.7, 1.1)
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=0.018, location=(math.cos(a) * r, math.sin(a) * r, R.uniform(-0.6, 0.5)))
+        w = bpy.context.object; w.name = "wisp"; w.data.materials.append(M); w.parent = piv
+        li = bpy.data.lights.new("wisp_light", "POINT"); li.energy = energy; li.color = rgb; li.shadow_soft_size = 0.05
+        lo = bpy.data.objects.new("wisp_light", li); C.sc.collection.objects.link(lo); lo.parent = w
+        out += [w, lo]
+    out.append(piv)
+    return out
+
+
+def grey_dust(emitter, rate=4000, rgb=(0.55, 0.55, 0.58)):
+    """Grey dust leaking off a Herald's outline: tiny glowing motes drifting up and away."""
+    bpy.ops.mesh.primitive_ico_sphere_add(radius=0.006, subdivisions=1, location=(0, 0, -50))
+    mote = bpy.context.object; mote.name = "dust_mote"; mote.data.materials.append(glow_mat("dust", rgb, 1.2))
+    ps = emitter.modifiers.new("dust", "PARTICLE_SYSTEM").particle_system
+    st = ps.settings; st.count = rate; st.frame_start = -60; st.frame_end = C.sc.frame_end; st.lifetime = 70
+    st.lifetime_random = 0.5; st.normal_factor = 0.08; st.factor_random = 0.05
+    st.effector_weights.gravity = -0.03; st.brownian_factor = 0.06
+    st.render_type = "OBJECT"; st.instance_object = mote; st.particle_size = 0.45; st.size_random = 0.7
+    st.use_modifier_stack = True
+    return ps
+
+
+def vesper_mh(rig, body, ex, J):
+    """The Pale Vesper, the Hollow Herald: a thin, very tall singer in grey mourning veils, mouth always open in song,
+    pale violet ghost-lights following like a choir. Eyes and mouth are empty grey light; grey dust leaks off her."""
+    SK = skin_mat_real((0.38, 0.36, 0.37), lips=(0.2, 0.18, 0.2), lids=(0.18, 0.17, 0.2))
+    SK.node_tree.nodes["Principled BSDF"].inputs["Subsurface Weight"].default_value = 0.05
+    body.data.materials.append(SK)
+    GREY = veil_mat("vesper_grey", (0.05, 0.05, 0.055), alpha=1.0)
+    VEIL = veil_mat("vesper_veil", (0.035, 0.035, 0.04), alpha=0.8)
+    LIGHT = glow_mat("hollow_light", (0.8, 0.8, 0.82), 18)
+    sh, el, wr = J["l-shoulder"], J["l-elbow"], J["l-hand"]
+    neck, pel, an = J["neck"].z, J["pelvis"].z, J["l-ankle"].z
+    s4 = J["spine-4"].z
+    ax = lambda c: abs(c.x)
+    parts = []
+    gown = wear(body, "vesper_gown", lambda c: (ax(c) < sh.x + 0.02 and pel - 0.1 < c.z < neck - 0.03)
+                or (ax(c) >= sh.x + 0.02 and ax(c) < wr.x - 0.04 and c.z > neck - 0.4), GREY, 0.015, 0.008, smooth=10)
+    parts.append(gown)
+    sk = skirt("vesper_skirt", J, s4 + 0.02, -0.02, 0.15, 0.55, GREY, rig, folds=0.05, leg_share=0.5, rings=34)
+    parts.append(sk)
+    parts.append(head_veil(rig, J, VEIL, drop=1.0))
+    hide_under(body, lambda c: c.z < an + 0.05)
+    # empty grey light where the eyes and mouth should be
+    for h in ex:
+        vs = [h.matrix_world @ v.co for v in h.data.vertices]
+        c = sum(vs, Vector()) / len(vs); r = max((v - c).length for v in vs)
+        bpy.data.objects.remove(h, do_unlink=True)
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=r * 0.98, location=c)
+        e = bpy.context.object; e.name = "hollow_eye"; e.data.materials.append(LIGHT); on_bone(e, rig, "head"); parts.append(e)
+        li = bpy.data.lights.new("eye_glow", "POINT"); li.energy = 0.6; li.color = (0.85, 0.85, 0.9); li.shadow_soft_size = 0.01
+        lo = bpy.data.objects.new("eye_glow", li); C.sc.collection.objects.link(lo); lo.location = c + Vector((0, -0.03, 0))
+        on_bone(lo, rig, "head"); parts.append(lo)
+    mo = J["mouth"]
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=0.03, location=(0, mo.y + 0.03, mo.z - 0.008))
+    m = bpy.context.object; m.name = "hollow_mouth"; m.scale = (1.1, 0.8, 1.2); m.data.materials.append(LIGHT)
+    on_bone(m, rig, "head"); parts.append(m)
+    parts += wisps(rig, J["spine-2"].z, n=6, radius=0.85)
+    grey_dust(sk, 900); grey_dust(parts[2], 300)
+    return [body] + parts
+
+
+POSTURES["vesper"] = dict(HUMAN_POSTURE, upperarm=(35.0, (0, 1, 0)), head=(-10.0, (1, 0, 0)))
+HUMANS["vesper"] = (dict(height=2.7, gender=0.0, muscle=0.1, weight=0.0, tall=1.0, age=0.6, proportions=0.6,
+                         targets={"expression/units/caucasian/mouth-open": 0.9, "cheek/l-cheek-volume-decr": 0.8,
+                                  "cheek/r-cheek-volume-decr": 0.8, "neck/measure-neck-height-incr": 0.6}), vesper_mh)
+
+
+def lamp(rig, energy):
+    """Set the brightness of a hero's lantern (or staff light) for a shot."""
+    for name in rig["meshes"]:
+        o = bpy.data.objects.get(name)
+        if o is not None and o.type == "LIGHT":
+            o.data.energy = energy

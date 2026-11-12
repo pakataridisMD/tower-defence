@@ -1,16 +1,15 @@
 """0:32 Oswin at the foot of the Gate, lantern-staff raised, six colours of tower light washing over him. (VO 08 ends)"""
 import sys, os, math, random
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-import cine3d as C
+import cine3d as C, hero
 
 C.setup(8.0, seed=15)
 C.canyon(y0=-20, y1=-110, gate_y=-95)
 gate = C.Gate(-95); gate.open_to(C.sec(0), 3.4); gate.open_to(C.sec(8), 2.4)
 C.world(density=0.010, sky=0.03)
 C.moon(2.0)
-oswin = C.char(C.KK + "Mage.glb", (0, -80, 0), 0.25, "Spellcast_Long", 0.0)
-C.recolour(oswin, (0.8, 0.8, 0.82), 0.92)
-C.lantern(oswin, pole=2.4, white=True, energy=800)
+oswin = hero.build_human("oswin", (0, -80, 0), 0.25, "Spellcast_Long")
+hero.lamp(oswin, 800)
 # The towers are off screen behind the camera: their colours fall on him from six directions.
 for i, col in enumerate(C.ELEMENTS):
     a = math.radians(-60 + i * 24)

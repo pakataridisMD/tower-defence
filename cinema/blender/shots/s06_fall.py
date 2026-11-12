@@ -1,7 +1,7 @@
 """0:40 The ground gives way and Oswin falls through. His lantern is still lit. (VO 09)"""
 import sys, os, math, random
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-import cine3d as C
+import cine3d as C, hero
 
 C.setup(10.0, seed=16)
 gate = C.Gate(-95); gate.open_to(C.sec(0), 2.6)
@@ -15,9 +15,8 @@ for k in range(8):
         c = C.box("shaft", (0, -96 + side * 12, -20 - k * 40), (26, 6, 42), C.M("rock"))
         C.rough_up(c, 3.0, 6.0, 5)
 C.world(density=0.012, sky=0.0, colour=(0.0, 0.0, 0.0))
-oswin = C.char(C.KK + "Mage.glb", (0, -96, 0), 0.0, "Jump_Idle", 0.0)
-C.recolour(oswin, (0.8, 0.8, 0.82), 0.92)
-glow, lamp = C.lantern(oswin, pole=2.4, white=True, energy=900)
+oswin = hero.build_human("oswin", (0, -96, 0), 0.0, "Jump_Idle")
+hero.lamp(oswin, 900)
 # He drops away from the camera, slowly tumbling, until only the white point of the lantern is left.
 oswin.keyframe_insert("location", index=2, frame=C.sec(0))
 oswin.location.z = -3; oswin.keyframe_insert("location", index=2, frame=C.sec(2.0))

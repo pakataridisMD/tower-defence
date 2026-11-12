@@ -1,7 +1,7 @@
 """0:50 Out through the gap and up the Rift road: the Unbound, grey-eyed, with their Herald at the head. (VO 10)"""
 import sys, os, math, random
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-import cine3d as C
+import cine3d as C, hero
 
 C.setup(8.0, seed=17)
 C.canyon(y0=30, y1=-110, gate_y=-95)
@@ -10,8 +10,8 @@ C.world(density=0.006, sky=0.05)
 C.moon(4.0)
 C.light("AREA", (6, -30, 30), (-55, 0, 170), 60000, (0.55, 0.62, 0.85), 20, "wash")
 C.light("AREA", (0, -52, 18), (-75, 0, 180), 15000, (0.7, 0.72, 0.8), 10, "rim")
-herald = C.char(C.SK + "Skeleton_Warrior.glb", (0, -62, 0), math.pi, "Walking_D_Skeletons", 0.0, keep=("Blade", "Axe"), scale=1.6)
-C.grey_eyes(herald, 0.09); C.march(herald, 1.0, sign=1)
+herald = hero.build_human("vesper", (0, -62, 0), math.pi, "Walking_B", 0.0)
+C.march(herald, 1.0, sign=1)
 for i in range(46):
     row, col = divmod(i, 2)
     kind = random.choice(["Skeleton_Minion", "Skeleton_Minion", "Skeleton_Warrior", "Skeleton_Rogue", "Skeleton_Mage"])
