@@ -119,8 +119,13 @@ def storm_cloud(name, rgb=(0.22, 0.24, 0.29), density=40.0, bolt_rgb=(0.75, 0.85
     nt.links.new(warp.outputs["Color"], wv.inputs[0]); nt.links.new(tc.outputs["Object"], wv.inputs[2])
     vo = _n(nt, "ShaderNodeTexVoronoi", _feature="DISTANCE_TO_EDGE", Scale=4.0)
     nt.links.new(wv.outputs[0], vo.inputs["Vector"])
-    th = _n(nt, "ShaderNodeMath", _operation="LESS_THAN"); th.inputs[1].default_value = 0.0035
-    nt.links.new(vo.outputs["Distance"], th.inputs[0])
+    th0 = _n(nt, "ShaderNodeMath", _operation="LESS_THAN"); th0.inputs[1].default_value = 0.0035
+    nt.links.new(vo.outputs["Distance"], th0.inputs[0])
+    gate = _n(nt, "ShaderNodeTexNoise", _noise_dimensions="4D", Scale=2.0, Detail=1.0)
+    nt.links.new(tc.outputs["Object"], gate.inputs["Vector"]); _animate_w(gate, 1 / 16)
+    gt = _n(nt, "ShaderNodeMath", _operation="GREATER_THAN"); gt.inputs[1].default_value = 0.58
+    nt.links.new(gate.outputs["Fac"], gt.inputs[0])
+    th = _n(nt, "ShaderNodeMath", _operation="MULTIPLY"); nt.links.new(th0.outputs[0], th.inputs[0]); nt.links.new(gt.outputs[0], th.inputs[1])
     tr = _n(nt, "ShaderNodeBsdfTransparent")
     em = _n(nt, "ShaderNodeEmission", Strength=bolts); em.inputs["Color"].default_value = (*bolt_rgb, 1)
     mx = _n(nt, "ShaderNodeMixShader"); nt.links.new(th.outputs[0], mx.inputs[0])
@@ -236,15 +241,18 @@ def starfield(name, cloth=False, black=False, sc=(90.0, 35.0), nebula=0.12, big=
     return m
 
 
-def flame_mat(name, rgb=(1.0, 0.45, 0.08), strength=12.0):
+def flame_mat(name, rgb=(1.0, 0.45, 0.08), strength=12.0, tip_down=False):
     """A soft flame: emission fading to clear toward the tip (object Z) with flicker noise."""
     m, nt, out = _blank(name)
     tc = _n(nt, "ShaderNodeTexCoord")
     sep = _n(nt, "ShaderNodeSeparateXYZ"); nt.links.new(tc.outputs["Generated"], sep.inputs[0])
     no = _n(nt, "ShaderNodeTexNoise", _noise_dimensions="4D", Scale=6.0, Detail=3.0)
     nt.links.new(tc.outputs["Object"], no.inputs["Vector"]); _animate_w(no, 1 / 12)
-    f = _n(nt, "ShaderNodeMath", _operation="SUBTRACT"); nt.links.new(no.outputs["Fac"], f.inputs[0]); nt.links.new(sep.outputs["Z"], f.inputs[1])
-    a = _n(nt, "ShaderNodeMapRange"); a.inputs[1].default_value = -0.4; a.inputs[2].default_value = 0.3
+    z = sep.outputs["Z"]
+    if tip_down:   # a flame cape: solid at the shoulders, burning away toward the hem
+        inv = _n(nt, "ShaderNodeMath", _operation="SUBTRACT"); inv.inputs[0].default_value = 1.0; nt.links.new(z, inv.inputs[1]); z = inv.outputs[0]
+    f = _n(nt, "ShaderNodeMath", _operation="SUBTRACT"); nt.links.new(no.outputs["Fac"], f.inputs[0]); nt.links.new(z, f.inputs[1])
+    a = _n(nt, "ShaderNodeMapRange"); a.inputs[1].default_value = -0.05; a.inputs[2].default_value = 0.4
     nt.links.new(f.outputs[0], a.inputs[0])
     tr = _n(nt, "ShaderNodeBsdfTransparent")
     em = _n(nt, "ShaderNodeEmission", Strength=strength); em.inputs["Color"].default_value = (*rgb, 1)
@@ -456,7 +464,7 @@ def aurath(rig, body, ex, J, corrupt=False):
     """Aurath of the Storms. A tall rider-shape of cloud, lightning for veins, never quite solid; a white lightning
     spine. (corrupt: the Thunderhead, the cloud gone solid and black.)"""
     f = Fig(rig, body, ex, J)
-    skin_as(body, storm_cloud("storm_body", density=10 if not corrupt else 300, black=corrupt))
+    skin_as(body, storm_cloud("storm_body", rgb=(0.55, 0.58, 0.66), density=30 if not corrupt else 300, black=corrupt))
     lumpy(body, 0.06, 0.05)
     BOLT = H.glow_mat("bolt", (0.8, 0.88, 1.0), 40)
     f.add(H.wear(body, "lightning_spine", lambda c: abs(c.x) < 0.012 and f.pel - 0.15 < c.z < J["head-2"].z, BOLT, 0.004, 0.0))

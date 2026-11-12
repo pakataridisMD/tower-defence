@@ -215,7 +215,7 @@ def ashwick(rig, body, ex, J):
     W.skin_as(body, embers())
     herald_eyes(f)
     satchel(f, K.leather("messenger_bag", (0.09, 0.05, 0.025)))
-    cape = K.back_cape(f, W.flame_mat("flame_cape", (1.0, 0.3, 0.03), 1.5), length=f.sh.z - 0.1, width=0.5, name="flame_cape")
+    cape = K.back_cape(f, W.flame_mat("flame_cape", (1.0, 0.22, 0.02), 1.4, tip_down=True), length=f.sh.z - 0.1, width=0.5, name="flame_cape")
     W.point_light(f, "ember_body", (0, J["spine-1"].y - 0.3, f.s2), (1.0, 0.45, 0.12), 40, "chest", 0.2)
     H.grey_dust(body, 500, (0.6, 0.55, 0.5))
     return [body] + f.parts
@@ -266,3 +266,86 @@ for _k, (_props, _fn, _sc, _post) in _HR.items():
     H.SCALE[_k] = _sc
     if _post:
         H.POSTURES[_k] = _post
+
+
+# ------------------------------------------------------------------ Vholt's mount
+def thunderbird(name="thunderbird", loc=(0, 0, 3.0), span=7.0, flap=24):
+    """A great bird of black storm cloud with white-hot eyes, flapping slowly. Built facing -Y like the riders.
+    Returns (root, saddle): parent a rider's rig to `saddle`."""
+    s = span / 7.0
+    root = bpy.data.objects.new(name, None); C.sc.collection.objects.link(root); root.location = loc
+    CLOUD = W.storm_cloud(name + "_cloud", density=140, black=True, bolts=25)
+    SKIN = C.mat(name + "_skin", (0.012, 0.012, 0.015), 0.6)
+    parts = []
+
+    def blob(nm, size, at, mat=CLOUD, parent=root):
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(0, 0, 0), segments=32, ring_count=16)
+        o = bpy.context.object; o.name = name + "_" + nm; o.scale = tuple(v * s for v in size)
+        o.location = tuple(v * s for v in at); o.data.materials.append(mat); bpy.ops.object.shade_smooth()
+        W.lumpy(o, 0.25, 0.05 * s); o.parent = parent; parts.append(o)
+        return o
+    blob("body", (0.7, 1.6, 0.62), (0, 0, 0))
+    blob("chest", (0.62, 0.8, 0.6), (0, -0.9, 0.12))
+    blob("neck", (0.32, 0.55, 0.34), (0, -1.75, 0.45))
+    head = blob("head", (0.3, 0.42, 0.3), (0, -2.25, 0.62))
+    bpy.ops.mesh.primitive_cone_add(vertices=16, radius1=0.12 * s, depth=0.55 * s, location=(0, -2.75 * s, 0.55 * s))
+    bk = bpy.context.object; bk.name = name + "_beak"; bk.rotation_euler.x = math.radians(-100); bk.data.materials.append(SKIN)
+    bk.parent = root; parts.append(bk)
+    EYE = H.glow_mat(name + "_eye", (1.0, 0.97, 0.9), 60)
+    for sx in (-1, 1):
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=0.055 * s, location=(sx * 0.2 * s, -2.42 * s, 0.7 * s))
+        e = bpy.context.object; e.data.materials.append(EYE); e.parent = root; parts.append(e)
+        li = bpy.data.lights.new(name + "_eye_light", "POINT"); li.energy = 15; li.color = (1, 0.97, 0.9); li.shadow_soft_size = 0.05
+        lo = bpy.data.objects.new(name + "_eye_light", li); C.sc.collection.objects.link(lo)
+        lo.location = (sx * 0.22 * s, -2.5 * s, 0.7 * s); lo.parent = root; parts.append(lo)
+    # tail: a fan of long feathers
+    for k in range(7):
+        a = math.radians(-36 + k * 12)
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(math.sin(a) * 1.1 * s, (1.6 + math.cos(a) * 1.1) * s, -0.05 * s))
+        t = bpy.context.object; t.scale = (0.14 * s, 0.9 * s, 0.04 * s); t.rotation_euler.z = -a
+        t.data.materials.append(CLOUD); t.parent = root; parts.append(t)
+    # wings: tapered, ragged trailing edge, on pivots that flap
+    for sx in (-1, 1):
+        piv = bpy.data.objects.new(name + "_wing_pivot", None); C.sc.collection.objects.link(piv)
+        piv.parent = root; piv.location = (sx * 0.55 * s, -0.5 * s, 0.25 * s); parts.append(piv)
+        bm = bmesh.new(); n = 14
+        lead, trail = [], []
+        for i in range(n + 1):
+            t = i / n
+            x = sx * t * 3.2 * s
+            chord = (1.5 - 0.9 * t) * s
+            yl = -0.25 * s + 0.35 * s * t * t
+            ragged = (0.25 * s if i % 2 else 0.0) * (0.3 + t)
+            lead.append(bm.verts.new((x, yl, 0.15 * s * math.sin(t * math.pi))))
+            trail.append(bm.verts.new((x, yl + chord + ragged, 0.1 * s * math.sin(t * math.pi))))
+        for i in range(n):
+            f = (lead[i], lead[i + 1], trail[i + 1], trail[i])
+            bm.faces.new(f if sx > 0 else f[::-1])
+        me = bpy.data.meshes.new(name + "_wing"); bm.to_mesh(me); bm.free()
+        w = bpy.data.objects.new(name + "_wing", me); C.sc.collection.objects.link(w)
+        w.modifiers.new("thick", "SOLIDIFY").thickness = 0.12 * s
+        w.modifiers.new("sub", "SUBSURF").levels = 2
+        W.lumpy(w, 0.2, 0.06 * s)
+        w.data.materials.append(CLOUD); w.parent = piv; parts.append(w)
+        for fr in range(C.sc.frame_start - flap, C.sc.frame_end + flap * 2, flap // 2):
+            up = ((fr - C.sc.frame_start) // (flap // 2)) % 2 == 0
+            piv.rotation_euler = (0, sx * math.radians(-32 if up else 18), 0)
+            piv.keyframe_insert("rotation_euler", frame=fr)
+    # the body rises and falls with the beat
+    for fr in range(C.sc.frame_start - flap, C.sc.frame_end + flap * 2, flap // 2):
+        up = ((fr - C.sc.frame_start) // (flap // 2)) % 2 == 0
+        root.location = (loc[0], loc[1], loc[2] + (0.12 if not up else -0.08) * s)
+        root.keyframe_insert("location", frame=fr)
+    saddle = bpy.data.objects.new(name + "_saddle", None); C.sc.collection.objects.link(saddle)
+    saddle.parent = root; saddle.location = (0, -0.35 * s, 0.6 * s)
+    return root, saddle
+
+
+def mount(rider, saddle):
+    """Seat a rider rig (built with action Sit_Chair_Idle) on a saddle: hips on the saddle point."""
+    bpy.context.view_layer.update()
+    hips = rider.matrix_world @ rider.pose.bones["hips"].head
+    off = rider.matrix_world.translation - hips
+    rider.parent = saddle; rider.matrix_parent_inverse = Matrix.Identity(4)
+    rider.location = off
+    return rider
