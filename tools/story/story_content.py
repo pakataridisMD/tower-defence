@@ -88,14 +88,15 @@ cin("prologue", "The Last Lantern", "Before the first stage. The opening story v
          "The ground under Oswin gives way. He falls through the gap into the dark. Last frame: the small "
          "white light of his lantern, still burning, falling away."),
     shot("Six armies came out through the gap, each led by a grey-eyed champion we called a Herald. Each "
-         "went to one land, to drive its Warden mad.",
+         "Herald went home, to the land they were born in. A Warden lets its own people come close.",
          "A single-file column of the Unbound marching out of the gap and up the Rift road, splitting into "
-         "six. At the head of each column, a grey-eyed Herald."),
-    shot("A land whose Warden is mad cannot keep out the element opposite its own. The sea climbs the "
-         "volcano. Stone climbs the plains. The Herald's army comes in with it.",
-         "Six quick cuts: black seawater climbing a volcano, boulders walking up a grassy plateau, grey mist "
-         "under giant trees, burning runners on a frozen sea, armoured lightning in a red canyon, thorns over "
-         "the Rift."),
+         "six. At the head of each column, a grey-eyed Herald in the dress of a different people."),
+    shot("There each Herald whispered to its Warden until the Warden went mad. A mad Warden turns its own "
+         "element on its own people. The volcano poured out its fire. The forest strangled its towns. And "
+         "the Herald raised an army out of the land itself.",
+         "Six quick cuts: fire walking out of a volcano onto a forge-town, lightning striking a tent camp on "
+         "a plateau, walking oaks and thorns over rope bridges, drowned climbing out of holes in sea ice, red "
+         "canyon walls breaking into walking stone, darkness climbing out of the Rift over violet grass."),
     shot("I am Ysolde, Queen of Solenne. You are a Spirewright, the last of Oswin's apprentices. You build "
          "the towers.\n\nWe take the lands back one at a time. Hold the road to each town. Kill its "
          "Herald. Free its Warden.\n\nHold the road.",
@@ -107,30 +108,33 @@ cin("ember_intro", "The Ember Reach", "Before the first stage of the Ember Reach
     shot("The Ember Reach is a land of volcanoes, and the Emberfolk forge in their heat. Its Warden, Ignar, "
          "sleeps in the fire under the mountain of Pyrrhenhall.",
          "Black basalt terraces, lava rivers, glassworks glowing, red and brass banners. Emberfolk at anvils."),
-    shot("Ignar had gone mad, and the sea was climbing the mountain. Inside the water came the Herald's "
-         "army: the drowned, led by the Saltmother. The town of Kethra was first on their road.",
-         "A black tide of seawater and grey-eyed drowned climbing the slopes, steam rising where it touches "
-         "lava. Inside the tide, a tall column of water walks: the Saltmother, glimpsed. Kethra below it."),
-    shot("I'm Fennick. I design the towers; you build them. Fire burns, water slows, and you, child, will "
-         "place them where I tell you.\n\nHold the road to Kethra. The Saltmother is somewhere up that "
-         "mountain. Kill her, and her army loses its head.",
+    shot("Ignar had gone mad, and the mountain's fire came out to burn the people it once kept warm. Out of "
+         "it walked the Herald's army: cinder hounds, smiths sealed in slag, the smoke of burned houses. At "
+         "its head ran a boy made of embers, the Herald Ashwick. The town of Kethra was first on their road.",
+         "Lava spilling out of the slopes of Pyrrhenhall onto the terraces. Out of it walk cinder hounds, "
+         "slag-armoured smiths and grey smoke-shapes. At their head runs a boy of white embers with a "
+         "messenger's satchel: Ashwick. Kethra below them."),
+    shot("I'm Fennick. I design the towers; you build them. Those things are made of fire, so fire won't "
+         "hurt them. Water will. And you, child, will place it where I tell you.\n\nHold the road to Kethra. "
+         "Ashwick is somewhere up that mountain. Kill him, and his army loses its head.",
          "Master Fennick, old, spectacles, leather apron, pointing at a tower plan on a cart. Tamsin behind "
          "him waving carts of Emberfolk to safety.",
          speaker="fennick"),
     )
 
-cin("ember_herald", "The Drowned Herald", "After Brazier Hold (Ember 2). Brannoc Emberhand joins.",
-    shot("At Brazier Hold the Saltmother came up the road herself, inside a column of black seawater. She "
-         "had been the high priestess of the Tidefolk. Two years ago she went east to the Rift, and nobody "
-         "knew why.",
-         "The Saltmother's water-column bursting apart on the steps, fish and drowned lanterns scattering. Her "
-         "empty grey eyes going dark."),
-    shot("When she fell, we found a cage of salt on the steps. In it was Brannoc Emberhand, the smith who "
-         "forged Solenne's gates. She had kept him nine days to make him forge chains for her army.",
-         "A cage of crusted salt breaking open. Brannoc Emberhand, huge, bald, brass-ringed beard, staggering "
-         "out and grabbing his hammer from the rubble; its head flares orange."),
-    shot("Nine days she asked me for chains. Nine days I told her no.\n\nNow give me a wall to stand on.",
-         "Brannoc on the wall of Brazier Hold, hammer on his shoulder, grinning. Joins as a hero.",
+cin("ember_herald", "The Flame Herald", "After Brazier Hold (Ember 2). Brannoc Emberhand joins.",
+    shot("At Brazier Hold Ashwick came down the road himself, running, the way he always ran. He was born in "
+         "Kethra. As a boy he swept Brannoc's forge; then he became the Concord's youngest messenger. Two "
+         "years ago he ran east to the Rift, and nobody knew why.",
+         "Ashwick stumbling on the steps of Brazier Hold, embers scattering off him, his empty messenger's "
+         "satchel falling open. His grey eyes going dark."),
+    shot("When he fell, we found Brannoc Emberhand, the smith who forged Solenne's gates, chained in his own "
+         "forge. Ashwick had kept him there nine days to make him forge chains for the horde.",
+         "A cold forge. Brannoc Emberhand, huge, bald, brass-ringed beard, wrenching out of chains of his own "
+         "iron and grabbing his hammer from the rubble; its head flares orange."),
+    shot("Nine days that boy asked me for chains. He used to sweep my floor.\n\nNine days I told him no. "
+         "Now give me a wall to stand on.",
+         "Brannoc on the wall of Brazier Hold, hammer on his shoulder, not smiling. Joins as a hero.",
          speaker="brannoc"),
     )
 
@@ -139,13 +143,14 @@ cin("ember_warden", "Ignar, Freed", "After Pyrrhenhall (Ember 4). Ignar joins.",
          "When it fell, the grey burned off it, and Ignar woke.",
          "The Cinder Tyrant collapsing in the caldera, grey-white fire guttering. From the cracked basalt "
          "steps a tall black-stone figure with an orange molten heart: Ignar."),
-    shot("Someone whispered in my sleep until I forgot what I was. I am awake now. I will burn for you.",
+    shot("A boy of my own people sat by my fire and whispered, until I forgot what I was. I burned the people "
+         "I swore to keep warm.\n\nI am awake now. I will burn for you.",
          "Ignar kneeling to Brannoc and the Emberfolk, his heart-light warming their faces.",
          speaker="ignar"),
-    shot("With its Warden awake, the Reach could keep the sea out again. By morning the water had run back "
-         "down the mountain, and the Emberfolk lit their forges.",
-         "Steam clearing off the slopes of Pyrrhenhall, the sea draining away. Emberfolk relighting forges; "
-         "Ignar standing among them, much taller than anyone."),
+    shot("With its Warden awake, the fire went back under the mountain. By morning the slopes had cooled to "
+         "black stone, and the Emberfolk lit their forges again.",
+         "Smoke clearing off the slopes of Pyrrhenhall, the lava sinking back into the cracks. Emberfolk "
+         "relighting forges; Ignar standing among them, much taller than anyone."),
     shot("One land back. Five to go. Pack your tools, Spirewright. The Thunder Steppe is next.",
          "Fennick rolling up a tower plan, the lit forges of the Reach behind him.", speaker="fennick"),
     )
@@ -155,43 +160,48 @@ cin("storm_intro", "The Thunder Steppe", "Before the first stage of the Thunder 
     shot("The Thunder Steppe is grassland on a high plateau. The Galeborn live there on horseback and steer "
          "by the storms. Its Warden, Aurath, sleeps in the storms themselves.",
          "Endless high grass under a racing sky, standing stones, tent-cities, riders on grey horses."),
-    shot("Aurath had gone mad, and the storms had stopped moving. Without them the Steppe could not keep "
-         "out the earth. Walking stone climbed the cliffs, led by the Herald Gorrath.",
-         "A frozen, motionless sky. Armoured earth spirits climbing the plateau edge. At their head a giant "
-         "Stoneborn general with a square hole in his chest: Gorrath."),
-    shot("The Galeborn don't build walls. Your towers are the only walls they've got. Start at Stonering "
-         "Camp.",
+    shot("Aurath had gone mad, and the storms turned on the camps they used to guide. Lightning struck the "
+         "tents. Dead riders came back on horses of lightning. Over them, on a bird of black cloud, rode the "
+         "Herald Vholt Stormcrown, the warchief who had taught half the Steppe to ride.",
+         "Lightning striking a burning tent camp. Dead riders on lightning-maned horses charging through the "
+         "grass, harpies and balls of lightning over them. Above, on a thunderbird of black cloud, an old "
+         "warchief with a crown of lightning: Vholt."),
+    shot("The Galeborn don't build walls. Your towers are the only walls they've got. And lightning doesn't "
+         "hurt lightning. Build stone. It grounds the stuff.\n\nStart at Stonering Camp.",
          "Fennick on horseback, badly, holding his hat on, pointing at a camp of standing stones.",
          speaker="fennick"),
     )
 
-cin("storm_herald", "The Stone Herald", "After Highwind (Storm 2). Kaela Stormrider joins.",
-    shot("Gorrath had been a Stoneborn general, the man who held the Kharum Pass for a month. He went to "
-         "the Rift two years ago, like the Saltmother. He came back with his heart cut out and a carved "
-         "stone in its place.",
-         "Gorrath breaking apart on the ridge into boulders that keep rolling, then stop. The carved stone "
-         "heart in his chest cracks."),
-    shot("Out of the dust rode Kaela Stormrider, the Galeborn's war-leader. She had been fighting his army "
-         "alone for eleven days, falling back from camp to camp.",
-         "Kaela Stormrider bursting out of the dust on her grey stallion Thunderclap, lightning lance "
-         "crackling, white war-paint across her face."),
-    shot("Eleven days I've been riding away from that thing. I hate riding away. Point me at the next one.",
+cin("storm_herald", "The Sky Herald", "After Highwind (Storm 2). Kaela Stormrider joins.",
+    shot("Over Highwind, Kaela Stormrider brought Vholt's bird down with her own lance. She was the "
+         "Galeborn's war-leader, and he had taught her to ride. For eleven days she had fought his army "
+         "alone, falling back from camp to camp.",
+         "The black thunderbird crashing on the ridge at Highwind. Kaela on her grey stallion Thunderclap, "
+         "lightning lance crackling, white war-paint across her face."),
+    shot("Kaela... someone I trusted asked me to go to the Rift. So I went. I'm sorry, girl.\n\nFinish it. "
+         "Clean, the way I taught you.",
+         "Vholt crawling free of the wreck, the grey light flickering out of his eyes as he looks up at Kaela "
+         "and her lance.", speaker="vholt"),
+    shot("She finished it facing him, the way he taught her.",
+         "Kaela standing over the fallen warchief, lance lowered, rain starting."),
+    shot("Eleven days I rode away from his army. I hate riding away. Point me at the next one.",
          "Kaela reining in beside the player's towers, looking back at Highwind. Joins as a hero.",
          speaker="kaela"),
     )
 
 cin("storm_warden", "Aurath, Freed", "After Aurvanis (Storm 4). Aurath joins.",
     shot("Over Aurvanis we brought down the Thunderhead, a storm gone solid as black glass. It was Aurath's "
-         "madness. It shattered, and the sky moved again for the first time in a month.",
+         "madness. It shattered, and for the first time in a month the rain fell with no lightning in it.",
          "The black solid cloud shattering, frozen lightning falling like glass. Rain. Riders lifting their "
          "faces to it."),
-    shot("A voice told me to be still. So I was still, and the stone walked in. Never again. My winds are "
-         "yours.",
+    shot("A voice I knew told me my riders had betrayed me. So I struck them down, camp by camp.\n\nNever "
+         "again. My winds are yours.",
          "Aurath, a rider-shape of cloud and lightning, flickering, bowing over the towers.",
          speaker="aurath"),
-    shot("The walking stone fell where it stood. The Galeborn rode home to Aurvanis. Two lands were free.",
-         "Boulders crumbling on the plateau. Galeborn raising their tents again at Aurvanis; Kaela watching "
-         "from her horse."),
+    shot("The dead riders fell from their horses where they stood. The Galeborn rode home to Aurvanis. Two "
+         "lands were free.",
+         "Lightning-horses going out like blown candles on the plateau. Galeborn raising their tents again at "
+         "Aurvanis; Kaela watching from her horse."),
     )
 
 # ------------------------------------------------------------------------------- the Verdant Deep
@@ -199,32 +209,35 @@ cin("nature_intro", "The Verdant Deep", "Before the first stage of the Verdant D
     shot("The Verdant Deep is a forest of trees as tall as towers. The Deepwood live in the branches. Its "
          "Warden, Elowen, sleeps in the oldest tree of all, at Sylvanmere.",
          "Giant trees, rope bridges, glow-moss lighting the roots like streets, Deepwood archers."),
-    shot("Elowen had gone mad, and the forest could not keep out the Hollow, the dark from behind the Gate. "
-         "It crept in under the trees. With it came a Herald who sang the dead back onto their feet: the "
-         "Pale Vesper.",
-         "The glow-moss going dark row by row. Pale violet ghost-lights drifting between the roots, and a "
-         "tall grey-veiled singer with her mouth open: the Pale Vesper."),
-    shot("The Deepwood have buried their dead under these trees for a thousand years. Now we know where her "
-         "army comes from.",
-         "Tamsin at the edge of a root-road, lantern-pole raised, as grey shapes climb out of the moss.",
+    shot("Elowen had gone mad, and her forest turned on the people who lived in it. Thorns closed the roads. "
+         "Oaks tore up their roots and walked. Leading them was the Herald Mother Briar, the Deepwood's "
+         "wisest healer, grown through with thorns.",
+         "Black thorns choking the rope bridges; an ancient oak tearing its roots out of the ground and "
+         "walking; bramble-creatures running ahead. Among them a thicket in the shape of a woman with grey "
+         "flowers in her hair: Mother Briar."),
+    shot("Fennick says green wood rots in the dark of the Rift, so build the void towers. I say build them "
+         "fast. Those trees are walking toward Fernholt.",
+         "Tamsin at the edge of a root-road, lantern-pole raised, as walking oaks come out of the dark.",
          speaker="tamsin"),
     )
 
-cin("nature_herald", "The Hollow Herald", "After Elderhollow (Nature 2). Sylvaine Thornwhisper joins.",
-    shot("At Elderhollow the Pale Vesper fell. She had been a Veilwalker singer who sang at funerals. She "
-         "too had gone to the Rift two years ago. Before she died, the grey went out of her eyes.",
-         "The Pale Vesper falling among the roots, her ghost-choir scattering like moths."),
+cin("nature_herald", "The Thorn Herald", "After Elderhollow (Nature 2). Sylvaine Thornwhisper joins.",
+    shot("At Elderhollow Mother Briar fell, and the thorns that had grown through her went brown and "
+         "crumbled. For forty years she had healed the Deepwood. Two years ago she went east to the Rift, "
+         "like Ashwick, like Vholt. Before she died, the grey went out of her eyes.",
+         "The thicket-woman falling among the roots, grey flowers wilting, black thorns crumbling to brown."),
     shot("The Marshal sent us to the Rift. Six of us. Study the Gate, he said...\n\nHe knew what was behind "
          "it.",
-         "Close on the Vesper's face, the grey light leaving her eyes; for a moment she looks like herself.",
-         speaker="pale_vesper"),
-    shot("Cassivane was my Marshal and my friend. I did not believe her. I thought it was the Hollow "
+         "Close on Mother Briar's face, the grey light leaving her eyes; for a moment she looks like herself, "
+         "an old woman with healer's hands.",
+         speaker="mother_briar"),
+    shot("Cassivane was my Marshal and my friend. I did not believe her. I thought it was the madness "
          "talking.",
          "Ysolde in the Hall of the Ring reading a messenger's report, then folding it away."),
     shot("In the root-halls we found Sylvaine Thornwhisper, the Deepwood's best archer. She had held the "
          "root-doors alone while the whole town climbed out.",
-         "Sylvaine Thornwhisper standing amid a ring of fallen hollow things, a pale leafing longbow in her "
-         "hands, moss cloak. She lowers the bow."),
+         "Sylvaine Thornwhisper standing amid a ring of fallen thorn-creatures and a felled walking oak, a pale "
+         "leafing longbow in her hands, moss cloak. She lowers the bow."),
     shot("They're all out. Every child. Now show me where to stand.",
          "Sylvaine at the edge of a tower platform, arrow on the string. Joins as a hero.",
          speaker="sylvaine"),
@@ -237,10 +250,10 @@ cin("nature_warden", "Elowen, Freed", "After Sylvanmere (Nature 4). Elowen joins
     shot("The tree is dying. It has one seed left. Take it, child, and plant it somewhere the dark can't "
          "reach.",
          "Elowen pressing a single glowing seed into Sylvaine's hand.", speaker="elowen"),
-    shot("The Hollow drew back out of the forest. Three lands were free, and we went home to Solenne for "
-         "one night's rest.",
-         "Grey mist pulling back from the roots; the glow-moss lighting again. The army on the road west, "
-         "Sylvaine's closed hand glowing green."),
+    shot("The thorns let go of the roads, and the walking oaks lay down where they stood. Three lands were "
+         "free, and we went home to Solenne for one night's rest.",
+         "Black thorns withering off the bridges; a walking oak settling into the ground; the glow-moss "
+         "lighting again. The army on the road west, Sylvaine's closed hand glowing green."),
     )
 
 # ------------------------------------------------------------------------------- Frostmere
@@ -248,26 +261,31 @@ cin("water_intro", "Frostmere", "Before the first stage of Frostmere (fought at 
     shot("Frostmere is a frozen sea in the north. The Tidefolk build their towns on the ice. Its Warden, "
          "Thalassa, sleeps in the water under it.",
          "A vast frozen sea in the dark, stilt towns, pearl-white harbours lit by torches."),
-    shot("We fought there in the dark. Thalassa had gone mad, and the ice could not keep out fire. Burning "
-         "runners came across it, and the ice melted behind them. They were led by a boy made of embers, "
-         "the Herald Ashwick.",
-         "Burning runners skating across the ice, leaving black water behind them. At their head a boy made "
-         "of white embers with a messenger's satchel: Ashwick."),
-    shot("Fennick always said water slows. Out here we're standing on it. Let's prove him right.",
-         "Tamsin on the ice at Netmend with Fennick's spectacles hanging round her neck.", speaker="tamsin"),
+    shot("We fought there in the dark. Thalassa had gone mad, and the sea under the ice rose against the "
+         "Tidefolk. It broke the ice from underneath, and the drowned climbed out of the holes: fishermen "
+         "still casting their nets, priests still praying. They were led by the Tidefolk's own high "
+         "priestess, the Saltmother.",
+         "The ice of Frostmere cracking open from below. Drowned fishermen with nets and drowned priests "
+         "climbing out of the black holes, crabs crusted with ice behind them. Inside a tall column of black "
+         "seawater, a woman walks: the Saltmother."),
+    shot("Fennick always said water slows. Not this water. In the margin of his notes he wrote one word: "
+         "fire.\n\nSo we burn it.",
+         "Tamsin on the ice at Netmend with Fennick's spectacles hanging round her neck, his notebook open.",
+         speaker="tamsin"),
     )
 
-cin("water_herald", "The Flame Herald", "After Reedhaven (Water 2). Mirelle the Tide-Seer joins.",
-    shot("Ashwick had been the Concord's youngest messenger. Two years ago he ran east to the Rift with a "
-         "letter, and never came back. When he fell in the reeds, his satchel split open. The letter was "
-         "still in it, under Cassivane's seal.",
-         "Ashwick stumbling in the reeds, embers scattering, the satchel falling open: a letter stamped "
-         "with the Lord Marshal's seal lands in the snow."),
-    shot("In the middle of the burning reeds stood a tower of ice that had not melted. Inside it was "
+cin("water_herald", "The Drowned Herald", "After Reedhaven (Water 2). Mirelle the Tide-Seer joins.",
+    shot("At Reedhaven the Saltmother's column of seawater burst on the ice. She had been the high priestess "
+         "of the Tidefolk. When she fell, we found an order sewn into her robes, sending her to the Rift to "
+         "study the Gate. It was sealed with Cassivane's seal.",
+         "The Saltmother's water-column bursting apart on the ice, fish and drowned lanterns scattering. On "
+         "the ice beside her, an oilskin packet split open: an order stamped with the Lord Marshal's red "
+         "seal."),
+    shot("In the middle of the flooded reeds stood a tower of ice the sea had not broken. Inside it was "
          "Mirelle, a blind Tidefolk seer who reads the future in ice. She had kept forty children alive in "
          "there.",
-         "A tower of ice in a ring of fire; inside, Mirelle, small, pearls sewn on everything, blind eyes "
-         "glowing teal, holding an ice staff, children huddled behind her."),
+         "A tower of ice standing in black floodwater; inside, Mirelle, small, pearls sewn on everything, "
+         "blind eyes glowing teal, holding an ice staff, children huddled behind her."),
     shot("You're late. Only a little. I saw that too.",
          "Mirelle stepping out onto the frost, barefoot. Joins as a hero.", speaker="mirelle"),
     )
@@ -277,14 +295,14 @@ cin("water_warden", "Thalassa, Freed", "After Pearlhaven (Water 4). Thalassa joi
          "It broke apart, and Thalassa rose out of the water.",
          "The ice-eel collapsing; drowned bronze bells rising out of the water and ringing. Thalassa rising "
          "from the sea, sea-glass and current, the bells floating in her hair."),
-    shot("I remember every ship that ever sailed this sea, and every child on it. I will remember what you "
-         "did here.",
+    shot("I remember every ship that ever sailed this sea, and every child on it. I drowned some of them "
+         "this winter. I will remember that too.",
          "Thalassa looking down at the towers and heroes.", speaker="thalassa"),
-    shot("The fire went out on the ice, and the sea froze over again. That night Mirelle looked into the "
-         "ice for a long time. She said she had seen a death at the very end of the war.\n\nShe would not "
-         "say whose.",
+    shot("The sea lay down under the ice, and the holes froze over. That night Mirelle looked into the ice "
+         "for a long time. She said she had seen a death at the very end of the war.\n\nShe would not say "
+         "whose.",
          "Mirelle alone on the shore with the ice staff, her blind eyes glowing, reflections in the ice of "
-         "something we cannot make out. Behind her, Pearlhaven's harbour freezing over."),
+         "something we cannot make out. Behind her, the black holes in the harbour freezing over."),
     )
 
 # ------------------------------------------------------------------------------- Sunscar Canyon
@@ -292,30 +310,31 @@ cin("earth_intro", "Sunscar Canyon", "Before the first stage of Sunscar Canyon (
     shot("Sunscar Canyon is red rock. The Stoneborn live in cities carved into its walls. Its Warden, "
          "Orrok, sleeps in the mountain at its head, under Grundhallow.",
          "Red rock canyon by torchlight, cliff cities in terraces, giant stone faces of old kings."),
-    shot("Orrok had gone mad, and the canyon could not keep out the storm. Lightning in armour walked down "
-         "the walls. Over it, on a bird of black cloud, rode the Herald Vholt Stormcrown: a Galeborn "
-         "warchief, and Kaela's old teacher.",
-         "Storm spirits in armour pouring down the walls. Above them, on a thunderbird of black cloud, an old "
-         "warchief with a crown of lightning: Vholt."),
-    shot("He taught me to ride. He taught me never to turn my back on a fight. If I have to kill him, I'll "
-         "do it facing him.",
-         "Kaela on Thunderclap at the canyon rim, watching the black bird circle.", speaker="kaela"),
+    shot("Orrok had gone mad, and the canyon turned on the Stoneborn. Its walls broke off and walked. Every "
+         "oath carved in its cities broke at once, and the oath-breakers turned to stone and marched. Their "
+         "Herald was Gorrath, the Stoneborn general who once held the Kharum Pass for a month.",
+         "Canyon walls cracking; boulders standing up and walking. Stoneborn with granite growing through "
+         "their skin marching among them. At their head a giant Stoneborn general with a square hole in his "
+         "chest: Gorrath."),
+    shot("Stone doesn't feel a blade. It feels lightning. Give me towers that throw it, and I'll do the rest.",
+         "Kaela on Thunderclap at the canyon rim, watching the walls move below.", speaker="kaela"),
     )
 
-cin("earth_herald", "The Sky Herald", "After the Kharum Terraces (Earth 2). Gorrim Stonebeard joins.",
-    shot("Over the Kharum Terraces, Kaela brought Vholt's bird down with her own lance. She was there when "
-         "he hit the ground.",
-         "The black thunderbird crashing on the terraces. Vholt crawling free. Kaela stands over him with "
-         "her lance."),
-    shot("Kaela... I went to the Rift because the Marshal asked me to. I'm sorry, girl. Finish it. Clean, "
-         "the way I taught you.",
-         "Vholt's face, the grey light flickering out of his eyes as he looks up.", speaker="vholt"),
+cin("earth_herald", "The Stone Herald", "After the Kharum Terraces (Earth 2). Gorrim Stonebeard joins.",
+    shot("On the Kharum Terraces Gorrath came down the steps himself. He had gone to the Rift two years ago "
+         "and come back with his heart cut out and a carved stone in its place. When it cracked, he broke "
+         "apart into boulders that kept rolling, then stopped.",
+         "Gorrath breaking apart on the terraces into boulders that keep rolling, then stop. The carved stone "
+         "heart in his chest cracks in two."),
     shot("Behind a fallen terrace we found what was left of the Canyon's shield-company. Gorrim Stonebeard "
-         "was standing in front of them, with a stone door for a shield.",
+         "was standing in front of them, with a stone door for a shield. Twenty years ago he had held the "
+         "Kharum Pass beside Gorrath.",
          "Gorrim Stonebeard, short and wide, a carved stone door as a shield, iron rings in his beard, "
          "standing in front of exhausted soldiers."),
-    shot("One iron ring in my beard for every friend I've buried. Thirty-one. Let's not make it thirty-two.",
-         "Gorrim hefting the door-shield onto his back. Joins as a hero.", speaker="gorrim"),
+    shot("One iron ring in my beard for every friend I've buried. He makes thirty-two.\n\nLet's not make it "
+         "thirty-three.",
+         "Gorrim braiding a new iron ring into his beard, then hefting the door-shield onto his back. Joins "
+         "as a hero.", speaker="gorrim"),
     )
 
 cin("earth_warden", "Orrok, Freed", "After Grundhallow (Earth 4). Orrok joins.",
@@ -323,7 +342,7 @@ cin("earth_warden", "Orrok, Freed", "After Grundhallow (Earth 4). Orrok joins.",
          "and under it was Orrok.",
          "The Titan crashing down; grey lichen falling from its eyes; amber geode eyes opening. Orrok."),
     shot("...Thank you.", "Orrok, enormous, looking at the towers.", speaker="orrok", duration=4.0),
-    shot("It was the first thing he had said in two thousand years. The storm left the canyon, and the "
+    shot("It was the first thing he had said in two thousand years. The walking stone lay down, and the "
          "Stoneborn buried their dead in the Deep Halls.",
          "The great stone doors of Grundhallow closing on the dead, torches along the hall."),
     shot("That's the last ring. Hear me say it. No more.",
@@ -339,10 +358,14 @@ cin("void_intro", "The Hollow Rift", "Before the first stage of the Hollow Rift 
          "soldiers still coming out.",
          "Looking down into the Rift: the Gate far below, the cart-wide gap, a thin grey column climbing the "
          "road cut into the wall."),
-    shot("Nyxara had gone mad, and the Rift could not keep out the forest. Thorns grew over everything, and "
-         "dead trees walked. Their Herald was Mother Briar, once the Deepwood's best healer.",
-         "Black thorns choking the Veilwalker towns; a thicket-woman with grey flowers in her hair walking "
-         "among them: Mother Briar."),
+    shot("Nyxara had gone mad, and the dark of the Rift climbed out over the Veilwalker towns. Their dead got "
+         "up and walked, and hunters made of night walked with them. Their Herald was the Pale Vesper, the "
+         "Veilwalkers' own funeral singer, who now sang the dead awake.",
+         "Darkness spilling over the rim of the Rift onto violet grass; the dead climbing out of Veilwalker "
+         "graves; great cats of living night. A tall grey-veiled singer with her mouth open: the Pale "
+         "Vesper."),
+    shot("The dark hates growing things. Plant my forest in its road.",
+         "Sylvaine at the rim, Elowen's seed glowing green in her closed hand.", speaker="sylvaine"),
     shot("The Veilwalkers at Lamplight say some nights a white light moves along the bottom of the Rift. "
          "Slowly. Like someone walking with a lantern.",
          "Tamsin at the Lamplight waystation, looking down into the Rift. Far below, very small, a white "
@@ -350,14 +373,16 @@ cin("void_intro", "The Hollow Rift", "Before the first stage of the Hollow Rift 
          speaker="tamsin"),
     )
 
-cin("void_herald", "The Thorn Herald", "After Vesperhold (Void 2). Corvin the Uncrowned joins.",
-    shot("Mother Briar fell on the steps of Vesperhold, and the thorns that had grown through her went "
-         "brown and crumbled.",
-         "The thicket-woman falling apart on the floating steps, grey flowers wilting, black thorns crumbling."),
-    shot("Tied in her thorns was my half-brother, Corvin. Six years ago he was found over a dead man, and I "
-         "exiled him for murder. He had lived on the edge of the Rift ever since, watching the Gate.",
-         "Corvin the Uncrowned cutting himself free with a black glass blade, hood back, silver hair, a scar "
-         "through his eyebrow."),
+cin("void_herald", "The Hollow Herald", "After Vesperhold (Void 2). Corvin the Uncrowned joins.",
+    shot("The Pale Vesper fell on the steps of Vesperhold, still singing, and the dead she had raised lay "
+         "down around her.",
+         "The Pale Vesper falling on the floating steps, her ghost-choir scattering like moths, the dead "
+         "dropping where they stand."),
+    shot("In the crypt under her steps, among the dead she had not yet woken, lay my half-brother, Corvin. "
+         "Six years ago he was found over a dead man, and I exiled him for murder. He had lived on the edge "
+         "of the Rift ever since, watching the Gate.",
+         "A Veilwalker crypt. Corvin the Uncrowned cutting himself free of grave-wrappings with a black glass "
+         "blade, hood back, silver hair, a scar through his eyebrow."),
     shot("Six years I told them it was the Marshal. Now they believe me.\n\nThe man I was exiled for "
          "killing saw Cassivane cut a piece off the Heartstone. That's why he died.",
          "Corvin standing, looking at the player. Joins as a hero.", speaker="corvin"),
@@ -778,11 +803,11 @@ CHARACTERS = [
      "Solenne's toughest soldier, always the last one through the gate. She dragged the blind Queen clear "
      "on the Night of Falling Stars, and reads Fennick's notes to the Spirewright since he died."),
     ("brannoc", "Brannoc Emberhand", "Smith-Lord of the Reach", "hero", "fire", "after ember_2",
-     "The giant smith who forged Solenne's gates. The Saltmother kept him in a salt cage for nine days to "
-     "make him forge her chains, and he refused every day. His hammer never cools."),
+     "The giant smith who forged Solenne's gates. Ashwick, the boy who once swept his forge, kept him chained "
+     "in it for nine days to make him forge chains for the horde, and he refused every day. His hammer never cools."),
     ("kaela", "Kaela Stormrider", "Marshal of the Steppe", "hero", "storm", "after storm_2",
-     "War-leader of the Galeborn, who fought the Stone alone for eleven days. Lightning lance, and a grey "
-     "stallion called Thunderclap. The Herald Vholt was her teacher."),
+     "War-leader of the Galeborn, who fought the mad storm's army alone for eleven days. Lightning lance, and a grey "
+     "stallion called Thunderclap. The Herald Vholt was her teacher, and she killed him facing him."),
     ("sylvaine", "Sylvaine Thornwhisper", "Bow of the Deep", "hero", "nature", "after nature_2",
      "The Deepwood's best archer, three hundred years old. She held Elderhollow's root-doors alone until "
      "every child was out, and carries the last seed of the oldest tree."),
@@ -790,8 +815,8 @@ CHARACTERS = [
      "A blind young seer who reads the future in ice. She kept forty children alive inside a tower of ice. "
      "She has seen a death at the end of the war, and will not say whose."),
     ("gorrim", "Gorrim Stonebeard", "Shield of the Canyon", "hero", "earth", "after earth_2",
-     "A Stoneborn shieldmaster with an iron ring in his beard for every friend he has buried. His shield is a "
-     "carved stone door."),
+     "A Stoneborn shieldmaster with an iron ring in his beard for every friend he has buried. He held the Kharum "
+     "Pass beside Gorrath, and buried him too. His shield is a carved stone door."),
     ("corvin", "Corvin the Uncrowned", "Ranger of the Rift", "hero", "void", "after void_2",
      "The Queen's half-brother. He accused Cassivane of treason, was framed for murder and exiled, and spent "
      "six years watching the Black Gate from the edge of the Rift."),
@@ -835,21 +860,23 @@ CHARACTERS = [
      "Lord Marshal of the Concord. He cut a sliver off the Heartstone and unlocked the Black Gate, because "
      "Vael-Orrun promised to give back his daughter."),
     ("saltmother", "Saltmother Ourra", "the Drowned Herald", "herald", "water", "",
-     "Once the Tidefolk's high priestess, sent to the Rift by Cassivane and sent back empty. Walks inside a "
-     "column of black seawater. Boss of Brazier Hold."),
+     "Once the Tidefolk's high priestess, sent to the Rift under Cassivane's seal and sent back empty to "
+     "drown her own people. Walks inside a column of black seawater. Boss of Reedhaven."),
     ("gorrath", "Gorrath the Quarried", "the Stone Herald", "herald", "earth", "",
      "A Stoneborn general who held the Kharum Pass for a month, sent back from the Rift with a stone for a "
-     "heart. Breaks into walking boulders. Boss of Highwind."),
+     "heart, then sent home to turn the canyon on the Stoneborn. Breaks into walking boulders. Boss of the "
+     "Kharum Terraces."),
     ("pale_vesper", "The Pale Vesper", "the Hollow Herald", "herald", "void", "",
-     "A Veilwalker singer who sang at funerals, and now sings the dead awake. Dying, she names the Marshal. "
-     "Boss of Elderhollow."),
+     "A Veilwalker singer who sang at funerals, and now sings her own people's dead awake. Boss of "
+     "Vesperhold."),
     ("ashwick", "Ashwick the Kindled", "the Flame Herald", "herald", "fire", "",
-     "The Concord's youngest messenger, sent to the Rift with a letter under Cassivane's seal. An ever-burning "
-     "boy who never stops running. Boss of Reedhaven."),
+     "Born in Kethra, he swept Brannoc's forge, then became the Concord's youngest messenger and ran to the "
+     "Rift. An ever-burning boy who never stops running. Boss of Brazier Hold."),
     ("vholt", "Vholt Stormcrown", "the Sky Herald", "herald", "storm", "",
-     "Kaela's old teacher, riding a thunderbird of black cloud. Boss of the Kharum Terraces."),
+     "The Galeborn warchief who taught Kaela to ride, riding a thunderbird of black cloud. Boss of Highwind."),
     ("mother_briar", "Mother Briar", "the Thorn Herald", "herald", "nature", "",
-     "The Deepwood's wisest healer, grown through with thorns. Boss of Vesperhold."),
+     "The Deepwood's wisest healer, grown through with thorns. Dying, she names the Marshal. Boss of "
+     "Elderhollow."),
     ("the_hush", "???", "", "secret", "", "",
      "Revealed only in the post-credits scene. The villain of Part 2. Keep hidden from every codex and menu."),
     ("vael_orrun", "Vael-Orrun", "the High King", "overlord", "", "",
