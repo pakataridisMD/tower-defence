@@ -12,6 +12,10 @@ extends Resource
 @export var tree_points_per_boss: int = 1
 ## Gold paid for clearing a wave, on top of bounties.
 @export var gold_per_wave: int = 20
+## Clearing a wave also pays this share of the gold the player kept unspent, as a reward for saving.
+@export_range(0.0, 1.0) var savings_bonus: float = 0.2
+## The savings bonus never pays more than this in one wave, so hoarding cannot snowball forever.
+@export var savings_bonus_cap: int = 150
 ## Share of a tower's price returned when it is sold.
 @export_range(0.0, 1.0) var sell_refund: float = 0.7
 
@@ -30,6 +34,13 @@ func tree_points_after_wave(wave_number: int, wave_was_boss: bool) -> int:
 	if wave_was_boss:
 		points += tree_points_per_boss
 	return points
+
+
+## The savings bonus for keeping `kept` gold through a wave, at `share` (normally savings_bonus).
+func savings_bonus_for(kept: int, share: float) -> int:
+	if kept <= 0 or share <= 0.0:
+		return 0
+	return mini(floori(kept * share), savings_bonus_cap)
 
 
 ## Meta points paid at the end of a run, before the difficulty multiplier.

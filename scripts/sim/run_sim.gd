@@ -6,6 +6,9 @@ extends RefCounted
 signal changed
 signal wave_started(wave_number: int)
 signal wave_cleared(wave_number: int, tree_points: int, gold: int)
+## The savings bonus paid for the gold kept through a wave. Sent just before wave_cleared, whose
+## gold already includes it.
+signal savings_paid(amount: int)
 signal enemy_killed(enemy: SimEnemy, killer: SimTower, bounty: int)
 signal enemy_leaked(enemy: SimEnemy)
 signal chain_fired(tower: SimTower, points: PackedVector2Array)
@@ -126,6 +129,8 @@ var break_time_left := -1.0
 var kills := 0
 var leaks := 0
 var gold_earned := 0
+## The savings bonus paid at the end of the last wave cleared.
+var last_savings_bonus := 0
 
 var _path_cells: Dictionary[Vector2i, bool] = {}
 var _tower_at: Dictionary[Vector2i, SimTower] = {}
@@ -1548,11 +1553,21 @@ func _pay_wave(finished: WaveData) -> Array[int]:
 	if finished.is_boss:
 		points += roundi(run_stat(&"tree_points_per_boss", rules.tree_points_per_boss))
 	tree.points += points
-	var bonus := roundi(run_stat(&"gold_per_wave", rules.gold_per_wave))
+	# The savings bonus is worked out on the gold kept through the wave, before the wave's own pay.
+	last_savings_bonus = savings_bonus_now()
+	var bonus := roundi(run_stat(&"gold_per_wave", rules.gold_per_wave)) + last_savings_bonus
 	gold += bonus
 	gold_earned += bonus
 	_level_heroes()
+	if last_savings_bonus > 0:
+		savings_paid.emit(last_savings_bonus)
 	return [points, bonus]
+
+
+## The savings bonus the gold held right now would earn if the wave ended now.
+func savings_bonus_now() -> int:
+	var rules := config.rules
+	return rules.savings_bonus_for(gold, run_stat(&"savings_bonus", rules.savings_bonus))
 
 
 func _end_run(won: bool) -> void:
