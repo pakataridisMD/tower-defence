@@ -239,8 +239,8 @@ func test_a_win_pays_a_bonus_and_harder_levels_pay_more() -> void:
 	var meta := _meta()
 	assert_eq(meta.record_run(_finished_run(RunSim.State.WON, 10, 100)), 12)
 	var hard: DifficultyData = registry.difficulties[&"hard"]
-	assert_eq(meta.record_run(_finished_run(RunSim.State.WON, 10, 100, hard)), 18, "12 x 1.5")
-	assert_eq(meta.points(), 30)
+	assert_eq(meta.record_run(_finished_run(RunSim.State.WON, 10, 100, hard)), 6, "12 x 1.5 = 18, less the record of 12")
+	assert_eq(meta.points(), 18)
 	assert_eq(meta.profile.runs_won, 2)
 	assert_eq(meta.profile.best_waves, 10)
 	assert_eq(meta.profile.enemies_killed, 200)
@@ -252,3 +252,37 @@ func test_records_keep_the_best_run() -> void:
 	meta.record_run(_finished_run(RunSim.State.LOST, 3, 20))
 	assert_eq(meta.profile.best_waves, 7)
 	assert_eq(meta.profile.runs_played, 2)
+
+
+# --- Records and replays ---------------------------------------------------------
+
+func test_a_run_pays_only_for_beating_the_record() -> void:
+	var meta := _meta()
+	assert_eq(meta.record_run(_finished_run(RunSim.State.LOST, 4, 10)), 4)
+	assert_eq(meta.record_run(_finished_run(RunSim.State.LOST, 3, 10)), 0, "worse than the record")
+	assert_string_contains(meta.last_run_note, "No new record")
+	assert_eq(meta.record_run(_finished_run(RunSim.State.LOST, 6, 10)), 2, "two waves past the record")
+	assert_eq(meta.record_run(_finished_run(RunSim.State.WON, 10, 10)), 6, "the rest of the waves and the win")
+	assert_eq(meta.profile.run_records[&"skirmish:switchback"], 12)
+	assert_eq(meta.points(), 12, "the map is worth 12 on Normal however it is reached")
+
+
+func test_won_replays_pay_a_little_and_only_a_few_times() -> void:
+	var meta := _meta()
+	meta.record_run(_finished_run(RunSim.State.WON, 10, 10))
+	var total := 0
+	for i in 10:
+		total += meta.record_run(_finished_run(RunSim.State.WON, 10, 10))
+	assert_eq(total, MetaProgress.REPLAY_WIN_POINTS * MetaProgress.REPLAY_LIMIT, "ten replays, capped")
+	assert_eq(meta.record_run(_finished_run(RunSim.State.LOST, 2, 10)), 0, "lost replays pay nothing")
+	assert_eq(meta.points(), 12 + MetaProgress.REPLAY_WIN_POINTS * MetaProgress.REPLAY_LIMIT)
+
+
+func test_records_survive_a_save() -> void:
+	var meta := _meta()
+	meta.record_run(_finished_run(RunSim.State.WON, 10, 10))
+	meta.record_run(_finished_run(RunSim.State.WON, 10, 10))
+	var loaded := PlayerProfile.from_dict(JSON.parse_string(JSON.stringify(meta.profile.to_dict())))
+	assert_eq(loaded.run_records[&"skirmish:switchback"], 12)
+	assert_eq(loaded.replays_paid[&"skirmish:switchback"], 1)
+	assert_false(loaded.needs_records)

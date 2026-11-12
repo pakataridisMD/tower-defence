@@ -588,7 +588,7 @@ func _on_run_ended(won: bool) -> void:
 	board.cancel_hero_actions()
 	_close_web()
 	var meta_points := Progress.record_run(sim)
-	hud.show_end(won, meta_points)
+	hud.show_end(won, meta_points, Progress.meta.last_run_note)
 	if sim.config.stage != null:
 		var result := Progress.record_stage(sim)
 		var next := Progress.meta.stage_after(sim.config.stage.id)
