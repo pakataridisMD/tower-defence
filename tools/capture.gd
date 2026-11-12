@@ -61,6 +61,9 @@ var _horde := &""
 var _look: PackedStringArray = []
 ## With --look: shoot the towers' effects in a fight (shots, hits, a Meteor and a Doom) instead of the look shots.
 var _fx_shots := false
+## --towers[=a,b]: every look of these towers (levels 1-3 and both ascendancies) built beside the road,
+## shot by day and night and filmed idling and firing (frames under clips/towers_<stage>).
+var _tower_looks: PackedStringArray = []
 ## --longshot: the three long-range towers built in the middle of a map, firing across it.
 var _longshot := false
 
@@ -98,6 +101,10 @@ func _ready() -> void:
 			_fx_shots = true
 		elif arg == "--longshot":
 			_longshot = true
+		elif arg.begins_with("--towers"):
+			_tower_looks = arg.trim_prefix("--towers").trim_prefix("=").split(",", false)
+			if _tower_looks.is_empty():
+				_tower_looks = PackedStringArray(["fire_brazier", "storm_spire"])
 		elif arg.begins_with("--look"):
 			_look = arg.trim_prefix("--look").trim_prefix("=").split(",", false)
 			if _look.is_empty():
@@ -106,7 +113,9 @@ func _ready() -> void:
 	Progress.use_memory_profile(_demo_profile())
 	# The map's glide down from the whole world would still be moving in the first shots.
 	CampaignScreen.intro_played = true
-	if not _look.is_empty():
+	if not _tower_looks.is_empty():
+		_run_tower_looks()
+	elif not _look.is_empty():
 		_run_look()
 	elif _longshot:
 		_run_longshot()
@@ -379,6 +388,74 @@ func _run_look() -> void:
 		await _shot("look_%s_night" % stage)
 		game.free()
 		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+## Each tower in --towers five times over (levels 1, 2, 3 and both ascendancies) in the free cells nearest
+## a bend of the road, then stills by day and night and a clip of them idling and firing at a wave.
+func _run_tower_looks() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	Progress.active_stage = &"ember_4"
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.2)
+	var sim := game.sim
+	sim.tree.points = 60
+	for id: StringName in [&"fire_entry", &"storm_entry", &"nature_entry", &"water_entry", &"earth_entry", &"void_entry"]:
+		sim.allocate_node(id)
+	var map := sim.config.map
+	var path := map.path_points(0)
+	var target := path[int(path.size() * 0.3)]
+	var cells: Array[Vector2i] = []
+	for y in map.grid_size.y:
+		for x in map.grid_size.x:
+			cells.append(Vector2i(x, y))
+	cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		return map.cell_center(a).distance_to(target) < map.cell_center(b).distance_to(target))
+	var built: Array[Vector2] = []
+	for tower_id in _tower_looks:
+		for stage in 5:
+			for cell in cells:
+				sim.gold = 99999
+				if not sim.can_place(StringName(tower_id), cell):
+					continue
+				var tower := sim.place_tower(StringName(tower_id), cell)
+				if tower == null:
+					continue
+				for i in mini(stage, 2):
+					sim.level_up(tower)
+				if stage >= 3:
+					sim.ascend(tower, tower.data.ascendancies[stage - 3].id)
+				built.append(map.cell_center(cell))
+				break
+	var middle := Vector2.ZERO
+	for p in built:
+		middle += p
+	middle /= maxf(built.size(), 1.0)
+	sim.wave_index = 6
+	_light(game.board.art, DayNight.DAY)
+	game.camera.set_view(1.5, middle)
+	# The stage's title card fades first.
+	await _wait(6.0)
+	await _shot("towers_day")
+	_light(game.board.art, DayNight.NIGHT)
+	await _wait(2.5)
+	await _shot("towers_night")
+	_light(game.board.art, DayNight.DUSK)
+	sim.start_next_wave()
+	await _until(func() -> bool:
+		for enemy in sim.enemies:
+			if enemy.position.distance_to(middle) < 300.0:
+				return true
+		return sim.is_over())
+	var folder := _out.path_join("clips").path_join("towers")
+	DirAccess.make_dir_recursive_absolute(folder)
+	for i in 70:
+		await _wait(0.06)
+		await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png(folder.path_join("%03d.png" % i))
+	await _shot("towers_fight")
 	print("Screenshots saved to ", _out)
 	get_tree().quit()
 
