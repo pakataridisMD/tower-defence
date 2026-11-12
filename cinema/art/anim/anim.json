@@ -1,0 +1,1250 @@
+{
+ "ashwick": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   70,
+   104
+  ],
+  "frame": [
+   140,
+   136
+  ]
+ },
+ "cassivane": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   88,
+   148
+  ],
+  "frame": [
+   176,
+   188
+  ]
+ },
+ "cinder_tyrant": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   141,
+   274
+  ],
+  "frame": [
+   282,
+   344
+  ]
+ },
+ "crownless_throne": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   128,
+   244
+  ],
+  "frame": [
+   256,
+   276
+  ]
+ },
+ "dragon": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   83,
+   112
+  ],
+  "frame": [
+   166,
+   144
+  ]
+ },
+ "dwarf": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   55,
+   72
+  ],
+  "frame": [
+   110,
+   104
+  ]
+ },
+ "echo_ashwick": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   70,
+   104
+  ],
+  "frame": [
+   140,
+   136
+  ]
+ },
+ "echo_gorrath": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   96,
+   164
+  ],
+  "frame": [
+   192,
+   212
+  ]
+ },
+ "echo_mother_briar": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   84,
+   134
+  ],
+  "frame": [
+   168,
+   166
+  ]
+ },
+ "echo_ourra": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   76,
+   174
+  ],
+  "frame": [
+   152,
+   206
+  ]
+ },
+ "echo_vesper": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   76,
+   174
+  ],
+  "frame": [
+   152,
+   206
+  ]
+ },
+ "echo_vholt": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   113,
+   154
+  ],
+  "frame": [
+   226,
+   186
+  ]
+ },
+ "elder_broodmother": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   136,
+   236
+  ],
+  "frame": [
+   272,
+   280
+  ]
+ },
+ "elf": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   54,
+   82
+  ],
+  "frame": [
+   108,
+   114
+  ]
+ },
+ "gatemaw": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   172,
+   200
+  ],
+  "frame": [
+   344,
+   232
+  ]
+ },
+ "ghost": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   52,
+   82
+  ],
+  "frame": [
+   104,
+   114
+  ]
+ },
+ "golem": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   64,
+   96
+  ],
+  "frame": [
+   128,
+   128
+  ]
+ },
+ "gorrath": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   96,
+   164
+  ],
+  "frame": [
+   192,
+   212
+  ]
+ },
+ "hollow_king": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   108,
+   250
+  ],
+  "frame": [
+   216,
+   282
+  ]
+ },
+ "hollow_shade": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   63,
+   116
+  ],
+  "frame": [
+   126,
+   148
+  ]
+ },
+ "mirror_spire": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   116,
+   286
+  ],
+  "frame": [
+   232,
+   318
+  ]
+ },
+ "mother_briar": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   84,
+   134
+  ],
+  "frame": [
+   168,
+   166
+  ]
+ },
+ "mountain_titan": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   156,
+   274
+  ],
+  "frame": [
+   312,
+   342
+  ]
+ },
+ "orb_earth": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   48,
+   70
+  ],
+  "frame": [
+   96,
+   102
+  ]
+ },
+ "orb_fire": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   48,
+   70
+  ],
+  "frame": [
+   96,
+   102
+  ]
+ },
+ "orb_nature": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   48,
+   70
+  ],
+  "frame": [
+   96,
+   102
+  ]
+ },
+ "orb_storm": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   48,
+   70
+  ],
+  "frame": [
+   96,
+   102
+  ]
+ },
+ "orb_void": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   48,
+   70
+  ],
+  "frame": [
+   96,
+   102
+  ]
+ },
+ "orb_water": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   48,
+   70
+  ],
+  "frame": [
+   96,
+   102
+  ]
+ },
+ "orc": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   57,
+   80
+  ],
+  "frame": [
+   114,
+   112
+  ]
+ },
+ "ourra": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   76,
+   174
+  ],
+  "frame": [
+   152,
+   206
+  ]
+ },
+ "skeleton": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   52,
+   76
+  ],
+  "frame": [
+   104,
+   108
+  ]
+ },
+ "soldier": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   53,
+   80
+  ],
+  "frame": [
+   106,
+   112
+  ]
+ },
+ "sundered_heart": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   133,
+   238
+  ],
+  "frame": [
+   266,
+   270
+  ]
+ },
+ "thunderhead": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   135,
+   210
+  ],
+  "frame": [
+   270,
+   242
+  ]
+ },
+ "tidal_leviathan": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   156,
+   236
+  ],
+  "frame": [
+   312,
+   280
+  ]
+ },
+ "vael_orrun": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   116,
+   360
+  ],
+  "frame": [
+   232,
+   392
+  ]
+ },
+ "vesper": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   76,
+   174
+  ],
+  "frame": [
+   152,
+   206
+  ]
+ },
+ "vholt": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   113,
+   154
+  ],
+  "frame": [
+   226,
+   186
+  ]
+ }
+}

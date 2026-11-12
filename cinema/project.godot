@@ -1,0 +1,19 @@
+; Cinematic kit: trailers and story cinematics rendered with Godot's Movie Maker.
+; This folder is its own Godot project (the game ignores it through .gdignore). See README.md.
+config_version=5
+
+[application]
+config/name="Cinema"
+run/main_scene="res://kit/director.tscn"
+
+[display]
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+
+[editor]
+movie_writer/fps=30
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+limits/opengl/max_lights_per_object=16
