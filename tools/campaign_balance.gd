@@ -3,7 +3,7 @@ extends SceneTree
 ## campaign (see tools/campaign/gen_campaign.py). No meta tree bonuses, Normal difficulty.
 ##
 ##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--health=X --boss=X --boss-life=X] [--tune] [--tune-bosses] [--skirmish] [--compare]
-##       [--heroes] [--list] [--no-meta] [--check]
+##       [--heroes] [--skill-levels] [--list] [--no-meta] [--check]
 ##
 ## --tune searches each stage's health scale so the bot wins keeping a target share of its lives,
 ## and prints lines for tools/campaign/tuning.py. The bot levels its towers and casts its skills,
@@ -14,7 +14,8 @@ extends SceneTree
 ## SKIRMISH_HARDNESS on top (skirmish is three times harder than this tuning). --compare plays everything with several kinds of bot (with and
 ## without skills and upgrades), to see what each habit is worth. --heroes plays every stage with a
 ## party of the three heroes who would have joined by then, with and without heroes and skills, to
-## see how much of a run they carry next to the towers. --list prints the stage ids, so CI can tune
+## see how much of a run they carry next to the towers. --skill-levels plays every stage with the bot
+## as it is and with the bot buying skill levels from spare gold. --list prints the stage ids, so CI can tune
 ## them one stage per process, side by side.
 ##
 ## Every stage is played (and tuned) by the player a new player would be by then: the profile in
@@ -70,6 +71,11 @@ func _initialize() -> void:
 		return
 	if OS.get_cmdline_user_args().has("--compare"):
 		_compare(registry, meta)
+		registry.free()
+		quit()
+		return
+	if OS.get_cmdline_user_args().has("--skill-levels"):
+		_compare_skill_levels(meta, only)
 		registry.free()
 		quit()
 		return
@@ -255,6 +261,36 @@ func _compare(registry: Node, meta: MetaProgress) -> void:
 	for i in BOTS.size():
 		total += " %12s" % ("%d/%d" % [wins[i], kept[i]])
 	print("COMPARE " + total)
+
+
+## A table for --skill-levels: one row per stage, the bot as it is against the same bot buying skill
+## levels with spare gold (half its gold goes on them at most), with the gold it put into them.
+func _compare_skill_levels(meta: MetaProgress, only: String) -> void:
+	print("%-12s %12s %12s %8s" % ["LEVELS", "skills", "+levels", "gold"])
+	var kept: Array[int] = [0, 0]
+	var wins: Array[int] = [0, 0]
+	for campaign in meta.campaigns_in_order():
+		for stage in campaign.stages:
+			if not only.is_empty() and stage.id != only:
+				continue
+			var line := "%-12s" % stage.id
+			var spent := 0
+			for i in 2:
+				var sim := RunSim.new(_config(meta, stage))
+				var bot := AutoPlayer.for_sim(sim)
+				bot.skill_upgrades = i == 1
+				var elapsed := 0.0
+				while not sim.is_over() and elapsed < 8000.0:
+					bot.act()
+					sim.step(RunSim.STEP)
+					elapsed += RunSim.STEP
+				line += " %12s" % ("%3d%%" % roundi(100.0 * sim.lives / sim.starting_lives) if sim.state == RunSim.State.WON else " w%-2d" % sim.wave_index)
+				spent = bot.skill_gold
+				if sim.state == RunSim.State.WON:
+					wins[i] += 1
+					kept[i] += roundi(100.0 * sim.lives / sim.starting_lives)
+			print("LEVELS " + line + " %8d" % spent)
+	print("LEVELS %-12s %12s %12s" % ["wins/lives", "%d/%d" % [wins[0], kept[0]], "%d/%d" % [wins[1], kept[1]]])
 
 
 ## Kinds of play for --heroes: name, skills, heroes. All of them level and ascend towers.

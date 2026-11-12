@@ -60,6 +60,7 @@ func _played() -> RunSim:
 	assert_not_null(tower)
 	assert_true(sim.level_up(tower))
 	assert_not_null(sim.summon_hero(&"tamsin", _free_cell(sim, &"tamsin")))
+	assert_true(sim.upgrade_skill(&"meteor"))
 	_clear_wave(sim)
 	_clear_wave(sim)
 	sim.lives -= 3
@@ -79,6 +80,8 @@ func test_a_run_comes_back_as_it_was() -> void:
 	assert_eq(thawed.kills, sim.kills)
 	assert_eq(thawed.tree.points, sim.tree.points)
 	assert_true(thawed.tree.is_allocated(&"fire_entry"))
+	assert_eq(thawed.skill_level(&"meteor"), 2, "skill levels bought come back")
+	assert_eq(thawed.skill_level(&"surge"), 1)
 	assert_eq(thawed.towers.size(), sim.towers.size())
 	var tower := thawed.tower_at(CELL)
 	assert_not_null(tower)

@@ -340,6 +340,29 @@ func test_skill_buttons_show_their_key_and_cooldown() -> void:
 	assert_eq(button.cooldown_text, str(roundi(game.sim.skill_cooldown(&"meteor"))))
 
 
+func test_a_skill_is_levelled_up_with_its_button_or_shift_and_its_key() -> void:
+	game.sim.allocate_node(&"fire_entry")
+	game.sim.gold = 2000
+	await wait_process_frames(2)
+	var upgrade := game.hud.skill_upgrade_button(&"meteor")
+	assert_not_null(upgrade)
+	assert_string_contains(upgrade.text, "Lv1")
+	assert_string_contains(upgrade.text, "%dg" % game.sim.skill_upgrade_cost(&"meteor"))
+	assert_true(game.hud.skill_upgrade_button(&"surge").disabled, "locked until Storm is taken")
+	_press(upgrade)
+	assert_eq(game.sim.skill_level(&"meteor"), 2)
+	var shift_q := InputEventKey.new()
+	shift_q.keycode = KEY_Q
+	shift_q.shift_pressed = true
+	shift_q.pressed = true
+	_push(shift_q)
+	assert_eq(game.sim.skill_level(&"meteor"), 3, "Shift+Q buys the next level")
+	assert_eq(game.board.aiming, &"", "and does not start aiming")
+	await wait_process_frames(2)
+	assert_string_contains(upgrade.text, "Lv3")
+	assert_string_contains(upgrade.tooltip_text, "Firestorm")
+
+
 # --- Layout --------------------------------------------------------------------------
 
 ## The top bar and the side panel used to run off the screen when they had a lot to show.

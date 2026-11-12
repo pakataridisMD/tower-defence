@@ -87,6 +87,7 @@ static func capture(sim: RunSim) -> Dictionary:
 		"towers": towers,
 		"skill_cooldowns": _string_keys(sim._skill_cooldowns),
 		"skill_time": _string_keys(sim._skill_time),
+		"skill_levels": _string_keys(sim.skill_levels),
 		"structures": structures,
 		"structure_phase": sim.structure_phase,
 		"citadel_fallen": sim.citadel_fallen,
@@ -159,6 +160,13 @@ static func restore(sim: RunSim, data: Dictionary) -> int:
 	for id: Variant in _dict(data, "skill_time"):
 		if config.skills.has(StringName(id)) and float(data["skill_time"][id]) > 0.0:
 			sim._skill_time[StringName(id)] = float(data["skill_time"][id])
+	# Skill levels bought with gold (saves from before levels existed have none: every skill at 1).
+	for id: Variant in _dict(data, "skill_levels"):
+		var skill: SkillData = config.skills.get(StringName(id))
+		if skill != null:
+			sim.skill_levels[skill.id] = clampi(int(data["skill_levels"][id]), 1, skill.max_level())
+	for id: StringName in sim._skill_time:
+		sim._skill_mods[id] = sim._scaled_modifiers(config.skills[id], sim.skill_level(id))
 
 	var stored: Variant = data.get("structures", [])
 	if stored is Array:

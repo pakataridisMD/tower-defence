@@ -11,6 +11,8 @@ signal audio_pressed
 signal pause_menu_pressed
 signal tower_chosen(tower_id: StringName)
 signal skill_pressed(skill_id: StringName)
+## The player wants the skill's next level (its small button under it, or Shift and its key).
+signal skill_upgrade_pressed(skill_id: StringName)
 signal sell_pressed
 signal level_up_pressed
 signal ascend_pressed(ascendancy_id: StringName)
@@ -73,6 +75,8 @@ var _tier_tabs: Dictionary[int, Button] = {}
 var _shop_scroll: ScrollContainer
 var _shop_grid: GridContainer
 var _skill_buttons: Dictionary[StringName, KeyButton] = {}
+## The small level-up button under each skill.
+var _skill_upgrades: Dictionary[StringName, Button] = {}
 ## Skill ids in the order of their keys.
 var _skill_ids: Array[StringName] = []
 var _info: RichTextLabel
@@ -371,7 +375,7 @@ func _build_skills(column: VBoxContainer) -> void:
 	var skills := sim.skill_list()
 	if skills.is_empty():
 		return
-	column.add_child(_heading("Skills", "cast during a wave"))
+	column.add_child(_heading("Skills", "Shift+key levels up"))
 	var grid := GridContainer.new()
 	grid.columns = 3
 	grid.add_theme_constant_override("h_separation", 5)
@@ -388,8 +392,18 @@ func _build_skills(column: VBoxContainer) -> void:
 		if _skill_ids.size() < SKILL_KEYS.size():
 			button.key_text = OS.get_keycode_string(SKILL_KEYS[_skill_ids.size()])
 		button.pressed.connect(func() -> void: skill_pressed.emit(skill_id))
-		grid.add_child(button)
+		var cell := VBoxContainer.new()
+		cell.add_theme_constant_override("separation", 2)
+		cell.add_child(button)
+		var upgrade := UiStyle.button("", 13)
+		upgrade.theme_type_variation = &"CompactButton"
+		upgrade.custom_minimum_size = Vector2(97, 22)
+		upgrade.clip_text = true
+		upgrade.pressed.connect(func() -> void: skill_upgrade_pressed.emit(skill_id))
+		cell.add_child(upgrade)
+		grid.add_child(cell)
 		_skill_buttons[skill_id] = button
+		_skill_upgrades[skill_id] = upgrade
 		_skill_ids.append(skill_id)
 
 
@@ -533,6 +547,11 @@ func tower_for_hotkey(number: int) -> StringName:
 			if count == number:
 				return tower_id
 	return &""
+
+
+## The level-up button under a skill, for tests and screenshots.
+func skill_upgrade_button(skill_id: StringName) -> Button:
+	return _skill_upgrades.get(skill_id)
 
 
 ## The skill on the n-th skill key, counted from 0, or an empty id.
@@ -809,13 +828,44 @@ func _refresh_skills() -> void:
 		else:
 			button.outline = Color(0, 0, 0, 0)
 		button.tooltip_text = _skill_tooltip(skill, unlocked, button.key_text)
+		_refresh_skill_upgrade(skill, unlocked, button.key_text)
+
+
+## The level-up button under a skill: its level and the gold for the next, or that it is at its last.
+func _refresh_skill_upgrade(skill: SkillData, unlocked: bool, key: String) -> void:
+	var upgrade: Button = _skill_upgrades.get(skill.id)
+	if upgrade == null:
+		return
+	var level := sim.skill_level(skill.id)
+	var cost := sim.skill_upgrade_cost(skill.id)
+	upgrade.text = "Lv%d  MAX" % level if cost < 0 else "Lv%d  +%dg" % [level, cost]
+	upgrade.disabled = not sim.skill_upgrade_error(skill.id).is_empty()
+	upgrade.modulate = Color.WHITE if unlocked else Color(1, 1, 1, 0.45)
+	var lines: PackedStringArray = []
+	lines.append("%s, level %d of %d" % [skill.title_at(level), level, skill.max_level()])
+	if cost < 0:
+		lines.append("At its last level.")
+	else:
+		var next := skill.rank(level + 1)
+		lines.append("Next: %s (%d gold)" % [skill.title_at(level + 1), cost])
+		lines.append(next.description)
+		if not key.is_empty():
+			lines.append("Key: Shift+%s" % key)
+		var error := sim.skill_upgrade_error(skill.id)
+		if not error.is_empty():
+			lines.append(error)
+	upgrade.tooltip_text = "\n".join(lines)
 
 
 func _skill_tooltip(skill: SkillData, unlocked: bool, key: String) -> String:
 	var element: ElementData = sim.config.elements.get(skill.element)
 	var lines: PackedStringArray = []
-	lines.append("%s (%s)" % [skill.display_name, element.display_name if element else String(skill.element)])
+	var level := sim.skill_level(skill.id)
+	lines.append("%s (%s), level %d" % [skill.title_at(level), element.display_name if element else String(skill.element), level])
 	lines.append(skill.description)
+	if level > 1:
+		for step in range(2, level + 1):
+			lines.append("+ %s: %s" % [skill.title_at(step), skill.rank(step).description])
 	lines.append("Ready again after %d s%s" % [roundi(sim.skill_cooldown(skill.id)), "  ·  Key: " + key if not key.is_empty() else ""])
 	if skill.is_targeted():
 		lines.append("Click it (or press its key), then click the board. Pressing the key again casts where the mouse is.")
