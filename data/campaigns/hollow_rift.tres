@@ -108,6 +108,7 @@ order = 5
 element = &"void"
 tagline = "The Grove against the Dark"
 description = "The rift where the ring cracked first. Nature's horde grows wild here, warded in bark, and only the Void's curses and auras can tear it down."
+requires_campaigns = Array[StringName]([&"sunscar_canyon"])
 stages = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r5"), SubResource("r8"), SubResource("r10")])
 reward_name = "Sigil of the Hollow"
 reward_description = "Void towers deal 10% increased damage in every run."

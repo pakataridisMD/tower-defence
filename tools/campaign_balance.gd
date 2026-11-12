@@ -326,7 +326,7 @@ func _tune(meta: MetaProgress, stage: StageData, target: float) -> void:
 		for wave in bosses:
 			wave.health_multiplier = value
 	set_boss.call(0.02)
-	var health := _bisect(meta, stage, target + (0.1 if not bosses.is_empty() else 0.0), 0.1, 10.0,
+	var health := _bisect(meta, stage, target + (0.1 if not bosses.is_empty() else 0.0), 0.1, 20.0,
 			func(value: float) -> void: waves.health_scale = value)
 	waves.health_scale = health
 	var boss := 0.0

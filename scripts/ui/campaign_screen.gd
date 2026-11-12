@@ -539,7 +539,13 @@ func _details_text(stage: StageData, campaign: CampaignData) -> String:
 	var stars := meta.stars(stage.id)
 	if not meta.is_stage_unlocked(stage.id):
 		if not meta.is_campaign_unlocked(campaign.id):
-			lines.append("[color=#%s]Opens when every element campaign is finished.[/color]" % UiStyle.BAD.to_html(false))
+			var needed: PackedStringArray = []
+			for id in campaign.requires_campaigns:
+				var before: CampaignData = DataRegistry.campaigns.get(id)
+				if before != null and not meta.is_campaign_complete(id):
+					needed.append(before.display_name)
+			var what := "every element campaign is finished" if needed.size() > 1 else "%s is finished" % ", ".join(needed)
+			lines.append("[color=#%s]Opens when %s.[/color]" % [UiStyle.BAD.to_html(false), what])
 		else:
 			lines.append("[color=#%s]Win the stage before it to open this one.[/color]" % UiStyle.BAD.to_html(false))
 	lines.append("[color=#%s][b]RULES[/b][/color]" % gold)
