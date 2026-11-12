@@ -20,3 +20,14 @@ tools/sfx/.samples/
 tools/sfx/.cache/
 cinema/blender/mh/
 cinema/blender/.mpfb2/
+
+# Poly Haven assets fetched on the Mac by get_ph.py (CC0, too big for git); the first set stays tracked
+cinema/blender/ph/*/
+!cinema/blender/ph/brown_mud_02/
+!cinema/blender/ph/castle_wall_slates/
+!cinema/blender/ph/dark_rock_02/
+!cinema/blender/ph/fouriesburg_mountain_cloudy/
+!cinema/blender/ph/gray_rocks/
+!cinema/blender/ph/mountainside/
+!cinema/blender/ph/namaqualand_cliff_02/
+!cinema/blender/ph/rock_face_02/
