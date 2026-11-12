@@ -287,7 +287,8 @@ func _process(delta: float) -> void:
 		_accumulator = 0.0
 		return
 	if sim.state == RunSim.State.BUILDING and sim.break_time_left >= 0.0 and _bot == null:
-		# In an assault the next wave comes on its own after a short break.
+		# After a cleared wave the next one comes on its own when the break runs out. Pausing, the
+		# menus, the skill web and cinematics stop the clock (see the return above).
 		if sim.tick_break(delta * SPEEDS[_speed_index]):
 			_close_web()
 	if sim.state != RunSim.State.WAVE:

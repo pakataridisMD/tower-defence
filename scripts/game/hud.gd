@@ -81,6 +81,8 @@ var _sell_button: Button
 var _actions: VBoxContainer
 var _actions_key := ""
 var _message: Label
+## "Next wave in 12 s" over the board while a break counts down to a wave that starts on its own.
+var _countdown: Label
 var _message_time := 0.0
 var _menu_button: Button
 var _end_panel: PanelContainer
@@ -128,6 +130,20 @@ func _announce_wave(number: int) -> void:
 			roundi(sim.endless_multiplier() * 100.0), roundi(sim.endless_multiplier() * 100.0)]
 	show_message(text)
 	_message_time = 4.0
+
+
+## Shows how long the break has left before the next wave starts on its own.
+func _refresh_countdown() -> void:
+	var counting := sim.state == RunSim.State.BUILDING and sim.break_time_left >= 0.0
+	_countdown.visible = counting
+	if not counting:
+		return
+	var seconds := ceili(sim.break_time_left)
+	if paused:
+		_countdown.text = "Next wave in %d s  (paused)" % seconds
+	else:
+		_countdown.text = "Next wave in %d s  -  Space to start now" % seconds
+	_countdown.add_theme_color_override("font_color", UiStyle.GOLD if seconds <= 5 else UiStyle.TEXT)
 
 
 func show_message(text: String, color: Color = UiStyle.TEXT) -> void:
@@ -397,6 +413,15 @@ func _build_message() -> void:
 	_message.size = Vector2(1536, 90)
 	_message.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_message)
+	_countdown = UiStyle.label("", 26)
+	_countdown.add_theme_color_override("font_outline_color", UiStyle.MENU_INK)
+	_countdown.add_theme_constant_override("outline_size", 8)
+	_countdown.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_countdown.position = Vector2(24, 196)
+	_countdown.size = Vector2(1536, 40)
+	_countdown.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_countdown.hide()
+	add_child(_countdown)
 
 
 func _build_end_panel() -> void:
@@ -659,6 +684,7 @@ func _refresh() -> void:
 				_wave_button.text = "Counter-attack!"
 		_:
 			_wave_button.text = "Run over"
+	_refresh_countdown()
 	var number := 0
 	for tower_id in _shop_ids:
 		var shown := _in_open_tab(tower_id)

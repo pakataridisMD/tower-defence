@@ -230,3 +230,45 @@ func test_the_other_ways_out_keep_their_own_note() -> void:
 	_key(KEY_ESCAPE)
 	_press(game.pause_menu.menu_button)
 	assert_string_contains(game.pause_menu._confirm_note.text, "Continue on the title screen")
+
+
+## Plays the first wave out at once, so the run is in the break before wave 2.
+func _clear_first_wave() -> void:
+	game.sim.lives = 999
+	game.sim.start_next_wave()
+	while game.sim.state == RunSim.State.WAVE:
+		game.sim.step(0.05)
+
+
+func test_break_counts_down_and_starts_the_next_wave() -> void:
+	await _start()
+	_clear_first_wave()
+	assert_eq(game.sim.break_time_left, RunSim.AUTO_WAVE_DELAY)
+	await wait_process_frames(2)
+	assert_true(game.hud._countdown.visible, "the countdown shows over the board")
+	assert_string_contains(game.hud._countdown.text, "Next wave in")
+	game.sim.break_time_left = 0.3
+	await wait_seconds(0.6)
+	assert_eq(game.sim.state, RunSim.State.WAVE, "the next wave started on its own")
+	assert_eq(game.sim.wave_number(), 2)
+	await wait_process_frames(2)
+	assert_false(game.hud._countdown.visible)
+
+
+func test_menu_and_skill_web_stop_the_break_countdown() -> void:
+	await _start()
+	_clear_first_wave()
+	_key(KEY_ESCAPE)
+	assert_true(game.pause_menu.visible)
+	var left := game.sim.break_time_left
+	await wait_seconds(0.3)
+	assert_eq(game.sim.break_time_left, left, "no countdown while the menu is open")
+	_key(KEY_ESCAPE)
+	await wait_seconds(0.3)
+	assert_lt(game.sim.break_time_left, left, "the countdown goes on after resuming")
+	game._toggle_web()
+	assert_true(game.web.visible)
+	left = game.sim.break_time_left
+	await wait_seconds(0.3)
+	assert_eq(game.sim.break_time_left, left, "no countdown while the skill web is open")
+	game._close_web()
