@@ -78,10 +78,11 @@ func kind_at(wave_number: int) -> Kind:
 	var block := (wave_number - 1) / BLOCK
 	var rng := RandomNumberGenerator.new()
 	rng.seed = _seed ^ ((block + 1) * 7919)
-	# The first block always gets its spell, a little way in, so the player sees it early.
+	# The first block always gets its spell, a little way in, so the player sees it early. A later
+	# spell starts after its block's first wave, so two spells never run together.
 	if block > 0 and rng.randf() > 0.75:
 		return Kind.CLEAR
-	var start := rng.randi_range(2, 4) if block == 0 else rng.randi_range(0, BLOCK - 3)
+	var start := rng.randi_range(2, 4) if block == 0 else rng.randi_range(1, BLOCK - 3)
 	var spells: Array = SPELLS[biome]
 	var kind: Kind = spells[rng.randi() % spells.size()]
 	var length := rng.randi_range(2, 3)
