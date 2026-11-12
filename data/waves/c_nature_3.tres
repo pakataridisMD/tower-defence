@@ -1415,4 +1415,5 @@ id = &"c_nature_3"
 display_name = "Bramble Maze"
 health_growth = 1.1
 health_scale = 6.82
+boss_health_scale = 0.41
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r16"), SubResource("r26"), SubResource("r37"), SubResource("r45"), SubResource("r58"), SubResource("r69"), SubResource("r81"), SubResource("r95"), SubResource("r110"), SubResource("r123"), SubResource("r139"), SubResource("r155"), SubResource("r172")])

@@ -1412,4 +1412,5 @@ id = &"c_ember_3"
 display_name = "Obsidian Crossing"
 health_growth = 1.1
 health_scale = 4.67
+boss_health_scale = 0.25
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r16"), SubResource("r26"), SubResource("r37"), SubResource("r45"), SubResource("r58"), SubResource("r69"), SubResource("r81"), SubResource("r95"), SubResource("r110"), SubResource("r123"), SubResource("r139"), SubResource("r155"), SubResource("r172")])

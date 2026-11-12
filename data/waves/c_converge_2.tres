@@ -2312,4 +2312,5 @@ id = &"c_converge_2"
 display_name = "Prism Wastes"
 health_growth = 1.1
 health_scale = 8.15
+boss_health_scale = 0.19
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r15"), SubResource("r27"), SubResource("r38"), SubResource("r50"), SubResource("r63"), SubResource("r76"), SubResource("r88"), SubResource("r103"), SubResource("r117"), SubResource("r131"), SubResource("r149"), SubResource("r165"), SubResource("r182"), SubResource("r201"), SubResource("r219"), SubResource("r237"), SubResource("r251")])
