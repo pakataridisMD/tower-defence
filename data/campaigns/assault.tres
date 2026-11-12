@@ -7,52 +7,38 @@
 
 [sub_resource type="Resource" id="r1"]
 script = ExtResource("2_s")
-enemy = &"gatemaw"
-cell = Vector2i(27, 12)
-phase = 1
-lane = 0
-closes_lanes = PackedInt32Array(1, 2)
-releases = Array[StringName]([&"saltmother", &"gorrath", &"pale_vesper", &"ashwick", &"vholt", &"mother_briar"])
-release_health = 0.15
-
-[sub_resource type="Resource" id="r2"]
-script = ExtResource("2_s")
-enemy = &"mirror_spire"
-cell = Vector2i(34, 7)
-phase = 2
-lane = 0
-
-[sub_resource type="Resource" id="r3"]
-script = ExtResource("2_s")
-enemy = &"crownless_throne"
-cell = Vector2i(41, 12)
+enemy = &"nhal_vorath"
+cell = Vector2i(36, 12)
 phase = 3
 lane = 0
-releases = Array[StringName]([&"vael_orrun"])
-release_health = 0.15
+footprint = Rect2i(31, 2, 11, 22)
 
-[sub_resource type="Resource" id="r4"]
+[sub_resource type="Resource" id="r2"]
 script = ExtResource("4_s")
 id = &"assault_1"
 display_name = "Nhal Vorath"
-description = "The citadel's roads run west toward our camp. Hold them, push your towers east, and bring Nhal Vorath down piece by piece. It will not end until the Sunderer is finished."
+description = "The citadel's three gates open toward our camp. Hold the roads until the Sunderer comes, break him, then muster the army and take the citadel down."
 map = &"c_assault_1"
 is_guardian = true
 modifiers = Array[ExtResource("3_s")]([])
-rule_text = PackedStringArray("Every element can be drafted. The horde comes down three roads from the fortress.", "The Black Gate: bring down the Gatemaw. It closes the two flank roads, and the six Heralds return as Echoes.", "The Mirror Spire: topple it. It silences towers near it.", "The Crownless Throne: break it, then unmake Vael-Orrun before he reaches your camp.", "You can only build on ground you hold: it moves east as each phase falls.", "Waves start on their own 12 seconds after the last one (Space calls the next one early). When the waves run out, the last one comes again, stronger.")
+rule_text = PackedStringArray("Every element can be drafted. The horde pours out of the citadel's three gates.", "Waves 1 to 38: hold the roads. Nothing you build can touch the citadel.", "Wave 39: Vael-Orrun comes himself. Break him three times, in three forms, before he reaches your camp.", "Wave 40: the counter-attack. Muster soldiers, war machines and every hero onto the roads to take the citadel down. Your towers hold the camp; the garrison keeps coming until the citadel falls.", "Waves start on their own 8 seconds after the last one (Space calls the next one early).")
 starting_lives = 30
 first_clear_points = 20
-structures = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2"), SubResource("r3")])
-build_columns = PackedInt32Array(25, 32, -1)
-auto_wave_delay = 12.0
+structures = Array[ExtResource("2_s")]([SubResource("r1")])
+build_columns = PackedInt32Array(28, 28, 28)
+auto_wave_delay = 8.0
+boss_wave = 39
+counter_wave = 40
+war_chest = 1500
+counter_income = 14.0
 
-[sub_resource type="Resource" id="r5"]
+[sub_resource type="Resource" id="r3"]
 script = ExtResource("3_s")
 stat = &"damage"
 kind = 2
 value = 0.05
 
-[sub_resource type="Resource" id="r6"]
+[sub_resource type="Resource" id="r4"]
 script = ExtResource("3_s")
 stat = &"cost"
 kind = 1
@@ -65,9 +51,9 @@ display_name = "The Crownless Citadel"
 order = 7
 element = &""
 tagline = "Through the Crack, into Nhal Vorath"
-description = "Solenne held. Now we stop running. Through the Crack lies Nhal Vorath, the Crownless Citadel: break its living gate, climb the Mirror Spire, and unmake the Sunderer on his throne."
+description = "Solenne held. Now we stop running. Through the Crack lies Nhal Vorath, the Crownless Citadel, the root of every horde. Hold its roads, break the Sunderer when he comes, then march on it with every soldier and hero we have."
 requires_campaigns = Array[StringName]([&"convergence"])
-stages = Array[ExtResource("4_s")]([SubResource("r4")])
+stages = Array[ExtResource("4_s")]([SubResource("r2")])
 reward_name = "Lantern of the White Order"
 reward_description = "Every tower deals 5% more damage and costs 5% less in every run."
-reward_modifiers = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r6")])
+reward_modifiers = Array[ExtResource("3_s")]([SubResource("r3"), SubResource("r4")])

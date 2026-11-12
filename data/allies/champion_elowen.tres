@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_elowen"
+display_name = "Elowen"
+title = "the Evergreen"
+description = "The Evergreen. Wherever she stands, the wounded stand again."
+role = 5
+element = &"nature"
+hero = &"elowen"
+order = 109
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 700.0
+armour = 8.0
+speed = 40.0
+damage = 22.0
+attack_interval = 1.2
+attack_range = 60.0
+heal_amount = 0.07
+heal_radius = 220.0
+heal_interval = 1.5

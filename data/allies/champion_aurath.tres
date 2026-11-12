@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_aurath"
+display_name = "Aurath"
+title = "of the Storms"
+description = "The storm itself, come to break the citadel's sky."
+role = 5
+element = &"storm"
+hero = &"aurath"
+order = 108
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 600.0
+armour = 6.0
+speed = 70.0
+blocks = false
+damage = 38.0
+attack_interval = 1.2
+attack_range = 220.0
+chain_count = 5

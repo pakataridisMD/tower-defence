@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_thalassa"
+display_name = "Thalassa"
+title = "of the Deep"
+description = "The Deep rises behind her and falls on the horde."
+role = 5
+element = &"water"
+hero = &"thalassa"
+order = 110
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 640.0
+armour = 8.0
+speed = 48.0
+blocks = false
+damage = 34.0
+attack_interval = 1.3
+attack_range = 200.0
+splash_radius = 90.0
+slow = 0.5
+slow_duration = 2.0

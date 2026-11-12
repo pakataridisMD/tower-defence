@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_sylvaine"
+display_name = "Sylvaine Thornwhisper"
+title = "Warden-Archer of the Deep"
+description = "Her arrows never miss and never stop hurting."
+role = 5
+element = &"nature"
+hero = &"sylvaine"
+order = 103
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 360.0
+armour = 4.0
+speed = 60.0
+blocks = false
+damage = 34.0
+attack_interval = 0.8
+attack_range = 260.0
+dot_damage = 12.0
+dot_duration = 4.0
+dot_kind = &"poison"

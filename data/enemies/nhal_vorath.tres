@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"nhal_vorath"
+display_name = "Nhal Vorath, the Crownless Citadel"
+max_health = 26000.0
+speed = 0.0
+armour = 6.0
+bounty = 1000
+leak_damage = 0
+tags = Array[StringName]([&"structure", &"citadel"])
+description = "The root of every horde: a black fortress Vael-Orrun raised at the bottom of the Rift from the ruins of Vael, with Solenne's own Dawn Gate for its gate and the stolen crowns burning on its spire. Towers and skills cannot touch it. Only the army you muster in the counter-attack can bring it down, under the fire of its spires."
+element = &"void"
+status_immune = true
+bolt_interval = 2.0
+bolt_damage = 32.0
+bolt_radius = 760.0
+bolt_count = 3
+structure = true

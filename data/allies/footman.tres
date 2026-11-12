@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"footman"
+display_name = "Solenne Footmen"
+title = "Shield wall"
+description = "Red plate, steel and a heater shield. Three of them hold a road against twice their number."
+role = 0
+element = &""
+order = 0
+cost = 60
+cooldown = 3.0
+count = 3
+max_health = 70.0
+armour = 2.0
+speed = 55.0
+damage = 9.0
+attack_interval = 1.0
+attack_range = 36.0

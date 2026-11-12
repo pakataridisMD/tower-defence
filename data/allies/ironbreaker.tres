@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"ironbreaker"
+display_name = "Stoneborn Shieldbreakers"
+title = "Wall breakers"
+description = "Stoneborn of the Canyon with rune-cut hammers. Slow, very hard to kill, and terrible to walls."
+role = 2
+element = &"earth"
+order = 8
+cost = 170
+cooldown = 9.0
+count = 2
+max_health = 260.0
+armour = 10.0
+speed = 40.0
+damage = 20.0
+attack_interval = 1.4
+attack_range = 38.0
+siege_multiplier = 2.5

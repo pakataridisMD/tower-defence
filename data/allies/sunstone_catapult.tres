@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"sunstone_catapult"
+display_name = "Spirewright Sunstone Catapult"
+title = "Long-range siege"
+description = "Throws shards of the broken Sunstone. It outranges the citadel's spires."
+role = 2
+element = &""
+order = 19
+cost = 260
+cooldown = 16.0
+count = 1
+max_health = 150.0
+armour = 4.0
+speed = 30.0
+blocks = false
+damage = 40.0
+attack_interval = 3.0
+attack_range = 320.0
+splash_radius = 70.0
+siege_multiplier = 2.5

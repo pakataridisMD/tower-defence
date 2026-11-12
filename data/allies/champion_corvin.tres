@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_corvin"
+display_name = "Corvin the Uncrowned"
+title = "Ranger-King of the Rift"
+description = "The Uncrowned's star-glass blade finds every weak point."
+role = 5
+element = &"void"
+hero = &"corvin"
+order = 106
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 440.0
+armour = 6.0
+speed = 80.0
+damage = 46.0
+attack_interval = 0.8
+attack_range = 40.0
+boss_multiplier = 1.8

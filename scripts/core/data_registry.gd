@@ -16,6 +16,7 @@ const DIFFICULTIES_DIR := "res://data/difficulties"
 const CAMPAIGNS_DIR := "res://data/campaigns"
 const SKILLS_DIR := "res://data/skills"
 const HEROES_DIR := "res://data/heroes"
+const ALLIES_DIR := "res://data/allies"
 const RUN_RULES_PATH := "res://data/rules/run_rules.tres"
 
 var elements: Dictionary[StringName, ElementData] = {}
@@ -27,6 +28,8 @@ var difficulties: Dictionary[StringName, DifficultyData] = {}
 var campaigns: Dictionary[StringName, CampaignData] = {}
 var skills: Dictionary[StringName, SkillData] = {}
 var heroes: Dictionary[StringName, HeroData] = {}
+## Units the player musters in the counter-attack of the final assault.
+var allies: Dictionary[StringName, AllyData] = {}
 ## Every campaign stage by id.
 var stages: Dictionary[StringName, StageData] = {}
 var in_run_tree_nodes: Array[TreeNodeData] = []
@@ -51,6 +54,7 @@ func reload() -> void:
 	campaigns.clear()
 	skills.clear()
 	heroes.clear()
+	allies.clear()
 	stages.clear()
 	in_run_tree_nodes.clear()
 	meta_tree_nodes.clear()
@@ -73,6 +77,8 @@ func reload() -> void:
 		_index(skills, resource as SkillData, SKILLS_DIR)
 	for resource in load_folder(HEROES_DIR):
 		_index(heroes, resource as HeroData, HEROES_DIR)
+	for resource in load_folder(ALLIES_DIR):
+		_index(allies, resource as AllyData, ALLIES_DIR)
 	for campaign: CampaignData in campaigns.values():
 		for stage in campaign.stages:
 			if stage != null and not stage.id.is_empty() and not stages.has(stage.id):
@@ -135,6 +141,7 @@ func validate() -> PackedStringArray:
 	_validate_campaigns(errors)
 	_validate_skills(errors)
 	_validate_heroes(errors)
+	_validate_allies(errors)
 	if run_rules != null and run_rules.starting_lives <= 0:
 		errors.append("Run rules: starting lives must be above 0")
 	return errors
@@ -437,3 +444,13 @@ func _validate_campaigns(errors: PackedStringArray) -> void:
 			errors.append("%s: cannot split into or summon itself" % label)
 		if enemy.summon_interval > 0.0 and not enemies.has(enemy.summon):
 			errors.append("%s: summons unknown enemy '%s'" % [label, enemy.summon])
+
+
+func _validate_allies(errors: PackedStringArray) -> void:
+	for ally: AllyData in allies.values():
+		if not ally.hero.is_empty() and not heroes.has(ally.hero):
+			errors.append("Ally %s: unknown hero %s" % [ally.id, ally.hero])
+		if not ally.element.is_empty() and not elements.has(ally.element):
+			errors.append("Ally %s: unknown element %s" % [ally.id, ally.element])
+		if ally.cost <= 0 or ally.max_health <= 0.0 or ally.speed <= 0.0:
+			errors.append("Ally %s: cost, health and speed must be above 0" % ally.id)

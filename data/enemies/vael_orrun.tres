@@ -5,19 +5,17 @@
 [resource]
 script = ExtResource("1_enemy")
 id = &"vael_orrun"
-display_name = "Vael-Orrun, the Sunderer"
-max_health = 9000.0
-speed = 24.0
-armour = 12.0
+display_name = "Vael-Orrun, the High King"
+max_health = 4500.0
+speed = 13.0
+armour = 4.0
 bounty = 500
 leak_damage = 999
 tags = Array[StringName]([&"boss", &"overlord"])
-description = "The seventh Primordial. Cycles through all six elements, steps forward through shadow, silences towers and rages when wounded. If he reaches the end of the road, all is lost."
+description = "The High King of Orrun in his armour of black glass. Cycles through all six elements, walks slowly and silences towers. Beat him and he does not fall: he changes. If he reaches the end of the road, all is lost."
 prismatic_interval = 6.0
-blink_interval = 12.0
-blink_distance = 96.0
 silence_interval = 10.0
 silence_radius = 190.0
 silence_duration = 2.5
-enrage_below = 0.35
-enrage_speed = 1.4
+next_form = &"vael_orrun_wrath"
+transform_seconds = 4.0

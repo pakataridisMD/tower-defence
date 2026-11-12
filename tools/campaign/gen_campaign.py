@@ -225,42 +225,52 @@ LIEUTENANT_NAMES = {
 }
 
 # ------------------------------------------------------------------------------------ the assault
-# The last campaign: after the capital holds, the player takes the war to the enemy's fortress. One
-# long stage (about 30 minutes) on a map whose right side is the enemy base. The horde comes down
-# three roads; two of them have a gate. Phase 1: bring down the gates. Phase 2: the spires of the
-# inner keep, which silence towers. Phase 3: the Black Throne, which releases the overlord. Towers
-# may only be built up to a column that moves right with each phase. Waves start on their own after
-# a short break and the last one repeats, stronger each time, until the fortress falls.
+# The last campaign: after the capital holds, the player takes the war to Nhal Vorath, the Crownless
+# Citadel. One long stage of 40 waves (about 30 minutes) on a map whose right side is the citadel.
+# The horde pours out of its three gates. Act 1 (waves 1-38): hold the roads; towers cannot touch the
+# citadel. Act 2 (wave 39): Vael-Orrun comes down the road himself, and changes into a worse form
+# twice before he breaks and flees back inside. Act 3 (wave 40): the roles turn. The player musters
+# soldiers, war machines and every hero (data/allies, tools/allies/gen_allies.py) who march up the
+# roads; the citadel defends with its spires and a horde that never stops coming, and the towers hold
+# our camp. Only the units can bring the citadel down. When it falls, the truth about Vael-Orrun.
 ASSAULT = {
     "id": "assault", "name": "The Crownless Citadel", "element": "",
     "tagline": "Through the Crack, into Nhal Vorath",
-    "description": "Solenne held. Now we stop running. Through the Crack lies Nhal Vorath, the Crownless Citadel: "
-                   "break its living gate, climb the Mirror Spire, and unmake the Sunderer on his throne.",
+    "description": "Solenne held. Now we stop running. Through the Crack lies Nhal Vorath, the Crownless Citadel, "
+                   "the root of every horde. Hold its roads, break the Sunderer when he comes, then march on it "
+                   "with every soldier and hero we have.",
     "requires": ["convergence"],
     "reward": ("Lantern of the White Order", "Every tower deals 5% more damage and costs 5% less in every run.",
                [("damage", 2, 0.05, []), ("cost", 1, -0.05, [])]),
     "stage": {
         "id": "assault_1", "name": "Nhal Vorath",
-        "story": "The citadel's roads run west toward our camp. Hold them, push your towers east, and bring Nhal Vorath "
-                 "down piece by piece. It will not end until the Sunderer is finished.",
+        "story": "The citadel's three gates open toward our camp. Hold the roads until the Sunderer comes, "
+                 "break him, then muster the army and take the citadel down.",
+        # Three roads out of the citadel's gates on its west face.
         "lanes": [
-            [(22, 7), (16, 7), (16, 10), (10, 10), (10, 7), (-1, 7)],
-            [(24, 2), (14, 2), (14, 4), (7, 4), (7, 7), (-1, 7)],
-            [(24, 13), (13, 13), (13, 10), (10, 10), (10, 7), (-1, 7)],
+            [(19, 7), (15, 7), (15, 10), (10, 10), (10, 7), (-1, 7)],
+            [(19, 5), (17, 5), (17, 2), (7, 2), (7, 7), (-1, 7)],
+            [(19, 9), (17, 9), (17, 13), (12, 13), (12, 10), (10, 10), (10, 7), (-1, 7)],
         ],
-        # (enemy, cell, phase, lane it releases onto, roads it closes when it falls, what it releases and
-        # at what share of their health)
-        "structures": [
-            ("gatemaw", (17, 7), 1, 0, [1, 2], ["saltmother", "gorrath", "pale_vesper", "ashwick", "vholt", "mother_briar"], 0.15),
-            ("mirror_spire", (20, 4), 2, 0, [], [], 1.0),
-            ("crownless_throne", (23, 7), 3, 0, [], ["vael_orrun"], 0.15),
-        ],
-        "build_columns": [15, 18, -1],
-        "auto_wave_delay": 12.0,
+        # The roads keep this many columns at the right edge of the board free: the citadel stands there.
+        "reserve": 8,
+        # (enemy, centre cell, phase, footprint corners) in board cells of the finished map.
+        "citadel": ("nhal_vorath", (36, 12), 3, ((31, 2), (41, 23))),
+        # Towers can be built up to this column (board cells); the gates open at column 30.
+        "build_column": 28,
+        "auto_wave_delay": 8.0,
         "waves": 40,
+        "boss_wave": 39,
+        "counter_wave": 40,
+        "war_chest": 1500,
+        "counter_income": 14.0,
         "first_clear": 20,
-        "echoes": {12: ["thunderhead"], 20: ["broodmother", "leviathan"], 28: ["mountain_titan", "cinder_tyrant"],
-                   36: ["hollow_king", "sundered_heart"]},
+        # An Echo of one of the six Heralds every sixth wave, and the Wardens' mad shapes with them later.
+        "echoes": {6: ["saltmother"], 12: ["gorrath", "thunderhead"], 18: ["pale_vesper"],
+                   24: ["ashwick", "broodmother", "leviathan"], 30: ["vholt", "mountain_titan", "cinder_tyrant"],
+                   36: ["mother_briar", "hollow_king", "sundered_heart"]},
+        # Wave 39: Vael-Orrun himself, with the horde around him.
+        "sunderer": ["vael_orrun"],
     },
 }
 
@@ -763,15 +773,18 @@ def write_campaign(order, c):
 def plan_assault_waves(stage):
     """The assault's waves: every group its own element, the mix growing heavier, and old bosses
     coming back as Echoes. Its waves start on their own, so they stay a little shorter than a
-    campaign stage's late waves."""
+    campaign stage's late waves. The boss wave brings the Sunderer; the counter-attack's wave is the
+    citadel's garrison, which comes again and again until the citadel falls."""
     waves = []
     extras = ["mender", "splitter", "warded", "brute"]
     lanes = len(stage["lanes"])
     for w in range(1, stage["waves"] + 1):
         horde = {"signature": extras[w % 4], "second": extras[(w + 1) % 4]}
         c = context(horde, 1, w, stage["waves"], lanes)
-        c["p"] = 1.1 + 0.05 * (w - 1)
-        c["beats"] = 1 + w // 12
+        # Forty waves have to fit in about half an hour, so each is short: one beat and a surge early,
+        # three by the end.
+        c["p"] = 1.0 + 0.04 * (min(w, stage["boss_wave"]) - 1)
+        c["beats"] = 1 + w // 15
         required = []
         if w >= 4:
             required.append(beat_signature)
@@ -779,14 +792,26 @@ def plan_assault_waves(stage):
             required.append(beat_second)
         if w % 3 == 0:
             required.append(beat_escort)
-        wave = compose(c, required, closer=False)
-        boss = w in stage["echoes"]
-        if boss:
+        if w == stage["counter_wave"]:
+            # The garrison: a steady march down every road, lighter than a late wave, because it
+            # never stops coming and the towers fight it while the army marches.
+            c["p"] = 0.9
+            c["beats"] = 2
+            wave = compose(c, [beat_signature, beat_escort], closer=False)
+            text = "The citadel's garrison. It keeps coming until Nhal Vorath falls."
+        else:
+            wave = compose(c, required, closer=False)
+            text = None
+        boss = w in stage["echoes"] or w == stage["boss_wave"]
+        if w in stage["echoes"]:
             beat_bosses(wave, stage["echoes"][w], 7.0)
-        beat_surge(wave, c)
+        if w == stage["boss_wave"]:
+            beat_bosses(wave, stage["sunderer"], 0.0)
+        if w != stage["counter_wave"]:
+            beat_surge(wave, c)
         for k, g in enumerate(wave.groups):
             g["element"] = RING[(w + k * 2) % 6]
-        waves.append((RING[w % 6], boss, wave.groups, describe(wave.words)))
+        waves.append((RING[w % 6], boss, wave.groups, text or describe(wave.words)))
     return waves
 
 
@@ -844,36 +869,23 @@ def write_assault(order, c):
         f"script = {script}", f"id = {sn(wave_set)}", f"display_name = {string(st['name'])}",
         f"health_growth = {tune.get('growth', 1.09)}", f"health_scale = {tune.get('health', 1.0)}",
         f"waves = {typed(t, WAVE, refs)}"])
-    cells_at = {e: maps.scale_cell(cell, st["lanes"]) for e, cell, *_ in st["structures"]}
-    write_map(sid, st["name"], {"lanes": st["lanes"]}, 100 + order * 10, "void", wave_set,
-              fixed_cells=[cell for _e, cell, *_ in st["structures"]], jitter=False)
+    enemy, (x, y), phase, ((ax, ay), (bx, by)) = st["citadel"]
+    with maps.reserve_right(st["reserve"]):
+        write_map(sid, st["name"], {"lanes": st["lanes"]}, 100 + order * 10, "void", wave_set, jitter=False)
     # Campaign and stage
     t = Tres("CampaignData")
     script = t.script("res://scripts/data/campaign_data.gd")
-    srefs = []
-    for e, _cell, ph, lane, closes, releases, release_health in st["structures"]:
-        x, y = cells_at[e]
-        fields = [f"enemy = {sn(e)}", f"cell = Vector2i({x}, {y})", f"phase = {ph}", f"lane = {lane}"]
-        if closes:
-            fields.append("closes_lanes = PackedInt32Array(%s)" % ", ".join(str(v) for v in closes))
-        if releases:
-            fields.append(f"releases = {sn_array(releases)}")
-            if release_health != 1.0:
-                fields.append(f"release_health = {release_health}")
-        srefs.append(t.sub(STRUCTURE, fields))
-    # The ground you hold ends as many cells short of each phase's building as it did on the small
-    # sketch, so towers at the front still reach it on the big map.
-    fronts = []
-    for (e, (sx, _sy), *_), v in zip(st["structures"], st["build_columns"]):
-        fronts.append(v if v < 0 else cells_at[e][0] - (sx - v))
+    fields = [f"enemy = {sn(enemy)}", f"cell = Vector2i({x}, {y})", f"phase = {phase}", "lane = 0",
+              f"footprint = Rect2i({ax}, {ay}, {bx - ax + 1}, {by - ay + 1})"]
+    srefs = [t.sub(STRUCTURE, fields)]
+    front = st["build_column"]
     rules = [
-        "Every element can be drafted. The horde comes down three roads from the fortress.",
-        "The Black Gate: bring down the Gatemaw. It closes the two flank roads, and the six Heralds return as Echoes.",
-        "The Mirror Spire: topple it. It silences towers near it.",
-        "The Crownless Throne: break it, then unmake Vael-Orrun before he reaches your camp.",
-        "You can only build on ground you hold: it moves east as each phase falls.",
-        "Waves start on their own %d seconds after the last one (Space calls the next one early). "
-        "When the waves run out, the last one comes again, stronger." % int(st["auto_wave_delay"]),
+        "Every element can be drafted. The horde pours out of the citadel's three gates.",
+        "Waves 1 to %d: hold the roads. Nothing you build can touch the citadel." % (st["boss_wave"] - 1),
+        "Wave %d: Vael-Orrun comes himself. Break him three times, in three forms, before he reaches your camp." % st["boss_wave"],
+        "Wave %d: the counter-attack. Muster soldiers, war machines and every hero onto the roads to take the "
+        "citadel down. Your towers hold the camp; the garrison keeps coming until the citadel falls." % st["counter_wave"],
+        "Waves start on their own %d seconds after the last one (Space calls the next one early)." % int(st["auto_wave_delay"]),
     ]
     fields = [f"id = {sn(sid)}", f"display_name = {string(st['name'])}", f"description = {string(st['story'])}",
               f"map = {sn('c_' + sid)}", "is_guardian = true", f"modifiers = {typed(t, MOD, [])}",
@@ -884,8 +896,11 @@ def write_assault(order, c):
         fields.append(f"starting_lives = {tune['lives']}")
     fields += [f"first_clear_points = {st['first_clear']}",
                f"structures = {typed(t, STRUCTURE, srefs)}",
-               "build_columns = PackedInt32Array(%s)" % ", ".join(str(v) for v in fronts),
-               f"auto_wave_delay = {float(st['auto_wave_delay'])}"]
+               "build_columns = PackedInt32Array(%d, %d, %d)" % (front, front, front),
+               f"auto_wave_delay = {float(st['auto_wave_delay'])}",
+               f"boss_wave = {st['boss_wave']}", f"counter_wave = {st['counter_wave']}",
+               f"war_chest = {tune.get('war_chest', st['war_chest'])}",
+               f"counter_income = {float(st['counter_income'])}"]
     stage_ref = t.sub(STAGE, fields)
     reward_name, reward_text, reward_mods = c["reward"]
     rmods = [modifier(t, *m) for m in reward_mods]

@@ -2400,6 +2400,18 @@ def drawn_enemy(eid: str) -> dict | None:
     return meta
 
 
+# Buildings drawn whole by tools/art/citadel/gen_citadel.py rather than as enemy sprites.
+CITADELS = {"nhal_vorath"}
+
+
+def has_drawn(eid: str) -> bool:
+    try:
+        with open(os.path.join(DRAWN, "drawn.json")) as fh:
+            return eid in json.load(fh)
+    except FileNotFoundError:
+        return False
+
+
 def enemy_art(eid: str) -> dict:
     drawn = drawn_enemy(eid)
     return drawn if drawn is not None else ENEMIES[eid]()
@@ -2414,10 +2426,19 @@ def main() -> None:
     if towers_only or enemies_only:
         with open(os.path.join(OUT, "art.json")) as fh:
             art = json.load(fh)
+    # "--ground=<map_id>,<map_id>" redraws only those maps' ground.
+    only_ground = [a.split("=", 1)[1] for a in sys.argv if a.startswith("--ground=")]
+    if only_ground:
+        with open(os.path.join(OUT, "art.json")) as fh:
+            props = json.load(fh)["props"]
+        for map_id in only_ground[0].split(","):
+            make_ground(read_map(os.path.join("data", "maps", map_id + ".tres")), props)
+        print("Wrote the ground of", only_ground[0], "and", write_missing_imports(), "import files")
+        return
     if enemies_only:
         art["enemies"] = {}
         for eid in sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("data/enemies/*.tres")):
-            if eid in ENEMIES:
+            if eid in ENEMIES or has_drawn(eid):
                 art["enemies"][eid] = enemy_art(eid)
         with open(os.path.join(OUT, "art.json"), "w") as fh:
             json.dump(art, fh, indent=1)
@@ -2439,8 +2460,10 @@ def main() -> None:
         print("Wrote the towers in", OUT, "and", write_missing_imports(), "import files")
         return
     for eid in sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("data/enemies/*.tres")):
-        if eid in ENEMIES:
+        if eid in ENEMIES or has_drawn(eid):
             art["enemies"][eid] = enemy_art(eid)
+        elif eid in CITADELS:
+            continue
         else:
             print("No art recipe for enemy", eid, "- the game draws a placeholder")
     art["props"] = make_props()

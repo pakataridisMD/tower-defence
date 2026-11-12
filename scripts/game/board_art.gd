@@ -91,6 +91,10 @@ const MAX_CORPSES := 40
 const CORPSE_LINGER := 1.2
 ## The war camps and the city at the road ends, or null when there is no art for them.
 var landmarks: LandmarkArt
+## The enemy citadel of the final assault, or null when the run has none.
+var citadel: CitadelArt
+## The army mustered in the counter-attack.
+var army: AllyArt
 
 
 ## Something with a contact shadow and a sun shadow that follows it.
@@ -262,12 +266,21 @@ func setup(p_sim: RunSim) -> void:
 		landmarks = LandmarkArt.new()
 		add_child(landmarks)
 		landmarks.build(self)
+	_build_citadel()
+	army = AllyArt.new(self)
 	_build_fireflies()
 	sim.chain_fired.connect(_on_chain_fired)
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.enemy_killed.connect(_on_enemy_killed)
 	sim.skill_used.connect(_on_skill_used)
 	sim.enemy_power.connect(_on_enemy_power)
+	sim.enemy_transformed.connect(_on_enemy_transformed)
+	sim.boss_fled.connect(_on_boss_fled)
+	sim.citadel_struck.connect(_on_citadel_struck)
+	sim.structure_destroyed.connect(_on_structure_destroyed)
+	sim.ally_attacked.connect(_on_ally_attacked)
+	sim.ally_healed.connect(_on_ally_healed)
+	sim.allies_mustered.connect(_on_allies_mustered)
 	_update_light(0.0)
 	day_night.snap()
 	_update_light(0.0)
@@ -398,6 +411,17 @@ func _build_ground() -> void:
 		_props_by_cell[key].append(caster)
 
 
+## The citadel stands between the ground and everything that walks: the roads start at its gates.
+func _build_citadel() -> void:
+	for structure in sim.structures:
+		if CitadelArt.draws(structure.data):
+			citadel = CitadelArt.new()
+			citadel.z_index = 1
+			_world.add_child(citadel)
+			citadel.build(self, structure)
+			return
+
+
 func _build_fireflies() -> void:
 	var size := sim.config.map.size_in_pixels() / SCALE
 	_fireflies = _particles(30, 5.0, size / 2.0)
@@ -484,6 +508,9 @@ func _process(delta: float) -> void:
 	_advance_corpses(delta)
 	if landmarks != null:
 		landmarks.update(delta)
+	if citadel != null:
+		citadel.update(delta, sim.is_vulnerable(citadel.structure))
+	army.sync(delta)
 	_update_shadows()
 	_advance_fx(delta)
 	_ground_fx.queue_redraw()
@@ -1400,6 +1427,78 @@ func _on_enemy_killed(enemy: SimEnemy, _killer: SimTower, _bounty: int) -> void:
 		var tween := create_tween()
 		tween.tween_property(light, "energy", 0.0, 0.5)
 		tween.tween_callback(func() -> void: _release_light(light))
+
+
+## The boss throws off its form: a wall of its colour, a flash, and the new form where it stood.
+func _on_enemy_transformed(enemy: SimEnemy, _from: EnemyData) -> void:
+	var at := _art_pos(enemy.position) + Vector2(0, ENEMY_DROP - 40)
+	var color := Color(0.7, 0.3, 1.0)
+	_burst(at, color, 60, 70.0)
+	_burst(at, Color(1.0, 0.3, 0.25), 30, 40.0, false)
+	_ring(at, color.lerp(Color.WHITE, 0.4), 6.0, 70.0, 0.9, 2.0)
+	_ring(at, Color.WHITE, 4.0, 40.0, 0.5)
+	_pulse_light(at, color, 3.0, 220.0, 1.6)
+
+
+## The beaten king runs for his citadel: a trail of void where he went.
+func _on_boss_fled(enemy: SimEnemy) -> void:
+	var at := _art_pos(enemy.position) + Vector2(0, ENEMY_DROP - 30)
+	_burst(at, Color(0.55, 0.25, 0.9), 30, 30.0)
+	_ring(at, Color(0.8, 0.6, 1.0), 4.0, 30.0, 0.6)
+
+
+## The citadel's spires strike at the army: violet lightning from the black sun to each unit hit.
+func _on_citadel_struck(_structure: SimEnemy, targets: Array[SimAlly]) -> void:
+	var from := _art_pos(citadel.bolt_origin()) if citadel != null else _art_pos(_structure.position)
+	for ally in targets:
+		var to := _art_pos(ally.position) + Vector2(0, ENEMY_DROP - 10)
+		_beam(from, to, Color(0.75, 0.45, 1.0), 0.28, 2.0)
+		_ring(to, Color(0.85, 0.6, 1.0), 2.0, 12.0, 0.3)
+		_sparks(to, Color(0.8, 0.55, 1.0), 6, 10.0)
+	_pulse_light(from, Color(0.6, 0.3, 1.0), 1.8, 160.0, 0.3)
+
+
+func _on_structure_destroyed(structure: SimEnemy) -> void:
+	if citadel == null or citadel.structure != structure:
+		return
+	# Every gate and the keep go up in fire as it falls.
+	var top := citadel.position
+	for k in 14:
+		var at := top + Vector2(60.0 + randf() * 300.0, 120.0 + randf() * 560.0)
+		_burst(at, Color(1.0, 0.45 + randf() * 0.3, 0.2), 20, 60.0, false)
+		_ring(at, Color(1.0, 0.8, 0.5), 4.0, 30.0 + randf() * 30.0, 0.8)
+	_pulse_light(_art_pos(citadel.bolt_origin()), Color(1.0, 0.5, 0.25), 4.0, 600.0, 2.5)
+
+
+func _on_ally_attacked(ally: SimAlly, target: SimEnemy) -> void:
+	if target == null:
+		return
+	var at := _art_pos(target.position) + Vector2(0, ENEMY_DROP - 8)
+	if target.data.structure and citadel != null:
+		# A blow on the citadel lands on the gate in front of the unit.
+		at = _art_pos(ally.position) + Vector2(14, -8)
+	var color := Color(1.0, 0.85, 0.6)
+	if not ally.data.element.is_empty():
+		color = sim.config.element_color(ally.data.element).lerp(Color.WHITE, 0.3)
+	if ally.data.is_ranged():
+		_beam(_art_pos(ally.position) + Vector2(0, -14), at, color, 0.12, 1.0)
+	_sparks(at, color, 3 if ally.data.splash_radius <= 0.0 else 8, 6.0 + ally.data.splash_radius * 0.1)
+
+
+func _on_ally_healed(ally: SimAlly, healed: Array[SimAlly]) -> void:
+	var from := _art_pos(ally.position) + Vector2(0, -16)
+	for other in healed:
+		if other != ally:
+			_beam(from, _art_pos(other.position) + Vector2(0, -12), Color(1.0, 0.92, 0.6), 0.35)
+	_ring(from + Vector2(0, 12), Color(1.0, 0.9, 0.55), 3.0, 18.0, 0.5)
+
+
+func _on_allies_mustered(squad: Array[SimAlly]) -> void:
+	if squad.is_empty():
+		return
+	var at := _art_pos(squad[0].position) + Vector2(0, ENEMY_DROP)
+	_ring(at, Color(1.0, 0.85, 0.45), 4.0, 26.0, 0.6, 2.0)
+	_burst(at, Color(1.0, 0.8, 0.4), 16, 26.0)
 
 
 ## A cast skill: a blast where it lands, or a wave of light across the whole board, and sparks on
