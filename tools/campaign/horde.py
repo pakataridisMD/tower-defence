@@ -239,7 +239,7 @@ KIND = {
 
 
 # How each kind takes damage from the elements (ElementRules.PROFILES in scripts/core/element_rules.gd):
-# attuned = immune to its own element, double from the opposite; warded = immune to its own and both
+# attuned = immune to its own element, double from the opposite; warded = immune to its own, half from both
 # neighbours, double from the opposite; tank = a quarter from its own, 0.6x from the rest, double from the
 # opposite. The rest are plain (half from its own, 1.5x from the opposite). One of each per horde where
 # it fits, so every land asks for its opposite element and punishes a one-element build.

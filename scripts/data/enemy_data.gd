@@ -247,7 +247,7 @@ func trait_words() -> PackedStringArray:
 		&"attuned":
 			words.append("immune to its element")
 		&"warded":
-			words.append("immune to three elements")
+			words.append("immune to its element, resists neighbours")
 		&"tank":
 			words.append("tank")
 	if regen_per_second > 0.0:

@@ -73,11 +73,11 @@ func test_profiles_by_ring_steps() -> void:
 	assert_eq(ElementRules.steps(STORM, VOID), 2)
 	assert_eq(ElementRules.damage_multiplier(_ints([FIRE]), FIRE, ElementRules.ATTUNED), 0.0)
 	assert_eq(ElementRules.damage_multiplier(_ints([WATER]), FIRE, ElementRules.ATTUNED), 2.0)
-	assert_eq(ElementRules.damage_multiplier(_ints([STORM]), FIRE, ElementRules.WARDED), 0.0)
+	assert_eq(ElementRules.damage_multiplier(_ints([STORM]), FIRE, ElementRules.WARDED), 0.5)
 	assert_eq(ElementRules.damage_multiplier(_ints([NATURE]), FIRE, ElementRules.WARDED), 1.0)
 	assert_eq(ElementRules.damage_multiplier(_ints([WATER]), FIRE, ElementRules.TANK), 2.0)
 	assert_eq(ElementRules.damage_multiplier(_ints([EARTH]), FIRE, ElementRules.TANK), 0.6)
-	assert_eq(ElementRules.immunities(FIRE, ElementRules.WARDED), _ints([FIRE, STORM, VOID]))
+	assert_eq(ElementRules.immunities(FIRE, ElementRules.WARDED), _ints([FIRE]))
 	assert_true(ElementRules.immunities(FIRE, ElementRules.PLAIN).is_empty())
 
 

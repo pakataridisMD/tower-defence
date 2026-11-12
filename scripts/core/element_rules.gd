@@ -15,21 +15,21 @@ const OPPOSITE_STEP := 3
 const PLAIN := &""
 ## Born of its element: immune to it, and the opposite element tears it apart.
 const ATTUNED := &"attuned"
-## Rune-warded: immune to its own element and both its neighbours, weak to the opposite.
+## Rune-warded: immune to its own element, half damage from both its neighbours, weak to the opposite.
 const WARDED := &"warded"
 ## Heavy plate and hide: shrugs off most of every element; only the opposite cuts deep.
 const TANK := &"tank"
 const PROFILES := {
 	PLAIN: [0.5, 1.0, 1.0, 1.5],
 	ATTUNED: [0.0, 1.0, 1.0, 2.0],
-	WARDED: [0.0, 0.0, 1.0, 2.0],
+	WARDED: [0.0, 0.5, 1.0, 2.0],
 	TANK: [0.25, 0.6, 0.6, 2.0],
 }
 const PROFILE_NAMES := {PLAIN: "", ATTUNED: "Attuned", WARDED: "Warded", TANK: "Tank"}
 const PROFILE_TEXT := {
 	PLAIN: "Takes half damage from its own element and 1.5x from the opposite.",
 	ATTUNED: "Attuned: immune to its own element, takes double damage from the opposite.",
-	WARDED: "Warded: immune to its own element and both its neighbours, takes double from the opposite.",
+	WARDED: "Warded: immune to its own element, half damage from its two neighbours, double from the opposite.",
 	TANK: "Tank: takes a quarter from its own element and 0.6x from all others, double from the opposite.",
 }
 

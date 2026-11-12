@@ -876,7 +876,7 @@ func _help_text() -> String:
 	lines.append("Pick a tower and click a free tile. Shift-click builds several.")
 	lines.append("Click a tower to level it up, to ascend it at level %d or to fuse it." % SimTower.MAX_LEVEL)
 	lines.append("Enemies resist their own element and are weak to the opposite one.")
-	lines.append("Marked ones are tougher: attuned (diamond) are immune to their element, warded (shield) to it and its neighbours, tanks (plate) shrug off all but the opposite. Hover an enemy to see its card.")
+	lines.append("Marked ones are tougher: attuned (diamond) are immune to their element, warded (shield) are immune to it and resist its neighbours, tanks (plate) shrug off all but the opposite. Hover an enemy to see its card.")
 	lines.append("")
 	var rules := _stage_rules()
 	if not rules.is_empty():
