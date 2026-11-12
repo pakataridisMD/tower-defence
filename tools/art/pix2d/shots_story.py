@@ -1310,11 +1310,11 @@ def epilogue_02():
     sc = Scene(342)
     _void_hall(sc)
     sc.put("vael_orrun", 160, 360)
-    sc.glow(160, 60, 60, (240, 240, 255), 0.8)
-    lantern(sc, 160, 64, 2)
+    sc.glow(160, 46, 60, (240, 240, 255), 0.8)            # the crown-shaped gap is the wound in his brow
+    lantern(sc, 160, 49, 2)
     for k in range(10):
         a = k / 10 * math.pi * 2
-        sc.line(160, 64, 160 + math.cos(a) * 70, 64 + math.sin(a) * 50, (200, 200, 230))
+        sc.line(160, 49, 160 + math.cos(a) * 70, 49 + math.sin(a) * 50, (200, 200, 230))
     sc.put("oswin_white", 110, 178, rim=(255, 255, 255))
     sc.vignette(0.45)
     return sc

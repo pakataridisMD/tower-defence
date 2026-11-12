@@ -17,6 +17,13 @@ BASALT_D = ramp("38333e", spread=0.5, shift=0.03)
 SMOKE = ramp("4a4650", spread=0.4, shift=0.0)
 GLASS = ramp("26223a", spread=0.5, shift=0.0)
 GLASS_D = ramp("16141f", spread=0.36, shift=0.0)
+SKULL = ramp("5c5468", spread=0.6, shift=0.03)        # Vael-Orrun's face: dead ashen glass
+SOCKET = (6, 2, 6)
+EYE_D = (44, 6, 9)
+EYE = [(150, 16, 18), (236, 64, 28), (255, 168, 72), (255, 246, 214)]
+MAW = [(22, 4, 8), (74, 10, 12), (176, 40, 20), (250, 128, 44), (255, 226, 150)]
+TOOTH = ramp("cfc2a2", spread=0.5)
+DROOL = (255, 196, 120)
 RING = [(255, 122, 58), (200, 216, 255), (138, 240, 80), (74, 224, 224), (232, 176, 64), (176, 112, 255)]  # the six
 
 
@@ -206,7 +213,8 @@ def cinder_tyrant(pose=None, pad=0):
 
 
 def vael_orrun(pose=None, pad=0):
-    """Vael-Orrun, the High King: a still figure of black glass with a crown-shaped hole for a face."""
+    """Vael-Orrun, the High King: a towering figure of black glass under a crown of spikes. His face is a gaunt skull
+    of ashen glass with six burning eyes and a jaw torn open to the stolen Heartstone fire in his throat."""
     s = Sprite(176, 336, pose, pad, origin=(0, 32))
     # cape of black glass behind
     s.g("cloak", 88, 70)
@@ -222,6 +230,7 @@ def vael_orrun(pose=None, pad=0):
     s.part(s.capsule(46, 140, 42, 196, 6.5, 4.5), GLASS, bias=-0.1, edge=False)
     for dx, ln in ((-5, 16), (-2, 22), (1, 24), (4, 20)):
         s.part(s.capsule(42 + dx, 198, 41 + dx * 1.4, 198 + ln, 1.4, 0.8), GLASS, edge=False)
+        s.line(41 + dx * 1.4, 198 + ln, 42 + dx * 1.6, 202 + ln, TOOTH[2])
     # robe: long faceted planes of glass
     s.g("body")
     facets = [([(64, 72), (78, 72), (72, 292), (44, 292), (54, 180)], 3), ([(78, 72), (90, 72), (92, 292), (72, 292)], 2),
@@ -253,30 +262,91 @@ def vael_orrun(pose=None, pad=0):
         s.line(sx - 14 * sgn, 66, sx + 22 * sgn, 50, GLASS[4 if sgn < 0 else 2])
         s.fill(s.poly([(sx + 14 * sgn, 60), (sx + 22 * sgn, 50), (sx + 28 * sgn, 22)]), GLASS[2 if sgn < 0 else 0])
         s.line(sx + 14 * sgn, 60, sx + 28 * sgn, 22, GLASS[4 if sgn < 0 else 1])
-    # head: a tall mask of glass under the black crown with six empty sockets
+    # head: a gaunt skull of ashen glass with the black crown driven into it, six burning eyes, and a jaw hanging open
+    # on the stolen Heartstone fire in his throat. The jaw hinges behind the cheek so it can gape wider when he strikes.
     s.g("head", 88, 68)
-    s.part(s.poly([(80, 60), (96, 60), (98, 72), (78, 72)]), GLASS_D)                  # neck
-    head = s.poly([(72, 22), (104, 22), (110, 44), (100, 66), (76, 66), (66, 44)])
-    s.part(head, GLASS, bulge=0.7)
-    s.line(72, 24, 67, 44, GLASS[4])
-    s.line(67, 44, 76, 65, GLASS[3])
-    s.fill(s.poly([(66, 14), (110, 14), (108, 24), (68, 24)]), GLASS_D[2])
-    s.line(66, 14, 110, 14, GLASS[4])
-    for i, x in enumerate((66, 74, 82, 90, 98, 106)):
-        h = (26, 34, 42, 42, 34, 26)[i]
-        s.fill(s.poly([(x - 1, 15), (x + 6, 15), (x + 2.5, 15 - h)]), GLASS_D[3 if i < 3 else 1])
-        s.line(x - 1, 15, x + 2, 15 - h, GLASS[4] if i < 3 else GLASS[2])
-        s.fill(s.rect(x + 1, 17, x + 4, 21), (6, 5, 10))                               # an empty socket
-        s.px(x + 1, 17, (120, 120, 150))
-    # the crown-shaped hole where the face should be: cut clean through the sprite
-    hole = s.poly([(77, 60), (77, 36), (82, 46), (88, 32), (94, 46), (99, 36), (99, 60)])
-    grow = hole.copy()
-    grow[1:] |= hole[:-1]
-    grow[:-1] |= hole[1:]
-    grow[:, 1:] |= hole[:, :-1]
-    grow[:, :-1] |= hole[:, 1:]
-    s.fill(grow & ~hole & s.a, (214, 216, 232), glow=True)
-    s.a[hole] = False
+    s.part(s.poly([(80, 60), (98, 60), (100, 74), (78, 74)]), GLASS_D)                  # neck
+    throat = s.poly([(73, 54), (105, 54), (105, 64), (101, 84), (93, 94), (83, 94), (77, 84), (73, 64)])
+    s.fill(throat, MAW[0])
+    s.fill(s.ellipse(89, 80, 10, 14) & throat, MAW[1])
+    for x0, y0, x1, y1 in ((77, 58, 78, 74), (102, 58, 101, 76), (80, 58, 83, 66)):    # sinew strung across the gape
+        s.line(x0, y0, x1, y1, MAW[1])
+    skull = s.poly([(71, 18), (105, 18), (110, 25), (114, 36), (113, 44), (105, 50), (103, 58), (75, 58), (72, 50), (63, 44), (62, 36), (66, 25)])
+    s.part(skull, SKULL, bulge=0.8)
+    s.fill(s.poly([(63, 44), (72, 50), (75, 58), (77, 50)]), SKULL[0])                  # the cheeks fall in under the bone
+    s.fill(s.poly([(113, 44), (105, 50), (103, 58), (102, 50)]), SKULL[1])
+    s.line(64, 43, 76, 48, SKULL[4])                                                    # cheekbone ridges catch the light
+    s.line(102, 48, 112, 43, SKULL[3])
+    s.line(66, 26, 63, 36, SKULL[4])
+    s.line(63, 36, 64, 42, SKULL[4])
+    s.fill(s.rect(62, 23, 114, 25) & skull, SKULL[0])                                    # shadow cast by the crown
+    s.line(88, 22, 88, 24, SKULL[0])                                                    # a seam down the brow
+    for pts in (((70, 22), (67, 29)), ((106, 22), (109, 28)), ((78, 22), (80, 30)), ((98, 22), (97, 30))):
+        (x0, y0), (x1, y1) = pts
+        s.line(x0, y0, x1, y1, SKULL[0])                                                # bone grooves under the crown
+    # his old signature kept as a wound: a crown-shaped gap burned into the brow, empty grey light (the Unmaking)
+    gap = s.poly([(83, 34), (83, 26), (85.5, 29), (88, 25), (90.5, 29), (93, 26), (93, 34)])
+    s.fill(gap, GREY_GLOW[2], glow=True)
+    s.fill(s.poly([(84, 33), (84, 29), (86, 31), (88, 28), (90, 31), (92, 29), (92, 33)]), GREY_GLOW[3], glow=True)
+    # a scowling brow over two deep sockets, each with a slit-pupilled eye of white fire
+    s.fill(s.poly([(64, 28), (89, 37), (112, 26), (112, 31), (89, 41), (64, 32)]), SKULL[1])
+    s.line(64, 27, 89, 36, SKULL[4])
+    s.line(89, 36, 112, 25, SKULL[3])
+    for pts in ([(66, 33), (88, 41), (86, 48), (72, 47), (66, 40)], [(91, 41), (111, 31), (112, 39), (106, 47), (93, 48)]):
+        s.fill(s.poly(pts), SOCKET)
+    for ex, ey in ((77, 42), (101, 41)):
+        sock = s.ellipse(ex, ey + 0.5, 5, 3) & s.a & (s.rgb == SOCKET).all(-1)
+        s.fill(sock, EYE_D, glow=True)                                                  # the socket smoulders round it
+        s.fill(s.rect(ex - 4, ey - 1, ex + 4, ey + 2), EYE[0], glow=True)
+        s.fill(s.rect(ex - 3, ey - 1, ex + 3, ey + 1), EYE[1], glow=True)
+        s.fill(s.rect(ex - 2, ey - 1, ex + 2, ey), EYE[2], glow=True)
+        s.pxs([(ex - 1, ey - 1), (ex + 1, ey - 1)], EYE[3], glow=True)
+        s.line(ex, ey - 2, ex, ey + 2, SOCKET)                                          # the slit pupil
+    # four smaller eyes crowding the temples and cheeks: six in all, one for each crown that betrayed him
+    for ex, ey in ((65, 36), (69, 47), (111, 34), (108, 46)):
+        s.fill(s.rect(ex - 1, ey - 1, ex + 2, ey + 1), SOCKET)
+        s.fill(s.rect(ex, ey, ex + 1, ey), EYE[1], glow=True)
+        s.px(ex, ey, EYE[3], glow=True)
+    # fire weeping from the eyes down the cheeks
+    for pts in ([(75, 47), (74, 52), (76, 56)], [(103, 47), (105, 51), (104, 56)]):
+        _crack(s, pts, EYE[1], EYE[2])
+    s.fill(s.poly([(86, 46), (89, 45), (88, 53)]), SOCKET)                              # a nose of two slits
+    s.fill(s.poly([(90, 45), (93, 46), (91, 53)]), SOCKET)
+    # the crown, black glass hammered down into the skull; its spikes bleed thin cracks into the brow
+    s.fill(s.poly([(64, 12), (112, 12), (110, 23), (66, 23)]), GLASS_D[2])
+    s.line(64, 12, 112, 12, GLASS[4])
+    s.line(66, 23, 110, 23, GLASS_D[0])
+    for i, x in enumerate((65, 73, 81, 89, 97, 105)):
+        h = (24, 33, 42, 42, 33, 24)[i]
+        s.fill(s.poly([(x - 1, 13), (x + 7, 13), (x + 3, 13 - h)]), GLASS_D[3 if i < 3 else 1])
+        s.line(x - 1, 13, x + 2, 13 - h, GLASS[4] if i < 3 else GLASS[2])
+        s.fill(s.rect(x + 2, 16, x + 4, 20), (6, 5, 10))                               # an empty socket where a gem was
+    for pts in ([(72, 23), (74, 27), (72, 30)], [(96, 23), (94, 26), (96, 29)], [(106, 23), (108, 26)]):
+        _crack(s, pts, EYE[0])
+    # upper fangs, long and uneven, hanging into the fire
+    for x, ln in ((76, 4), (79, 11), (82, 4), (85, 6), (88, 3), (91, 6), (94, 4), (97, 5), (100, 13), (103, 4)):
+        s.fill(s.poly([(x - 1.2, 57), (x + 1.6, 57), (x + 0.3, 57 + ln)]), TOOTH[2])
+        s.line(x - 1, 57, x, 57 + ln - 1, TOOTH[4])
+        s.px(x + 1, 57, TOOTH[0])
+    for x0, y0, y1 in ((86, 62, 71), (96, 61, 71)):                                     # strings of glowing spit
+        s.line(x0, y0, x0 + 1, y1, DROOL, glow=True)
+    # the lower jaw: a long bony chin hinged behind the cheek, lower fangs pointing up
+    s.g("jaw", 74, 56, "head")
+    gullet = s.poly([(73, 72), (105, 72), (101, 84), (93, 94), (83, 94), (77, 84)])
+    s.fill(gullet, MAW[0])
+    s.fill(s.ellipse(89, 80, 10, 14) & gullet, MAW[1])                                 # the fire sits low and drops with the jaw
+    s.fill(s.ellipse(90, 83, 6, 10) & gullet, MAW[2], glow=True)
+    s.fill(s.ellipse(90, 86, 3, 6) & gullet, MAW[3], glow=True)
+    s.fill(s.ellipse(90, 88, 1.5, 3) & gullet, MAW[4], glow=True)
+    jaw = s.poly([(72, 56), (71, 66), (74, 82), (81, 95), (89, 99), (97, 95), (103, 84), (106, 66), (106, 56),
+                  (102, 60), (100, 80), (94, 90), (88, 92), (82, 89), (77, 78), (76, 60)])
+    s.part(jaw, SKULL, bulge=0.6)
+    s.line(72, 57, 74, 82, SKULL[4])
+    s.line(74, 82, 81, 95, SKULL[3])
+    for x, y, ln in ((78, 76, 4), (80, 84, 10), (84, 89, 4), (88, 91, 5), (92, 90, 4), (96, 87, 5), (99, 80, 11), (101, 70, 4)):
+        s.fill(s.poly([(x - 1.2, y), (x + 1.6, y), (x + 0.3, y - ln)]), TOOTH[2])
+        s.line(x - 1, y, x, y - ln + 1, TOOTH[4])
+    s.g("body")
     # raised arm (front): reaching out, palm open, colour draining to grey around the hand
     s.g("weapon", 112, 82)
     s.part(s.capsule(112, 82, 128, 132, 7.5), GLASS)
@@ -284,11 +354,12 @@ def vael_orrun(pose=None, pad=0):
     s.part(s.capsule(128, 132, 150, 108, 6.5, 4.5), GLASS, edge=False)
     for ang, ln in ((-1.3, 16), (-0.9, 20), (-0.5, 21), (-0.1, 18), (0.5, 12)):
         s.part(s.capsule(152, 106, 152 + np.cos(ang) * ln, 106 + np.sin(ang) * ln, 1.5, 0.8), GLASS, edge=False)
+        tx, ty = 152 + np.cos(ang) * ln, 106 + np.sin(ang) * ln                         # a hooked bone talon on each finger
+        s.line(tx, ty, tx + np.cos(ang + 0.6) * 4, ty + np.sin(ang + 0.6) * 4, TOOTH[3])
     s.line(114, 86, 126, 126, (150, 150, 190))
     for x, y in ((160, 84), (166, 92), (158, 76), (170, 100), (164, 108), (172, 86), (154, 70)):
         s.px(x, y, GREY_GLOW[1], glow=True)
     s.ink()
-    s.a[hole] = False
     _dust(s, 50, 2)
     s.shadow(88, 296, 50, 5)
     return s

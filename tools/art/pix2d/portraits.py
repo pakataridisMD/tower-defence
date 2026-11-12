@@ -39,7 +39,7 @@ PEOPLE = {"tamsin": "tamsin", "brannoc": "brannoc", "kaela": "kaela", "sylvaine"
 HEADS = {"saltmother": ("ourra", 50, 52, 48, "3a8a8a", None), "gorrath": ("gorrath", 54, 24, 48, "a07c4c", None),
          "pale_vesper": ("vesper", 63, 20, 48, "8a70c0", None), "ashwick": ("ashwick", 49, 24, 48, "e06020", None),
          "vholt": ("vholt", 90, 36, 48, "6a78b0", None), "mother_briar": ("mother_briar", 76, 42, 48, "5a8a3a", None),
-         "cassivane_ashen": ("cassivane", 52, 34, 48, "6a5a5a", None), "vael_orrun": ("vael_orrun", 88, 60, 96, "50485e", None),
+         "cassivane_ashen": ("cassivane", 52, 34, 48, "6a5a5a", None), "vael_orrun": ("vael_orrun", 88, 80, 96, "50485e", None),
          "ignar": ("cinder_tyrant", 90, 58, 48, "e0602a", FIRE), "aurath": ("thunderhead", 94, 62, 48, "8aa0e0", STORM),
          "orrok": ("mountain_titan", 132, 74, 48, "b07030", AMBER),
          "sundered_heart": ("sundered_heart", 104, 100, 96, "e0a040", None), "hollow_king": ("hollow_king", 86, 54, 48, "5a40a0", None)}

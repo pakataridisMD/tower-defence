@@ -43,6 +43,11 @@ for _h in ("ourra", "gorrath", "vesper", "ashwick", "vholt", "mother_briar"):   
             _t["echo_" + _h] = _t[_h]
 
 
+# bosses whose jaw drops (rot, dx, dy per frame) on top of their style's motion
+GAPE = {"vael_orrun": {"idle": [(0, 0, v) for v in (0, 1, 2, 2, 1, 0)],
+                       "walk": [(0, 0, v) for v in (0, 1, 1, 0, 0, 1, 1, 0)],
+                       "attack": [(0.02 * v, 0, v) for v in (0, 1, 3, 5, 9, 10, 5, 1)],
+                       "death": [(0.03 * v, 0, v) for v in (2, 5, 8, 10, 10, 10, 10, 10)]}}
 ORBIT = {"orb_earth": math.pi / 3, "orb_nature": math.pi / 4}   # aura turns by one symmetry step per loop
 
 
@@ -190,6 +195,8 @@ def frames(name, anim):
         if anim == "death":
             style = DEATH.get(name, style)
         pose = fn(i, n, style, name)
+        if anim in GAPE.get(name, {}):
+            pose["jaw"] = GAPE[name][anim][i]
         pose["_t"] = i
         pad = PADS.get(name, PAD)
         s = creatures.CREATURES[name](pose, pad)
