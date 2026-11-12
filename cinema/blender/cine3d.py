@@ -398,7 +398,7 @@ def render(default_res=67, default_samples=32):
     sc.view_settings.view_transform = "AgX"; sc.view_settings.look = "AgX - Medium High Contrast"
     r.image_settings.file_format = "PNG"
     os.makedirs(OUT, exist_ok=True)
-    for f in range(f0, f1 + 1):
+    for f in range(f0, f1 + 1, int(opt("--step", "1"))):   # --step N: every Nth frame (animatic previews)
         path = os.path.join(OUT, "f%04d.png" % f)
         if os.path.exists(path) and "--force" not in argv:
             continue  # resumable: rerun the same command to finish a cut-short render
