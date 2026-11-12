@@ -3,7 +3,7 @@
 # usage: cinema/render.sh OUT.mp4 AUDIO [CINE] [chunk boundaries in seconds...]
 # Needs GODOT (path to a Godot 4.7 binary). In a headless Linux box it runs under xvfb-run.
 set -e
-OUT=$(realpath -m "$1"); AUDIO=$(realpath "$2"); export CINE=${3:-seven_crowns}; shift 3 || true
+OUT="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"; AUDIO="$(cd "$(dirname "$2")" && pwd)/$(basename "$2")"; export CINE=${3:-seven_crowns}; shift 3 || true
 CUTS=("$@"); [ ${#CUTS[@]} -eq 0 ] && CUTS=(0 14.4 24 36 51 62 78)
 GODOT=${GODOT:-godot}; JOBS=${JOBS:-4}
 cd "$(dirname "$0")"
