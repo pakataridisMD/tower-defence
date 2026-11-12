@@ -19,7 +19,7 @@ extends Node
 ## against the bot's towers, saved as numbered frames in <out>/powers/ (make a GIF from them).
 ## Add --landmarks to take the enemy war camps and the defended cities at the road ends in every land,
 ## by day, at night and burning, plus frames for short clips (<out>/clips/<name>/NNN.png).
-## Add --story to take the cinematic player, a Herald's boss banner, the assault on the citadel and
+## Add --story to take the cinematic player, a Herald's boss banner, the final level's defence and counter-attack and
 ## the campaign map with the citadel on it.
 
 const MENU_SCENE := preload("res://scenes/main.tscn")
@@ -373,7 +373,7 @@ func _run_story() -> void:
 		game.free()
 		await _wait(0.1)
 
-	# The assault: the opening, then the second movement once the gate has fallen.
+	# The final level: the defence before the citadel, then the counter-attack with the army at its gates.
 	Progress.active_stage = &"assault_1"
 	var assault := GAME_SCENE.instantiate() as Game
 	assault.autoplay = true
@@ -381,11 +381,16 @@ func _run_story() -> void:
 	await _until(func() -> bool: return assault.sim.wave_number() >= 4 and assault.sim.time_in_wave > 8.0 \
 			or assault.sim.is_over())
 	await _shot("story_assault_gate")
-	Engine.time_scale = 8.0
-	await _until(func() -> bool: return assault.sim.structure_phase >= 2 or assault.sim.is_over())
+	assault.sim.enemies.clear()
+	assault.sim.wave_index = assault.sim.config.stage.counter_wave - 1
+	assault.sim.start_next_wave()
+	assault.sim.gold = 2400
+	Engine.time_scale = 4.0
+	await _until(func() -> bool: return assault.sim.allies.size() >= 24 and assault.sim.time_in_wave > 40.0 \
+			or assault.sim.is_over())
 	Engine.time_scale = 1.0
-	await _wait(3.0)
-	await _shot("story_assault_heralds")
+	await _wait(1.0)
+	await _shot("story_counter_attack")
 	assault.free()
 
 	# The campaign map once the Convergence is won: the road to the citadel opens.

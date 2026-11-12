@@ -524,69 +524,85 @@ cin("solenne_falls", "Solenne Falls", "If Heart of the Ring is lost. Then retry.
     )
 
 # ------------------------------------------------------------------------------- the final assault
-cin("assault_intro", "The Crownless Citadel", "Before the final assault (about 30 minutes).",
-    shot("Beyond the Crack, nothing is the right way up.",
-         "Through the Crack: the Outer Hollow, a black sky with a black sun and a crown-shaped gap. Hanging "
-         "upside down beneath it, a vast fortress."),
-    shot("Nhal Vorath. He built it out of everything his Unbound tore from our world. I am told the walls of "
-         "Kethra are in it. And Vitrea. And our Dawn Gate.",
-         "Close on the citadel walls: recognisable pieces of fallen cities: glass towers, a frozen ship, "
-         "uprooted trees, broken Spirewright towers, and the Dawn Gate set as a tooth in an enormous mouth."),
-    shot("You built your city on my city. You hang my crown over it like a lamp. I have come home for both.",
+cin("assault_intro", "The Crownless Citadel", "Before the final assault (about 35 minutes).",
+    shot("We went down the road cut into the wall of the Rift, and at the bottom we went through the Black "
+         "Gate in single file, the way his armies had come out.",
+         "The army filing down the Rift road by lantern light, a thread of small lights against black stone; "
+         "at the bottom, the Black Gate, a stone door forced open a cart's width."),
+    shot("Behind it is the Hollow: a cavern under the world, with a stone sky and grey fire for light. A "
+         "day's march in, his fortress was waiting for us.",
+         "The Hollow opening out: a stone sky hung with roots, grey fire in cracks of the ground, and far "
+         "off, a black fortress with leaning spires and a black sun over its keep."),
+    shot("Nhal Vorath. He built it from the ruins of his own city, Vael, which sank with him when he was "
+         "driven down. Our Dawn Gate hangs in its keep.",
+         "Close on the citadel: black stone, roots like veins running out of its walls, Solenne's Dawn Gate "
+         "hung in the keep, its gold torn half away."),
+    shot("You built your city on my city, and you lock my door with my own crown. Come in, then.",
          "The black sun's corona flaring; every colour on screen drains to grey for a moment.",
          speaker="vael_orrun"),
-    shot("Then it's a good thing we only need to make it once. Spirewright... for the first time in this "
-         "war, we are not holding the road.\n\nWe are taking it.",
-         "Tamsin, lantern-pole raised, at the head of the army, the Gatemaw ahead.", speaker="tamsin"),
+    shot("For once we're not holding a road. We're on his.\n\nDig in. Let his army break on us first.",
+         "Tamsin, lantern-pole raised, the towers going up in front of the army.", speaker="tamsin"),
     )
 
-cin("mirror_spire", "The Mirror Spire", "During the final assault, at the start of the second movement.",
-    shot("The Spire was Solenne, made wrong. Six walls of stolen stone, and on every one, a Herald we had "
-         "already buried.",
-         "A dark mirror of Solenne's six rings, upside down; on its walls the six Heralds as glassy grey "
-         "Echo-Heralds."),
-    shot("At the top gate, the Dawnblade turned and held it open for all of us. Her armour had gone grey. "
-         "She held it until the last of us were through.",
-         "Seraphel in the top gate, armour drained of colour, sword blazing, holding the doors apart as the "
-         "army runs past her. Her light goes out. (Seraphel leaves the party.)"),
+cin("crownless_throne", "The High King",
+    "During the final assault, when wave 39 begins: his army is spent and Vael-Orrun comes out himself.",
+    shot("His army was spent. So he came out himself.",
+         "The citadel's gate opening. A tall figure in black armour under a crown of six empty sockets walks "
+         "out alone onto the road."),
+    shot("Six of you. Always six. Ask them what they did at my table.",
+         "Vael-Orrun looking past the army at the six Wardens; cracks in his armour bleeding red, then blue, "
+         "then green.", speaker="vael_orrun"),
+    shot("Nobody answered him.",
+         "The six Wardens, silent. Thalassa alone meets his eyes.", duration=3.5),
+    )
+
+cin("the_turning", "The Turning", "During the final assault, when wave 40 begins: the citadel stands open.",
+    shot("He ran from us. For the first time in two thousand years, the High King ran, and the gates of his "
+         "city closed behind him.",
+         "Vael-Orrun, broken and smoking, fleeing up the road into the citadel; the gates booming shut."),
+    shot("Gates are my trade. Let me.",
+         "Brannoc stepping out in front of the army with his hammer on his shoulder, the forge-light in his "
+         "arm glowing.", speaker="brannoc"),
+    shot("Our towers held the camp. Everything else we had went up the roads: every soldier, every hero, "
+         "every one of them.",
+         "The army pouring up the three roads toward the gates: red-plate footmen, pikes, hounds, hawk-riders "
+         "overhead, the ram rolling under its hides."),
+    shot("At the inner gate, the Dawnblade turned and held it open for all of us. She held it until the last "
+         "of us were through.",
+         "Seraphel in the inner gate, armour drained of colour, sword blazing, holding the doors apart as the "
+         "army runs past her. Her light goes out."),
     shot("Tell Ysolde I saw one more dawn. That was all I wanted.", "Seraphel, smiling, fading.",
          speaker="seraphel"),
     )
 
-cin("crownless_throne", "The Crownless Throne",
-    "During the final assault, at the start of the third movement (the Vael-Orrun fight).",
-    shot("He had no throne. He would not sit on anything that was not the centre of the world.",
-         "A vast empty hall with no floor. In the middle, standing on nothing: a figure of black glass with a "
-         "crown-shaped gap for a face, the Heartstone's stolen light caught in its chest."),
-    shot("Six of you. Always six. You wear their crowns, little Queen. Ask them what they did at my table.",
-         "Vael-Orrun turning toward the army and the six Wardens; cracks in its glass bleeding red, then "
-         "blue, then green.", speaker="vael_orrun"),
-    shot("Mirelle had seen a death at the end of the war. She told me later what it was.\n\nIt was the "
-         "Seventh's.",
-         "Mirelle at the edge of the hall, blind eyes glowing teal, a small smile."),
+cin("the_truth", "The Truth", "During the final assault, the moment the citadel falls (about 1:45).",
+    shot("The throne hall was in ruins. He was on his knees, and the thing he had become was cracking open.",
+         "The throne hall in ruins. Vael-Orrun on his knees; the monster shape cracks, and there is a tired "
+         "man inside it."),
+    shot("I gave away my forgetting, so I remember everything. You should know what we did.",
+         "The six Wardens standing round him.", speaker="thalassa"),
+    shot("He kept the peace between us for forty years. We feared him, and we wanted his gold.",
+         "A painted memory: the Feast of the Crossroads. A kind king in grey, his wife and small son, six "
+         "crowned guests, all smiling.", speaker="thalassa"),
+    shot("They came to his feast as friends. At midnight they opened his gates. His city burned, and his wife "
+         "and son burned with it.\n\nThe songs call it a victory. The Wardens call it the Night of Six Knives.",
+         "The painting burns from the middle out."),
+    shot("It was my fire.", "Ignar, looking at his own hands.", speaker="ignar", duration=3.0),
+    shot("You did this. Remember that you did this.", "Vael-Orrun, quiet, not angry any more.",
+         speaker="vael_orrun"),
+    shot("We remember.", "Thalassa, bells silent in her hair.", speaker="thalassa", duration=3.0),
+    shot("It was never my voice in the dark. It spoke to me too.\n\nIt is still listening.",
+         "The grey goes out of his eyes. He looks past the Wardens, past the heroes, at something behind the "
+         "camera.", speaker="vael_orrun"),
+    shot("Mirelle had seen a death at the end of the war. It was his.",
+         "Mirelle at the edge of the hall, blind eyes glowing teal."),
+    shot("Oswin set his lantern in the wound in his brow, where his crown once sat. He wanted the middle of "
+         "the world. So we gave it to him.\n\nNot as its king. As its light.",
+         "Oswin setting the white lantern into the crown-shaped wound. Vael-Orrun turns to light, and the "
+         "light rises home toward Solenne, to the Heartstone that was his crown."),
     )
 
 cin("epilogue", "The Seventh Colour", "After the final assault is won. Then the credits.",
-    shot("At the end, the six Wardens joined hands around him, the way they had at the beginning of the "
-         "world.",
-         "The six Wardens in a ring around Vael-Orrun, hands joined, their light rising."),
-    shot("And Oswin set his lantern in the empty crown.",
-         "Oswin stepping into the ring and placing the white lantern into the crown-shaped gap. Light floods "
-         "the black glass from the inside."),
-    shot("For a moment, in the light, he was a man again. Grey, and tired, and much younger than I had "
-         "imagined.",
-         "Inside the light: Vael-Orrun as he was, the kind-faced king in grey, holding his wife's ring. His "
-         "eyes are not grey. They are only tired."),
-    shot("It was never my voice in the dark. It spoke to me too.\n\nIt is still listening.",
-         "Vael-Orrun looking past the Wardens, past the heroes, at something behind the camera.",
-         speaker="vael_orrun"),
-    shot("We remember.",
-         "Thalassa, bells silent in her hair, the only Warden who can meet his eyes.", speaker="thalassa",
-         duration=3.0),
-    shot("We did not kill him. I do not think he could be killed. He wanted the middle of the world, so we "
-         "gave it to him. Not as its king.\n\nAs its light.",
-         "Vael-Orrun cracking apart into pure white light, which rises, and the black sun above the citadel "
-         "turns gold."),
     shot("We went home to twenty-six cities of ash. Every one of their people walked back to rebuild them.\n\n"
          "That is what we fought for. Not the land. Them.",
          "Montage: Emberfolk relighting the forges of Kethra from their iron pots; Galeborn raising tents at "
@@ -751,13 +767,20 @@ BOSS_ENEMY = {
     "vholt": "vholt", "mother_briar": "mother_briar", "vael_orrun": "vael_orrun",
 }
 
-# The final assault: three movements, roughly ten minutes each.
+# The final assault, in acts (the game's structure phases): 38 waves of defence with the echoes of the
+# six Heralds, Vael-Orrun himself on wave 39, the counter-attack on wave 40, and the truth when the
+# citadel falls (phase 4).
 ASSAULT = {
     "intro": "assault_intro",
     "movements": [
-        {"name": "The Black Gate", "minutes": 10, "boss": "gatemaw", "cinematic": ""},
-        {"name": "The Mirror Spire", "minutes": 10, "boss": "echo_heralds", "cinematic": "mirror_spire"},
-        {"name": "The Crownless Throne", "minutes": 10, "boss": "vael_orrun", "cinematic": "crownless_throne"},
+        {"name": "The Long Siege", "minutes": 30, "boss": "echo_heralds", "cinematic": "",
+         "objective": "Hold the camp until his army is spent"},
+        {"name": "The High King", "minutes": 4, "boss": "vael_orrun", "cinematic": "crownless_throne",
+         "objective": "Break Vael-Orrun in all three of his forms"},
+        {"name": "The Turning", "minutes": 4, "boss": "", "cinematic": "the_turning",
+         "objective": "Muster the army and bring down Nhal Vorath"},
+        {"name": "The Truth", "minutes": 2, "boss": "", "cinematic": "the_truth",
+         "objective": "The citadel is broken"},
     ],
     "outro": "epilogue",
 }

@@ -428,7 +428,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.17
+health_multiplier = 0.15
 description = "Stragglers, a flank attack, Warded packs, brutes under escort and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r37"), SubResource("r38"), SubResource("r39"), SubResource("r40"), SubResource("r41"), SubResource("r42"), SubResource("r43"), SubResource("r44"), SubResource("r45"), SubResource("r46"), SubResource("r47")])
 
@@ -963,7 +963,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.17
+health_multiplier = 0.15
 description = "Stragglers, a flank attack, Mender packs, brutes under escort and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r95"), SubResource("r96"), SubResource("r97"), SubResource("r98"), SubResource("r99"), SubResource("r100"), SubResource("r101"), SubResource("r102"), SubResource("r103"), SubResource("r104"), SubResource("r105"), SubResource("r106")])
 
@@ -1524,7 +1524,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.17
+health_multiplier = 0.15
 description = "Stragglers, a flank attack, Warded packs, brutes under escort and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r158"), SubResource("r159"), SubResource("r160"), SubResource("r161"), SubResource("r162"), SubResource("r163"), SubResource("r164"), SubResource("r165"), SubResource("r166"), SubResource("r167"), SubResource("r168")])
 
@@ -2118,7 +2118,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.17
+health_multiplier = 0.15
 description = "Stragglers, a flank attack, Mender packs, brutes under escort and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r222"), SubResource("r223"), SubResource("r224"), SubResource("r225"), SubResource("r226"), SubResource("r227"), SubResource("r228"), SubResource("r229"), SubResource("r230"), SubResource("r231"), SubResource("r232"), SubResource("r233"), SubResource("r234")])
 
@@ -2712,7 +2712,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.17
+health_multiplier = 0.15
 description = "Stragglers, a flank attack, Warded packs, brutes under escort and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r288"), SubResource("r289"), SubResource("r290"), SubResource("r291"), SubResource("r292"), SubResource("r293"), SubResource("r294"), SubResource("r295"), SubResource("r296"), SubResource("r297"), SubResource("r298"), SubResource("r299"), SubResource("r300")])
 
@@ -3344,7 +3344,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.17
+health_multiplier = 0.15
 description = "Stragglers, a flank attack, Mender packs, brutes under escort and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r358"), SubResource("r359"), SubResource("r360"), SubResource("r361"), SubResource("r362"), SubResource("r363"), SubResource("r364"), SubResource("r365"), SubResource("r366"), SubResource("r367"), SubResource("r368"), SubResource("r369"), SubResource("r370")])
 
@@ -3671,7 +3671,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"water"
 is_boss = true
-health_multiplier = 0.17
+health_multiplier = 0.15
 description = "Stragglers, a pincer, Brute packs, Menders in a line, brutes under escort and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r393"), SubResource("r394"), SubResource("r395"), SubResource("r396"), SubResource("r397"), SubResource("r398"), SubResource("r399"), SubResource("r400"), SubResource("r401"), SubResource("r402"), SubResource("r403"), SubResource("r404"), SubResource("r405"), SubResource("r406")])
 

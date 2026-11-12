@@ -162,6 +162,12 @@ static func _hybrid(config: RunConfig, a: StringName, b: StringName) -> StringNa
 ## before every simulation step.
 func act() -> void:
 	if sim.state == RunSim.State.BUILDING:
+		# The final level counts its breaks down: wait them out as a person would, building.
+		if sim.is_counter_assault() and sim.break_time_left >= 0.0:
+			spend_points()
+			build_towers()
+			sim.tick_break(RunSim.STEP)
+			return
 		play_build_phase()
 	elif sim.state == RunSim.State.WAVE:
 		use_skills()

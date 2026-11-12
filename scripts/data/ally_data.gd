@@ -18,7 +18,7 @@ enum Role { MELEE, RANGED, SIEGE, HEALER, SUPPORT, CHAMPION }
 @export var role: Role = Role.MELEE
 ## Id of an ElementData its blows are made of, or empty for plain steel.
 @export var element: StringName
-## Set for a hero who marches as a champion: the hero must have joined to be mustered.
+## Set for a hero who marches as a champion. In the counter-attack every hero answers the call.
 @export var hero: StringName
 ## Sort order in the muster panel.
 @export var order: int = 0

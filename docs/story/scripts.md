@@ -37,9 +37,10 @@ Narration is read by the narrator (Queen Ysolde, deep calm female voice). Lines 
 | `dawn` | The White Lantern | During Heart of the Ring, in the last waves. Oswin returns; dawn breaks. |
 | `heart_falls` | Dawn | After Heart of the Ring (Converge 3) is won. |
 | `solenne_falls` | Solenne Falls | If Heart of the Ring is lost. Then retry. |
-| `assault_intro` | The Crownless Citadel | Before the final assault (about 30 minutes). |
-| `mirror_spire` | The Mirror Spire | During the final assault, at the start of the second movement. |
-| `crownless_throne` | The Crownless Throne | During the final assault, at the start of the third movement (the Vael-Orrun fight). |
+| `assault_intro` | The Crownless Citadel | Before the final assault (about 35 minutes). |
+| `crownless_throne` | The High King | During the final assault, when wave 39 begins: his army is spent and Vael-Orrun comes out himself. |
+| `the_turning` | The Turning | During the final assault, when wave 40 begins: the citadel stands open. |
+| `the_truth` | The Truth | During the final assault, the moment the citadel falls (about 1:45). |
 | `epilogue` | The Seventh Colour | After the final assault is won. Then the credits. |
 
 Beats keyed to stages won (any campaign order): `regents_counsel` after 6, `night_of_falling_stars` after 12, `long_night` after 18. Land stages are fought at night from 12 stages won on.
@@ -728,113 +729,147 @@ Not like this. Not yet. Again.
 
 ## The Crownless Citadel (`assault_intro`)
 
-*Before the final assault (about 30 minutes).* About 0:46.
+*Before the final assault (about 35 minutes).* About 1:04.
 
-**1. [Through the Crack: the Outer Hollow, a black sky with a black sun and a crown-shaped gap. Hanging upside down beneath it, a vast fortress.]**
+**1. [The army filing down the Rift road by lantern light, a thread of small lights against black stone; at the bottom, the Black Gate, a stone door forced open a cart's width.]**
 
-> **NARRATOR (YSOLDE):** Beyond the Crack, nothing is the right way up.
+> **NARRATOR (YSOLDE):** We went down the road cut into the wall of the Rift, and at the bottom we went through the Black Gate in single file, the way his armies had come out.
 
-**2. [Close on the citadel walls: recognisable pieces of fallen cities: glass towers, a frozen ship, uprooted trees, broken Spirewright towers, and the Dawn Gate set as a tooth in an enormous mouth.]**
+**2. [The Hollow opening out: a stone sky hung with roots, grey fire in cracks of the ground, and far off, a black fortress with leaning spires and a black sun over its keep.]**
 
-> **NARRATOR (YSOLDE):** Nhal Vorath. He built it out of everything his Unbound tore from our world. I am told the walls of Kethra are in it. And Vitrea. And our Dawn Gate.
+> **NARRATOR (YSOLDE):** Behind it is the Hollow: a cavern under the world, with a stone sky and grey fire for light. A day's march in, his fortress was waiting for us.
 
-**3. [The black sun's corona flaring; every colour on screen drains to grey for a moment.]**
+**3. [Close on the citadel: black stone, roots like veins running out of its walls, Solenne's Dawn Gate hung in the keep, its gold torn half away.]**
 
-> **VAEL-ORRUN:** You built your city on my city. You hang my crown over it like a lamp. I have come home for both.
+> **NARRATOR (YSOLDE):** Nhal Vorath. He built it from the ruins of his own city, Vael, which sank with him when he was driven down. Our Dawn Gate hangs in its keep.
 
-**4. [Tamsin, lantern-pole raised, at the head of the army, the Gatemaw ahead.]**
+**4. [The black sun's corona flaring; every colour on screen drains to grey for a moment.]**
 
-> **TAMSIN REED:** Then it's a good thing we only need to make it once. Spirewright... for the first time in this war, we are not holding the road.  
+> **VAEL-ORRUN:** You built your city on my city, and you lock my door with my own crown. Come in, then.
+
+**5. [Tamsin, lantern-pole raised, the towers going up in front of the army.]**
+
+> **TAMSIN REED:** For once we're not holding a road. We're on his.  
 *(pause)*  
-We are taking it.
+Dig in. Let his army break on us first.
 
 ---
 
-## The Mirror Spire (`mirror_spire`)
+## The High King (`crownless_throne`)
 
-*During the final assault, at the start of the second movement.* About 0:31.
+*During the final assault, when wave 39 begins: his army is spent and Vael-Orrun comes out himself.* About 0:16.
 
-**1. [A dark mirror of Solenne's six rings, upside down; on its walls the six Heralds as glassy grey Echo-Heralds.]**
+**1. [The citadel's gate opening. A tall figure in black armour under a crown of six empty sockets walks out alone onto the road.]**
 
-> **NARRATOR (YSOLDE):** The Spire was Solenne, made wrong. Six walls of stolen stone, and on every one, a Herald we had already buried.
+> **NARRATOR (YSOLDE):** His army was spent. So he came out himself.
 
-**2. [Seraphel in the top gate, armour drained of colour, sword blazing, holding the doors apart as the army runs past her. Her light goes out. (Seraphel leaves the party.)]**
+**2. [Vael-Orrun looking past the army at the six Wardens; cracks in his armour bleeding red, then blue, then green.]**
 
-> **NARRATOR (YSOLDE):** At the top gate, the Dawnblade turned and held it open for all of us. Her armour had gone grey. She held it until the last of us were through.
+> **VAEL-ORRUN:** Six of you. Always six. Ask them what they did at my table.
 
-**3. [Seraphel, smiling, fading.]**
+**3. [The six Wardens, silent. Thalassa alone meets his eyes.]**
+
+> **NARRATOR (YSOLDE):** Nobody answered him.
+
+---
+
+## The Turning (`the_turning`)
+
+*During the final assault, when wave 40 begins: the citadel stands open.* About 0:46.
+
+**1. [Vael-Orrun, broken and smoking, fleeing up the road into the citadel; the gates booming shut.]**
+
+> **NARRATOR (YSOLDE):** He ran from us. For the first time in two thousand years, the High King ran, and the gates of his city closed behind him.
+
+**2. [Brannoc stepping out in front of the army with his hammer on his shoulder, the forge-light in his arm glowing.]**
+
+> **BRANNOC EMBERHAND:** Gates are my trade. Let me.
+
+**3. [The army pouring up the three roads toward the gates: red-plate footmen, pikes, hounds, hawk-riders overhead, the ram rolling under its hides.]**
+
+> **NARRATOR (YSOLDE):** Our towers held the camp. Everything else we had went up the roads: every soldier, every hero, every one of them.
+
+**4. [Seraphel in the inner gate, armour drained of colour, sword blazing, holding the doors apart as the army runs past her. Her light goes out.]**
+
+> **NARRATOR (YSOLDE):** At the inner gate, the Dawnblade turned and held it open for all of us. She held it until the last of us were through.
+
+**5. [Seraphel, smiling, fading.]**
 
 > **SERAPHEL THE DAWNBLADE:** Tell Ysolde I saw one more dawn. That was all I wanted.
 
 ---
 
-## The Crownless Throne (`crownless_throne`)
+## The Truth (`the_truth`)
 
-*During the final assault, at the start of the third movement (the Vael-Orrun fight).* About 0:31.
+*During the final assault, the moment the citadel falls (about 1:45).* About 1:32.
 
-**1. [A vast empty hall with no floor. In the middle, standing on nothing: a figure of black glass with a crown-shaped gap for a face, the Heartstone's stolen light caught in its chest.]**
+**1. [The throne hall in ruins. Vael-Orrun on his knees; the monster shape cracks, and there is a tired man inside it.]**
 
-> **NARRATOR (YSOLDE):** He had no throne. He would not sit on anything that was not the centre of the world.
+> **NARRATOR (YSOLDE):** The throne hall was in ruins. He was on his knees, and the thing he had become was cracking open.
 
-**2. [Vael-Orrun turning toward the army and the six Wardens; cracks in its glass bleeding red, then blue, then green.]**
+**2. [The six Wardens standing round him.]**
 
-> **VAEL-ORRUN:** Six of you. Always six. You wear their crowns, little Queen. Ask them what they did at my table.
+> **THALASSA:** I gave away my forgetting, so I remember everything. You should know what we did.
 
-**3. [Mirelle at the edge of the hall, blind eyes glowing teal, a small smile.]**
+**3. [A painted memory: the Feast of the Crossroads. A kind king in grey, his wife and small son, six crowned guests, all smiling.]**
 
-> **NARRATOR (YSOLDE):** Mirelle had seen a death at the end of the war. She told me later what it was.  
+> **THALASSA:** He kept the peace between us for forty years. We feared him, and we wanted his gold.
+
+**4. [The painting burns from the middle out.]**
+
+> **NARRATOR (YSOLDE):** They came to his feast as friends. At midnight they opened his gates. His city burned, and his wife and son burned with it.  
 *(pause)*  
-It was the Seventh's.
+The songs call it a victory. The Wardens call it the Night of Six Knives.
 
----
+**5. [Ignar, looking at his own hands.]**
 
-## The Seventh Colour (`epilogue`)
+> **IGNAR:** It was my fire.
 
-*After the final assault is won. Then the credits.* About 1:34.
+**6. [Vael-Orrun, quiet, not angry any more.]**
 
-**1. [The six Wardens in a ring around Vael-Orrun, hands joined, their light rising.]**
+> **VAEL-ORRUN:** You did this. Remember that you did this.
 
-> **NARRATOR (YSOLDE):** At the end, the six Wardens joined hands around him, the way they had at the beginning of the world.
+**7. [Thalassa, bells silent in her hair.]**
 
-**2. [Oswin stepping into the ring and placing the white lantern into the crown-shaped gap. Light floods the black glass from the inside.]**
+> **THALASSA:** We remember.
 
-> **NARRATOR (YSOLDE):** And Oswin set his lantern in the empty crown.
-
-**3. [Inside the light: Vael-Orrun as he was, the kind-faced king in grey, holding his wife's ring. His eyes are not grey. They are only tired.]**
-
-> **NARRATOR (YSOLDE):** For a moment, in the light, he was a man again. Grey, and tired, and much younger than I had imagined.
-
-**4. [Vael-Orrun looking past the Wardens, past the heroes, at something behind the camera.]**
+**8. [The grey goes out of his eyes. He looks past the Wardens, past the heroes, at something behind the camera.]**
 
 > **VAEL-ORRUN:** It was never my voice in the dark. It spoke to me too.  
 *(pause)*  
 It is still listening.
 
-**5. [Thalassa, bells silent in her hair, the only Warden who can meet his eyes.]**
+**9. [Mirelle at the edge of the hall, blind eyes glowing teal.]**
 
-> **THALASSA:** We remember.
+> **NARRATOR (YSOLDE):** Mirelle had seen a death at the end of the war. It was his.
 
-**6. [Vael-Orrun cracking apart into pure white light, which rises, and the black sun above the citadel turns gold.]**
+**10. [Oswin setting the white lantern into the crown-shaped wound. Vael-Orrun turns to light, and the light rises home toward Solenne, to the Heartstone that was his crown.]**
 
-> **NARRATOR (YSOLDE):** We did not kill him. I do not think he could be killed. He wanted the middle of the world, so we gave it to him. Not as its king.  
+> **NARRATOR (YSOLDE):** Oswin set his lantern in the wound in his brow, where his crown once sat. He wanted the middle of the world. So we gave it to him.  
 *(pause)*  
-As its light.
+Not as its king. As its light.
 
-**7. [Montage: Emberfolk relighting the forges of Kethra from their iron pots; Galeborn raising tents at Aurvanis; Sylvaine planting Elowen's seed; Pearlhaven's fleet coming home; Stoneborn unsealing Grundhallow through a door that is part of Orrok; Veilwalkers raising the telescope at Umbrael; Seraphel's glass sword set into the rebuilt Sunstone; Nyxara walking slowly beside Elowen through the ash of Sylvanmere. Tamsin, alive, sitting on the Lantern Walk with Fennick's spectacles, and Oswin, grey and old again, beside her, pointing at the sunset for the Queen.]**
+---
+
+## The Seventh Colour (`epilogue`)
+
+*After the final assault is won. Then the credits.* About 0:39.
+
+**1. [Montage: Emberfolk relighting the forges of Kethra from their iron pots; Galeborn raising tents at Aurvanis; Sylvaine planting Elowen's seed; Pearlhaven's fleet coming home; Stoneborn unsealing Grundhallow through a door that is part of Orrok; Veilwalkers raising the telescope at Umbrael; Seraphel's glass sword set into the rebuilt Sunstone; Nyxara walking slowly beside Elowen through the ash of Sylvanmere. Tamsin, alive, sitting on the Lantern Walk with Fennick's spectacles, and Oswin, grey and old again, beside her, pointing at the sunset for the Queen.]**
 
 > **NARRATOR (YSOLDE):** We went home to twenty-six cities of ash. Every one of their people walked back to rebuild them.  
 *(pause)*  
 That is what we fought for. Not the land. Them.
 
-**8. [Ysolde, older, grey hair, still blindfolded, on the walls of a rebuilt Solenne, sun on her face. Credits roll.]**
+**2. [Ysolde, older, grey hair, still blindfolded, on the walls of a rebuilt Solenne, sun on her face. Credits roll.]**
 
 > **NARRATOR (YSOLDE):** I am Ysolde, Queen of Solenne. I am old now, and I have never seen a dawn since.  
 *(pause)*  
 But I have felt every one of them.
 
-**9. [After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six colours... then, faintly, a seventh. Ilyra, alone, leans in to look. Deep inside the seventh colour, something with no colour at all opens, like an eye.]**
+**3. [After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six colours... then, faintly, a seventh. Ilyra, alone, leans in to look. Deep inside the seventh colour, something with no colour at all opens, like an eye.]**
 
-**10. [Black. No sound at all for a moment before the voice, and none after. Title card: TO BE CONTINUED.]**
+**4. [Black. No sound at all for a moment before the voice, and none after. Title card: TO BE CONTINUED.]**
 
 > **???:** Seven crowns. One door.  
 *(pause)*  
@@ -876,4 +911,4 @@ Shown after each stage win.
 | converge_2 | The Lumen Gate | The first of Solenne's six walls falls. There is nowhere left to retreat to. |
 | converge_3 | Solenne | Solenne stands. |
 
-Total cinematic running time: about 23 minutes.
+Total cinematic running time: about 24 minutes.

@@ -1085,12 +1085,15 @@ func _tick_statuses(delta: float) -> void:
 			continue
 		enemy.stun_immunity = maxf(0.0, enemy.stun_immunity - delta)
 		for kind: StringName in enemy.statuses.keys():
+			# A blow can change a boss's form, which clears what burned on the old one.
+			if not enemy.statuses.has(kind):
+				continue
 			var status: SimStatus = enemy.statuses[kind]
 			var dps := status.damage_per_second()
 			if dps > 0.0:
 				_damage(enemy, dps * minf(delta, status.time_left), status.source)
-				# Dead, or fallen in a heap with its statuses gone.
-				if not enemy.alive or enemy.downed > 0.0:
+				# Dead, fallen in a heap, or changing form: its statuses are gone.
+				if not enemy.alive or enemy.downed > 0.0 or enemy.transforming > 0.0 or enemy.fleeing:
 					break
 			status.time_left -= delta
 			if status.time_left <= 0.0:

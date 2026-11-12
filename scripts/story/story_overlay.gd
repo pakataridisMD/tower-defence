@@ -39,6 +39,10 @@ func setup(p_sim: RunSim, p_story: Story) -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	sim.boss_arrived.connect(_on_boss_arrived)
 	sim.structure_destroyed.connect(_on_structure_destroyed)
+	sim.enemy_transformed.connect(func(enemy: SimEnemy, _from: EnemyData) -> void:
+		headline("%s rises" % enemy.data.display_name, "Form %d of 3" % (enemy.form + 1), UiStyle.BAD))
+	sim.counter_attack_started.connect(func() -> void:
+		headline("The roles turn", "Muster your army (1-0, Tab, R) and break the citadel. Your towers hold the camp.", UiStyle.GOLD))
 	sim.enemy_escaped.connect(func(enemy: SimEnemy) -> void:
 		headline("%s escapes!" % enemy.data.display_name, "Beaten, but not finished.", UiStyle.BAD))
 	var stage := sim.config.stage
@@ -75,7 +79,9 @@ func _on_boss_arrived(enemy: SimEnemy) -> void:
 
 func _on_structure_destroyed(structure: SimEnemy) -> void:
 	var next := story.assault_movement(sim.structure_phase)
-	if sim.citadel_fallen:
+	if sim.is_counter_assault() and sim.citadel_fallen:
+		headline("%s falls!" % structure.data.display_name, "The root of the horde is torn out.", UiStyle.GOOD)
+	elif sim.citadel_fallen:
 		headline("%s is broken!" % structure.data.display_name, "Finish what came out of it.", UiStyle.GOOD)
 	elif not next.is_empty() and structure.phase < sim.structure_phase:
 		headline("%s falls!" % structure.data.display_name, "Next: %s. The ground you hold moves east." % next.get("name", ""), UiStyle.GOOD)
@@ -116,6 +122,27 @@ func _character(enemy: SimEnemy) -> Dictionary:
 	return story.character_for_enemy(enemy.data.id) if story != null else {}
 
 
+## The final level in acts: hold the camp, break the High King, then take the citadel.
+func _counter_objective(movement: Dictionary, lines: PackedStringArray) -> void:
+	var stage := sim.config.stage
+	var act := sim.structure_phase
+	lines.append("%s  (act %d of 3)" % [movement.get("name", "Act %d" % act), mini(act, 3)] if act <= 3 else str(movement.get("name", "")))
+	match act:
+		1:
+			lines.append("Hold the camp: wave %d of %d" % [sim.wave_number(), stage.boss_wave - 1])
+		2:
+			var king := sim.strongest_boss()
+			if king != null:
+				lines.append("Break %s (form %d of 3)" % [king.data.display_name, king.form + 1])
+			else:
+				lines.append(str(movement.get("objective", "")))
+		3:
+			for structure in sim.structures_left(3):
+				lines.append("Bring down %s: %d%%" % [structure.data.display_name, ceili(100.0 * structure.health / structure.max_health)])
+		_:
+			lines.append(str(movement.get("objective", "")))
+
+
 func _draw_boss_bar() -> void:
 	var boss := sim.strongest_boss()
 	if boss == null or sim.is_over():
@@ -144,7 +171,9 @@ func _draw_boss_bar() -> void:
 func _draw_objective() -> void:
 	var movement := story.assault_movement(sim.structure_phase)
 	var lines: PackedStringArray = []
-	if sim.citadel_fallen:
+	if sim.is_counter_assault():
+		_counter_objective(movement, lines)
+	elif sim.citadel_fallen:
 		lines.append("The citadel is broken. Unmake the Sunderer!")
 	else:
 		var title := str(movement.get("name", "Phase %d" % sim.structure_phase))
@@ -153,6 +182,8 @@ func _draw_objective() -> void:
 			lines.append("Bring down %s: %d%%" % [structure.data.display_name, ceili(100.0 * structure.health / structure.max_health)])
 	if sim.state == RunSim.State.BUILDING and sim.break_time_left >= 0.0:
 		lines.append("Next wave in %d s (Space: now)" % ceili(sim.break_time_left))
+	elif sim.state == RunSim.State.WAVE and sim.rolls_on() and sim.next_wave_in() > 0.0:
+		lines.append("Next wave in %d s" % ceili(sim.next_wave_in()))
 	var top := BOARD_TOP + (64.0 if sim.strongest_boss() != null else 12.0)
 	var height := 12.0 + lines.size() * 26.0
 	draw_rect(Rect2(BOARD_LEFT + 12, top, 470, height), Color(0, 0, 0, 0.55))

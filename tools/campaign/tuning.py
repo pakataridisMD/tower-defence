@@ -34,7 +34,7 @@ TUNING["void_4"] = {"health": 2.2, "boss": 0.57}
 TUNING["converge_1"] = {"health": 2.11, "boss": 0.32}
 TUNING["converge_2"] = {"health": 2.15, "boss": 0.24}
 TUNING["converge_3"] = {"health": 1.49, "boss": 0.35}
-TUNING["assault_1"] = {"health": 0.22, "boss": 0.17, "lives": 30}
+TUNING["assault_1"] = {"health": 0.22, "boss": 0.15, "lives": 30}
 # The skirmish waves (data/waves/prototype.tres), from `campaign_balance.gd -- --skirmish`: it found
 # 0.95, but the Water/Earth/Void plan only scrapes through there, so this sits a little lower.
 TUNING["prototype"] = {"health": 0.85}

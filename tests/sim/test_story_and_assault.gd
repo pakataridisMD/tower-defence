@@ -132,60 +132,101 @@ func _assault() -> RunSim:
 	return RunSim.new(meta.stage_config(&"assault_1"))
 
 
-func test_the_assault_has_three_phases_of_buildings() -> void:
+func test_the_final_level_is_defended_then_turned() -> void:
 	var sim := _assault()
-	assert_true(sim.is_assault())
-	assert_eq(sim.total_phases(), 3)
-	assert_eq(sim.structure_phase, 1)
-	assert_eq(sim.structures_left(1).size(), 1)
-	for structure in sim.structures:
-		assert_eq(structure.speed(), 0.0, "buildings do not walk")
-		assert_eq(sim.is_vulnerable(structure), structure.phase == 1)
+	var stage := sim.config.stage
+	assert_true(sim.is_counter_assault())
+	assert_eq(sim.total_waves(), 40)
+	assert_eq(stage.boss_wave, 39)
+	assert_eq(stage.counter_wave, 40)
+	assert_eq(sim.structures.size(), 1, "one citadel")
+	var citadel := sim.structures[0]
+	assert_true(citadel.data.tags.has(&"citadel"))
+	assert_false(sim.is_vulnerable(citadel), "the citadel cannot be touched while we defend")
+	assert_false(sim.towers_besiege(), "towers never hurt the citadel")
+	assert_eq(sim.assault_act(1), 1)
+	assert_eq(sim.assault_act(38), 1)
+	assert_eq(sim.assault_act(39), 2)
+	assert_eq(sim.assault_act(40), 3)
 
 
-func test_towers_cannot_be_built_past_the_front() -> void:
+func test_units_can_only_be_mustered_in_the_counter_attack() -> void:
 	var sim := _assault()
-	var limit := sim.build_limit()
-	assert_gt(limit, 0)
-	var tower_id: StringName = sim.config.towers.keys()[0]
-	var past := Vector2i(limit + 1, 0)
-	assert_ne(sim.placement_error(tower_id, past), "", "a cell past the front is refused")
+	sim.gold = 5000
+	assert_ne(sim.muster_error(&"footman", 0), "", "not while we defend")
+	_jump_to_counter(sim)
+	assert_true(sim.counter_started)
+	assert_true(sim.is_vulnerable(sim.structures[0]))
+	assert_eq(sim.muster_error(&"footman", 0), "")
+	var squad := sim.muster(&"footman", 0)
+	assert_eq(squad.size(), (sim.config.allies[&"footman"] as AllyData).count)
+	assert_gt(sim.muster_cooldown_left(&"footman"), 0.0)
+	assert_ne(sim.muster_error(&"footman", 0), "", "it has a cooldown")
 
 
-func test_a_fallen_gate_closes_roads_releases_heralds_and_moves_the_front() -> void:
+func test_every_hero_marches_as_a_champion_once() -> void:
 	var sim := _assault()
-	var limit := sim.build_limit()
-	var gate := sim.structures_left(1)[0]
-	watch_signals(sim)
-	sim._damage(gate, gate.health + 1.0, null)
-	assert_false(gate.alive)
-	assert_eq(sim.structure_phase, 2)
-	for lane in gate.closes_lanes:
-		assert_true(sim.is_lane_closed(lane))
-	assert_eq(sim._arrivals.size(), gate.releases.size(), "the heralds come out")
-	assert_gt(sim.build_limit(), limit, "the front moves forward")
-	assert_signal_emitted(sim, "structure_destroyed")
-	assert_signal_emitted(sim, "phase_changed")
-	assert_false(sim.is_over())
+	var champions := 0
+	for data in sim.ally_list():
+		if data.is_champion():
+			champions += 1
+			assert_eq(data.max_alive, 1)
+	assert_gte(champions, 16)
+	var troops := sim.ally_list().size() - champions
+	assert_eq(troops, 20, "twenty troops")
+	_jump_to_counter(sim)
+	sim.gold = 5000
+	sim.muster(&"champion_brannoc", 0)
+	assert_ne(sim.muster_error(&"champion_brannoc", 1), "", "one Brannoc at a time")
 
 
-func test_the_run_is_won_only_when_the_overlord_falls_too() -> void:
+func test_the_army_marches_on_the_citadel_and_breaks_it() -> void:
 	var sim := _assault()
-	sim.start_next_wave()
-	for phase in range(1, sim.total_phases() + 1):
-		for structure in sim.structures_left(phase):
-			sim._damage(structure, structure.health + 1.0, null)
+	_jump_to_counter(sim)
+	sim.enemies.clear()
+	var citadel := sim.structures[0]
+	citadel.health = 50.0
+	sim.gold = 5000
+	sim.muster(&"footman", 1)
+	var start: float = sim.allies[0].progress
+	for i in 60:
+		sim.step(RunSim.STEP)
+	assert_lt(sim.allies[0].progress, start, "units march toward the gate")
+	# A long march: start the ram near the gate.
+	var ram := sim.muster(&"battering_ram", 0)
+	for ally in ram:
+		ally.progress = 60.0
+	for i in 60 * 60:
+		sim.step(RunSim.STEP)
+		if sim.is_over():
+			break
+	assert_false(citadel.alive, "the army breaks the citadel")
 	assert_true(sim.citadel_fallen)
-	var overlord: SimEnemy = null
-	for enemy in sim._arrivals:
-		if enemy.data.tags.has(&"overlord"):
-			overlord = enemy
-	assert_not_null(overlord, "Vael-Orrun comes out of the throne")
-	assert_false(sim.is_over(), "not won while he walks")
-	overlord.alive = false
-	sim._arrivals.clear()
-	sim.step(RunSim.STEP)
 	assert_eq(sim.state, RunSim.State.WON)
+
+
+func test_the_high_king_changes_form_twice_and_flees() -> void:
+	var sim := _assault()
+	var king := sim._make_enemy(sim.config.enemies[&"vael_orrun"], 1.0, 0, -1, 200.0)
+	sim.enemies.append(king)
+	watch_signals(sim)
+	for form in 2:
+		sim._damage(king, king.health + 1.0, null)
+		assert_true(king.alive, "he does not die, he changes")
+		assert_gt(king.transforming, 0.0)
+		assert_true(king.untouchable())
+		king.transforming = 0.0
+	assert_eq(king.data.id, &"vael_orrun_unmade")
+	assert_signal_emit_count(sim, "enemy_transformed", 2)
+	sim._damage(king, king.health + 1.0, null)
+	assert_true(king.fleeing, "the Unmade runs for the citadel")
+	assert_signal_emitted(sim, "boss_fled")
+
+
+## Skips the defence: the citadel's act 3 starts as it would when wave 40 begins.
+func _jump_to_counter(sim: RunSim) -> void:
+	sim.wave_index = sim.config.stage.counter_wave - 1
+	sim.start_next_wave()
 
 
 # --- Story files -----------------------------------------------------------------

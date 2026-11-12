@@ -242,22 +242,32 @@
     "intro": "assault_intro",
     "movements": [
       {
-        "name": "The Black Gate",
-        "minutes": 10,
-        "boss": "gatemaw",
-        "cinematic": ""
-      },
-      {
-        "name": "The Mirror Spire",
-        "minutes": 10,
+        "name": "The Long Siege",
+        "minutes": 30,
         "boss": "echo_heralds",
-        "cinematic": "mirror_spire"
+        "cinematic": "",
+        "objective": "Hold the camp until his army is spent"
       },
       {
-        "name": "The Crownless Throne",
-        "minutes": 10,
+        "name": "The High King",
+        "minutes": 4,
         "boss": "vael_orrun",
-        "cinematic": "crownless_throne"
+        "cinematic": "crownless_throne",
+        "objective": "Break Vael-Orrun in all three of his forms"
+      },
+      {
+        "name": "The Turning",
+        "minutes": 4,
+        "boss": "",
+        "cinematic": "the_turning",
+        "objective": "Muster the army and bring down Nhal Vorath"
+      },
+      {
+        "name": "The Truth",
+        "minutes": 2,
+        "boss": "",
+        "cinematic": "the_truth",
+        "objective": "The citadel is broken"
       }
     ],
     "outro": "epilogue"

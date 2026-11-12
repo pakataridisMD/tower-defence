@@ -35,6 +35,8 @@ func test_every_tower_has_art() -> void:
 
 func test_every_enemy_has_art() -> void:
 	for enemy_id: StringName in registry.enemies:
+		if CitadelArt.draws(registry.enemies[enemy_id]):
+			continue
 		var meta := BoardArt.enemy_info(enemy_id)
 		assert_false(meta.is_empty(), "art.json has no entry for enemy %s" % enemy_id)
 		if meta.is_empty():
@@ -47,10 +49,37 @@ func test_every_enemy_has_art() -> void:
 		assert_gt(BoardArt.enemy_height(enemy_id), 0.0)
 
 
+## The citadel of the final assault is drawn whole, with its fire, its cracks and its ruin.
+func test_citadel_has_art() -> void:
+	assert_true(CitadelArt.has_art(), "citadel.json")
+	var meta := CitadelArt.read_meta()
+	assert_eq((meta.get("gates", []) as Array).size(), 3, "three gates")
+	for name in ["citadel", "ruin"]:
+		_assert_lit(CitadelArt.DIR + name)
+	for f in int(meta.get("frames", 0)):
+		assert_true(ResourceLoader.exists(CitadelArt.DIR + "citadel_glow_%d.png" % f), "glow frame %d" % f)
+	assert_true(ResourceLoader.exists(CitadelArt.DIR + "citadel_cracks.png"), "cracks")
+
+
+## Every unit of the counter-attack walks, strikes and dies, and every champion has its hero's sprite.
+func test_every_ally_has_art() -> void:
+	for ally_id: StringName in registry.allies:
+		var data: AllyData = registry.allies[ally_id]
+		assert_true(AllyArt.has_art(data), "art for %s" % ally_id)
+		if data.is_champion():
+			continue
+		var info: Dictionary = AllyArt.meta()[String(ally_id)]
+		for anim in ["walk", "attack", "death"]:
+			assert_true(info["anims"].has(anim), "%s %s" % [ally_id, anim])
+			_assert_lit(AllyArt.DIR + "%s_%s" % [ally_id, anim])
+
+
 ## Code-drawn enemies walk in six frames and stand on the bottom row. Hand-drawn ones bring their
 ## own frame count and a padded frame, so their feet only have to be inside it.
 func test_enemies_walk_in_six_frames() -> void:
 	for enemy_id: StringName in registry.enemies:
+		if CitadelArt.draws(registry.enemies[enemy_id]):
+			continue
 		var meta := BoardArt.enemy_info(enemy_id)
 		if meta.get("drawn", false):
 			var frame: Array = meta["size"]
