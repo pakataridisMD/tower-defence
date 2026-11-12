@@ -35,6 +35,8 @@ var story_overlay: StoryOverlay
 ## The cinematic playing over the run, or null.
 var cinematic: CinematicPlayer
 var audio: GameAudio
+## Boss moves and battle lines.
+var bosses: BossDirector
 ## The army's shouts in the counter-attack.
 var army_voice: ArmyVoice
 var music: BattleMusic
@@ -137,6 +139,9 @@ func _build_views() -> void:
 	music = BattleMusic.new()
 	add_child(music)
 	music.setup(sim)
+	bosses = BossDirector.new()
+	add_child(bosses)
+	bosses.setup(sim, board.art)
 	army_voice = ArmyVoice.new()
 	add_child(army_voice)
 	army_voice.setup(sim, board)
