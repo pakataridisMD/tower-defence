@@ -254,9 +254,17 @@ def more(stat: str, pct: float, *tags: str) -> Mod:
     return Mod(stat, MORE, pct / 100.0, list(tags))
 
 
+# Skill points in a run come three at a time since the skill web grew tenfold (its nodes cost 1 to
+# 6 points, tools/web/gen_skill_web.py), so a talent's skill points are written in old points and
+# multiplied here.
+WEB_POINT_SCALE = 3
+
+
 def flat(stat: str, value: float, *tags: str) -> Mod:
     if stat in ("starting_gold", "gold_per_wave", "starting_lives") and value > 0:
         value = max(1, round(value * ECON))
+    if stat in ("starting_tree_points", "tree_points_per_boss"):
+        value *= WEB_POINT_SCALE
     return Mod(stat, FLAT, value, list(tags))
 
 
@@ -323,13 +331,13 @@ wing("arsenal", {
            [more("splash_radius", 25, "area"), more("damage", 10, "area"), inc("cost", 10)],
            {"desc": "Pick one: closes Glass Cannon.", "icon": "burst"}),
     "ax": ("arsenal_focus", "Focus", NOTABLE, 8, [],
-           {"desc": "Adds the Focus keystone to the skill web: towers deal 60% more damage but attack 30% slower.",
+           {"desc": "Adds the Focus keystone to the skill web: towers deal 40% more damage but attack 25% slower.",
             "unlocks_nodes": ["keystone_focus"]}),
     "bx": ("arsenal_overcharge", "Overcharge", NOTABLE, 8, [],
-           {"desc": "Adds the Overcharge keystone to the skill web: towers attack 40% faster but cost 25% more.",
+           {"desc": "Adds the Overcharge keystone to the skill web: towers attack 30% faster but cost 20% more.",
             "unlocks_nodes": ["keystone_overcharge"]}),
     "ay": ("arsenal_hoard", "Hoard", NOTABLE, 8, [],
-           {"desc": "Adds the Hoard keystone to the skill web: kills earn 2 more gold but towers cost 20% more.",
+           {"desc": "Adds the Hoard keystone to the skill web: kills earn 1 more gold but towers cost 15% more.",
             "unlocks_nodes": ["keystone_hoard"]}),
     "by": ("arsenal_hybrid", "Fusion Lore", NOTABLE, 5, [inc("damage", 8, "hybrid"), inc("damage", 8, "triple")]),
 })

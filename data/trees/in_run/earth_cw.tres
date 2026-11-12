@@ -7,15 +7,17 @@
 script = ExtResource("1_mod")
 stat = &"stun_duration"
 kind = 1
-value = 0.3
+value = 0.05
 required_tags = Array[StringName]([&"earth"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"earth_cw"
-display_name = "Aftershock"
-description = "Stuns from earth towers last 30% longer."
+display_name = "Tremor I"
+description = "Stuns from earth towers last 5% longer."
+kind = 2
 region = &"earth"
-position = Vector2(-186, 40)
+cost = 1
+position = Vector2(-212, 37)
 links = Array[StringName]([&"earth_entry"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

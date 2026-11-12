@@ -6,15 +6,18 @@
 [sub_resource type="Resource" id="Resource_m0"]
 script = ExtResource("1_mod")
 stat = &"knockback"
-value = 8.0
+kind = 1
+value = 0.05
 required_tags = Array[StringName]([&"water"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"water_ccw"
-display_name = "Undertow"
-description = "Water towers push enemies back 8 further."
+display_name = "Undertow I"
+description = "Water towers push enemies back 5% farther."
+kind = 2
 region = &"water"
-position = Vector2(59, 181)
+cost = 1
+position = Vector2(74, 202)
 links = Array[StringName]([&"water_entry"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

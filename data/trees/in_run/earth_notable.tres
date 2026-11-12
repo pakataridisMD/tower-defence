@@ -6,16 +6,18 @@
 [sub_resource type="Resource" id="Resource_m0"]
 script = ExtResource("1_mod")
 stat = &"splash_radius"
-value = 40.0
+kind = 0
+value = 25.0
 required_tags = Array[StringName]([&"earth"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"earth_notable"
-display_name = "Landslide"
-description = "Earth tower hits crush every enemy within 40 of the target."
+display_name = "Avalanche"
+description = "Earth towers crush every enemy within 25 of the target."
 kind = 3
 region = &"earth"
-position = Vector2(-251, 145)
-links = Array[StringName]([&"earth_core"])
+cost = 3
+position = Vector2(-554, 320)
+links = Array[StringName]([&"earth_c_555", &"earth_r1_640"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"attacks_per_second"
+kind = 2
+value = 0.3
+required_tags = Array[StringName]([&"nature"])
+
+[sub_resource type="Resource" id="Resource_m1"]
+script = ExtResource("1_mod")
+stat = &"attack_range"
+kind = 2
+value = -0.15
+
+[resource]
+script = ExtResource("2_node")
+id = &"keystone_overgrowth"
+display_name = "Overgrowth"
+description = "Pick one: closes Hoard. Nature towers attack 30% faster. All towers have 15% less range."
+kind = 5
+cost = 6
+position = Vector2(1150, 476)
+links = Array[StringName]([&"nature_o_l1_1150"])
+excludes = Array[StringName]([&"keystone_hoard"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0"), SubResource("Resource_m1")])
+icon = &"bubbles"

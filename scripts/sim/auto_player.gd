@@ -333,6 +333,9 @@ func _best_aim(skill: SkillData, alive: Array[SimEnemy]) -> Vector3:
 	return best
 
 
+## Takes the planned nodes in order, with the nodes on the way to each. Once every planned node is
+## taken (or out of reach), the rest of the points go on the cheapest open nodes of the planned
+## elements, nearest the Origin first. Keystones are left alone: they need a plan of their own.
 func spend_points() -> void:
 	var took_one := true
 	while took_one and sim.tree.points > 0:
@@ -341,6 +344,37 @@ func spend_points() -> void:
 			if sim.allocate_node(id):
 				took_one = true
 				break
+		if not took_one and _plan_done():
+			var next := _cheapest_open_node()
+			took_one = not next.is_empty() and sim.allocate_node(next)
+
+
+## True when no planned node is left that the bot could still save up for.
+func _plan_done() -> bool:
+	for id in node_priority:
+		if not sim.tree.is_allocated(id) and sim.tree.path_cost(id) >= 0:
+			return false
+	return true
+
+
+func _cheapest_open_node() -> StringName:
+	var regions: Dictionary[StringName, bool] = {}
+	for id in node_priority:
+		if sim.tree.graph.has_node_id(id):
+			regions[sim.tree.graph.node(id).region] = true
+	var best: StringName = &""
+	var best_key := Vector2(INF, INF)
+	for id in sim.tree.graph.ids():
+		var data := sim.tree.graph.node(id)
+		if data.kind == TreeNodeData.Kind.KEYSTONE or not sim.tree.can_allocate(id):
+			continue
+		if not data.region.is_empty() and not regions.has(data.region):
+			continue
+		var key := Vector2(data.cost, data.position.length())
+		if key.x < best_key.x or (key.x == best_key.x and key.y < best_key.y):
+			best_key = key
+			best = id
+	return best
 
 
 ## Spends the gold, best buy first: another tower where it covers the most road, or a level (or
