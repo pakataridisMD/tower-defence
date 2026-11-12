@@ -174,3 +174,26 @@ func test_the_menu_fits_the_screen_and_the_menu_button_fits_the_bar() -> void:
 	assert_eq(game.hud._top_bar.size.x, 1896.0, "the top bar keeps its width")
 	for control: Control in [game.hud._menu_button, game.hud._wave_button, game.hud._next]:
 		assert_true(bar.encloses(control.get_global_rect()), "%s is inside the top bar" % control.name)
+
+
+func test_exit_to_main_menu_is_named_plainly_and_enter_confirms() -> void:
+	await _start()
+	_key(KEY_ESCAPE)
+	assert_eq(game.pause_menu.menu_button.text, "Exit to main menu")
+	assert_eq(game.pause_menu.quit_button.text, "Quit to desktop", "quitting says where it goes")
+	_press(game.pause_menu.menu_button)
+	assert_string_contains(game.pause_menu.leave_button.text, "Exit to main menu")
+	_key(KEY_ENTER)
+	assert_eq(left_for, [&"menu"] as Array[StringName])
+
+
+func test_closing_the_window_during_a_run_asks_first() -> void:
+	await _start()
+	_key(KEY_SPACE)
+	game.notification(NOTIFICATION_WM_CLOSE_REQUEST)
+	assert_true(game.pause_menu.visible, "the window close (or Cmd+Q) opens the menu instead of quitting")
+	assert_true(game.paused)
+	assert_true(game.pause_menu.is_confirming())
+	assert_eq(left_for, [] as Array[StringName], "nothing quits until it is confirmed")
+	_key(KEY_ESCAPE)
+	assert_true(game.pause_menu.menu_button.is_visible_in_tree(), "Esc steps back to the menu, with Exit to main menu")

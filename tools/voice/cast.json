@@ -1,0 +1,181 @@
+{
+  "_about": "Voice cast for every speaking character in the cinematics (ElevenLabs v3, Voice Library). narrate.py reads it. style: mortal (close and dry, like the narrator), warden (bigger, older space), herald (hollowed: thin chorus, scooped mids), sovereign (dark hall + sub-octave shadow), twin (two voices at once), titan (very deep), seer (a little cold air), hush (layered, inhuman). owner is the Voice Library owner id, needed to add the voice to a new ElevenLabs account.",
+  "speakers": {
+    "vael_orrun": {
+      "character": "Vael-Orrun, the Sunderer",
+      "voice": "Victor",
+      "voice_id": "cPoqAvGWCPfCfyPMwe4z",
+      "owner": "5dde3271b3f8e68cc8618e67773db224acbb661e197e6312e07fd245fa79872c",
+      "style": "sovereign",
+      "why": "Ancient, deep and slow. A dark hall and a faint sub-octave shadow, so every element in the room goes still."
+    },
+    "cassivane": {
+      "character": "Cassivane Dral, the Ashen Regent",
+      "voice": "Dominic",
+      "voice_id": "yhf80q1381zd2JJQ4tM7",
+      "owner": "51855fcd1e38c2297e848e9a2e80a05c830e502b0be1bb014c8e93289fe8b929",
+      "style": "mortal",
+      "why": "British, brooding, commanding. Not cruel: certain."
+    },
+    "the_hush": {
+      "character": "The Hush (secret, post-credits)",
+      "voice": "True",
+      "voice_id": "tZssYepgGaQmegsMEXjK",
+      "owner": "675db5c1a341e2f820aefb00825680aa042d958a4a3aef3200735c799210dcb4",
+      "style": "hush",
+      "why": "A dark whisper, layered an octave down and a fifth up: flat, quiet, inhuman."
+    },
+    "oswin": {
+      "character": "Oswin, the Grey/White Lantern",
+      "voice": "Cornelius",
+      "voice_id": "6sFKzaJr574YWVu4UuJF",
+      "owner": "a72a436938f959ab051e6a27b035db67a4b75945b4d6e8c86ed40e6e946a2e11",
+      "style": "mortal",
+      "why": "Old British sage. Wry and endlessly patient."
+    },
+    "fennick": {
+      "character": "Master Tobias Fennick",
+      "voice": "Adam",
+      "voice_id": "U5UjeJMsOvyhYhXfZdvZ",
+      "owner": "751e6916d6bff1264667b343c7f8e26abae82993b855c1d5aef615063d60d0d3",
+      "style": "mortal",
+      "why": "Gruff, gravelly old Scot. The engineer who shouts orders."
+    },
+    "tamsin": {
+      "character": "Tamsin Reed",
+      "voice": "Charmion",
+      "voice_id": "lUCNYQh2kqW2wiie85Qk",
+      "owner": "6f846ef5fbdcc1482e1b7213fbc58156aa89a6d8b02b904f8055d329de9ac650",
+      "style": "mortal",
+      "why": "Husky British soldier. Dry, kind, tired, unbreakable."
+    },
+    "brannoc": {
+      "character": "Brannoc Emberhand",
+      "voice": "Viking Bjorn",
+      "voice_id": "ljo9gAlSqKOvF6D8sOsX",
+      "owner": "0fe52f209ed41586089f6955eebdd52aea973a12de5285ab6101ed2ea46def5c",
+      "style": "mortal",
+      "why": "Gravelly, booming Northern raider of a smith."
+    },
+    "kaela": {
+      "character": "Kaela Stormrider",
+      "voice": "Blondie",
+      "voice_id": "si0svtk05vPEuvwAW93c",
+      "owner": "d377abcdcb97307b18a362960f3a8f44c5d42ebeae52abbf589216384f3aca0f",
+      "style": "mortal",
+      "why": "Intense, powerful British rider who never retreats."
+    },
+    "sylvaine": {
+      "character": "Sylvaine Thornwhisper",
+      "voice": "Valory",
+      "voice_id": "cicZiwk5NrFYKb3gi8in",
+      "owner": "7398804d9eaf2f463899a907587c33a390591775784f87857b6d0e1e4e3e66f6",
+      "style": "mortal",
+      "why": "Calm, mysterious, three hundred years patient."
+    },
+    "mirelle": {
+      "character": "Mirelle the Tide-Seer",
+      "voice": "Arabella",
+      "voice_id": "Z3R5wn05IrDiVCyEkUrK",
+      "owner": "9214c228369d78a4201c47897c5f0ae5a0a131cde4f51532060a37ea5d7ebd1a",
+      "style": "seer",
+      "why": "Young, soft, mysterious. A touch of cold air around her."
+    },
+    "gorrim": {
+      "character": "Gorrim Stonebeard",
+      "voice": "Gravel Midnight",
+      "voice_id": "M5E055lOUxMi0kJpGyE9",
+      "owner": "72026985ddcf2e1b6cf05e05a8d5dc2e4d1b644e967553f8f6bf36210739d9a5",
+      "style": "mortal",
+      "why": "Deep, rough, gritty old shieldmaster."
+    },
+    "corvin": {
+      "character": "Corvin the Uncrowned",
+      "voice": "Gideon",
+      "voice_id": "q1h5HGdnfVxp4TXTJRNN",
+      "owner": "655db62473dfb65f630c66cab2df71a87da6f912f5ac05ca869b852e1b7f9489",
+      "style": "mortal",
+      "why": "Rugged, gravelly, Northern. Bitter restraint."
+    },
+    "ilyra": {
+      "character": "Ilyra the Unbroken",
+      "voice": "Grace",
+      "voice_id": "4zDsWfgtAP9O9F9kJlUk",
+      "owner": "d0e07776a012125e8476abc827196c84f0794d5f427c6d8b6c020b3f6e761bca",
+      "style": "mortal",
+      "why": "Soft-spoken, moody young British woman."
+    },
+    "seraphel": {
+      "character": "Seraphel the Dawnblade",
+      "voice": "Cate",
+      "voice_id": "J64VNrjLE6uKFBKlxfSJ",
+      "owner": "479ab2a2bcf64d1c95e8bb45a026c29f4212adf5b94f5af410d3039cd58cc917",
+      "style": "mortal",
+      "why": "Deep, resonant, elegant knight with one fight left."
+    },
+    "ignar": {
+      "character": "Ignar, the Cinder Warden",
+      "voice": "Flint",
+      "voice_id": "qAZH0aMXY8tw1QufPN0D",
+      "owner": "0b881d49eb59a37c49bd6bf590e476b04c7d9ee78c71195e7d6292f829f29382",
+      "style": "warden",
+      "why": "Deep, raspy and warm, like a bonfire."
+    },
+    "aurath": {
+      "character": "Aurath of the Storms",
+      "voice": "Ethereal Husk",
+      "voice_id": "jpUA5miJyO2ygonZPVsO",
+      "owner": "8c78eec628ae4a53795c7e7bc1c17f731df191608cd138d9c3e815a39f1adecc",
+      "style": "twin",
+      "why": "Atmospheric, gravelly female voice doubled an octave down: two voices at once."
+    },
+    "elowen": {
+      "character": "Elowen the Evergreen",
+      "voice": "Beatrice",
+      "voice_id": "kkPJzQOWz2Oz9cUaEaQd",
+      "owner": "e21da557bd3d3d214ca0cd46cb06720331c223a478ee711c3b62b8965330ec9d",
+      "style": "warden",
+      "why": "Old, gentle, slow. Her land is dying."
+    },
+    "thalassa": {
+      "character": "Thalassa of the Deep",
+      "voice": "Tessa",
+      "voice_id": "USEQXnsXRJlw2k9LUzG4",
+      "owner": "5214e3d3123945dcad0881d8743a206c4dbc617f34e858e8878c4fd90deb4892",
+      "style": "warden",
+      "why": "Mystical, deep, prophetic. She remembers everything."
+    },
+    "orrok": {
+      "character": "Orrok the Mountain",
+      "voice": "John Doe",
+      "voice_id": "EiNlNiXeDU1pqqOPrYMO",
+      "owner": "e9a6840c69b79812b77ea81fa11d55aaf80dcf1938fa0137bf7f514f67f75c99",
+      "style": "titan",
+      "why": "Very deep and very slow. He barely speaks."
+    },
+    "nyxara": {
+      "character": "Nyxara of the Hollow",
+      "voice": "Bella",
+      "voice_id": "hbB2qXyS2GMyyZIZyhAH",
+      "owner": "3e69e48fe4c80b766c365c3c014dc48f772219b95c674b54ff98b6b5ee1585f4",
+      "style": "warden",
+      "why": "Deep, elegant, haunting. Keeper of the road of the dead."
+    },
+    "pale_vesper": {
+      "character": "The Pale Vesper (Herald)",
+      "voice": "Veda Sky",
+      "voice_id": "1rnYMVDXZksVr6x7pZPX",
+      "owner": "7398804d9eaf2f463899a907587c33a390591775784f87857b6d0e1e4e3e66f6",
+      "style": "herald",
+      "why": "Chilling singer's voice, hollowed out."
+    },
+    "vholt": {
+      "character": "Vholt Stormcrown (Herald)",
+      "voice": "Jerry B.",
+      "voice_id": "TxWZERZ5Hc6h9dGxVmXa",
+      "owner": "a39978ae1a3df0f45fdab1322b8c5a8723fa4e2909858fd3c6bb5ab836cc50de",
+      "style": "herald",
+      "why": "Gruff old commander, hollowed out."
+    }
+  }
+}

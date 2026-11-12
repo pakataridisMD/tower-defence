@@ -1,7 +1,8 @@
 class_name SettingsPage
 extends MenuPage
 ## Settings: Sound (a volume slider and mute switch for every bus, as in the in-run audio panel)
-## and Video (window mode and v-sync). Every change applies and saves at once.
+## and Video (window mode and v-sync). Every change applies and saves at once. The studio's
+## name sits at the right of the tab row.
 
 const TABS: Array[String] = ["Sound", "Video"]
 
@@ -11,6 +12,7 @@ var mutes: Dictionary[StringName, CheckBox] = {}
 var _percent: Dictionary[StringName, Label] = {}
 var _sections: Array[Control] = []
 var _tab_buttons: Array[Button] = []
+var developer_label: Label
 
 
 func _init() -> void:
@@ -29,6 +31,13 @@ func _init() -> void:
 				show_tab(index))
 		tabs.add_child(b)
 		_tab_buttons.append(b)
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tabs.add_child(spacer)
+	developer_label = UiStyle.menu_label(
+			"Developed by %s  (%s)" % [CreditsPage.DEVELOPER, CreditsPage.MAKERS], "small", 16, UiStyle.MENU_GOLD)
+	developer_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	tabs.add_child(developer_label)
 	var panel := add_panel(Vector2(0, 68), Vector2(1824, 784))
 	var stack := Control.new()
 	panel.add_child(stack)

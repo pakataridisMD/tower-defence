@@ -212,8 +212,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if key == null or not key.pressed or key.echo or cinematic != null or audio_panel.visible:
 		return
 	if pause_menu.visible:
-		_pause_menu_key(key.keycode)
+		# Handled first: leaving the run takes the game out of the tree (and away from its viewport).
 		get_viewport().set_input_as_handled()
+		_pause_menu_key(key.keycode)
 		return
 	match key.keycode:
 		KEY_SPACE:
@@ -370,8 +371,8 @@ func close_pause_menu() -> void:
 	SoundPlayer.sfx(&"ui_resume")
 
 
-## Keys while the menu is open: Esc resumes (or steps back from "Leave the run?"), O opens the
-## audio settings and M mutes. Every other key waits until the menu closes.
+## Keys while the menu is open: Esc resumes (or steps back from "Leave the run?"), Enter says yes
+## to leaving, O opens the audio settings and M mutes. Every other key waits until the menu closes.
 func _pause_menu_key(keycode: Key) -> void:
 	match keycode:
 		KEY_ESCAPE:
@@ -379,11 +380,33 @@ func _pause_menu_key(keycode: Key) -> void:
 				pause_menu.back()
 			else:
 				close_pause_menu()
+		KEY_ENTER, KEY_KP_ENTER:
+			pause_menu.confirm()
 		KEY_O:
 			if not pause_menu.is_confirming():
 				_open_audio()
 		KEY_M:
 			_toggle_mute()
+
+
+## Closing the window (or Cmd+Q on a Mac) during a run opens the pause menu and asks before
+## quitting, so a run is never lost to a stray click. The menu then offers Exit to main menu too.
+func _notification(what: int) -> void:
+	if what != NOTIFICATION_WM_CLOSE_REQUEST or not is_inside_tree():
+		return
+	if autoplay or pause_menu == null:
+		get_tree().quit()
+		return
+	open_pause_menu()
+	pause_menu.ask_to_leave(&"quit")
+
+
+func _enter_tree() -> void:
+	get_tree().set_auto_accept_quit(false)
+
+
+func _exit_tree() -> void:
+	get_tree().set_auto_accept_quit(true)
 
 
 func _leave_from_menu(scene: StringName) -> void:
@@ -595,7 +618,7 @@ func _on_run_ended(won: bool) -> void:
 	board.cancel_hero_actions()
 	_close_web()
 	var meta_points := Progress.record_run(sim)
-	hud.show_end(won, meta_points)
+	hud.show_end(won, meta_points, Progress.meta.last_run_note)
 	if sim.config.stage != null:
 		var result := Progress.record_stage(sim)
 		var next := Progress.meta.stage_after(sim.config.stage.id)

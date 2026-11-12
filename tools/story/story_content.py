@@ -855,10 +855,36 @@ def screenplay():
     return "\n".join(lines)
 
 
+# Lines recorded before these scenes were rewritten for the counter-attack: for each shot, the number
+# of the recording that still says its words, or None for a new line that waits for the voice thread
+# (it plays silent, timed by its words, rather than under someone else's line).
+VOICE_TAKES = {
+    "assault_intro": [None] * 5,
+    "crownless_throne": [None] * 3,
+    "epilogue": [7, 8, None, 10],
+}
+
+
+# The epilogue lost its opening shots: its remaining shots keep the stills painted for them.
+IMAGE_TAKES = {"epilogue": [7, 8, 9, 10]}
+
+
+def apply_voice_takes():
+    for cid, takes in IMAGE_TAKES.items():
+        for s, take in zip(CINEMATICS[cid]["shots"], takes):
+            s["image"] = f"res://assets/story/images/{cid}/{take:02d}.png"
+    for cid, takes in VOICE_TAKES.items():
+        shots = CINEMATICS[cid]["shots"]
+        assert len(takes) == len(shots), f"{cid}: {len(shots)} shots but {len(takes)} voice takes"
+        for s, take in zip(shots, takes):
+            s["voice"] = f"res://assets/story/voice/{cid}/{take:02d}.ogg" if take else False
+
+
 def main():
     root = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", ".."))
     if "--out" in sys.argv:
         root = sys.argv[sys.argv.index("--out") + 1]
+    apply_voice_takes()
     for cid, c in CINEMATICS.items():
         write_json(os.path.join(root, "data/story/cinematics", f"{cid}.json"),
                    {"id": cid, "title": c["title"], "shots": c["shots"]})

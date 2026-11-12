@@ -1456,7 +1456,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"storm"
 is_boss = true
-health_multiplier = 0.29
+health_multiplier = 4.17
 description = "A marching column, brutes under escort, runner packs, a flank attack and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r163"), SubResource("r164"), SubResource("r165"), SubResource("r166"), SubResource("r167"), SubResource("r168"), SubResource("r169"), SubResource("r170"), SubResource("r171")])
 
@@ -1465,5 +1465,5 @@ script = ExtResource("1_s")
 id = &"c_water_4"
 display_name = "The Drowned Throne"
 health_growth = 1.1
-health_scale = 1.11
+health_scale = 13.96
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r13"), SubResource("r22"), SubResource("r32"), SubResource("r41"), SubResource("r53"), SubResource("r65"), SubResource("r76"), SubResource("r90"), SubResource("r103"), SubResource("r116"), SubResource("r132"), SubResource("r147"), SubResource("r162"), SubResource("r172")])
