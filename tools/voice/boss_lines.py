@@ -20,6 +20,7 @@ import json
 import sys
 from pathlib import Path
 
+import numpy as np
 import soundfile as sf
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -38,6 +39,15 @@ def preset_for(entry: dict) -> dict:
     style = entry.get("style") or role.get("style", "mortal")
     return {**narrate.PRESETS["regal_el"], **narrate.STYLES[style], "voice_id": role["voice_id"],
             "stability": entry.get("stability", 0.0)}
+
+
+def voiced_length(path: Path) -> float:
+    """Seconds to the last word, before the hall's echo dies away (the boss's jaw stops there)."""
+    x, sr = sf.read(path)
+    win = max(1, int(sr * 0.03))
+    env = np.convolve(np.abs(x), np.ones(win) / win, "same")
+    loud = np.flatnonzero(env > 0.12 * env.max())
+    return round(float(loud[-1]) / sr + 0.1, 2) if loud.size else 0.0
 
 
 def main() -> None:
@@ -73,7 +83,8 @@ def main() -> None:
                         sf.write(raw, narrate._trim(audio, sr), sr)
                         narrate.master(raw, out, preset)
                     secs = round(sf.info(out).duration - 0.6, 2)   # master() pads 0.6 s of tail
-                    item["lines"].setdefault(kind, []).append({"file": rel, "text": text, "secs": secs})
+                    item["lines"].setdefault(kind, []).append({"file": rel, "text": text, "secs": secs,
+                                                               "voiced": voiced_length(out)})
                     print(f"{rel:38} {secs:4.1f}s  {text}")
         index[boss] = item
     if a.cost:

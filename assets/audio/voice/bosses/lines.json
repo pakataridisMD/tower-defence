@@ -1,0 +1,1137 @@
+{
+ "ashen_regent": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "ashen_regent/arrive_1.ogg",
+     "secs": 5.01,
+     "text": "Stand aside. I do this for my daughter, not for him.",
+     "voiced": 4.01
+    }
+   ],
+   "bind": [
+    {
+     "file": "ashen_regent/bind_1.ogg",
+     "secs": 3.09,
+     "text": "Silence those towers.",
+     "voiced": 1.91
+    }
+   ],
+   "enrage": [
+    {
+     "file": "ashen_regent/enrage_1.ogg",
+     "secs": 2.78,
+     "text": "[desperate] She is waiting for me!",
+     "voiced": 1.78
+    }
+   ],
+   "flee": [
+    {
+     "file": "ashen_regent/flee_1.ogg",
+     "secs": 3.45,
+     "text": "[breathless] Fall back! This is not over.",
+     "voiced": 2.44
+    }
+   ],
+   "heal": [
+    {
+     "file": "ashen_regent/heal_1.ogg",
+     "secs": 3.55,
+     "text": "Not yet. I am not finished.",
+     "voiced": 2.48
+    }
+   ],
+   "hurt": [
+    {
+     "file": "ashen_regent/hurt_1.ogg",
+     "secs": 3.07,
+     "text": "[pained] I have bled worse for less.",
+     "voiced": 2.07
+    }
+   ],
+   "shield": [
+    {
+     "file": "ashen_regent/shield_1.ogg",
+     "secs": 3.36,
+     "text": "Shields up. Hold the line!",
+     "voiced": 2.28
+    }
+   ],
+   "taunt": [
+    {
+     "file": "ashen_regent/taunt_1.ogg",
+     "secs": 3.1,
+     "text": "You cannot win this, Spirewright.",
+     "voiced": 2.11
+    },
+    {
+     "file": "ashen_regent/taunt_2.ogg",
+     "secs": 5.05,
+     "text": "Every life lost here will be paid back. I promised that.",
+     "voiced": 4.01
+    }
+   ]
+  }
+ },
+ "ashwick": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "ashwick/arrive_1.ogg",
+     "secs": 4.87,
+     "text": "[breathless] I have a letter! I have to deliver the letter!",
+     "voiced": 3.21
+    }
+   ],
+   "death": [
+    {
+     "file": "ashwick/death_1.ogg",
+     "secs": 4.24,
+     "text": "[softly] Can I rest now?",
+     "voiced": 1.25
+    }
+   ],
+   "enrage": [
+    {
+     "file": "ashwick/enrage_1.ogg",
+     "secs": 4.65,
+     "text": "[screaming] It hurts! Make it stop hurting!",
+     "voiced": 2.81
+    }
+   ],
+   "heal": [
+    {
+     "file": "ashwick/heal_1.ogg",
+     "secs": 5.87,
+     "text": "The fire eats the hurt. It eats everything.",
+     "voiced": 4.06
+    }
+   ],
+   "hurt": [
+    {
+     "file": "ashwick/hurt_1.ogg",
+     "secs": 4.9,
+     "text": "[crying out] That's not fair!",
+     "voiced": 3.23
+    }
+   ],
+   "shield": [
+    {
+     "file": "ashwick/shield_1.ogg",
+     "secs": 4.81,
+     "text": "Too hot to touch! Too hot!",
+     "voiced": 3.03
+    }
+   ],
+   "taunt": [
+    {
+     "file": "ashwick/taunt_1.ogg",
+     "secs": 7.35,
+     "text": "[manic laugh] I can't stop running. I can't stop burning!",
+     "voiced": 5.45
+    },
+    {
+     "file": "ashwick/taunt_2.ogg",
+     "secs": 4.02,
+     "text": "Out of my way! The Marshal is waiting!",
+     "voiced": 2.22
+    }
+   ]
+  }
+ },
+ "broodmother": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "broodmother/arrive_1.ogg",
+     "secs": 5.34,
+     "text": "[tired] So many children. All of them hungry.",
+     "voiced": 3.36
+    }
+   ],
+   "death": [
+    {
+     "file": "broodmother/death_1.ogg",
+     "secs": 5.75,
+     "text": "[relieved] One seed left. Plant it far from here.",
+     "voiced": 3.84
+    }
+   ],
+   "enrage": [
+    {
+     "file": "broodmother/enrage_1.ogg",
+     "secs": 5.99,
+     "text": "[shrieking] My children! You hurt my children!",
+     "voiced": 4.13
+    }
+   ],
+   "heal": [
+    {
+     "file": "broodmother/heal_1.ogg",
+     "secs": 4.55,
+     "text": "New bark. New flesh.",
+     "voiced": 2.67
+    }
+   ],
+   "hurt": [
+    {
+     "file": "broodmother/hurt_1.ogg",
+     "secs": 5.19,
+     "text": "[groans] The old wood splits.",
+     "voiced": 3.31
+    }
+   ],
+   "summon": [
+    {
+     "file": "broodmother/summon_1.ogg",
+     "secs": 4.15,
+     "text": "Go, my children. Feed.",
+     "voiced": 2.19
+    }
+   ],
+   "taunt": [
+    {
+     "file": "broodmother/taunt_1.ogg",
+     "secs": 5.27,
+     "text": "Grow. Grow and devour.",
+     "voiced": 3.37
+    },
+    {
+     "file": "broodmother/taunt_2.ogg",
+     "secs": 7.35,
+     "text": "[weary laugh] I am so old, and I cannot stop growing.",
+     "voiced": 5.25
+    }
+   ]
+  }
+ },
+ "cinder_tyrant": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "cinder_tyrant/arrive_1.ogg",
+     "secs": 5.29,
+     "text": "[roaring] Who wakes the fire? The fire is hungry!",
+     "voiced": 3.4
+    }
+   ],
+   "bind": [
+    {
+     "file": "cinder_tyrant/bind_1.ogg",
+     "secs": 3.03,
+     "text": "Melt.",
+     "voiced": 0.65
+    }
+   ],
+   "death": [
+    {
+     "file": "cinder_tyrant/death_1.ogg",
+     "secs": 4.09,
+     "text": "[gasping] I remember my name.",
+     "voiced": 2.19
+    }
+   ],
+   "enrage": [
+    {
+     "file": "cinder_tyrant/enrage_1.ogg",
+     "secs": 6.67,
+     "text": "[bellowing] Everything burns! Everything!",
+     "voiced": 4.78
+    }
+   ],
+   "heal": [
+    {
+     "file": "cinder_tyrant/heal_1.ogg",
+     "secs": 5.03,
+     "text": "Ash to ember. Ember to blaze.",
+     "voiced": 3.15
+    }
+   ],
+   "hurt": [
+    {
+     "file": "cinder_tyrant/hurt_1.ogg",
+     "secs": 5.76,
+     "text": "[pained] Put me out... No! Burn!",
+     "voiced": 3.14
+    }
+   ],
+   "taunt": [
+    {
+     "file": "cinder_tyrant/taunt_1.ogg",
+     "secs": 6.63,
+     "text": "I was a king of flame. Now I am only flame.",
+     "voiced": 4.7
+    },
+    {
+     "file": "cinder_tyrant/taunt_2.ogg",
+     "secs": 5.55,
+     "text": "[growling] The whisper says burn. So I burn.",
+     "voiced": 3.67
+    }
+   ]
+  }
+ },
+ "gorrath": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "gorrath/arrive_1.ogg",
+     "secs": 7.78,
+     "text": "[deep] I held the Kharum Pass for a month. I will hold this road forever.",
+     "voiced": 6.01
+    }
+   ],
+   "bind": [
+    {
+     "file": "gorrath/bind_1.ogg",
+     "secs": 3.82,
+     "text": "Crumble.",
+     "voiced": 0.71
+    }
+   ],
+   "death": [
+    {
+     "file": "gorrath/death_1.ogg",
+     "secs": 6.73,
+     "text": "[slowly] Tell the Stoneborn... I held.",
+     "voiced": 5.07
+    }
+   ],
+   "enrage": [
+    {
+     "file": "gorrath/enrage_1.ogg",
+     "secs": 5.28,
+     "text": "[roaring] Break! Break like the pass broke!",
+     "voiced": 3.62
+    }
+   ],
+   "hurt": [
+    {
+     "file": "gorrath/hurt_1.ogg",
+     "secs": 4.91,
+     "text": "[grunts] A crack. Only a crack.",
+     "voiced": 3.15
+    }
+   ],
+   "shield": [
+    {
+     "file": "gorrath/shield_1.ogg",
+     "secs": 4.98,
+     "text": "Stand fast. I am the wall now.",
+     "voiced": 3.13
+    }
+   ],
+   "taunt": [
+    {
+     "file": "gorrath/taunt_1.ogg",
+     "secs": 5.87,
+     "text": "Stone does not bleed. Stone does not tire.",
+     "voiced": 4.15
+    },
+    {
+     "file": "gorrath/taunt_2.ogg",
+     "secs": 5.12,
+     "text": "Strike harder. The mountain is laughing.",
+     "voiced": 3.46
+    }
+   ]
+  }
+ },
+ "hollow_king": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "hollow_king/arrive_1.ogg",
+     "secs": 8.39,
+     "text": "The crown is heavy. The crown is mine. [whispers] Help me.",
+     "voiced": 6.52
+    }
+   ],
+   "bind": [
+    {
+     "file": "hollow_king/bind_1.ogg",
+     "secs": 3.91,
+     "text": "Shadows, hold them.",
+     "voiced": 2.0
+    }
+   ],
+   "death": [
+    {
+     "file": "hollow_king/death_1.ogg",
+     "secs": 5.27,
+     "text": "[whispers] Not yet. I am still in here.",
+     "voiced": 3.52
+    }
+   ],
+   "enrage": [
+    {
+     "file": "hollow_king/enrage_1.ogg",
+     "secs": 4.23,
+     "text": "[screaming] Get out of my head!",
+     "voiced": 2.13
+    }
+   ],
+   "hurt": [
+    {
+     "file": "hollow_king/hurt_1.ogg",
+     "secs": 4.55,
+     "text": "[gasping] Yes. Crack the crown.",
+     "voiced": 2.74
+    }
+   ],
+   "shield": [
+    {
+     "file": "hollow_king/shield_1.ogg",
+     "secs": 6.15,
+     "text": "The void wraps me. Cold. Safe.",
+     "voiced": 4.26
+    }
+   ],
+   "taunt": [
+    {
+     "file": "hollow_king/taunt_1.ogg",
+     "secs": 4.43,
+     "text": "I hear what walks beneath your land.",
+     "voiced": 2.48
+    },
+    {
+     "file": "hollow_king/taunt_2.ogg",
+     "secs": 5.61,
+     "text": "[laughs darkly] Fight it? I am it.",
+     "voiced": 3.74
+    }
+   ]
+  }
+ },
+ "hollow_shade": {
+  "only": [
+   "taunt",
+   "hurt"
+  ],
+  "share": "hollow_king"
+ },
+ "leviathan": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "leviathan/arrive_1.ogg",
+     "secs": 5.17,
+     "text": "[echoing] I remember every ship that sank in me.",
+     "voiced": 3.16
+    }
+   ],
+   "bind": [
+    {
+     "file": "leviathan/bind_1.ogg",
+     "secs": 3.19,
+     "text": "Sink.",
+     "voiced": 1.32
+    }
+   ],
+   "death": [
+    {
+     "file": "leviathan/death_1.ogg",
+     "secs": 4.23,
+     "text": "[whispers] I will tell you what we did.",
+     "voiced": 2.26
+    }
+   ],
+   "enrage": [
+    {
+     "file": "leviathan/enrage_1.ogg",
+     "secs": 4.79,
+     "text": "[roaring] Drown! Drown them all!",
+     "voiced": 2.92
+    }
+   ],
+   "hurt": [
+    {
+     "file": "leviathan/hurt_1.ogg",
+     "secs": 6.73,
+     "text": "[groaning] An old wound. I remember it.",
+     "voiced": 4.38
+    }
+   ],
+   "shield": [
+    {
+     "file": "leviathan/shield_1.ogg",
+     "secs": 5.25,
+     "text": "Below the waves, nothing can touch me.",
+     "voiced": 3.2
+    }
+   ],
+   "taunt": [
+    {
+     "file": "leviathan/taunt_1.ogg",
+     "secs": 5.83,
+     "text": "I will remember you too. Every scream.",
+     "voiced": 3.89
+    },
+    {
+     "file": "leviathan/taunt_2.ogg",
+     "secs": 5.91,
+     "text": "The tide is rising, and it does not forgive.",
+     "voiced": 3.97
+    }
+   ]
+  }
+ },
+ "mother_briar": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "mother_briar/arrive_1.ogg",
+     "secs": 6.78,
+     "text": "[gently] Hush, children. Mother Briar is here to make it better.",
+     "voiced": 4.03
+    }
+   ],
+   "bind": [
+    {
+     "file": "mother_briar/bind_1.ogg",
+     "secs": 3.92,
+     "text": "Roots, take their hands.",
+     "voiced": 2.1
+    }
+   ],
+   "death": [
+    {
+     "file": "mother_briar/death_1.ogg",
+     "secs": 4.36,
+     "text": "[whispers] The thorns are letting go.",
+     "voiced": 2.55
+    }
+   ],
+   "enrage": [
+    {
+     "file": "mother_briar/enrage_1.ogg",
+     "secs": 7.12,
+     "text": "[snarling] Then rot, you ungrateful things!",
+     "voiced": 5.43
+    }
+   ],
+   "heal": [
+    {
+     "file": "mother_briar/heal_1.ogg",
+     "secs": 4.71,
+     "text": "[soothing] There. There. All mended.",
+     "voiced": 3.1
+    }
+   ],
+   "hurt": [
+    {
+     "file": "mother_briar/hurt_1.ogg",
+     "secs": 6.12,
+     "text": "[hissing] You cut my garden.",
+     "voiced": 4.1
+    }
+   ],
+   "taunt": [
+    {
+     "file": "mother_briar/taunt_1.ogg",
+     "secs": 5.49,
+     "text": "Every thorn in me was planted with love.",
+     "voiced": 3.73
+    },
+    {
+     "file": "mother_briar/taunt_2.ogg",
+     "secs": 5.2,
+     "text": "[sweetly] Lie down in the roots. Sleep.",
+     "voiced": 3.28
+    }
+   ]
+  }
+ },
+ "mountain_titan": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "mountain_titan/arrive_1.ogg",
+     "secs": 6.22,
+     "text": "[very slowly] Two thousand years... of silence.",
+     "voiced": 4.27
+    }
+   ],
+   "death": [
+    {
+     "file": "mountain_titan/death_1.ogg",
+     "secs": 3.28,
+     "text": "[softly] Thank you.",
+     "voiced": 1.19
+    }
+   ],
+   "enrage": [
+    {
+     "file": "mountain_titan/enrage_1.ogg",
+     "secs": 2.98,
+     "text": "[roaring] Crush!",
+     "voiced": 0.88
+    }
+   ],
+   "heal": [
+    {
+     "file": "mountain_titan/heal_1.ogg",
+     "secs": 3.58,
+     "text": "Stone grows back.",
+     "voiced": 1.66
+    }
+   ],
+   "hurt": [
+    {
+     "file": "mountain_titan/hurt_1.ogg",
+     "secs": 4.06,
+     "text": "[rumbling] Hm. That was felt.",
+     "voiced": 2.15
+    }
+   ],
+   "shield": [
+    {
+     "file": "mountain_titan/shield_1.ogg",
+     "secs": 5.4,
+     "text": "Stand. Behind. Stone.",
+     "voiced": 3.52
+    }
+   ],
+   "taunt": [
+    {
+     "file": "mountain_titan/taunt_1.ogg",
+     "secs": 4.7,
+     "text": "Small things. Loud things.",
+     "voiced": 2.78
+    },
+    {
+     "file": "mountain_titan/taunt_2.ogg",
+     "secs": 5.27,
+     "text": "The mountain does not move. You move.",
+     "voiced": 3.33
+    }
+   ]
+  }
+ },
+ "pale_vesper": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "pale_vesper/arrive_1.ogg",
+     "secs": 4.94,
+     "text": "[sings softly] Hush now. The bells are ringing for you.",
+     "voiced": 3.35
+    }
+   ],
+   "bind": [
+    {
+     "file": "pale_vesper/bind_1.ogg",
+     "secs": 4.48,
+     "text": "Shh. Your towers are sleeping.",
+     "voiced": 2.83
+    }
+   ],
+   "death": [
+    {
+     "file": "pale_vesper/death_1.ogg",
+     "secs": 4.48,
+     "text": "[whispers] The Marshal. It was the Marshal.",
+     "voiced": 2.83
+    }
+   ],
+   "enrage": [
+    {
+     "file": "pale_vesper/enrage_1.ogg",
+     "secs": 4.03,
+     "text": "[shrieking] Wake! All of you, wake!",
+     "voiced": 2.38
+    }
+   ],
+   "heal": [
+    {
+     "file": "pale_vesper/heal_1.ogg",
+     "secs": 3.77,
+     "text": "[humming] A song to close the wounds.",
+     "voiced": 2.12
+    }
+   ],
+   "hurt": [
+    {
+     "file": "pale_vesper/hurt_1.ogg",
+     "secs": 2.86,
+     "text": "You broke my note.",
+     "voiced": 1.22
+    }
+   ],
+   "taunt": [
+    {
+     "file": "pale_vesper/taunt_1.ogg",
+     "secs": 6.44,
+     "text": "I sang at a thousand funerals. Yours will be my favourite.",
+     "voiced": 4.73
+    },
+    {
+     "file": "pale_vesper/taunt_2.ogg",
+     "secs": 5.25,
+     "text": "[laughs softly] The dead are listening. Can you hear them hum?",
+     "voiced": 3.58
+    }
+   ]
+  }
+ },
+ "saltmother": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "saltmother/arrive_1.ogg",
+     "secs": 6.32,
+     "text": "[whispers] The sea gave me back. It kept everything else.",
+     "voiced": 4.63
+    }
+   ],
+   "bind": [
+    {
+     "file": "saltmother/bind_1.ogg",
+     "secs": 5.51,
+     "text": "Drown, little towers. Drown and be still.",
+     "voiced": 3.84
+    }
+   ],
+   "death": [
+    {
+     "file": "saltmother/death_1.ogg",
+     "secs": 4.56,
+     "text": "[whispers] At last. The shore.",
+     "voiced": 2.78
+    }
+   ],
+   "enrage": [
+    {
+     "file": "saltmother/enrage_1.ogg",
+     "secs": 4.72,
+     "text": "[screams] I will drag your city under!",
+     "voiced": 3.06
+    }
+   ],
+   "heal": [
+    {
+     "file": "saltmother/heal_1.ogg",
+     "secs": 3.6,
+     "text": "[softly] The tide returns what it takes.",
+     "voiced": 1.94
+    }
+   ],
+   "hurt": [
+    {
+     "file": "saltmother/hurt_1.ogg",
+     "secs": 4.8,
+     "text": "[gasping] Salt in the wound.",
+     "voiced": 2.97
+    }
+   ],
+   "taunt": [
+    {
+     "file": "saltmother/taunt_1.ogg",
+     "secs": 7.5,
+     "text": "Come closer. The water is so cold, and so quiet.",
+     "voiced": 5.79
+    },
+    {
+     "file": "saltmother/taunt_2.ogg",
+     "secs": 6.56,
+     "text": "I prayed to the tide for forty years. Now it answers only me.",
+     "voiced": 4.83
+    }
+   ]
+  }
+ },
+ "sundered_heart": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "sundered_heart/arrive_1.ogg",
+     "secs": 8.5,
+     "text": "[agonized] Ysolde... it burns. It burns and it will not stop.",
+     "voiced": 5.23
+    }
+   ],
+   "death": [
+    {
+     "file": "sundered_heart/death_1.ogg",
+     "secs": 5.22,
+     "text": "[whispers] Ilyra... forgive me.",
+     "voiced": 2.43
+    }
+   ],
+   "enrage": [
+    {
+     "file": "sundered_heart/enrage_1.ogg",
+     "secs": 4.98,
+     "text": "[screaming] Make it stop!",
+     "voiced": 1.79
+    }
+   ],
+   "heal": [
+    {
+     "file": "sundered_heart/heal_1.ogg",
+     "secs": 6.28,
+     "text": "The stone mends me. It will not let me die.",
+     "voiced": 3.47
+    }
+   ],
+   "hurt": [
+    {
+     "file": "sundered_heart/hurt_1.ogg",
+     "secs": 6.03,
+     "text": "[gasping] Yes. Break it. Break it!",
+     "voiced": 3.11
+    }
+   ],
+   "summon": [
+    {
+     "file": "sundered_heart/summon_1.ogg",
+     "secs": 5.55,
+     "text": "[growls] Guards! To me!",
+     "voiced": 2.76
+    }
+   ],
+   "taunt": [
+    {
+     "file": "sundered_heart/taunt_1.ogg",
+     "secs": 6.02,
+     "text": "[sobbing] I only wanted her back.",
+     "voiced": 2.98
+    },
+    {
+     "file": "sundered_heart/taunt_2.ogg",
+     "secs": 7.22,
+     "text": "Fire, water, stone. I am all of it now.",
+     "voiced": 4.38
+    }
+   ]
+  }
+ },
+ "thunderhead": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "thunderhead/arrive_1.ogg",
+     "secs": 8.22,
+     "text": "[whispers] Be still, the voice said. [shouting] We will not be still!",
+     "voiced": 5.05
+    }
+   ],
+   "bind": [
+    {
+     "file": "thunderhead/bind_1.ogg",
+     "secs": 4.39,
+     "text": "Be still. Be still.",
+     "voiced": 2.51
+    }
+   ],
+   "death": [
+    {
+     "file": "thunderhead/death_1.ogg",
+     "secs": 5.51,
+     "text": "[softly] Quiet. Finally, quiet.",
+     "voiced": 3.62
+    }
+   ],
+   "enrage": [
+    {
+     "file": "thunderhead/enrage_1.ogg",
+     "secs": 4.15,
+     "text": "[shrieking] Tear the sky open!",
+     "voiced": 2.05
+    }
+   ],
+   "hurt": [
+    {
+     "file": "thunderhead/hurt_1.ogg",
+     "secs": 4.07,
+     "text": "[gasping] The clouds are breaking.",
+     "voiced": 2.19
+    }
+   ],
+   "shield": [
+    {
+     "file": "thunderhead/shield_1.ogg",
+     "secs": 7.51,
+     "text": "The eye of the storm. Calm. Untouchable.",
+     "voiced": 5.36
+    }
+   ],
+   "taunt": [
+    {
+     "file": "thunderhead/taunt_1.ogg",
+     "secs": 5.27,
+     "text": "We are the wind that tore your roofs away.",
+     "voiced": 3.15
+    },
+    {
+     "file": "thunderhead/taunt_2.ogg",
+     "secs": 4.95,
+     "text": "Two voices. One storm.",
+     "voiced": 3.04
+    }
+   ]
+  }
+ },
+ "vael_orrun": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "vael_orrun/arrive_1.ogg",
+     "secs": 12.04,
+     "text": "[slowly] Two thousand years behind a door. [growls] Did you think I would knock?",
+     "voiced": 9.49
+    }
+   ],
+   "bind": [
+    {
+     "file": "vael_orrun/bind_1.ogg",
+     "secs": 6.18,
+     "text": "Be still. [whispers] Be still.",
+     "voiced": 3.32
+    }
+   ],
+   "destroy": [
+    {
+     "file": "vael_orrun/destroy_1.ogg",
+     "secs": 7.25,
+     "text": "[laughs darkly] Ash. Like the rest of them.",
+     "voiced": 4.25
+    }
+   ],
+   "enrage": [
+    {
+     "file": "vael_orrun/enrage_1.ogg",
+     "secs": 4.16,
+     "text": "[furious] Enough!",
+     "voiced": 1.5
+    }
+   ],
+   "fireball": [
+    {
+     "file": "vael_orrun/fireball_1.ogg",
+     "secs": 5.09,
+     "text": "[roaring] Burn!",
+     "voiced": 2.25
+    }
+   ],
+   "heal": [
+    {
+     "file": "vael_orrun/heal_1.ogg",
+     "secs": 7.14,
+     "text": "My wounds close. Yours will not.",
+     "voiced": 4.37
+    }
+   ],
+   "hurt": [
+    {
+     "file": "vael_orrun/hurt_1.ogg",
+     "secs": 6.92,
+     "text": "[snarling] You draw blood from a king?",
+     "voiced": 4.13
+    }
+   ],
+   "shield": [
+    {
+     "file": "vael_orrun/shield_1.ogg",
+     "secs": 8.26,
+     "text": "Strike, little queen. I am older than your steel.",
+     "voiced": 5.42
+    }
+   ],
+   "taunt": [
+    {
+     "file": "vael_orrun/taunt_1.ogg",
+     "secs": 6.26,
+     "text": "Every stone you stand on was mine.",
+     "voiced": 3.49
+    },
+    {
+     "file": "vael_orrun/taunt_2.ogg",
+     "secs": 7.94,
+     "text": "[laughs darkly] Kneel, and your city may keep its name.",
+     "voiced": 5.12
+    }
+   ],
+   "transform": [
+    {
+     "file": "vael_orrun/transform_1.ogg",
+     "secs": 6.03,
+     "text": "[roaring] You have not seen me. Not yet.",
+     "voiced": 3.26
+    }
+   ]
+  }
+ },
+ "vael_orrun_unmade": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "vael_orrun_unmade/arrive_1.ogg",
+     "secs": 8.14,
+     "text": "[hoarse] There is no king left. Only the hunger.",
+     "voiced": 5.64
+    }
+   ],
+   "fireball": [
+    {
+     "file": "vael_orrun_unmade/fireball_1.ogg",
+     "secs": 7.24,
+     "text": "[screaming] All of it! Burn all of it!",
+     "voiced": 4.14
+    }
+   ],
+   "flee": [
+    {
+     "file": "vael_orrun_unmade/flee_1.ogg",
+     "secs": 6.02,
+     "text": "[cold] This is not the end of the song.",
+     "voiced": 2.88
+    }
+   ],
+   "hurt": [
+    {
+     "file": "vael_orrun_unmade/hurt_1.ogg",
+     "secs": 6.6,
+     "text": "[gasping] Not like this. Not again.",
+     "voiced": 3.9
+    }
+   ],
+   "taunt": [
+    {
+     "file": "vael_orrun_unmade/taunt_1.ogg",
+     "secs": 4.92,
+     "text": "[whispers] Do you hear it too?",
+     "voiced": 2.15
+    }
+   ]
+  },
+  "share": "vael_orrun_wrath"
+ },
+ "vael_orrun_wrath": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "vael_orrun_wrath/arrive_1.ogg",
+     "secs": 6.18,
+     "text": "[roaring] Look at what your fathers made of me!",
+     "voiced": 3.44
+    }
+   ],
+   "destroy": [
+    {
+     "file": "vael_orrun_wrath/destroy_1.ogg",
+     "secs": 5.12,
+     "text": "Another one falls.",
+     "voiced": 2.11
+    }
+   ],
+   "enrage": [
+    {
+     "file": "vael_orrun_wrath/enrage_1.ogg",
+     "secs": 6.96,
+     "text": "[roaring] I will unmake you all!",
+     "voiced": 4.18
+    }
+   ],
+   "fireball": [
+    {
+     "file": "vael_orrun_wrath/fireball_1.ogg",
+     "secs": 5.38,
+     "text": "[screaming] Burn with them!",
+     "voiced": 2.2
+    }
+   ],
+   "hurt": [
+    {
+     "file": "vael_orrun_wrath/hurt_1.ogg",
+     "secs": 7.09,
+     "text": "[snarls] Is that all the six left you?",
+     "voiced": 4.26
+    }
+   ],
+   "taunt": [
+    {
+     "file": "vael_orrun_wrath/taunt_1.ogg",
+     "secs": 7.04,
+     "text": "[growling] I will wear my crown over your skull.",
+     "voiced": 4.49
+    }
+   ],
+   "transform": [
+    {
+     "file": "vael_orrun_wrath/transform_1.ogg",
+     "secs": 6.47,
+     "text": "[roaring] Then let there be nothing left of me!",
+     "voiced": 3.79
+    }
+   ]
+  },
+  "share": "vael_orrun"
+ },
+ "vholt": {
+  "lines": {
+   "arrive": [
+    {
+     "file": "vholt/arrive_1.ogg",
+     "secs": 4.46,
+     "text": "[shouting] Ride with me, storm! One more charge!",
+     "voiced": 2.81
+    }
+   ],
+   "bind": [
+    {
+     "file": "vholt/bind_1.ogg",
+     "secs": 4.07,
+     "text": "Ground them. Every one.",
+     "voiced": 2.28
+    }
+   ],
+   "death": [
+    {
+     "file": "vholt/death_1.ogg",
+     "secs": 4.49,
+     "text": "[weakly] Clean. The way I taught her.",
+     "voiced": 2.84
+    }
+   ],
+   "enrage": [
+    {
+     "file": "vholt/enrage_1.ogg",
+     "secs": 3.76,
+     "text": "[roaring] Thunder, take them!",
+     "voiced": 1.43
+    }
+   ],
+   "hurt": [
+    {
+     "file": "vholt/hurt_1.ogg",
+     "secs": 4.63,
+     "text": "[grunts] Clean hit. She taught you well.",
+     "voiced": 2.98
+    }
+   ],
+   "shield": [
+    {
+     "file": "vholt/shield_1.ogg",
+     "secs": 3.2,
+     "text": "Lightning, around me!",
+     "voiced": 1.33
+    }
+   ],
+   "taunt": [
+    {
+     "file": "vholt/taunt_1.ogg",
+     "secs": 5.52,
+     "text": "I taught Kaela everything. Not everything I knew.",
+     "voiced": 3.85
+    },
+    {
+     "file": "vholt/taunt_2.ogg",
+     "secs": 6.09,
+     "text": "The sky is mine. Look up, and despair.",
+     "voiced": 4.28
+    }
+   ]
+  }
+ }
+}

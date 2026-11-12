@@ -94,9 +94,11 @@ func say(boss_id: StringName, kind: StringName) -> float:
 	var index := (int(_last_index.get(key, -1)) + 1) % lines.size()
 	_last_index[key] = index
 	var line: Dictionary = lines[index]
+	# secs runs to the end of the hall's echo; voiced to the last word, which is what the jaw follows.
 	var seconds := float(line.get("secs", 2.0))
+	var voiced := float(line.get("voiced", seconds))
 	_last_kind[key] = now
-	_speaking_until = now + seconds + 0.4
+	_speaking_until = now + voiced + 0.8
 	_speaking_urgent = urgent
 	history.append(key)
 	if history.size() > 64:
@@ -107,8 +109,8 @@ func say(boss_id: StringName, kind: StringName) -> float:
 			_player.stream = stream
 			_player.play()
 			SoundPlayer.duck(DUCK_DB, seconds)
-	spoke.emit(boss_id, kind, String(line.get("text", "")), seconds)
-	return seconds
+	spoke.emit(boss_id, kind, String(line.get("text", "")), voiced)
+	return voiced
 
 
 func stop() -> void:
