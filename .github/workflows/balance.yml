@@ -3,8 +3,8 @@ name: Balance
 # Plays the campaign and the skirmish with the scripted player and prints how it did. It takes a
 # while, so it only runs when asked: by hand, or by a commit on a branch whose message contains
 # [compare] (how several kinds of bot do, a minute or two), [tune] (new numbers for
-# tools/campaign/tuning.py and data/waves/prototype.tres, ten minutes or more) or [pacing] (how much
-# of the meta tree a player has after each campaign stage, see tools/meta_pacing.gd).
+# tools/campaign/tuning.py, about twenty minutes) or [pacing] (how much of the meta tree a player
+# has after each campaign stage, see tools/meta_pacing.gd).
 on:
   workflow_dispatch:
   push:
@@ -43,7 +43,10 @@ jobs:
 
       - name: Tune the campaign
         if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
-        run: /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --tune 2>&1 | grep -E "TUNING|ERROR"
+        # One stage per process, four at a time: the long waves make a single pass take about an hour.
+        run: |
+          /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --list 2>/dev/null | sed -n 's/^STAGE //p' > stages.txt
+          xargs -P4 -I{} sh -c '/tmp/godot/godot --headless -s tools/campaign_balance.gd -- --tune --stage={} 2>&1 | grep -E "TUNING|ERROR"' < stages.txt
 
       - name: Meta tree pacing across the campaign
         if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[pacing]')

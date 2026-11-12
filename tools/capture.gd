@@ -122,6 +122,9 @@ func _run_ui() -> void:
 	game.close_pause_menu()
 	sim.wave_index = 6
 	game._start_wave()
+	# The wave's announcement: its number and how it comes.
+	await _until(func() -> bool: return sim.time_in_wave > 1.5 or sim.is_over())
+	await _shot("wave_announce")
 	await _until(func() -> bool: return sim.time_in_wave > 9.0 or sim.is_over())
 	game._begin_skill(&"surge")
 	game._begin_skill(&"tidal_wave")

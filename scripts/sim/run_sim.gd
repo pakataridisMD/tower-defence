@@ -92,8 +92,6 @@ var _next_id := 1
 var _taken_this_break: Dictionary[StringName, bool] = {}
 var _modifiers: Array[Modifier] = []
 var _wave_element := -1
-## Next lane for groups that share their enemies out over every lane.
-var _lane_turn := 0
 ## Enemies split off or summoned during a step, added once the step's loops are done.
 var _arrivals: Array[SimEnemy] = []
 ## Seconds of wave time until each skill can be used again, by skill id.
@@ -583,7 +581,7 @@ func start_next_wave() -> bool:
 	time_in_wave = 0.0
 	break_time_left = -1.0
 	_wave_element = config.element_index(wave.element)
-	_spawner.start(wave)
+	_spawner.start(wave, lane_curves.size())
 	_taken_this_break.clear()
 	for tower in _heroes_on_board.values():
 		tower.moved_this_break = false
@@ -661,15 +659,12 @@ func _spawn(delta: float) -> void:
 	var wave := current_wave()
 	if wave != null:
 		multiplier *= wave.health_multiplier
-	for group in _spawner.advance(delta):
+	for spawn in _spawner.advance(delta):
+		var group := spawn.group
 		var data: EnemyData = config.enemies.get(group.enemy)
 		if data == null:
 			continue
-		var lane := group.lane
-		if lane < 0:
-			lane = _lane_turn
-			_lane_turn = (_lane_turn + 1) % lane_curves.size()
-		lane = _open_lane(mini(lane, lane_curves.size() - 1))
+		var lane := _open_lane(spawn.lane)
 		var element := _wave_element
 		if not group.element.is_empty():
 			element = config.element_index(group.element)
@@ -835,13 +830,14 @@ func _tick_powers(delta: float) -> void:
 		if enemy.power_timer > 0.0 or not enemy.can_use_power():
 			continue
 		match data.power:
-			&"phase":
-				enemy.power_timer = data.power_interval
-				enemy.power_left = data.power_duration
-				enemy_power.emit(enemy, &"phase", [])
 			&"war_cry":
-				var driven := _allies_near(enemy, data.power_radius)
-				for ally in driven:
+				var driven: Array = []
+				for ally in _allies_near(enemy, data.power_radius):
+					# It drives the lesser ranks on: not runners, already as fast as they go, nor
+					# brutes, its own kind.
+					if not ally.data.tags.has(&"fast") and ally.data.power != &"war_cry":
+						driven.append(ally)
+				for ally: SimEnemy in driven:
 					ally.haste = maxf(ally.haste if ally.haste_left > 0.0 else 0.0, data.power_amount)
 					ally.haste_left = maxf(ally.haste_left, data.power_duration)
 				enemy.power_timer = data.power_interval
@@ -1070,10 +1066,12 @@ func _damage(enemy: SimEnemy, amount: float, source: SimTower) -> void:
 			_fall(enemy)
 			return
 		_kill(enemy, source)
-	elif enemy.data.power == &"harden" and enemy.has_power and enemy.power_timer <= 0.0 and enemy.can_use_power():
+	elif (enemy.data.power == &"harden" or enemy.data.power == &"phase") and enemy.has_power \
+			and enemy.power_timer <= 0.0 and enemy.can_use_power():
+		# Struck, it turns to stone or slips out of the world for a moment.
 		enemy.power_left = enemy.data.power_duration
 		enemy.power_timer = enemy.data.power_interval + enemy.data.power_duration
-		enemy_power.emit(enemy, &"harden", [])
+		enemy_power.emit(enemy, enemy.data.power, [])
 
 
 ## A grunt that would have died falls in a heap instead, out of reach, and rises a little later.

@@ -73,6 +73,8 @@ func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
 	silence_timer = p_data.silence_interval
 	# A power is first used halfway through its interval, so a fresh enemy shows it soon.
 	power_timer = p_data.power_interval * 0.5
+	# Spread so a pack does not all use its power at the same moment.
+	power_timer *= 0.4 + 1.2 * fposmod(float(p_id) * 0.381966, 1.0)
 	# Spread evenly: the golden ratio walks round the unit interval without bunching.
 	has_power = not p_data.power.is_empty() and fposmod(float(p_id) * 0.618034, 1.0) < p_data.power_share
 	shield_up = has_power and p_data.power == &"block"

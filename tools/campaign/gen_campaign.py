@@ -348,26 +348,202 @@ def write_map(stage_id, name, roads, order, biome, wave_set):
 
 
 # ------------------------------------------------------------------------------------ waves
+# A wave is a short story told in beats: it opens (a marching column or stragglers), builds through
+# a few middle beats (runner packs, brutes under escort, a flank attack down a second road, the
+# campaign's own enemies in packs...) and closes with a surge that gets faster and faster. Later
+# waves and later stages have more middle beats, so they last longer; the enemies walk no slower.
+# Beats overlap a little so there is always something on the road, with short breathers between.
 WAVE = "res://scripts/data/wave_data.gd"
 GROUP = "res://scripts/data/spawn_group.gd"
 
+# SpawnGroup.Pattern
+STREAM, PACKS, SURGE, SCATTER = 0, 1, 2, 3
 
-def group(t, enemy, count, interval, delay=0.0, element=None, lane=-1):
-    fields = [f"enemy = {sn(enemy)}", f"count = {max(1, int(count))}", f"spawn_interval = {interval}"]
-    if delay:
-        fields.append(f"start_delay = {delay}")
-    if element:
-        fields.append(f"element = {sn(element)}")
-    if lane >= 0:
-        fields.append(f"lane = {lane}")
+ENEMY_NAMES = {"grunt": "Grunt", "runner": "Runner", "brute": "Brute", "mender": "Mender", "splitter": "Splitter",
+               "warded": "Warded", "shardling": "Shardling"}
+
+
+def G(enemy, count, interval, delay=0.0, pattern=STREAM, lane=-1, pack=5, gap=4.0, element=None):
+    """One spawn group. Counts are rounded and never below one."""
+    return {"enemy": enemy, "count": max(1, int(round(count))), "interval": round(interval, 3),
+            "delay": round(delay, 2), "pattern": pattern, "lane": lane, "pack": pack, "gap": gap, "element": element}
+
+
+def span(g):
+    """Seconds from a group's first enemy to its last, as SpawnGroup.spawn_times lays them out
+    (SCATTER on average)."""
+    n, i = g["count"], g["interval"]
+    if n <= 1:
+        return 0.0
+    if g["pattern"] == PACKS:
+        packs = (n - 1) // max(g["pack"], 1)
+        return (n - 1) * i + packs * g["gap"]
+    if g["pattern"] == SURGE:
+        return sum(i * (2.0 + (0.34 - 2.0) * k / (n - 1)) for k in range(1, n))
+    return (n - 1) * i
+
+
+def group(t, g):
+    fields = [f"enemy = {sn(g['enemy'])}", f"count = {g['count']}", f"spawn_interval = {g['interval']}"]
+    if g["delay"]:
+        fields.append(f"start_delay = {g['delay']}")
+    if g.get("element"):
+        fields.append(f"element = {sn(g['element'])}")
+    if g["lane"] >= 0:
+        fields.append(f"lane = {g['lane']}")
+    if g["pattern"] != STREAM:
+        fields.append(f"pattern = {g['pattern']}")
+    if g["pattern"] == PACKS:
+        fields += [f"pack_size = {g['pack']}", f"pack_gap = {g['gap']}"]
     return t.sub(GROUP, fields)
 
 
-def plan_waves(campaign, stage_index, n, extra):
-    """The waves of one stage as lists of (enemy, count, interval, delay, element) with the wave's
-    element and boss flag."""
+class Wave:
+    """Collects a wave's beats. Each beat starts where the last one began to tail off."""
+
+    def __init__(self, ctx):
+        self.ctx = ctx
+        self.groups = []
+        self.words = []
+        self.t = 0.0
+
+    def beat(self, word, groups, overlap=0.75, rest=1.5):
+        start = self.t
+        length = 0.0
+        for g in groups:
+            g["delay"] = round(g["delay"] + start, 2)
+            length = max(length, g["delay"] - start + span(g))
+        self.groups += groups
+        if word and word not in self.words:
+            self.words.append(word)
+        self.t = start + length * overlap + rest
+        return start
+
+    def length(self):
+        return max((g["delay"] + span(g) for g in self.groups), default=0.0)
+
+
+def tight(c, interval):
+    """How close together a fast pack runs: loose in a stage's first waves, while the player has only
+    a few towers (a tower fires a few times a second however weak the enemy), tight from wave 5 on."""
+    ease = min(max((c["w"] - 1) / 4.0, 0.0), 1.0)
+    return interval + (0.6 - interval) * (1.0 - ease)
+
+
+def interval_for(enemy, slow=1.1, fast=0.5):
+    return fast if enemy in ("runner", "shardling") else slow
+
+
+# The beats. Each takes the wave's context (pressure p, lanes, the campaign's enemies) and adds itself.
+def beat_column(w, c):
+    w.beat("a marching column", [G("grunt", 6 * c["p"], 0.8)])
+
+
+def beat_stragglers(w, c):
+    w.beat("stragglers", [G("grunt", 4 * c["p"], 1.0, pattern=SCATTER), G("runner", 3 * c["p"], 1.3, 1.5, SCATTER)])
+
+
+def beat_runner_packs(w, c):
+    size = 4 + min(int(c["p"]), 3)
+    packs = 2 + int(c["p"] * 0.8)
+    w.beat("runner packs", [G("runner", size * packs, tight(c, 0.28), pattern=PACKS, pack=size, gap=3.5)])
+
+
+def beat_escort(w, c):
+    brutes = 1 + int(c["p"])
+    # Three grunts round each brute: a pack every three seconds, in step with the brutes.
+    w.beat("brutes under escort", [G("brute", brutes, 3.0, 0.6),
+                                   G("grunt", 3 * brutes, 0.35, pattern=PACKS, pack=3, gap=3.0 - 3 * 0.35)])
+
+
+def beat_flank(w, c):
+    if c["lanes"] > 1:
+        side = 1 + (c["w"] % (c["lanes"] - 1))
+        w.beat("a flank attack", [G("grunt", 4 * c["p"], 0.9, lane=0),
+                                  G("runner", 5 * (1 + int(c["p"] * 0.6)), tight(c, 0.3), 2.0, PACKS, lane=side, pack=5, gap=3.0)])
+    else:
+        # One road: a lull, then a tight rush.
+        w.beat("an ambush", [G("runner", 6 + 3 * c["p"], tight(c, 0.22), 3.0, PACKS, pack=6 + int(c["p"]), gap=2.5)], rest=1.0)
+
+
+def beat_pincer(w, c):
+    lanes = c["lanes"]
+    a, b = c["w"] % lanes, (c["w"] + 1) % lanes
+    n = 4 + int(c["p"] * 2)
+    w.beat("a pincer", [G("grunt", n, 0.3, 0.0, PACKS, lane=a, pack=4, gap=3.0),
+                        G("grunt", n, 0.3, 0.0, PACKS, lane=b, pack=4, gap=3.0),
+                        G("runner", 2 + c["p"] * 2, 0.4, 2.0, lane=-1)])
+
+
+def beat_signature(w, c):
+    sig = c["sig"]
+    n = 2 + c["w"] // 2 + c["stage"]
+    if sig == "runner":
+        w.beat("runner packs", [G("runner", n * 2, tight(c, 0.25), pattern=PACKS, pack=5, gap=3.0)])
+    else:
+        w.beat(ENEMY_NAMES[sig] + " packs", [G(sig, n, 0.55, 0.0, PACKS, pack=3, gap=3.0),
+                                            G("grunt", 3 * c["p"], 0.9, 1.0)])
+
+
+def beat_second(w, c):
+    second = c["second"]
+    n = 2 + c["w"] // 3
+    w.beat(ENEMY_NAMES[second] + "s in a line", [G(second, n, interval_for(second, 1.2), 0.0),
+                                                 G("runner", 2 * c["p"], 0.6, 2.0, SCATTER)])
+
+
+def beat_swarm(w, c):
+    kind = "splitter" if c["w"] % 2 else "mender"
+    w.beat("a mixed swarm", [G(kind, 2 + c["w"] // 3, 1.0, pattern=SCATTER), G("grunt", 3 * c["p"], 0.7, 1.0, SCATTER)])
+
+
+def beat_surge(w, c):
+    w.beat("a closing surge", [G("grunt", 6 * c["p"], 0.7, pattern=SURGE),
+                               G("runner", 3 * c["p"], 0.55, 2.0, SURGE)], rest=0.0)
+
+
+def beat_bosses(w, bosses, gap):
+    w.beat("", [G(b, 1, 1.0, gap * i) for i, b in enumerate(bosses)], overlap=0.0, rest=4.0)
+
+
+def compose(c, required, closer=True):
+    """A wave from its context: an opener, the required beats, more middle beats picked from the
+    pool by the wave's number, and the closing surge."""
+    w = Wave(c)
+    (beat_column if c["w"] == 1 or c["w"] % 3 != 0 else beat_stragglers)(w, c)
+    pool = [beat_runner_packs, beat_flank] if c["w"] > 2 else [beat_stragglers, beat_runner_packs]
+    if c["w"] >= 3:
+        pool.append(beat_escort)
+    if c["lanes"] > 1 and c["w"] >= 4:
+        pool.append(beat_pincer)
+    extra = max(c["beats"] - len(required), 1)
+    start = (c["w"] * 2 + c["stage"]) % len(pool)
+    picked = [pool[(start + k) % len(pool)] for k in range(extra)]
+    # Picked and required beats take turns, so the campaign's own enemies come in the middle.
+    middle = []
+    for k in range(max(len(picked), len(required))):
+        middle += picked[k:k + 1] + required[k:k + 1]
+    for b in middle:
+        b(w, c)
+    if closer:
+        beat_surge(w, c)
+    return w
+
+
+def context(campaign, stage_index, w, n, lanes, converge=False):
+    p = 1.0 + 0.08 * (w - 1) + 0.15 * stage_index + (0.25 if converge else 0.0)
+    # The first waves are a warm-up while the player has only their first towers: fewer beats,
+    # and the waves after it build up slowly.
+    beats = 1 + w // 3 + stage_index // 2 + (1 if converge else 0)
+    p *= 0.7 + 0.3 * min((w - 1) / 4.0, 1.0)
+    return {"w": w, "n": n, "stage": stage_index, "p": p, "beats": beats, "lanes": lanes,
+            "sig": campaign.get("signature", "grunt"), "second": campaign.get("second", "brute")}
+
+
+def plan_waves(campaign, stage_index, n, extra, lanes=1):
+    """The waves of one stage: (element, boss flag, groups, description) for each."""
     home = campaign["element"]
-    sig, second = campaign["signature"], campaign["second"]
+    sig = campaign["signature"]
     converge = not home
     if converge:
         cycle = RING
@@ -377,65 +553,99 @@ def plan_waves(campaign, stage_index, n, extra):
     waves = []
     for w in range(1, n + 1):
         el = cycle[(w - 1 + stage_index) % len(cycle)]
-        size = 8 + w + stage_index * 2
-        kind = (w + stage_index) % 4
-        groups = []
-        if kind == 1:
-            groups.append(("grunt", size, 0.8, 0.0))
-        elif kind == 2:
-            groups.append(("runner", size * 1.2, 0.5, 0.0))
-        elif kind == 3:
-            groups.append(("grunt", size * 0.7, 0.7, 0.0))
-            groups.append(("brute", 1 + w // 3, 1.6, 4.0))
-        else:
-            groups.append(("grunt", size * 0.8, 0.6, 0.0))
-            groups.append(("runner", size * 0.5, 0.45, 3.0))
+        c = context(campaign, stage_index, w, n, lanes, converge)
+        required = []
         # The campaign's signature enemy from the second stage on (and late in the first), and its
         # second one from the third stage on.
         if (stage_index >= 1 and w >= 2) or (stage_index == 0 and w >= n - 3):
-            groups.append((sig, 2 + w // 2 + stage_index, 1.1 if sig != "runner" else 0.5, 2.0))
+            required.append(beat_signature)
         if stage_index >= 2 and w >= 4 and w % 2 == 0:
-            groups.append((second, 2 + w // 3, 1.2 if second != "runner" else 0.5, 5.0))
+            required.append(beat_second)
         if converge and w >= 3:
-            groups.append(("splitter" if w % 2 else "mender", 2 + w // 3, 1.0, 3.0))
+            required.append(beat_swarm)
         boss = False
         if w == n and "boss" in extra:
+            # The Warden: an opening column, then the Warden under escort, its brood behind it.
             boss = True
-            groups = [(extra["boss"], 1, 1.0, 0.0), ("grunt", size * 0.6, 0.7, 3.0), (sig, 3 + stage_index, 1.0, 6.0)]
-        elif w == n and "lieutenant" in extra:
-            boss = True
-            groups.append((extra["lieutenant"], 1, 1.0, 4.0))
+            wave = Wave(c)
+            beat_column(wave, c)
+            beat_bosses(wave, [extra["boss"]], 0.0)
+            beat_escort(wave, c)
+            beat_signature(wave, c)
+            beat_flank(wave, c)
+            beat_surge(wave, c)
+            # The Warden leads the list (the game and the tests look for it there).
+            wave.groups.sort(key=lambda g: 0 if g["enemy"] == extra["boss"] else 1)
         elif w == n and "boss_pair" in extra:
             boss = True
-            groups = [(b, 1, 1.0, 6.0 * i) for i, b in enumerate(extra["boss_pair"])] + [("grunt", size * 0.6, 0.7, 3.0)]
-        elif w == n and stage_index == 2:
-            boss = True
-            groups.append(("warden", 1, 1.0, 1.0))
+            wave = Wave(c)
+            beat_column(wave, c)
+            beat_bosses(wave, extra["boss_pair"], 6.0)
+            beat_runner_packs(wave, c)
+            beat_swarm(wave, c)
+            (beat_pincer if lanes > 1 else beat_flank)(wave, c)
+            beat_surge(wave, c)
+            wave.groups.sort(key=lambda g: 0 if g["enemy"] in extra["boss_pair"] else 1)
         elif "echoes" in extra and w in extra["echoes"]:
             boss = True
-            groups = [(b, 1, 1.0, 8.0 * i) for i, b in enumerate(extra["echoes"][w])] + [("runner", size * 0.6, 0.5, 2.0)]
+            wave = Wave(c)
+            beat_stragglers(wave, c)
+            beat_bosses(wave, extra["echoes"][w], 8.0)
+            beat_runner_packs(wave, c)
+            beat_swarm(wave, c)
+            beat_flank(wave, c)
+            beat_surge(wave, c)
+        else:
+            wave = compose(c, required, closer=not (w == n and ("lieutenant" in extra or stage_index == 2)))
+            if w == n and "lieutenant" in extra:
+                # The Herald walks in after the opening beats, then the horde surges behind it.
+                boss = True
+                beat_bosses(wave, [extra["lieutenant"]], 0.0)
+                beat_surge(wave, c)
+            elif w == n and stage_index == 2:
+                boss = True
+                beat_bosses(wave, ["warden"], 0.0)
+                beat_surge(wave, c)
+        groups = wave.groups
         # In the Convergence each group of a wave carries its own element, so every wave mixes.
         if converge:
-            groups = [g + (RING[(w + k * 2) % 6],) for k, g in enumerate(groups)]
-        else:
-            groups = [g + (None,) for g in groups]
-        waves.append((el, boss, groups))
+            for k, g in enumerate(groups):
+                g["element"] = RING[(w + k * 2) % 6]
+        waves.append((el, boss, groups, describe(wave.words)))
     return waves
 
 
-def write_waves(campaign, stage_index, stage_id, name, n, extra):
+def describe(words):
+    """'A marching column, runner packs and a closing surge.'"""
+    if not words:
+        return ""
+    text = words[0] if len(words) == 1 else ", ".join(words[:-1]) + " and " + words[-1]
+    return text[0].upper() + text[1:] + "."
+
+
+def wave_fields(t, el, boss, groups, text, boss_health):
+    grefs = [group(t, g) for g in groups]
+    fields = [f"element = {sn(el)}"]
+    if boss:
+        fields.append("is_boss = true")
+        fields.append(f"health_multiplier = {boss_health}")
+    if text:
+        fields.append(f"description = {string(text)}")
+    fields.append(f"groups = {typed(t, GROUP, grefs)}")
+    return fields
+
+
+def lane_count(roads):
+    return len(roads["lanes"]) if isinstance(roads, dict) else 1
+
+
+def write_waves(campaign, stage_index, stage_id, name, n, extra, lanes=1):
     tune = TUNING.get(stage_id, {})
     t = Tres("WaveSet")
     script = t.script("res://scripts/data/wave_set.gd")
     refs = []
-    for el, boss, groups in plan_waves(campaign, stage_index, n, extra):
-        grefs = [group(t, e, c, i, d, ge) for e, c, i, d, ge in groups]
-        fields = [f"element = {sn(el)}"]
-        if boss:
-            fields.append("is_boss = true")
-            fields.append(f"health_multiplier = {tune.get('boss', 1.0)}")
-        fields.append(f"groups = {typed(t, GROUP, grefs)}")
-        refs.append(t.sub(WAVE, fields))
+    for el, boss, groups, text in plan_waves(campaign, stage_index, n, extra, lanes):
+        refs.append(t.sub(WAVE, wave_fields(t, el, boss, groups, text, tune.get("boss", 1.0))))
     wave_set = "c_" + stage_id
     t.write(f"data/waves/{wave_set}.tres", [
         f"script = {script}", f"id = {sn(wave_set)}", f"display_name = {string(name)}",
@@ -458,7 +668,7 @@ def write_campaign(order, c):
         sid, name, story, roads, n, _health, twist = stage[:7]
         extra = stage[7] if len(stage) > 7 else {}
         tune = TUNING.get(sid, {})
-        wave_set = write_waves(c, i, sid, name, n, extra)
+        wave_set = write_waves(c, i, sid, name, n, extra, lane_count(roads))
         write_map(sid, name, roads, order * 10 + i, biome, wave_set)
         mods, rules = [], []
         allowed, starting = [], []
@@ -510,24 +720,68 @@ def write_campaign(order, c):
 
 def plan_assault_waves(stage):
     """The assault's waves: every group its own element, the mix growing heavier, and old bosses
-    coming back every ten waves."""
+    coming back as Echoes. Its waves start on their own, so they stay a little shorter than a
+    campaign stage's late waves."""
     waves = []
     extras = ["mender", "splitter", "warded", "brute"]
+    lanes = len(stage["lanes"])
     for w in range(1, stage["waves"] + 1):
-        size = 10 + w
-        groups = [("grunt", size * 0.7, 0.6, 0.0), ("runner", size * 0.5, 0.45, 3.0)]
-        if w % 3 == 0:
-            groups.append(("brute", 1 + w // 4, 1.4, 5.0))
+        horde = {"signature": extras[w % 4], "second": extras[(w + 1) % 4]}
+        c = context(horde, 1, w, stage["waves"], lanes)
+        c["p"] = 1.1 + 0.05 * (w - 1)
+        c["beats"] = 1 + w // 12
+        required = []
         if w >= 4:
-            groups.append((extras[w % 4], 2 + w // 4, 1.0, 6.0))
-        if w >= 15 and w % 2 == 1:
-            groups.append((extras[(w + 1) % 4], 2 + w // 6, 1.0, 9.0))
+            required.append(beat_signature)
+        if w >= 15 and w % 2 == 1 and horde["second"] != "runner":
+            required.append(beat_second)
+        if w % 3 == 0:
+            required.append(beat_escort)
+        wave = compose(c, required, closer=False)
         boss = w in stage["echoes"]
         if boss:
-            groups += [(b, 1, 1.0, 4.0 + 7.0 * i) for i, b in enumerate(stage["echoes"][w])]
-        groups = [g + (RING[(w + k * 2) % 6],) for k, g in enumerate(groups)]
-        waves.append((RING[w % 6], boss, groups))
+            beat_bosses(wave, stage["echoes"][w], 7.0)
+        beat_surge(wave, c)
+        for k, g in enumerate(wave.groups):
+            g["element"] = RING[(w + k * 2) % 6]
+        waves.append((RING[w % 6], boss, wave.groups, describe(wave.words)))
     return waves
+
+
+# ------------------------------------------------------------------------------------ skirmish
+# The skirmish waves (data/waves/prototype.tres), shared by every skirmish map: ten waves of the
+# first horde (Grunts, Runners, Brutes) cycling Fire, Storm and Nature, and a Warden at the end.
+SKIRMISH = {"id": "prototype", "name": "Skirmish waves", "waves": 10, "growth": 1.12,
+            "elements": ["fire", "storm", "nature"], "boss": "warden"}
+
+
+def plan_skirmish_waves(sk):
+    waves = []
+    horde = {"signature": "brute", "second": "brute"}
+    n = sk["waves"]
+    for w in range(1, n + 1):
+        el = sk["elements"][(w - 1) % len(sk["elements"])]
+        c = context(horde, 0, w, n, 1)
+        boss = w == n
+        wave = compose(c, [], closer=not boss)
+        if boss:
+            beat_bosses(wave, [sk["boss"]], 0.0)
+            beat_surge(wave, c)
+            wave.groups.sort(key=lambda g: 0 if g["enemy"] == sk["boss"] else 1)
+        waves.append((el, boss, wave.groups, describe(wave.words)))
+    return waves
+
+
+def write_skirmish(sk):
+    tune = TUNING.get(sk["id"], {})
+    t = Tres("WaveSet")
+    script = t.script("res://scripts/data/wave_set.gd")
+    refs = [t.sub(WAVE, wave_fields(t, el, boss, groups, text, tune.get("boss", 1.0)))
+            for el, boss, groups, text in plan_skirmish_waves(sk)]
+    t.write(f"data/waves/{sk['id']}.tres", [
+        f"script = {script}", f"id = {sn(sk['id'])}", f"display_name = {string(sk['name'])}",
+        f"health_growth = {tune.get('growth', sk['growth'])}", f"health_scale = {tune.get('health', 1.0)}",
+        f"waves = {typed(t, WAVE, refs)}"])
 
 
 STRUCTURE = "res://scripts/data/structure_spec.gd"
@@ -541,14 +795,8 @@ def write_assault(order, c):
     t = Tres("WaveSet")
     script = t.script("res://scripts/data/wave_set.gd")
     refs = []
-    for el, boss, groups in plan_assault_waves(st):
-        grefs = [group(t, e, n, i, d, ge) for e, n, i, d, ge in groups]
-        fields = [f"element = {sn(el)}"]
-        if boss:
-            fields.append("is_boss = true")
-            fields.append(f"health_multiplier = {tune.get('boss', 1.0)}")
-        fields.append(f"groups = {typed(t, GROUP, grefs)}")
-        refs.append(t.sub(WAVE, fields))
+    for el, boss, groups, text in plan_assault_waves(st):
+        refs.append(t.sub(WAVE, wave_fields(t, el, boss, groups, text, tune.get("boss", 1.0))))
     wave_set = "c_" + sid
     t.write(f"data/waves/{wave_set}.tres", [
         f"script = {script}", f"id = {sn(wave_set)}", f"display_name = {string(st['name'])}",
@@ -603,6 +851,7 @@ def main():
     for order, c in enumerate(CAMPAIGNS):
         write_campaign(order, c)
     write_assault(len(CAMPAIGNS), ASSAULT)
+    write_skirmish(SKIRMISH)
     print("Wrote %d campaigns and %d stages" % (len(CAMPAIGNS) + 1, sum(len(c["stages"]) for c in CAMPAIGNS) + 1))
 
 

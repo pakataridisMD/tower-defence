@@ -58,7 +58,8 @@ extends Resource
 ## The rank and file's own power, one per kind of enemy (see RunSim._tick_powers):
 ## &"rise" - the first time it dies it falls in a heap for power_duration seconds, beyond reach, then
 ##           stands again with power_amount of its health. Not if it died burning.
-## &"phase" - every power_interval seconds it fades out for power_duration seconds: nothing can hit it.
+## &"phase" - when it is hit and the power is ready it fades out for power_duration seconds: nothing
+##            can hit it. Then it waits power_interval seconds.
 ## &"war_cry" - every power_interval seconds it roars: allies within power_radius pixels, itself too,
 ##              move power_amount faster for power_duration seconds.
 ## &"mend" - every power_interval seconds it heals allies within power_radius pixels, itself too, by
@@ -92,9 +93,9 @@ func power_text() -> String:
 			var who := "It rises" if power_share >= 1.0 else "Those with burning eyes rise"
 			return "%s again once, %d%% whole, %.1f s after falling. Kill it while it burns and it stays down." % [who, roundi(power_amount * 100.0), power_duration]
 		&"phase":
-			return "Every %.0f s it fades out of the world for %.1f s: shots pass through it." % [power_interval, power_duration]
+			return "When struck it fades out of the world for %.1f s and shots pass through it. Then it needs %.0f s to gather itself." % [power_duration, power_interval]
 		&"war_cry":
-			return "Every %.0f s it roars: the horde near it runs %d%% faster for %.0f s." % [power_interval, roundi(power_amount * 100.0), power_duration]
+			return "Every %.0f s it roars: the lesser horde near it (not runners or brutes) marches %d%% faster for %.1f s." % [power_interval, roundi(power_amount * 100.0), power_duration]
 		&"mend":
 			return "Every %.0f s it heals the horde near it by %d%%. Burning or poisoned foes are not healed." % [power_interval, roundi(power_amount * 100.0)]
 		&"harden":

@@ -104,12 +104,13 @@ func test_a_burning_grunt_stays_down() -> void:
 	assert_false(grunt.alive)
 
 
-func test_a_runner_phases_out_and_shots_pass_through() -> void:
+func test_a_runner_phases_out_when_struck_and_shots_pass_through() -> void:
 	var sim := _sim([_group(&"runner")])
 	_spawn_all(sim)
 	var runner := sim.enemies[0]
-	_tick(sim, runner.data.power_interval * 0.5 + 0.05)
-	assert_true(runner.is_phased(), "it phases on its timer")
+	runner.power_timer = 0.0
+	sim._damage(runner, 1.0, null)
+	assert_true(runner.is_phased(), "the blow lands, then it phases")
 	var before := runner.health
 	sim._damage(runner, 10.0, null)
 	assert_eq(runner.health, before, "nothing hits it")
@@ -120,6 +121,7 @@ func test_a_runner_phases_out_and_shots_pass_through() -> void:
 	assert_false(runner.is_phased())
 	sim._damage(runner, 10.0, null)
 	assert_lt(runner.health, before)
+	assert_false(runner.is_phased(), "not again until it has gathered itself")
 
 
 func test_stunned_enemies_cannot_use_powers() -> void:
@@ -127,7 +129,8 @@ func test_stunned_enemies_cannot_use_powers() -> void:
 	_spawn_all(sim)
 	var runner := sim.enemies[0]
 	runner.apply_status(_effect(&"stun"), null, 1.0)
-	_tick(sim, runner.data.power_interval)
+	runner.power_timer = 0.0
+	sim._damage(runner, 1.0, null)
 	assert_false(runner.is_phased())
 
 
@@ -137,9 +140,10 @@ func test_a_brute_war_cry_drives_the_horde_on() -> void:
 	var brute := sim.enemies[0]
 	var grunt := sim.enemies[1]
 	var calm := grunt.speed()
-	_tick(sim, brute.data.power_interval * 0.5 + 0.05)
+	brute.power_timer = 0.0
+	_tick(sim, 0.05)
 	assert_almost_eq(grunt.speed(), calm * (1.0 + brute.data.power_amount), 0.01, "faster")
-	assert_gt(brute.speed(), brute.base_speed, "the brute too")
+	assert_almost_eq(brute.speed(), brute.base_speed, 0.01, "not the brute itself")
 	_tick(sim, brute.data.power_duration + 0.1)
 	assert_almost_eq(grunt.speed(), calm, 0.01, "it wears off")
 
@@ -153,7 +157,8 @@ func test_a_mender_heals_the_hurt_but_not_the_burning() -> void:
 	brute.health = brute.max_health * 0.5
 	grunt.health = grunt.max_health * 0.5
 	grunt.apply_status(_effect(&"burn"), null, 1.0)
-	_tick(sim, mender.data.power_interval * 0.5 + 0.05)
+	mender.power_timer = 0.0
+	_tick(sim, 0.05)
 	assert_almost_eq(brute.health, brute.max_health * (0.5 + mender.data.power_amount), 0.01)
 	assert_eq(grunt.health, grunt.max_health * 0.5, "burning, so no healing")
 	mender.apply_status(_effect(&"poison"), null, 1.0)
@@ -216,7 +221,8 @@ func test_the_warden_breathes_fire_on_the_strongest_tower() -> void:
 	var strong := _tower(sim, warden.position + Vector2(0, 96), 50.0)
 	var far := _tower(sim, warden.position + Vector2(2000, 0), 500.0)
 	sim.towers.append_array([weak, strong, far])
-	_tick(sim, warden.data.power_interval * 0.5 + 0.05)
+	warden.power_timer = 0.0
+	_tick(sim, 0.05)
 	assert_gt(strong.silenced, 0.0, "the strongest tower in reach burns")
 	assert_eq(weak.silenced, 0.0)
 	assert_eq(far.silenced, 0.0, "out of reach")
