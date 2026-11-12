@@ -70,10 +70,15 @@ def api_get(path: str) -> dict:
         return json.load(r)
 
 
+def cache_key(voice_id: str, body: dict) -> str:
+    """The name a reply is cached under (tools/voice/cache/<key>.mp3)."""
+    return hashlib.sha256(json.dumps([voice_id, body], sort_keys=True).encode()).hexdigest()[:24]
+
+
 def tts(text: str, voice_id: str, stability: float = 0.0, model: str = "eleven_v3") -> bytes:
     """MP3 bytes for text, cached on disk."""
     body = {"text": text, "model_id": model, "voice_settings": {"stability": stability}}
-    key = hashlib.sha256(json.dumps([voice_id, body], sort_keys=True).encode()).hexdigest()[:24]
+    key = cache_key(voice_id, body)
     cached = CACHE / f"{key}.mp3"
     if cached.exists():
         return cached.read_bytes()

@@ -59,6 +59,8 @@ var _air: Node2D
 var _ambient: CanvasModulate
 var _sun: DirectionalLight2D
 var _fireflies: CPUParticles2D
+## The wind, rain, snow, ash and dust over the map (see Weather).
+var weather: WeatherArt
 ## Glowing cracks and glints in the ground, brighter at night.
 var _ground_glow: Node2D
 ## The map's biome tints the light and the motes in the air.
@@ -180,6 +182,8 @@ class TowerVisual:
 
 class EnemyVisual:
 	var enemy: SimEnemy
+	## The kind of enemy it was drawn as (a boss changes kind when it takes a new form).
+	var kind: StringName
 	var root: Node2D
 	var body: Sprite2D
 	var gear: Sprite2D
@@ -212,6 +216,20 @@ class EnemyVisual:
 	var face_left := false
 	## Seconds until a power that never fires (an aura, a trait) is shown off again.
 	var idle_power := 0.0
+	## A boss's own moves (tools/art/pix2d/boss_moves.py), by name: {frames, fps, hold}. See BOSS_MOVES.
+	var moves: Dictionary[StringName, Dictionary] = {}
+	## The move playing while anim is &"move", and whether it stays on its hold frame (a guard while
+	## the barrier stands) until released.
+	var move := &""
+	var move_hold := false
+	## Seconds left of speech: its walk works its jaw meanwhile.
+	var talk_left := 0.0
+
+
+## The moves a boss can be drawn with besides its walk and death, in art.json under these names.
+## BossDirector chooses when each plays; talk replaces the walk while it speaks, idle while it stands.
+const BOSS_MOVES: Array[StringName] = [&"idle", &"talk", &"attack", &"roar", &"cast", &"slam", &"guard",
+	&"hurt", &"rise"]
 
 
 ## A killed enemy playing out its death where it fell.
@@ -316,6 +334,9 @@ func setup(p_sim: RunSim) -> void:
 	_build_citadel()
 	army = AllyArt.new(self)
 	_build_fireflies()
+	weather = WeatherArt.new()
+	_air.add_child(weather)
+	weather.build(self, Weather.for_map(sim.config.map))
 	sim.chain_fired.connect(_on_chain_fired)
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.enemy_killed.connect(_on_enemy_killed)
@@ -343,13 +364,28 @@ func _build_resources() -> void:
 	var sway := Shader.new()
 	sway.code = """
 shader_type canvas_item;
-// Sways the top of a sprite while its base stays planted.
+// Sways the top of a sprite in the wind while its base stays planted. WeatherArt drives it: a steady
+// lean downwind, a flutter that quickens as the wind rises, and gust fronts that sweep across the map
+// and bow everything they pass.
 uniform float strength = 0.9;
+uniform float phase = 0.0;
+uniform float lean = 0.0;
+uniform float gust = 0.0;
+uniform float gust_at = -100000.0;
+uniform float gust_width = 150.0;
+uniform vec2 wind_dir = vec2(1.0, 0.0);
+uniform vec2 map_origin = vec2(0.0);
+uniform float map_scale = 1.0;
 void vertex() {
-	float top = 1.0 - UV.y;
+	float top = pow(1.0 - UV.y, 1.4);
 	vec2 world = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
-	float t = TIME * 1.7 + world.x * 0.02 + world.y * 0.015;
-	VERTEX.x += (sin(t) + 0.35 * sin(t * 2.7)) * strength * top;
+	vec2 m = (world - map_origin) / map_scale;
+	float t = phase + m.x * 0.02 + m.y * 0.015;
+	float d = (dot(m, wind_dir) - gust_at) / gust_width;
+	float front = exp(-d * d);
+	float flutter = (sin(t) + 0.35 * sin(t * 2.7)) * strength * (1.0 + 0.8 * front);
+	float push = (lean + gust * front * (0.85 + 0.15 * sin(t * 3.3))) * sign(wind_dir.x);
+	VERTEX.x += (flutter + push) * top;
 }
 """
 	_sway_material = ShaderMaterial.new()
@@ -549,6 +585,7 @@ func _process(delta: float) -> void:
 	if sim == null:
 		return
 	_elapsed += delta
+	weather.update(delta)
 	_update_light(delta)
 	_sync_towers(delta)
 	_sync_enemies(delta)
@@ -578,6 +615,9 @@ func _update_light(delta: float) -> void:
 	day_night.advance(delta)
 	_ambient.color = day_night.ambient() * BIOME_TINTS[_biome]
 	_sun.energy = day_night.sun_energy()
+	if weather != null:
+		_ambient.color *= weather.ambient_tint()
+		_sun.energy *= weather.sun_scale()
 	_sun.color = day_night.sun_color()
 	var motes := day_night.night()
 	if _biome in [&"fire", &"water", &"void", &"heart"]:
@@ -928,6 +968,12 @@ func _sync_enemies(delta: float) -> void:
 			continue
 		seen[enemy.id] = true
 		var visual: EnemyVisual = _enemies.get(enemy.id)
+		if visual != null and visual.kind != enemy.data.id:
+			# A boss in a new form is drawn as that form.
+			_remove_caster(visual.caster)
+			visual.root.queue_free()
+			_enemies.erase(enemy.id)
+			visual = null
 		if visual == null:
 			if enemy_info(enemy.data.id).is_empty():
 				continue
@@ -946,6 +992,7 @@ func _make_enemy(enemy: SimEnemy, tint: Color) -> EnemyVisual:
 	var meta := enemy_info(enemy.data.id)
 	var visual := EnemyVisual.new()
 	visual.enemy = enemy
+	visual.kind = enemy.data.id
 	visual.tint = tint
 	visual.last_health = enemy.health
 	visual.time = randf() * 2.0
@@ -965,6 +1012,14 @@ func _make_enemy(enemy: SimEnemy, tint: Color) -> EnemyVisual:
 			visual.power_hold = int(spec.get("hold", -1))
 		else:
 			visual.death_fps = float(spec.get("fps", 10))
+	for move in BOSS_MOVES:
+		var spec: Dictionary = meta.get(String(move), {})
+		if spec.is_empty():
+			continue
+		var list: Array[CanvasTexture] = []
+		for f in int(spec.get("frames", 0)):
+			list.append(lit_texture(ART + "enemies/%s_%s_%d" % [enemy.data.id, move, f]))
+		visual.moves[move] = {"frames": list, "fps": float(spec.get("fps", 10)), "hold": int(spec.get("hold", -1))}
 	var anchor: Array = meta["anchor"]
 	var offset := -Vector2(anchor[0], anchor[1])
 	var size: Array = meta["size"]
@@ -1272,6 +1327,14 @@ func _enemy_frame(visual: EnemyVisual, delta: float, walk_frame: int) -> CanvasT
 	if visual.anim == &"fall":
 		# It stands up: a grunt's power is its rise.
 		visual.anim = &"walk"
+	visual.talk_left = maxf(0.0, visual.talk_left - delta)
+	if visual.anim == &"move":
+		var shown := _move_frame(visual)
+		if shown != null:
+			return shown
+		visual.anim = &"walk"
+	if visual.anim == &"walk" and not visual.moves.is_empty():
+		return _boss_walk_frame(visual, walk_frame)
 	var count := visual.power_frames.size()
 	if count == 0 or visual.anim == &"walk":
 		return visual.frames[walk_frame]
@@ -1295,6 +1358,76 @@ func _enemy_frame(visual: EnemyVisual, delta: float, walk_frame: int) -> CanvasT
 		visual.anim = &"walk"
 		return visual.frames[walk_frame]
 	return visual.power_frames[back]
+
+
+## The frame of the boss move playing now, or null once it has played out.
+func _move_frame(visual: EnemyVisual) -> CanvasTexture:
+	var spec: Dictionary = visual.moves.get(visual.move, {})
+	if spec.is_empty():
+		return null
+	var frames: Array[CanvasTexture] = spec["frames"]
+	var step := int(visual.anim_time * float(spec["fps"]))
+	var hold: int = spec["hold"]
+	if visual.move_hold:
+		return frames[mini(step, hold if hold >= 0 else frames.size() - 1)]
+	if step >= frames.size():
+		return null
+	return frames[step]
+
+
+## A boss between moves: it works its jaw while it speaks, and stands breathing when it is not moving.
+func _boss_walk_frame(visual: EnemyVisual, walk_frame: int) -> CanvasTexture:
+	var enemy := visual.enemy
+	if visual.talk_left > 0.0 and visual.moves.has(&"talk"):
+		var talk: Array[CanvasTexture] = visual.moves[&"talk"]["frames"]
+		# Standing still it still talks, at the pace of speech rather than of its feet.
+		var at := walk_frame if enemy.speed() > 0.0 else int(visual.anim_time * 10.0)
+		return talk[at % talk.size()]
+	if (enemy.speed() <= 0.0 or enemy.has_status(&"stun")) and visual.moves.has(&"idle"):
+		var idle: Array[CanvasTexture] = visual.moves[&"idle"]["frames"]
+		return idle[int(visual.anim_time * float(visual.moves[&"idle"]["fps"])) % idle.size()]
+	return visual.frames[walk_frame]
+
+
+## Plays one of a boss's moves (BOSS_MOVES) from its first frame. With `hold`, a move that has a hold
+## frame stays on it until release_boss_move(). Returns how long the move takes, 0 if the boss cannot
+## (no art for that move, or it is lying in a heap).
+func play_boss_move(enemy: SimEnemy, move: StringName, hold := false) -> float:
+	var visual: EnemyVisual = _enemies.get(enemy.id)
+	if visual == null or visual.kind != enemy.data.id or not visual.moves.has(move) or enemy.downed > 0.0:
+		return 0.0
+	visual.anim = &"move"
+	visual.move = move
+	visual.move_hold = hold and int(visual.moves[move]["hold"]) >= 0
+	visual.anim_time = 0.0
+	var spec: Dictionary = visual.moves[move]
+	return float((spec["frames"] as Array).size()) / float(spec["fps"])
+
+
+## Lets a held move (a guard) play out and go back to walking.
+func release_boss_move(enemy: SimEnemy, move: StringName = &"") -> void:
+	var visual: EnemyVisual = _enemies.get(enemy.id)
+	if visual != null and visual.anim == &"move" and (move.is_empty() or visual.move == move):
+		visual.anim = &"walk"
+		visual.move_hold = false
+
+
+## The boss works its jaw for this many seconds (it is speaking).
+func set_boss_talking(enemy: SimEnemy, seconds: float) -> void:
+	var visual: EnemyVisual = _enemies.get(enemy.id)
+	if visual != null:
+		visual.talk_left = maxf(visual.talk_left, seconds)
+
+
+## The move a boss is showing now (&"" while it walks), for tests and the director.
+func boss_move_of(enemy: SimEnemy) -> StringName:
+	var visual: EnemyVisual = _enemies.get(enemy.id)
+	return visual.move if visual != null and visual.anim == &"move" else &""
+
+
+## True when this kind of enemy has art for that boss move.
+static func has_boss_move(enemy_id: StringName, move: StringName) -> bool:
+	return enemy_info(enemy_id).has(String(move))
 
 
 ## Starts an enemy's power animation from its first frame.

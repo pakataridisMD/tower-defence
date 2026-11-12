@@ -17,7 +17,7 @@ on:
 jobs:
   screenshots:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 45
     env:
       GODOT_VERSION: 4.7.2
     steps:
@@ -59,6 +59,13 @@ jobs:
             --resolution 1920x1080 --fixed-fps 30 res://tools/capture.tscn -- --bigmaps --out="$PWD/shots/bigmaps" 2>&1 | tail -n 30 || true
           ls -la shots/bigmaps
 
+      - name: Take the weather
+        run: |
+          mkdir -p shots/weather
+          xvfb-run -a -s "-screen 0 1920x1080x24" timeout 600 /tmp/godot/godot --rendering-driver opengl3 \
+            --resolution 1920x1080 --fixed-fps 30 res://tools/capture.tscn -- --weather --out="$PWD/shots/weather" 2>&1 | tail -n 30 || true
+          ls -la shots/weather
+
       - name: Take a whole run
         run: |
           mkdir -p shots/run
@@ -82,3 +89,5 @@ jobs:
           python3 tools/ci/print_shots.py shots/map --quality=74 || true
           python3 tools/ci/print_shots.py shots/bigmaps --width=1280 --quality=70 || true
           python3 tools/ci/print_shots.py shots/run --width=1280 --quality=66 || true
+          python3 tools/ci/print_shots.py shots/weather --width=1280 --quality=72 || true
+          python3 tools/ci/print_shots.py shots/weather/gust --width=960 --quality=70 || true

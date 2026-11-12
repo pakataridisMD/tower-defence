@@ -24,6 +24,9 @@ extends Node
 ## Add --look[=stage,stage] for the graphics look test: in each stage (the fire and jungle lands by default)
 ## one of each base tower is built in a row by the road, then the whole map, the row up close at x1
 ## and x2, and the same row at night are taken.
+## Add --weather for the weather test: in a land of each kind, the battle under each of its weathers
+##   (clear with wind, rain, thunderstorm, snow, blizzard, ashfall, dust storm), by day and by night, and
+##   frames of a gust bowing the trees (in <out>/gust).
 ## Add --edge to film the edge pan: zoomed in on a battle, the mouse is pushed against each edge of the
 ## screen in turn, saved as numbered frames in <out>/edge/ (make a clip from them).
 ## Add --skirmish to take the Skirmish page (a hard level and Endless picked), a battle on each land
@@ -66,6 +69,8 @@ var _bigmaps := false
 var _skirmish := false
 var _edge := false
 var _powers := false
+## With --bosses[=id,...]: film each boss on the road doing every move, with the voice cues.
+var _bosses: PackedStringArray = []
 var _landmarks := false
 var _army := false
 var _army_frames := 600
@@ -73,6 +78,17 @@ var _horde := &""
 var _look: PackedStringArray = []
 ## With --look: shoot the towers' effects in a fight (shots, hits, a Meteor and a Doom) instead of the look shots.
 var _fx_shots := false
+var _weather := false
+## The weather test: stage, then the kinds of weather to shoot there.
+const WEATHER_SHOTS := [
+	["nature_2", [Weather.Kind.CLEAR, Weather.Kind.RAIN, Weather.Kind.STORM]],
+	["storm_1", [Weather.Kind.STORM]],
+	["water_3", [Weather.Kind.SNOW, Weather.Kind.BLIZZARD]],
+	["ember_1", [Weather.Kind.ASH]],
+	["earth_1", [Weather.Kind.DUST]],
+	["void_1", [Weather.Kind.ASH]],
+]
+
 ## --towers[=a,b]: every look of these towers (levels 1-3 and both ascendancies) built beside the road,
 ## shot by day and night and filmed idling and firing (frames under clips/towers_<stage>).
 var _tower_looks: PackedStringArray = []
@@ -109,6 +125,10 @@ func _ready() -> void:
 			_skirmish = true
 		elif arg == "--powers":
 			_powers = true
+		elif arg.begins_with("--bosses"):
+			_bosses = arg.trim_prefix("--bosses").trim_prefix("=").split(",", false)
+			if _bosses.is_empty():
+				_bosses = PackedStringArray(["vael_orrun", "gorrath", "cinder_tyrant", "pale_vesper", "vholt", "mountain_titan"])
 		elif arg == "--army":
 			_army = true
 		elif arg.begins_with("--frames="):
@@ -117,6 +137,8 @@ func _ready() -> void:
 			_landmarks = true
 		elif arg.begins_with("--horde="):
 			_horde = StringName(arg.trim_prefix("--horde="))
+		elif arg == "--weather":
+			_weather = true
 		elif arg == "--fx":
 			_fx_shots = true
 		elif arg == "--longshot":
@@ -137,12 +159,16 @@ func _ready() -> void:
 		_run_tower_looks()
 	elif not _look.is_empty():
 		_run_look()
+	elif _weather:
+		_run_weather()
 	elif _army:
 		_run_army()
 	elif _longshot:
 		_run_longshot()
 	elif _powers:
 		_run_powers()
+	elif not _bosses.is_empty():
+		_run_bosses()
 	elif _landmarks:
 		_run_landmarks()
 	elif _menu:
@@ -464,6 +490,63 @@ func _run_look() -> void:
 		game.camera.set_view(1.0, row)
 		await _wait(2.5)
 		await _shot("look_%s_night" % stage)
+		game.free()
+		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+func _run_weather() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	for entry: Array in WEATHER_SHOTS:
+		var stage: String = entry[0]
+		Progress.active_stage = StringName(stage)
+		var game := GAME_SCENE.instantiate() as Game
+		game.autoplay = true
+		add_child(game)
+		await _wait(0.2)
+		var sim := game.sim
+		sim.tree.points = 30
+		for id: StringName in [&"fire_entry", &"storm_entry", &"nature_entry", &"water_entry", &"earth_entry", &"void_entry"]:
+			sim.allocate_node(id)
+		sim.gold = 9000
+		var row := _look_row(game)
+		sim.wave_index = 6
+		var sky := game.board.art.weather
+		print("Weather in %s: %s" % [stage, sky.weather.spells(40).map(
+				func(s: Array) -> String: return "%s waves %d-%d" % [Weather.describe(s[0]), s[1], s[2]])])
+		await _until(func() -> bool: return sim.state == RunSim.State.WAVE and sim.time_in_wave > 6.0 or sim.is_over())
+		game.camera.set_view(1.0, row)
+		for kind: Weather.Kind in entry[1]:
+			var label := Weather.describe(kind).to_lower().replace(" ", "_")
+			sky.force(kind)
+			_light(game.board.art, DayNight.DAY)
+			await _wait(2.5)
+			if kind == Weather.Kind.STORM:
+				sky.strike(row / BoardArt.SCALE + Vector2(-60, -10))
+				await _wait(0.05)
+			await _shot("weather_%s_%s" % [stage, label])
+			if kind != Weather.Kind.CLEAR:
+				game.camera.set_view(game.camera.min_zoom, sim.config.map.size_in_pixels() / 2.0)
+				await _wait(0.6)
+				await _shot("weather_%s_%s_whole" % [stage, label])
+				game.camera.set_view(1.0, row)
+			_light(game.board.art, DayNight.NIGHT)
+			await _wait(2.0)
+			await _shot("weather_%s_%s_night" % [stage, label])
+		if stage == "nature_2":
+			# Frames of the trees bowing as gusts sweep through, close up.
+			sky.force(Weather.Kind.CLEAR)
+			_light(game.board.art, DayNight.DAY)
+			game.camera.set_view(2.0, row)
+			sky._gust_wait = 0.0
+			var folder := _out.path_join("gust")
+			DirAccess.make_dir_recursive_absolute(folder)
+			for i in 40:
+				await _wait(0.1)
+				await RenderingServer.frame_post_draw
+				get_viewport().get_texture().get_image().save_png(folder.path_join("%03d.png" % i))
+			print("Saved clip ", folder)
 		game.free()
 		await _wait(0.1)
 	print("Screenshots saved to ", _out)
@@ -989,6 +1072,79 @@ func _run_powers() -> void:
 			count[0] += 1
 		await get_tree().process_frame
 	print("Saved %d frames to %s" % [count[0], folder])
+	get_tree().quit()
+
+
+## Each boss in turn walks on, and is made to go through its moves while the camera follows it:
+## frames in <out>/bosses/f_NNNN.png and the voice lines it says, by frame, in <out>/bosses/cues.json
+## (tools/art/boss_film.py turns them into a film with sound). --fixed-fps 30 keeps frames and time in step.
+func _run_bosses() -> void:
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.2)
+	game._speed_index = 0
+	game.hud.speed = Game.SPEEDS[0]
+	var waves := WaveSet.new()
+	waves.id = &"bosses"
+	waves.health_growth = 1.0
+	var list: Array[WaveData] = []
+	for boss_id in _bosses:
+		var wave := WaveData.new()
+		wave.element = &"void"
+		var group := SpawnGroup.new()
+		group.enemy = StringName(boss_id)
+		group.count = 1
+		wave.groups = [group] as Array[SpawnGroup]
+		list.append(wave)
+	waves.waves = list
+	game.sim.config.wave_set = waves
+	var folder := _out.path_join("bosses")
+	DirAccess.make_dir_recursive_absolute(folder)
+	var cues: Array = []
+	var count := [0]
+	game.bosses.voice.spoke.connect(func(_b: StringName, _k: StringName, text: String, _s: float) -> void:
+		cues.append({"frame": count[0], "file": game.bosses.voice.last_file, "text": text}))
+	var script := [[&"attack", &"taunt"], [&"cast", &"bind"], [&"slam", &""], [&"guard", &"shield"],
+		[&"hurt", &"hurt"], [&"roar", &"enrage"], [&"attack", &"taunt"]]
+	for boss_id in _bosses:
+		game.sim.start_next_wave()
+		await _until(func() -> bool: return not game.sim.enemies.is_empty())
+		var boss: SimEnemy = game.sim.enemies[0]
+		# Far enough along the road to be in the open.
+		# The lowest point of the middle of its road, so a tall boss has the whole map above it.
+		var length: float = game.sim.lane_lengths[boss.lane]
+		var best := length * 0.45
+		for k in 25:
+			var at := length * (0.2 + 0.025 * k)
+			if game.sim.lane_curves[boss.lane].sample_baked(at).y > game.sim.lane_curves[boss.lane].sample_baked(best).y:
+				best = at
+		boss.progress = best
+		boss.position = game.sim.lane_curves[boss.lane].sample_baked(boss.progress)
+		var tall := BoardArt.enemy_height(boss.data.id)
+		var zoom := 0.75 if tall > 300.0 else 1.0 if tall > 200.0 else 1.5
+		var step := 0
+		var next := 4.0
+		var t := 0.0
+		while t < 4.0 + script.size() * 2.6 + 1.0:
+			game.camera.set_view(zoom, boss.position + Vector2(0, -BoardArt.enemy_height(boss.data.id) * 0.25))
+			if t >= next and step < script.size():
+				var item: Array = script[step]
+				game.bosses.act(boss, item[0], item[1], item[0] == &"guard")
+				if item[0] == &"guard":
+					get_tree().create_timer(1.6).timeout.connect(func() -> void: game.board.art.release_boss_move(boss, &"guard"))
+				step += 1
+				next += 2.6
+			await RenderingServer.frame_post_draw
+			get_viewport().get_texture().get_image().save_png(folder.path_join("f_%04d.png" % count[0]))
+			count[0] += 1
+			t += 1.0 / 30.0
+			await get_tree().process_frame
+		boss.alive = false
+		await _until(func() -> bool: return game.sim.state != RunSim.State.WAVE)
+	var file := FileAccess.open(folder.path_join("cues.json"), FileAccess.WRITE)
+	file.store_string(JSON.stringify(cues, " "))
+	file.close()
+	print("Saved %d frames and %d voice cues to %s" % [count[0], cues.size(), folder])
 	get_tree().quit()
 
 

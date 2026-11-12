@@ -105,6 +105,10 @@ STYLES = {
     "sovereign": {"room": 0.2, "rt60": 2.6, "layers": [[0.5, 0.3]]},   # Vael-Orrun: dark hall, sub-octave shadow
     "twin": {"room": 0.14, "rt60": 1.8, "layers": [[0.5, 0.8]]},       # Aurath speaks in two voices at once
     "titan": {"room": 0.14, "rt60": 2.0, "semitones": -2},             # Orrok: stone giant
+    # A Warden gone mad (the corrupted bosses in battle): its own voice with something larger and
+    # darker speaking under it, a little unsteady.
+    "corrupted": {"room": 0.12, "rt60": 1.6, "layers": [[0.5, 0.4]],
+                  "fx": "chorus=0.6:0.85:30|47:0.25|0.2:0.35|0.6:1.3|1.9"},
     # The hidden god. Every word must land: the clean take stays on top at full level,
     # with only a faint octave below and a short, light room. No echo, no lowpass.
     "hush": {"room": 0.06, "rt60": 1.0, "layers": [[0.5, 0.2]], "lufs": -16.0},
