@@ -13,33 +13,36 @@
 # bonuses, three skill points a wave): every element and Convergence stage, from a local --tune per stage.
 # nature_4 and earth_3 sit 5% under what that tune found: the bot lost or only scraped through there.
 # These were found with full minor enemy health; the campaign's halving of it (RunSim) comes on top.
-TUNING["ember_1"] = {"health": 3.05}
-TUNING["ember_2"] = {"health": 3.86, "boss": 0.39}
-TUNING["ember_3"] = {"health": 4.01, "boss": 1.30}
-TUNING["ember_4"] = {"health": 6.00, "boss": 0.33}
-TUNING["storm_1"] = {"health": 6.59}
-TUNING["storm_2"] = {"health": 6.81, "boss": 1.39}
-TUNING["storm_3"] = {"health": 5.26, "boss": 1.97}
-TUNING["storm_4"] = {"health": 13.49, "boss": 0.28}
-TUNING["nature_1"] = {"health": 6.75}
-TUNING["nature_2"] = {"health": 10.95, "boss": 0.45}
-TUNING["nature_3"] = {"health": 6.30, "boss": 1.74}
-TUNING["nature_4"] = {"health": 6.55, "boss": 0.45}
-TUNING["water_1"] = {"health": 8.59}
-TUNING["water_2"] = {"health": 11.32, "boss": 0.36}
-TUNING["water_3"] = {"health": 13.46, "boss": 0.85}
-TUNING["water_4"] = {"health": 11.71, "boss": 3.03}
-TUNING["earth_1"] = {"health": 6.22}
-TUNING["earth_2"] = {"health": 9.77, "boss": 0.28}
-TUNING["earth_3"] = {"health": 4.93, "boss": 3.96}
-TUNING["earth_4"] = {"health": 8.59, "boss": 2.85}
-TUNING["void_1"] = {"health": 6.22}
-TUNING["void_2"] = {"health": 13.56, "boss": 1.40}
-TUNING["void_3"] = {"health": 7.70, "boss": 1.50}
-TUNING["void_4"] = {"health": 13.49, "boss": 3.55}
-TUNING["converge_1"] = {"health": 11.54, "boss": 0.59}
-TUNING["converge_2"] = {"health": 11.17, "boss": 0.24, "boss_life": 0.6}
-TUNING["converge_3"] = {"health": 13.83, "boss": 0.24, "boss_life": 0.17}
+# Retuned 2026-11-12 night for elemental affinities (attuned, warded, tank, Hulking elites) and each
+# land fought by its own element's horde with every element open (the bot brings what the horde fears).
+# Stages at 18.92 hit the bisect's ceiling: the counter-element bot wins them easily.
+TUNING["ember_1"] = {"health": 2.17}
+TUNING["ember_2"] = {"health": 1.83, "boss": 3.69}
+TUNING["ember_3"] = {"health": 3.09, "boss": 1.91}
+TUNING["ember_4"] = {"health": 2.09, "boss": 3.82}
+TUNING["storm_1"] = {"health": 8.81}
+TUNING["storm_2"] = {"health": 5.79, "boss": 3.44}
+TUNING["storm_3"] = {"health": 6.17, "boss": 2.47}
+TUNING["storm_4"] = {"health": 2.96, "boss": 7.57}
+TUNING["nature_1"] = {"health": 10.51}
+TUNING["nature_2"] = {"health": 4.96, "boss": 0.10}
+TUNING["nature_3"] = {"health": 8.00, "boss": 0.28}
+TUNING["nature_4"] = {"health": 8.00, "boss": 0.21}
+TUNING["water_1"] = {"health": 18.92}
+TUNING["water_2"] = {"health": 18.92, "boss": 2.29}
+TUNING["water_3"] = {"health": 10.14, "boss": 2.15}
+TUNING["water_4"] = {"health": 4.88, "boss": 7.57}
+TUNING["earth_1"] = {"health": 18.92}
+TUNING["earth_2"] = {"health": 18.92, "boss": 3.41}
+TUNING["earth_3"] = {"health": 9.53, "boss": 2.26}
+TUNING["earth_4"] = {"health": 15.14, "boss": 1.94}
+TUNING["void_1"] = {"health": 13.46}
+TUNING["void_2"] = {"health": 8.46, "boss": 1.26}
+TUNING["void_3"] = {"health": 9.18, "boss": 0.66}
+TUNING["void_4"] = {"health": 12.37, "boss": 2.20}
+TUNING["converge_1"] = {"health": 13.55, "boss": 0.98}
+TUNING["converge_2"] = {"health": 7.50, "boss": 0.42, "boss_life": 0.60}
+TUNING["converge_3"] = {"health": 13.09, "boss": 0.24, "boss_life": 0.17}
 # Nov 12: every boss got 4x its life (Vael-Orrun 10x) and new abilities (heal, barrier, binding towers,
 # his fireball). "boss_life" softens a stage's bosses alone (WaveSet.boss_health_scale) where the bot could
 # no longer beat them keeping a tenth of its lives; from `campaign_balance.gd -- --tune-bosses`. Stages
