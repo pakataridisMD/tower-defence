@@ -2,8 +2,14 @@ class_name CreditsPage
 extends MenuPage
 ## Credits: who made the game and the free fonts and tools it uses.
 
+## The studio that made the game (a working name for now) and its two makers, equal partners.
+## Shown here and on the Settings page.
+const DEVELOPER := "Pasiv Production"
+const MAKERS := "Doctor Paris and Thanos"
+
 const LINES: Array[Array] = [
-	["A GAME BY", ["Doctor Paris"]],
+	["DEVELOPED BY", [DEVELOPER]],
+	["A GAME BY", [MAKERS]],
 	["STORY", ["The War of Seven Crowns"]],
 	["NARRATOR", ["Elariel (ElevenLabs)"]],
 	["MUSIC AND SOUND", ["Original score and effects"]],
