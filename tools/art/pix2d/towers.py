@@ -399,3 +399,4 @@ def void_obelisk():
 
 import towers_duals  # noqa: E402,F401  (registers the dual-element towers)
 import towers_triples  # noqa: E402,F401  (registers the triple-element towers)
+import towers_longshot  # noqa: E402,F401  (registers the long-range towers)

@@ -33,8 +33,10 @@ def read_towers() -> list[dict]:
             m = re.search(rf"^{key} = ([\d.]+)", text, re.M)
             return float(m.group(1)) if m else 0.0
 
+        tags = re.search(r"^tags = (.*)$", text, re.M)
         out.append({"id": tid, "elements": elements, "splash": num("splash_radius"), "chain": num("chain_count"),
-                    "knockback": num("knockback"), "aura": num("aura_radius"), "rate": num("attacks_per_second") or 1.0})
+                    "knockback": num("knockback"), "aura": num("aura_radius"), "rate": num("attacks_per_second") or 1.0,
+                    "longshot": bool(tags and '&"longshot"' in tags.group(1))})
     return out
 
 
@@ -73,13 +75,15 @@ def tower_attack(tower: dict, rng: np.random.Generator) -> np.ndarray:
 
 for _tower in TOWERS:
     _size = len(_tower["elements"])
+    # Long-range towers fire several times a second from anywhere on the map: quieter, and fewer at once.
+    _long = _tower["longshot"]
     register(
         f"tower_{_tower['id']}", "towers",
         (lambda t: (lambda rng, v: tower_attack(t, rng)))(_tower),
         variants=3 if _size == 1 else 2,
         loud=-21.0 if _size == 1 else -20.0,
-        volume_db=-5.0,
-        max_voices=3, min_gap=0.06, pitch_jitter=0.06, priority=1,
+        volume_db=-10.0 if _long else -5.0,
+        max_voices=2 if _long else 3, min_gap=0.14 if _long else 0.06, pitch_jitter=0.1 if _long else 0.06, priority=1,
         description=f"{_tower['id'].replace('_', ' ')} attacks ({', '.join(_tower['elements'])})",
     )
 
