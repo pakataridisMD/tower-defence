@@ -2790,5 +2790,5 @@ id = &"c_converge_3"
 display_name = "Heart of the Ring"
 health_growth = 1.1
 health_scale = 9.47
-boss_health_scale = 0.15
+boss_health_scale = 0.16
 waves = Array[ExtResource("3_s")]([SubResource("r9"), SubResource("r18"), SubResource("r30"), SubResource("r43"), SubResource("r53"), SubResource("r68"), SubResource("r81"), SubResource("r95"), SubResource("r111"), SubResource("r125"), SubResource("r140"), SubResource("r159"), SubResource("r177"), SubResource("r195"), SubResource("r209"), SubResource("r229"), SubResource("r248"), SubResource("r271"), SubResource("r292"), SubResource("r305")])

@@ -1037,5 +1037,4 @@ id = &"c_ember_2"
 display_name = "Cinder Steps"
 health_growth = 1.1
 health_scale = 3.93
-boss_health_scale = 0.16
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r13"), SubResource("r23"), SubResource("r32"), SubResource("r42"), SubResource("r52"), SubResource("r63"), SubResource("r73"), SubResource("r85"), SubResource("r97"), SubResource("r109"), SubResource("r125")])
