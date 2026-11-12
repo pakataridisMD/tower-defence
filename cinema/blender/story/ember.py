@@ -38,9 +38,9 @@ SHOTS = {
     "ember_intro": [
         dict(set="ember", cast=[], cam=[(0, (-14, -40, 9), (80, 0, -12)), (14, (-4, -30, 7), (82, 0, 4))], lens=28),
         # Lava out of the slopes; out of it the horde; at its head runs a boy of white embers: Ashwick.
-        dict(set="ember", cast=[("ashwick", (0, 12, 0), 0, "Running_A", {"walk": (0.6, (1, -1))})],
+        dict(set="ember", cast=[("ashwick", (0, 13, 0), 0, "Running_A", {"walk": (0.42, (1, -1))})],
              extra=lambda S, r: sets.ash_fall(),
-             cam=[aim(0, (3.2, -6, 0.7), (0, 12, 1.4)), aim(26.7, (2.4, -6.5, 0.8), (0, -3, 1.3))], lens=40, focus="ashwick"),
+             cam=[aim(0, (3.2, -6, 0.7), (0, 13, 1.4)), aim(1, (2.4, -6.5, 0.8), (0, -1.5, 1.3))], norm=True, lens=40, focus="ashwick"),
         # Fennick pointing at a tower plan on a cart; Tamsin behind waving the carts through.
         dict(set="ember", cast=[("fennick", (0.4, 0, 0), -15, "Interact"), ("tamsin", (-1.8, 2.6, 0), -30, "Cheer")],
              extra=lambda S, r: cart(S, (1.5, 0.5, 0)),
