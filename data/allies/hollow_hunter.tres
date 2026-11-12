@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"hollow_hunter"
+display_name = "Veilwalker Hollow-Hunters"
+title = "Boss killers"
+description = "Veilwalkers who have walked the Outer Hollow and learned where the big things are soft."
+role = 1
+element = &"void"
+order = 13
+cost = 160
+cooldown = 9.0
+count = 2
+max_health = 45.0
+armour = 0.0
+speed = 56.0
+blocks = false
+damage = 30.0
+attack_interval = 2.0
+attack_range = 240.0
+boss_multiplier = 3.0

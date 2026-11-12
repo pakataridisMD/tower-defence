@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"ember_knight"
+display_name = "Emberfolk Forge-Knights"
+title = "Burning blades"
+description = "Kindlers in blackened plate. Their swords keep the heat of their bodies and set the horde alight."
+role = 0
+element = &"fire"
+order = 4
+cost = 150
+cooldown = 8.0
+count = 2
+max_health = 220.0
+armour = 6.0
+speed = 48.0
+damage = 18.0
+attack_interval = 1.2
+attack_range = 38.0
+dot_damage = 6.0
+dot_duration = 3.0
+dot_kind = &"burn"

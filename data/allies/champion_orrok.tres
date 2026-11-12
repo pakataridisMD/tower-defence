@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_orrok"
+display_name = "Orrok"
+title = "the Mountain"
+description = "The Mountain walks. Walls do not survive him."
+role = 5
+element = &"earth"
+hero = &"orrok"
+order = 111
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 1200.0
+armour = 20.0
+speed = 30.0
+damage = 60.0
+attack_interval = 2.0
+attack_range = 52.0
+splash_radius = 70.0
+siege_multiplier = 3.5

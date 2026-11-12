@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"veil_blade"
+display_name = "Veilwalker Shades"
+title = "Shadow duellists"
+description = "Veilwalker duellists who step between shadows. They do not hold a road; they cut through it."
+role = 0
+element = &"void"
+order = 9
+cost = 130
+cooldown = 7.0
+count = 2
+max_health = 70.0
+armour = 0.0
+speed = 80.0
+blocks = false
+damage = 30.0
+attack_interval = 0.9
+attack_range = 36.0
+boss_multiplier = 1.5

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"pikeman"
+display_name = "Lantern Pikemen"
+title = "Long pikes"
+description = "The Lanternguard's pike line. Their long reach strikes first, and they brace against the big ones."
+role = 0
+element = &""
+order = 1
+cost = 80
+cooldown = 4.0
+count = 3
+max_health = 60.0
+armour = 1.0
+speed = 52.0
+damage = 11.0
+attack_interval = 1.1
+attack_range = 54.0
+boss_multiplier = 2.0

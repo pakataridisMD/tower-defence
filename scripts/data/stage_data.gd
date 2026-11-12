@@ -42,10 +42,25 @@ extends Resource
 @export var build_columns: PackedInt32Array = []
 ## Above 0, the next wave starts on its own this many seconds after a wave is cleared.
 @export var auto_wave_delay: float = 0.0
+## The counter-attack (the final assault): above 0, the citadel cannot be hurt by towers or skills at
+## all. Up to boss_wave the player only defends; the boss_wave brings the overlord down the road; from
+## counter_wave on the player musters units (data/allies) that march on the citadel, the waves come
+## on without end, and the citadel falls only to the units.
+@export var boss_wave: int = 0
+@export var counter_wave: int = 0
+## Gold handed to the player when the counter-attack begins.
+@export var war_chest: int = 0
+## Gold per second the camp sends the army during the counter-attack.
+@export var counter_income: float = 0.0
 
 
 func is_assault() -> bool:
 	return not structures.is_empty()
+
+
+## True for the final assault, where the player defends and then counter-attacks with units.
+func is_counter_assault() -> bool:
+	return is_assault() and counter_wave > 0
 
 
 ## The number of phases: the highest phase of any structure.

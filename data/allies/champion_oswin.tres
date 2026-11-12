@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_oswin"
+display_name = "Oswin the White Lantern"
+title = "Master of the Order of the Spire"
+description = "The White Lantern. In his light the whole army fights as one."
+role = 5
+element = &""
+hero = &"oswin"
+order = 115
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 700.0
+armour = 8.0
+speed = 55.0
+blocks = false
+damage = 36.0
+attack_interval = 1.0
+attack_range = 200.0
+heal_amount = 0.04
+heal_radius = 200.0
+heal_interval = 2.0
+aura_damage = 0.3
+aura_radius = 200.0

@@ -23,6 +23,8 @@ signal next_stage_pressed
 signal hero_pressed(hero_id: StringName)
 ## The selected hero's Move button.
 signal move_pressed
+## A unit picked in the muster bar of the counter-attack.
+signal muster_pressed(ally_id: StringName)
 
 const TOP_BAR_HEIGHT := 72.0
 const SIDE_PANEL_X := 1584.0
@@ -88,6 +90,8 @@ var _end_meta: Label
 var _end_stage: RichTextLabel
 var _campaign_button: Button
 var _next_stage_button: Button
+## The muster bar of the final assault's counter-attack, or null in any other stage.
+var muster: MusterBar
 
 
 func setup(p_sim: RunSim) -> void:
@@ -98,6 +102,7 @@ func setup(p_sim: RunSim) -> void:
 	_build_top_bar()
 	_build_side_panel()
 	_build_message()
+	_build_muster()
 	_build_end_panel()
 	# Everything in the HUD, and whatever it adds later (hero buttons, choices), uses the pixel fonts.
 	UiStyle.pixel_fonts(self)
@@ -368,6 +373,17 @@ func _build_skills(column: VBoxContainer) -> void:
 		_skill_ids.append(skill_id)
 
 
+func _build_muster() -> void:
+	if not sim.is_counter_assault() or sim.config.allies.is_empty():
+		return
+	muster = MusterBar.new()
+	muster.setup(sim)
+	muster.position = Vector2(24, 912)
+	muster.size = Vector2(1536, 144)
+	muster.muster_pressed.connect(func(ally_id: StringName) -> void: muster_pressed.emit(ally_id))
+	add_child(muster)
+
+
 func _build_message() -> void:
 	_message = UiStyle.label("", 30)
 	_message.add_theme_color_override("font_outline_color", UiStyle.MENU_INK)
@@ -600,7 +616,7 @@ func _hero_info(tower: SimTower) -> String:
 func _refresh() -> void:
 	_gold.text = "%d" % sim.gold
 	_lives.text = "%d" % sim.lives
-	_wave.text = "Wave %d / %d" % [sim.wave_number(), sim.total_waves()]
+	_wave.text = "Wave %d / %d" % [mini(sim.wave_number(), sim.total_waves()), sim.total_waves()]
 	var where: PackedStringArray = []
 	var difficulty := sim.config.difficulty
 	if difficulty != null and difficulty.order > 0:
@@ -626,6 +642,10 @@ func _refresh() -> void:
 			_wave_button.text = "Start wave (Space)"
 		RunSim.State.WAVE:
 			_wave_button.text = "Wave in progress"
+			if sim.rolls_on() and sim.next_wave_in() > 0.0:
+				_wave_button.text = "Next wave in %d s" % ceili(sim.next_wave_in())
+			elif sim.counter_started:
+				_wave_button.text = "Counter-attack!"
 		_:
 			_wave_button.text = "Run over"
 	var number := 0

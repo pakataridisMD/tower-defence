@@ -42,6 +42,21 @@ signal hero_ability_used(tower: SimTower, ability: HeroAbility, points: PackedVe
 ## A hero joined the party during the run (Oswin at the capital).
 signal hero_arrived(hero: HeroData)
 signal hero_leveled(tower: SimTower)
+## A boss changed into its next form (see EnemyData.next_form). `from` is the form it was.
+signal enemy_transformed(enemy: SimEnemy, from: EnemyData)
+## A boss that flees when beaten turned back toward its citadel.
+signal boss_fled(enemy: SimEnemy)
+## The final assault turned: from now on the player musters units against the citadel.
+signal counter_attack_started
+## Units marched out of our camp.
+signal allies_mustered(allies: Array[SimAlly])
+## A unit struck an enemy or a building.
+signal ally_attacked(ally: SimAlly, target: SimEnemy)
+## A unit healed these units.
+signal ally_healed(ally: SimAlly, healed: Array[SimAlly])
+signal ally_died(ally: SimAlly)
+## A building's defences struck these units.
+signal citadel_struck(structure: SimEnemy, targets: Array[SimAlly])
 
 enum State { BUILDING, WAVE, WON, LOST }
 
@@ -52,6 +67,24 @@ const STEP := 1.0 / 60.0
 const SIEGE_EVERY := 3
 ## How far a dying enemy's poison can jump.
 const POISON_SPREAD_RANGE := 160.0
+## A unit holding the road stops an enemy this many pixels in front of it.
+const CONTACT := 26.0
+## Enemies one unit can hold back at once; a champion holds more.
+const HOLD_COUNT := 2
+const CHAMPION_HOLD_COUNT := 5
+## A unit can strike a building from this many pixels further than its reach, as buildings are big.
+const BUILDING_REACH := 150.0
+## A unit this many pixels from the start of its road (a gate of the citadel), plus its reach,
+## strikes the citadel.
+const GATE_REACH := 30.0
+## A beaten boss flees this many times as fast as it walked.
+const FLEE_SPEED := 3.0
+## In the counter-attack the horde keeps coming: the wave starts again this many seconds after its
+## last enemy marched out, a little stronger each time.
+const COUNTER_LOOP_GAP := 4.0
+const COUNTER_LOOP_GROWTH := 0.06
+## A blow at least does this share of its damage, whatever the armour.
+const ALLY_MIN_DAMAGE := 0.2
 
 var config: RunConfig
 var state := State.BUILDING
@@ -115,6 +148,19 @@ var _hero_effects: Array[Array] = []
 var _bursts: Array[Array] = []
 ## Lives given back by kills during the running hero abilities, so each keeps to its cap.
 var _lives_from_kills := 0
+## The player's units in the counter-attack, marching or fighting.
+var allies: Array[SimAlly] = []
+## True once the counter-attack has begun (see StageData.counter_wave).
+var counter_started := false
+## Times the counter-attack's wave has started again.
+var counter_loops := 0
+var _counter_loop_wait := 0.0
+## Seconds until a rolling wave of the final assault brings the next one (see rolls_on()).
+var _roll_wait := 0.0
+## Seconds until each kind of unit can be mustered again, by ally id.
+var _muster_cooldowns: Dictionary[StringName, float] = {}
+## Gold from the camp's supply not yet paid out, under a whole coin.
+var _supply := 0.0
 
 
 func _init(p_config: RunConfig) -> void:
@@ -177,6 +223,17 @@ func wave_number() -> int:
 ## True when the run is an assault on the enemy base: it is won by bringing down its buildings.
 func is_assault() -> bool:
 	return not structures.is_empty()
+
+
+## True for the final assault, where the player defends, then musters units against the citadel.
+func is_counter_assault() -> bool:
+	return is_assault() and config.stage != null and config.stage.counter_wave > 0
+
+
+## Towers and skills can hurt the enemy's buildings, except in the counter-attack, where only the
+## units the player musters can.
+func towers_besiege() -> bool:
+	return is_assault() and not is_counter_assault()
 
 
 func total_phases() -> int:
@@ -334,7 +391,7 @@ func use_skill(skill_id: StringName, at: Vector2 = Vector2.ZERO) -> bool:
 		effects.append(scaled)
 	var targets: Array[SimEnemy] = enemies.duplicate()
 	for structure in structures:
-		if is_vulnerable(structure):
+		if is_vulnerable(structure) and towers_besiege():
 			targets.append(structure)
 	for enemy in targets:
 		if not enemy.alive or (skill.is_targeted() and enemy.position.distance_to(at) > skill.radius):
@@ -595,6 +652,11 @@ func sell_tower(tower: SimTower) -> int:
 func start_next_wave() -> bool:
 	if state != State.BUILDING or current_wave() == null:
 		return false
+	_begin_wave()
+	return true
+
+
+func _begin_wave() -> void:
 	var wave := current_wave()
 	state = State.WAVE
 	time_in_wave = 0.0
@@ -608,9 +670,37 @@ func start_next_wave() -> bool:
 		if hero != null and hero.arrives_at_wave == wave_number() and not party.has(hero):
 			party.append(hero)
 			hero_arrived.emit(hero)
+	_roll_wait = config.stage.auto_wave_delay if config.stage != null else 0.0
 	wave_started.emit(wave_number())
+	_advance_act()
 	changed.emit()
-	return true
+
+
+## The act of the final assault a wave belongs to: 1 while the player only defends, 2 for the wave the
+## overlord comes, 3 for the counter-attack. 0 in any other run.
+func assault_act(number: int = -1) -> int:
+	if not is_counter_assault():
+		return 0
+	var n := wave_number() if number < 0 else number
+	if n >= config.stage.counter_wave:
+		return 3
+	if config.stage.boss_wave > 0 and n >= config.stage.boss_wave:
+		return 2
+	return 1
+
+
+## Moves the final assault on to the act of the wave just started.
+func _advance_act() -> void:
+	var act := assault_act()
+	if act <= structure_phase or citadel_fallen:
+		return
+	structure_phase = act
+	if act >= 3 and not counter_started:
+		counter_started = true
+		gold += config.stage.war_chest
+		counter_attack_started.emit()
+	_recompute_towers()
+	phase_changed.emit(structure_phase)
 
 
 func allocate_node(id: StringName) -> bool:
@@ -649,6 +739,9 @@ func step(delta: float) -> void:
 	_rebuild_hash()
 	_update_towers(delta)
 	_update_projectiles(delta)
+	if counter_started:
+		_update_allies(delta)
+		_tick_structure_defences(delta)
 	_remove_dead()
 	if not _arrivals.is_empty():
 		enemies.append_array(_arrivals)
@@ -658,8 +751,55 @@ func step(delta: float) -> void:
 	if citadel_fallen and not _overlord_alive():
 		_end_run(true)
 		return
+	if counter_started:
+		_loop_counter_wave(delta)
+		return
+	if rolls_on():
+		if _spawner.is_finished():
+			_roll_wait -= delta
+			if _roll_wait <= 0.0:
+				_roll_wave()
+		return
 	if _spawner.is_finished() and enemies.is_empty():
 		_finish_wave()
+
+
+## In the final assault the horde never lets up while the player defends: each wave marches in a few
+## seconds after the last one has left the gates, whether or not the board is clear. The wave before
+## the Sunderer's ends as usual, so there is a breath before he comes.
+func rolls_on() -> bool:
+	return is_counter_assault() and config.stage.boss_wave > 0 and wave_number() < config.stage.boss_wave - 1
+
+
+## Seconds until the next wave rolls in, or -1 when the next wave waits for a break.
+func next_wave_in() -> float:
+	if state == State.WAVE and rolls_on() and _spawner.is_finished():
+		return maxf(0.0, _roll_wait)
+	if state == State.BUILDING:
+		return break_time_left
+	return -1.0
+
+
+## The wave being fought pays out, and the next one marches in at once.
+func _roll_wave() -> void:
+	var finished := current_wave()
+	wave_index += 1
+	var rewards := _pay_wave(finished)
+	wave_cleared.emit(wave_index, rewards[0], rewards[1])
+	_begin_wave()
+
+
+## The counter-attack's wave never ends while the citadel stands: once its last enemy has marched
+## out, it starts again, a little stronger.
+func _loop_counter_wave(delta: float) -> void:
+	if not _spawner.is_finished():
+		_counter_loop_wait = COUNTER_LOOP_GAP
+		return
+	_counter_loop_wait -= delta
+	if _counter_loop_wait <= 0.0 and current_wave() != null:
+		counter_loops += 1
+		_counter_loop_wait = COUNTER_LOOP_GAP
+		_spawner.start(current_wave(), lane_curves.size())
 
 
 ## Counts down the break before a wave that starts on its own. Call it while building; the game
@@ -678,6 +818,7 @@ func _spawn(delta: float) -> void:
 	var wave := current_wave()
 	if wave != null:
 		multiplier *= wave.health_multiplier
+	multiplier *= 1.0 + COUNTER_LOOP_GROWTH * counter_loops
 	for spawn in _spawner.advance(delta):
 		var group := spawn.group
 		var data: EnemyData = config.enemies.get(group.enemy)
@@ -729,8 +870,22 @@ func _release_from(parent: SimEnemy, enemy_id: StringName, count: int) -> void:
 
 
 func _move_enemies(delta: float) -> void:
+	if counter_started:
+		_hold_the_road()
 	for enemy in enemies:
 		if not enemy.alive:
+			continue
+		if enemy.transforming > 0.0:
+			enemy.transforming = maxf(0.0, enemy.transforming - delta)
+			continue
+		if enemy.fleeing:
+			enemy.progress -= enemy.base_speed * FLEE_SPEED * delta
+			if enemy.progress <= 0.0:
+				enemy.alive = false
+				enemy.escaped = true
+				enemy_escaped.emit(enemy)
+			else:
+				enemy.position = lane_curves[enemy.lane].sample_baked(enemy.progress)
 			continue
 		enemy.progress += enemy.speed() * delta
 		if enemy.progress >= lane_lengths[enemy.lane] and is_warded():
@@ -775,6 +930,8 @@ func _tick_traits(delta: float) -> void:
 
 
 func _tick_summons(enemy: SimEnemy, delta: float) -> void:
+	if enemy.transforming > 0.0 or enemy.fleeing:
+		return
 	var data := enemy.data
 	if data.summon_interval > 0.0 and not data.summon.is_empty():
 		enemy.summon_timer -= delta
@@ -795,6 +952,8 @@ func _tick_boss_tricks(delta: float) -> void:
 			casters.append(structure)
 	for caster in casters:
 		var data := caster.data
+		if caster.transforming > 0.0 or caster.fleeing:
+			continue
 		if data.escape_below > 0.0 and caster.health < caster.max_health * data.escape_below:
 			caster.alive = false
 			caster.escaped = true
@@ -926,12 +1085,15 @@ func _tick_statuses(delta: float) -> void:
 			continue
 		enemy.stun_immunity = maxf(0.0, enemy.stun_immunity - delta)
 		for kind: StringName in enemy.statuses.keys():
+			# A blow can change a boss's form, which clears what burned on the old one.
+			if not enemy.statuses.has(kind):
+				continue
 			var status: SimStatus = enemy.statuses[kind]
 			var dps := status.damage_per_second()
 			if dps > 0.0:
 				_damage(enemy, dps * minf(delta, status.time_left), status.source)
-				# Dead, or fallen in a heap with its statuses gone.
-				if not enemy.alive or enemy.downed > 0.0:
+				# Dead, fallen in a heap, or changing form: its statuses are gone.
+				if not enemy.alive or enemy.downed > 0.0 or enemy.transforming > 0.0 or enemy.fleeing:
 					break
 			status.time_left -= delta
 			if status.time_left <= 0.0:
@@ -945,9 +1107,10 @@ func _rebuild_hash() -> void:
 	for enemy in enemies:
 		if enemy.alive and not enemy.untouchable():
 			_hash.insert(enemy)
-	for structure in structures:
-		if is_vulnerable(structure):
-			_hash.insert(structure)
+	if towers_besiege():
+		for structure in structures:
+			if is_vulnerable(structure):
+				_hash.insert(structure)
 
 
 func _update_towers(delta: float) -> void:
@@ -970,7 +1133,7 @@ func _update_towers(delta: float) -> void:
 ## except for a siege shot now and then.
 func _find_target(tower: SimTower) -> SimEnemy:
 	tower.shots += 1
-	if not structures.is_empty() and tower.shots % SIEGE_EVERY == 0:
+	if towers_besiege() and tower.shots % SIEGE_EVERY == 0:
 		for structure in structures:
 			if is_vulnerable(structure) and structure.position.distance_to(tower.position) <= tower.attack_range:
 				return structure
@@ -1081,6 +1244,12 @@ func _damage(enemy: SimEnemy, amount: float, source: SimTower) -> void:
 	if source != null:
 		source.damage_dealt += dealt
 	if enemy.health <= 0.0:
+		if not enemy.data.next_form.is_empty() and config.enemies.has(enemy.data.next_form):
+			_transform(enemy)
+			return
+		if enemy.data.flee_when_beaten:
+			_flee(enemy)
+			return
 		if enemy.data.power == &"rise" and enemy.has_power and not enemy.risen and not enemy.has_status(&"burn"):
 			_fall(enemy)
 			return
@@ -1091,6 +1260,25 @@ func _damage(enemy: SimEnemy, amount: float, source: SimTower) -> void:
 		enemy.power_left = enemy.data.power_duration
 		enemy.power_timer = enemy.data.power_interval + enemy.data.power_duration
 		enemy_power.emit(enemy, enemy.data.power, [])
+
+
+## A boss beaten in one form rises in the next, at its full health.
+func _transform(enemy: SimEnemy) -> void:
+	var from := enemy.data
+	enemy.become(config.enemies[from.next_form], from.transform_seconds)
+	enemy_transformed.emit(enemy, from)
+
+
+## A beaten boss that flees: beyond reach, it runs back up its road and leaves the board. It pays its
+## bounty for the beating.
+func _flee(enemy: SimEnemy) -> void:
+	enemy.health = 0.0
+	enemy.fleeing = true
+	enemy.statuses.clear()
+	var bounty := roundi(enemy.data.bounty * gold_multiplier())
+	gold += bounty
+	gold_earned += bounty
+	boss_fled.emit(enemy)
 
 
 ## A grunt that would have died falls in a heap instead, out of reach, and rises a little later.
@@ -1152,6 +1340,21 @@ func _remove_dead() -> void:
 func _finish_wave() -> void:
 	var finished := current_wave()
 	wave_index += 1
+	var rewards := _pay_wave(finished)
+	projectiles.clear()
+	_bursts.clear()
+	if wave_index >= total_waves() and not is_assault():
+		_end_run(true)
+	else:
+		state = State.BUILDING
+		if config.stage != null and config.stage.auto_wave_delay > 0.0:
+			break_time_left = config.stage.auto_wave_delay
+	wave_cleared.emit(wave_index, rewards[0], rewards[1])
+	changed.emit()
+
+
+## Tree points and gold for a wave fought, and a level for every hero: [points, gold].
+func _pay_wave(finished: WaveData) -> Array[int]:
 	var rules := config.rules
 	var points := rules.tree_points_after_wave(wave_index, false)
 	if finished.is_boss:
@@ -1160,17 +1363,8 @@ func _finish_wave() -> void:
 	var bonus := roundi(run_stat(&"gold_per_wave", rules.gold_per_wave))
 	gold += bonus
 	gold_earned += bonus
-	projectiles.clear()
-	_bursts.clear()
 	_level_heroes()
-	if wave_index >= total_waves() and not is_assault():
-		_end_run(true)
-	else:
-		state = State.BUILDING
-		if config.stage != null and config.stage.auto_wave_delay > 0.0:
-			break_time_left = config.stage.auto_wave_delay
-	wave_cleared.emit(wave_index, points, bonus)
-	changed.emit()
+	return [points, bonus]
 
 
 func _end_run(won: bool) -> void:
@@ -1224,6 +1418,9 @@ func _place_structures() -> void:
 	if config.stage == null:
 		return
 	var multiplier := config.wave_set.health_multiplier(1) * config.enemy_health_multiplier()
+	# The citadel of the final assault is fought by units grown to the counter-attack's wave.
+	if config.stage.counter_wave > 0:
+		multiplier = config.wave_set.health_multiplier(config.stage.counter_wave) * config.enemy_health_multiplier()
 	for spec in config.stage.structures:
 		var data: EnemyData = config.enemies.get(spec.enemy) if spec != null else null
 		if data == null:
@@ -1238,6 +1435,11 @@ func _place_structures() -> void:
 		structure.position = config.map.cell_center(spec.cell)
 		structures.append(structure)
 		_structure_cells[spec.cell] = structure
+		if spec.footprint.has_area():
+			for x in range(spec.footprint.position.x, spec.footprint.end.x):
+				for y in range(spec.footprint.position.y, spec.footprint.end.y):
+					if config.map.is_inside(Vector2i(x, y)) and not is_path(Vector2i(x, y)):
+						_structure_cells[Vector2i(x, y)] = structure
 
 
 func _on_structure_fallen(structure: SimEnemy) -> void:
@@ -1373,7 +1575,7 @@ func move_error(tower: SimTower, cell: Vector2i) -> String:
 		return "The run is over"
 	if tower == null or not tower.is_hero() or not towers.has(tower):
 		return "Only heroes can move"
-	if state != State.BUILDING:
+	if state != State.BUILDING and not rolls_on():
 		return "Heroes can only move between waves"
 	if tower.moved_this_break:
 		return "%s has already moved this break" % tower.hero.display_name
@@ -1624,3 +1826,349 @@ func _apply_hero_auras() -> void:
 		for hero: SimTower in _heroes_on_board.values():
 			if not hero.hero.aura.is_empty() and hero.position.distance_to(tower.position) <= radius:
 				tower.hero_aura.append_array(hero.hero.aura)
+
+
+# --- The counter-attack ----------------------------------------------------------
+
+## Every kind of unit the player can muster in this run, in panel order.
+func ally_list() -> Array[AllyData]:
+	var result: Array[AllyData] = []
+	result.assign(config.allies.values())
+	result.sort_custom(func(a: AllyData, b: AllyData) -> bool:
+		return a.order < b.order if a.order != b.order else String(a.id) < String(b.id))
+	return result
+
+
+## How much a unit mustered now is grown: the wave's health growth, as skill damage is.
+func muster_growth() -> float:
+	return config.wave_set.health_multiplier(wave_number()) * config.enemy_health_multiplier()
+
+
+func ally_price(ally_id: StringName) -> int:
+	var data: AllyData = config.allies.get(ally_id)
+	return data.cost if data != null else 0
+
+
+## Seconds until another squad of this kind can be mustered. 0 when it can.
+func muster_cooldown_left(ally_id: StringName) -> float:
+	return _muster_cooldowns.get(ally_id, 0.0)
+
+
+## Units of a kind on the field now.
+func allies_alive(ally_id: StringName) -> int:
+	var count := 0
+	for ally in allies:
+		if ally.alive and ally.data.id == ally_id:
+			count += 1
+	return count
+
+
+## Why a squad cannot be mustered onto a road now, or an empty string if it can.
+func muster_error(ally_id: StringName, lane: int = 0) -> String:
+	if is_over():
+		return "The run is over"
+	if not is_counter_assault():
+		return "Units are only mustered in the final assault"
+	if not counter_started:
+		return "Hold the line until the counter-attack (wave %d)" % config.stage.counter_wave
+	var data: AllyData = config.allies.get(ally_id)
+	if data == null:
+		return "Unknown unit"
+	if lane < 0 or lane >= lane_curves.size():
+		return "No such road"
+	if data.max_alive > 0 and allies_alive(ally_id) >= data.max_alive:
+		return "%s is already on the field" % data.display_name
+	var left := muster_cooldown_left(ally_id)
+	if left > 0.0:
+		return "%s is ready in %d s" % [data.display_name, ceili(left)]
+	if gold < data.cost:
+		return "Not enough gold"
+	return ""
+
+
+## Musters a squad onto a road: it marches out of our camp toward the citadel. Returns the units, or
+## an empty list if it cannot be mustered now.
+func muster(ally_id: StringName, lane: int = 0) -> Array[SimAlly]:
+	var squad: Array[SimAlly] = []
+	if not muster_error(ally_id, lane).is_empty():
+		return squad
+	var data: AllyData = config.allies[ally_id]
+	gold -= data.cost
+	_muster_cooldowns[ally_id] = data.cooldown
+	var growth := muster_growth()
+	for i in maxi(1, data.count):
+		var ally := SimAlly.new(_new_id(), data, growth)
+		ally.lane = lane
+		ally.progress = maxf(0.0, lane_lengths[lane] - 12.0 - 22.0 * i)
+		ally.position = lane_curves[lane].sample_baked(ally.progress)
+		allies.append(ally)
+		squad.append(ally)
+	allies_mustered.emit(squad)
+	changed.emit()
+	return squad
+
+
+## The road with the fewest enemies on it, for the bot and for a muster with no road picked.
+func quietest_lane() -> int:
+	var counts: Array[int] = []
+	counts.resize(lane_curves.size())
+	for enemy in enemies:
+		if enemy.alive:
+			counts[enemy.lane] += 1
+	var best := 0
+	for lane in counts.size():
+		if not _closed_lanes.has(lane) and counts[lane] < counts[best]:
+			best = lane
+	return best
+
+
+## The road whose end is nearest a point, for mustering where the player clicks.
+func lane_near(at: Vector2) -> int:
+	var best := 0
+	var best_distance := INF
+	for lane in lane_curves.size():
+		var distance := lane_curves[lane].get_closest_point(at).distance_to(at)
+		if distance < best_distance:
+			best_distance = distance
+			best = lane
+	return best
+
+
+## Units holding the road stop the enemies that walk into them. A unit holds a few at a time, and a
+## boss only stops for a champion.
+func _hold_the_road() -> void:
+	for enemy in enemies:
+		enemy.blocked_by = null
+	for ally in allies:
+		if not ally.alive or not ally.data.blocks or ally.data.flying:
+			continue
+		var limit := CHAMPION_HOLD_COUNT if ally.is_champion() else HOLD_COUNT
+		var held := 0
+		for enemy in enemies:
+			if held >= limit:
+				break
+			if not enemy.alive or enemy.blocked_by != null or enemy.lane != ally.lane or enemy.untouchable():
+				continue
+			if enemy.data.tags.has(&"boss") and not ally.is_champion():
+				continue
+			var gap := ally.progress - enemy.progress
+			if gap >= -CONTACT * 0.5 and gap <= CONTACT:
+				enemy.blocked_by = ally
+				held += 1
+
+
+## Units fight, heal, march, and fall. Enemies strike the units holding them.
+func _update_allies(delta: float) -> void:
+	for cooldown_id: StringName in _muster_cooldowns.keys():
+		_muster_cooldowns[cooldown_id] = maxf(0.0, _muster_cooldowns[cooldown_id] - delta)
+	# The camp keeps the army supplied while it marches.
+	_supply += config.stage.counter_income * delta
+	if _supply >= 1.0:
+		var paid := floori(_supply)
+		_supply -= paid
+		gold += paid
+		gold_earned += paid
+	if allies.is_empty():
+		return
+	_apply_banners()
+	for enemy in enemies:
+		if enemy.alive and enemy.blocked_by != null and enemy.blocked_by.alive:
+			enemy.attack_timer -= delta
+			if enemy.attack_timer <= 0.0:
+				enemy.attack_timer += 1.0
+				_wound(enemy.blocked_by, enemy_attack_damage(enemy))
+	for ally in allies:
+		if not ally.alive:
+			continue
+		if ally.data.heal_amount > 0.0 and ally.data.heal_interval > 0.0:
+			ally.heal_timer -= delta
+			if ally.heal_timer <= 0.0:
+				ally.heal_timer += ally.data.heal_interval
+				_heal_around(ally)
+		ally.cooldown = maxf(0.0, ally.cooldown - delta)
+		var target := _ally_target(ally)
+		ally.fighting = target != null
+		if target == null:
+			ally.progress = maxf(0.0, ally.progress - ally.data.speed * delta)
+			ally.position = lane_curves[ally.lane].sample_baked(ally.progress)
+			continue
+		ally.target = target
+		if ally.cooldown <= 0.0:
+			ally.cooldown = ally.data.attack_interval
+			_ally_strike(ally, target)
+	var standing: Array[SimAlly] = []
+	for ally in allies:
+		if ally.alive:
+			standing.append(ally)
+	allies = standing
+
+
+## What a unit fights now: the enemy it holds or the nearest in its reach, else a building it can
+## reach. Null while the road ahead is clear.
+func _ally_target(ally: SimAlly) -> SimEnemy:
+	if not ally.data.siege_only:
+		var best: SimEnemy = null
+		var best_distance := INF
+		for enemy in _hash.query(ally.position, ally.data.attack_range):
+			if enemy.structure:
+				continue
+			var distance := enemy.position.distance_squared_to(ally.position)
+			if enemy.blocked_by == ally:
+				distance = -1.0
+			if distance < best_distance:
+				best_distance = distance
+				best = enemy
+		if best != null:
+			return best
+	for structure in structures:
+		if not is_vulnerable(structure):
+			continue
+		# Every road of the final assault starts at one of the citadel's gates: a unit at the gate, or
+		# with the gate in its reach, strikes the citadel.
+		if is_counter_assault() and ally.progress <= ally.data.attack_range + GATE_REACH:
+			return structure
+		if structure.position.distance_to(ally.position) <= ally.data.attack_range + BUILDING_REACH:
+			return structure
+	return null
+
+
+## One blow, with its splash, chain and effects.
+func _ally_strike(ally: SimAlly, target: SimEnemy) -> void:
+	ally_attacked.emit(ally, target)
+	var hit: Array[SimEnemy] = [target]
+	if not target.structure:
+		if ally.data.splash_radius > 0.0:
+			for other in _hash.query(target.position, ally.data.splash_radius):
+				if other != target and not other.structure:
+					hit.append(other)
+		var current := target
+		for jump in ally.data.chain_count:
+			var next: SimEnemy = null
+			var best := INF
+			for other in _hash.query(current.position, 140.0):
+				if hit.has(other) or other.structure:
+					continue
+				var distance := other.position.distance_squared_to(current.position)
+				if distance < best:
+					best = distance
+					next = other
+			if next == null:
+				break
+			hit.append(next)
+			current = next
+	for enemy in hit:
+		_ally_hit(ally, enemy, 1.0 if enemy == target else 0.6)
+
+
+func _ally_hit(ally: SimAlly, enemy: SimEnemy, share: float) -> void:
+	if not enemy.alive or enemy.untouchable():
+		return
+	if enemy.shield_up:
+		enemy.shield_up = false
+		enemy.power_timer = enemy.data.power_interval
+		enemy_power.emit(enemy, &"block", [])
+		return
+	var elements: Array[int] = []
+	if not ally.data.element.is_empty():
+		elements.append(config.element_index(ally.data.element))
+	var multiplier := ElementRules.damage_multiplier(elements, enemy.element)
+	if ally.is_champion() and ally.data.element.is_empty():
+		# Champions of the light strike each foe where it is weakest.
+		multiplier = ElementRules.OPPOSITE_ELEMENT_MULTIPLIER if enemy.element >= 0 else 1.0
+	var amount := ally.damage * share * (1.0 + ally.aura_bonus) * multiplier
+	if enemy.structure:
+		amount *= ally.data.siege_multiplier
+	elif enemy.data.tags.has(&"boss"):
+		amount *= ally.data.boss_multiplier
+	amount = maxf(amount - enemy.effective_armour(), amount * ALLY_MIN_DAMAGE) * (1.0 + enemy.damage_taken_bonus())
+	var before := enemy.health
+	_damage(enemy, amount, null)
+	ally.damage_dealt += maxf(0.0, before - maxf(enemy.health, 0.0))
+	if not enemy.alive or enemy.structure:
+		return
+	if ally.data.slow > 0.0 and ally.data.slow_duration > 0.0:
+		var slow := StatusEffectData.new()
+		slow.kind = &"slow"
+		slow.slow = ally.data.slow
+		slow.duration = ally.data.slow_duration
+		enemy.apply_status(slow, null, multiplier)
+	if not ally.data.dot_kind.is_empty() and ally.dot_damage > 0.0:
+		var dot := StatusEffectData.new()
+		dot.kind = ally.data.dot_kind
+		dot.damage_per_second = ally.dot_damage
+		dot.duration = maxf(0.5, ally.data.dot_duration)
+		enemy.apply_status(dot, null, multiplier)
+
+
+## A banner's bonus to the units around it.
+func _apply_banners() -> void:
+	var bearers: Array[SimAlly] = []
+	for ally in allies:
+		ally.aura_bonus = 0.0
+		if ally.alive and ally.data.aura_damage > 0.0:
+			bearers.append(ally)
+	for bearer in bearers:
+		var reach := bearer.data.aura_radius * bearer.data.aura_radius
+		for ally in allies:
+			if ally != bearer and ally.position.distance_squared_to(bearer.position) <= reach:
+				ally.aura_bonus = maxf(ally.aura_bonus, bearer.data.aura_damage)
+
+
+func _heal_around(healer: SimAlly) -> void:
+	var healed: Array[SimAlly] = []
+	var reach := healer.data.heal_radius * healer.data.heal_radius
+	for ally in allies:
+		if ally.alive and ally.health < ally.max_health and ally.position.distance_squared_to(healer.position) <= reach:
+			ally.health = minf(ally.max_health, ally.health + ally.max_health * healer.data.heal_amount)
+			healed.append(ally)
+	if not healed.is_empty():
+		ally_healed.emit(healer, healed)
+
+
+## Damage per blow an enemy deals to the unit holding it: one blow a second.
+func enemy_attack_damage(enemy: SimEnemy) -> float:
+	var base := enemy.data.attack_damage
+	if base <= 0.0:
+		base = 5.0 + 4.0 * minf(enemy.data.leak_damage, 10)
+	return base * enemy.health_multiplier
+
+
+## A unit takes a blow, less its armour.
+func _wound(ally: SimAlly, amount: float) -> void:
+	if not ally.alive:
+		return
+	ally.health -= maxf(amount - ally.data.armour, amount * ALLY_MIN_DAMAGE)
+	if ally.health <= 0.0:
+		ally.health = 0.0
+		ally.alive = false
+		for enemy in enemies:
+			if enemy.blocked_by == ally:
+				enemy.blocked_by = null
+		ally_died.emit(ally)
+
+
+## The citadel's spires strike the units that come near it.
+func _tick_structure_defences(delta: float) -> void:
+	for structure in structures:
+		var data := structure.data
+		if not is_vulnerable(structure) or data.bolt_interval <= 0.0 or data.bolt_damage <= 0.0:
+			continue
+		structure.bolt_timer -= delta
+		if structure.bolt_timer > 0.0:
+			continue
+		structure.bolt_timer += data.bolt_interval
+		var near: Array[SimAlly] = []
+		var reach := data.bolt_radius * data.bolt_radius
+		for ally in allies:
+			if ally.alive and ally.position.distance_squared_to(structure.position) <= reach:
+				near.append(ally)
+		if near.is_empty():
+			continue
+		var at := structure.position
+		near.sort_custom(func(a: SimAlly, b: SimAlly) -> bool: return a.position.distance_squared_to(at) < b.position.distance_squared_to(at))
+		var struck: Array[SimAlly] = []
+		for i in mini(maxi(1, data.bolt_count), near.size()):
+			struck.append(near[i])
+		citadel_struck.emit(structure, struck)
+		for ally in struck:
+			_wound(ally, data.bolt_damage * structure.health_multiplier)

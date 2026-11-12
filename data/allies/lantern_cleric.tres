@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"lantern_cleric"
+display_name = "Order Lantern-Bearers"
+title = "Light and mending"
+description = "Brothers and sisters of the Order of the Spire with white lanterns. The light heals whoever stands in it."
+role = 3
+element = &""
+order = 14
+cost = 140
+cooldown = 12.0
+count = 1
+max_health = 80.0
+armour = 2.0
+speed = 50.0
+damage = 6.0
+attack_interval = 1.0
+attack_range = 40.0
+heal_amount = 0.05
+heal_radius = 180.0
+heal_interval = 1.5

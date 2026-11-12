@@ -22,7 +22,7 @@ extends Node
 ## Add --look[=stage,stage] for the graphics look test: in each stage (the fire and jungle lands by default)
 ## one of each base tower is built in a row by the road, then the whole map, the row up close at x1
 ## and x2, and the same row at night are taken.
-## Add --story to take the cinematic player, a Herald's boss banner, the assault on the citadel and
+## Add --story to take the cinematic player, a Herald's boss banner, the final level's defence and counter-attack and
 ## the campaign map with the citadel on it.
 
 const MENU_SCENE := preload("res://scenes/main.tscn")
@@ -498,7 +498,7 @@ func _run_story() -> void:
 		game.free()
 		await _wait(0.1)
 
-	# The assault: the opening, then the second movement once the gate has fallen.
+	# The final level: the defence before the citadel, then the counter-attack with the army at its gates.
 	Progress.active_stage = &"assault_1"
 	var assault := GAME_SCENE.instantiate() as Game
 	assault.autoplay = true
@@ -506,11 +506,20 @@ func _run_story() -> void:
 	await _until(func() -> bool: return assault.sim.wave_number() >= 4 and assault.sim.time_in_wave > 8.0 \
 			or assault.sim.is_over())
 	await _shot("story_assault_gate")
-	Engine.time_scale = 8.0
-	await _until(func() -> bool: return assault.sim.structure_phase >= 2 or assault.sim.is_over())
+	# The turning's own scene would hold the battle still: this picture is of the fight after it.
+	Progress.mark_seen(&"the_turning")
+	assault.sim.enemies.clear()
+	assault.sim.wave_index = assault.sim.config.stage.counter_wave - 1
+	assault.sim.start_next_wave()
+	assault.sim.gold = 2400
+	# No towers were built in the waves skipped: keep the run alive for the picture.
+	assault.sim.lives = 9999
+	Engine.time_scale = 4.0
+	var citadel: SimEnemy = assault.sim.structures[0]
+	await _until(func() -> bool: return citadel.health < 0.8 * citadel.max_health or assault.sim.is_over())
 	Engine.time_scale = 1.0
-	await _wait(3.0)
-	await _shot("story_assault_heralds")
+	await _wait(1.0)
+	await _shot("story_counter_attack")
 	assault.free()
 
 	# The campaign map once the Convergence is won: the road to the citadel opens.

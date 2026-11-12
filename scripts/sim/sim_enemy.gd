@@ -61,6 +61,17 @@ var shield_up := false
 ## Seconds left of a war cry's speed, and how much faster it runs meanwhile.
 var haste_left := 0.0
 var haste := 0.0
+## Seconds left while it changes into its next form: it stands still and nothing can touch it.
+var transforming := 0.0
+## How many times it has changed form, from 0.
+var form := 0
+## True once a boss that flees when beaten has turned back toward its citadel.
+var fleeing := false
+## The mustered unit holding it on the road, or null.
+var blocked_by: SimAlly
+## Seconds until it can strike the unit holding it, and until a building's defences fire again.
+var attack_timer := 0.0
+var bolt_timer := 0.0
 
 
 func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
@@ -83,10 +94,31 @@ func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
 	health = max_health
 	armour = p_data.armour
 	base_speed = p_data.speed
+	bolt_timer = p_data.bolt_interval
+
+
+## Turns it into another kind of enemy at the same strength: a boss's next form. It comes back at the
+## new form's full health and starts its tricks afresh.
+func become(p_data: EnemyData, seconds: float) -> void:
+	data = p_data
+	max_health = p_data.max_health * health_multiplier
+	health = max_health
+	armour = p_data.armour
+	base_speed = p_data.speed
+	summon_timer = p_data.summon_interval
+	prism_timer = p_data.prismatic_interval
+	blink_timer = p_data.blink_interval
+	silence_timer = p_data.silence_interval
+	enraged = false
+	statuses.clear()
+	knockback_taken = 0.0
+	form += 1
+	transforming = maxf(0.1, seconds)
 
 
 func speed() -> float:
-	if structure or statuses.has(&"stun") or statuses.has(&"root") or downed > 0.0 or is_hardened():
+	if structure or statuses.has(&"stun") or statuses.has(&"root") or downed > 0.0 or is_hardened() \
+			or transforming > 0.0 or blocked_by != null:
 		return 0.0
 	var slow := 0.0
 	for status: SimStatus in statuses.values():
@@ -106,10 +138,10 @@ func is_hardened() -> bool:
 	return power_left > 0.0 and data.power == &"harden"
 
 
-## True while nothing can touch it: lying in a heap before it rises, or phased out. Towers do not
-## aim at it, and hits, effects and pushes pass it by.
+## True while nothing can touch it: lying in a heap before it rises, phased out, changing form or
+## fleeing. Towers do not aim at it, and hits, effects and pushes pass it by.
 func untouchable() -> bool:
-	return downed > 0.0 or is_phased()
+	return downed > 0.0 or is_phased() or transforming > 0.0 or fleeing
 
 
 ## True when it is free to use its power: it has one, and nothing holds it.

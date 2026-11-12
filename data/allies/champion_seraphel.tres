@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_seraphel"
+display_name = "Seraphel the Dawnblade"
+title = "Knight of the Sunstone"
+description = "The Dawnblade's glass sword burns brightest against the dark."
+role = 5
+element = &""
+hero = &"seraphel"
+order = 114
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 620.0
+armour = 12.0
+speed = 62.0
+damage = 52.0
+attack_interval = 1.0
+attack_range = 46.0
+siege_multiplier = 1.5
+boss_multiplier = 2.0
