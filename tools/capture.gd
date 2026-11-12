@@ -465,6 +465,9 @@ func _run_weather() -> void:
 			print("Saved clip ", folder)
 		game.free()
 		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
 
 ## Each tower in --towers five times over (levels 1, 2, 3 and both ascendancies) in the free cells nearest
 ## a bend of the road, then stills by day and night and a clip of them idling and firing at a wave.
