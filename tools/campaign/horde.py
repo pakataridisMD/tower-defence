@@ -224,6 +224,20 @@ def string(v):
     return '"' + v.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
+# Which of the Unbound's three kinds each one is (bible section 4): Hollowed (living people the
+# Unmaking emptied), Risen (the dead, marching) or Wild (beasts and spirits of the invading element).
+# Its description starts with the kind, as the first horde's do.
+KIND = {
+    "brinecaller": "Risen", "netcaster": "Risen", "mire_eel": "Wild", "fogwife": "Hollowed", "rimeback": "Wild",
+    "oathbroken": "Hollowed", "quarry_hound": "Wild", "runebearer": "Hollowed", "geode": "Wild", "menhir": "Wild",
+    "lightdrinker": "Hollowed", "umbral_stalker": "Wild", "gravecaller": "Hollowed", "wailing_widow": "Risen",
+    "voidmaw": "Wild", "cinderhound": "Wild", "smoke_wraith": "Wild", "glass_singer": "Hollowed",
+    "slagwalker": "Hollowed", "brass_juggernaut": "Wild", "gale_harpy": "Wild", "spark_wisp": "Wild",
+    "voiceless": "Hollowed", "stormrider": "Risen", "squall_witch": "Hollowed", "briarling": "Wild",
+    "seedsower": "Hollowed", "greenwitch": "Hollowed", "briar_stag": "Wild", "barkhulk": "Wild",
+}
+
+
 def write_enemy(row):
     eid, name, host, hp, speed, armour, bounty, leak, tags, power, nums, desc, lore = row
     h = HOSTS[host]
@@ -236,7 +250,7 @@ def write_enemy(row):
     lines += [f"bounty = {bounty}", f"leak_damage = {leak}"]
     if tags:
         lines.append("tags = Array[StringName]([%s])" % ", ".join(sn(t) for t in tags))
-    lines.append(f"description = {string(desc)}")
+    lines.append(f"description = {string(KIND[eid] + '. ' + desc)}")
     lines.append(f"element = {sn(h['element'])}")
     lines.append(f"power = {sn(power)}")
     for key, field in (("interval", "power_interval"), ("duration", "power_duration"), ("radius", "power_radius"),
@@ -262,13 +276,14 @@ def write_bestiary():
             if row[2] != host:
                 continue
             eid, name, _h, hp, speed, armour, bounty, leak, tags, power, nums, desc, lore = row
-            out += [f"### {name}", "", f"*{desc}*", "", lore, "",
+            out += [f"### {name}", "", f"*{KIND[eid]}. {desc}*", "", lore, "",
                     f"Health {hp}, speed {speed}, armour {armour}, bounty {bounty}, lives {leak}. Power: `{power}`.", ""]
     with open("docs/story/horde.md", "w") as fh:
         fh.write("\n".join(out))
 
 
 def main():
+    assert set(KIND) == {r[0] for r in ROSTER}
     assert len(ROSTER) == 30 and len({r[0] for r in ROSTER}) == 30 and len({r[9] for r in ROSTER}) == 30
     for row in ROSTER:
         write_enemy(row)
