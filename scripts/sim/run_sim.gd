@@ -75,6 +75,9 @@ enum State { BUILDING, WAVE, WON, LOST }
 
 ## Simulation step used by the game scene. Tests may use bigger steps.
 const STEP := 1.0 / 60.0
+## Seconds a break lasts before the next wave starts on its own, unless the stage sets its own
+## auto_wave_delay. The player can start the wave sooner; the first wave always waits for them.
+const AUTO_WAVE_DELAY := 15.0
 ## In an assault, every this many attacks a tower in reach of a building it can hurt shoots the
 ## building, even with enemies in range, so the siege moves on during a crowded wave.
 const SIEGE_EVERY := 3
@@ -1310,6 +1313,13 @@ func _loop_counter_wave(delta: float) -> void:
 		_spawner.start(_wave_as_fought if _wave_as_fought != null else current_wave(), lane_curves.size())
 
 
+## Seconds the break after a cleared wave lasts before the next wave starts on its own.
+func break_length() -> float:
+	if config.stage != null and config.stage.auto_wave_delay > 0.0:
+		return config.stage.auto_wave_delay
+	return AUTO_WAVE_DELAY
+
+
 ## Counts down the break before a wave that starts on its own. Call it while building; the game
 ## does so every frame. Returns true when it started the wave.
 func tick_break(delta: float) -> bool:
@@ -1953,8 +1963,7 @@ func _finish_wave() -> void:
 		_end_run(true)
 	else:
 		state = State.BUILDING
-		if config.stage != null and config.stage.auto_wave_delay > 0.0:
-			break_time_left = config.stage.auto_wave_delay
+		break_time_left = break_length()
 		_open_due_cave()
 	wave_cleared.emit(wave_index, rewards[0], rewards[1])
 	changed.emit()

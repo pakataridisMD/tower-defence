@@ -105,6 +105,35 @@ func test_a_cleared_wave_pays_points_and_gold() -> void:
 	assert_true(sim.gold >= gold_before + 20, "wave bonus plus bounties")
 
 
+func test_next_wave_starts_on_its_own_after_the_break() -> void:
+	var sim := _sim()
+	sim.lives = 999
+	assert_lt(sim.break_time_left, 0.0, "the first wave waits for the player")
+	assert_false(sim.tick_break(60.0), "nothing counts down before the first wave")
+	assert_eq(sim.state, RunSim.State.BUILDING)
+	sim.start_next_wave()
+	_run_until_building(sim)
+	assert_eq(sim.state, RunSim.State.BUILDING)
+	assert_eq(sim.break_time_left, RunSim.AUTO_WAVE_DELAY, "a 15 second break after a cleared wave")
+	assert_false(sim.tick_break(RunSim.AUTO_WAVE_DELAY - 0.5))
+	assert_eq(sim.state, RunSim.State.BUILDING, "still building with half a second left")
+	assert_true(sim.tick_break(1.0), "the wave starts when the break runs out")
+	assert_eq(sim.state, RunSim.State.WAVE)
+	assert_eq(sim.wave_number(), 2)
+	assert_lt(sim.break_time_left, 0.0)
+
+
+func test_starting_the_wave_early_ends_the_countdown() -> void:
+	var sim := _sim()
+	sim.lives = 999
+	sim.start_next_wave()
+	_run_until_building(sim)
+	sim.tick_break(3.0)
+	assert_true(sim.start_next_wave())
+	assert_lt(sim.break_time_left, 0.0)
+	assert_false(sim.tick_break(60.0))
+
+
 func test_leaks_cost_lives_and_can_end_the_run() -> void:
 	var sim := _sim([Modifier.create(&"starting_lives", Modifier.Kind.FLAT, -18.0)])
 	watch_signals(sim)
