@@ -84,6 +84,11 @@ var _ground_fx: Node2D
 ## Drawn over everything: what is hurting each enemy, and the rings and sparks of hits.
 var _marks: Node2D
 var _fx: Array[Fx] = []
+var _corpses: Array[Corpse] = []
+## Bodies left playing their deaths at once, oldest cleared first.
+const MAX_CORPSES := 40
+## Seconds a body stays on the ground after its death has played, fading out.
+const CORPSE_LINGER := 1.2
 ## The war camps and the city at the road ends, or null when there is no art for them.
 var landmarks: LandmarkArt
 
@@ -111,6 +116,8 @@ class Fx:
 	var count := 5
 	var salt := 0
 	var width := 1.0
+	## Set for a beam: a line from `at` to here that fades (a mender's healing reaching an ally).
+	var beam_to := Vector2.INF
 
 
 class TowerVisual:
@@ -150,6 +157,28 @@ class EnemyVisual:
 	## The sprite's size in art pixels, as drawn.
 	var size := Vector2.ZERO
 	var size_scale := 1.0
+	## Its power's frames (see tools/art/gen_enemy_powers.py) and its death's, empty without art.
+	var power_frames: Array[CanvasTexture] = []
+	var power_fps := 10.0
+	## The power frame held while the power lasts (phased out, turned to stone), or -1.
+	var power_hold := -1
+	var death_frames: Array[CanvasTexture] = []
+	var death_fps := 10.0
+	## What it is showing: &"walk", &"power" (its power, once), &"unpower" (the power played back to
+	## the start as it wears off) or &"fall" (lying in a heap before it rises).
+	var anim := &"walk"
+	var anim_time := 0.0
+	## Above 0, it faces its power's target for this many more seconds instead of where it walks.
+	var face_time := 0.0
+	var face_left := false
+
+
+## A killed enemy playing out its death where it fell.
+class Corpse:
+	var sprite: Sprite2D
+	var frames: Array[CanvasTexture] = []
+	var fps := 10.0
+	var time := 0.0
 
 
 # ------------------------------------------------------------------ setup
@@ -238,6 +267,7 @@ func setup(p_sim: RunSim) -> void:
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.enemy_killed.connect(_on_enemy_killed)
 	sim.skill_used.connect(_on_skill_used)
+	sim.enemy_power.connect(_on_enemy_power)
 	_update_light(0.0)
 	day_night.snap()
 	_update_light(0.0)
@@ -451,6 +481,7 @@ func _process(delta: float) -> void:
 	_sync_towers(delta)
 	_sync_enemies(delta)
 	_sync_shots()
+	_advance_corpses(delta)
 	if landmarks != null:
 		landmarks.update(delta)
 	_update_shadows()
@@ -779,6 +810,16 @@ func _make_enemy(enemy: SimEnemy, tint: Color) -> EnemyVisual:
 		if meta.get("gear", false):
 			visual.gear_frames.append(lit_texture(ART + "enemies/%s_gear_%d" % [enemy.data.id, f]))
 			visual.glow_frames.append(load(ART + "enemies/%s_gear_%d_glow.png" % [enemy.data.id, f]))
+	for anim: String in ["power", "death"]:
+		var spec: Dictionary = meta.get(anim, {})
+		var list: Array[CanvasTexture] = visual.power_frames if anim == "power" else visual.death_frames
+		for f in int(spec.get("frames", 0)):
+			list.append(lit_texture(ART + "enemies/%s_%s_%d" % [enemy.data.id, anim, f]))
+		if anim == "power":
+			visual.power_fps = float(spec.get("fps", 10))
+			visual.power_hold = int(spec.get("hold", -1))
+		else:
+			visual.death_fps = float(spec.get("fps", 10))
 	var anchor: Array = meta["anchor"]
 	var offset := -Vector2(anchor[0], anchor[1])
 	var size: Array = meta["size"]
@@ -820,12 +861,13 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 	if not enemy.has_status(&"stun"):
 		visual.time += delta * (0.6 + speed_factor * 0.4) * (1.6 if enemy.data.tags.has(&"fast") else 1.0)
 	var frame := int(visual.time * 9.0) % visual.frames.size()
-	visual.body.texture = visual.frames[frame]
+	visual.body.texture = _enemy_frame(visual, delta, frame)
 	if visual.gear != null:
 		visual.gear.texture = visual.gear_frames[frame]
 		visual.gear_glow.texture = visual.glow_frames[frame]
-	if absf(pos.x - visual.last_x) > 0.01:
-		var left := pos.x < visual.last_x
+	visual.face_time = maxf(0.0, visual.face_time - delta)
+	if visual.face_time > 0.0 or absf(pos.x - visual.last_x) > 0.01:
+		var left := visual.face_left if visual.face_time > 0.0 else pos.x < visual.last_x
 		visual.body.flip_h = left
 		if visual.gear != null:
 			visual.gear.flip_h = left
@@ -856,6 +898,14 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 		color = color.darkened(0.15)
 	if enemy.has_status(&"stun"):
 		color = color.lerp(Color(1.0, 0.9, 0.5), 0.5)
+	if enemy.is_hardened():
+		# Turned to stone: grey, cold and still, with the crystals bright.
+		color = color.lerp(Color(0.42, 0.46, 0.55), 0.6)
+	if enemy.is_phased():
+		# Thinned into the air: pale and flickering.
+		color = Color(color.lerp(Color(0.75, 0.95, 1.0), 0.5), 0.42 + 0.12 * sin(_elapsed * 23.0 + float(enemy.id)))
+	if enemy.haste_left > 0.0:
+		color = color.lerp(Color(1.0, 0.55, 0.45), 0.18 + 0.08 * pulse)
 	visual.body.modulate = color.lerp(Color(1.8, 1.8, 1.8), visual.flash * 0.7)
 	if visual.gear != null:
 		visual.gear.modulate = Color(1, 1, 1).lerp(Color(1.8, 1.8, 1.8), visual.flash * 0.7)
@@ -1027,6 +1077,214 @@ func _update_shadows() -> void:
 			caster.sun.flip_h = caster.flip_from.flip_h
 
 
+## The frame an enemy shows now: its walk, its power playing out or held, or its death while it lies
+## in a heap. `walk_frame` is the walk's frame for this moment.
+func _enemy_frame(visual: EnemyVisual, delta: float, walk_frame: int) -> CanvasTexture:
+	var enemy := visual.enemy
+	visual.anim_time += delta
+	if enemy.downed > 0.0:
+		if visual.anim != &"fall":
+			visual.anim = &"fall"
+			visual.anim_time = 0.0
+		if visual.death_frames.is_empty():
+			return visual.frames[0]
+		return visual.death_frames[mini(int(visual.anim_time * visual.death_fps), visual.death_frames.size() - 1)]
+	if visual.anim == &"fall":
+		# It stands up: a grunt's power is its rise.
+		visual.anim = &"walk"
+	var count := visual.power_frames.size()
+	if count == 0 or visual.anim == &"walk":
+		return visual.frames[walk_frame]
+	var step := int(visual.anim_time * visual.power_fps)
+	var lasting := enemy.is_phased() or enemy.is_hardened()
+	if visual.anim == &"power":
+		if visual.power_hold >= 0 and step >= visual.power_hold:
+			if lasting:
+				return visual.power_frames[visual.power_hold]
+			# It wears off: play back to the start.
+			visual.anim = &"unpower"
+			visual.anim_time = 0.0
+			return visual.power_frames[visual.power_hold]
+		if step >= count:
+			visual.anim = &"walk"
+			return visual.frames[walk_frame]
+		return visual.power_frames[step]
+	# &"unpower"
+	var back := (visual.power_hold if visual.power_hold >= 0 else count - 1) - step
+	if back < 0:
+		visual.anim = &"walk"
+		return visual.frames[walk_frame]
+	return visual.power_frames[back]
+
+
+## Starts an enemy's power animation from its first frame.
+func _play_power(enemy: SimEnemy) -> void:
+	var visual: EnemyVisual = _enemies.get(enemy.id)
+	if visual != null and not visual.power_frames.is_empty():
+		visual.anim = &"power"
+		visual.anim_time = 0.0
+
+
+## A killed enemy plays out its death where it fell, then fades.
+func _leave_corpse(enemy: SimEnemy) -> void:
+	var visual: EnemyVisual = _enemies.get(enemy.id)
+	if visual == null or visual.death_frames.is_empty():
+		return
+	if _corpses.size() >= MAX_CORPSES:
+		_corpses.pop_front().sprite.queue_free()
+	var corpse := Corpse.new()
+	corpse.frames = visual.death_frames
+	corpse.fps = visual.death_fps
+	corpse.sprite = Sprite2D.new()
+	corpse.sprite.texture = visual.death_frames[0]
+	corpse.sprite.centered = false
+	corpse.sprite.offset = visual.body.offset
+	corpse.sprite.flip_h = visual.body.flip_h
+	corpse.sprite.modulate = visual.tint
+	corpse.sprite.position = visual.root.position
+	corpse.sprite.scale = Vector2.ONE * visual.size_scale
+	_actors.add_child(corpse.sprite)
+	_corpses.append(corpse)
+
+
+func _advance_corpses(delta: float) -> void:
+	var left: Array[Corpse] = []
+	for corpse in _corpses:
+		corpse.time += delta
+		var played := float(corpse.frames.size()) / corpse.fps
+		if corpse.time >= played + CORPSE_LINGER:
+			corpse.sprite.queue_free()
+			continue
+		corpse.sprite.texture = corpse.frames[mini(int(corpse.time * corpse.fps), corpse.frames.size() - 1)]
+		if corpse.time > played:
+			corpse.sprite.modulate.a = 1.0 - (corpse.time - played) / CORPSE_LINGER
+		left.append(corpse)
+	_corpses = left
+
+
+## What a power looks like on the board, on top of the enemy's own animation.
+func _on_enemy_power(enemy: SimEnemy, power: StringName, targets: Array) -> void:
+	var visual: EnemyVisual = _enemies.get(enemy.id)
+	var feet := _art_pos(enemy.position) + Vector2(0, ENEMY_DROP)
+	var tall := visual.size.y * 0.55 if visual != null else 20.0
+	var chest := feet + Vector2(0, -tall * 0.6)
+	var radius := enemy.data.power_radius / SCALE
+	match power:
+		&"fall":
+			# The bones come apart in a puff of grave dust.
+			_burst(feet + Vector2(0, -4), Color(0.75, 0.72, 0.66), 16, 18.0, false)
+			_ring(feet, Color(0.55, 0.45, 0.75), 2.0, 10.0, 0.35)
+		&"rise":
+			_play_power(enemy)
+			_ring(feet, NECRO, 12.0, 2.0, 0.6, 1.0)
+			_burst(feet + Vector2(0, -6), NECRO, 18, 20.0)
+			_sparks(chest, NECRO.lerp(Color.WHITE, 0.4), 8, 12.0)
+			_pulse_light(feet + Vector2(0, -8), NECRO, 1.6, 40.0, 0.6)
+		&"phase":
+			_play_power(enemy)
+			_burst(chest, Color(0.7, 0.95, 1.0), 14, 16.0)
+			_sparks(chest, Color(0.85, 1.0, 1.0), 7, 10.0)
+		&"war_cry":
+			_play_power(enemy)
+			# A blood-red shock wave out to the edge of the cry, and every ally it reached flares.
+			_ring(chest, Color(0.95, 0.25, 0.15), 4.0, radius, 0.55, 2.0)
+			_ring(chest, Color(1.0, 0.6, 0.35), 2.0, radius * 0.7, 0.4)
+			for ally: SimEnemy in targets:
+				if ally != enemy:
+					_sparks(_art_pos(ally.position) + Vector2(0, ENEMY_DROP - 8), Color(1.0, 0.45, 0.3), 5, 7.0)
+			_pulse_light(chest, Color(1.0, 0.3, 0.15), 1.4, radius * 1.2, 0.5)
+		&"mend":
+			_play_power(enemy)
+			var hand := feet + Vector2(0, -tall * 1.05)
+			_ring(feet, HEAL, 3.0, radius, 0.8, 1.0)
+			_burst(hand, HEAL.lerp(Color.WHITE, 0.4), 16, 14.0)
+			for ally: SimEnemy in targets:
+				var at := _art_pos(ally.position) + Vector2(0, ENEMY_DROP - 10)
+				if ally != enemy:
+					_beam(hand, at, HEAL, 0.45)
+				_sparks(at, HEAL.lerp(Color.WHITE, 0.3), 6, 8.0)
+			_pulse_light(hand, HEAL, 1.6, radius, 0.7)
+		&"harden":
+			_play_power(enemy)
+			_burst(feet + Vector2(0, -6), Color(0.6, 0.6, 0.62), 18, 20.0, false)
+			_ring(feet, Color(0.55, 0.85, 1.0), 14.0, 4.0, 0.4, 2.0)
+			_sparks(chest, Color(0.6, 0.9, 1.0), 8, 14.0)
+		&"shield":
+			_ring(chest, WARD, 3.0, 13.0, 0.35)
+		&"block":
+			_play_power(enemy)
+			# The ward takes the blow and shatters in gold and blue.
+			var side := -1.0 if visual != null and visual.body.flip_h else 1.0
+			var at := chest + Vector2(side * 7.0, 0)
+			_ring(at, WARD.lerp(Color.WHITE, 0.5), 2.0, 14.0, 0.3, 2.0)
+			_burst(at, WARD, 20, 26.0)
+			_sparks(at, Color(1.0, 0.85, 0.4), 9, 12.0)
+			_pulse_light(at, WARD, 1.5, 36.0, 0.25)
+		&"breath":
+			_play_power(enemy)
+			if not targets.is_empty():
+				_breathe_fire(enemy, visual, targets[0] as SimTower)
+
+
+const NECRO := Color(0.62, 0.35, 1.0)
+const HEAL := Color(0.45, 1.0, 0.55)
+const WARD := Color(0.55, 0.8, 1.0)
+
+
+## A stream of dragon fire from the Warden's jaws to the tower, which burns while it is silenced.
+func _breathe_fire(enemy: SimEnemy, visual: EnemyVisual, tower: SimTower) -> void:
+	var feet := _art_pos(enemy.position) + Vector2(0, ENEMY_DROP)
+	var target := _art_pos(tower.position) + Vector2(0, -10)
+	var side := 1.0 if target.x >= feet.x else -1.0
+	var size := visual.size if visual != null else Vector2(60, 60)
+	if visual != null:
+		# It turns on the tower to breathe.
+		visual.face_left = side < 0.0
+		visual.face_time = float(visual.power_frames.size()) / visual.power_fps + 0.3
+	# Where the jaws are in the hand-drawn dragon's strike (feet at 83,112 in a 166x144 frame).
+	var mouth := feet + Vector2(side * size.x * 0.3, -size.y * 0.32)
+	# The jaws open on the fifth frame of the strike.
+	var delay := 4.0 / (visual.power_fps if visual != null else 12.0)
+	get_tree().create_timer(delay).timeout.connect(func() -> void:
+		_beam(mouth, target, Color(1.0, 0.45, 0.1), 0.5, 4.0)
+		_beam(mouth, target, Color(1.0, 0.85, 0.4), 0.35, 1.0)
+		_pulse_light(mouth, Color(1.0, 0.5, 0.15), 2.0, 70.0, 0.5))
+	for i in 9:
+		var t := float(i) / 8.0
+		var at := mouth.lerp(target, t)
+		get_tree().create_timer(delay + t * 0.2).timeout.connect(func() -> void:
+			_burst(at, Color(1.0, 0.75 - t * 0.4, 0.2), 18 + i * 3, 12.0 + t * 18.0)
+			if i == 8:
+				_burst(target, Color(1.0, 0.4, 0.1), 40, 30.0)
+				_ring(target, Color(1.0, 0.45, 0.1), 3.0, 22.0, 0.45, 2.0)
+				_pulse_light(target, Color(1.0, 0.45, 0.15), 2.4, 70.0, 0.8))
+
+
+## A short glow that fades: a rise, a cry, a healing, a blocked blow.
+func _pulse_light(at: Vector2, color: Color, energy: float, radius: float, life: float) -> void:
+	var light := _flash_light(color, energy, maxf(16.0, radius), 14.0)
+	if light == null:
+		return
+	light.position = at
+	_air.add_child(light)
+	var tween := create_tween()
+	tween.tween_property(light, "energy", 0.0, life)
+	tween.tween_callback(func() -> void: _release_light(light))
+
+
+func _beam(from: Vector2, to: Vector2, color: Color, life: float, width := 1.0) -> void:
+	if _fx.size() >= MAX_FX:
+		return
+	var fx := Fx.new()
+	fx.ring = false
+	fx.at = from
+	fx.beam_to = to
+	fx.color = color
+	fx.life = life
+	fx.width = width
+	_fx.append(fx)
+
+
 # ------------------------------------------------------------------ effects
 
 func _on_chain_fired(tower: SimTower, points: PackedVector2Array) -> void:
@@ -1122,6 +1380,7 @@ func _on_projectile_landed(shot: SimProjectile) -> void:
 
 
 func _on_enemy_killed(enemy: SimEnemy, _killer: SimTower, _bounty: int) -> void:
+	_leave_corpse(enemy)
 	var visual: EnemyVisual = _enemies.get(enemy.id)
 	var color := visual.tint if visual != null else Color(0.8, 0.85, 0.9)
 	var at := _art_pos(enemy.position) + Vector2(0, ENEMY_DROP - 4)
@@ -1276,10 +1535,24 @@ func _draw_ground_fx() -> void:
 func _draw_marks() -> void:
 	for visual: EnemyVisual in _enemies.values():
 		_draw_enemy_marks(visual)
+	for visual: TowerVisual in _towers.values():
+		if visual.tower.silenced > 0.0:
+			# A silenced tower smoulders until it can fire again.
+			var salt := float(visual.tower.id) * 2.3
+			for i in 6:
+				var rise := fposmod(_elapsed * 1.5 + salt + float(i) * 0.17, 1.0)
+				var at := visual.root.position + Vector2(sin(salt + float(i) * 2.2) * 7.0, -4.0 - rise * 26.0)
+				var flame := Color(1.0, 0.92, 0.55).lerp(Color(0.85, 0.2, 0.05), rise)
+				_marks.draw_rect(Rect2(at.floor(), Vector2(1.0, 2.0 if rise < 0.4 else 1.0)), Color(flame, 1.0 - rise * 0.7))
 	for fx in _fx:
 		var fade := 1.0 - fx.age / fx.life
 		var spread := 1.0 - fade * fade
-		if fx.ring:
+		if fx.beam_to != Vector2.INF:
+			# A thread of light that runs out from the start and fades.
+			var reach := fx.at.lerp(fx.beam_to, minf(1.0, spread * 2.0))
+			_marks.draw_line(fx.at, reach, Color(fx.color, fade * 0.9), fx.width)
+			_dot(_marks, reach, Color(fx.color.lerp(Color.WHITE, 0.6), fade))
+		elif fx.ring:
 			var radius := lerpf(fx.from, fx.to, spread)
 			# Big rings get more corners, so a skill's shock wave stays round.
 			var corners := clampi(int(radius * 0.8), 28, 120)
@@ -1318,13 +1591,14 @@ func _draw_ring(at: Vector2, radius: float, corners: int, color: Color, width: f
 func _draw_enemy_marks(visual: EnemyVisual) -> void:
 	var enemy := visual.enemy
 	var healing := enemy.is_regenerating() and enemy.health < enemy.max_health
-	if enemy.statuses.is_empty() and not healing:
-		return
 	var feet := visual.root.position
 	var half := visual.size.x * 0.32
 	var tall := visual.size.y * 0.7
 	var head := feet + Vector2(0, -tall - 3.0)
 	var salt := float(enemy.id) * 1.37
+	_draw_power_marks(visual, feet, half, tall, salt)
+	if enemy.statuses.is_empty() and not healing:
+		return
 	if enemy.has_status(&"slow"):
 		for i in 5:
 			var glint := 0.5 + 0.5 * sin(_elapsed * 5.0 + salt + float(i) * 2.1)
@@ -1372,6 +1646,46 @@ func _draw_enemy_marks(visual: EnemyVisual) -> void:
 		var green := Color(0.5, 1.0, 0.55, 1.0 - rise)
 		_marks.draw_rect(Rect2(at + Vector2(-1, 0), Vector2(3, 1)), green)
 		_marks.draw_rect(Rect2(at + Vector2(0, -1), Vector2(1, 3)), green)
+
+
+## What an enemy's power looks like while it lasts: a grunt that will rise has a cold violet fire in
+## its skull and smoulders while it lies in a heap, a warded dwarf's rune shield hangs in front of
+## it, a war cry leaves red streaks at the heels and stone glints with crystal.
+func _draw_power_marks(visual: EnemyVisual, feet: Vector2, half: float, tall: float, salt: float) -> void:
+	var enemy := visual.enemy
+	var side := -1.0 if visual.body.flip_h else 1.0
+	if enemy.downed > 0.0:
+		for i in 4:
+			var rise := fposmod(_elapsed * 1.1 + salt + float(i) * 0.25, 1.0)
+			var at := feet + Vector2(sin(salt * 2.0 + float(i) * 1.9) * half * 0.8, -1.0 - rise * tall * 0.5)
+			_dot(_marks, at, Color(NECRO.lerp(Color.WHITE, 0.3 * (1.0 - rise)), 1.0 - rise))
+		return
+	if enemy.has_power and enemy.data.power == &"rise" and not enemy.risen:
+		# Eyes that burn: this one will get up again.
+		var flicker := 0.7 + 0.3 * sin(_elapsed * 11.0 + salt)
+		var eye := (feet + Vector2(side * visual.size.x * 0.035, -visual.size.y * 0.42)).floor()
+		_dot(_marks, eye, Color(NECRO.lerp(Color.WHITE, 0.35), flicker))
+		_dot(_marks, eye + Vector2(0, -1 - int(fposmod(_elapsed * 4.0 + salt, 2.0))), Color(NECRO, flicker * 0.5))
+	if enemy.shield_up:
+		# A curved rune ward held up in front of it, in gold and ice blue.
+		var center := feet + Vector2(side * (half + 2.0), -tall * 0.45)
+		var throb := 0.55 + 0.25 * sin(_elapsed * 4.0 + salt)
+		for i in 7:
+			var y := (float(i) - 3.0) * 2.0
+			var at := center + Vector2(side * (1.5 - absf(float(i) - 3.0) * 0.5), y)
+			_dot(_marks, at, Color(WARD.lerp(Color.WHITE, 0.3), throb))
+			if i % 3 == 1:
+				_dot(_marks, at + Vector2(-side, 0), Color(1.0, 0.82, 0.4, throb * 0.8))
+	if enemy.haste_left > 0.0:
+		for i in 3:
+			var trail := fposmod(_elapsed * 3.0 + salt + float(i) * 0.33, 1.0)
+			var at := feet + Vector2(-side * (half * 0.6 + trail * 6.0), -1.0 - float(i) * 3.0)
+			_dot(_marks, at, Color(1.0, 0.3, 0.2, 0.9 * (1.0 - trail)))
+	if enemy.is_hardened():
+		for i in 3:
+			var glint := 0.5 + 0.5 * sin(_elapsed * 7.0 + salt + float(i) * 2.0)
+			var at := feet + Vector2((float(i) - 1.0) * half * 0.8, -tall * (0.3 + 0.2 * float(i % 2)))
+			_dot(_marks, at, Color(0.7, 0.95, 1.0, glint))
 
 
 ## Height of an enemy's sprite in board pixels, for placing its health bar. 0 if it has no art.

@@ -115,6 +115,13 @@
     "frames": 6,
     "loop": true
    },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "war_cry"
+   },
    "walk": {
     "fps": 10,
     "frames": 8,
@@ -280,6 +287,13 @@
     "frames": 6,
     "loop": true
    },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "rise"
+   },
    "walk": {
     "fps": 10,
     "frames": 8,
@@ -411,6 +425,13 @@
     "fps": 6,
     "frames": 6,
     "loop": true
+   },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "mend"
    },
    "walk": {
     "fps": 10,
@@ -577,6 +598,13 @@
     "frames": 6,
     "loop": true
    },
+   "power": {
+    "fps": 12,
+    "frames": 6,
+    "hold": 5,
+    "loop": false,
+    "power": "phase"
+   },
    "walk": {
     "fps": 10,
     "frames": 8,
@@ -675,6 +703,13 @@
     "fps": 6,
     "frames": 6,
     "loop": true
+   },
+   "power": {
+    "fps": 12,
+    "frames": 6,
+    "hold": 5,
+    "loop": false,
+    "power": "harden"
    },
    "walk": {
     "fps": 10,
@@ -841,6 +876,13 @@
     "frames": 6,
     "loop": true
    },
+   "power": {
+    "fps": 16,
+    "frames": 6,
+    "hold": -1,
+    "loop": false,
+    "power": "block"
+   },
    "walk": {
     "fps": 10,
     "frames": 8,
@@ -873,6 +915,13 @@
     "fps": 6,
     "frames": 6,
     "loop": true
+   },
+   "power": {
+    "fps": 12,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "breath"
    },
    "walk": {
     "fps": 10,

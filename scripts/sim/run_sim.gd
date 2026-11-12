@@ -20,6 +20,10 @@ signal skill_used(skill: SkillData, at: Vector2)
 signal boss_arrived(enemy: SimEnemy)
 ## A boss silenced these towers.
 signal towers_silenced(boss: SimEnemy, silenced: Array[SimTower])
+## An enemy used its power (see EnemyData.power), or something happened to it: &"fall" and &"rise"
+## for a grunt that falls and stands again, &"shield" when a shield comes up and &"block" when it
+## stops a hit. `targets` holds the allies it healed or drove on, or the tower it burned or blocked.
+signal enemy_power(enemy: SimEnemy, power: StringName, targets: Array)
 ## An enemy jumped forward along its road, from one point to another.
 signal enemy_blinked(enemy: SimEnemy, from: Vector2)
 ## A boss escaped the board when badly hurt (see EnemyData.escape_below).
@@ -747,9 +751,10 @@ func _move_enemies(delta: float) -> void:
 			enemy.position = lane_curves[enemy.lane].sample_baked(enemy.progress)
 
 
-## Healing, summoning and changing element, and the bosses' tricks.
+## Healing, summoning and changing element, the horde's powers and the bosses' tricks.
 func _tick_traits(delta: float) -> void:
 	_tick_boss_tricks(delta)
+	_tick_powers(delta)
 	# Buildings only call up the horde while the wave is still marching in, so a wave can end.
 	if not _spawner.is_finished():
 		for structure in structures:
@@ -822,6 +827,88 @@ func _tick_boss_tricks(delta: float) -> void:
 					enemy_blinked.emit(caster, from)
 
 
+## Each kind of enemy's own power. See EnemyData.power.
+func _tick_powers(delta: float) -> void:
+	for enemy in enemies:
+		if not enemy.alive:
+			continue
+		var data := enemy.data
+		enemy.haste_left = maxf(0.0, enemy.haste_left - delta)
+		if enemy.downed > 0.0:
+			enemy.downed -= delta
+			if enemy.downed <= 0.0:
+				enemy.downed = 0.0
+				enemy.risen = true
+				enemy.health = enemy.max_health * clampf(data.power_amount, 0.05, 1.0)
+				enemy_power.emit(enemy, &"rise", [])
+			continue
+		if not enemy.has_power:
+			continue
+		enemy.power_left = maxf(0.0, enemy.power_left - delta)
+		enemy.power_timer = maxf(0.0, enemy.power_timer - delta)
+		if enemy.power_timer > 0.0 or not enemy.can_use_power():
+			continue
+		match data.power:
+			&"war_cry":
+				var driven: Array = []
+				for ally in _allies_near(enemy, data.power_radius):
+					# It drives the lesser ranks on: not runners, already as fast as they go, nor
+					# brutes, its own kind.
+					if not ally.data.tags.has(&"fast") and ally.data.power != &"war_cry":
+						driven.append(ally)
+				for ally: SimEnemy in driven:
+					ally.haste = maxf(ally.haste if ally.haste_left > 0.0 else 0.0, data.power_amount)
+					ally.haste_left = maxf(ally.haste_left, data.power_duration)
+				enemy.power_timer = data.power_interval
+				enemy_power.emit(enemy, &"war_cry", driven)
+			&"mend":
+				# A healer on fire or sick with poison cannot mend anyone.
+				if enemy.has_status(&"burn") or enemy.has_status(&"poison"):
+					continue
+				var healed: Array = []
+				for ally in _allies_near(enemy, data.power_radius):
+					if ally.health < ally.max_health and not ally.data.tags.has(&"boss") \
+							and not ally.has_status(&"burn") and not ally.has_status(&"poison"):
+						ally.health = minf(ally.max_health, ally.health + ally.max_health * data.power_amount)
+						healed.append(ally)
+				# It waits for someone to be hurt, so every pulse heals.
+				if not healed.is_empty():
+					enemy.power_timer = data.power_interval
+					enemy_power.emit(enemy, &"mend", healed)
+			&"block":
+				if not enemy.shield_up:
+					enemy.shield_up = true
+					enemy_power.emit(enemy, &"shield", [])
+			&"breath":
+				var target := _strongest_tower_near(enemy.position, data.power_radius)
+				if target != null:
+					target.silenced = maxf(target.silenced, data.power_duration)
+					enemy.power_timer = data.power_interval
+					enemy_power.emit(enemy, &"breath", [target])
+
+
+## Living, touchable enemies within `radius` of `caster`, the caster too.
+func _allies_near(caster: SimEnemy, radius: float) -> Array[SimEnemy]:
+	var found: Array[SimEnemy] = []
+	var reach := radius * radius
+	for other in enemies:
+		if other.alive and other.downed <= 0.0 and other.position.distance_squared_to(caster.position) <= reach:
+			found.append(other)
+	return found
+
+
+## The tower that hits hardest within `radius` of `at`, or null.
+func _strongest_tower_near(at: Vector2, radius: float) -> SimTower:
+	var best: SimTower = null
+	var reach := radius * radius
+	for tower in towers:
+		if tower.position.distance_squared_to(at) > reach:
+			continue
+		if best == null or tower.damage * tower.attacks_per_second > best.damage * best.attacks_per_second:
+			best = tower
+	return best
+
+
 func _silence_towers(caster: SimEnemy) -> void:
 	var hit: Array[SimTower] = []
 	var reach := caster.data.silence_radius * caster.data.silence_radius
@@ -843,7 +930,8 @@ func _tick_statuses(delta: float) -> void:
 			var dps := status.damage_per_second()
 			if dps > 0.0:
 				_damage(enemy, dps * minf(delta, status.time_left), status.source)
-				if not enemy.alive:
+				# Dead, or fallen in a heap with its statuses gone.
+				if not enemy.alive or enemy.downed > 0.0:
 					break
 			status.time_left -= delta
 			if status.time_left <= 0.0:
@@ -855,7 +943,7 @@ func _tick_statuses(delta: float) -> void:
 func _rebuild_hash() -> void:
 	_hash.clear()
 	for enemy in enemies:
-		if enemy.alive:
+		if enemy.alive and not enemy.untouchable():
 			_hash.insert(enemy)
 	for structure in structures:
 		if is_vulnerable(structure):
@@ -963,7 +1051,13 @@ func _land(shot: SimProjectile) -> void:
 
 
 func _hit(tower: SimTower, enemy: SimEnemy, damage: float) -> void:
-	if not enemy.alive:
+	if not enemy.alive or enemy.untouchable():
+		return
+	if enemy.shield_up:
+		# The shield takes the whole hit, effects and all, and breaks.
+		enemy.shield_up = false
+		enemy.power_timer = enemy.data.power_interval
+		enemy_power.emit(enemy, &"block", [tower])
 		return
 	var multiplier := _element_multiplier(tower, enemy)
 	var armour := enemy.effective_armour() * (1.0 - tower.armour_ignore)
@@ -976,16 +1070,36 @@ func _hit(tower: SimTower, enemy: SimEnemy, damage: float) -> void:
 
 
 func _damage(enemy: SimEnemy, amount: float, source: SimTower) -> void:
-	if not enemy.alive or amount <= 0.0:
+	if not enemy.alive or amount <= 0.0 or enemy.untouchable():
 		return
 	if enemy.ward > 0.0:
 		amount *= 1.0 - enemy.ward
+	if enemy.is_hardened():
+		amount *= 1.0 - clampf(enemy.data.power_amount, 0.0, 0.95)
 	var dealt := minf(amount, enemy.health)
 	enemy.health -= amount
 	if source != null:
 		source.damage_dealt += dealt
 	if enemy.health <= 0.0:
+		if enemy.data.power == &"rise" and enemy.has_power and not enemy.risen and not enemy.has_status(&"burn"):
+			_fall(enemy)
+			return
 		_kill(enemy, source)
+	elif (enemy.data.power == &"harden" or enemy.data.power == &"phase") and enemy.has_power \
+			and enemy.power_timer <= 0.0 and enemy.can_use_power():
+		# Struck, it turns to stone or slips out of the world for a moment.
+		enemy.power_left = enemy.data.power_duration
+		enemy.power_timer = enemy.data.power_interval + enemy.data.power_duration
+		enemy_power.emit(enemy, enemy.data.power, [])
+
+
+## A grunt that would have died falls in a heap instead, out of reach, and rises a little later.
+func _fall(enemy: SimEnemy) -> void:
+	enemy.health = 0.0
+	enemy.downed = maxf(0.1, enemy.data.power_duration)
+	enemy.statuses.clear()
+	enemy.haste_left = 0.0
+	enemy_power.emit(enemy, &"fall", [])
 
 
 func _kill(enemy: SimEnemy, killer: SimTower) -> void:

@@ -171,7 +171,8 @@ func use_skills() -> void:
 	var boss := false
 	var furthest := 0.0
 	for enemy in sim.enemies:
-		if not enemy.alive:
+		# Nothing lands on a fallen grunt or a phased runner, so no skill is spent on them.
+		if not enemy.alive or enemy.untouchable():
 			continue
 		alive.append(enemy)
 		boss = boss or enemy.data.tags.has(&"boss")

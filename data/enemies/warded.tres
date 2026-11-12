@@ -6,10 +6,12 @@
 script = ExtResource("1_enemy")
 id = &"warded"
 display_name = "Warded"
-max_health = 110.0
+max_health = 95.0
 speed = 68.0
 armour = 2.0
 bounty = 6
 leak_damage = 1
-description = "Rune-shielded: burns, poison, slows, stuns and curses do nothing to it."
 status_immune = true
+power = &"block"
+power_interval = 3.0
+description = "A rune-shielded dwarf. Its ward stops a tower's blow, and burns, poison, slows, stuns and curses do nothing to it."

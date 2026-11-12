@@ -45,6 +45,23 @@ var release_health := 1.0
 ## True when it left the board by escaping (see EnemyData.escape_below).
 var escaped := false
 
+# Its power (see EnemyData.power).
+## True when this one carries its kind's power (see EnemyData.power_share).
+var has_power := false
+## Seconds until the power can be used again.
+var power_timer := 0.0
+## Seconds left of a power that lasts: phased out, or turned to stone.
+var power_left := 0.0
+## Seconds left lying in a heap before it rises (power "rise"). Above 0 it is down.
+var downed := 0.0
+## True once it has risen, so it stays dead the next time.
+var risen := false
+## True while its shield is up (power "block").
+var shield_up := false
+## Seconds left of a war cry's speed, and how much faster it runs meanwhile.
+var haste_left := 0.0
+var haste := 0.0
+
 
 func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
 	id = p_id
@@ -54,6 +71,13 @@ func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
 	prism_timer = p_data.prismatic_interval
 	blink_timer = p_data.blink_interval
 	silence_timer = p_data.silence_interval
+	# A power is first used halfway through its interval, so a fresh enemy shows it soon.
+	power_timer = p_data.power_interval * 0.5
+	# Spread so a pack does not all use its power at the same moment.
+	power_timer *= 0.4 + 1.2 * fposmod(float(p_id) * 0.381966, 1.0)
+	# Spread evenly: the golden ratio walks round the unit interval without bunching.
+	has_power = not p_data.power.is_empty() and fposmod(float(p_id) * 0.618034, 1.0) < p_data.power_share
+	shield_up = has_power and p_data.power == &"block"
 	structure = p_data.structure
 	max_health = p_data.max_health * p_health_multiplier
 	health = max_health
@@ -62,13 +86,35 @@ func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
 
 
 func speed() -> float:
-	if structure or statuses.has(&"stun") or statuses.has(&"root"):
+	if structure or statuses.has(&"stun") or statuses.has(&"root") or downed > 0.0 or is_hardened():
 		return 0.0
 	var slow := 0.0
 	for status: SimStatus in statuses.values():
 		slow = maxf(slow, status.slow)
 	var rage := data.enrage_speed if enraged else 1.0
-	return base_speed * rage * (1.0 - clampf(slow, 0.0, 0.9))
+	var cry := 1.0 + haste if haste_left > 0.0 else 1.0
+	return base_speed * rage * cry * (1.0 - clampf(slow, 0.0, 0.9))
+
+
+## True while it is phased out (power "phase").
+func is_phased() -> bool:
+	return power_left > 0.0 and data.power == &"phase"
+
+
+## True while it is stone (power "harden").
+func is_hardened() -> bool:
+	return power_left > 0.0 and data.power == &"harden"
+
+
+## True while nothing can touch it: lying in a heap before it rises, or phased out. Towers do not
+## aim at it, and hits, effects and pushes pass it by.
+func untouchable() -> bool:
+	return downed > 0.0 or is_phased()
+
+
+## True when it is free to use its power: it has one, and nothing holds it.
+func can_use_power() -> bool:
+	return has_power and downed <= 0.0 and not statuses.has(&"stun") and not statuses.has(&"root")
 
 
 ## Extra damage taken from curses, as a fraction.
@@ -90,6 +136,8 @@ func effective_armour() -> float:
 ## Pushes the enemy back along the path, up to its knockback allowance. Bosses take half.
 ## Returns how far it moved.
 func knock_back(distance: float) -> float:
+	if untouchable():
+		return 0.0
 	if data.tags.has(&"boss"):
 		distance *= 0.5
 	var moved := minf(minf(distance, MAX_KNOCKBACK - knockback_taken), progress)
@@ -110,7 +158,7 @@ func is_regenerating() -> bool:
 
 
 func apply_status(spec: StatusEffectData, source: SimTower, element_multiplier: float) -> void:
-	if data.status_immune:
+	if data.status_immune or untouchable():
 		return
 	# A root (from a hero) holds anything but a boss, whatever stuns came before.
 	if spec.kind == &"root" and data.tags.has(&"boss"):
