@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Narrator voice for the story cinematics.
+"""Voices for the story cinematics: the narrator and every speaking character.
 
 Reads data/story/cinematics/<id>.json and writes one Ogg Vorbis file per shot to
 assets/story/voice/<id>/<NN>.ogg (NN = 01, 02, ...), which the cinematic player
 picks up. Shots without "text" are skipped.
 
-The voice is Kokoro-82M (Apache-2.0 weights, safe for a commercial Steam release),
-run locally with kokoro-onnx, then mastered with ffmpeg to sound deeper and larger:
-a small pitch drop, warmth in the low mids, a soft hall, loudness to -16 LUFS.
+The narrator (Queen Ysolde) is the ElevenLabs v3 voice Elariel (preset regal_el).
+Every other speaker gets their own ElevenLabs voice from cast.json, placed with a
+style (Heralds sound hollowed, Wardens elemental, Vael-Orrun vast). Each sentence
+is acted from direction.json. Kokoro-82M (Apache-2.0, run locally) remains as a
+free offline fallback (presets regal, warm, elder, whisper, hush).
 
 Setup (once):
     python3 -m venv .venv-voice
@@ -19,6 +21,7 @@ Use:
     .venv-voice/bin/python tools/voice/narrate.py opening         # one cinematic
     .venv-voice/bin/python tools/voice/narrate.py --text "Line" --out line.ogg
     .venv-voice/bin/python tools/voice/narrate.py --preset elder opening
+    .venv-voice/bin/python tools/voice/narrate.py --speakers cast     # only the characters
 
 Needs ffmpeg with the rubberband filter on PATH.
 """
@@ -70,8 +73,8 @@ PRESETS = {
         "voice_id": os.environ.get("NARRATOR_VOICE_ID", "ksryVoNAGZT8GxWCTiVm"),  # Elariel (Voice Library), picked by Doctor Paris
         "stability": 0.0, "para_gap": 1.2, "room": 0.05, "rt60": 0.9, "master": "trailer",
     },
-    # The Hush, the hidden god (Part 2 tease): deliberately a different engine from
-    # every character, flat and slow, then layered an octave down and a fifth up.
+    # Free offline fallback for the Hush (the cast voices it with ElevenLabs):
+    # flat and slow, then layered an octave down and a fifth up.
     "hush": {
         "voices": {"af_nicole": 0.5, "bf_isabella": 0.5}, "lang": "en-us", "speed": 0.78,
         "sentence_gap": 0.9, "para_gap": 1.4, "room": 0.0, "master": "hush",
@@ -87,8 +90,39 @@ PRESETS = {
 # Speaker ids voiced by the narrator. Queen Ysolde is the narrator, so her
 # in-scene lines use the same voice.
 NARRATOR_SPEAKERS = {"narrator", "ysolde"}
-# Other speakers with their own voice: speaker id -> preset.
-SPEAKER_PRESETS = {"the_hush": "hush"}
+# Every other speaking character has their own ElevenLabs voice in cast.json.
+CAST_FILE = Path(__file__).resolve().parent / "cast.json"
+
+# How a character's voice is placed and treated, on top of the narrator's ElevenLabs preset.
+# "layers": extra copies of the voice at [pitch ratio, gain] under the dry voice;
+# "fx": an ffmpeg filter chain run before mastering.
+STYLES = {
+    "mortal": {},                                               # close and dry, like the narrator
+    "seer": {"room": 0.1, "rt60": 1.6},                         # a little cold air around her
+    "warden": {"room": 0.14, "rt60": 1.8},                      # elemental: a bigger, older space
+    "herald": {"room": 0.1, "rt60": 1.4,                        # hollowed: thin chorus, scooped mids
+               "fx": "chorus=0.7:0.9:35|52:0.3|0.25:0.3|0.45:1.6|2.1,equalizer=f=900:t=q:w=1.5:g=-3"},
+    "sovereign": {"room": 0.2, "rt60": 2.6, "layers": [[0.5, 0.3]]},   # Vael-Orrun: dark hall, sub-octave shadow
+    "twin": {"room": 0.14, "rt60": 1.8, "layers": [[0.5, 0.8]]},       # Aurath speaks in two voices at once
+    "titan": {"room": 0.14, "rt60": 2.0, "semitones": -2},             # Orrok: stone giant
+    "hush": {"master": "hush"},                                 # the hidden god: layered, flat, inhuman
+}
+
+
+def cast() -> dict[str, dict]:
+    if not CAST_FILE.exists():
+        return {}
+    return json.loads(CAST_FILE.read_text(encoding="utf-8")).get("speakers", {})
+
+
+def speaker_preset(speaker: str, narrator: str = "regal_el") -> dict | None:
+    """The preset that voices a speaker, or None if they stay as subtitles."""
+    if speaker in NARRATOR_SPEAKERS:
+        return PRESETS[narrator]
+    role = cast().get(speaker)
+    if not role:
+        return None
+    return {**PRESETS["regal_el"], **STYLES[role.get("style", "mortal")], "voice_id": role["voice_id"]}
 
 _kokoro = None
 
@@ -253,6 +287,16 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
             "loudnorm=I=-16:TP=-1.5:LRA=11",
             "aresample=44100",
         ]
+    if preset.get("fx"):
+        filters.insert(0, preset["fx"])
+    layers = preset.get("layers") or []
+    graph = ",".join(filters)
+    if layers:  # extra pitched copies under the dry voice, then the usual chain
+        names = [f"l{i}" for i in range(len(layers))]
+        graph = (f"[0:a]asplit={len(layers) + 1}[dry]{''.join(f'[{n}s]' for n in names)};"
+                 + "".join(f"[{n}s]rubberband=pitch={ratio}:formant=shifted,volume={gain}[{n}];"
+                           for n, (ratio, gain) in zip(names, layers))
+                 + f"[dry]{''.join(f'[{n}]' for n in names)}amix=inputs={len(layers) + 1}:normalize=0,{graph}")
     with tempfile.TemporaryDirectory() as tmp:
         x, sr = sf.read(wav_in)
         roomy = Path(tmp) / "room.wav"
@@ -260,8 +304,32 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
                  sr, subtype="FLOAT")
         mastered = Path(tmp) / "m.wav"
         subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(roomy),
-                        "-af", ",".join(filters), "-ac", "1", str(mastered)], check=True)
+                        "-filter_complex" if layers else "-af", graph, "-ac", "1", str(mastered)], check=True)
+        if preset.get("master") == "trailer":
+            _level(mastered, -15.0)
         _write_ogg(mastered, ogg_out)
+
+
+def _loudness(wav: Path) -> float:
+    log = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(wav), "-af", "ebur128", "-f", "null", "-"],
+                         capture_output=True, text=True).stderr
+    found = re.findall(r"I:\s+(-?[\d.]+) LUFS", log)
+    return float(found[-1]) if found else float("nan")
+
+
+def _level(wav: Path, target: float, ceiling: float = 0.89) -> None:
+    """loudnorm misses on very short lines ("We remember."): correct the integrated
+    loudness to target, then keep the peaks under the ceiling (about -1 dBFS)."""
+    x, sr = sf.read(wav)
+    off = target - _loudness(wav)
+    if np.isfinite(off) and abs(off) > 0.5:
+        x = x * 10 ** (off / 20)
+    peak = np.max(np.abs(x)) if len(x) else 0.0
+    if peak > ceiling:  # soft knee: squash only what pokes above the ceiling
+        over = np.abs(x) > ceiling * 0.9
+        knee = ceiling * 0.9
+        x[over] = np.sign(x[over]) * (knee + (ceiling - knee) * np.tanh((np.abs(x[over]) - knee) / (ceiling - knee)))
+    sf.write(wav, x, sr, subtype="FLOAT")
 
 
 def _write_ogg(wav: Path, ogg_out: Path) -> None:
@@ -294,7 +362,8 @@ def shots_of(doc) -> list[dict]:
     return []
 
 
-def narrate_cinematic(path: Path, preset_name: str, out_root: Path = VOICE_OUT) -> None:
+def narrate_cinematic(path: Path, preset_name: str, out_root: Path = VOICE_OUT,
+                      speakers: set[str] | None = None) -> None:
     doc = json.loads(path.read_text(encoding="utf-8"))
     cid = doc.get("id", path.stem) if isinstance(doc, dict) else path.stem
     out_dir = out_root / cid
@@ -304,9 +373,11 @@ def narrate_cinematic(path: Path, preset_name: str, out_root: Path = VOICE_OUT) 
         if not text or shot.get("voice") is False:
             continue
         speaker = shot.get("speaker", "narrator")
-        if speaker not in NARRATOR_SPEAKERS and speaker not in SPEAKER_PRESETS:
-            continue  # other characters stay as subtitles until they get voices
-        preset = PRESETS[shot.get("voice_preset", SPEAKER_PRESETS.get(speaker, preset_name))]
+        if speakers and speaker not in speakers:
+            continue
+        preset = PRESETS[shot["voice_preset"]] if "voice_preset" in shot else speaker_preset(speaker, preset_name)
+        if preset is None:
+            continue  # characters without a voice in cast.json stay as subtitles
         out = out_dir / f"{n:02d}.ogg"
         secs = render(text, out, preset, direction)
         print(f"{out}  {secs:5.1f}s")
@@ -319,7 +390,11 @@ def main() -> None:
     ap.add_argument("--text", help="speak this text instead of cinematics")
     ap.add_argument("--out", type=Path, help="output .ogg for --text, or output root for cinematics")
     ap.add_argument("--scripts", type=Path, default=CINEMATICS, help="folder of cinematic .json files")
+    ap.add_argument("--speakers", help="comma-separated speaker ids to render (default: all); 'cast' = everyone but the narrator")
     args = ap.parse_args()
+    speakers = None
+    if args.speakers:
+        speakers = set(cast()) if args.speakers == "cast" else set(args.speakers.split(","))
 
     if args.text:
         out = args.out or Path("narration.ogg")
@@ -331,7 +406,7 @@ def main() -> None:
     if not files:
         sys.exit(f"No cinematics found in {args.scripts}")
     for f in files:
-        narrate_cinematic(f, args.preset, args.out or VOICE_OUT)
+        narrate_cinematic(f, args.preset, args.out or VOICE_OUT, speakers)
 
 
 if __name__ == "__main__":
