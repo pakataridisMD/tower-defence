@@ -105,7 +105,9 @@ STYLES = {
     "sovereign": {"room": 0.2, "rt60": 2.6, "layers": [[0.5, 0.3]]},   # Vael-Orrun: dark hall, sub-octave shadow
     "twin": {"room": 0.14, "rt60": 1.8, "layers": [[0.5, 0.8]]},       # Aurath speaks in two voices at once
     "titan": {"room": 0.14, "rt60": 2.0, "semitones": -2},             # Orrok: stone giant
-    "hush": {"master": "hush"},                                 # the hidden god: layered, flat, inhuman
+    # The hidden god. Every word must land: the clean take stays on top at full level,
+    # with only a faint octave below and a short, light room. No echo, no lowpass.
+    "hush": {"room": 0.06, "rt60": 1.0, "layers": [[0.5, 0.2]], "lufs": -16.0},
 }
 
 
@@ -175,6 +177,14 @@ def direction_for(cid: str | None) -> dict[str, dict]:
             if name in emotions}
 
 
+def respellings() -> dict[str, str]:
+    """sentence text -> how to spell it for the TTS, for names it mispronounces
+    (direction.json "respell"). Subtitles keep the script's spelling."""
+    if not DIRECTION_FILE.exists():
+        return {}
+    return json.loads(DIRECTION_FILE.read_text(encoding="utf-8")).get("respell", {})
+
+
 def speak(text: str, preset: dict, direction: dict | None = None) -> tuple[np.ndarray, int]:
     """Raw speech, one sentence at a time with natural breaths between them.
     A blank line in the text becomes a longer, dramatic pause. Each sentence can
@@ -210,12 +220,14 @@ def speak_elevenlabs(text: str, preset: dict, direction: dict | None = None) -> 
     One request per paragraph; blank lines become pauses of para_gap seconds."""
     import elevenlabs_tts as el
     direction = direction or {}
+    respell = respellings()
     out, sr = [], 44100
     paras = [p.strip() for p in text.split("\n\n") if p.strip()]
     for pi, para in enumerate(paras):
         sentences = [x for x in re.split(r"(?<=[.!?])\s+", " ".join(para.split())) if x]
         emotions = [EMOTION_NAMES.get(id(direction[x])) if x in direction else None for x in sentences]
-        audio, sr = el.decode(el.tts(el.tagged(sentences, emotions), preset["voice_id"],
+        said = [respell.get(x, x) for x in sentences]
+        audio, sr = el.decode(el.tts(el.tagged(said, emotions), preset["voice_id"],
                                      preset.get("stability", 0.0)))
         out.append(_trim(audio, sr))
         if pi < len(paras) - 1:
@@ -273,7 +285,7 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
             "acompressor=threshold=-24dB:ratio=2.5:attack=8:release=160:makeup=2",  # keep acted dynamics
             "alimiter=limit=0.89:attack=2:release=50",
             "apad=pad_dur=0.6",
-            "loudnorm=I=-15:TP=-1:LRA=7",
+            f"loudnorm=I={preset.get('lufs', -15.0)}:TP=-1:LRA=7",
             "aresample=44100",
         ]
     else:
@@ -306,7 +318,7 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
         subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(roomy),
                         "-filter_complex" if layers else "-af", graph, "-ac", "1", str(mastered)], check=True)
         if preset.get("master") == "trailer":
-            _level(mastered, -15.0)
+            _level(mastered, preset.get("lufs", -15.0))
         _write_ogg(mastered, ogg_out)
 
 
