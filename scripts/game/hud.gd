@@ -126,9 +126,10 @@ func _announce_wave(number: int) -> void:
 	var text := "Wave %d" % number
 	if wave != null and not wave.description.is_empty():
 		text += "\n" + wave.description
-	if sim.is_endless() and number > 1 and (number - 1) % RunSim.ENDLESS_STEP == 0:
-		text += "\nThe horde doubles: x%d enemies, x%d health" % [
-			roundi(sim.endless_multiplier()), roundi(sim.endless_multiplier())]
+	# Every tenth wave of an endless run says how strong the horde has grown.
+	if sim.is_endless() and number > 1 and number % 10 == 0:
+		text += "\nThe horde has grown: %d%% numbers, %d%% health" % [
+			roundi(sim.endless_multiplier() * 100.0), roundi(sim.endless_multiplier() * 100.0)]
 	show_message(text)
 	_message_time = 4.0
 
@@ -646,7 +647,7 @@ func _refresh() -> void:
 		_wave.text = "Wave %d / %d" % [mini(sim.wave_number(), sim.total_waves()), sim.total_waves()]
 	var where: PackedStringArray = []
 	if sim.is_endless():
-		where.append("Endless x%d" % roundi(sim.endless_multiplier()))
+		where.append("Endless %d%%" % roundi(sim.endless_multiplier() * 100.0))
 	var difficulty := sim.config.difficulty
 	if difficulty != null and difficulty.order > 0:
 		where.append(difficulty.display_name)
@@ -1024,6 +1025,12 @@ func _on_wave_cleared(number: int, points: int, gold: int) -> void:
 	var text := "Wave %d cleared  ·  +%d gold" % [number, gold]
 	if points > 0:
 		text += "  ·  +%d skill point%s" % [points, "" if points == 1 else "s"]
+	if not sim.caves.is_empty() and sim.caves[-1].wave == number + 1:
+		# A cave broke open in this break: say so, and keep the message up a while.
+		text += "\nThe ground splits open: a new enemy cave! From the next wave the horde pours out of it too."
+		show_message(text, UiStyle.LIFE)
+		_message_time = 6.0
+		return
 	show_message(text, UiStyle.GOOD)
 
 

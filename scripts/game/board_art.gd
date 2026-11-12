@@ -97,6 +97,8 @@ const MAX_CORPSES := 40
 const CORPSE_LINGER := 1.2
 ## The war camps and the city at the road ends, or null when there is no art for them.
 var landmarks: LandmarkArt
+## The enemy caves that open during the run, or null without their art.
+var caves: CaveArt
 ## The enemy citadel of the final assault, or null when the run has none.
 var citadel: CitadelArt
 ## The army mustered in the counter-attack.
@@ -340,6 +342,10 @@ func setup(p_sim: RunSim) -> void:
 		landmarks = LandmarkArt.new()
 		add_child(landmarks)
 		landmarks.build(self)
+	if CaveArt.has_art():
+		caves = CaveArt.new()
+		add_child(caves)
+		caves.build(self)
 	_build_citadel()
 	army = AllyArt.new(self)
 	_build_fireflies()
@@ -605,6 +611,8 @@ func _process(delta: float) -> void:
 	_advance_corpses(delta)
 	if landmarks != null:
 		landmarks.update(delta)
+	if caves != null:
+		caves.update(delta)
 	if citadel != null:
 		citadel.update(delta, sim.is_vulnerable(citadel.structure))
 	army.sync(delta)

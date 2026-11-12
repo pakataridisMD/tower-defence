@@ -2,7 +2,7 @@ extends SceneTree
 ## Plays every campaign stage with the scripted AutoPlayer and prints how each went, for tuning the
 ## campaign (see tools/campaign/gen_campaign.py). No meta tree bonuses, Normal difficulty.
 ##
-##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--health=X --boss=X] [--tune] [--skirmish] [--compare]
+##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--health=X --boss=X --boss-life=X] [--tune] [--tune-bosses] [--skirmish] [--compare]
 ##       [--heroes] [--skill-levels] [--list] [--no-meta] [--check]
 ##
 ## --tune searches each stage's health scale so the bot wins keeping a target share of its lives,
@@ -102,6 +102,9 @@ func _initialize() -> void:
 				var targets := TARGETS if not campaign.element.is_empty() else CONVERGE_TARGETS
 				_tune(meta, stage, targets[mini(i, targets.size() - 1)])
 				continue
+			if OS.get_cmdline_user_args().has("--tune-bosses"):
+				_tune_boss_life(meta, stage)
+				continue
 			var started := Time.get_ticks_msec()
 			var sim := _play(meta, stage)
 			if sim.state != RunSim.State.WON:
@@ -157,6 +160,8 @@ func _play(meta: MetaProgress, stage: StageData) -> RunSim:
 			for wave in config.wave_set.waves:
 				if wave.is_boss:
 					wave.health_multiplier = float(arg.trim_prefix("--boss="))
+		if arg.begins_with("--boss-life="):
+			config.wave_set.boss_health_scale = float(arg.trim_prefix("--boss-life="))
 	var sim := RunSim.new(config)
 	var bot := AutoPlayer.for_sim(sim)
 	_wave_seconds.clear()
@@ -421,6 +426,31 @@ func _tune(meta: MetaProgress, stage: StageData, target: float) -> void:
 	if not bosses.is_empty():
 		line += ', "boss": %.2f' % (boss * margin)
 	print(line + "}")
+
+
+## Share of lives the bot must keep for a stage's bosses to stay at full strength (see --tune-bosses).
+const BOSS_LIFE_TARGET := 0.1
+
+
+## --tune-bosses: the bosses keep their full life (EnemyData.max_health) wherever the bot still wins
+## keeping BOSS_LIFE_TARGET of its lives. Elsewhere it finds the highest share of their life the bot can
+## beat, with a 5% margin, and prints it as the stage's "boss_life" for tools/campaign/tuning.py.
+func _tune_boss_life(meta: MetaProgress, stage: StageData) -> void:
+	var waves := meta.stage_config(stage.id).wave_set
+	var apply := func(value: float) -> void: waves.boss_health_scale = value
+	apply.call(1.0)
+	var sim := _play(meta, stage)
+	if sim.state == RunSim.State.WON and sim.lives >= ceili(sim.starting_lives * BOSS_LIFE_TARGET):
+		print('TUNING["%s"] boss_life 1.0 (full: lives %d/%d)' % [stage.id, sim.lives, sim.starting_lives])
+		return
+	var life := _bisect(meta, stage, BOSS_LIFE_TARGET, 0.05, 1.0, apply)
+	var margin := 0.95
+	for attempt in 6:
+		apply.call(life * margin)
+		if _play(meta, stage).state == RunSim.State.WON:
+			break
+		margin *= 0.95
+	print('TUNING["%s"] boss_life %.2f' % [stage.id, life * margin])
 
 
 ## The highest value in [low, high] at which the bot still wins keeping `target` of its lives.

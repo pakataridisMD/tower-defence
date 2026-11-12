@@ -55,6 +55,13 @@ static func capture(sim: RunSim) -> Dictionary:
 	var closed: Array[int] = []
 	for lane: int in sim._closed_lanes:
 		closed.append(lane)
+	var caves: Array = []
+	for cave in sim.caves:
+		var dig: Array = []
+		for cell in cave.dig:
+			dig.append([cell.x, cell.y])
+		caves.append({"cell": [cave.cell.x, cave.cell.y], "dig": dig, "joins_lane": cave.joins_lane,
+				"join_offset": cave.join_offset, "wave": cave.wave})
 	return {
 		"version": VERSION,
 		"stage": String(config.stage.id) if config.stage != null else "",
@@ -85,6 +92,10 @@ static func capture(sim: RunSim) -> Dictionary:
 		"structure_phase": sim.structure_phase,
 		"citadel_fallen": sim.citadel_fallen,
 		"closed_lanes": closed,
+		"caves": caves,
+		"next_cave_wave": sim.next_cave_wave,
+		"cave_seed": str(sim._cave_rng.seed),
+		"cave_state": str(sim._cave_rng.state),
 	}
 
 
@@ -130,6 +141,8 @@ static func restore(sim: RunSim, data: Dictionary) -> int:
 		for hero in known:
 			if hero != null and hero.id == id and not sim.party.has(hero) and sim.party.size() < HeroData.MAX_PARTY:
 				sim.party.append(hero)
+
+	_restore_caves(sim, data)
 
 	var refund := 0
 	for entry: Variant in data.get("towers", []):
@@ -179,6 +192,45 @@ static func restore(sim: RunSim, data: Dictionary) -> int:
 	sim._refresh_modifiers()
 	sim.changed.emit()
 	return refund
+
+
+## Opens the caves the run had again, before any tower goes back, so their lanes keep their numbers.
+static func _restore_caves(sim: RunSim, data: Dictionary) -> void:
+	if not sim.caves_come():
+		return
+	if data.has("next_cave_wave"):
+		sim.next_cave_wave = maxi(0, _int(data, "next_cave_wave"))
+	if str(data.get("cave_seed", "")).is_valid_int():
+		sim._cave_rng.seed = str(data["cave_seed"]).to_int()
+	if str(data.get("cave_state", "")).is_valid_int():
+		sim._cave_rng.state = str(data["cave_state"]).to_int()
+	var stored: Variant = data.get("caves", [])
+	if not stored is Array:
+		return
+	for entry: Variant in stored:
+		if not entry is Dictionary or not entry.get("cell") is Array or not entry.get("dig") is Array:
+			continue
+		var cave := Caves.Cave.new()
+		var at: Array = entry["cell"]
+		if at.size() < 2:
+			continue
+		cave.cell = Vector2i(int(at[0]), int(at[1]))
+		cave.cells = Caves.mound(cave.cell)
+		var fits := true
+		for c in cave.cells:
+			fits = fits and sim.config.map.is_inside(c) and not sim.is_path(c) and sim.landmark_at(c) == null \
+					and sim.cave_at(c) == null
+		for step: Variant in entry["dig"]:
+			if step is Array and step.size() >= 2:
+				var cell := Vector2i(int(step[0]), int(step[1]))
+				fits = fits and sim.config.map.is_inside(cell)
+				cave.dig.append(cell)
+		cave.joins_lane = _int(entry, "joins_lane")
+		cave.join_offset = float(entry.get("join_offset", 0.0))
+		cave.wave = _int(entry, "wave")
+		if not fits or cave.joins_lane < 0 or cave.joins_lane >= sim.config.map.lane_count():
+			continue
+		sim.add_cave(cave)
 
 
 ## Puts one tower or hero back. Returns the gold to pay back when it cannot stand any more.

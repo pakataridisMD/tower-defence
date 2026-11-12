@@ -8,7 +8,7 @@ signal play_requested
 const CARD_SIZE := Vector2(216, 236)
 
 const WAVES_TEXT := "Fight the map's waves, a Warden at the end. Win by holding to the last."
-const ENDLESS_TEXT := "The waves never stop. Every %d waves the horde doubles: twice the enemies, twice their health. How long can you hold?" % RunSim.ENDLESS_STEP
+const ENDLESS_TEXT := "The waves never stop. The horde starts at half strength and grows a little with every wave, in numbers and in health. How long can you hold?"
 
 var _difficulty_text: Label
 var _mode_text: Label

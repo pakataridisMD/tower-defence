@@ -6,12 +6,14 @@
 script = ExtResource("1_enemy")
 id = &"mother_briar"
 display_name = "Mother Briar"
-max_health = 1600.0
+max_health = 6400.0
 speed = 38.0
 armour = 6.0
 bounty = 60
 leak_damage = 15
 tags = Array[StringName]([&"boss"])
+heal_interval = 16.0
+heal_amount = 0.025
 description = "The Thorn Herald. A thicket in the shape of a woman: shrugs off every effect, wards the horde around her (25% less damage), and chokes nearby towers with thorns every 11 seconds."
 element = &"nature"
 status_immune = true
