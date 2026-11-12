@@ -59,6 +59,8 @@ var _air: Node2D
 var _ambient: CanvasModulate
 var _sun: DirectionalLight2D
 var _fireflies: CPUParticles2D
+## The wind, rain, snow, ash and dust over the map (see Weather).
+var weather: WeatherArt
 ## Glowing cracks and glints in the ground, brighter at night.
 var _ground_glow: Node2D
 ## The map's biome tints the light and the motes in the air.
@@ -296,6 +298,9 @@ func setup(p_sim: RunSim) -> void:
 	_build_citadel()
 	army = AllyArt.new(self)
 	_build_fireflies()
+	weather = WeatherArt.new()
+	_air.add_child(weather)
+	weather.build(self, Weather.for_map(sim.config.map))
 	sim.chain_fired.connect(_on_chain_fired)
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.enemy_killed.connect(_on_enemy_killed)
@@ -322,13 +327,28 @@ func _build_resources() -> void:
 	var sway := Shader.new()
 	sway.code = """
 shader_type canvas_item;
-// Sways the top of a sprite while its base stays planted.
+// Sways the top of a sprite in the wind while its base stays planted. WeatherArt drives it: a steady
+// lean downwind, a flutter that quickens as the wind rises, and gust fronts that sweep across the map
+// and bow everything they pass.
 uniform float strength = 0.9;
+uniform float phase = 0.0;
+uniform float lean = 0.0;
+uniform float gust = 0.0;
+uniform float gust_at = -100000.0;
+uniform float gust_width = 150.0;
+uniform vec2 wind_dir = vec2(1.0, 0.0);
+uniform vec2 map_origin = vec2(0.0);
+uniform float map_scale = 1.0;
 void vertex() {
-	float top = 1.0 - UV.y;
+	float top = pow(1.0 - UV.y, 1.4);
 	vec2 world = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
-	float t = TIME * 1.7 + world.x * 0.02 + world.y * 0.015;
-	VERTEX.x += (sin(t) + 0.35 * sin(t * 2.7)) * strength * top;
+	vec2 m = (world - map_origin) / map_scale;
+	float t = phase + m.x * 0.02 + m.y * 0.015;
+	float d = (dot(m, wind_dir) - gust_at) / gust_width;
+	float front = exp(-d * d);
+	float flutter = (sin(t) + 0.35 * sin(t * 2.7)) * strength * (1.0 + 0.8 * front);
+	float push = (lean + gust * front * (0.85 + 0.15 * sin(t * 3.3))) * sign(wind_dir.x);
+	VERTEX.x += (flutter + push) * top;
 }
 """
 	_sway_material = ShaderMaterial.new()
@@ -528,6 +548,7 @@ func _process(delta: float) -> void:
 	if sim == null:
 		return
 	_elapsed += delta
+	weather.update(delta)
 	_update_light(delta)
 	_sync_towers(delta)
 	_sync_enemies(delta)
@@ -557,6 +578,9 @@ func _update_light(delta: float) -> void:
 	day_night.advance(delta)
 	_ambient.color = day_night.ambient() * BIOME_TINTS[_biome]
 	_sun.energy = day_night.sun_energy()
+	if weather != null:
+		_ambient.color *= weather.ambient_tint()
+		_sun.energy *= weather.sun_scale()
 	_sun.color = day_night.sun_color()
 	var motes := day_night.night()
 	if _biome in [&"fire", &"water", &"void", &"heart"]:

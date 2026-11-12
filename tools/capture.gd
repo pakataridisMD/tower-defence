@@ -24,6 +24,9 @@ extends Node
 ## Add --look[=stage,stage] for the graphics look test: in each stage (the fire and jungle lands by default)
 ## one of each base tower is built in a row by the road, then the whole map, the row up close at x1
 ## and x2, and the same row at night are taken.
+## Add --weather for the weather test: in a land of each kind, the battle under each of its weathers
+##   (clear with wind, rain, thunderstorm, snow, blizzard, ashfall, dust storm), by day and by night, and
+##   frames of a gust bowing the trees (in <out>/gust).
 ## Add --edge to film the edge pan: zoomed in on a battle, the mouse is pushed against each edge of the
 ## screen in turn, saved as numbered frames in <out>/edge/ (make a clip from them).
 ## Add --story to take the cinematic player, a Herald's boss banner, the final level's defence and counter-attack and
@@ -61,6 +64,16 @@ var _horde := &""
 var _look: PackedStringArray = []
 ## With --look: shoot the towers' effects in a fight (shots, hits, a Meteor and a Doom) instead of the look shots.
 var _fx_shots := false
+var _weather := false
+## The weather test: stage, then the kinds of weather to shoot there.
+const WEATHER_SHOTS := [
+	["nature_2", [Weather.Kind.CLEAR, Weather.Kind.RAIN, Weather.Kind.STORM]],
+	["storm_1", [Weather.Kind.STORM]],
+	["water_3", [Weather.Kind.SNOW, Weather.Kind.BLIZZARD]],
+	["ember_1", [Weather.Kind.ASH]],
+	["earth_1", [Weather.Kind.DUST]],
+	["void_1", [Weather.Kind.ASH]],
+]
 
 
 func _ready() -> void:
@@ -92,6 +105,8 @@ func _ready() -> void:
 			_landmarks = true
 		elif arg.begins_with("--horde="):
 			_horde = StringName(arg.trim_prefix("--horde="))
+		elif arg == "--weather":
+			_weather = true
 		elif arg == "--fx":
 			_fx_shots = true
 		elif arg.begins_with("--look"):
@@ -104,6 +119,8 @@ func _ready() -> void:
 	CampaignScreen.intro_played = true
 	if not _look.is_empty():
 		_run_look()
+	elif _weather:
+		_run_weather()
 	elif _powers:
 		_run_powers()
 	elif _landmarks:
@@ -371,6 +388,63 @@ func _run_look() -> void:
 		game.camera.set_view(1.0, row)
 		await _wait(2.5)
 		await _shot("look_%s_night" % stage)
+		game.free()
+		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+func _run_weather() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	for entry: Array in WEATHER_SHOTS:
+		var stage: String = entry[0]
+		Progress.active_stage = StringName(stage)
+		var game := GAME_SCENE.instantiate() as Game
+		game.autoplay = true
+		add_child(game)
+		await _wait(0.2)
+		var sim := game.sim
+		sim.tree.points = 30
+		for id: StringName in [&"fire_entry", &"storm_entry", &"nature_entry", &"water_entry", &"earth_entry", &"void_entry"]:
+			sim.allocate_node(id)
+		sim.gold = 9000
+		var row := _look_row(game)
+		sim.wave_index = 6
+		var sky := game.board.art.weather
+		print("Weather in %s: %s" % [stage, sky.weather.spells(40).map(
+				func(s: Array) -> String: return "%s waves %d-%d" % [Weather.describe(s[0]), s[1], s[2]])])
+		await _until(func() -> bool: return sim.state == RunSim.State.WAVE and sim.time_in_wave > 6.0 or sim.is_over())
+		game.camera.set_view(1.0, row)
+		for kind: Weather.Kind in entry[1]:
+			var label := Weather.describe(kind).to_lower().replace(" ", "_")
+			sky.force(kind)
+			_light(game.board.art, DayNight.DAY)
+			await _wait(2.5)
+			if kind == Weather.Kind.STORM:
+				sky.strike(row / BoardArt.SCALE + Vector2(-60, -10))
+				await _wait(0.05)
+			await _shot("weather_%s_%s" % [stage, label])
+			if kind != Weather.Kind.CLEAR:
+				game.camera.set_view(game.camera.min_zoom, sim.config.map.size_in_pixels() / 2.0)
+				await _wait(0.6)
+				await _shot("weather_%s_%s_whole" % [stage, label])
+				game.camera.set_view(1.0, row)
+			_light(game.board.art, DayNight.NIGHT)
+			await _wait(2.0)
+			await _shot("weather_%s_%s_night" % [stage, label])
+		if stage == "nature_2":
+			# Frames of the trees bowing as gusts sweep through, close up.
+			sky.force(Weather.Kind.CLEAR)
+			_light(game.board.art, DayNight.DAY)
+			game.camera.set_view(2.0, row)
+			sky._gust_wait = 0.0
+			var folder := _out.path_join("gust")
+			DirAccess.make_dir_recursive_absolute(folder)
+			for i in 40:
+				await _wait(0.1)
+				await RenderingServer.frame_post_draw
+				get_viewport().get_texture().get_image().save_png(folder.path_join("%03d.png" % i))
+			print("Saved clip ", folder)
 		game.free()
 		await _wait(0.1)
 	print("Screenshots saved to ", _out)
