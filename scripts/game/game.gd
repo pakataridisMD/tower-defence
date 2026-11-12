@@ -70,7 +70,10 @@ func _ready() -> void:
 	var args := OS.get_cmdline_user_args()
 	autoplay = autoplay or args.has("--autoplay")
 	quit_at_end = quit_at_end or args.has("--quit-at-end")
-	sim = RunSim.new(Progress.run_config())
+	var config := Progress.run_config()
+	# The caves open somewhere new each run (a loaded run keeps its own).
+	config.cave_seed = randi() + 1
+	sim = RunSim.new(config)
 	var loaded := _restore_saved_run()
 	story = Story.shared()
 	_build_views()
@@ -133,6 +136,9 @@ func _build_views() -> void:
 	add_child(camera)
 	camera.setup(board, sim.config.map.size_in_pixels())
 	board.view_rect = BoardCamera.VIEW_RECT
+	if board.art != null:
+		BossFx.new().setup(sim, board.art)
+	sim.boss_ability.connect(_on_boss_ability)
 
 	audio = GameAudio.new()
 	add_child(audio)
@@ -241,6 +247,7 @@ func _connect_signals() -> void:
 	_autosave()
 	hud.tower_chosen.connect(_choose_tower)
 	hud.skill_pressed.connect(_skill_button)
+	hud.skill_upgrade_pressed.connect(_upgrade_skill)
 	hud.sell_pressed.connect(_sell_selected)
 	hud.level_up_pressed.connect(_level_up_selected)
 	hud.ascend_pressed.connect(_ascend_selected)
@@ -281,7 +288,8 @@ func _process(delta: float) -> void:
 		_accumulator = 0.0
 		return
 	if sim.state == RunSim.State.BUILDING and sim.break_time_left >= 0.0 and _bot == null:
-		# In an assault the next wave comes on its own after a short break.
+		# After a cleared wave the next one comes on its own when the break runs out. Pausing, the
+		# menus, the skill web and cinematics stop the clock (see the return above).
 		if sim.tick_break(delta * SPEEDS[_speed_index]):
 			_close_web()
 	if sim.state != RunSim.State.WAVE:
@@ -313,9 +321,9 @@ func _input(event: InputEvent) -> void:
 
 ## Keys: Space starts the wave, T opens the skill web, F changes speed, P pauses, O opens the audio
 ## settings, M mutes everything, Esc backs out and then opens the pause menu,
-## 1-9 pick a tower from the open shop page (Tab turns the page), Q W E A S D cast the skills,
-## F1 to F4 summon the heroes and then use their abilities, Z X C V B N press the selected tower's
-## upgrade buttons, and Delete sells it.
+## 1-9 pick a tower from the open shop page (Tab turns the page), Q W E A S D cast the skills
+## (Shift with them buys the skill's next level), F1 to F4 summon the heroes and then use their
+## abilities, Z X C V B N press the selected tower's upgrade buttons, and Delete sells it.
 func _unhandled_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
 	if key == null or not key.pressed or key.echo or cinematic != null or audio_panel.visible:
@@ -367,7 +375,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			var action := Hud.ACTION_KEYS.find(key.keycode)
 			if web.visible or (skill < 0 and action < 0):
 				return
-			if skill >= 0:
+			if skill >= 0 and key.shift_pressed:
+				_upgrade_skill(hud.skill_for_hotkey(skill))
+			elif skill >= 0:
 				_skill_key(hud.skill_for_hotkey(skill))
 			elif board.selected != null:
 				hud.press_action(action)
@@ -637,6 +647,21 @@ func _skill_key(skill_id: StringName) -> void:
 		_begin_skill(skill_id)
 
 
+## Buys a skill's next level, or says why it cannot.
+func _upgrade_skill(skill_id: StringName) -> void:
+	if skill_id.is_empty():
+		return
+	var error := sim.skill_upgrade_error(skill_id)
+	if not error.is_empty():
+		hud.show_message(error, UiStyle.BAD)
+		return
+	sim.upgrade_skill(skill_id)
+	var skill: SkillData = sim.config.skills[skill_id]
+	var level := sim.skill_level(skill_id)
+	SoundPlayer.sfx(&"tower_level_up")
+	hud.show_message("%s: level %d" % [skill.title_at(level), level], sim.config.element_color(skill.element).lightened(0.35))
+
+
 func _begin_skill(skill_id: StringName) -> void:
 	var error := sim.skill_error(skill_id)
 	if not error.is_empty():
@@ -646,7 +671,7 @@ func _begin_skill(skill_id: StringName) -> void:
 	if skill.is_targeted():
 		board.begin_aiming(skill_id)
 		SoundPlayer.sfx(&"skill_aim")
-		hud.show_message("%s: click where it should land" % skill.display_name)
+		hud.show_message("%s: click where it should land" % skill.title_at(sim.skill_level(skill_id)))
 	else:
 		_cast_skill(skill_id, Vector2.ZERO)
 
@@ -658,7 +683,7 @@ func _cast_skill(skill_id: StringName, at: Vector2) -> void:
 		hud.show_message(error, UiStyle.BAD)
 	elif sim.use_skill(skill_id, at):
 		var skill: SkillData = sim.config.skills[skill_id]
-		hud.show_message(skill.display_name, sim.config.element_color(skill.element).lightened(0.35))
+		hud.show_message(skill.title_at(sim.skill_level(skill_id)), sim.config.element_color(skill.element).lightened(0.35))
 
 
 ## A hero's portrait: summons the hero if it is not on the field yet, else uses its ability.
@@ -727,6 +752,21 @@ func _move_selected() -> void:
 		return
 	board.begin_moving(tower)
 	hud.show_message("%s: click a free tile to march to" % tower.hero.display_name)
+
+
+## Tells the player when a boss binds or burns down their towers, and lets go of a destroyed one.
+func _on_boss_ability(boss: SimEnemy, ability: StringName, targets: Array) -> void:
+	match ability:
+		&"fireball":
+			hud.show_message("%s hurls fire at your %s! Sell it now or lose it." % [boss.data.display_name,
+					(targets[0] as SimTower).data.display_name], UiStyle.BAD)
+		&"destroy_tower":
+			var tower: SimTower = targets[0]
+			if board.selected == tower:
+				board.select(null)
+			hud.show_message("%s destroyed your %s" % [boss.data.display_name, tower.data.display_name], UiStyle.BAD)
+		&"bind":
+			hud.show_message("%s binds %d of your towers" % [boss.data.display_name, targets.size()], UiStyle.BAD)
 
 
 func _on_hero_summoned(tower: SimTower) -> void:

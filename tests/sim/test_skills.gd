@@ -70,28 +70,36 @@ func test_meteor_hits_what_is_near_and_then_cools_down() -> void:
 	_wave_with_enemies(sim, 6)
 	var skill: SkillData = sim.config.skills[&"meteor"]
 	var at := sim.enemies[0].position
+	# Who is in reach is decided where they stand when the meteor lands, after its fall.
 	var near: Array[SimEnemy] = []
 	var far: Array[SimEnemy] = []
-	for enemy in sim.enemies:
-		if enemy.position.distance_to(at) <= skill.radius:
-			near.append(enemy)
-		else:
-			far.append(enemy)
-	assert_false(far.is_empty(), "some enemies are out of its reach")
+	sim.skill_struck.connect(func(_cast: SimSkillCast, blow: SimSkillCast.Blow, _hit: Array[SimEnemy]) -> void:
+		for enemy in sim.enemies:
+			if enemy.position.distance_to(blow.at) <= blow.radius:
+				near.append(enemy)
+			else:
+				far.append(enemy))
 	watch_signals(sim)
 	assert_true(sim.use_skill(&"meteor", at))
 	assert_signal_emitted(sim, "skill_used")
+	assert_signal_not_emitted(sim, "skill_struck", "the meteor is still falling")
+	assert_eq(sim.skill_casts().size(), 1)
+	_run(sim, skill.impact_delay + 0.05)
+	assert_signal_emitted(sim, "skill_struck")
+	assert_false(near.is_empty(), "it lands among them")
+	assert_false(far.is_empty(), "some enemies are out of its reach")
 	for enemy in near:
 		assert_true(not enemy.alive or (enemy.health < enemy.max_health and enemy.has_status(&"burn")),
 				"an enemy in reach is hurt and burning")
 	for enemy in far:
 		assert_eq(enemy.health, enemy.max_health, "an enemy out of reach is untouched")
 
-	assert_almost_eq(sim.skill_cooldown_left(&"meteor"), skill.cooldown, 0.001)
+	var spent := skill.impact_delay + 0.05
+	assert_almost_eq(sim.skill_cooldown_left(&"meteor"), skill.cooldown - spent, 0.05)
 	assert_string_contains(sim.skill_error(&"meteor"), "ready in")
 	assert_false(sim.use_skill(&"meteor", at), "it cannot be cast again straight away")
 	_run(sim, 10.0)
-	assert_almost_eq(sim.skill_cooldown_left(&"meteor"), skill.cooldown - 10.0, 0.1)
+	assert_almost_eq(sim.skill_cooldown_left(&"meteor"), skill.cooldown - 10.0 - spent, 0.1)
 
 
 func test_a_cooldown_runs_down_and_the_skill_can_be_cast_again() -> void:
@@ -126,10 +134,16 @@ func test_tidal_wave_pushes_every_enemy_back() -> void:
 	var before: Dictionary[int, float] = {}
 	for enemy in sim.enemies:
 		before[enemy.id] = enemy.progress
+	var pushed: Dictionary[int, bool] = {}
+	sim.skill_struck.connect(func(_cast: SimSkillCast, _blow: SimSkillCast.Blow, hit: Array[SimEnemy]) -> void:
+		for enemy in hit:
+			pushed[enemy.id] = true)
 	assert_true(sim.use_skill(&"tidal_wave"))
-	for enemy in sim.enemies:
-		assert_lt(enemy.progress, before[enemy.id], "pushed back along the road")
-		assert_true(enemy.has_status(&"slow"))
+	# The wave crosses the board, hitting each enemy as it passes.
+	_run(sim, sim.config.skills[&"tidal_wave"].sweep_time + 0.1)
+	for id in before:
+		assert_true(pushed.has(id), "the wave reached enemy %d" % id)
+	assert_true(sim.skill_casts().is_empty(), "the wave has crossed")
 
 
 func test_entangle_holds_and_poisons_what_it_reaches() -> void:

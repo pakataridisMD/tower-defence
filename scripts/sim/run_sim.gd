@@ -6,6 +6,9 @@ extends RefCounted
 signal changed
 signal wave_started(wave_number: int)
 signal wave_cleared(wave_number: int, tree_points: int, gold: int)
+## The savings bonus paid for the gold kept through a wave. Sent just before wave_cleared, whose
+## gold already includes it.
+signal savings_paid(amount: int)
 signal enemy_killed(enemy: SimEnemy, killer: SimTower, bounty: int)
 signal enemy_leaked(enemy: SimEnemy)
 signal chain_fired(tower: SimTower, points: PackedVector2Array)
@@ -16,8 +19,19 @@ signal run_ended(won: bool)
 ## A skill was cast. `at` is the point picked on the board, or the board's centre for a skill
 ## that reaches everything.
 signal skill_used(skill: SkillData, at: Vector2)
+## A skill set off: the cast holds every blow still to land, so the board can draw what is coming.
+signal skill_cast(cast: SimSkillCast)
+## One blow of a cast landed (a strike, a stretch of a sweep, a bolt or a field closing) on `hit`.
+signal skill_struck(cast: SimSkillCast, blow: SimSkillCast.Blow, hit: Array[SimEnemy])
+## A skill was taken to a new level with gold.
+signal skill_upgraded(skill: SkillData, level: int)
 ## A boss came onto the board, walking in or released by another enemy.
 signal boss_arrived(enemy: SimEnemy)
+## A boss used one of its abilities: &"heal", &"shield", &"shield_break", &"bind" (targets: the towers
+## bound), &"fireball" (targets: [the tower it flies at]), &"destroy_tower" (targets: [the tower, already
+## gone from towers]), &"silence" (targets: towers), &"summon" (targets: the new enemies), &"blink" or
+## &"enrage". See BossAbilities.
+signal boss_ability(boss: SimEnemy, ability: StringName, targets: Array)
 ## A boss silenced these towers.
 signal towers_silenced(boss: SimEnemy, silenced: Array[SimTower])
 ## An enemy used its power (see EnemyData.power), or something happened to it: &"fall" and &"rise"
@@ -28,6 +42,8 @@ signal enemy_power(enemy: SimEnemy, power: StringName, targets: Array)
 signal enemy_blinked(enemy: SimEnemy, from: Vector2)
 ## A boss escaped the board when badly hurt (see EnemyData.escape_below).
 signal enemy_escaped(enemy: SimEnemy)
+## The ground broke open: from the next wave on, part of the horde comes out of this cave (see Caves).
+signal cave_opened(cave: Caves.Cave)
 ## A building of the enemy base fell in an assault.
 signal structure_destroyed(structure: SimEnemy)
 ## Every building of an assault phase fell. `phase` is the new phase; above the stage's last phase
@@ -62,6 +78,9 @@ enum State { BUILDING, WAVE, WON, LOST }
 
 ## Simulation step used by the game scene. Tests may use bigger steps.
 const STEP := 1.0 / 60.0
+## Seconds a break lasts before the next wave starts on its own, unless the stage sets its own
+## auto_wave_delay. The player can start the wave sooner; the first wave always waits for them.
+const AUTO_WAVE_DELAY := 15.0
 ## In an assault, every this many attacks a tower in reach of a building it can hurt shoots the
 ## building, even with enemies in range, so the siege moves on during a crowded wave.
 const SIEGE_EVERY := 3
@@ -93,6 +112,12 @@ const ENDLESS_LOOP := 5
 ## as the same number of stronger enemies instead (the same total health), so the game stays smooth.
 ## 2,000 enemies on the board at once takes about 18 ms a step; 500 takes about 4.
 const MAX_WAVE_ENEMIES := 600
+## Boss ability strength for the first boss of the campaign or of a skirmish; the last gets 1.
+const BOSS_POWER_FIRST := 0.3
+## Stages in each land's campaign, and stages in the whole campaign: six lands of four, the three of
+## the Convergence and the final assault.
+const STAGES_PER_LAND := 4
+const CAMPAIGN_BOSS_STAGES := 28
 
 var config: RunConfig
 var state := State.BUILDING
@@ -124,6 +149,8 @@ var break_time_left := -1.0
 var kills := 0
 var leaks := 0
 var gold_earned := 0
+## The savings bonus paid at the end of the last wave cleared.
+var last_savings_bonus := 0
 
 var _path_cells: Dictionary[Vector2i, bool] = {}
 var _tower_at: Dictionary[Vector2i, SimTower] = {}
@@ -139,6 +166,12 @@ var _arrivals: Array[SimEnemy] = []
 var _skill_cooldowns: Dictionary[StringName, float] = {}
 ## Seconds left on each skill whose modifiers are still running, by skill id.
 var _skill_time: Dictionary[StringName, float] = {}
+## The modifiers a running boon lends, scaled to the level it was cast at, by skill id.
+var _skill_mods: Dictionary[StringName, Array] = {}
+## Each skill's level in this run, by skill id (1 when it has not been raised).
+var skill_levels: Dictionary[StringName, int] = {}
+## Casts still landing.
+var _casts: Array[SimSkillCast] = []
 ## Roads whose gate has fallen in an assault: nothing more comes down them.
 var _closed_lanes: Dictionary[int, bool] = {}
 var _structure_cells: Dictionary[Vector2i, SimEnemy] = {}
@@ -146,6 +179,15 @@ var _structure_cells: Dictionary[Vector2i, SimEnemy] = {}
 var landmarks: Array[Landmarks.Site] = []
 ## Cells the camps and the city stand on, to the site on each.
 var _landmark_cells: Dictionary[Vector2i, Landmarks.Site] = {}
+## Caves that broke open during the run, oldest first. Each has its own lane after the map's roads.
+var caves: Array[Caves.Cave] = []
+## The wave the next cave first sends enemies in; it opens in the break before. 0 when no more come.
+var next_cave_wave := 0
+## Cells cave mounds stand on, to their cave.
+var _cave_cells: Dictionary[Vector2i, Caves.Cave] = {}
+## Cells of the map's own roads (not the caves' digs).
+var _road_cells: Dictionary[Vector2i, bool] = {}
+var _cave_rng := RandomNumberGenerator.new()
 ## The heroes the player can summon in this run, in key order.
 var party: Array[HeroData] = []
 ## Summoned heroes by hero id.
@@ -177,6 +219,8 @@ var _roll_wait := 0.0
 var _muster_cooldowns: Dictionary[StringName, float] = {}
 ## Gold from the camp's supply not yet paid out, under a whole coin.
 var _supply := 0.0
+## The bosses' healing, barriers, binding and fireballs, and the ruins they leave.
+var boss_powers: BossAbilities
 ## The wave being fought as it really comes: grown by the difficulty (and in endless, the round).
 var _wave_as_fought: WaveData
 ## Extra health for the enemies of a wave whose numbers hit MAX_WAVE_ENEMIES.
@@ -184,6 +228,7 @@ var _crowd_health := 1.0
 
 
 func _init(p_config: RunConfig) -> void:
+	boss_powers = BossAbilities.new(self)
 	config = p_config
 	var rules := config.rules
 	var base_gold := rules.starting_gold
@@ -207,8 +252,12 @@ func _init(p_config: RunConfig) -> void:
 	path_curve = lane_curves[0]
 	path_length = lane_lengths[0]
 	_path_cells = config.map.path_cells()
+	_road_cells = _path_cells.duplicate()
 	_place_structures()
 	_place_landmarks()
+	_cave_rng.seed = config.cave_seed if config.cave_seed != 0 else hash(str(config.map.id) + ":" + (str(config.stage.id) if config.stage != null else ""))
+	if caves_come():
+		next_cave_wave = Caves.next_wave(1, _cave_rng)
 	for hero in config.heroes:
 		if hero != null and not party.has(hero) and party.size() < HeroData.MAX_PARTY:
 			party.append(hero)
@@ -234,6 +283,30 @@ func current_wave() -> WaveData:
 			return config.wave_set.waves[_set_index(index)]
 		return null
 	return config.wave_set.waves[index]
+
+
+## How strong the bosses' abilities are in this run, BOSS_POWER_FIRST for the very first boss up to 1
+## for the last (Doctor Paris, 2026-11-12: bosses get harder as you go, first easiest, last hardest,
+## never past the cut abilities). In the campaign it rises stage by stage, from Ashfall Road to the
+## final assault; in a skirmish it rises boss wave by boss wave through the set, and stays at 1 in
+## the endless waves after it.
+func boss_power() -> float:
+	var t := 1.0
+	if config.stage != null and config.campaign != null:
+		var index := maxi(config.campaign.stage_index(config.stage.id), 0)
+		var position := mini(config.campaign.order * STAGES_PER_LAND + index, CAMPAIGN_BOSS_STAGES - 1)
+		t = float(position) / float(CAMPAIGN_BOSS_STAGES - 1)
+	elif config.wave_set != null:
+		var bosses := 0
+		var reached := 0
+		for i in config.wave_set.waves.size():
+			if config.wave_set.waves[i].is_boss:
+				bosses += 1
+				if i <= wave_index:
+					reached += 1
+		if bosses > 1 and wave_index < total_waves():
+			t = float(maxi(reached - 1, 0)) / float(bosses - 1)
+	return lerpf(BOSS_POWER_FIRST, 1.0, clampf(t, 0.0, 1.0))
 
 
 ## 1-based number of the current or next wave. In an assault and in an endless run it keeps
@@ -468,46 +541,335 @@ func skill_error(skill_id: StringName) -> String:
 	return ""
 
 
+## The level a skill is at in this run, from 1.
+func skill_level(skill_id: StringName) -> int:
+	return skill_levels.get(skill_id, 1)
+
+
+## How far an aimed skill reaches at its level now, in board pixels.
+func skill_radius(skill_id: StringName) -> float:
+	var skill: SkillData = config.skills.get(skill_id)
+	if skill == null:
+		return 0.0
+	return skill.radius * skill.rank(skill_level(skill_id)).reach
+
+
+## Gold to take the skill to its next level, or -1 when it is at its last.
+func skill_upgrade_cost(skill_id: StringName) -> int:
+	var skill: SkillData = config.skills.get(skill_id)
+	if skill == null or skill_level(skill_id) >= skill.max_level():
+		return -1
+	return skill.rank(skill_level(skill_id) + 1).cost
+
+
+## Why a skill cannot be taken to its next level now, or an empty string if it can.
+func skill_upgrade_error(skill_id: StringName) -> String:
+	var skill: SkillData = config.skills.get(skill_id)
+	if skill == null:
+		return "Unknown skill"
+	if is_over():
+		return "The run is over"
+	if skill_level(skill_id) >= skill.max_level():
+		return "%s is at its last level" % skill.title_at(skill_level(skill_id))
+	if not is_skill_unlocked(skill_id):
+		return "Open %s in the skill web first" % skill.display_name
+	if gold < skill_upgrade_cost(skill_id):
+		return "Not enough gold"
+	return ""
+
+
+## Spends gold to take a skill to its next level. Returns false and does nothing if it cannot.
+func upgrade_skill(skill_id: StringName) -> bool:
+	if not skill_upgrade_error(skill_id).is_empty():
+		return false
+	gold -= skill_upgrade_cost(skill_id)
+	skill_levels[skill_id] = skill_level(skill_id) + 1
+	if _skill_time.has(skill_id):
+		# A boon that is running takes the new level at once.
+		_skill_mods[skill_id] = _scaled_modifiers(config.skills[skill_id], skill_level(skill_id))
+		_refresh_modifiers()
+	skill_upgraded.emit(config.skills[skill_id], skill_level(skill_id))
+	changed.emit()
+	return true
+
+
+## Skills that are still landing: meteors falling, waves crossing, fields burning.
+func skill_casts() -> Array[SimSkillCast]:
+	return _casts
+
+
 ## Casts a skill at a point on the board (ignored by skills that reach everything). Returns false
-## and does nothing if it cannot be cast now.
+## and does nothing if it cannot be cast now. What lands at once lands before it returns; the rest
+## (a falling meteor, a wave crossing the board) lands over the next steps.
 func use_skill(skill_id: StringName, at: Vector2 = Vector2.ZERO) -> bool:
 	if not skill_error(skill_id).is_empty():
 		return false
 	var skill: SkillData = config.skills[skill_id]
 	_skill_cooldowns[skill_id] = skill_cooldown(skill_id)
-	var elements: Array[int] = []
-	if config.element_index(skill.element) >= 0:
-		elements.append(config.element_index(skill.element))
-	# Skill damage keeps pace with enemy health, wave by wave.
-	var growth := health_growth()
-	var damage := StatCalculator.compute(&"skill_damage", skill.damage, _modifiers, skill.all_tags()) * growth
-	var effects: Array[StatusEffectData] = []
-	for spec in skill.status_effects:
-		var scaled := spec.duplicate() as StatusEffectData
-		scaled.damage_per_second *= growth
-		effects.append(scaled)
-	var targets: Array[SimEnemy] = enemies.duplicate()
-	for structure in structures:
-		if is_vulnerable(structure) and towers_besiege():
-			targets.append(structure)
-	for enemy in targets:
-		if not enemy.alive or (skill.is_targeted() and enemy.position.distance_to(at) > skill.radius):
-			continue
-		var multiplier := ElementRules.damage_multiplier(elements, enemy.element)
-		if damage > 0.0:
-			_damage(enemy, CombatMath.hit_damage(damage, multiplier, enemy.effective_armour(), enemy.damage_taken_bonus()) * _spread_cut(enemy), null)
-		if not enemy.alive:
-			continue
-		for spec in effects:
-			enemy.apply_status(spec, null, multiplier)
-		if skill.knockback > 0.0 and enemy.knock_back(skill.knockback) > 0.0:
-			enemy.position = lane_curves[enemy.lane].sample_baked(enemy.progress)
+	var cast := _plan_cast(skill, at)
 	if skill.duration > 0.0 and not skill.modifiers.is_empty():
-		_skill_time[skill_id] = skill.duration
+		_skill_time[skill_id] = skill.duration * cast.rank.hold
+		_skill_mods[skill_id] = _scaled_modifiers(skill, cast.level)
 		_refresh_modifiers()
-	skill_used.emit(skill, at if skill.is_targeted() else config.map.size_in_pixels() * 0.5)
+	skill_used.emit(skill, cast.at)
+	skill_cast.emit(cast)
+	_advance_cast(cast, 0.0)
+	if not cast.is_finished():
+		_casts.append(cast)
 	changed.emit()
 	return true
+
+
+## Works out every blow of a cast: where and when each lands and how hard it hits at this wave.
+func _plan_cast(skill: SkillData, at: Vector2) -> SimSkillCast:
+	var cast := SimSkillCast.new()
+	cast.skill = skill
+	cast.level = skill_level(skill.id)
+	var rank := skill.rank(cast.level)
+	cast.rank = rank
+	var board := config.map.size_in_pixels()
+	cast.at = at if skill.is_targeted() else board * 0.5
+	if config.element_index(skill.element) >= 0:
+		cast.elements.append(config.element_index(skill.element))
+	# Skill damage keeps pace with enemy health, wave by wave.
+	var growth := health_growth()
+	var tags := skill.all_tags()
+	cast.damage = StatCalculator.compute(&"skill_damage", skill.damage + rank.damage_bonus, _modifiers, tags) * rank.power * growth
+	cast.radius = skill.radius * rank.reach
+	cast.knockback = (skill.knockback + rank.knockback_bonus) * rank.reach
+	cast.launch = rank.launch
+	for spec in skill.status_effects:
+		var scaled := spec.duplicate() as StatusEffectData
+		scaled.damage_per_second *= growth * rank.power
+		scaled.damage_taken *= rank.power
+		scaled.armour_reduction *= rank.power
+		scaled.duration *= rank.hold
+		cast.effects.append(scaled)
+	var strikes := maxi(1, rank.strikes)
+	if skill.is_targeted():
+		for i in strikes:
+			var blow := SimSkillCast.Blow.new()
+			blow.kind = &"strike"
+			blow.time = skill.impact_delay + skill.strike_gap * i
+			blow.main = i == 0
+			blow.at = cast.at
+			blow.radius = cast.radius
+			blow.damage = cast.damage
+			if i > 0:
+				# The rest come down in a ring round the first, smaller, each a little further round.
+				var angle := float(i) * 2.39996
+				blow.at = cast.at + Vector2(cos(angle), sin(angle) * 0.8) * cast.radius * (0.7 + 0.25 * float(i % 2))
+				blow.radius = cast.radius * 0.65
+				blow.damage = cast.damage * 0.6
+			cast.blows.append(blow)
+	else:
+		# Waves come from the side of the board where the roads end, so they push back toward the gates.
+		var ends_right := _roads_end_right()
+		for i in strikes:
+			var blow := SimSkillCast.Blow.new()
+			blow.time = skill.impact_delay + skill.strike_gap * i
+			blow.damage = cast.damage
+			blow.main = i == 0
+			if skill.sweep_time > 0.0:
+				blow.kind = &"sweep"
+				blow.at = Vector2(board.x + 40.0 if ends_right else -40.0, board.y * 0.5)
+				blow.to_x = -40.0 if ends_right else board.x + 40.0
+				blow.front = blow.at.x
+				blow.sweep_time = skill.sweep_time
+			else:
+				blow.kind = &"strike"
+				blow.at = cast.at
+			cast.blows.append(blow)
+	for i in rank.bolts:
+		var bolt := SimSkillCast.Blow.new()
+		bolt.kind = &"bolt"
+		bolt.time = skill.impact_delay + 0.15 + skill.bolt_time * float(i) / maxf(1.0, float(rank.bolts))
+		bolt.radius = SimSkillCast.BOLT_RADIUS
+		bolt.damage = rank.bolt_damage * rank.power * growth
+		cast.blows.append(bolt)
+	return cast
+
+
+## True when the roads run toward the right side of the board (their ends are right of their starts).
+func _roads_end_right() -> bool:
+	var drift := 0.0
+	for curve in lane_curves:
+		if curve.point_count >= 2:
+			drift += curve.get_point_position(curve.point_count - 1).x - curve.get_point_position(0).x
+	return drift >= 0.0
+
+
+## A skill's modifiers at a level: its power scales what they give.
+func _scaled_modifiers(skill: SkillData, level: int) -> Array[Modifier]:
+	var result: Array[Modifier] = []
+	var power := skill.rank(level).power
+	for modifier in skill.modifiers:
+		var scaled := modifier.duplicate() as Modifier
+		scaled.value *= power
+		result.append(scaled)
+	return result
+
+
+## Lands what is due of every cast still playing out, and lets their fields burn.
+func _advance_casts(delta: float) -> void:
+	if _casts.is_empty():
+		return
+	var live: Array[SimSkillCast] = []
+	for cast in _casts:
+		_advance_cast(cast, delta)
+		if not cast.is_finished():
+			live.append(cast)
+	_casts = live
+
+
+func _advance_cast(cast: SimSkillCast, delta: float) -> void:
+	cast.age += delta
+	for blow in cast.blows:
+		if blow.done or cast.age < blow.time:
+			continue
+		match blow.kind:
+			&"sweep":
+				_advance_sweep(cast, blow)
+			&"bolt":
+				_land_bolt(cast, blow)
+			_:
+				_land_strike(cast, blow)
+	for zone in cast.zones.duplicate():
+		zone.time_left -= delta
+		zone.tick -= delta
+		if zone.tick <= 0.0 and zone.time_left > 0.0:
+			zone.tick += SimSkillCast.ZONE_TICK
+			var hit := _skill_targets(zone.at, zone.radius)
+			for enemy in hit:
+				_skill_hit(cast, enemy, zone.damage_per_second * SimSkillCast.ZONE_TICK, false, 0.0)
+		if zone.time_left <= 0.0:
+			cast.zones.erase(zone)
+			if zone.finale_damage > 0.0:
+				var finale := SimSkillCast.Blow.new()
+				finale.kind = &"finale"
+				finale.at = zone.at
+				finale.radius = zone.radius
+				finale.damage = zone.finale_damage
+				finale.time = cast.age
+				finale.done = true
+				cast.blows.append(finale)
+				var hit := _skill_targets(zone.at, zone.radius)
+				for enemy in hit:
+					_skill_hit(cast, enemy, finale.damage, false, cast.launch)
+				skill_struck.emit(cast, finale, hit)
+
+
+## Everything a skill can hit within `radius` of a point (0 reaches the whole board).
+func _skill_targets(at: Vector2, radius: float) -> Array[SimEnemy]:
+	var result: Array[SimEnemy] = []
+	var pool: Array[SimEnemy] = enemies.duplicate()
+	for structure in structures:
+		if is_vulnerable(structure) and towers_besiege():
+			pool.append(structure)
+	for enemy in pool:
+		if enemy.alive and (radius <= 0.0 or enemy.position.distance_to(at) <= radius):
+			result.append(enemy)
+	return result
+
+
+func _land_strike(cast: SimSkillCast, blow: SimSkillCast.Blow) -> void:
+	blow.done = true
+	# A boon for the towers (Surge) lands on no enemy.
+	var harms := blow.damage > 0.0 or not cast.effects.is_empty() or cast.knockback > 0.0
+	var hit: Array[SimEnemy] = []
+	if harms:
+		hit = _skill_targets(blow.at, blow.radius)
+	for enemy in hit:
+		_skill_hit(cast, enemy, blow.damage, true, cast.launch)
+	if blow.main and cast.rank.zone_time > 0.0:
+		var zone := SimSkillCast.Zone.new()
+		zone.at = blow.at
+		zone.radius = maxf(blow.radius, 60.0) if blow.radius > 0.0 else 0.0
+		zone.duration = cast.rank.zone_time
+		zone.time_left = cast.rank.zone_time
+		zone.tick = SimSkillCast.ZONE_TICK
+		var growth := health_growth()
+		zone.damage_per_second = cast.rank.zone_damage * cast.rank.power * growth
+		zone.finale_damage = cast.rank.finale_damage * cast.rank.power * growth
+		cast.zones.append(zone)
+	skill_struck.emit(cast, blow, hit)
+
+
+## A sweep moves its front on and hits everything it has passed since the last step.
+func _advance_sweep(cast: SimSkillCast, blow: SimSkillCast.Blow) -> void:
+	var front := blow.front_at(cast.age)
+	var low := minf(blow.front, front)
+	var high := maxf(blow.front, front)
+	blow.front = front
+	var hit: Array[SimEnemy] = []
+	for enemy in _skill_targets(Vector2.ZERO, 0.0):
+		if blow.swept.has(enemy.id) or enemy.position.x < low - 1.0 or enemy.position.x > high + 1.0:
+			continue
+		blow.swept[enemy.id] = true
+		hit.append(enemy)
+		_skill_hit(cast, enemy, blow.damage, true, cast.launch)
+	if is_equal_approx(front, blow.to_x):
+		blow.done = true
+	if not hit.is_empty() or blow.done:
+		skill_struck.emit(cast, blow, hit)
+
+
+## A bolt falls on the enemy furthest along the road that this cast has not struck yet.
+func _land_bolt(cast: SimSkillCast, blow: SimSkillCast.Blow) -> void:
+	blow.done = true
+	var struck: Dictionary[int, bool] = {}
+	for other in cast.blows_of(&"bolt"):
+		if other.target != null:
+			struck[other.target.id] = true
+	var best: SimEnemy = null
+	var best_left := INF
+	for enemy in enemies:
+		if not enemy.alive or enemy.untouchable() or struck.has(enemy.id):
+			continue
+		var left := lane_lengths[enemy.lane] - enemy.progress if enemy.lane < lane_lengths.size() else 0.0
+		if left < best_left:
+			best_left = left
+			best = enemy
+	if best == null:
+		for enemy in enemies:
+			if enemy.alive and not enemy.untouchable():
+				best = enemy
+				break
+	if best == null:
+		return
+	blow.target = best
+	blow.at = best.position
+	var hit := _skill_targets(blow.at, blow.radius)
+	for enemy in hit:
+		_skill_hit(cast, enemy, blow.damage if enemy == best else blow.damage * 0.5, false, cast.launch * 0.5)
+	skill_struck.emit(cast, blow, hit)
+
+
+## One enemy takes a skill's blow: its damage, its effects if `with_effects`, a throw off its feet
+## and a push back along the road.
+func _skill_hit(cast: SimSkillCast, enemy: SimEnemy, damage: float, with_effects: bool, launch: float) -> void:
+	if not enemy.alive:
+		return
+	var multiplier := ElementRules.damage_multiplier(cast.elements, enemy.element)
+	if damage > 0.0:
+		_damage(enemy, CombatMath.hit_damage(damage, multiplier, enemy.effective_armour(), enemy.damage_taken_bonus()) * _spread_cut(enemy), null)
+	if not enemy.alive:
+		return
+	# A field re-applies the skill's effects to whatever walks in.
+	for spec in cast.effects:
+		if with_effects or not enemy.has_status(spec.kind):
+			enemy.apply_status(spec, null, multiplier)
+	if launch > 0.0 and with_effects:
+		enemy.apply_status(_launch_spec(launch), null, multiplier)
+	if with_effects and cast.knockback > 0.0 and enemy.knock_back(cast.knockback) > 0.0:
+		enemy.position = lane_curves[enemy.lane].sample_baked(enemy.progress)
+
+
+func _launch_spec(seconds: float) -> StatusEffectData:
+	var spec := StatusEffectData.new()
+	spec.kind = &"stun"
+	spec.duration = seconds
+	return spec
 
 
 func _tick_skills(delta: float) -> void:
@@ -518,6 +880,7 @@ func _tick_skills(delta: float) -> void:
 		_skill_time[skill_id] -= delta
 		if _skill_time[skill_id] <= 0.0:
 			_skill_time.erase(skill_id)
+			_skill_mods.erase(skill_id)
 			ended = true
 	if ended:
 		_refresh_modifiers()
@@ -533,6 +896,64 @@ func _place_landmarks() -> void:
 ## The camp or city standing on a cell, or null.
 func landmark_at(cell: Vector2i) -> Landmarks.Site:
 	return _landmark_cells.get(cell)
+
+
+## The cave whose mound stands on a cell, or null.
+func cave_at(cell: Vector2i) -> Caves.Cave:
+	return _cave_cells.get(cell)
+
+
+## True when caves break open in this run: every run but an assault on the enemy's base.
+func caves_come() -> bool:
+	return config.caves and not is_assault()
+
+
+## Opens the next cave if its wave is the one about to start. Called in the break after each wave.
+func _open_due_cave() -> void:
+	if next_cave_wave <= 0 or wave_number() < next_cave_wave:
+		return
+	var wave := next_cave_wave
+	next_cave_wave = Caves.next_wave(next_cave_wave, _cave_rng) if caves.size() + 1 < Caves.MAX_CAVES else 0
+	var spawns := PackedVector2Array()
+	var bases := PackedVector2Array()
+	for lane in config.map.lane_count():
+		var points := config.map.path_points(lane)
+		if points.size() >= 2:
+			spawns.append(points[0])
+			bases.append(points[points.size() - 1])
+	for site in landmarks:
+		if site.kind == &"city":
+			for cell in site.cells:
+				bases.append(config.map.cell_center(cell))
+	for cave in caves:
+		spawns.append(config.map.cell_center(cave.cell))
+	var blocked := func(cell: Vector2i) -> bool:
+		return _tower_at.has(cell) or _landmark_cells.has(cell) or _structure_cells.has(cell) \
+				or _cave_cells.has(cell) or (_path_cells.has(cell) and not _road_cells.has(cell))
+	var cave := Caves.find(config.map, lane_curves, lane_lengths, func(cell: Vector2i) -> bool: return _road_cells.has(cell),
+			blocked, spawns, bases, _cave_rng)
+	if cave == null:
+		# No room anywhere (the player built over everything): this one never opens.
+		return
+	cave.wave = wave
+	add_cave(cave)
+
+
+## Puts a cave on the board with its own lane: its mound and dig can no longer be built on.
+func add_cave(cave: Caves.Cave) -> void:
+	var curve := Curve2D.new()
+	for point in Caves.lane_points(config.map, cave, lane_curves[cave.joins_lane], lane_lengths[cave.joins_lane]):
+		curve.add_point(point)
+	cave.lane = lane_curves.size()
+	lane_curves.append(curve)
+	lane_lengths.append(curve.get_baked_length())
+	for cell in cave.cells:
+		_cave_cells[cell] = cave
+	for cell in cave.dig:
+		_path_cells[cell] = true
+	caves.append(cave)
+	cave_opened.emit(cave)
+	changed.emit()
 
 
 func is_path(cell: Vector2i) -> bool:
@@ -561,11 +982,15 @@ func placement_error(tower_id: StringName, cell: Vector2i) -> String:
 		return "The enemy's building stands here"
 	if _landmark_cells.has(cell):
 		return "The enemy's war camp stands here" if _landmark_cells[cell].kind == &"camp" else "The city stands here"
+	if _cave_cells.has(cell):
+		return "An enemy cave yawns here"
 	var limit := build_limit()
 	if limit >= 0 and cell.x > limit:
 		return "The enemy still holds this ground: bring down its buildings first"
 	if _tower_at.has(cell):
 		return "There is already a tower here"
+	if boss_powers.is_ruin(cell):
+		return "The ruin still burns: build here once the wave is over"
 	if gold < tower_price(tower_id):
 		return "Not enough gold"
 	return ""
@@ -749,6 +1174,18 @@ func sell_tower(tower: SimTower) -> int:
 	return refund
 
 
+## A boss's fireball destroys a tower outright: no refund.
+func destroy_tower(tower: SimTower) -> void:
+	if not towers.has(tower):
+		return
+	towers.erase(tower)
+	_tower_at.erase(tower.cell)
+	if tower.is_hero():
+		_heroes_on_board.erase(tower.hero.id)
+	_recompute_towers()
+	changed.emit()
+
+
 func start_next_wave() -> bool:
 	if state != State.BUILDING or current_wave() == null:
 		return false
@@ -843,6 +1280,7 @@ func step(delta: float) -> void:
 	_move_enemies(delta)
 	if state != State.WAVE:
 		return
+	_advance_casts(delta)
 	_tick_statuses(delta)
 	_tick_traits(delta)
 	_rebuild_hash()
@@ -894,6 +1332,7 @@ func _roll_wave() -> void:
 	var finished := current_wave()
 	wave_index += 1
 	var rewards := _pay_wave(finished)
+	boss_powers.clear()
 	wave_cleared.emit(wave_index, rewards[0], rewards[1])
 	_begin_wave()
 
@@ -909,6 +1348,13 @@ func _loop_counter_wave(delta: float) -> void:
 		counter_loops += 1
 		_counter_loop_wait = COUNTER_LOOP_GAP
 		_spawner.start(_wave_as_fought if _wave_as_fought != null else current_wave(), lane_curves.size())
+
+
+## Seconds the break after a cleared wave lasts before the next wave starts on its own.
+func break_length() -> float:
+	if config.stage != null and config.stage.auto_wave_delay > 0.0:
+		return config.stage.auto_wave_delay
+	return AUTO_WAVE_DELAY
 
 
 ## Counts down the break before a wave that starts on its own. Call it while building; the game
@@ -937,9 +1383,12 @@ func _spawn(delta: float) -> void:
 		var element := _wave_element
 		if not group.element.is_empty():
 			element = config.element_index(group.element)
-		var enemy := _make_enemy(data, multiplier, lane, element, 0.0)
+		var boss := data.tags.has(&"boss")
+		var enemy := _make_enemy(data, multiplier * (config.wave_set.boss_health_scale if boss else 1.0), lane, element, 0.0)
+		if boss:
+			enemy.boss_power = boss_power()
 		enemies.append(enemy)
-		if data.tags.has(&"boss"):
+		if boss:
 			boss_arrived.emit(enemy)
 
 
@@ -980,15 +1429,18 @@ func minor_health_share(data: EnemyData) -> float:
 
 ## Enemies that come out of another: splitting on death, or summoned by a boss. They appear a little
 ## behind it on its lane, with its strength and element.
-func _release_from(parent: SimEnemy, enemy_id: StringName, count: int) -> void:
+func _release_from(parent: SimEnemy, enemy_id: StringName, count: int) -> Array[SimEnemy]:
+	var released: Array[SimEnemy] = []
 	var data: EnemyData = config.enemies.get(enemy_id)
 	if data == null:
-		return
+		return released
 	for i in count:
 		var child := _make_enemy(data, parent.health_multiplier, parent.lane, parent.element, parent.progress - 14.0 * i)
 		_arrivals.append(child)
+		released.append(child)
 		if data.tags.has(&"boss"):
 			boss_arrived.emit(child)
+	return released
 
 
 func _move_enemies(delta: float) -> void:
@@ -1031,6 +1483,7 @@ func _move_enemies(delta: float) -> void:
 ## Healing, summoning and changing element, the horde's powers and the bosses' tricks.
 func _tick_traits(delta: float) -> void:
 	_tick_boss_tricks(delta)
+	boss_powers.tick(delta)
 	_tick_horde_auras(delta)
 	_tick_powers(delta)
 	_tick_seeds(delta)
@@ -1045,7 +1498,7 @@ func _tick_traits(delta: float) -> void:
 			continue
 		var data := enemy.data
 		if enemy.is_regenerating() and enemy.health < enemy.max_health:
-			enemy.health = minf(enemy.max_health, enemy.health + enemy.max_health * data.regen_per_second * delta)
+			enemy.health = minf(enemy.max_health, enemy.health + enemy.max_health * data.regen_per_second * enemy.boss_power * delta)
 		_tick_summons(enemy, delta)
 		if data.prismatic_interval > 0.0:
 			enemy.prism_timer -= delta
@@ -1061,8 +1514,10 @@ func _tick_summons(enemy: SimEnemy, delta: float) -> void:
 	if data.summon_interval > 0.0 and not data.summon.is_empty():
 		enemy.summon_timer -= delta
 		if enemy.summon_timer <= 0.0:
-			enemy.summon_timer += data.summon_interval
-			_release_from(enemy, data.summon, data.summon_count)
+			enemy.summon_timer += enemy.summon_interval()
+			var called := _release_from(enemy, data.summon, data.summon_count)
+			if data.tags.has(&"boss") and not called.is_empty():
+				boss_ability.emit(enemy, &"summon", called)
 
 
 ## Shields, silences, blinks and rage. Buildings of the enemy base use them too, once they can be hurt.
@@ -1086,11 +1541,12 @@ func _tick_boss_tricks(delta: float) -> void:
 			continue
 		if data.enrage_below > 0.0 and not caster.enraged and caster.health < caster.max_health * data.enrage_below:
 			caster.enraged = true
+			boss_ability.emit(caster, &"enrage", [])
 		if data.ward_radius > 0.0 and data.ward_reduction > 0.0:
 			var reach := data.ward_radius * data.ward_radius
 			for other in enemies:
 				if other != caster and other.alive and other.position.distance_squared_to(caster.position) <= reach:
-					other.ward = maxf(other.ward, clampf(data.ward_reduction, 0.0, 0.9))
+					other.ward = maxf(other.ward, clampf(data.ward_reduction * caster.boss_power, 0.0, 0.9))
 		if data.silence_interval > 0.0 and data.silence_radius > 0.0:
 			caster.silence_timer -= delta
 			if caster.silence_timer <= 0.0:
@@ -1109,6 +1565,7 @@ func _tick_boss_tricks(delta: float) -> void:
 					caster.progress += jump
 					caster.position = lane_curves[caster.lane].sample_baked(caster.progress)
 					enemy_blinked.emit(caster, from)
+					boss_ability.emit(caster, &"blink", [])
 
 
 ## Each kind of enemy's own power. See EnemyData.power.
@@ -1166,7 +1623,7 @@ func _tick_powers(delta: float) -> void:
 			&"breath":
 				var target := _strongest_tower_near(enemy.position, data.power_radius)
 				if target != null:
-					target.silenced = maxf(target.silenced, data.power_duration)
+					target.silenced = maxf(target.silenced, data.power_duration * enemy.boss_power)
 					enemy.power_timer = data.power_interval
 					enemy_power.emit(enemy, &"breath", [target])
 			_:
@@ -1203,10 +1660,11 @@ func _silence_towers(caster: SimEnemy) -> void:
 	var reach := caster.data.silence_radius * caster.data.silence_radius
 	for tower in towers:
 		if tower.position.distance_squared_to(caster.position) <= reach:
-			tower.silenced = maxf(tower.silenced, caster.data.silence_duration)
+			tower.silenced = maxf(tower.silenced, caster.data.silence_duration * caster.boss_power)
 			hit.append(tower)
 	if not hit.is_empty():
 		towers_silenced.emit(caster, hit)
+		boss_ability.emit(caster, &"silence", hit)
 
 
 func _tick_statuses(delta: float) -> void:
@@ -1417,6 +1875,11 @@ func _damage(enemy: SimEnemy, amount: float, source: SimTower) -> void:
 		amount *= 1.0 - enemy.ward
 	if enemy.is_hardened():
 		amount *= 1.0 - clampf(enemy.data.power_amount, 0.0, 0.95)
+	if enemy.barrier > 0.0:
+		# A boss's barrier soaks the blow up first.
+		amount = boss_powers.absorb(enemy, amount)
+		if amount <= 0.0:
+			return
 	if enemy.shell > 0.0:
 		# A Rimeback's ice soaks the blow up first.
 		var soaked := minf(enemy.shell, amount)
@@ -1533,12 +1996,14 @@ func _finish_wave() -> void:
 	var rewards := _pay_wave(finished)
 	projectiles.clear()
 	_bursts.clear()
+	_casts.clear()
+	boss_powers.clear()
 	if wave_index >= total_waves() and not is_assault() and not is_endless():
 		_end_run(true)
 	else:
 		state = State.BUILDING
-		if config.stage != null and config.stage.auto_wave_delay > 0.0:
-			break_time_left = config.stage.auto_wave_delay
+		break_time_left = break_length()
+		_open_due_cave()
 	wave_cleared.emit(wave_index, rewards[0], rewards[1])
 	changed.emit()
 
@@ -1550,11 +2015,31 @@ func _pay_wave(finished: WaveData) -> Array[int]:
 	if finished.is_boss:
 		points += roundi(run_stat(&"tree_points_per_boss", rules.tree_points_per_boss))
 	tree.points += points
-	var bonus := roundi(run_stat(&"gold_per_wave", rules.gold_per_wave))
+	# The savings bonus is worked out on the gold kept through the wave, before the wave's own pay.
+	last_savings_bonus = _savings_bonus(wave_index)
+	var bonus := roundi(run_stat(&"gold_per_wave", rules.gold_per_wave)) + last_savings_bonus
 	gold += bonus
 	gold_earned += bonus
 	_level_heroes()
+	if last_savings_bonus > 0:
+		savings_paid.emit(last_savings_bonus)
 	return [points, bonus]
+
+
+## The savings bonus the gold held right now would earn if the wave ended now.
+func savings_bonus_now() -> int:
+	return _savings_bonus(wave_index + 1)
+
+
+## The savings bonus the gold held now earns for clearing wave `wave_number` (starts at 1).
+func _savings_bonus(wave_number: int) -> int:
+	var rules := config.rules
+	return rules.savings_bonus_for(gold, run_stat(&"savings_bonus", rules.savings_bonus), wave_number)
+
+
+## The most the savings bonus can pay at the end of the wave being fought (or the next one).
+func savings_cap_now() -> int:
+	return config.rules.savings_cap_at(wave_index + 1)
 
 
 func _end_run(won: bool) -> void:
@@ -1571,7 +2056,7 @@ func _refresh_modifiers() -> void:
 	for skill_id: StringName in _skill_time:
 		var skill: SkillData = config.skills.get(skill_id)
 		if skill != null:
-			_modifiers.append_array(skill.modifiers)
+			_modifiers.append_array(_skill_mods.get(skill_id, skill.modifiers))
 	for effect in _hero_effects:
 		_modifiers.append_array((effect[0] as HeroAbility).modifiers)
 	_recompute_towers()
@@ -1723,8 +2208,12 @@ func _cell_error(cell: Vector2i) -> String:
 		return "Heroes stand beside the road, not on it"
 	if _landmark_cells.has(cell):
 		return "The enemy's war camp stands here" if _landmark_cells[cell].kind == &"camp" else "The city stands here"
+	if _cave_cells.has(cell):
+		return "An enemy cave yawns here"
 	if _tower_at.has(cell):
 		return "There is already a tower here"
+	if boss_powers.is_ruin(cell):
+		return "The ruin still burns: build here once the wave is over"
 	return ""
 
 

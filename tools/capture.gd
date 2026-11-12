@@ -21,6 +21,8 @@ extends Node
 ## with the camera close and following them.
 ## Add --landmarks to take the enemy war camps and the defended cities at the road ends in every land,
 ## by day, at night and burning, plus frames for short clips (<out>/clips/<name>/NNN.png).
+## Add --caves to take the enemy caves: in a few lands a cave breaks open beside the bot's towers (frames of
+## it heaving up in <out>/clips/cave_<stage>/), then the whole map and close-ups with the horde pouring out.
 ## Add --look[=stage,stage] for the graphics look test: in each stage (the fire and jungle lands by default)
 ## one of each base tower is built in a row by the road, then the whole map, the row up close at x1
 ## and x2, and the same row at night are taken.
@@ -29,6 +31,12 @@ extends Node
 ##   frames of a gust bowing the trees (in <out>/gust).
 ## Add --edge to film the edge pan: zoomed in on a battle, the mouse is pushed against each edge of the
 ## screen in turn, saved as numbered frames in <out>/edge/ (make a clip from them).
+## Add --skills to film every player skill at its last level (and the Meteor at its first, to compare)
+## in a busy battle: numbered JPEG frames in <out>/skills/ at 960x540 (make a clip from them), plus
+## <out>/skills_hud.png, the skill bar with its level-up buttons.
+## Add --boss-abilities to take the bosses' abilities: the red glow on boss stages on the map, a boss healing, raising
+## its barrier and binding towers, and Vael-Orrun's fireball burning a tower down, plus frames for clips
+## (<out>/bosses/<boss>/NNNN.png).
 ## Add --skirmish to take the Skirmish page (a hard level and Endless picked), a battle on each land
 ## skirmish map on Merciless, and an endless run once the horde has doubled three times.
 ## Add --saves to take the saved games: the title screen with Continue and New game, the new game
@@ -61,6 +69,7 @@ var _quick := false
 var _campaign := false
 var _ui := false
 var _story := false
+var _boss_abilities := false
 var _heroes := false
 var _menu := false
 var _saves := false
@@ -72,6 +81,8 @@ var _powers := false
 ## With --bosses[=id,...]: film each boss on the road doing every move, with the voice cues.
 var _bosses: PackedStringArray = []
 var _landmarks := false
+var _skills := false
+var _caves := false
 var _army := false
 var _army_frames := 600
 var _horde := &""
@@ -109,6 +120,8 @@ func _ready() -> void:
 			_ui = true
 		elif arg == "--edge":
 			_edge = true
+		elif arg == "--boss-abilities":
+			_boss_abilities = true
 		elif arg == "--story":
 			_story = true
 		elif arg == "--heroes":
@@ -133,8 +146,12 @@ func _ready() -> void:
 			_army = true
 		elif arg.begins_with("--frames="):
 			_army_frames = int(arg.trim_prefix("--frames="))
+		elif arg == "--caves":
+			_caves = true
 		elif arg == "--landmarks":
 			_landmarks = true
+		elif arg == "--skills":
+			_skills = true
 		elif arg.begins_with("--horde="):
 			_horde = StringName(arg.trim_prefix("--horde="))
 		elif arg == "--weather":
@@ -155,7 +172,9 @@ func _ready() -> void:
 	Progress.use_memory_profile(_demo_profile())
 	# The map's glide down from the whole world would still be moving in the first shots.
 	CampaignScreen.intro_played = true
-	if not _tower_looks.is_empty():
+	if _skills:
+		_run_skills()
+	elif not _tower_looks.is_empty():
 		_run_tower_looks()
 	elif not _look.is_empty():
 		_run_look()
@@ -169,6 +188,8 @@ func _ready() -> void:
 		_run_powers()
 	elif not _bosses.is_empty():
 		_run_bosses()
+	elif _caves:
+		_run_caves()
 	elif _landmarks:
 		_run_landmarks()
 	elif _menu:
@@ -185,6 +206,8 @@ func _ready() -> void:
 		_run_edge()
 	elif _story:
 		_run_story()
+	elif _boss_abilities:
+		_run_boss_abilities()
 	elif _heroes:
 		_run_heroes()
 	elif _ui:
@@ -852,6 +875,132 @@ func _run_story() -> void:
 	get_tree().quit()
 
 
+func _run_boss_abilities() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	var screen := CAMPAIGN_SCENE.instantiate() as CampaignScreen
+	add_child(screen)
+	await _wait(0.6)
+	screen.show_whole_world()
+	await _wait(1.0)
+	await _shot("bosses_map_world")
+	screen.select(&"ember_2")
+	await _wait(0.9)
+	await _shot("bosses_map_stage")
+	screen.free()
+	for entry: Array in [[&"void_4", &"hollow_king"], [&"water_4", &"leviathan"], [&"assault_1", &"vael_orrun"]]:
+		await _boss_fight(entry[0], entry[1])
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+## A wave of the boss alone against the bot's towers, with each of its abilities called on cue.
+func _boss_fight(stage: StringName, boss_id: StringName) -> void:
+	Progress.active_stage = stage
+	var game := GAME_SCENE.instantiate() as Game
+	game.autoplay = true
+	add_child(game)
+	await _wait(0.2)
+	game._speed_index = 0
+	game.hud.speed = Game.SPEEDS[0]
+	game.sim.gold = 8000
+	game.sim.tree.points = 16
+	game.sim.lives = 9999
+	var group := SpawnGroup.new()
+	group.enemy = boss_id
+	group.count = 1
+	var wave := WaveData.new()
+	wave.is_boss = true
+	wave.groups = [group] as Array[SpawnGroup]
+	var waves := WaveSet.new()
+	waves.id = &"bosses"
+	waves.health_growth = 1.0
+	waves.waves = [wave, wave] as Array[WaveData]
+	game.sim.config.wave_set = waves
+	await _until(func() -> bool: return game.sim.strongest_boss() != null)
+	var boss := game.sim.strongest_boss()
+	# Its own timers wait: each ability is called on cue below.
+	var hold := func() -> void:
+		boss.heal_timer = 999.0
+		boss.shield_timer = 999.0
+		boss.bind_timer = 999.0
+		boss.doom_timer = 999.0
+		boss.silence_timer = 999.0
+	hold.call()
+	var near := func() -> bool:
+		for tower in game.sim.towers:
+			if tower.position.distance_to(boss.position) < 260.0:
+				return true
+		return false
+	# The camera keeps the boss in view, or frames it with the towers it last went for.
+	var aim: Array = [null]
+	game.sim.boss_ability.connect(func(_b: SimEnemy, ability: StringName, targets: Array) -> void:
+		if ability in [&"bind", &"fireball"] and not targets.is_empty():
+			aim[0] = (targets[0] as SimTower).position)
+	var follow := func() -> void:
+		var at := boss.position + Vector2(0, -60)
+		if aim[0] != null:
+			at = at.lerp(aim[0], 0.6)
+		game.camera.set_view(1.25, at)
+	_film_dir = _out.path_join("bosses").path_join(String(boss_id))
+	_film_count = 0
+	DirAccess.make_dir_recursive_absolute(_film_dir)
+	while not near.call() and boss.alive:
+		follow.call()
+		hold.call()
+		await get_tree().process_frame
+	follow.call()
+	await _wait(0.3)
+	var boss_name := String(boss_id)
+	if boss.data.heal_interval > 0.0:
+		boss.health = boss.max_health * 0.6
+		boss.heal_timer = 0.0
+		await _wait(0.25)
+		await _shot("bosses_%s_heal" % boss_name)
+		boss.heal_timer = 999.0
+	if boss.data.shield_interval > 0.0:
+		boss.shield_timer = 0.0
+		await _wait(0.6)
+		boss.shield_timer = 999.0
+		await _shot("bosses_%s_barrier" % boss_name)
+	if boss.data.bind_interval > 0.0:
+		boss.bind_timer = 0.0
+		await _wait(0.1)
+		boss.bind_timer = 999.0
+		follow.call()
+		await _wait(0.4)
+		await _shot("bosses_%s_bind" % boss_name)
+		aim[0] = null
+	if boss.data.doom_interval > 0.0:
+		boss.doom_timer = 0.0
+		await get_tree().process_frame
+		await get_tree().process_frame
+		boss.doom_timer = 999.0
+		await _film(follow, BossAbilities.FIREBALL_FLIGHT * 0.5)
+		await _shot("bosses_%s_fireball" % boss_name)
+		await _film(follow, BossAbilities.FIREBALL_FLIGHT * 0.5 + 0.15)
+		await _shot("bosses_%s_tower_destroyed" % boss_name)
+		await _film(follow, 2.0)
+		await _shot("bosses_%s_ruin" % boss_name)
+	game.free()
+	await _wait(0.1)
+
+
+var _film_dir := ""
+var _film_count := 0
+
+
+## Saves every other frame to _film_dir for `seconds`, calling `follow` to keep the camera on the action.
+func _film(follow: Callable, seconds: float) -> void:
+	# Counted in frames, not the clock: the capture runs at a fixed 30 frames a second of game time.
+	for frame in roundi(seconds * 30.0):
+		follow.call()
+		await RenderingServer.frame_post_draw
+		if frame % 2 == 0:
+			get_viewport().get_texture().get_image().save_png(_film_dir.path_join("f_%04d.png" % _film_count))
+			_film_count += 1
+		await get_tree().process_frame
+
+
 ## A player some way into the campaign: the storm land done, a few storm towers unlocked in Talents,
 ## a few points left to spend.
 static func _demo_profile() -> PlayerProfile:
@@ -1244,6 +1393,68 @@ func _run_landmarks() -> void:
 	get_tree().quit()
 
 
+const CAVE_STAGES: Array[StringName] = [&"ember_2", &"nature_1", &"water_1", &"void_1"]
+
+
+## In each land the bot builds, a cave breaks open (filmed), then a wave pours out of it and a second one opens.
+func _run_caves() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	for stage: StringName in CAVE_STAGES:
+		Progress.active_stage = stage
+		var game := GAME_SCENE.instantiate() as Game
+		add_child(game)
+		await _wait(0.3)
+		var sim := game.sim
+		var art := game.board.art
+		_light(art, DayNight.DAY)
+		sim.wave_index = 4
+		sim.gold = 2500
+		sim.tree.points = 10
+		var bot := AutoPlayer.for_sim(sim)
+		bot.spend_points()
+		bot.build_towers()
+		await _wait(0.4)
+		sim.next_cave_wave = sim.wave_number()
+		sim._open_due_cave()
+		if sim.caves.is_empty():
+			push_warning("No room for a cave in %s" % stage)
+			game.free()
+			continue
+		var cave := sim.caves[-1]
+		var at := sim.config.map.cell_center(cave.cell)
+		game.camera.set_view(2.0, at)
+		var region := Rect2i(Rect2(BoardCamera.VIEW_CENTER - Vector2(420, 300), Vector2(840, 600)))
+		var folder := _out.path_join("clips").path_join("cave_%s" % stage)
+		DirAccess.make_dir_recursive_absolute(folder)
+		for i in 30:
+			await RenderingServer.frame_post_draw
+			get_viewport().get_texture().get_image().get_region(region).save_png(folder.path_join("%03d.png" % i))
+			await _wait(0.07)
+		await _wait(0.6)
+		await _shot("cave_%s_open" % stage)
+		game.camera.set_view(game.camera.min_zoom, sim.config.map.size_in_pixels() * 0.5)
+		game._start_wave()
+		var out_of_cave := func() -> bool:
+			var count := 0
+			for enemy in sim.enemies:
+				if enemy.lane == cave.lane and enemy.progress > 200.0:
+					count += 1
+			return count >= 5 or sim.state != RunSim.State.WAVE
+		await _until(out_of_cave)
+		await _wait(0.5)
+		await _shot("cave_%s_map" % stage)
+		game.camera.set_view(1.5, at + Vector2(0, 40))
+		await _wait(0.3)
+		await _shot("cave_%s_horde" % stage)
+		_light(art, DayNight.NIGHT)
+		await _wait(1.2)
+		await _shot("cave_%s_night" % stage)
+		game.free()
+		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
 ## Holds the light at a time of day (the campaign profile has reached the Long Night).
 func _light(art: BoardArt, time: float) -> void:
 	art.light_override = time
@@ -1332,6 +1543,102 @@ func _run_edge() -> void:
 	print("Saved clip ", folder)
 	game.free()
 	get_tree().quit()
+
+
+## Each skill at its last level in a busy battle, filmed frame by frame with its name on screen.
+func _run_skills() -> void:
+	Progress.active_stage = &"ember_2"
+	var game := GAME_SCENE.instantiate() as Game
+	game.autoplay = true
+	add_child(game)
+	await _wait(0.2)
+	var sim := game.sim
+	sim.wave_index = 9
+	sim.gold = 9000
+	sim.tree.points = 40
+	# Every element at once, which no real run allows (opposites shut each other out), to film them all.
+	for entry: StringName in [&"fire_entry", &"storm_entry", &"nature_entry", &"water_entry", &"earth_entry", &"void_entry"]:
+		sim.tree._locked.erase(entry)
+		sim.tree._allocated[entry] = true
+	await _until(func() -> bool: return sim.state == RunSim.State.WAVE and sim.time_in_wave > 12.0 or sim.is_over())
+	game._bot.skills = false
+	sim.lives = 9999
+	# Filmed by daylight so every effect reads.
+	if game.board.art != null:
+		game.board.art.light_override = DayNight.DAY
+	# The skill bar with a few levels bought, at full size.
+	sim.gold = 9000
+	for skill_id: StringName in [&"meteor", &"meteor", &"tidal_wave", &"surge", &"surge", &"surge", &"doom"]:
+		sim.upgrade_skill(skill_id)
+	await _wait(0.3)
+	await _shot("skills_hud")
+	var caption_layer := CanvasLayer.new()
+	caption_layer.layer = 100
+	add_child(caption_layer)
+	var caption := Label.new()
+	caption.add_theme_font_size_override("font_size", 46)
+	caption.add_theme_color_override("font_outline_color", Color.BLACK)
+	caption.add_theme_constant_override("outline_size", 12)
+	caption.position = Vector2(60, 110)
+	caption_layer.add_child(caption)
+	var folder := _out.path_join("skills")
+	DirAccess.make_dir_recursive_absolute(folder)
+	var frame := [0]
+	var plan: Array = [[&"meteor", 1], [&"meteor", 5], [&"tidal_wave", 5], [&"earthquake", 5], [&"entangle", 5],
+		[&"surge", 5], [&"doom", 5]]
+	for entry: Array in plan:
+		var skill_id: StringName = entry[0]
+		var skill: SkillData = sim.config.skills[skill_id]
+		sim.skill_levels[skill_id] = entry[1]
+		sim._skill_cooldowns.clear()
+		sim.lives = 9999
+		# Wait for a crowd on the road to cast it on.
+		await _until(func() -> bool: return sim.enemies.size() >= 12 or sim.is_over() or sim.state != RunSim.State.WAVE)
+		if sim.state != RunSim.State.WAVE:
+			game._start_wave()
+			await _until(func() -> bool: return sim.enemies.size() >= 12 or sim.is_over())
+		var target := _inner_crowd(sim)
+		game.camera.set_view(1.6 if skill.is_targeted() else 1.0, target)
+		caption.text = "%s  (%s, level %d)" % [skill.title_at(entry[1]), skill.display_name, entry[1]]
+		await _film_frames(folder, frame, 8)
+		if not sim.skill_error(skill_id).is_empty():
+			push_warning("Capture: %s cannot be cast: %s" % [skill_id, sim.skill_error(skill_id)])
+		game._cast_skill(skill_id, target)
+		var cast: SimSkillCast = sim.skill_casts().back() if not sim.skill_casts().is_empty() else null
+		var length := (cast.length() if cast != null else 0.0) + 1.6
+		await _film_frames(folder, frame, int(length * 30.0))
+	print("Saved clip ", folder)
+	game.free()
+	get_tree().quit()
+
+
+## Like _crowd, but only counting enemies well away from the map's edges, so the camera can centre on them.
+static func _inner_crowd(sim: RunSim) -> Vector2:
+	var board := sim.config.map.size_in_pixels()
+	var inner := Rect2(Vector2(560, 340), board - Vector2(1120, 680))
+	var best := board * 0.5
+	var most := -1
+	for center in sim.enemies:
+		if not center.alive or not inner.has_point(center.position):
+			continue
+		var count := 0
+		for other in sim.enemies:
+			if other.alive and other.position.distance_to(center.position) < 130.0:
+				count += 1
+		if count > most:
+			most = count
+			best = center.position
+	return best if most >= 0 else _crowd(sim)
+
+
+## Saves `frames` frames, one per drawn frame, as half-size JPEGs numbered on from `counter[0]`.
+func _film_frames(folder: String, counter: Array, frames: int) -> void:
+	for i in frames:
+		await RenderingServer.frame_post_draw
+		var image := get_viewport().get_texture().get_image()
+		image.resize(960, 540, Image.INTERPOLATE_BILINEAR)
+		image.save_jpg(folder.path_join("%04d.jpg" % counter[0]), 0.88)
+		counter[0] += 1
 
 
 func _wait(seconds: float) -> void:

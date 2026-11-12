@@ -27,6 +27,36 @@ extends Resource
 ## Modifiers that hold for `duration` seconds, such as faster attacks for every tower.
 @export var modifiers: Array[Modifier] = []
 @export var duration: float = 0.0
+## Seconds from the cast until it lands, such as a meteor's fall.
+@export var impact_delay: float = 0.0
+## Seconds between one strike and the next, when a level lands more than once.
+@export var strike_gap: float = 0.35
+## Seconds a skill that reaches the whole board takes to cross it, as a wave does, hitting each
+## enemy as it passes. 0 hits everything at once.
+@export var sweep_time: float = 0.0
+## Seconds over which a level's bolts (lightning, falling rocks) come down.
+@export var bolt_time: float = 1.6
+## Its levels, bought with gold during the run. The first is the skill as it comes with its element.
+## Empty means it has only one level, made of the numbers above.
+@export var ranks: Array[SkillRank] = []
+
+
+## How many levels it has.
+func max_level() -> int:
+	return maxi(1, ranks.size())
+
+
+## The rank at a level counted from 1, or a plain one when it has no ranks.
+func rank(level: int) -> SkillRank:
+	if ranks.is_empty():
+		return SkillRank.new()
+	return ranks[clampi(level, 1, ranks.size()) - 1]
+
+
+## Its name at a level, such as "Comet Shower".
+func title_at(level: int) -> String:
+	var title := rank(level).title
+	return display_name if title.is_empty() else title
 
 
 ## True when the player has to pick a point on the board.

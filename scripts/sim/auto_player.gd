@@ -39,6 +39,11 @@ var max_towers := 40
 ## Turn off to make the bot play like a beginner: no levels, no skills.
 var upgrades := true
 var skills := true
+## Turn on to have the bot buy skill levels with gold it can spare (it keeps half for towers).
+## Off by default, so the campaign is tuned against towers and plain skills.
+var skill_upgrades := false
+## Gold the bot spent on skill levels this run.
+var skill_gold := 0
 ## Turn off to leave the heroes unsummoned.
 var heroes := true
 ## Turn off to stop the bot at the top level instead of ascending.
@@ -60,6 +65,7 @@ var muster_lane := 0
 var upgrade_bias := 0.6
 
 var _path_samples := PackedVector2Array()
+var _caves_seen := 0
 var _coverage_cache: Dictionary[Vector3i, int] = {}
 var _skill_wait := 0
 var _muster_wait := 0
@@ -221,8 +227,27 @@ func play_build_phase() -> void:
 	if sim.state != RunSim.State.BUILDING:
 		return
 	spend_points()
+	upgrade_skills()
 	build_towers()
 	sim.start_next_wave()
+
+
+## Buys the next level of the lowest open skill while that leaves at least as much gold again for
+## towers.
+func upgrade_skills() -> void:
+	if not skill_upgrades:
+		return
+	while true:
+		var best: StringName = &""
+		for skill in sim.skill_list():
+			if not sim.is_skill_unlocked(skill.id) or sim.skill_upgrade_cost(skill.id) < 0:
+				continue
+			if best.is_empty() or sim.skill_level(skill.id) < sim.skill_level(best):
+				best = skill.id
+		if best.is_empty() or sim.gold < sim.skill_upgrade_cost(best) * 2:
+			return
+		skill_gold += sim.skill_upgrade_cost(best)
+		sim.upgrade_skill(best)
 
 
 ## Casts every skill that is ready and has something worth hitting. Cheap to call every step.
@@ -318,19 +343,32 @@ func _use_hero_abilities(alive: Array[SimEnemy], boss: bool, furthest: float) ->
 ## Where an aimed skill reaches the most enemies: (x, y, how many). A boss in reach makes the
 ## count -1, which always casts.
 func _best_aim(skill: SkillData, alive: Array[SimEnemy]) -> Vector3:
+	# A skill that takes a moment to land (a falling meteor) is aimed where they will be by then.
+	var at: Array[Vector2] = []
+	for enemy in alive:
+		at.append(_ahead(enemy, skill.impact_delay))
+	var radius := sim.skill_radius(skill.id)
 	var best := Vector3.ZERO
-	for center in alive:
+	for i in alive.size():
 		var count := 0
 		var boss := false
-		for other in alive:
-			if other.position.distance_squared_to(center.position) <= skill.radius * skill.radius:
+		for j in alive.size():
+			if at[j].distance_squared_to(at[i]) <= radius * radius:
 				count += 1
-				boss = boss or other.data.tags.has(&"boss")
+				boss = boss or alive[j].data.tags.has(&"boss")
 		if boss:
-			return Vector3(center.position.x, center.position.y, -1.0)
+			return Vector3(at[i].x, at[i].y, -1.0)
 		if count > best.z:
-			best = Vector3(center.position.x, center.position.y, count)
+			best = Vector3(at[i].x, at[i].y, count)
 	return best
+
+
+## Where an enemy will be after `seconds` if it keeps walking.
+func _ahead(enemy: SimEnemy, seconds: float) -> Vector2:
+	if seconds <= 0.0 or enemy.lane >= sim.lane_curves.size() or enemy.has_status(&"stun"):
+		return enemy.position
+	var curve := sim.lane_curves[enemy.lane]
+	return curve.sample_baked(minf(enemy.progress + enemy.speed() * seconds, sim.lane_lengths[enemy.lane]))
 
 
 ## Takes the planned nodes in order, with the nodes on the way to each, saving up for the next one
@@ -377,6 +415,7 @@ func _cheapest_open_node() -> StringName:
 ## Spends the gold, best buy first: another tower where it covers the most road, or a level (or
 ## an ascension) for a tower that already stands in a good spot.
 func build_towers() -> void:
+	_see_new_caves()
 	summon_heroes()
 	for purchase in 400:
 		var tower_id := _affordable_tower() if sim.towers.size() < max_towers else &""
@@ -486,6 +525,25 @@ func siege_value(cell: Vector2i, reach: float) -> int:
 		if sim.is_vulnerable(structure) and structure.position.distance_to(center) <= reach:
 			score += SIEGE_WEIGHT
 	return score
+
+
+## A new cave's dig is road worth covering too (the rest of its lane is a road already sampled).
+## Polled rather than connected: a signal from the sim back to the bot would keep both alive.
+func _see_new_caves() -> void:
+	while _caves_seen < sim.caves.size():
+		_add_dig(sim.caves[_caves_seen])
+		_caves_seen += 1
+
+
+func _add_dig(cave: Caves.Cave) -> void:
+	var dig := Curve2D.new()
+	for point in cave.dig_points:
+		dig.add_point(point)
+	var offset := 0.0
+	while offset <= dig.get_baked_length():
+		_path_samples.append(dig.sample_baked(offset))
+		offset += PATH_SAMPLE_SPACING
+	_coverage_cache.clear()
 
 
 ## How many path sample points lie within reach of a cell's centre.

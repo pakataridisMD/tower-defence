@@ -2,8 +2,8 @@ extends SceneTree
 ## Plays every campaign stage with the scripted AutoPlayer and prints how each went, for tuning the
 ## campaign (see tools/campaign/gen_campaign.py). No meta tree bonuses, Normal difficulty.
 ##
-##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--health=X --boss=X] [--tune] [--skirmish] [--compare]
-##       [--heroes] [--list] [--no-meta] [--check]
+##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--health=X --boss=X --boss-life=X] [--tune] [--tune-bosses] [--skirmish] [--compare]
+##       [--heroes] [--skill-levels] [--list] [--no-meta] [--check]
 ##
 ## --tune searches each stage's health scale so the bot wins keeping a target share of its lives,
 ## and prints lines for tools/campaign/tuning.py. The bot levels its towers and casts its skills,
@@ -14,7 +14,8 @@ extends SceneTree
 ## SKIRMISH_HARDNESS on top (skirmish is three times harder than this tuning). --compare plays everything with several kinds of bot (with and
 ## without skills and upgrades), to see what each habit is worth. --heroes plays every stage with a
 ## party of the three heroes who would have joined by then, with and without heroes and skills, to
-## see how much of a run they carry next to the towers. --list prints the stage ids, so CI can tune
+## see how much of a run they carry next to the towers. --skill-levels plays every stage with the bot
+## as it is and with the bot buying skill levels from spare gold. --list prints the stage ids, so CI can tune
 ## them one stage per process, side by side.
 ##
 ## Every stage is played (and tuned) by the player a new player would be by then: the profile in
@@ -73,6 +74,11 @@ func _initialize() -> void:
 		registry.free()
 		quit()
 		return
+	if OS.get_cmdline_user_args().has("--skill-levels"):
+		_compare_skill_levels(meta, only)
+		registry.free()
+		quit()
+		return
 	if OS.get_cmdline_user_args().has("--heroes"):
 		_compare_heroes(meta, only)
 		registry.free()
@@ -95,6 +101,9 @@ func _initialize() -> void:
 			if tune:
 				var targets := TARGETS if not campaign.element.is_empty() else CONVERGE_TARGETS
 				_tune(meta, stage, targets[mini(i, targets.size() - 1)])
+				continue
+			if OS.get_cmdline_user_args().has("--tune-bosses"):
+				_tune_boss_life(meta, stage)
 				continue
 			var started := Time.get_ticks_msec()
 			var sim := _play(meta, stage)
@@ -151,6 +160,8 @@ func _play(meta: MetaProgress, stage: StageData) -> RunSim:
 			for wave in config.wave_set.waves:
 				if wave.is_boss:
 					wave.health_multiplier = float(arg.trim_prefix("--boss="))
+		if arg.begins_with("--boss-life="):
+			config.wave_set.boss_health_scale = float(arg.trim_prefix("--boss-life="))
 	var sim := RunSim.new(config)
 	var bot := AutoPlayer.for_sim(sim)
 	_wave_seconds.clear()
@@ -250,6 +261,36 @@ func _compare(registry: Node, meta: MetaProgress) -> void:
 	for i in BOTS.size():
 		total += " %12s" % ("%d/%d" % [wins[i], kept[i]])
 	print("COMPARE " + total)
+
+
+## A table for --skill-levels: one row per stage, the bot as it is against the same bot buying skill
+## levels with spare gold (half its gold goes on them at most), with the gold it put into them.
+func _compare_skill_levels(meta: MetaProgress, only: String) -> void:
+	print("%-12s %12s %12s %8s" % ["LEVELS", "skills", "+levels", "gold"])
+	var kept: Array[int] = [0, 0]
+	var wins: Array[int] = [0, 0]
+	for campaign in meta.campaigns_in_order():
+		for stage in campaign.stages:
+			if not only.is_empty() and stage.id != only:
+				continue
+			var line := "%-12s" % stage.id
+			var spent := 0
+			for i in 2:
+				var sim := RunSim.new(_config(meta, stage))
+				var bot := AutoPlayer.for_sim(sim)
+				bot.skill_upgrades = i == 1
+				var elapsed := 0.0
+				while not sim.is_over() and elapsed < 8000.0:
+					bot.act()
+					sim.step(RunSim.STEP)
+					elapsed += RunSim.STEP
+				line += " %12s" % ("%3d%%" % roundi(100.0 * sim.lives / sim.starting_lives) if sim.state == RunSim.State.WON else " w%-2d" % sim.wave_index)
+				spent = bot.skill_gold
+				if sim.state == RunSim.State.WON:
+					wins[i] += 1
+					kept[i] += roundi(100.0 * sim.lives / sim.starting_lives)
+			print("LEVELS " + line + " %8d" % spent)
+	print("LEVELS %-12s %12s %12s" % ["wins/lives", "%d/%d" % [wins[0], kept[0]], "%d/%d" % [wins[1], kept[1]]])
 
 
 ## Kinds of play for --heroes: name, skills, heroes. All of them level and ascend towers.
@@ -385,6 +426,31 @@ func _tune(meta: MetaProgress, stage: StageData, target: float) -> void:
 	if not bosses.is_empty():
 		line += ', "boss": %.2f' % (boss * margin)
 	print(line + "}")
+
+
+## Share of lives the bot must keep for a stage's bosses to stay at full strength (see --tune-bosses).
+const BOSS_LIFE_TARGET := 0.1
+
+
+## --tune-bosses: the bosses keep their full life (EnemyData.max_health) wherever the bot still wins
+## keeping BOSS_LIFE_TARGET of its lives. Elsewhere it finds the highest share of their life the bot can
+## beat, with a 5% margin, and prints it as the stage's "boss_life" for tools/campaign/tuning.py.
+func _tune_boss_life(meta: MetaProgress, stage: StageData) -> void:
+	var waves := meta.stage_config(stage.id).wave_set
+	var apply := func(value: float) -> void: waves.boss_health_scale = value
+	apply.call(1.0)
+	var sim := _play(meta, stage)
+	if sim.state == RunSim.State.WON and sim.lives >= ceili(sim.starting_lives * BOSS_LIFE_TARGET):
+		print('TUNING["%s"] boss_life 1.0 (full: lives %d/%d)' % [stage.id, sim.lives, sim.starting_lives])
+		return
+	var life := _bisect(meta, stage, BOSS_LIFE_TARGET, 0.05, 1.0, apply)
+	var margin := 0.95
+	for attempt in 6:
+		apply.call(life * margin)
+		if _play(meta, stage).state == RunSim.State.WON:
+			break
+		margin *= 0.95
+	print('TUNING["%s"] boss_life %.2f' % [stage.id, life * margin])
 
 
 ## The highest value in [low, high] at which the bot still wins keeping `target` of its lives.

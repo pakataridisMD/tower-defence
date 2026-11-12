@@ -11,6 +11,8 @@ signal audio_pressed
 signal pause_menu_pressed
 signal tower_chosen(tower_id: StringName)
 signal skill_pressed(skill_id: StringName)
+## The player wants the skill's next level (its small button under it, or Shift and its key).
+signal skill_upgrade_pressed(skill_id: StringName)
 signal sell_pressed
 signal level_up_pressed
 signal ascend_pressed(ascendancy_id: StringName)
@@ -73,6 +75,8 @@ var _tier_tabs: Dictionary[int, Button] = {}
 var _shop_scroll: ScrollContainer
 var _shop_grid: GridContainer
 var _skill_buttons: Dictionary[StringName, KeyButton] = {}
+## The small level-up button under each skill.
+var _skill_upgrades: Dictionary[StringName, Button] = {}
 ## Skill ids in the order of their keys.
 var _skill_ids: Array[StringName] = []
 var _info: RichTextLabel
@@ -81,6 +85,8 @@ var _sell_button: Button
 var _actions: VBoxContainer
 var _actions_key := ""
 var _message: Label
+## "Next wave in 12 s" over the board while a break counts down to a wave that starts on its own.
+var _countdown: Label
 var _message_time := 0.0
 var _menu_button: Button
 var _end_panel: PanelContainer
@@ -128,6 +134,20 @@ func _announce_wave(number: int) -> void:
 			roundi(sim.endless_multiplier() * 100.0), roundi(sim.endless_multiplier() * 100.0)]
 	show_message(text)
 	_message_time = 4.0
+
+
+## Shows how long the break has left before the next wave starts on its own.
+func _refresh_countdown() -> void:
+	var counting := sim.state == RunSim.State.BUILDING and sim.break_time_left >= 0.0
+	_countdown.visible = counting
+	if not counting:
+		return
+	var seconds := ceili(sim.break_time_left)
+	if paused:
+		_countdown.text = "Next wave in %d s  (paused)" % seconds
+	else:
+		_countdown.text = "Next wave in %d s  -  Space to start now" % seconds
+	_countdown.add_theme_color_override("font_color", UiStyle.GOLD if seconds <= 5 else UiStyle.TEXT)
 
 
 func show_message(text: String, color: Color = UiStyle.TEXT) -> void:
@@ -355,7 +375,7 @@ func _build_skills(column: VBoxContainer) -> void:
 	var skills := sim.skill_list()
 	if skills.is_empty():
 		return
-	column.add_child(_heading("Skills", "cast during a wave"))
+	column.add_child(_heading("Skills", "Shift+key levels up"))
 	var grid := GridContainer.new()
 	grid.columns = 3
 	grid.add_theme_constant_override("h_separation", 5)
@@ -372,8 +392,18 @@ func _build_skills(column: VBoxContainer) -> void:
 		if _skill_ids.size() < SKILL_KEYS.size():
 			button.key_text = OS.get_keycode_string(SKILL_KEYS[_skill_ids.size()])
 		button.pressed.connect(func() -> void: skill_pressed.emit(skill_id))
-		grid.add_child(button)
+		var cell := VBoxContainer.new()
+		cell.add_theme_constant_override("separation", 2)
+		cell.add_child(button)
+		var upgrade := UiStyle.button("", 13)
+		upgrade.theme_type_variation = &"CompactButton"
+		upgrade.custom_minimum_size = Vector2(97, 22)
+		upgrade.clip_text = true
+		upgrade.pressed.connect(func() -> void: skill_upgrade_pressed.emit(skill_id))
+		cell.add_child(upgrade)
+		grid.add_child(cell)
 		_skill_buttons[skill_id] = button
+		_skill_upgrades[skill_id] = upgrade
 		_skill_ids.append(skill_id)
 
 
@@ -397,6 +427,15 @@ func _build_message() -> void:
 	_message.size = Vector2(1536, 90)
 	_message.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_message)
+	_countdown = UiStyle.label("", 26)
+	_countdown.add_theme_color_override("font_outline_color", UiStyle.MENU_INK)
+	_countdown.add_theme_constant_override("outline_size", 8)
+	_countdown.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_countdown.position = Vector2(24, 196)
+	_countdown.size = Vector2(1536, 40)
+	_countdown.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_countdown.hide()
+	add_child(_countdown)
 
 
 func _build_end_panel() -> void:
@@ -510,6 +549,11 @@ func tower_for_hotkey(number: int) -> StringName:
 	return &""
 
 
+## The level-up button under a skill, for tests and screenshots.
+func skill_upgrade_button(skill_id: StringName) -> Button:
+	return _skill_upgrades.get(skill_id)
+
+
 ## The skill on the n-th skill key, counted from 0, or an empty id.
 func skill_for_hotkey(index: int) -> StringName:
 	return _skill_ids[index] if index >= 0 and index < _skill_ids.size() else &""
@@ -621,6 +665,7 @@ func _hero_info(tower: SimTower) -> String:
 
 func _refresh() -> void:
 	_gold.text = "%d" % sim.gold
+	_gold.get_parent().tooltip_text = _gold_hint()
 	_lives.text = "%d" % sim.lives
 	if sim.is_endless():
 		_wave.text = "Wave %d" % sim.wave_number()
@@ -659,6 +704,7 @@ func _refresh() -> void:
 				_wave_button.text = "Counter-attack!"
 		_:
 			_wave_button.text = "Run over"
+	_refresh_countdown()
 	var number := 0
 	for tower_id in _shop_ids:
 		var shown := _in_open_tab(tower_id)
@@ -669,6 +715,24 @@ func _refresh() -> void:
 	_refresh_skills()
 	_refresh_heroes()
 	_refresh_info()
+
+
+## The gold's tooltip: how the savings bonus works and what the gold held now would earn.
+func _gold_hint() -> String:
+	var rules := sim.config.rules
+	var share := roundi(sim.run_stat(&"savings_bonus", rules.savings_bonus) * 100.0)
+	return "Gold\nSavings bonus: clearing a wave pays %d%% of the gold you kept (at most %d this wave, rising 8%% a wave).\nRight now: +%d gold" % [
+		share, sim.savings_cap_now(), sim.savings_bonus_now()]
+
+
+## "Savings +N" for the top bar while a wave is being fought, or nothing.
+func _savings_text() -> String:
+	if sim.state != RunSim.State.WAVE:
+		return ""
+	var bonus := sim.savings_bonus_now()
+	if bonus <= 0:
+		return ""
+	return "  ·  [color=#%s]Savings +%d[/color]" % [UiStyle.GOLD.to_html(false), bonus]
 
 
 func _wave_text() -> String:
@@ -693,7 +757,7 @@ func _wave_text() -> String:
 			part += " (every element)"
 		parts.append(part)
 	var label := "Now" if sim.state == RunSim.State.WAVE else "Next"
-	var boss := " [b][color=#e8c547]BOSS[/color][/b]" if wave.is_boss else ""
+	var boss := (" [b][color=#e8c547]BOSS[/color][/b]" if wave.is_boss else "") + _savings_text()
 	# Two lines: what the wave is, then who is in it.
 	if mixed:
 		return "%s: [b]Mixed wave[/b]%s  ·  every group has its own element\n%s" % [label, boss, ", ".join(parts)]
@@ -764,13 +828,44 @@ func _refresh_skills() -> void:
 		else:
 			button.outline = Color(0, 0, 0, 0)
 		button.tooltip_text = _skill_tooltip(skill, unlocked, button.key_text)
+		_refresh_skill_upgrade(skill, unlocked, button.key_text)
+
+
+## The level-up button under a skill: its level and the gold for the next, or that it is at its last.
+func _refresh_skill_upgrade(skill: SkillData, unlocked: bool, key: String) -> void:
+	var upgrade: Button = _skill_upgrades.get(skill.id)
+	if upgrade == null:
+		return
+	var level := sim.skill_level(skill.id)
+	var cost := sim.skill_upgrade_cost(skill.id)
+	upgrade.text = "Lv%d  MAX" % level if cost < 0 else "Lv%d  +%dg" % [level, cost]
+	upgrade.disabled = not sim.skill_upgrade_error(skill.id).is_empty()
+	upgrade.modulate = Color.WHITE if unlocked else Color(1, 1, 1, 0.45)
+	var lines: PackedStringArray = []
+	lines.append("%s, level %d of %d" % [skill.title_at(level), level, skill.max_level()])
+	if cost < 0:
+		lines.append("At its last level.")
+	else:
+		var next := skill.rank(level + 1)
+		lines.append("Next: %s (%d gold)" % [skill.title_at(level + 1), cost])
+		lines.append(next.description)
+		if not key.is_empty():
+			lines.append("Key: Shift+%s" % key)
+		var error := sim.skill_upgrade_error(skill.id)
+		if not error.is_empty():
+			lines.append(error)
+	upgrade.tooltip_text = "\n".join(lines)
 
 
 func _skill_tooltip(skill: SkillData, unlocked: bool, key: String) -> String:
 	var element: ElementData = sim.config.elements.get(skill.element)
 	var lines: PackedStringArray = []
-	lines.append("%s (%s)" % [skill.display_name, element.display_name if element else String(skill.element)])
+	var level := sim.skill_level(skill.id)
+	lines.append("%s (%s), level %d" % [skill.title_at(level), element.display_name if element else String(skill.element), level])
 	lines.append(skill.description)
+	if level > 1:
+		for step in range(2, level + 1):
+			lines.append("+ %s: %s" % [skill.title_at(step), skill.rank(step).description])
 	lines.append("Ready again after %d s%s" % [roundi(sim.skill_cooldown(skill.id)), "  ·  Key: " + key if not key.is_empty() else ""])
 	if skill.is_targeted():
 		lines.append("Click it (or press its key), then click the board. Pressing the key again casts where the mouse is.")
@@ -975,8 +1070,16 @@ func _on_wave_cleared(number: int, points: int, gold: int) -> void:
 	if sim.is_over():
 		return
 	var text := "Wave %d cleared  ·  +%d gold" % [number, gold]
+	if sim.last_savings_bonus > 0:
+		text += " (%d savings bonus)" % sim.last_savings_bonus
 	if points > 0:
 		text += "  ·  +%d skill point%s" % [points, "" if points == 1 else "s"]
+	if not sim.caves.is_empty() and sim.caves[-1].wave == number + 1:
+		# A cave broke open in this break: say so, and keep the message up a while.
+		text += "\nThe ground splits open: a new enemy cave! From the next wave the horde pours out of it too."
+		show_message(text, UiStyle.LIFE)
+		_message_time = 6.0
+		return
 	show_message(text, UiStyle.GOOD)
 
 

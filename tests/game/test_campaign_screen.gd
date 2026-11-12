@@ -110,3 +110,11 @@ func test_a_won_stage_shows_its_stars_and_opens_the_next() -> void:
 			next = button
 	assert_not_null(next)
 	assert_true(next.visible)
+
+
+func test_stages_with_a_boss_are_marked_for_the_red_glow() -> void:
+	var screen := await _open_campaign()
+	assert_true(screen.has_boss(&"ember_2"), "a Herald leads ember_2's last wave")
+	assert_true(screen.has_boss(&"ember_4"), "the land's Warden")
+	assert_true(screen.has_boss(&"assault_1"), "Vael-Orrun")
+	assert_false(screen.has_boss(&"ember_1"), "no boss on the first stage")

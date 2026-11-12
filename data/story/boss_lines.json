@@ -1,8 +1,8 @@
 {
- "_about": "What each boss says in battle (tools/voice/boss_lines.py records them; BossVoice plays them). Keys are game enemy ids. speaker = a cast.json voice; style = narrate.py STYLES (+ corrupted). Line kinds: arrive (first seen), taunt (while it strikes), heal, shield, bind (heal / barrier / binding or silencing towers), summon, fireball, destroy (a tower burnt down), enrage, hurt (half its life gone or its barrier broken), transform (a new form), flee, death. A kind a boss has no line for falls back to taunt. [tags] are ElevenLabs v3 acting directions. share = another boss whose lines this one uses.",
+ "_about": "What each boss says in battle (tools/voice/boss_lines.py records them; BossVoice plays them). Keys are game enemy ids. speaker = a cast.json voice; style = narrate.py STYLES (the battle styles are monsters: demon_*, torn, iron, herald_*, warden_*). Line kinds: arrive (first seen), taunt (while it strikes), heal, shield, bind (heal / barrier / binding or silencing towers), summon, fireball, destroy (a tower burnt down), enrage, hurt (half its life gone or its barrier broken), transform (a new form), flee, death. A kind a boss has no line for falls back to taunt. [tags] are ElevenLabs v3 acting directions. share = another boss whose lines this one uses.",
  "bosses": {
   "vael_orrun": {
-   "speaker": "vael_orrun", "style": "sovereign",
+   "speaker": "vael_orrun", "style": "demon_king",
    "lines": {
     "arrive": ["[slowly] Two thousand years behind a door. [growls] Did you think I would knock?"],
     "taunt": ["Every stone you stand on was mine.", "[laughs darkly] Kneel, and your city may keep its name."],
@@ -17,7 +17,7 @@
    }
   },
   "vael_orrun_wrath": {
-   "speaker": "vael_orrun", "style": "sovereign",
+   "speaker": "vael_orrun", "style": "demon_wrath",
    "lines": {
     "arrive": ["[roaring] Look at what your fathers made of me!"],
     "taunt": ["[growling] I will wear my crown over your skull."],
@@ -30,7 +30,7 @@
    "share": "vael_orrun"
   },
   "vael_orrun_unmade": {
-   "speaker": "vael_orrun", "style": "sovereign",
+   "speaker": "vael_orrun", "style": "demon_unmade",
    "lines": {
     "arrive": ["[hoarse] There is no king left. Only the hunger."],
     "taunt": ["[whispers] Do you hear it too?"],
@@ -41,7 +41,7 @@
    "share": "vael_orrun_wrath"
   },
   "ashen_regent": {
-   "speaker": "cassivane", "style": "mortal",
+   "speaker": "cassivane", "style": "iron",
    "lines": {
     "arrive": ["Stand aside. I do this for my daughter, not for him."],
     "taunt": ["You cannot win this, Spirewright.", "Every life lost here will be paid back. I promised that."],
@@ -54,7 +54,7 @@
    }
   },
   "sundered_heart": {
-   "speaker": "cassivane", "style": "sovereign",
+   "speaker": "cassivane", "style": "torn",
    "lines": {
     "arrive": ["[agonized] Ysolde... it burns. It burns and it will not stop."],
     "taunt": ["[sobbing] I only wanted her back.", "Fire, water, stone. I am all of it now."],
@@ -66,7 +66,7 @@
    }
   },
   "saltmother": {
-   "speaker": "saltmother", "style": "herald",
+   "speaker": "saltmother", "style": "herald_witch",
    "lines": {
     "arrive": ["[whispers] The sea gave me back. It kept everything else."],
     "taunt": ["Come closer. The water is so cold, and so quiet.", "I prayed to the tide for forty years. Now it answers only me."],
@@ -78,7 +78,7 @@
    }
   },
   "gorrath": {
-   "speaker": "gorrath", "style": "herald",
+   "speaker": "gorrath", "style": "herald_beast",
    "lines": {
     "arrive": ["[deep] I held the Kharum Pass for a month. I will hold this road forever."],
     "taunt": ["Stone does not bleed. Stone does not tire.", "Strike harder. The mountain is laughing."],
@@ -90,7 +90,7 @@
    }
   },
   "pale_vesper": {
-   "speaker": "pale_vesper", "style": "herald",
+   "speaker": "pale_vesper", "style": "herald_witch",
    "lines": {
     "arrive": ["[sings softly] Hush now. The bells are ringing for you."],
     "taunt": ["I sang at a thousand funerals. Yours will be my favourite.", "[laughs softly] The dead are listening. Can you hear them hum?"],
@@ -102,7 +102,7 @@
    }
   },
   "ashwick": {
-   "speaker": "ashwick", "style": "herald",
+   "speaker": "ashwick", "style": "herald_beast",
    "lines": {
     "arrive": ["[breathless] I have a letter! I have to deliver the letter!"],
     "taunt": ["[manic laugh] I can't stop running. I can't stop burning!", "Out of my way! The Marshal is waiting!"],
@@ -114,7 +114,7 @@
    }
   },
   "vholt": {
-   "speaker": "vholt", "style": "herald",
+   "speaker": "vholt", "style": "herald_beast",
    "lines": {
     "arrive": ["[shouting] Ride with me, storm! One more charge!"],
     "taunt": ["I taught Kaela everything. Not everything I knew.", "The sky is mine. Look up, and despair."],
@@ -126,7 +126,7 @@
    }
   },
   "mother_briar": {
-   "speaker": "mother_briar", "style": "herald",
+   "speaker": "mother_briar", "style": "herald_witch",
    "lines": {
     "arrive": ["[gently] Hush, children. Mother Briar is here to make it better."],
     "taunt": ["Every thorn in me was planted with love.", "[sweetly] Lie down in the roots. Sleep."],
@@ -138,7 +138,7 @@
    }
   },
   "cinder_tyrant": {
-   "speaker": "ignar", "style": "corrupted",
+   "speaker": "ignar", "style": "warden_beast",
    "lines": {
     "arrive": ["[roaring] Who wakes the fire? The fire is hungry!"],
     "taunt": ["I was a king of flame. Now I am only flame.", "[growling] The whisper says burn. So I burn."],
@@ -150,7 +150,7 @@
    }
   },
   "thunderhead": {
-   "speaker": "aurath", "style": "corrupted",
+   "speaker": "aurath", "style": "warden_witch",
    "lines": {
     "arrive": ["[whispers] Be still, the voice said. [shouting] We will not be still!"],
     "taunt": ["We are the wind that tore your roofs away.", "Two voices. One storm."],
@@ -162,7 +162,7 @@
    }
   },
   "broodmother": {
-   "speaker": "elowen", "style": "corrupted",
+   "speaker": "elowen", "style": "warden_witch",
    "lines": {
     "arrive": ["[tired] So many children. All of them hungry."],
     "taunt": ["Grow. Grow and devour.", "[weary laugh] I am so old, and I cannot stop growing."],
@@ -174,7 +174,7 @@
    }
   },
   "leviathan": {
-   "speaker": "thalassa", "style": "corrupted",
+   "speaker": "thalassa", "style": "warden_witch",
    "lines": {
     "arrive": ["[echoing] I remember every ship that sank in me."],
     "taunt": ["I will remember you too. Every scream.", "The tide is rising, and it does not forgive."],
@@ -186,7 +186,7 @@
    }
   },
   "mountain_titan": {
-   "speaker": "orrok", "style": "corrupted",
+   "speaker": "orrok", "style": "warden_beast",
    "lines": {
     "arrive": ["[very slowly] Two thousand years... of silence."],
     "taunt": ["Small things. Loud things.", "The mountain does not move. You move."],
@@ -198,7 +198,7 @@
    }
   },
   "hollow_king": {
-   "speaker": "nyxara", "style": "corrupted",
+   "speaker": "nyxara", "style": "warden_witch",
    "lines": {
     "arrive": ["The crown is heavy. The crown is mine. [whispers] Help me."],
     "taunt": ["I hear what walks beneath your land.", "[laughs darkly] Fight it? I am it."],
