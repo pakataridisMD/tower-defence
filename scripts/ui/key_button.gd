@@ -3,7 +3,8 @@ extends Button
 ## A button that shows its keyboard key in the corner. Skill buttons also show their cooldown: a
 ## shade that drains away as the skill gets ready, with the seconds left on top.
 
-const KEY_FONT_SIZE := 13
+const KEY_FONT_SIZE := 16
+const COOLDOWN_FONT_SIZE := 30
 const KEY_BOX := Color(0.05, 0.05, 0.09, 0.88)
 const SHADE := Color(0.03, 0.03, 0.07, 0.74)
 
@@ -44,10 +45,14 @@ func _draw() -> void:
 	if cooldown > 0.0:
 		draw_rect(Rect2(Vector2(2, 2), Vector2(size.x - 4.0, (size.y - 4.0) * clampf(cooldown, 0.0, 1.0))), SHADE)
 		if not cooldown_text.is_empty():
-			var width := font.get_string_size(cooldown_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 22).x
+			# The seconds left, big, in the button font when there is one.
+			var big: Font = UiStyle.font("button")
+			if big == null:
+				big = font
+			var width := big.get_string_size(cooldown_text, HORIZONTAL_ALIGNMENT_LEFT, -1, COOLDOWN_FONT_SIZE).x
 			var at := Vector2((size.x - width) * 0.5, size.y * 0.5 + 8.0)
-			draw_string_outline(font, at, cooldown_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 22, 5, Color(0, 0, 0, 0.8))
-			draw_string(font, at, cooldown_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color.WHITE)
+			draw_string_outline(big, at, cooldown_text, HORIZONTAL_ALIGNMENT_LEFT, -1, COOLDOWN_FONT_SIZE, 5, Color(0, 0, 0, 0.8))
+			draw_string(big, at, cooldown_text, HORIZONTAL_ALIGNMENT_LEFT, -1, COOLDOWN_FONT_SIZE, Color.WHITE)
 	if outline.a > 0.0:
 		draw_rect(Rect2(Vector2.ONE, size - Vector2(2, 2)), outline, false, 2.0)
 	if not badge_text.is_empty():

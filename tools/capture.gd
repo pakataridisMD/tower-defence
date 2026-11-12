@@ -53,6 +53,8 @@ var _bigmaps := false
 var _powers := false
 var _landmarks := false
 var _look: PackedStringArray = []
+## With --look: shoot the towers' effects in a fight (shots, hits, a Meteor and a Doom) instead of the look shots.
+var _fx_shots := false
 
 
 func _ready() -> void:
@@ -80,6 +82,8 @@ func _ready() -> void:
 			_powers = true
 		elif arg == "--landmarks":
 			_landmarks = true
+		elif arg == "--fx":
+			_fx_shots = true
 		elif arg.begins_with("--look"):
 			_look = arg.trim_prefix("--look").trim_prefix("=").split(",", false)
 			if _look.is_empty():
@@ -338,6 +342,11 @@ func _run_look() -> void:
 		var row := _look_row(game)
 		sim.wave_index = 6
 		_light(game.board.art, DayNight.DAY)
+		if _fx_shots:
+			await _fx_fight(game, stage, row)
+			game.free()
+			await _wait(0.1)
+			continue
 		await _until(func() -> bool: return sim.state == RunSim.State.WAVE and sim.time_in_wave > 9.0 or sim.is_over())
 		await _shot("look_%s_whole" % stage)
 		game.camera.set_view(1.0, row)
@@ -354,6 +363,44 @@ func _run_look() -> void:
 		await _wait(0.1)
 	print("Screenshots saved to ", _out)
 	get_tree().quit()
+
+
+## Close shots of a fight: the enemy with the most towers around it, the shots flying at it, then a
+## Meteor and a Doom cast on it.
+func _fx_fight(game: Game, stage: String, _row: Vector2) -> void:
+	var sim := game.sim
+	var hottest := func() -> SimEnemy:
+		var best: SimEnemy = null
+		var best_count := 0
+		for enemy in sim.enemies:
+			if not enemy.alive:
+				continue
+			var count := 0
+			for tower in sim.towers:
+				if tower.position.distance_to(enemy.position) < 260.0:
+					count += 1
+			if count > best_count:
+				best = enemy
+				best_count = count
+		return best
+	await _until(func() -> bool: return sim.state == RunSim.State.WAVE and sim.time_in_wave > 14.0 or sim.is_over())
+	var target: SimEnemy = hottest.call()
+	if target == null:
+		push_warning("Capture: no fight to shoot")
+		return
+	game.camera.set_view(2.0, target.position)
+	await _wait(0.5)
+	await _shot("fx_%s_1" % stage)
+	await _wait(0.3)
+	await _shot("fx_%s_2" % stage)
+	for skill_id: StringName in [&"meteor", &"doom"]:
+		target = hottest.call()
+		if target != null:
+			game.camera.set_view(2.0, target.position)
+			sim.use_skill(skill_id, target.position)
+		await _wait(0.15)
+		await _shot("fx_%s_%s" % [stage, skill_id])
+		await _wait(0.8)
 
 
 ## Builds one of each base tower in free cells next to the road, a third of the way along, and returns

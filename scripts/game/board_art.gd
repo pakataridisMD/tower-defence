@@ -42,6 +42,7 @@ const SHOT_STYLES := {
 const HERO_LIGHT := Color(1.0, 0.9, 0.62)
 
 static var _info: Dictionary = {}
+static var _fx_info: Dictionary = {}
 static var _texture_cache: Dictionary = {}
 
 var sim: RunSim
@@ -84,6 +85,9 @@ var _ground_fx: Node2D
 ## Drawn over everything: what is hurting each enemy, and the rings and sparks of hits.
 var _marks: Node2D
 var _fx: Array[Fx] = []
+var _flipbooks: Array[Flipbook] = []
+## Blasts are drawn for this splash radius (art pixels) and scaled to the real one.
+const BLAST_RADIUS := 24.0
 var _corpses: Array[Corpse] = []
 ## Bodies left playing their deaths at once, oldest cleared first.
 const MAX_CORPSES := 40
@@ -105,6 +109,17 @@ class Caster:
 
 
 ## A short effect drawn straight onto the board: a ring that spreads (or closes in), or a spray of sparks.
+## A hand-drawn effect played frame by frame (tools/art/pix2d/effects.py): the picture, and its hot pixels
+## added on top so they shine at night.
+class Flipbook:
+	var node: Node2D
+	var sprites: Array[Sprite2D] = []
+	var frames := 1
+	var fps := 12.0
+	var age := 0.0
+	var loop := false
+
+
 class Fx:
 	var ring := true
 	var at := Vector2.ZERO
@@ -194,6 +209,15 @@ static func info() -> Dictionary:
 		if parsed is Dictionary:
 			_info = parsed
 	return _info
+
+
+## A hand-drawn effect strip's size, frame count and speed, or {} if it has not been drawn.
+static func fx_info(fx_name: String) -> Dictionary:
+	if _fx_info.is_empty() and FileAccess.file_exists(ART + "fx/fx.json"):
+		var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(ART + "fx/fx.json"))
+		if parsed is Dictionary:
+			_fx_info = parsed
+	return _fx_info.get(fx_name, {})
 
 
 static func tower_info(tower_id: StringName) -> Dictionary:
@@ -487,6 +511,7 @@ func _process(delta: float) -> void:
 		landmarks.update(delta)
 	_update_shadows()
 	_advance_fx(delta)
+	_advance_flipbooks(delta)
 	_ground_fx.queue_redraw()
 	_marks.queue_redraw()
 
@@ -958,6 +983,40 @@ func _make_shot(shot: SimProjectile) -> Node2D:
 				second = sim.config.element_color(element)
 	var hot := color.lerp(Color.WHITE, 0.6)
 	var heavy := shot.splash_radius > 0.0
+	if style != &"" and _flipbook("shot_%s%s" % [style, "_heavy" if heavy else ""], node, true) != null:
+		_drawn_shot_trail(node, style, hot, second, heavy)
+	else:
+		_procedural_shot(node, style, color, second, hot, heavy)
+	if heavy:
+		# A shot that will burst carries its own light, if there is room for one.
+		var light := _flash_light(color.lerp(Color.WHITE, 0.2), 0.9, 34.0, 16.0)
+		if light != null:
+			node.add_child(light)
+	return node
+
+
+## What a hand-drawn shot leaves behind it: embers, spray, dust or spores.
+func _drawn_shot_trail(node: Node2D, style: StringName, hot: Color, second: Color, heavy: bool) -> void:
+	match style:
+		&"fire":
+			_shot_trail(node, 10 if heavy else 4, 0.25, Color(1, 0.85, 0.45), second, Vector2(0, -12), true)
+		&"storm":
+			if heavy:
+				var sparks := _shot_trail(node, 8, 0.2, Color.WHITE, second, Vector2.ZERO, true)
+				sparks.spread = 180.0
+				sparks.initial_velocity_max = 16.0
+		&"nature":
+			_shot_trail(node, 6 if heavy else 2, 0.4, hot, second, Vector2(0, 14), true)
+		&"water":
+			_shot_trail(node, 8 if heavy else 3, 0.35, hot, second, Vector2(0, 34), false)
+		&"earth":
+			_shot_trail(node, 8 if heavy else 3, 0.45, Color(0.9, 0.8, 0.62, 0.8), second.lerp(Color(0.6, 0.5, 0.4), 0.5), Vector2(0, 6), false)
+		&"void":
+			_shot_trail(node, 8 if heavy else 4, 0.4, hot, second, Vector2.ZERO, true)
+
+
+## The plain shots drawn in code, for an element with no hand-drawn picture.
+func _procedural_shot(node: Node2D, style: StringName, color: Color, second: Color, hot: Color, heavy: bool) -> void:
 	match style:
 		&"fire":
 			# A fireball: hot core and a trail of flame.
@@ -1000,12 +1059,6 @@ func _make_shot(shot: SimProjectile) -> Node2D:
 			_shot_trail(node, 14 if heavy else 6, 0.4, hot, second, Vector2.ZERO, true)
 		_:
 			_shot_streak(node, [Vector2(-3, 0), Vector2(1, 0)], color.lerp(Color.WHITE, 0.25), 1.0, false)
-	if heavy:
-		# A shot that will burst carries its own light, if there is room for one.
-		var light := _flash_light(color.lerp(Color.WHITE, 0.2), 0.9, 34.0, 16.0)
-		if light != null:
-			node.add_child(light)
-	return node
 
 
 func _shot_core(node: Node2D, color: Color, size: float, glowing: bool) -> Sprite2D:
@@ -1345,9 +1398,26 @@ func _on_projectile_landed(shot: SimProjectile) -> void:
 	if shot.splash_radius <= 0.0:
 		# A shot that found its target throws a few sparks off it.
 		if shot.target != null and shot.target.alive:
-			_sparks(at + Vector2(0, ENEMY_DROP - 5), color, 5, 7.0)
+			var hit_at := at + Vector2(0, ENEMY_DROP - 5)
+			if style == &"" or _play_fx("hit_" + String(style), hit_at) == null:
+				_sparks(hit_at, color, 5, 7.0)
 		return
 	var radius := shot.splash_radius / SCALE
+	if style != &"" and _play_fx("blast_" + String(style), at, radius / BLAST_RADIUS) != null:
+		# The drawn blast carries its own debris; a faint ring still shows how far it reached.
+		_ring(at, Color(color, 0.55), radius * 0.6, radius, 0.35)
+	else:
+		_procedural_blast(at, style, color, radius)
+	var light := _flash_light(color, 1.8, radius * 1.6, 12.0)
+	if light != null:
+		light.position = at
+		_air.add_child(light)
+		var tween := create_tween()
+		tween.tween_property(light, "energy", 0.0, 0.3)
+		tween.tween_callback(func() -> void: _release_light(light))
+
+
+func _procedural_blast(at: Vector2, style: StringName, color: Color, radius: float) -> void:
 	match style:
 		&"water":
 			# A splash: drops thrown up that fall back, and a ripple.
@@ -1371,13 +1441,6 @@ func _on_projectile_landed(shot: SimProjectile) -> void:
 		_:
 			_burst(at, color.lerp(Color(1, 0.8, 0.4), 0.3), 22, 30.0)
 			_ring(at, color.lerp(Color(1, 0.9, 0.6), 0.5), radius * 0.3, radius, 0.3)
-	var light := _flash_light(color, 1.8, radius * 1.6, 12.0)
-	if light != null:
-		light.position = at
-		_air.add_child(light)
-		var tween := create_tween()
-		tween.tween_property(light, "energy", 0.0, 0.3)
-		tween.tween_callback(func() -> void: _release_light(light))
 
 
 func _on_enemy_killed(enemy: SimEnemy, _killer: SimTower, _bounty: int) -> void:
@@ -1386,9 +1449,17 @@ func _on_enemy_killed(enemy: SimEnemy, _killer: SimTower, _bounty: int) -> void:
 	var color := visual.tint if visual != null else Color(0.8, 0.85, 0.9)
 	var at := _art_pos(enemy.position) + Vector2(0, ENEMY_DROP - 4)
 	if not enemy.data.tags.has(&"boss"):
-		_burst(at, color, 14, 22.0, false)
-		_ring(at, color.lerp(Color.WHITE, 0.4), 2.0, 9.0, 0.25)
+		var puff := _play_fx("death_puff", at + Vector2(0, -8))
+		if puff != null:
+			puff.node.modulate = color.lerp(Color.WHITE, 0.55)
+			_burst(at, color, 6, 18.0, false)
+		else:
+			_burst(at, color, 14, 22.0, false)
+			_ring(at, color.lerp(Color.WHITE, 0.4), 2.0, 9.0, 0.25)
 		return
+	var boss_puff := _play_fx("death_puff", at + Vector2(0, -20), 2.5)
+	if boss_puff != null:
+		boss_puff.node.modulate = color.lerp(Color.WHITE, 0.45)
 	# A boss goes out with a blast and a flash of its own colour.
 	_burst(at, color, 48, 50.0, false)
 	_burst(at, color.lerp(Color.WHITE, 0.5), 20, 30.0)
@@ -1416,6 +1487,7 @@ func _on_skill_used(skill: SkillData, board_at: Vector2) -> void:
 		_ring(at, color, radius, radius * 0.97, 0.9, 2.0)
 		if skill.damage > 0.0:
 			# It lands: a flash, flying sparks and a shock wave out to its edge.
+			_play_fx("blast_" + String(skill.element), at, radius / BLAST_RADIUS)
 			_ring(at, bright, radius * 0.1, radius, 0.4, 2.0)
 			_ring(at, color, radius * 0.05, radius * 0.8, 0.7)
 			_burst(at, bright, 60, 80.0)
@@ -1495,6 +1567,61 @@ func _sparks(at: Vector2, color: Color, count: int, reach: float) -> void:
 ## True while a ring or a spray of sparks is still playing.
 func has_live_effects() -> bool:
 	return not _fx.is_empty()
+
+
+## Starts a hand-drawn effect strip on `parent`. Null when that strip has not been drawn.
+func _flipbook(fx_name: String, parent: Node2D, loop: bool) -> Flipbook:
+	var meta := fx_info(fx_name)
+	if meta.is_empty():
+		return null
+	var book := Flipbook.new()
+	book.frames = int(meta.get("frames", 1))
+	book.fps = float(meta.get("fps", 12))
+	book.loop = loop
+	if loop:
+		# Shots in flight do not all flicker in step.
+		book.age = randf() * book.frames / book.fps
+	book.node = Node2D.new()
+	parent.add_child(book.node)
+	var layers := [[fx_name, _unshaded]]
+	if meta.get("glow", false):
+		layers.append([fx_name + "_glow", _additive])
+	for layer: Array in layers:
+		var sprite := Sprite2D.new()
+		sprite.texture = load(ART + "fx/%s.png" % layer[0])
+		sprite.hframes = book.frames
+		sprite.material = layer[1]
+		book.node.add_child(sprite)
+		book.sprites.append(sprite)
+	_flipbooks.append(book)
+	return book
+
+
+## Plays a hand-drawn effect once at a point in the air, scaled (blasts are drawn for BLAST_RADIUS).
+func _play_fx(fx_name: String, at: Vector2, scale_by := 1.0) -> Flipbook:
+	if _flipbooks.size() >= MAX_FX:
+		return null
+	var book := _flipbook(fx_name, _air, false)
+	if book != null:
+		book.node.position = at
+		book.node.scale = Vector2.ONE * clampf(scale_by, 0.5, 4.0)
+	return book
+
+
+func _advance_flipbooks(delta: float) -> void:
+	var live: Array[Flipbook] = []
+	for book in _flipbooks:
+		if not is_instance_valid(book.node) or book.node.is_queued_for_deletion():
+			continue
+		book.age += delta
+		var frame := int(book.age * book.fps)
+		if not book.loop and frame >= book.frames:
+			book.node.queue_free()
+			continue
+		for sprite in book.sprites:
+			sprite.frame = frame % book.frames
+		live.append(book)
+	_flipbooks = live
 
 
 func _advance_fx(delta: float) -> void:
