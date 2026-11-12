@@ -135,6 +135,8 @@ func test_a_boss_is_revealed_once_and_heard_walking_and_dying() -> void:
 	gut.p("Heard: %s" % ", ".join(heard))
 	assert_eq(heard.count(&"boss_earth_reveal"), 1, "revealed once")
 	assert_true(heard.has(&"boss_earth_step"), "footsteps")
-	assert_true(heard.has(&"boss_earth_voice"), "it speaks after its reveal")
+	# Its words are recorded lines played by BossVoice (tests/game/test_boss_moves.gd), not the old chatter.
+	assert_true(BossVoice.speaks(&"mountain_titan"), "it has battle lines")
+	assert_false(heard.has(&"boss_earth_voice"), "so the synthetic voice stays quiet")
 	assert_true(heard.has(&"boss_earth_enrage"), "it roars when badly wounded")
 	assert_true(heard.has(&"boss_earth_death"), "its death")

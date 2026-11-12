@@ -331,7 +331,9 @@ func _track_boss(enemy: SimEnemy) -> void:
 	if not _revealed.has(enemy.data.id):
 		_revealed[enemy.data.id] = true
 		play(StringName("boss_%s_reveal" % set_name), enemy.position)
-		_queue.append([_sim_time + FIRST_WORDS, StringName("boss_%s_voice" % set_name), enemy.id])
+		# Bosses with recorded lines speak through BossVoice instead.
+		if not BossVoice.speaks(enemy.data.id):
+			_queue.append([_sim_time + FIRST_WORDS, StringName("boss_%s_voice" % set_name), enemy.id])
 
 
 func _tick_bosses(step: float) -> void:
@@ -351,7 +353,8 @@ func _tick_bosses(step: float) -> void:
 		state["talk"] -= step
 		if state["talk"] <= 0.0:
 			state["talk"] = randf_range(TALK_EVERY.x, TALK_EVERY.y)
-			play(StringName("boss_%s_voice" % set_name), enemy.position)
+			if not BossVoice.speaks(enemy.data.id):
+				play(StringName("boss_%s_voice" % set_name), enemy.position)
 		# A boss that enrages in the simulation roars when it does; any other roars when badly hurt.
 		var enraged: Variant = enemy.get(&"enraged")
 		var wounded: bool = enraged if enraged is bool and enemy.data.enrage_below > 0.0 \
