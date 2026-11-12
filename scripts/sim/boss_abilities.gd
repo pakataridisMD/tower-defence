@@ -10,7 +10,11 @@ extends RefCounted
 ## Seconds a fireball flies from the boss's hand to the tower.
 const FIREBALL_FLIGHT := 1.4
 
-var _sim: RunSim
+## The run, held weakly: the run owns this, and a strong reference both ways would never be freed.
+var _sim_ref: WeakRef
+var _sim: RunSim:
+	get:
+		return _sim_ref.get_ref() as RunSim
 ## Fireballs in the air: [boss, tower, seconds left].
 var _fireballs: Array[Array] = []
 ## Cells where a destroyed tower burns, until the wave ends.
@@ -18,7 +22,7 @@ var ruins: Dictionary[Vector2i, bool] = {}
 
 
 func _init(sim: RunSim) -> void:
-	_sim = sim
+	_sim_ref = weakref(sim)
 
 
 ## True where a destroyed tower's ruin still burns: nothing can be built there until the wave ends.
