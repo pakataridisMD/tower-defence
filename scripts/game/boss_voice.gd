@@ -32,6 +32,7 @@ var _speaking_until := 0.0
 var _speaking_urgent := false
 var _last_kind: Dictionary[String, float] = {}
 var _last_index: Dictionary[String, int] = {}
+var _clock := 0.0
 
 signal spoke(boss_id: StringName, kind: StringName, text: String, seconds: float)
 
@@ -125,5 +126,11 @@ func stop() -> void:
 		_player.stop()
 
 
+## Seconds of unpaused game: it stops with the game, as the line being spoken does, and keeps in step
+## with frames when they are rendered slower than real time (tools/capture.gd).
+func _process(delta: float) -> void:
+	_clock += delta
+
+
 func _now() -> float:
-	return Time.get_ticks_msec() / 1000.0
+	return _clock
