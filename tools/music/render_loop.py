@@ -2,6 +2,7 @@
 
     python3 tools/music/render_loop.py battle            # tools/music/loops/battle.py
     python3 tools/music/render_loop.py battle --stems    # also write each part as a WAV
+    python3 tools/music/render_loop.py --realms          # the 21 realm tracks (loops/realms.py)
 
 A loop module defines LAYERS (names, quietest first) and build(layer) -> Score. Every layer's
 score has the same sections, so the layers line up sample for sample and the game can play them
@@ -39,7 +40,7 @@ CEILING = 0.85  # about -1.4 dBFS sample peak, leaves room for Vorbis overshoot
 
 
 def loudness(x: np.ndarray) -> float:
-    path = os.path.join(OUT, "_measure.wav")
+    path = os.path.join(OUT, f"_measure_{os.getpid()}.wav")
     sf.write(path, x, SR, subtype="FLOAT")
     err = subprocess.run(["ffmpeg", "-hide_banner", "-i", path, "-af", "ebur128", "-f", "null", "-"],
                          capture_output=True, text=True).stderr
@@ -77,8 +78,8 @@ def fold(x: np.ndarray, n: int) -> np.ndarray:
     return y
 
 
-def encode(wav: str, base: str):
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", wav, "-c:a", "libvorbis", "-q:a", "6",
+def encode(wav: str, base: str, quality: int = 6):
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", wav, "-c:a", "libvorbis", "-q:a", str(quality),
                     base + ".ogg"], check=True)
 
 
@@ -92,7 +93,11 @@ def preview(x: np.ndarray, path: str, loops: int = 1):
 
 def render(name: str, stems: bool = False):
     t0 = time.time()
-    mod = importlib.import_module(f"loops.{name}")
+    if name.startswith("realm_"):
+        from loops import realms
+        mod = realms.Loop(name)
+    else:
+        mod = importlib.import_module(f"loops.{name}")
     layers = {}
     first = None
     os.makedirs(ASSETS, exist_ok=True)
@@ -119,7 +124,7 @@ def render(name: str, stems: bool = False):
         layers[layer] = y
         wav = os.path.join(OUT, f"{name}_{layer}.wav")
         sf.write(wav, y, SR, subtype="PCM_16")
-        encode(wav, os.path.join(ASSETS, f"{name}_{layer}"))
+        encode(wav, os.path.join(ASSETS, f"{name}_{layer}"), getattr(mod, "QUALITY", 6))
     # previews: each layer added in turn, two times round so the seam is heard
     acc = np.zeros_like(full)
     for layer in mod.LAYERS:
@@ -143,10 +148,15 @@ def render(name: str, stems: bool = False):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("loops", nargs="+")
+    ap.add_argument("loops", nargs="*")
     ap.add_argument("--stems", action="store_true")
+    ap.add_argument("--realms", action="store_true", help="render every realm track (loops/realms.py)")
     a = ap.parse_args()
-    for n in a.loops:
+    names = list(a.loops)
+    if a.realms:
+        from loops import realms
+        names += list(realms.BY_ID)
+    for n in names:
         render(n, a.stems)
 
 

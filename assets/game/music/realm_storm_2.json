@@ -1,0 +1,38 @@
+{
+  "id": "realm_storm_2_calm",
+  "title": "Riders of the Gale",
+  "duration": 72.0,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 18.0,
+      "name": "B"
+    },
+    {
+      "time": 36.0,
+      "name": "C"
+    },
+    {
+      "time": 54.0,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 72.0,
+  "loop_samples": 3175200,
+  "handover_seconds": 72.0,
+  "bpm": 160,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "realm_storm_2_calm.ogg",
+    "wave": "realm_storm_2_wave.ogg",
+    "boss": "realm_storm_2_boss.ogg"
+  }
+}

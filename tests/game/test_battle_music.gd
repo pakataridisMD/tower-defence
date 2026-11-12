@@ -1,21 +1,52 @@
 extends GutTest
-## The battle music: its three layers load, loop and line up, each state of a run brings in the
+## The battle music: every map's tracks load and their layers line up, the track rotates, each state of a run brings in the
 ## right layers, and a boss wave swaps them for the boss entrance and boss loop.
 
 const OFF := BattleMusic.SILENT_DB
 
 
-func test_layers_load_and_line_up() -> void:
-	var length := -1.0
-	for path: String in BattleMusic.LAYER_FILES:
-		var stream := load(path) as AudioStreamOggVorbis
-		assert_not_null(stream, "missing music layer " + path)
-		if stream == null:
+func test_every_track_loads_and_its_layers_line_up() -> void:
+	var all := BattleMusic.tracks_for(&"meadow")
+	assert_eq(all.size(), 22, "seven realms of three tracks, plus Hold the Line")
+	for track: String in all:
+		var length := -1.0
+		for layer in BattleMusic.LAYER_NAMES.size():
+			var path := BattleMusic.layer_file(track, layer)
+			var stream := load(path) as AudioStreamOggVorbis
+			assert_not_null(stream, "missing music layer " + path)
+			if stream == null:
+				continue
+			if length < 0.0:
+				length = stream.get_length()
+			assert_almost_eq(stream.get_length(), length, 0.01, "layers must be the same length: " + path)
+		assert_gt(length, 50.0, "a battle loop is at least about a minute long: " + track)
+
+
+func test_every_element_map_has_four_tracks() -> void:
+	for biome: StringName in [&"fire", &"water", &"earth", &"storm", &"nature", &"void", &"heart"]:
+		var tracks := BattleMusic.tracks_for(biome)
+		assert_eq(tracks.size(), 4, "three realm tracks and Hold the Line for " + biome)
+		assert_true(tracks.has(BattleMusic.DEFAULT_TRACK))
+		for t: String in tracks.slice(0, 3):
+			assert_true(t.begins_with("realm_" + String(biome)), t + " belongs to " + biome)
+
+
+func test_every_map_biome_has_its_own_music() -> void:
+	for path: String in DirAccess.get_files_at("res://data/maps"):
+		if not path.ends_with(".tres"):
 			continue
-		if length < 0.0:
-			length = stream.get_length()
-		assert_almost_eq(stream.get_length(), length, 0.01, "layers must be the same length: " + path)
-	assert_gt(length, 60.0, "the loop is about 96 s long")
+		var map := load("res://data/maps/" + path) as MapData
+		if map.biome == &"meadow":
+			continue
+		assert_true(BattleMusic.REALM_TRACKS.has(map.biome), "no music for biome %s (%s)" % [map.biome, path])
+
+
+func test_the_track_changes_after_a_few_waves_or_a_boss() -> void:
+	assert_false(BattleMusic.should_change(1, false, 4))
+	assert_false(BattleMusic.should_change(BattleMusic.WAVES_PER_TRACK - 1, false, 4))
+	assert_true(BattleMusic.should_change(BattleMusic.WAVES_PER_TRACK, false, 4))
+	assert_true(BattleMusic.should_change(1, true, 4), "a new track after every boss wave")
+	assert_false(BattleMusic.should_change(9, true, 1), "nothing to change to")
 
 
 func test_build_phase_plays_only_the_calm_layer() -> void:

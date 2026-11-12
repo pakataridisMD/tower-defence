@@ -1,0 +1,38 @@
+{
+  "id": "realm_void_2_calm",
+  "title": "The Unlit Choir",
+  "duration": 80.0,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 20.0,
+      "name": "B"
+    },
+    {
+      "time": 40.0,
+      "name": "C"
+    },
+    {
+      "time": 60.0,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 80.0,
+  "loop_samples": 3528000,
+  "handover_seconds": 80.0,
+  "bpm": 96,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "realm_void_2_calm.ogg",
+    "wave": "realm_void_2_wave.ogg",
+    "boss": "realm_void_2_boss.ogg"
+  }
+}

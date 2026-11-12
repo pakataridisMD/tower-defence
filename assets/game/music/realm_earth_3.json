@@ -1,0 +1,38 @@
+{
+  "id": "realm_earth_3_calm",
+  "title": "The Deep Toll",
+  "duration": 64.0,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 16.0,
+      "name": "B"
+    },
+    {
+      "time": 32.0,
+      "name": "C"
+    },
+    {
+      "time": 48.0,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 64.0,
+  "loop_samples": 2822400,
+  "handover_seconds": 64.0,
+  "bpm": 120,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "realm_earth_3_calm.ogg",
+    "wave": "realm_earth_3_wave.ogg",
+    "boss": "realm_earth_3_boss.ogg"
+  }
+}
