@@ -45,9 +45,12 @@ func setup(p_sim: RunSim, p_story: Story) -> void:
 	if stage != null:
 		var city := story.city(stage.id)
 		if not city.is_empty():
-			var saved: bool = city.get("saved", false)
-			headline("Defend %s" % city.get("name", ""), "The last city. It must not fall." if saved \
-					else "Hold the road until its people are away.")
+			var line := "Hold the road. Its people are behind you."
+			if bool(city.get("capital", false)):
+				line = "The capital. It must not fall."
+			elif not bool(city.get("saved", true)):
+				line = "Hold the wall as long as it stands."
+			headline("Defend %s" % city.get("name", ""), line)
 		if sim.is_assault():
 			var first := story.assault_movement(1)
 			headline(stage.display_name, str(first.get("name", "")))

@@ -35,9 +35,10 @@ var stage_scenes: Dictionary = {}
 var night_from_stages_won := 0
 ## The named boss of a stage, by stage id (a character id).
 var stage_bosses: Dictionary = {}
-## The final assault: {intro, outro, movements: [{name, minutes, boss, cinematic}]}.
+## The final assault: {intro, waves: [{wave, cinematic}], movements: [{name, minutes, boss, cinematic}],
+## truth, outro, post_credits}. After the win: truth, then outro, then post_credits.
 var assault: Dictionary = {}
-## The city each stage defends, by stage id: {name, fall_text, capital}.
+## The town each stage defends, by stage id: {name, fall_text, saved, capital}.
 var cities: Dictionary = {}
 ## Characters by id.
 var characters: Dictionary = {}
@@ -205,10 +206,14 @@ func all_triggered_cinematics() -> Array[StringName]:
 				if moment is Dictionary:
 					add.call(moment.get("cinematic"))
 	add.call(assault.get("intro"))
-	add.call(assault.get("outro"))
+	for key in ["truth", "outro", "post_credits"]:
+		add.call(assault.get(key))
 	for movement: Variant in assault.get("movements", []):
 		if movement is Dictionary:
 			add.call(movement.get("cinematic"))
+	for moment: Variant in assault.get("waves", []):
+		if moment is Dictionary:
+			add.call(moment.get("cinematic"))
 	return result
 
 
@@ -228,6 +233,8 @@ func lost_scene(stage_id: StringName) -> StringName:
 ## The scene that plays when this wave of a stage starts, if any ({wave, cinematic}).
 func scene_at_wave(stage_id: StringName, wave_number: int) -> StringName:
 	var scenes: Variant = stage_scenes.get(String(stage_id), {})
+	if stage_id == StringName(str(assault.get("stage", "assault_1"))):
+		scenes = {"during": assault.get("waves", [])}
 	if not scenes is Dictionary:
 		return &""
 	for moment: Variant in scenes.get("during", []):
@@ -265,6 +272,16 @@ func due_after_win(stage_id: StringName, stages_won: int, seen: Array[StringName
 		own = StringName(str(assault["outro"]))
 	if not own.is_empty() and cinematics.has(own) and not seen.has(own):
 		result.push_front(own)
+	# After the assault: the truth, then the epilogue, then the scene after the credits.
+	if stage_id == StringName(str(assault.get("stage", "assault_1"))):
+		var at := 0
+		for key in ["truth", "outro", "post_credits"]:
+			var id := StringName(str(assault.get(key, "")))
+			if id.is_empty() or not cinematics.has(id) or seen.has(id):
+				continue
+			result.erase(id)
+			result.insert(at, id)
+			at += 1
 	return result
 
 
@@ -284,7 +301,7 @@ func due_before_stage(stage_id: StringName, seen: Array[StringName]) -> Array[St
 	return result
 
 
-## The city a stage defends: {name, fall_text, capital}, or an empty dictionary.
+## The town a stage defends: {name, fall_text, saved, capital}, or an empty dictionary.
 func city(stage_id: StringName) -> Dictionary:
 	var entry: Variant = cities.get(String(stage_id), {})
 	return entry if entry is Dictionary else {}

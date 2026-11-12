@@ -1,33 +1,70 @@
-# Story Bible: The Long Defeat of the Ring
+# Story Bible: The Black Gate
 
-This is the canon for the campaign story. The art, voice, cinematics and heroes work all builds from it.
-If something here disagrees with a stage description in `tools/campaign/gen_campaign.py`, this file wins
-and the generator text should be updated to match.
+This is the canon for the campaign story (version 2, approved by Doctor Paris on 2026-11-12). The art,
+voice, cinematics and heroes work all builds from it. If anything disagrees with it (a stage description,
+a codex text, an older doc), this file wins and the other text should be changed to match.
 
 Companion files:
 
 - [characters.md](characters.md): the cast sheet (looks, colours, weapons, key scenes) for art and voice.
-- [scripts.md](scripts.md): the opening narration and every cinematic, shot by shot.
-- [README.md](README.md): how the story maps onto the 27 stages, the capital and the final assault.
+- [scripts.md](scripts.md): the opening and every cinematic, shot by shot. Generated from
+  `tools/story/story_content.py`.
+- [README.md](README.md): how the story maps onto the 27 stages, the capital and the final level.
+
+**The two rules this version is built on.** Everything in the plot is physical: a real place you can walk
+to, a real object, a plain cause. And the player wins: every stage won saves its town, every land is taken
+back, and the war ends with us storming the enemy's fortress.
 
 ---
 
 ## 1. The story in one breath
 
-The world of **Orrhen** is a ring of six elemental lands around a single shining city. At the dawn of
-history there were seven kingdoms. The songs say the lord of the seventh, the High King Vael-Orrun, tried
-to rule them all, and the other six beat him, banished him beyond the stars and locked the door with his
-own crown. The songs leave out that the six betrayed him first, and burned his wife and son, and that
-something else was whispering to him the whole time. Now someone inside has opened the door, and the High
-King has come back to reclaim what was his.
+**The world.** Orrhen is six lands in a ring around one capital, Solenne. Each land has its own element:
+Fire, Storm, Nature, Water, Earth, Void. In the far east, in the Void land, the ground splits open into the
+**Rift**, a chasm miles deep. At the bottom of the Rift stands the **Black Gate**, a stone door as tall as
+a mountain. Behind it is **the Hollow**, a sunless cavern land under the world.
 
-We are the **Order of the Spire**, the tower-binders who turn raw elements into stone and light. We cannot
-win back the lands that are falling. We can only hold each road long enough for its people to escape,
-then burn the bridges behind them and fall back toward the capital, **Solenne**. Every victory costs a
-city. When there are no cities left but one, we stop retreating.
+**Two thousand years ago.** Vael-Orrun was king of the middle kingdom, where Solenne stands today. The six
+monarchs of the other kingdoms came to his peace feast as friends, burned his city and killed his wife
+and son. That night something in the dark taught him a power that stops all magic, and he made war on all
+six. They beat him, drove him and his army down the Rift and shut the Black Gate on them. They made the
+Gate's key from his own crown: a six-coloured jewel, the **Heartstone**, which they kept far from the
+lock, in the capital later built on his ruins. Locked, the Gate lets nothing of the Hollow out, not even
+through a crack, though anyone can still go in. Then the six monarchs gave their lives to hold the Gate
+shut. Their spirits sleep inside their lands as the six **Wardens**, and while all six sleep in peace,
+their oath binds him by name.
 
-> *"We do not fight to win. We fight so that they may live."*
-> Motto of the Lanternguard, carved over every gate of Solenne.
+**What starts the war.** Six years ago, Ilyra, daughter of Solenne's Lord Marshal Cassivane, climbed down
+to the Gate, slipped inside through a crack, and was caught. A voice from behind the Gate told Cassivane
+she would come home if he unlocked it. He chipped a sliver off the Heartstone and, this spring, used it to
+unlock the Gate and force it open. Oswin, master of our Order, turned the light of all his towers on the
+Gate and pushed it back until only a gap a cart wide was left, and fell through.
+
+**The war.** A gap that size lets an army through a few at a time, but not Vael-Orrun himself: the
+Wardens' oath binds him while they sleep in peace. So he sends six generals, the **Heralds**, one to each
+land, to drive its Warden mad. When a land's Warden goes mad, the land can no longer keep out the element
+opposite its own, and that element floods in with the Herald's army: the sea climbs the volcano, the stone
+climbs the steppe.
+
+**Us.** We are the **Order of the Spire**, who build towers that hold an element. We go land by land,
+hold the road in front of each town until the attack breaks, kill the Herald and free the mad Warden.
+Every town we hold is saved. The last of the six lands is the Rift itself.
+
+**The end.** With all six Wardens free, the oath holds him again, and only the whole Heartstone can undo
+it, so everything Vael-Orrun has left marches on Solenne for it. We hold the capital. Then we march down
+the road into the Rift, through the gap in the Gate on foot, and take his fortress in the Hollow.
+
+### Plain answers
+
+| Question | Answer |
+|---|---|
+| Where is the enemy? | Behind the Black Gate, a stone door at the bottom of the Rift, in the Hollow, a cavern land under the world. |
+| How did they get out? | Cassivane unlocked the Gate with a sliver of the Heartstone. Oswin pushed it back to a gap a cart wide, and the armies come out through that gap. |
+| Why doesn't Vael-Orrun walk out himself? | The six Wardens' oath binds him by name while they sleep in peace. Driving them mad weakens it; the whole Heartstone would undo it. |
+| Why is each land attacked by its opposite? | Each Warden holds its own element and keeps the opposite one out. Mad, it can't, and the opposite floods in with the Herald's army. Free the Warden and the flood stops. |
+| Do we lose towns? | No. Winning a stage saves its town. The only wall we lose is Solenne's outer wall, the Lumen Gate. |
+| Why is it night for half the game? | The Sunstone's light held the Hollow's darkness down in the Rift. When Cassivane breaks it, the darkness climbs out and covers the sky. When Oswin relights it, the darkness sinks back. |
+| How do we reach his fortress? | We walk down the road cut into the Rift's wall and through the gap in the Gate in single file. |
 
 ---
 
@@ -48,7 +85,7 @@ was the one that most opposed its own.
 | **The Green Realm** | Nature | **Elowen**, the Green Queen | Sylvanmere, the Tree-City |
 | **The Tide Throne** | Water | **Thalassa**, the Sea-Queen | Pearlhaven |
 | **The Stone Kingdom of Kharum** | Earth | **Orrok**, the Mountain-King | Grundhallow, the Deep Halls |
-| **The Star Kingdom** | Void | **Nyxara**, the Star-Queen, keeper of the road of the dead | Umbrael |
+| **The Star Kingdom** | Void | **Nyxara**, the Star-Queen | Umbrael |
 
 The seventh kingdom was **Orrun**, the Middle Kingdom, and its capital was **Vael**, a city of black stone at
 the crossroads where every road of the world met. Orrun had no element of its own. Its people were
@@ -69,7 +106,7 @@ in the game draws its power from one of them.
 | **Rootcraft** (green alchemy) | The Green Realm (nature) | Slow magic of seed, graft, venom and remedy. A spell is planted rather than cast, and grows into its effect: a thorn that becomes a wall, a poison brewed over a season. Healing and poison are the same craft. | Time. Great rootcraft takes years, and the Deepwood live long to pay for it. | Grovewardens, apothecaries, bow-shapers |
 | **Tidelore** (rime memory) | The Tide Throne (water) | Water remembers everything it has touched. Tidefolk seers read memory and the future in ice, freeze moments in place (slowing, holding) and call drowned things back up. Initiates are drowned under the ice and brought back. | Their own memories, given to the water in trade. Great seers forget their own names. | Ice-seers, tide-priests, the Saltmothers |
 | **Runecarving** (deepcraft) | Kharum (earth) | Oaths cut into stone hold forever. Stoneborn carve runes of weight, ward and breaking into rock, armour and gates; their golems are oaths given a body. | Permanence. A rune can never be uncarved, and a Stoneborn who breaks a carved oath turns, slowly, to stone. | Runewrights, shieldmasters, oath-keepers |
-| **Starcraft** (veil astromancy) | The Star Kingdom (void) | The stars are a map of every hidden road, including the road of the dead. Veilwalkers chart a spell in the stars, then walk it: curses, shadows, pulls of gravity, and passage between the living and the dead. | Light. Every starcraft spell darkens something of the caster's (their hair, their eyes, their shadow). | Astronomers, deathwalkers, rangers of the Rift |
+| **Starcraft** (veil astromancy) | The Star Kingdom (void) | The stars are a map of every hidden road, including the roads under the world. Veilwalkers chart a spell in the stars, then walk it: curses, shadows, pulls of gravity, and the dark places under the earth. | Light. Every starcraft spell darkens something of the caster's (their hair, their eyes, their shadow). | Astronomers, deathwalkers, rangers of the Rift |
 | **The Grand Alchemy** | Orrun, the Middle Kingdom (no element) | Orrun had no element of its own, so its scholars studied all six arts and learned how each was put together, so that they could trade in them. The Grand Alchemy was the science of magic itself: how to combine the arts, and how to take them apart. | Nothing, at first. That was what made it dangerous. | The alchemist-merchants of Vael |
 
 **The Unmaking** was the last and worst discovery of the Grand Alchemy. If you know how an art is put
@@ -83,11 +120,12 @@ kingdom's art into worked stone, and a tower holding two or three arts at once (
 triple towers) is stronger than any of them alone. Few in the Order know where their art first came from.
 Oswin did.
 
+
 ### The Keeper of the Crossroads (the truth the songs bury)
 
 What follows is what really happened. The songs of the Concord, and the prologue (which Ysolde narrates
 as the songs tell it), give only the winners' version: a greedy tyrant and six brave kingdoms. The truth
-comes out in pieces over the campaign, and all of it only in the Convergence.
+comes out in hints over the campaign, and all at once in The Truth, after his fortress falls.
 
 The last king of Orrun was **Vael-Orrun**, and for forty years he was the best king the world had. Orrun
 had no element and no army worth the name; what it had was the crossroads and the Grand Alchemy, and Vael-
@@ -125,6 +163,7 @@ in one place, where it could be watched. It taught him **the Unmaking**.
 
 He believed the voice was his own grief, talking him through the dark. It was not. (See section 7.6.)
 
+
 ### The War of Seven Crowns
 
 What the songs call a tyrant's conquest began as a widower's justice. Vael-Orrun had a crown made with six
@@ -135,50 +174,54 @@ and each year he gave it, and each year there was a little less of the king who 
 
 At the **Siege of Vael**, the six monarchs stood together a second time, each beside its oldest enemy.
 Ignar with Thalassa. Aurath with Orrok. Elowen with Nyxara. Opposites in balance were the one thing the
-Unmaking could not unpick. They broke what was left of Vael and came for him in his throne room.
+Unmaking could not unpick. They broke what was left of Vael and drove him and his army east, to the Rift.
 
-They could not kill him. He had unmade his own death long before. So they joined hands in a ring around
-him, each across from its opposite, and *pushed*, and balance became a wall. Vael-Orrun was driven out past
-the edge of the world into the **Outer Hollow**. That ring of six is the **Ring** the world is named for.
+### The Black Gate and the Heartstone
 
-His last words before the dark took him are kept only in Thalassa's memory: *"You did this. Remember that
-you did this."*
+They could not kill him; he had unmade his own death long before. So they drove him and his army down the
+Rift and through the **Black Gate**, an ancient stone door at its bottom, into **the Hollow**, the sunless
+cavern land under the world. The ruins of Vael sank with him into the dark below.
 
-### The Heartstone and the sleep of the Six
-
-A wall needs a lock. The six monarchs took the High King's crown, set a piece of themselves into each of
-its six empty sockets, and fused it into a single stone that shines in all six colours: the
-**Heartstone**. It sits at the exact centre of the world, where his throne stood. As long as it is whole and
-the six opposites stay in balance, the door stays shut.
+A door needs a lock. The six monarchs took the High King's crown, set a piece of themselves into each of
+its six empty sockets, and fused it into a single stone that shines in all six colours: the **Heartstone**,
+the Gate's key. They kept it as far from the lock as they could, at the centre of the world, where his
+throne had stood.
 
 What each gave shaped them ever after. Ignar gave his **appetite**, so the fire of the Reach warms instead
 of devouring. Aurath gave his **stillness**, so the sky of the Steppe can never rest. Elowen gave her
 **seasons**, so the Deep is always green and she is always slowly ageing. Thalassa gave her
-**forgetting**, so Frostmere remembers everything. Orrok gave his **voice**, so he barely speaks. Nyxara
-gave her **face**, so where her face should be there are only stars.
+**forgetting**, so she remembers everything. Orrok gave his **voice**, so he barely speaks. Nyxara gave
+her **face**, so where her face should be there are only stars.
 
-The binding cost them their mortal lives. The six monarchs gave themselves into their lands (a volcano, a
-stormcloud, a tree, a sea, a mountain, a starless sky) and went to sleep there, holding the Ring. Their
-kingdoms, crownless now, became the six peoples. Mortals call the sleepers the **Wardens**, and most have
-forgotten they were ever kings and queens.
+**The rules of the Gate** (the whole plot rests on these):
 
-Vael was left in ruins at the centre of the world, and its name was cursed and then forgotten.
+1. **Locked, the Gate lets nothing of the Hollow out**, not even through the cracks in its stone. Anyone
+   can still go in. Ilyra did.
+2. **The Heartstone is the key.** A sliver of it can unlock the Gate. The whole stone can undo everything.
+3. **The Wardens' oath binds Vael-Orrun by name.** The six monarchs gave their mortal lives and went to
+   sleep inside their lands (a volcano, a storm, a tree, a sea, a mountain, the dark over the Rift). While
+   all six sleep in peace, he cannot pass the Gate even when it stands open.
+4. **Each Warden holds its own element and keeps the opposite one out.** A mad Warden can't, and the
+   opposite element floods its land.
+5. **The Sunstone's light** (hung over Solenne a thousand years later) burns hollow things and holds the
+   Hollow's darkness down in the Rift.
 
-### Why he comes back
+His last words before the Gate shut are kept only in Thalassa's memory: *"You did this. Remember that you
+did this."*
 
-Vael-Orrun has spent two thousand years in the Outer Hollow, alone with the voice. It has emptied him
-out: what comes back is less a man than a will, a black glass shape with a hole where his crown used to
-sit. But he remembers. The Heartstone is his crown. The city at the middle of the world stands on the ruins
-of his city, on the hall where his wife and son burned. The Ring is the six who betrayed him, still holding
-hands against him, and nobody alive even remembers what they did. He has come back to reclaim what is his,
-and to make the six kingdoms answer for the Night of Six Knives.
+Their kingdoms, crownless now, became the six peoples. Mortals call the sleepers the **Wardens**, and most
+have forgotten they were ever kings and queens. Vael's name was cursed and then forgotten.
+
+### What two thousand years did to him
+
+Vael-Orrun has spent two thousand years in the Hollow with the voice. It has made a monster of him: the
+huge, horned, demon-faced High King the player fights is what the dark and the Hush made of the man. But
+he remembers. The Heartstone is his crown. Solenne stands on the ruins of his city, on the hall where his
+wife and son burned. The six who betrayed him still hold him by name, and nobody alive remembers what they
+did. He wants his crown back, because it is the key to his prison, and he wants the six to answer for the
+Night of Six Knives.
 
 He is wrong about one thing. He thinks the war is his.
-
-**The rule the whole game rests on:** the Ring holds because opposites hold each other. If one element
-devours its opposite, the balance tips and the wall cracks. *That* is why the hordes come from the far
-side of the Ring. Vael-Orrun does not need to break the door. He only needs the six to go back to hating
-each other, the way they did before the Siege of Vael.
 
 ---
 
@@ -195,7 +238,8 @@ The six kingdoms, without their monarchs, became six peoples, each still shaped 
 | **The Deepwood Clans** | The Verdant Deep (nature) | Archers and healers who live in, not under, the oldest trees. Slow to anger, impossible to forget. |
 | **The Tidefolk** | Frostmere (water) | Fishers, sailors and seers of the great frozen lake. They keep every memory in songs and in ice. |
 | **The Stoneborn** | Sunscar Canyon (earth) | Miners and masons who carve whole cities into canyon walls. Stubborn as their mountain. |
-| **The Veilwalkers** | The Hollow Rift (void) | Astronomers and keepers of the dead. They map the stars and walk the dead to the edge of the dark. |
+| **The Veilwalkers** | The Hollow Rift (void) | Astronomers and keepers of the dead, and the guards of the Rift. They have watched the Black Gate from its rim for two thousand years. |
+
 
 ### The Opposites War (Year -300 to 0)
 
@@ -215,7 +259,8 @@ at once.
 
 Aurel united the peoples in the **Concord of the Ring**, founded the **Order of the Spire** to train
 tower-binders (**Spirewrights**), and raised the city of **Solenne** around the Heartstone. Above the city
-she hung the **Sunstone**, a lens that gathers the light of all six lands into a second sun. The Concord
+she hung the **Sunstone**, a lens that gathers the light of all six lands into a second sun. Its light burns hollow things,
+and it holds the Hollow's darkness down in the Rift. The Concord
 counts its years from that day.
 
 ### The Thousand Years (Year 0 to 1012)
@@ -228,66 +273,56 @@ The Veilwalkers alone kept the old warning, cut into the walls of their observat
 
 > *Six hold the door. Six hold each other. When the Six hold knives, the door will open.*
 
+
 ### The present: Year 1012 of the Concord
 
 Queen **Ysolde** rules Solenne. She came to the throne at fourteen, and for ten years the realm was
 governed by her regent, the Lord Marshal **Cassivane Dral**, a brilliant and well-loved soldier. When
-Ysolde came of age he stayed at her side as her first counsellor. Nobody in Solenne is more trusted.
-
-Six years ago, Cassivane's only daughter **Ilyra** vanished into the Hollow Rift while studying the stars
-with the Veilwalkers. The Veilwalkers told him she had walked the road of the dead. He did not accept it.
-In the dark of his grief, something answered him from beyond the stars, and promised to give her back.
+Ysolde came of age he stayed at her side as her first counsellor and commander of the armies. Nobody in
+Solenne is more trusted.
 
 ---
 
 ## 4. How the war began
 
-### The Black Comet
+| When | What happened | Who knows |
+|---|---|---|
+| Year 1006 | Ilyra, Cassivane's only daughter, goes down the Rift with the Veilwalkers to study the Gate, slips inside through a crack, and is caught. Through the crack a voice tells Cassivane she lives and will come home if he unlocks the Gate. | Cassivane |
+| Year 1006 | Cassivane chips a sliver off the Heartstone. A Veilwalker of the Hall sees him do it and is killed. Corvin, the Queen's half-brother, accuses Cassivane, is found over the body, and is exiled for the murder. | Cassivane, Corvin |
+| Year 1010 | Cassivane secretly sends six of the Concord's champions to the Rift "to study the Gate". They come back emptied, as the Heralds, and wait in the Rift. | Cassivane |
+| Year 1012, spring | Cassivane unlocks the Gate with the sliver and forces it open. Oswin rides to the Rift, turns the light of every tower on the Gate and drives it back until the gap is a cart wide, then falls through when the ground gives way. His lantern is still lit. | Everyone, except who did it |
+| Year 1012 | Six armies file out through the gap and up the Rift road, one to each land, each led by a Herald. | Everyone |
 
-Vael-Orrun cannot touch the world. He can whisper. For six years he whispered to Cassivane, and Cassivane
-listened. The Regent quietly sent shards of the Heartstone's light (stolen from the Sunstone's lens during
-"repairs") to the Hollow Rift, where they were set into a ring of black pillars aimed at a gap in the
-stars.
+### Why each land is attacked, and by what
 
-On the night the **Black Comet** crossed the sky, the pillars sang, and the edge of the world split open.
-This is the **Crack**: a wound in the Hollow Rift that looks out into the Outer Hollow.
+The Heralds go to the six sleeping Wardens and whisper to them until they go mad. A mad Warden's land can
+no longer keep out the element opposite its own, and that element floods in with the Herald's army:
 
-### Oswin's stand (the prologue)
+| Land | Warden (mad form) | Floods in | Herald |
+|---|---|---|---|
+| The Ember Reach (Fire) | Ignar (the Cinder Tyrant) | The sea climbs the volcano | Saltmother Ourra |
+| The Thunder Steppe (Storm) | Aurath (the Thunderhead) | Walking stone climbs the plateau | Gorrath the Quarried |
+| The Verdant Deep (Nature) | Elowen (the Elder Broodmother) | The Hollow's dark creeps under the trees | The Pale Vesper |
+| Frostmere (Water) | Thalassa (the Tidal Leviathan) | Fire runs across the ice | Ashwick the Kindled |
+| Sunscar Canyon (Earth) | Orrok (the Mountain Titan) | Armoured lightning walks down the walls | Vholt Stormcrown |
+| The Hollow Rift (Void) | Nyxara (the Hollow King) | Thorns and walking dead trees | Mother Briar |
 
-**Oswin**, the Grey Lantern, Master of the Order of the Spire and Ysolde's oldest friend, felt the Crack open
-and rode to the Rift with the Spirewrights. They held the edge for one night against the first things
-that crawled through. At dawn Oswin saw that the Crack was widening and could not be closed from this
-side. He walked to its lip, lifted his lantern, and poured every element he had ever bound into one blast
-of light that slammed the Crack nearly shut.
+Freeing a Warden ends that land's war: the flood drains away and the Herald's army scatters.
 
-Then the ground gave way and he fell into the dark, and his lantern went out.
+### The Unbound
 
-The Crack is now a hairline, not a gate. Vael-Orrun cannot come through himself. But his voice can, and his
-voice reached the six sleeping Wardens.
+Every common enemy is one of the **Unbound**, in three kinds:
 
-### Why they attack us, and why opposites
+- **Hollowed**: living people the Unmaking has emptied (grey, empty eyes). Brutes, Menders, the Warded.
+- **Risen**: the dead, marching. The dead of the old war shut behind the Gate with him (Grunts), and the
+  dead the Pale Vesper sings out of the ground.
+- **Wild**: beasts and spirits of the invading element. Runners, Splitters and Shardlings, Ashdrakes.
 
-Vael-Orrun's whisper drives the Wardens mad. A corrupted Warden twists its own land (the volcano burns
-wrong, the storm stops moving, the tree rots) and wakes the elemental spirits of its land, the **Unbound**,
-and sends them across the Ring against their opposite. The Tide marches on the Volcano, the Stone climbs
-the Sky, the Hollow creeps into the Grove. The Opposites War begins again, but this time the soldiers are
-the elements themselves.
-
-The hordes are not evil. They are mad. Every enemy the player kills is an elemental spirit torn out of
-its Warden's keeping. This is why the boss of each land's campaign is that land's own Warden: to save a
-land from its opposite, we must also free its own guardian from the madness at its heart.
-
-**Who attacks:** the Unbound hordes of the corrupted Wardens, the Six Heralds who lead them, the Ashen
-Regent who opened the door, and behind it all, Vael-Orrun the Sunderer.
+They cannot stand the Sunstone's light, and they scatter when their land's Warden is freed. Never describe
+them as orcs, elves or dwarves, and never call an enemy a "Warden" (the dragon is an **Ashdrake**).
 
 **Who we are:** the Spirewright (the player), last apprentice of Oswin, with what is left of the Order of
-the Spire and the Lanternguard, holding the roads while six peoples flee toward Solenne.
-
-**Why we lose a city every time we win:** the Unbound are endless while their Warden is mad. Each stage
-is a rearguard: we hold the road until the city behind us is empty, then the land is swallowed. Freeing a
-Warden at the end of a campaign stops its horde for good, but by then its land is ash, ice or ruin. We
-never win back ground. We save people. Every survivor walks to Solenne, which is why the capital is so
-full, and so worth saving, at the end.
+the Spire and the Lanternguard.
 
 ---
 
@@ -295,79 +330,68 @@ full, and so worth saving, at the end.
 
 ### The Six Lands and their campaigns
 
-| Land | Element | Campaign | Horde from | Look |
+The lands open in a fixed order, so the story runs straight through.
+
+| Land | Element | Campaign | Invaded by | Look |
 |---|---|---|---|---|
-| **The Ember Reach** | Fire | Ember Reach (stages 1-4) | The Tide (water + nature + earth) | Black basalt terraces, lava rivers, glassworks, banners of red and brass. |
-| **The Thunder Steppe** | Storm | Thunder Steppe (5-8) | The Stone (earth + water + void) | Endless high grass, standing stones, tent-cities, a sky that should never be still. |
-| **The Verdant Deep** | Nature | Verdant Deep (9-12) | The Hollow (void + earth + fire) | Trees the size of towers, rope bridges, glow-moss, roots like roads. |
-| **Frostmere** | Water | Frostmere (13-16) | The Flame (fire + storm + void) | A frozen inland sea, stilt towns, pearl-white harbours, aurora. |
-| **Sunscar Canyon** | Earth | Sunscar Canyon (17-20) | The Sky (storm + fire + nature) | Red rock, cliff cities carved in terraces, giant stone faces of old kings. |
-| **The Hollow Rift** | Void | Hollow Rift (21-24) | The Grove (nature + storm + water) | Starless sky, violet grass, floating stone steps, the observatory city. |
-| **The Heartland** | All | Convergence (25-27) | Every horde at once | Prism glass plains, the six-ringed white city of Solenne. |
+| **The Ember Reach** | Fire | stages 1-4 | The sea | Black basalt terraces, lava rivers, glassworks, banners of red and brass. |
+| **The Thunder Steppe** | Storm | stages 5-8 | The Stone | Endless high grass, standing stones, tent-cities, a sky that should never be still. |
+| **The Verdant Deep** | Nature | stages 9-12 | The Hollow | Trees the size of towers, rope bridges, glow-moss, roots like roads. |
+| **Frostmere** | Water | stages 13-16 (night) | The Flame | A frozen sea, stilt towns, pearl-white harbours. |
+| **Sunscar Canyon** | Earth | stages 17-20 (night) | The Sky | Red rock, cliff cities carved in terraces, giant stone faces of old kings. |
+| **The Hollow Rift** | Void | stages 21-24 (night) | The Grove | Violet grass, floating stone steps, the observatory city, and the chasm with the Gate at its bottom. |
+| **The Heartland** | All | Convergence, stages 25-27 | Everything he has left | Prism glass plains, the six-ringed white city of Solenne. |
 
 ### Solenne, the Crowned Heart (capital)
 
 Six concentric walls, each faced with the stone of one land: red basalt, storm-grey granite, living
-greenwood, blue ice-glass, sun-red sandstone and starless black. At the centre, the **Heartstone** in its
-open-roofed Hall of the Ring. Above the city, the **Sunstone** lens throws a soft gold light even at night.
-After the midpoint (see section 8) the Sunstone is broken, and Solenne is lit only by torches and the
-Heartstone's faint six-colour pulse.
+greenwood, blue ice-glass, sun-red sandstone and black stone. At the centre, the **Heartstone** in its
+open-roofed Hall of the Ring. Above the city, on the **Spire of Aurel**, hangs the **Sunstone** lens.
 
-Key places in Solenne: the **Dawn Gate** (the great east gate, where the midpoint disaster happens), the
-**Lumen Gate** (the outer wall), the **Hall of the Ring**, the **Spire of Aurel** (the Order's tower), the
-**Lantern Walk** (the wall-top road of the Lanternguard).
+Key places: the **east gate** (where Fennick dies at the midpoint), the **Lumen Gate** (the outermost
+wall, lost at Convergence 2), the **Hall of the Ring**, the **Spire of Aurel**, the **Lantern Walk** (the
+wall-top road of the Lanternguard).
 
-### Nhal Vorath, the Crownless Citadel (the enemy base)
+### The Rift and the Black Gate
 
-On the far side of the Crack, in the Outer Hollow, Vael-Orrun's will has built a fortress out of
-everything the Unbound tore out of the world: burned city walls, frozen ships, uprooted trees, broken
-towers of the Order. It hangs upside down beneath a black sun. It has no throne, because its lord will not
-sit on anything that is not the centre of the world. Its gate is a mouth. Its spire is a mirror of
-Solenne's, made wrong.
+A chasm miles deep in the east of the Hollow Rift land. A road is cut into its wall, winding down to the
+bottom; it takes a day to walk. At the bottom stands the Black Gate, a stone door as tall as a mountain.
+Since the prologue it stands open by a gap the width of a cart. From the rim you can see the Gate and the
+grey columns still climbing out.
 
-This is the final level: the ~30-minute assault where the player stops defending and attacks.
+### The Hollow and Nhal Vorath (the final level)
+
+Behind the Gate is the Hollow: a cavern under the world so big its roof is lost in the dark, a stone sky
+lit only by grey fire. A day's march in stands **Nhal Vorath**, Vael-Orrun's fortress, built from the
+ruins of his old city Vael, which sank with him when he was driven down.
 
 ---
 
-## 6. The cities we lose
+## 6. The towns we save
 
-Every stage has a city behind it. Win the stage and the city's people escape; then the city falls. Lose
-the stage and you try again (the city has not fallen yet). The capital, Solenne, is the one city the
-player can save. This table is the in-game **Ledger of Fallen Cities** (one line is shown after every
-stage win).
+Every stage defends one town at the end of its road. Winning the stage saves it; the game shows "**<town>
+is saved.**" and one line. The only exception is the Lumen Gate, Solenne's outer wall, which falls in the
+story even when its stage is won. The exact lines are in `tools/story/story_content.py` (`CITIES`).
 
-| # | Stage | City behind it | What happens to it |
+| Stage | Town | Stage | Town |
 |---|---|---|---|
-| 1 | Ashfall Road | **Kethra**, a forge-town | Its forges go cold under a black tide of seawater and ash. |
-| 2 | Cinder Steps | **Brazier Hold**, a fortress of the Emberfolk | The Lanternguard bring down its gate behind the last cart. |
-| 3 | Obsidian Crossing | **Vitrea**, the Glass City | Its glass towers ring like bells as they shatter, all at once. |
-| 4 | Throne of Cinders | **Pyrrhenhall**, the Caldera Capital of the Emberfolk | The caldera floods. The Emberfolk walk west carrying their forge-fires in iron pots. |
-| 5 | Windswept Pass | **Stonering Camp** | The standing stones topple inward like a closing hand. |
-| 6 | Galeback Ridge | **Highwind**, the clifftop eyrie | Its wind-bridges are cut so nothing can follow. |
-| 7 | The Long Squall | **Tarrow's Rest**, the horse-fairs | The Galeborn set the grass alight behind them to slow the Stone. |
-| 8 | Eye of the Storm | **Aurvanis**, the Sky-Moot | The great tent-city is packed onto ten thousand horses and ridden away. Only the poles remain. |
-| 9 | Mossy Trail | **Fernholt** | The moss stops glowing. The village is silent by morning. |
-| 10 | Rootway | **Elderhollow**, the root-halls | The Deepwood seal the root-doors with their own hands, with the hollow things inside. |
-| 11 | Bramble Maze | **Thornwall** | The thorns turn on their own wall. |
-| 12 | Heart of the Grove | **Sylvanmere**, the Tree-City | The great tree is saved but dying. Its people leave by its highest branches. |
-| 13 | Tidepool Shore | **Netmend** | The nets burn on the ice. |
-| 14 | Saltmarsh Bends | **Reedhaven** | The reeds are fired, and the town's stilts go with them. |
-| 15 | Frozen Causeway | **Glasswater** | The ice under the town cracks and the lake takes it whole. |
-| 16 | The Drowned Throne | **Pearlhaven**, the harbour city | The fleet sails west with every child of Frostmere aboard. The harbour boils behind them. |
-| 17 | Red Gulch | **Dustmark** | A dust storm buries it to its roofs. |
-| 18 | Canyon Switchbacks | **The Kharum Terraces** | The Stoneborn collapse the switchbacks onto the road themselves. |
-| 19 | Mesa Loop | **Mesa Kharn** | Lightning splits the mesa in two. |
-| 20 | Titan's Cradle | **Grundhallow**, the Deep Halls | The Stoneborn seal the Deep Halls with their ancestors inside. They do not speak of it. |
-| 21 | Starless Path | **Lamplight**, a waystation | Its lamps are left burning for anyone still on the road. |
-| 22 | Fractured Steps | **Vesperhold** | Its floating steps drift apart into the dark. |
-| 23 | Mirror Rift | **Twinmoor** | Its reflection walks away without it. |
-| 24 | Throne of the Hollow King | **Umbrael**, the Observatory City | The great telescope is turned to face the Crack one last time, and then it falls. |
-| 25 | Shattered Crossroads | **Crossmere**, the last free town outside Solenne | Every road on the Ring met here. Now none do. |
-| 26 | Prism Wastes | **The Lumen Gate**, Solenne's outermost ring | The first of Solenne's six walls falls. There is nowhere left to retreat to. |
-| 27 | Heart of the Ring | **Solenne**, the Crowned Heart | **Saved**, if the player holds. |
+| Ember 1 | Kethra, a forge-town | Water 1 | Netmend |
+| Ember 2 | Brazier Hold (Saltmother) | Water 2 | Reedhaven (Ashwick) |
+| Ember 3 | Vitrea, the Glass City | Water 3 | Glasswater |
+| Ember 4 | Pyrrhenhall (Ignar) | Water 4 | Pearlhaven (Thalassa) |
+| Storm 1 | Stonering Camp | Earth 1 | Dustmark |
+| Storm 2 | Highwind (Gorrath) | Earth 2 | The Kharum Terraces (Vholt) |
+| Storm 3 | Tarrow's Rest | Earth 3 | Mesa Kharn |
+| Storm 4 | Aurvanis, the Sky-Moot (Aurath) | Earth 4 | Grundhallow (Orrok) |
+| Nature 1 | Fernholt | Void 1 | Lamplight, a waystation |
+| Nature 2 | Elderhollow (Pale Vesper) | Void 2 | Vesperhold (Mother Briar) |
+| Nature 3 | Thornwall | Void 3 | Twinmoor |
+| Nature 4 | Sylvanmere, the Tree-City (Elowen) | Void 4 | Umbrael, the Observatory City (Nyxara) |
+| Converge 1 | Crossmere (Cassivane) | Converge 2 | **The Lumen Gate (falls)** |
+| Converge 3 | **Solenne** (the Sundered Heart) | Final level | Nhal Vorath (Vael-Orrun) |
 
-Stage numbers here follow the canonical order (section 9). The cities belong to stages, not to order, so
-the ledger works even if the player plays the element campaigns in another order.
+The story's losses come from its big moments instead: Fennick, the Sunstone, the Queen's sight, the Lumen
+Gate, Seraphel.
 
 ---
 
@@ -378,371 +402,215 @@ Full looks, colours and scene lists are in [characters.md](characters.md). This 
 ### 7.1 The Spirewright (the player)
 
 The last apprentice of Oswin. Never named, never seen up close, never speaks. Characters address the
-player as "Spirewright" or "Binder". The player's hand is visible in cinematics only as a gloved hand
-setting a glowing keystone into a tower.
+player as "Spirewright". The player's hand is visible in cinematics only as a gloved hand setting a glowing
+keystone into a tower.
 
 ### 7.2 The narrator
 
-**Queen Ysolde of Solenne** narrates the whole game, in a deep, calm, low female voice, speaking from a time
-after the war. She does not say how it ends. She speaks like someone who lost a great deal and does not
-regret the price. She is also a character on screen (section 7.4).
+**Queen Ysolde of Solenne** narrates the whole game in a deep, calm, low female voice, speaking from years
+after the war. She never gives a secret away before its scene. She is also a character on screen.
 
 ### 7.3 Heroes (playable)
 
-Heroes are powerful units that join over the campaign and can be fielded in stages. There are sixteen:
-one at the start, one mortal champion per land (rescued when that land's Herald falls at stage 2), the six
-Wardens (freed and joining when their campaign is won at stage 4), two in the Convergence, and Oswin,
-who comes back at the capital.
+Sixteen heroes join over the campaign: one at the start, one mortal champion per land (rescued when that
+land's Herald falls at stage 2), the six Wardens (freed at stage 4 of their land), two in the Convergence,
+and Oswin, who comes back at the capital.
 
 | # | Hero | Element | Joins | Who they are |
 |---|---|---|---|---|
-| 1 | **Tamsin Reed**, Captain of the Lanternguard | None (lantern light) | Start | Solenne's toughest soldier, raised in the gutters of the Lantern Walk. She leads every evacuation and is always the last one through the gate. Dry, kind, tired, unbreakable. |
-| 2 | **Brannoc Emberhand**, Smith-Lord of the Reach | Fire | Ember Reach, after stage 2 | A giant of a man who forged half the gates of Solenne. Found chained in the Saltmother's tide-cage, still swearing. Fights with a forge-hammer that never cools. |
-| 3 | **Kaela Stormrider**, Marshal of the Steppe | Storm | Thunder Steppe, after stage 2 | First rider of the Galeborn, who has never once ridden in the direction of retreat until now. Lightning lance, a grey stallion called Thunderclap. |
-| 4 | **Sylvaine Thornwhisper**, Warden-Archer of the Deep | Nature | Verdant Deep, after stage 2 | Three hundred years old and looks thirty. The Deepwood's greatest archer, who held Elderhollow alone for nine days. Her arrows grow where they land. |
-| 5 | **Mirelle the Tide-Seer** | Water | Frostmere, after stage 2 | A blind young seer of the Tidefolk who sees the future in ice and has already seen how she dies. She will not say when. |
-| 6 | **Gorrim Stonebeard**, Shield of the Canyon | Earth | Sunscar Canyon, after stage 2 | A Stoneborn shieldmaster with a beard braided with iron rings, one for each comrade he has buried. His shield is a carved door from the Kharum Terraces. |
-| 7 | **Corvin the Uncrowned**, Ranger-King of the Rift | Void | Hollow Rift, after stage 2 | Ysolde's elder half-brother and rightful heir of the Veilwalkers, exiled by the Regent on a false charge of murder. A ranger who walks the edge of the dark. He knows the Regent is a traitor; nobody believed him. |
-| 8 | **Ignar**, the Cinder Warden | Fire | Ember Reach, after stage 4 | The Warden of Fire, freed from madness. In mortal form, a tall figure of cooling black stone with a molten heart. Speaks like a bonfire: warm, then sudden. |
-| 9 | **Aurath** of the Storms | Storm | Thunder Steppe, after stage 4 | The Warden of Storm. Barely a shape: a grey-blue rider of cloud and lightning, never quite still. Speaks in two voices at once. |
-| 10 | **Elowen** the Evergreen | Nature | Verdant Deep, after stage 4 | The Warden of Nature. An ancient woman of bark and blossom, walking slowly. Her land is dying and she knows it. |
-| 11 | **Thalassa** of the Deep | Water | Frostmere, after stage 4 | The Warden of Water. A tall, translucent figure of sea-glass and current, with drowned bells in her hair. Remembers everything. |
-| 12 | **Orrok** the Mountain | Earth | Sunscar Canyon, after stage 4 | The Warden of Earth. A slow, enormous stone giant with moss on his shoulders. Says perhaps ten words in the whole game. |
-| 13 | **Nyxara** of the Hollow | Void | Hollow Rift, after stage 4 | The Warden of Void. Tall and starlit, face hidden, keeper of the road of the dead. She knows where Oswin went. |
-| 14 | **Ilyra the Unbroken** | Void + Storm | Convergence, after stage 1 | The Regent's lost daughter, found alive in his war camp as a hollowed captive. Freed, she remembers six years in the Outer Hollow and can bend its dark. She is the reason her father fell, and she will be the reason he is stopped. |
-| 15 | **Seraphel the Dawnblade**, Knight of the Sunstone | All six | Convergence, after stage 2 | The last living knight of the Sunstone, sworn to its lens since Aurel's day and bound to it by an old rite that keeps her alive while it shines. When the Sunstone broke she began to die. She has one fight left in her. |
-| 16 | **Oswin the White Lantern** | All six (light) | Heart of the Ring, mid-battle | Oswin returns. See section 8. |
+| 1 | **Tamsin Reed**, Captain of the Lanternguard | None (lantern light) | Start | Solenne's toughest soldier, raised in the gutters of the Lantern Walk. Always the last one through the gate. Drags the blind Queen clear on the midpoint night, then reads Fennick's notes to the player. Dry, kind, tired, unbreakable. |
+| 2 | **Brannoc Emberhand**, Smith-Lord of the Reach | Fire | Ember 2 | The giant smith who forged Solenne's gates. The Saltmother kept him in a salt cage for nine days to make him forge her chains, and he refused every day. Breaks Vael-Orrun's gate in the final level ("Gates are my trade"). |
+| 3 | **Kaela Stormrider**, Marshal of the Steppe | Storm | Storm 2 | War-leader of the Galeborn, who fought the Stone alone for eleven days and hates riding away. Kills her old teacher, the Herald Vholt, facing him. |
+| 4 | **Sylvaine Thornwhisper**, Bow of the Deep | Nature | Nature 2 | The Deepwood's best archer, three hundred years old. Held Elderhollow's root-doors until every child was out. Carries Elowen's last seed and plants it in Solenne in the epilogue. |
+| 5 | **Mirelle the Tide-Seer** | Water | Water 2 | A blind young Tidefolk seer who reads the future in ice; kept forty children alive inside a tower of ice. Has seen a death at the end of the war and won't say whose. It is Vael-Orrun's. |
+| 6 | **Gorrim Stonebeard**, Shield of the Canyon | Earth | Earth 2 | Stoneborn shieldmaster with an iron ring in his beard for every friend he has buried (thirty-one when he joins). Braids one more for Grundhallow's dead and swears it is his last. |
+| 7 | **Corvin the Uncrowned**, Ranger of the Rift | Void | Void 2 | The Queen's elder half-brother. Accused Cassivane, was framed for murder and exiled, and watched the Gate from the rim for six years. The man who was right all along. |
+| 8-13 | **Ignar, Aurath, Elowen, Thalassa, Orrok, Nyxara**, the six Wardens | Their own | Stage 4 of their land | The six monarchs who betrayed Vael-Orrun. Freed from madness, they fight for us and keep their old crime secret until his fortress falls. |
+| 14 | **Ilyra the Unbroken** | Void + Storm | Converge 1 | Cassivane's daughter, caught inside the Gate six years ago and sent back empty. Left in her father's cage, she finds herself again on her own, which proves his bargain was a lie. Behind the Gate she heard two voices: "One of them wept. The other never did." |
+| 15 | **Seraphel the Dawnblade**, Knight of the Sunstone | All six | Converge 2 | The Sunstone's light has kept her alive for a thousand years; since it broke she has been dying. Holds the fortress's inner gate open in the final level until the last of us are through, and dies. |
+| 16 | **Oswin the White Lantern** | All six (light) | Converge 3, wave 17 | Fell through the Gate in the prologue, walked back under the world through the Hollow, found the last piece of the Sunstone at the bottom of the Rift and climbs out in time to relight it. |
 
 **Each hero's art.** Tamsin has no magic, only Lanternguard drill and a lantern that is an old Spirecraft
 relic. Brannoc is a master Kindler. Kaela is a stormsinger. Sylvaine works Rootcraft through her bow.
 Mirelle is a Tidelore seer. Gorrim is a runewright, and his door-shield is carved with Kharum's oldest
-oath-runes. Corvin works Starcraft, and his silver hair is what it has cost him. The six Wardens *founded*
-their kingdoms' arts and work them at the source. Ilyra knows Starcraft and Stormsong, and from six
-years in the Outer Hollow, a little of the Unmaking, which frightens everyone, including her. Seraphel
-and Oswin work Spirecraft; Oswin alone in the Order understands the Grand Alchemy it came from. The Heralds
-still use their old arts, unpicked and turned grey by the Unmaking. Cassivane was a Kindler and a soldier;
-his Heartstone blade is the Unmaking given an edge.
-
-Heroes thread note: this roster keeps the names already drafted there, with two changes. The starting
-hero is Tamsin Reed (Oswin cannot be fielded until he comes back). Oswin returns as hero 16.
+oath-runes. Corvin works Starcraft, and his silver hair is what it has cost him. The six Wardens founded
+their kingdoms' arts. Ilyra knows Starcraft and Stormsong, and from six years behind the Gate, a little of
+the Unmaking, which frightens everyone, including her. Seraphel and Oswin work Spirecraft.
 
 ### 7.3a Hero backstory details (canon)
 
 The full hero stories are in the heroes doc, "Heroes of the Ring: hero stories"
-(https://claude.ai/artifact/G1tjkeYAfvc4UBZz5oda6p). These details from it are canon:
+(https://claude.ai/artifact/G1tjkeYAfvc4UBZz5oda6p). Where it disagrees with this file, this file wins.
+These details from it are canon:
 
 - **Tamsin** was born on the Lantern Walk and joined the Guard unable to read; she learned from the
   Order's tower manuals.
-- **Brannoc** forged the Dawn Gate and signed his name inside it. When he sees it set as a tooth in the
-  Gatemaw, he asks to be the one who breaks it.
-- **Kaela** was born in a storm on the road to Aurvanis and won the Long Race on Thunderclap. In the
-  Mirror Spire she faces Vholt's Echo-Herald.
-- **Sylvaine** killed a Veilwalker astronomer three hundred years ago, in an old feud; that man's line
-  kept the lamps at Lamplight. She tells Corvin in the Hollow Rift.
-- **Mirelle** was born blind in Reedhaven and became a seer by drowning under the ice; the fish in her
-  staff swam beside her. After the war she tells Ysolde what she saw.
-- **Gorrim** held the Kharum Pass beside Gorrath. He had nineteen rings before the war, swears "no more
-  rings", and braids Gorrath's ring in last, after the Mirror Spire.
-- **Corvin**'s mother was Lady Iseult of Umbrael; he taught Ysolde and Ilyra the stars. He was framed for
-  the murder of **Archon Saevin**, the Veilwalker who built the black pillars at the Rift for the Regent and
-  was silenced by him.
-- **Ilyra** spent six years alone in the Outer Hollow measuring the stars with her astrolabe. She is the
-  first to notice the seventh colour in the Heartstone (post-credits).
-- **Seraphel** was the last of the twelve **Knights of the Sunstone**, and taught Ysolde. On the Night of
-  Falling Stars she was thrown from the Spire of Aurel trying to stop the Regent. After the war her sword
-  is set into the rebuilt Sunstone.
-- **Oswin** came to Solenne as a tinker's boy from nowhere. The lantern burning at Lamplight was lit by
-  him as he passed on the road of the dead. Giving up the lantern leaves him grey and old again; he lives
-  to see Solenne rebuilt and describes the sunsets to the Queen.
-- **Elowen** lies down in the ash of Sylvanmere after the war, and Nyxara walks her home.
-- **Orrok** leaves a piece of himself as the new door of Grundhallow, and opens it in the epilogue.
-- **Nyxara** lays her broken crown beside Oswin's lantern at the end.
-- **Mirelle** can no longer remember her mother's face: that was her Tidelore price.
-- **Gorrim**'s "no more rings" is a carved oath, which makes it dangerous: if another friend falls, he
-  starts turning to stone. When Seraphel dies in the Mirror Spire his fingertips go grey; he says she did
-  not fall, she went where she meant to go, and the grey stops there. He gives her no ring.
-- The first rune ever carved is **Orrok**'s oath from the Siege of Vael, and it is cut into the Heartstone.
-- **Ilyra**'s ability Last Light is her one use of the Unmaking.
-- **The Wardens and the Night of Six Knives.** Ignar's Kindlers set the fire he says he meant only for the
-  gates; it took the feast hall, and in the epilogue ring he says "It was my fire." Aurath's riders were
-  first through the gates; the others think he gave up his stillness so he would never have to stand still
-  with it. Elowen asked for Ysmera and Caelan to be sent out before midnight; nobody did it, and she did not
-  check. Ysmera was one of Thalassa's Tidefolk; Thalassa tells the truth at the Convergence, and answers his
-  last words with "We remember." Orrok swore the peace aloud at the feast knowing it would be broken, then
-  invented Runecarving so no oath of his could break again; his Siege oath is the first he kept, and the
-  voice he gave the Heartstone is the one that swore the false peace. Nyxara was crowned the Hollow King
-  because she came to his feast wearing a crown; her starfield face has one starless patch, the Unwritten
-  Star, which she never looks at.
-- **Ilyra** heard two voices in the Hollow: one wept for a wife and son, the other never wept, and she
-  thought both were him. At "It spoke to me too" she understands the weeping one was his, which is why she
-  is watching the Heartstone after the credits. Her line: "One of them wept. The other never did."
-- **Corvin**'s blade shows every star except the Unwritten Star, and that gap is what Ilyra chased.
-- The voice that handed Ilyra to Cassivane is "the voice he had bargained with, which he believed was
-  Vael-Orrun's".
+- **Brannoc** forged Solenne's east gate and signed his name inside it.
+- **Kaela** was born in a storm on the road to Aurvanis and won the Long Race on Thunderclap.
+- **Mirelle** was born blind in Reedhaven and became a seer by drowning under the ice; the fish in her staff
+  swam beside her. She can no longer remember her mother's face: that was her Tidelore price.
+- **Gorrim** held the Kharum Pass beside Gorrath. His "no more rings" is a carved oath. When Seraphel dies
+  his fingertips go grey; he says she did not fall, she went where she meant to go, and gives her no ring.
+- **Corvin** taught Ysolde and Ilyra the stars when they were children.
+- **Ilyra** is the one alone in the Hall of the Ring after the credits, because at Vael-Orrun's "It was
+  never my own voice" she understood that the weeping voice behind the Gate was his, and the other was not.
+- **Seraphel** was the last of the twelve Knights of the Sunstone, and taught Ysolde to fight. After the
+  war her sword is set into the rebuilt Sunstone.
+- **Oswin** came to Solenne as a tinker's boy from nowhere. Giving up his lantern in The Truth leaves him
+  grey and old again; he lives to see Solenne rebuilt and describes the sunsets to the Queen.
+- **The Wardens and the Night of Six Knives.** Ignar's Kindlers set the fire ("It was my fire"). Aurath's
+  riders were first through the gates. Elowen asked for Ysmera and Caelan to be sent out before midnight;
+  nobody did it, and she did not check. Ysmera was one of Thalassa's Tidefolk; Thalassa tells the truth
+  after his fortress falls and answers his last words with "We remember." Orrok swore the peace aloud at
+  the feast knowing it would be broken. Nyxara's mad form is a crowned king because she came to his feast
+  wearing a crown.
 
 ### 7.4 Major allies (non-playable)
 
 - **Queen Ysolde**, 24, ruler of Solenne and the Concord. Clever, sharp-tongued, braver than she lets anyone
-  see. She trusted Cassivane like a father. She is blinded at the midpoint and rules the last half of the
-  war by voice alone. In the capital battle she stands on the walls anyway. She is the narrator.
-- **Master Tobias Fennick**, 70, Chief Tower-Wright of the Order. The gruff old engineer who designed every
-  tower the player builds and briefs the player before stages ("Fire burns, water slows, and you, child,
-  will place them where I tell you"). He dies at the midpoint holding the Dawn Gate. After that, the
-  briefings are given by Tamsin, using his notes.
-- **Oswin**, the Grey Lantern (before his return). Old, wry, endlessly patient. He appears in the prologue
-  and in memories.
+  see. She trusted Cassivane like a father and signed Corvin's exile. Blinded at the midpoint while running
+  with the Heartstone, she rules by voice for the rest of the war and stands on the walls anyway.
+- **Master Tobias Fennick**, 70, Chief Tower-Wright of the Order. Designed every tower the player builds
+  and briefs the player from the first land ("Fire burns, water slows, and you, child, will place them
+  where I tell you"). Dies at the midpoint holding Solenne's east gate. After that Tamsin reads his notes.
+- **Oswin**, the Grey Lantern (before his return). Old, wry, endlessly patient. Seen in the prologue.
 
-### 7.5 Villains
+### 7.5 Villains: one chain, each link thinks it is the top
 
-**Vael-Orrun, the Sunderer** (the overlord, the face of evil). Once the good king of Orrun and the keeper
-of the world's peace, betrayed by the six monarchs on the Night of Six Knives, his wife Ysmera and son
-Caelan burned. He took up the Unmaking for justice and became the tyrant of the War of Seven Crowns,
-without knowing the voice that taught him was not his own. Banished beyond the stars, he has come back for
-his crown (the Heartstone), his throne (the ground Solenne stands on) and his vengeance. He is a tragic
-villain, not a monster, and the game should let the player pity him by the end. He speaks
-rarely, and when he does, every element in the room goes still. In cinematics he is never fully seen until
-the final assault: a black sun with a crown-shaped gap in its corona, a voice like the silence after a
-bell. Final boss of the final assault.
+| Who | What they want | What is true | How it ends |
+|---|---|---|---|
+| **The Hush** (never named in Part 1) | Silence: no magic, no world. | Older than the world, deep under the Hollow. It taught Vael-Orrun the Unmaking and has lived inside him since. It cannot reach our world by itself. | When Vael-Orrun's light goes home into the Heartstone, it comes with him. Post-credits: an eye opens inside the Heartstone. |
+| **Vael-Orrun, the High King** | Justice for the Night of Six Knives, and his crown, the key to his prison. | Two thousand years in the dark with the Hush made him a monster. He bargained with Cassivane himself, and never knew he was the Hush's tool. | Beaten on wave 39, flees into his fortress; when it falls the Wardens confess, he sees the truth, and his light goes home to his crown. |
+| **Cassivane Dral, the Ashen Regent** | His daughter back. | Vael-Orrun gave Ilyra back empty and promised she would be whole once he is free. That is why Cassivane fights on after he has her. | Fused with the broken Sunstone as the Sundered Heart, he dies at Solenne's inner wall in Ilyra's arms, seeing she has healed without any of it. |
+| **The six Heralds** | Nothing. They are emptied. | Six champions Cassivane sent to the Rift. Each leads one army to one land and drives its Warden mad. | Each dies at stage 2 of its land; echoes of them return in the final level. |
+| **The six mad Wardens** | Nothing. They are mad. | The six old monarchs, whose sleep holds the Gate. | Each is fought and freed at stage 4 of its land, and joins us. |
 
-**Cassivane Dral, the Ashen Regent** (main villain). Lord Marshal of the Concord, former regent to Ysolde,
-hero of the Border Wars. Opened the Crack to bring his daughter back from the dead. He is not cruel; he
-is certain. He believes he is bargaining with Vael-Orrun, but the voice that promised him his daughter was the Hush
-(section 7.6) wearing the High King's voice. He believes the world can be remade by Vael-Orrun without death in it, and that every city
-lost is a price worth paying for that. He appears as an ally in briefings until the midpoint, where he
-betrays Solenne. Boss of the Shattered Crossroads (stage 25), where he escapes; final form at the capital
-as **the Sundered Heart** (stage 27), when he fuses himself with the stolen shards of the Sunstone and the
-Heartstone's light.
+**Vael-Orrun** is a tragic villain, not a monster at heart, and the game should let the player pity him by
+the end. He speaks rarely. His three forms on wave 39 are **the High King** (crowned, armoured), **the
+Sunderer** (the six stolen magics at once) and **the Unmade** (a beast, the Hush showing through him).
+He wears a crown-shaped wound in his brow where his crown once sat.
 
-### 7.6 The secret villain: the Hush (revealed only at the very end, for Part 2)
+**Cassivane** is not cruel; he is certain. He appears as an ally until the midpoint. Boss of Crossmere
+(Converge 1), where he retreats; final form at the capital as **the Sundered Heart** (Converge 3).
 
-**Never named, never shown, never explained in Part 1.** Only the post-credits scene reveals that it
-exists. Everything else is clues a player will only understand on a second play.
-
-**What it is.** Before the Unshaped Sea there was silence, and the silence was something. The world, with
-its seven kingdoms and six arts and noise, is an interruption of it. It wants the interruption to end. Its
-working name in our docs is **the Hush**; its true name is saved for Part 2. It is god-like: older than the
-Wardens, beyond the Outer Hollow, and unable to touch the world directly. It needs a door and a hand.
-
-**What it has done.** It found Vael-Orrun in the vault under burning Vael and taught him the Unmaking,
-which is its own breath: magic stopping is the world going quiet. Vael-Orrun was its first hand. For two
-thousand years in the Outer Hollow it kept him company and hollowed him out. Six years ago, the voice that
-answered Cassivane's grief and promised him his daughter was not Vael-Orrun's. It was the Hush, *wearing*
-Vael-Orrun's voice. Cassivane was its second hand, and Vael-Orrun never knew.
-
-**What it wants from Part 1.** Not Vael-Orrun's victory. His defeat was always acceptable, because the war
-woke all six Wardens, cracked the Ring, and led the Concord through the Crack to the Outer Hollow, the one
-thing the Hush could never do itself: open the way from *our* side. In the post-credits, the door is still
-ajar.
-
-**Clues to plant (all subtle, none named):**
-1. **The Veilwalker warning** in section 3 ("When the Six hold knives, the door will open") uses *the
-   door*, not *his door*.
-2. **Starcraft:** the Veilwalkers' charts have a patch of sky no astronomer will chart, the Unwritten
-   Star. Corvin's star-glass blade shows every star but that one.
-3. **Ilyra** says that in the Outer Hollow she heard two voices: one that wept, and one that never did.
-   (For the heroes thread to use in her lines.)
-4. **Mirelle**, after the war, admits there was something else in the ice that she has never been able to
-   look at.
-5. **The Unbound** have grey empty eyes, and so does everything the Unmaking touches, including the Heralds
-   and the Regent. Vael-Orrun's own eyes, in his last moment, are not grey. They are just tired.
-6. **Vael-Orrun's last words** (epilogue): "It was never my voice in the dark. It spoke to me too."
-7. **The post-credits scene** (see scripts: epilogue).
-
-**The Six Heralds** (generals, mid-campaign bosses). Six of the Concord's greatest champions, who went with
-the Regent "to study the Crack" and came back hollow: still themselves, still wearing their faces, but
-emptied out and filled with the Sunderer's will. Each leads the horde invading one land and is fought at
-stage 2 of that land's campaign. Each Herald comes from the horde's own element. Each holds that land's
-champion prisoner, which is how the champion is rescued.
+**The Six Heralds** (stage 2 of each land):
 
 | Herald | Element | Fought at | Who they were | What they do now |
 |---|---|---|---|---|
-| **Saltmother Ourra**, the Drowned Herald | Water | Cinder Steps (Ember 2) | High priestess of the Tidefolk, who sang the tides in. | Walks inside a standing column of black seawater. Her Menders knit the horde back together. Holds Brannoc in a cage of salt. |
-| **Gorrath the Quarried**, the Stone Herald | Earth | Galeback Ridge (Storm 2) | A Stoneborn general who once held the Kharum Pass for a month. | Carved out his own heart and replaced it with a stone. When struck down he breaks into boulders that keep walking. Hunts Kaela. |
-| **The Pale Vesper**, the Hollow Herald | Void | Rootway (Nature 2) | A Veilwalker singer who walked the dead to their rest. | Sings the dead awake instead. The first to say aloud that the Regent sent them. Has Sylvaine pinned in the root-halls. |
-| **Ashwick the Kindled**, the Flame Herald | Fire | Saltmarsh Bends (Water 2) | The youngest Emberfolk runner ever to carry the Concord's messages. | An ever-burning boy who never stops running. His runners set the ice on fire. Has Mirelle's tower ringed in flame. |
-| **Vholt Stormcrown**, the Sky Herald | Storm | Canyon Switchbacks (Earth 2) | A Galeborn warchief and Kaela's former teacher. | Rides a thunderbird of black cloud, calls lightning down the canyon. Has Gorrim's company trapped on the terraces. |
-| **Mother Briar**, the Thorn Herald | Nature | Fractured Steps (Void 2) | The wisest healer of the Deepwood. | A thicket in the shape of a woman. Her bark-warded beasts shrug off curses. Keeps Corvin bound in thorns. |
+| **Saltmother Ourra**, the Drowned Herald | Water | Brazier Hold (Ember 2) | High priestess of the Tidefolk. | Walks inside a column of black seawater. Held Brannoc in a salt cage. |
+| **Gorrath the Quarried**, the Stone Herald | Earth | Highwind (Storm 2) | A Stoneborn general who held the Kharum Pass for a month. | A carved stone for a heart; breaks into boulders that keep walking. |
+| **The Pale Vesper**, the Hollow Herald | Void | Elderhollow (Nature 2) | A Veilwalker singer who sang at funerals. | Sings the dead awake. Dying, says "The Marshal sent us to the Rift." Nobody believes her. |
+| **Ashwick the Kindled**, the Flame Herald | Fire | Reedhaven (Water 2) | The Concord's youngest messenger. | An ever-burning boy who never stops running. His satchel still holds a letter under Cassivane's seal. |
+| **Vholt Stormcrown**, the Sky Herald | Storm | the Kharum Terraces (Earth 2) | A Galeborn warchief, Kaela's teacher. | Rides a thunderbird of black cloud. Dies at Kaela's lance. |
+| **Mother Briar**, the Thorn Herald | Nature | Vesperhold (Void 2) | The wisest healer of the Deepwood. | A thicket in the shape of a woman. Kept Corvin bound in thorns. |
 
-**The Corrupted Wardens** (land bosses, stage 4 of each land). These are the Wardens in their madness, and
-the boss enemies already in the game. Defeating one frees it, and it joins as a hero.
+**The mad Wardens** (stage 4 of each land): Cinder Tyrant (Ignar), Thunderhead (Aurath), Elder
+Broodmother (Elowen), Tidal Leviathan (Thalassa), Mountain Titan (Orrok), Hollow King (Nyxara). The Hollow
+King is Nyxara fighting her madness from inside, which is why it splits in two when it falls.
 
-| Boss (corrupted) | Warden (freed) | Fought at |
-|---|---|---|
-| Cinder Tyrant | Ignar | Throne of Cinders |
-| Thunderhead | Aurath | Eye of the Storm |
-| Elder Broodmother | Elowen | Heart of the Grove |
-| Tidal Leviathan | Thalassa | The Drowned Throne |
-| Mountain Titan | Orrok | Titan's Cradle |
-| Hollow King | Nyxara | Throne of the Hollow King |
+### 7.6 The secret villain: the Hush (revealed only after the credits, for Part 2)
 
-The Hollow King is the one Warden who is not merely mad. He is Nyxara wearing a crown Vael-Orrun gave her,
-and she has been fighting it from the inside. This is why he splits in two when struck down: half of him
-is her, trying to get out.
+**Never named, never shown, never explained in Part 1.** Its working name in our docs is the Hush; its
+true name is saved for Part 2. It lives deep under the Hollow, older than the Wardens, and cannot reach
+the world by itself. It found Vael-Orrun in the vault under burning Vael and taught him the Unmaking, which
+is its own breath: magic stopping is the world going quiet. It has lived inside him ever since. When
+Vael-Orrun bargained with Cassivane through the crack in the Gate, it was Vael-Orrun speaking; he did not
+know whose words they really were. When we turn him to light in The Truth and his light goes home into the
+Heartstone, the Hush comes with it, into the middle of our world.
 
-**Echoes.** After the Wardens are freed, Vael-Orrun can still project their mad shapes through the Crack as
-*Echoes* (the boss pairs of Prism Wastes and the echoes in Heart of the Ring). Echoes are hollow copies,
-weaker, and the freed Wardens hate the sight of them.
-
-**Final assault bosses** (Nhal Vorath): **the Gatemaw** (the citadel's living gate), the **Echo-Heralds**
-(all six Heralds remade together in the Mirror Spire) and **Vael-Orrun** himself.
+Clues (subtle, none named): Ysolde ends the songs with "That is how the songs tell it"; Aurath and Ignar
+both say a voice whispered to them in their madness; Ilyra heard two voices behind the Gate, one that
+wept and one that never did; Vael-Orrun's "It was never my own voice. It is still listening."
 
 ---
 
-## 8. The two great turns
+## 8. The story, beat by beat
 
-### The midpoint: the Night of Falling Stars (after 12 stages won)
+| # | When | Scene (cinematic id) | What happens |
+|---|---|---|---|
+| A | Before stage 1 | The Last Lantern (`prologue`) | The songs' version of the old war; Cassivane's lost daughter (grief only); the Gate opens, nobody knows who unlocked it; Oswin drives it back to a cart-wide gap and falls through; the Heralds and the opposite-element floods; Ysolde gives the player the plan: hold each town's road, kill its Herald, free its Warden. |
+| B | Before Ember 1 | The Ember Reach (`ember_intro`) | Ignar is mad, the sea climbs the volcano with the Saltmother's army. Fennick briefs us. |
+| C | After Ember 2 | The Drowned Herald (`ember_herald`) | The Saltmother (who went to the Rift two years ago, nobody knew why) dies. Brannoc joins. |
+| D | After Ember 4 | Ignar, Freed (`ember_warden`) | "Someone whispered in my sleep." The sea drains, the forges relight. Fennick: "One land back. Five to go." |
+| E | Before Storm 1 | The Thunder Steppe (`storm_intro`) | Aurath is mad, the storms are still, the Stone climbs the plateau behind Gorrath. |
+| F | After Storm 2 | The Stone Herald (`storm_herald`) | Gorrath, also sent to the Rift two years ago, falls. Kaela joins. |
+| G | After Storm 4, then 8 stages won | Aurath, Freed (`storm_warden`), then The Refugee Road (`regents_counsel`) | The sky moves again. In Solenne, Cassivane at his kindest: "Every life we lose out there will be paid back." Ysolde recalls exiling Corvin on his word. |
+| H | Before Nature 1 | The Verdant Deep (`nature_intro`) | Elowen is mad; the Hollow creeps in behind the Pale Vesper, who raises the Deepwood's dead. |
+| I | After Nature 2 | The Hollow Herald (`nature_herald`) | The dying Vesper: "The Marshal sent us to the Rift." Ysolde doesn't believe her. Sylvaine joins. |
+| J | After Nature 4, then 12 won | Elowen, Freed (`nature_warden`), then The Night of Falling Stars (`night_of_falling_stars`) | Elowen gives Sylvaine the last seed. That night Cassivane's emptied soldiers open the east gate; Fennick dies holding it; Cassivane breaks the Sunstone and comes for the Heartstone (a sliver of it opened the Gate). Ysolde runs with it and is blinded by the falling light; Tamsin drags her clear. "He has my daughter." Cassivane flees east with the shards; one piece falls into the Rift. The darkness climbs out and covers the sky: the Long Night. |
+| K | Water 1-4 (night) | `water_intro`, `water_herald`, `water_warden` | Thalassa is mad, fire runs over the ice. Ashwick dies with a letter under Cassivane's seal; Mirelle joins. Thalassa is freed. Mirelle sees a death at the end of the war. |
+| L | Earth 1-4 (night) | `earth_intro`, `earth_herald`, `long_night` (18 won), `earth_warden` | Orrok is mad, armoured lightning in the canyon under Vholt. Kaela kills her teacher; Gorrim joins. The war in the dark; Tamsin reads Fennick's notes. Orrok is freed; Gorrim's last ring. |
+| M | Void 1-4 (night) | `void_intro`, `void_herald`, `void_warden` | The Gate seen from the rim; a white light walking at the bottom. Mother Briar dies; Corvin is cut free and says why the murdered man died. Nyxara is freed: "Your Grey Lantern is alive." |
+| N | Before Converge 1 | The Convergence (`convergence_intro`) | The oath holds again; only the whole Heartstone can break it, so everything he has left marches on Solenne. Thalassa: "When this is over, I will tell you what we did at Vael." |
+| O | After Converge 1 | The Ashen Regent (`crossroads`) | Crossmere saved. Cassivane: "Yes. I opened the Gate... She will be whole when he is free." He leaves Ilyra behind; she recovers on her own and joins. |
+| P | After Converge 2 | The Lumen Gate (`lumen_gate`) | Solenne's outer wall falls, the only wall we lose. Seraphel joins. |
+| Q | Converge 3 | `capital_prelude`, `dawn` (wave 17), `heart_falls` (or `solenne_falls` if lost) | The Sundered Heart comes for the Heartstone. Ysolde sees a light on the east road. Oswin walks up it with the last piece of the Sunstone and relights it; the dark sinks back into the Rift. Cassivane dies in Ilyra's arms. We march east. |
+| R | Final level | `assault_intro`, `the_high_king` (wave 39), `the_turning` (wave 40) | Down the Rift road, through the gap, dig in before Nhal Vorath. 38 waves of defence, Echo-Heralds every sixth wave. Wave 39: Vael-Orrun's three forms, then he flees. Wave 40: we attack the fortress; Brannoc breaks the gate. |
+| S | Fortress falls | The Truth (`the_truth`) | Seraphel dies at the inner gate. The Wardens confess the Night of Six Knives. "It was never my own voice." Mirelle's foreseen death was his. Oswin's lantern in the wound in his brow; his light goes home to the Heartstone. |
+| T | Then | The Seventh Colour (`epilogue`) | The Wardens seal the Gate. The towns rebuild; Sylvaine plants the seed; Fennick and Seraphel are buried. "I have felt every one of them." Credits. |
+| U | After the credits | One Door (`the_hush`) | The Hush's reveal. "Seven crowns. One door. Thank you." |
 
-Halfway through the war, Solenne is still a place of hope. The Sunstone shines. Refugees pour in. The
-Regent has been everyone's rock.
+### Secrets and their payoffs
 
-That night, the Regent opens the **Dawn Gate** from the inside. Hollowed soldiers he has kept in Solenne's
-own barracks under Lanternguard colours pour into the city. While they fight, Cassivane climbs the Spire
-of Aurel, and with a blade made from a Heartstone shard he **shatters the Sunstone**. Its pieces fall
-across the city like stars.
-
-- **The sun goes out.** From this point on the Ring lives under the **Long Night**. Every stage after the
-  midpoint is fought at dusk or night (the game's day/night lighting carries this). Light is now
-  something you carry.
-- **Fennick dies.** The old Tower-Wright holds the Dawn Gate with a handful of half-built towers until the
-  Queen is clear, and is buried when the gatehouse falls. His last line is to the player.
-- **Ysolde is blinded** by the falling light of the Sunstone. She rules by voice for the rest of the war.
-- **The Regent escapes** through the Crack with the Sunstone's shards, carrying them to his master.
-- **The truth comes out.** Corvin, exiled for murder, was right all along: the Regent opened the door.
-  The Pale Vesper said it with her last breath; now the whole Ring knows it.
-
-The narration of the midpoint is the darkest moment in the game. The next cinematic is the first that
-begins with the line *"There was no dawn."*
-
-### The ending twist: Oswin returns (Heart of the Ring, stage 27)
-
-Oswin fell into the Crack in the prologue, and everyone believes he is dead. He was dead, in the way
-Veilwalkers understand it: he walked the road of the dead, which runs along the inside of the Ring.
-Nyxara, half-trapped inside the Hollow King, caught him on that road and kept him from falling through.
-For the whole war he walked it, the long way round the world, carrying his empty lantern, while the dead of
-every fallen city passed him going the other way. He relit his lantern from them, one light at a time.
-
-Hints across the campaign:
-1. **Prologue:** his lantern goes out as he falls, but the last shot shows one spark still drifting down.
-2. **Midpoint:** as the Sunstone shatters, a single falling shard does not land. It drifts toward the Rift.
-3. **Hollow Rift intro:** the Lamplight waystation has a lantern burning that nobody lit.
-4. **Hollow King freed:** Nyxara's first words: *"Your Grey Lantern walks my road. He is not finished."*
-   Nobody understands her yet.
-5. **Capital prelude:** Ysolde, blind, says she can see a light on the east road. Everyone thinks she is
-   wandering.
-
-**The return:** At the Heart of the Ring, in the last waves, as the Sundered Heart reaches the inner wall,
-the night sky splits in the east and a white light comes up the road. The light is Oswin, alive, with a
-lantern that holds every light the war put out. He walks through the Unbound and they fall still around
-him. He raises the lantern to the broken frame of the Sunstone and **dawn breaks over Solenne for the first
-time since the midpoint** (the in-game lighting goes from night to dawn mid-battle). He joins as a hero
-for the last waves.
-
-He has come back as **Oswin the White Lantern**: not the wry old wanderer, but something brighter and
-more certain, the light of every city that fell.
+| Secret | Planted | Hinted | Paid off |
+|---|---|---|---|
+| Cassivane let the enemy in | Prologue: his lost daughter; nobody knows who unlocked the Gate | Heralds all "went to the Rift two years ago"; Refugee Road: his locket and Corvin's exile; Nature 2: the Vesper names him | Midpoint: he opens the gate and breaks the Sunstone. Water 2: his seal on Ashwick's letter. Void 2: Corvin proved right. Converge 1: his confession. |
+| Oswin is alive | Prologue: he falls with his lantern lit | Midpoint: a piece of the Sunstone falls into the Rift; Void 1: a white light walks at the bottom; Nyxara hears him; capital: blind Ysolde sees a light | Converge 3, wave 17: he brings the piece back and relights the Sunstone. |
+| Vael-Orrun was wronged, and something used him | Prologue: "That is how the songs tell it." | Ignar and Aurath heard a voice; Thalassa's promise; Ilyra's two voices; Mirelle's foreseen death | The Truth; post-credits: the Hush. |
 
 ---
 
-## 9. Story structure
+## 9. Final level: 40 waves under Nhal Vorath
 
-### Canonical order
+The final-level thread builds the mechanics; this is the story fitted to it.
 
-The story is written for this order, but the element campaigns can be played in any order. So the main
-plot moves on the number of stages won: the Refugee Road scene after 6 wins (the Regent at his kindest),
-the Night of Falling Stars after 12 (the midpoint) and There Was No Dawn after 18. Land intros, Herald
-scenes and Warden scenes belong to their stages and never mention another land, day or night. The
-Convergence only opens after all six lands, so its scenes are fixed. Exact triggers are in
-`data/story/story.json`.
-
-| Act | Stages | Story |
+| Wave | What happens | Scene or line |
 |---|---|---|
-| **Prologue** | before 1 | The Black Comet. Oswin falls. |
-| **Act I: The Burning Edge** | 1-8 (Ember Reach, Thunder Steppe) | The first retreats. We learn the shape of the war: hold, evacuate, fall back. Brannoc and Kaela join. Ignar and Aurath are freed. Solenne is still bright. |
-| **Act II: The Withering** | 9-12 (Verdant Deep) | The war gets personal. The Pale Vesper names the Regent; nobody believes it. Elowen is freed. Then the Night of Falling Stars. |
-| **Act III: The Long Night** | 13-24 (Frostmere, Sunscar Canyon, Hollow Rift) | The war in the dark. Heroes and Wardens gather. Corvin is vindicated. At the Hollow Rift we return to where it began, free Nyxara, and hear that Oswin is not finished. |
-| **Act IV: The Convergence** | 25-27 | Every horde marches on the Heartland. The Regent at the crossroads. Ilyra freed. The Lumen Gate falls. The siege of Solenne. Oswin returns. Dawn. |
-| **Act V: The Crownless Citadel** | final assault | We stop running. Through the Crack, into Nhal Vorath. Vael-Orrun is unmade. |
-| **Epilogue** | after | The Ring is whole. The cities are ash, but their people are alive. They go home to rebuild. |
+| Before 1 | We come through the Gate and dig in before the fortress. | `assault_intro`. Vael-Orrun, unseen: "You built your city on my city, and you lock my door with my own crown. Come in, then." Tamsin: "For once we're not holding a road, Spirewright. We're on his." |
+| 1-38 | Hold the camp. Every sixth wave (6, 12, 18, 24, 30, 36) an echo of one of the six Heralds leads the attack. | Optional barks from the hero each Herald once held. |
+| 39 | His army is spent, so he comes out himself, in three forms. After the third he breaks and flees into the fortress. | `the_high_king`: "Six of you. Always six. Ask them what they did at my table." None of the Wardens answer. |
+| 40 | The towers keep the camp; heroes and troops attack the fortress. | `the_turning`. Brannoc: "Gates are my trade. Let me." |
+| Fortress falls | The truth. | `the_truth` (Seraphel's death opens it), then `epilogue`, then `the_hush`. |
 
-### Bosses every 2-3 stages
-
-| Stage | Boss | Kind |
-|---|---|---|
-| Ember 2: Cinder Steps | Saltmother Ourra | Herald |
-| Ember 4: Throne of Cinders | Cinder Tyrant (Ignar) | Corrupted Warden |
-| Storm 2: Galeback Ridge | Gorrath the Quarried | Herald |
-| Storm 4: Eye of the Storm | Thunderhead (Aurath) | Corrupted Warden |
-| Nature 2: Rootway | The Pale Vesper | Herald |
-| Nature 4: Heart of the Grove | Elder Broodmother (Elowen) | Corrupted Warden |
-| Water 2: Saltmarsh Bends | Ashwick the Kindled | Herald |
-| Water 4: The Drowned Throne | Tidal Leviathan (Thalassa) | Corrupted Warden |
-| Earth 2: Canyon Switchbacks | Vholt Stormcrown | Herald |
-| Earth 4: Titan's Cradle | Mountain Titan (Orrok) | Corrupted Warden |
-| Void 2: Fractured Steps | Mother Briar | Herald |
-| Void 4: Throne of the Hollow King | Hollow King (Nyxara) | Corrupted Warden |
-| Converge 1: Shattered Crossroads | Cassivane, the Ashen Regent | Main villain (escapes) |
-| Converge 2: Prism Wastes | Echoes of the Broodmother and the Hollow King | Echoes |
-| Converge 3: Heart of the Ring | The Sundered Heart (Cassivane, fused) + Echoes | Main villain, final form |
-| Final assault: Nhal Vorath | The Gatemaw, the Echo-Heralds, Vael-Orrun | Overlord |
-
-### The final assault (Act V), about 30 minutes
-
-Once Solenne is saved, the player becomes the attacker. Oswin, the six Wardens and every hero go through
-the Crack. The story frames the level in three movements; the gameplay thread decides the mechanics.
-
-1. **The Black Gate** (about 10 minutes). Break through the Gatemaw, the citadel's living gate. The citadel
-   throws everything it has stolen at the army.
-2. **The Mirror Spire** (about 10 minutes). Climb a reflection of Solenne made wrong, through the six rings
-   of stolen city walls. The Six Heralds return as Echo-Heralds, all at once.
-3. **The Crownless Throne** (about 10 minutes). Vael-Orrun takes a shape for the first time: a figure of
-   black glass with a crown-shaped gap where a face should be, and the Heartstone's stolen light caught in
-   its chest. He cycles through all six elements and every hero's death is a shard of his corona. At the
-   end, the six Wardens join hands around him in a ring, as they did at the Siege of Vael, and Oswin's
-   lantern is set into the gap where his crown used to be. He is not killed. He is *finished*: he gets the
-   middle of the world he always wanted, not as its king but as its light, the seventh colour in the
-   Heartstone. For one moment before that, in the light, he is the Keeper of the Crossroads again, and he
-   tells them the voice was never his.
-
-Story beats inside the level (for the gameplay thread to hook to timers or phases): Ilyra faces her
-father's last shadow in the Mirror Spire; Seraphel dies holding the Spire's top gate open (the Sunstone
-is gone and she has run out of time); Mirelle reveals that the death she foresaw at the end of the war was never anyone's
-but the Sunderer's; Oswin's lantern is set into the crown.
+In `data/story/story.json`, `assault.waves` holds the wave scenes and `assault.truth`, `assault.outro` and
+`assault.post_credits` play in that order after the win.
 
 ### Endings
 
-- **Losing the capital:** a short "Solenne Falls" scene, then retry. There is no bad canon ending; the
-  story always assumes the player holds.
-- **Victory:** the Epilogue (see scripts.md), with a post-credits tease: in the rebuilt Hall of the Ring,
-  the Heartstone now shines with seven colours. Deep inside the seventh, something with no colour
-  at all opens, like an eye. A voice with no sound: *"Seven crowns. One door. Thank you."* To be continued
-  in Part 2.
+- **Losing the capital:** a short "Solenne Falls" scene, then retry. There is no bad canon ending.
+- **Victory:** The Truth, the Epilogue, the credits, and the post-credits reveal. To be continued in Part 2.
 
 ---
 
 ## 10. Themes and tone
 
-- **The long defeat.** Like the old songs, this is a story where good is losing and fights anyway. Victory
-  is measured in people saved, not ground held.
-- **Balance, not purity.** Fire is not good and Water evil. Every element is needed, especially the one
-  across from you. This is the game's tower mechanic and its moral.
-- **Grief can be a door.** Vael-Orrun and Cassivane are the same story two thousand years apart: good men broken by loss, who took the help of a voice in the dark. Cassivane is a good man who could not let go. The game should never make him a
-  cackling villain. His last scene is with Ilyra.
+- **We win, and it costs.** Every town is saved, every land taken back; the price is paid by people we
+  know: Fennick, Seraphel, the Queen's eyes.
+- **Balance, not purity.** Every element is needed, especially the one across from you. This is the game's
+  tower mechanic and its moral.
+- **Grief can be a door.** Vael-Orrun and Cassivane are the same story two thousand years apart: good men
+  broken by loss, who took the help of a voice in the dark. Never make either a cackling villain.
 - **Light is carried.** The Lanternguard, Oswin's lantern, the Long Night, the dawn. Light is the visual
   motif for hope, and it is literal in the lighting system.
-- **Tone:** grave, warm, sometimes funny in small human ways (Tamsin and Brannoc especially), never ironic.
-  No modern slang. Short sentences when things are bad.
+- **Tone:** 18+, grave, dark, warm, sometimes funny in small human ways (Tamsin and Brannoc especially),
+  never ironic. No modern slang. Short sentences when things are bad.
 
 ### Style guide for writing more
 
+- **Write for a player who knows nothing.** Every scene says where we are, what is attacking and why, and
+  what changed. Name people and places and give causes. If a line could sit in any fantasy game, cut it or
+  make it about this one.
+- **Everything physical.** No cracks in the sky, nothing beyond the stars, no road of the dead. Cut terms:
+  the Crack, the Outer Hollow, the Unwritten Star, the Ledger of Fallen Cities, the Gatemaw, the Mirror
+  Spire, the Crownless Throne. `tools/story/story_content.py` refuses the worst of these.
 - Names: Emberfolk names are hard and short (Brannoc, Kethra). Galeborn are breathy (Aurath, Kaela, Vholt).
   Deepwood are soft and long (Sylvaine, Elowen). Tidefolk are liquid (Mirelle, Thalassa, Ourra).
   Stoneborn are heavy (Gorrim, Orrok, Grund, Kharn). Veilwalkers are dark and sharp (Nyxara, Corvin,
   Vesper, Umbrael).
 - The six elements are always written Fire, Storm, Nature, Water, Earth, Void (capitalised, ring order).
-- Elements are the raw forces; the **arts** are how people work them. Characters talk about their art
-  ("a Kindler", "she sang the storm down", "runecarved steel"), not about "using Fire". Arts: Kindling,
-  Stormsong, Rootcraft, Tidelore, Runecarving, Starcraft, the Grand Alchemy and its Unmaking, Spirecraft.
-- Say "the Unbound" for the enemy hordes as a whole, "the Tide", "the Stone", "the Hollow", "the
-  Flame", "the Sky" and "the Grove" for each land's invaders.
-- Never call Vael-Orrun "the Dark Lord". He is the High King, the Sunderer, the Seventh, the Crownless.
-- The six Wardens are the founding monarchs of the six kingdoms. Their people mostly call them by their
-  Warden titles; the Wardens themselves sometimes slip and speak like the kings and queens they were.
+- Characters talk about their art ("a Kindler", "she sang the storm down", "runecarved steel"), not about
+  "using Fire". Arts: Kindling, Stormsong, Rootcraft, Tidelore, Runecarving, Starcraft, the Grand Alchemy
+  and its Unmaking, Spirecraft.
+- "Warden" means only the six monarchs. Enemies are the Unbound (Hollowed, Risen, Wild). Never "orc",
+  "elf" or "dwarf".
+- Never call Vael-Orrun "the Dark Lord". He is the High King.
