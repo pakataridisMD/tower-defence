@@ -42,9 +42,10 @@ Gate and pushed it back until only a gap a cart wide was left, and fell through.
 
 **The war.** A gap that size lets an army through a few at a time, but not Vael-Orrun himself: the
 Wardens' oath binds him while they sleep in peace. So he sends six generals, the **Heralds**, one to each
-land, to drive its Warden mad. When a land's Warden goes mad, the land can no longer keep out the element
-opposite its own, and that element floods in with the Herald's army: the sea climbs the volcano, the stone
-climbs the steppe.
+land, to drive its Warden mad. Each Herald is sent home, to the land they were born in, because a Warden
+lets its own people come close. A mad Warden turns its own element on its own people: the volcano pours out
+its fire on the Emberfolk, the forest strangles the Deepwood, the sea breaks the ice under Frostmere. Out
+of that element the Herald raises an army from the land itself: its dead, its beasts, its broken.
 
 **Us.** We are the **Order of the Spire**, who build towers that hold an element. We go land by land,
 hold the road in front of each town until the attack breaks, kill the Herald and free the mad Warden.
@@ -61,7 +62,8 @@ the road into the Rift, through the gap in the Gate on foot, and take his fortre
 | Where is the enemy? | Behind the Black Gate, a stone door at the bottom of the Rift, in the Hollow, a cavern land under the world. |
 | How did they get out? | Cassivane unlocked the Gate with a sliver of the Heartstone. Oswin pushed it back to a gap a cart wide, and the armies come out through that gap. |
 | Why doesn't Vael-Orrun walk out himself? | The six Wardens' oath binds him by name while they sleep in peace. Driving them mad weakens it; the whole Heartstone would undo it. |
-| Why is each land attacked by its opposite? | Each Warden holds its own element and keeps the opposite one out. Mad, it can't, and the opposite floods in with the Herald's army. Free the Warden and the flood stops. |
+| Why is each land attacked by its own element? | Each Warden holds its land's element in check: Ignar keeps the volcano's fire under the mountain, Thalassa keeps the sea quiet under the ice. Mad, the Warden turns that element on its own people, and the Herald (a native of that land) raises an army out of it. Free the Warden and the element lies down again. |
+| Why does the opposite element work best? | Things made of fire don't burn, and things made of water don't drown. Fennick's rule: fight each land with the element across the ring from it. |
 | Do we lose towns? | No. Winning a stage saves its town. The only wall we lose is Solenne's outer wall, the Lumen Gate. |
 | Why is it night for half the game? | The Sunstone's light held the Hollow's darkness down in the Rift. When Cassivane breaks it, the darkness climbs out and covers the sky. When Oswin relights it, the darkness sinks back. |
 | How do we reach his fortress? | We walk down the road cut into the Rift's wall and through the gap in the Gate in single file. |
@@ -201,8 +203,8 @@ her **face**, so where her face should be there are only stars.
 3. **The Wardens' oath binds Vael-Orrun by name.** The six monarchs gave their mortal lives and went to
    sleep inside their lands (a volcano, a storm, a tree, a sea, a mountain, the dark over the Rift). While
    all six sleep in peace, he cannot pass the Gate even when it stands open.
-4. **Each Warden holds its own element and keeps the opposite one out.** A mad Warden can't, and the
-   opposite element floods its land.
+4. **Each Warden holds its own element in check.** A mad Warden turns that element on its own land and
+   people, and whoever drove it mad can raise an army out of it.
 5. **The Sunstone's light** (hung over Solenne a thousand years later) burns hollow things and holds the
    Hollow's darkness down in the Rift.
 
@@ -295,19 +297,22 @@ Solenne is more trusted.
 
 ### Why each land is attacked, and by what
 
-The Heralds go to the six sleeping Wardens and whisper to them until they go mad. A mad Warden's land can
-no longer keep out the element opposite its own, and that element floods in with the Herald's army:
+Each Herald goes home, to the land they were born in, because a Warden lets its own people come close.
+There they whisper to the sleeping Warden until it goes mad, and a mad Warden turns its own element on its
+own people. The Herald raises an army out of that element and the land itself (its horde, see
+docs/story/horde.md):
 
-| Land | Warden (mad form) | Floods in | Herald |
-|---|---|---|---|
-| The Ember Reach (Fire) | Ignar (the Cinder Tyrant) | The sea climbs the volcano | Saltmother Ourra |
-| The Thunder Steppe (Storm) | Aurath (the Thunderhead) | Walking stone climbs the plateau | Gorrath the Quarried |
-| The Verdant Deep (Nature) | Elowen (the Elder Broodmother) | The Hollow's dark creeps under the trees | The Pale Vesper |
-| Frostmere (Water) | Thalassa (the Tidal Leviathan) | Fire runs across the ice | Ashwick the Kindled |
-| Sunscar Canyon (Earth) | Orrok (the Mountain Titan) | Armoured lightning walks down the walls | Vholt Stormcrown |
-| The Hollow Rift (Void) | Nyxara (the Hollow King) | Thorns and walking dead trees | Mother Briar |
+| Land | Warden (mad form) | The land turns on its people | Herald (born there) | Horde |
+|---|---|---|---|---|
+| The Ember Reach (Fire) | Ignar (the Cinder Tyrant) | The mountain's fire comes out over the forge-towns | Ashwick the Kindled | the Flame |
+| The Thunder Steppe (Storm) | Aurath (the Thunderhead) | The storms strike the camps; dead riders come back on lightning | Vholt Stormcrown | the Sky |
+| The Verdant Deep (Nature) | Elowen (the Elder Broodmother) | Thorns close the roads; oaks tear up their roots and walk | Mother Briar | the Grove |
+| Frostmere (Water) | Thalassa (the Tidal Leviathan) | The sea breaks the ice from below; the drowned climb out | Saltmother Ourra | the Tide |
+| Sunscar Canyon (Earth) | Orrok (the Mountain Titan) | The canyon walls break off and walk; oath-breakers turn to stone | Gorrath the Quarried | the Stone |
+| The Hollow Rift (Void) | Nyxara (the Hollow King) | The dark of the Rift climbs out; the dead get up | The Pale Vesper | the Hollow |
 
-Freeing a Warden ends that land's war: the flood drains away and the Herald's army scatters.
+Freeing a Warden ends that land's war: the element lies down again and the Herald's army falls where it
+stands.
 
 ### The Unbound
 
@@ -315,8 +320,8 @@ Every common enemy is one of the **Unbound**, in three kinds:
 
 - **Hollowed**: living people the Unmaking has emptied (grey, empty eyes). Brutes, Menders, the Warded.
 - **Risen**: the dead, marching. The dead of the old war shut behind the Gate with him (Grunts), and the
-  dead the Pale Vesper sings out of the ground.
-- **Wild**: beasts and spirits of the invading element. Runners, Splitters and Shardlings, Ashdrakes.
+  dead each Herald raises out of its own land (the drowned of Frostmere, the Veilwalkers' dead under the Pale Vesper).
+- **Wild**: beasts and spirits of the land's own element, turned on it. Runners, Splitters and Shardlings, Ashdrakes.
 
 They cannot stand the Sunstone's light, and they scatter when their land's Warden is freed. Never describe
 them as orcs, elves or dwarves, and never call an enemy a "Warden" (the dragon is an **Ashdrake**).
@@ -376,15 +381,15 @@ story even when its stage is won. The exact lines are in `tools/story/story_cont
 | Stage | Town | Stage | Town |
 |---|---|---|---|
 | Ember 1 | Kethra, a forge-town | Water 1 | Netmend |
-| Ember 2 | Brazier Hold (Saltmother) | Water 2 | Reedhaven (Ashwick) |
+| Ember 2 | Brazier Hold (Ashwick) | Water 2 | Reedhaven (Saltmother) |
 | Ember 3 | Vitrea, the Glass City | Water 3 | Glasswater |
 | Ember 4 | Pyrrhenhall (Ignar) | Water 4 | Pearlhaven (Thalassa) |
 | Storm 1 | Stonering Camp | Earth 1 | Dustmark |
-| Storm 2 | Highwind (Gorrath) | Earth 2 | The Kharum Terraces (Vholt) |
+| Storm 2 | Highwind (Vholt) | Earth 2 | The Kharum Terraces (Gorrath) |
 | Storm 3 | Tarrow's Rest | Earth 3 | Mesa Kharn |
 | Storm 4 | Aurvanis, the Sky-Moot (Aurath) | Earth 4 | Grundhallow (Orrok) |
 | Nature 1 | Fernholt | Void 1 | Lamplight, a waystation |
-| Nature 2 | Elderhollow (Pale Vesper) | Void 2 | Vesperhold (Mother Briar) |
+| Nature 2 | Elderhollow (Mother Briar) | Void 2 | Vesperhold (Pale Vesper) |
 | Nature 3 | Thornwall | Void 3 | Twinmoor |
 | Nature 4 | Sylvanmere, the Tree-City (Elowen) | Void 4 | Umbrael, the Observatory City (Nyxara) |
 | Converge 1 | Crossmere (Cassivane) | Converge 2 | **The Lumen Gate (falls)** |
@@ -419,11 +424,11 @@ and Oswin, who comes back at the capital.
 | # | Hero | Element | Joins | Who they are |
 |---|---|---|---|---|
 | 1 | **Tamsin Reed**, Captain of the Lanternguard | None (lantern light) | Start | Solenne's toughest soldier, raised in the gutters of the Lantern Walk. Always the last one through the gate. Drags the blind Queen clear on the midpoint night, then reads Fennick's notes to the player. Dry, kind, tired, unbreakable. |
-| 2 | **Brannoc Emberhand**, Smith-Lord of the Reach | Fire | Ember 2 | The giant smith who forged Solenne's gates. The Saltmother kept him in a salt cage for nine days to make him forge her chains, and he refused every day. Breaks Vael-Orrun's gate in the final level ("Gates are my trade"). |
-| 3 | **Kaela Stormrider**, Marshal of the Steppe | Storm | Storm 2 | War-leader of the Galeborn, who fought the Stone alone for eleven days and hates riding away. Kills her old teacher, the Herald Vholt, facing him. |
+| 2 | **Brannoc Emberhand**, Smith-Lord of the Reach | Fire | Ember 2 | The giant smith who forged Solenne's gates. Ashwick, the boy who once swept his forge, kept him chained in it for nine days to make him forge chains for the horde, and he refused every day. Breaks Vael-Orrun's gate in the final level ("Gates are my trade"). |
+| 3 | **Kaela Stormrider**, Marshal of the Steppe | Storm | Storm 2 | War-leader of the Galeborn, who fought her old teacher's army alone for eleven days and hates riding away. Kills that teacher, the Herald Vholt, facing him, at Highwind. |
 | 4 | **Sylvaine Thornwhisper**, Bow of the Deep | Nature | Nature 2 | The Deepwood's best archer, three hundred years old. Held Elderhollow's root-doors until every child was out. Carries Elowen's last seed and plants it in Solenne in the epilogue. |
 | 5 | **Mirelle the Tide-Seer** | Water | Water 2 | A blind young Tidefolk seer who reads the future in ice; kept forty children alive inside a tower of ice. Has seen a death at the end of the war and won't say whose. It is Vael-Orrun's. |
-| 6 | **Gorrim Stonebeard**, Shield of the Canyon | Earth | Earth 2 | Stoneborn shieldmaster with an iron ring in his beard for every friend he has buried (thirty-one when he joins). Braids one more for Grundhallow's dead and swears it is his last. |
+| 6 | **Gorrim Stonebeard**, Shield of the Canyon | Earth | Earth 2 | Stoneborn shieldmaster with an iron ring in his beard for every friend he has buried (thirty-two when he joins: the last is Gorrath, beside whom he held the Kharum Pass). Braids one more for Grundhallow's dead and swears it is his last. |
 | 7 | **Corvin the Uncrowned**, Ranger of the Rift | Void | Void 2 | The Queen's elder half-brother. Accused Cassivane, was framed for murder and exiled, and watched the Gate from the rim for six years. The man who was right all along. |
 | 8-13 | **Ignar, Aurath, Elowen, Thalassa, Orrok, Nyxara**, the six Wardens | Their own | Stage 4 of their land | The six monarchs who betrayed Vael-Orrun. Freed from madness, they fight for us and keep their old crime secret until his fortress falls. |
 | 14 | **Ilyra the Unbroken** | Void + Storm | Converge 1 | Cassivane's daughter, caught inside the Gate six years ago and sent back empty. Left in her father's cage, she finds herself again on her own, which proves his bargain was a lie. Behind the Gate she heard two voices: "One of them wept. The other never did." |
@@ -498,12 +503,12 @@ redesign of 2026-11-12, pending approval); Oswin's lantern goes into that core i
 
 | Herald | Element | Fought at | Who they were | What they do now |
 |---|---|---|---|---|
-| **Saltmother Ourra**, the Drowned Herald | Water | Brazier Hold (Ember 2) | High priestess of the Tidefolk. | Walks inside a column of black seawater. Held Brannoc in a salt cage. |
-| **Gorrath the Quarried**, the Stone Herald | Earth | Highwind (Storm 2) | A Stoneborn general who held the Kharum Pass for a month. | A carved stone for a heart; breaks into boulders that keep walking. |
-| **The Pale Vesper**, the Hollow Herald | Void | Elderhollow (Nature 2) | A Veilwalker singer who sang at funerals. | Sings the dead awake. Dying, says "The Marshal sent us to the Rift." Nobody believes her. |
-| **Ashwick the Kindled**, the Flame Herald | Fire | Reedhaven (Water 2) | The Concord's youngest messenger. | An ever-burning boy who never stops running. His satchel still holds a letter under Cassivane's seal. |
-| **Vholt Stormcrown**, the Sky Herald | Storm | the Kharum Terraces (Earth 2) | A Galeborn warchief, Kaela's teacher. | Rides a thunderbird of black cloud. Dies at Kaela's lance. |
-| **Mother Briar**, the Thorn Herald | Nature | Vesperhold (Void 2) | The wisest healer of the Deepwood. | A thicket in the shape of a woman. Kept Corvin bound in thorns. |
+| **Ashwick the Kindled**, the Flame Herald | Fire | Brazier Hold (Ember 2) | Born in Kethra; swept Brannoc's forge, then the Concord's youngest messenger. | An ever-burning boy who never stops running. Kept Brannoc chained in his own forge for nine days. |
+| **Vholt Stormcrown**, the Sky Herald | Storm | Highwind (Storm 2) | A Galeborn warchief, Kaela's teacher. | Rides a thunderbird of black cloud. Dying: "Someone I trusted asked me to go to the Rift." Dies at Kaela's lance. |
+| **Mother Briar**, the Thorn Herald | Nature | Elderhollow (Nature 2) | The wisest healer of the Deepwood. | A thicket in the shape of a woman. Dying, says "The Marshal sent us to the Rift." Nobody believes her. |
+| **Saltmother Ourra**, the Drowned Herald | Water | Reedhaven (Water 2) | High priestess of the Tidefolk. | Walks inside a column of black seawater. An order to go to the Rift, under Cassivane's seal, is sewn into her robes. |
+| **Gorrath the Quarried**, the Stone Herald | Earth | the Kharum Terraces (Earth 2) | A Stoneborn general who held the Kharum Pass for a month, with Gorrim beside him. | A carved stone for a heart; breaks into boulders that keep walking. |
+| **The Pale Vesper**, the Hollow Herald | Void | Vesperhold (Void 2) | A Veilwalker singer who sang at funerals. | Sings her own people's dead awake. Kept Corvin in the crypt under her steps. |
 
 **The mad Wardens** (stage 4 of each land): Cinder Tyrant (Ignar), Thunderhead (Aurath), Elder
 Broodmother (Elowen), Tidal Leviathan (Thalassa), Mountain Titan (Orrok), Hollow King (Nyxara). The Hollow
@@ -529,19 +534,19 @@ wept and one that never did; Vael-Orrun's "It was never my own voice. It is stil
 
 | # | When | Scene (cinematic id) | What happens |
 |---|---|---|---|
-| A | Before stage 1 | The Last Lantern (`prologue`) | The songs' version of the old war; Cassivane's lost daughter (grief only); the Gate opens, nobody knows who unlocked it; Oswin drives it back to a cart-wide gap and falls through; the Heralds and the opposite-element floods; Ysolde gives the player the plan: hold each town's road, kill its Herald, free its Warden. |
-| B | Before Ember 1 | The Ember Reach (`ember_intro`) | Ignar is mad, the sea climbs the volcano with the Saltmother's army. Fennick briefs us. |
-| C | After Ember 2 | The Drowned Herald (`ember_herald`) | The Saltmother (who went to the Rift two years ago, nobody knew why) dies. Brannoc joins. |
-| D | After Ember 4 | Ignar, Freed (`ember_warden`) | "Someone whispered in my sleep." The sea drains, the forges relight. Fennick: "One land back. Five to go." |
-| E | Before Storm 1 | The Thunder Steppe (`storm_intro`) | Aurath is mad, the storms are still, the Stone climbs the plateau behind Gorrath. |
-| F | After Storm 2 | The Stone Herald (`storm_herald`) | Gorrath, also sent to the Rift two years ago, falls. Kaela joins. |
+| A | Before stage 1 | The Last Lantern (`prologue`) | The songs' version of the old war; Cassivane's lost daughter (grief only); the Gate opens, nobody knows who unlocked it; Oswin drives it back to a cart-wide gap and falls through; each Herald goes home and turns its land's own element on its people; Ysolde gives the player the plan: hold each town's road, kill its Herald, free its Warden. |
+| B | Before Ember 1 | The Ember Reach (`ember_intro`) | Ignar is mad; the mountain's fire comes out over the forge-towns with Ashwick's army. Fennick briefs us: fire won't hurt them, water will. |
+| C | After Ember 2 | The Flame Herald (`ember_herald`) | Ashwick, Brannoc's old forge-boy (who went to the Rift two years ago, nobody knew why), dies. Brannoc joins: "He used to sweep my floor." |
+| D | After Ember 4 | Ignar, Freed (`ember_warden`) | "A boy of my own people sat by my fire and whispered." The fire goes back under the mountain, the forges relight. Fennick: "One land back. Five to go." |
+| E | Before Storm 1 | The Thunder Steppe (`storm_intro`) | Aurath is mad; the storms strike the camps, dead riders on lightning come with Vholt, Kaela's teacher. Fennick: build stone, it grounds lightning. |
+| F | After Storm 2 | The Sky Herald (`storm_herald`) | Kaela brings Vholt down at Highwind. Dying: "Someone I trusted asked me to go to the Rift." She kills him facing him, and joins. |
 | G | After Storm 4, then 8 stages won | Aurath, Freed (`storm_warden`), then The Refugee Road (`regents_counsel`) | The sky moves again. In Solenne, Cassivane at his kindest: "Every life we lose out there will be paid back." Ysolde recalls exiling Corvin on his word. |
-| H | Before Nature 1 | The Verdant Deep (`nature_intro`) | Elowen is mad; the Hollow creeps in behind the Pale Vesper, who raises the Deepwood's dead. |
-| I | After Nature 2 | The Hollow Herald (`nature_herald`) | The dying Vesper: "The Marshal sent us to the Rift." Ysolde doesn't believe her. Sylvaine joins. |
+| H | Before Nature 1 | The Verdant Deep (`nature_intro`) | Elowen is mad; thorns close the roads and oaks walk behind Mother Briar, the Deepwood's own healer. |
+| I | After Nature 2 | The Thorn Herald (`nature_herald`) | The dying Mother Briar: "The Marshal sent us to the Rift." Ysolde doesn't believe her. Sylvaine joins. |
 | J | After Nature 4, then 12 won | Elowen, Freed (`nature_warden`), then The Night of Falling Stars (`night_of_falling_stars`) | Elowen gives Sylvaine the last seed. That night Cassivane's emptied soldiers open the east gate; Fennick dies holding it; Cassivane breaks the Sunstone and comes for the Heartstone (a sliver of it opened the Gate). Ysolde runs with it and is blinded by the falling light; Tamsin drags her clear. "He has my daughter." Cassivane flees east with the shards; one piece falls into the Rift. The darkness climbs out and covers the sky: the Long Night. |
-| K | Water 1-4 (night) | `water_intro`, `water_herald`, `water_warden` | Thalassa is mad, fire runs over the ice. Ashwick dies with a letter under Cassivane's seal; Mirelle joins. Thalassa is freed. Mirelle sees a death at the end of the war. |
-| L | Earth 1-4 (night) | `earth_intro`, `earth_herald`, `long_night` (18 won), `earth_warden` | Orrok is mad, armoured lightning in the canyon under Vholt. Kaela kills her teacher; Gorrim joins. The war in the dark; Tamsin reads Fennick's notes. Orrok is freed; Gorrim's last ring. |
-| M | Void 1-4 (night) | `void_intro`, `void_herald`, `void_warden` | The Gate seen from the rim; a white light walking at the bottom. Mother Briar dies; Corvin is cut free and says why the murdered man died. Nyxara is freed: "Your Grey Lantern is alive." |
+| K | Water 1-4 (night) | `water_intro`, `water_herald`, `water_warden` | Thalassa is mad; the sea breaks the ice and the drowned climb out behind the Saltmother. Tamsin finds Fennick's note: fire. The Saltmother dies with an order under Cassivane's seal sewn into her robes; Mirelle joins. Thalassa is freed. Mirelle sees a death at the end of the war. |
+| L | Earth 1-4 (night) | `earth_intro`, `earth_herald`, `long_night` (18 won), `earth_warden` | Orrok is mad; the canyon walls walk behind Gorrath. Kaela: stone feels lightning. Gorrath falls; Gorrim, who held the Kharum Pass beside him, braids his thirty-second ring and joins. The war in the dark; Tamsin reads Fennick's notes. Orrok is freed; Gorrim's last ring. |
+| M | Void 1-4 (night) | `void_intro`, `void_herald`, `void_warden` | The Gate seen from the rim; a white light walking at the bottom. The Pale Vesper dies; Corvin is found in the crypt under her steps and says why the murdered man died. Nyxara is freed: "Your Grey Lantern is alive." |
 | N | Before Converge 1 | The Convergence (`convergence_intro`) | The oath holds again; only the whole Heartstone can break it, so everything he has left marches on Solenne. Thalassa: "When this is over, I will tell you what we did at Vael." |
 | O | After Converge 1 | The Ashen Regent (`crossroads`) | Crossmere saved. Cassivane: "Yes. I opened the Gate... She will be whole when he is free." He leaves Ilyra behind; she recovers on her own and joins. |
 | P | After Converge 2 | The Lumen Gate (`lumen_gate`) | Solenne's outer wall falls, the only wall we lose. Seraphel joins. |
@@ -555,7 +560,7 @@ wept and one that never did; Vael-Orrun's "It was never my own voice. It is stil
 
 | Secret | Planted | Hinted | Paid off |
 |---|---|---|---|
-| Cassivane let the enemy in | Prologue: his lost daughter; nobody knows who unlocked the Gate | Heralds all "went to the Rift two years ago"; Refugee Road: his locket and Corvin's exile; Nature 2: the Vesper names him | Midpoint: he opens the gate and breaks the Sunstone. Water 2: his seal on Ashwick's letter. Void 2: Corvin proved right. Converge 1: his confession. |
+| Cassivane let the enemy in | Prologue: his lost daughter; nobody knows who unlocked the Gate | Heralds all "went to the Rift two years ago"; Refugee Road: his locket and Corvin's exile; Storm 2: Vholt, "someone I trusted"; Nature 2: Mother Briar names him | Midpoint: he opens the gate and breaks the Sunstone. Water 2: his seal on the Saltmother's order. Void 2: Corvin proved right. Converge 1: his confession. |
 | Oswin is alive | Prologue: he falls with his lantern lit | Midpoint: a piece of the Sunstone falls into the Rift; Void 1: a white light walks at the bottom; Nyxara hears him; capital: blind Ysolde sees a light | Converge 3, wave 17: he brings the piece back and relights the Sunstone. |
 | Vael-Orrun was wronged, and something used him | Prologue: "That is how the songs tell it." | Ignar and Aurath heard a voice; Thalassa's promise; Ilyra's two voices; Mirelle's foreseen death | The Truth; post-credits: the Hush. |
 
