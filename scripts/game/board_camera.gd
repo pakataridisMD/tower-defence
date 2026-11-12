@@ -42,6 +42,12 @@ func setup(p_board: Node2D, p_map_size: Vector2) -> void:
 	for step in ZOOMS:
 		if map_size.x * step <= VIEW_RECT.size.x and map_size.y * step <= VIEW_RECT.size.y:
 			min_zoom = step
+	# A big map is shown as large as the view allows rather than at the next crisp step below, so the
+	# whole-map view fills the screen. That scale is between whole art pixels, so the board is drawn
+	# with smooth filtering there (see _apply).
+	var fit := minf(VIEW_RECT.size.x / maxf(map_size.x, 1.0), VIEW_RECT.size.y / maxf(map_size.y, 1.0))
+	if fit > min_zoom + 0.02 and fit < 1.0:
+		min_zoom = floorf(fit * 100.0) / 100.0
 	show_all()
 
 
@@ -84,6 +90,16 @@ func set_view(p_zoom: float, board_point: Vector2, screen_point: Vector2 = VIEW_
 func pan(screen_delta: Vector2) -> void:
 	board.position = _clamped(board.position + screen_delta, zoom)
 	_anchor_screen += screen_delta
+
+
+## Nearest filtering keeps the pixel art crisp when every art pixel covers a whole number of screen
+## pixels (the art is drawn at 2x, so steps of 0.5); in between, smooth filtering stops pixels from
+## doubling up unevenly.
+static func filter_for(scale: float) -> CanvasItem.TextureFilter:
+	var screen_px := scale * 2.0
+	if absf(screen_px - roundf(screen_px)) < 0.01:
+		return CanvasItem.TEXTURE_FILTER_NEAREST
+	return CanvasItem.TEXTURE_FILTER_LINEAR
 
 
 func _steps() -> Array[float]:
@@ -165,6 +181,7 @@ func _blocked() -> bool:
 ## Scales the board and places it so `board_point` sits at `screen_point`, kept inside the view.
 func _apply(board_point: Vector2, screen_point: Vector2) -> void:
 	board.scale = Vector2(zoom, zoom)
+	board.texture_filter = filter_for(zoom)
 	board.position = _clamped(screen_point - board_point * zoom, zoom)
 
 
