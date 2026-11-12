@@ -64,6 +64,7 @@ var _immune_shown: Dictionary[int, float] = {}
 var _clock := 0.0
 ## The enemy under the mouse, whose card is drawn, or null.
 var hovered_enemy: SimEnemy
+var _card_layer: Node2D
 
 
 ## A short-lived visual: a lightning arc, an explosion, floating gold text or a leak flash.
@@ -108,6 +109,16 @@ func setup(p_sim: RunSim) -> void:
 	_army_layer.material = overlay
 	_army_layer.draw.connect(_draw_army_layer)
 	add_child(_army_layer)
+	# The hovered enemy's card goes over everything on the board, art and actors included.
+	_card_layer = Node2D.new()
+	_card_layer.z_index = 20
+	_card_layer.material = overlay
+	_card_layer.draw.connect(func() -> void:
+		for enemy in sim.enemies:
+			_draw_affinity_badge(_card_layer, enemy)
+		if hovered_enemy != null and hovered_enemy.alive:
+			_draw_enemy_card(_card_layer, hovered_enemy))
+	add_child(_card_layer)
 	sim.chain_fired.connect(_on_chain_fired)
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.enemy_killed.connect(_on_enemy_killed)
@@ -333,8 +344,7 @@ func _draw() -> void:
 		_draw_road_labels()
 	_draw_effects()
 	_draw_cursor()
-	if hovered_enemy != null:
-		_draw_enemy_card(hovered_enemy)
+	_card_layer.queue_redraw()
 
 
 ## Small gems under a tower: one per level above the first, gold once it has ascended.
@@ -525,7 +535,6 @@ func _art_height(enemy: SimEnemy) -> float:
 func _draw_enemy(enemy: SimEnemy) -> void:
 	var radius := _enemy_radius(enemy)
 	var art_height := _art_height(enemy)
-	_draw_affinity_badge(enemy, radius, art_height)
 	if art_height <= 0.0:
 		var aura := sim.config.element_color_at(enemy.element)
 		draw_circle(enemy.position, radius + 3.0, aura)
@@ -956,13 +965,14 @@ func _enemy_under_mouse() -> SimEnemy:
 
 ## A small mark over enemies that are not plain: a diamond (attuned), a shield (warded) or a plate
 ## (tank), in the colour of their element, so the player sees at a glance what to bring.
-func _draw_affinity_badge(enemy: SimEnemy, radius: float, art_height: float) -> void:
+func _draw_affinity_badge(on: CanvasItem, enemy: SimEnemy) -> void:
+	var radius := _enemy_radius(enemy)
+	var art_height := _art_height(enemy)
 	if enemy.affinity.is_empty() or enemy.element < 0 or not enemy.alive:
 		return
 	var k := label_scale()
-	var top := -radius - 22.0
-	if art_height > 0.0:
-		top = BoardArt.ENEMY_DROP * BoardArt.SCALE - art_height - 16.0
+	# Drawn sprites stand in tall frames, so the mark sits over the body by the enemy's size instead.
+	var top := -radius * (3.2 if art_height > 0.0 else 1.0) - 10.0
 	var at := enemy.position + Vector2(0, top - 4.0 * (k - 1.0))
 	var color := sim.config.element_color_at(enemy.element)
 	var s := 5.0 * k
@@ -977,18 +987,19 @@ func _draw_affinity_badge(enemy: SimEnemy, radius: float, art_height: float) -> 
 			shape = PackedVector2Array([at + Vector2(-s, -s), at + Vector2(s, -s), at + Vector2(s, s), at + Vector2(-s, s)])
 	var outline := shape.duplicate()
 	outline.append(shape[0])
-	draw_colored_polygon(shape, Color(0, 0, 0, 0.7))
+	on.draw_colored_polygon(shape, Color(0, 0, 0, 0.7))
 	var inner := PackedVector2Array()
 	for point in shape:
 		inner.append(at + (point - at) * 0.6)
-	draw_colored_polygon(inner, color)
-	draw_polyline(outline, UiStyle.GOLD if enemy.elite else Color(1, 1, 1, 0.85), 1.5 * k, true)
+	on.draw_colored_polygon(inner, color)
+	on.draw_polyline(outline, UiStyle.GOLD if enemy.elite else Color(1, 1, 1, 0.85), 1.5 * k, true)
 
 
 ## The hovered enemy's card: its name, element and what hurts it.
-func _draw_enemy_card(enemy: SimEnemy) -> void:
+func _draw_enemy_card(on: CanvasItem, enemy: SimEnemy) -> void:
 	var lines := enemy_card_lines(enemy)
-	var k := label_scale()
+	# The same size on screen at any zoom.
+	var k := 1.0 / maxf(global_scale.x, 0.01)
 	var size := roundi(15 * k)
 	var line_height := 19.0 * k
 	var width := 0.0
@@ -1003,14 +1014,14 @@ func _draw_enemy_card(enemy: SimEnemy) -> void:
 	var board := sim.config.map.size_in_pixels()
 	at.x = clampf(at.x, 0.0, maxf(0.0, board.x - box.x))
 	at.y = clampf(at.y, 0.0, maxf(0.0, board.y - box.y))
-	draw_rect(Rect2(at, box), Color(0.05, 0.06, 0.09, 0.9))
-	draw_rect(Rect2(at, box), UiStyle.GOLD if enemy.elite else Color(1, 1, 1, 0.35), false, 1.5 * k)
+	on.draw_rect(Rect2(at, box), Color(0.05, 0.06, 0.09, 0.9))
+	on.draw_rect(Rect2(at, box), UiStyle.GOLD if enemy.elite else Color(1, 1, 1, 0.35), false, 1.5 * k)
 	var y := at.y + pad + line_height * 0.75
 	for line in lines:
 		var x := at.x + pad
 		for part in line:
 			var text := String(part[0])
-			draw_string(_font, Vector2(x, y), text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, part[1])
+			on.draw_string(_font, Vector2(x, y), text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, part[1])
 			x += _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
 		y += line_height
 
