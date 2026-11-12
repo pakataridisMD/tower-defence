@@ -23,7 +23,7 @@ def ring_map(S, rigs, lit_every=1.2):
             s.default_value = v; s.keyframe_insert("default_value", frame=C.sec(t))
         bpy.ops.mesh.primitive_uv_sphere_add(radius=0.05, location=(m.x + math.cos(a) * 0.85, m.y + math.sin(a) * 0.85, 0.98))
         bpy.context.object.data.materials.append(g)
-    C.light("POINT", (m.x + 0.6, m.y - 0.8, 2.2), (0, 0, 0), 60, (1.0, 0.7, 0.4), 0.2, "candle")
+    C.light("POINT", (m.x + 0.6, m.y - 0.8, 2.2), (0, 0, 0), 250, (1.0, 0.7, 0.4), 0.2, "candle")
 
 
 def far_light(S, rigs, at=(-14, 70, -40)):

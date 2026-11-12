@@ -45,7 +45,7 @@ def build(film, n):
     secs = length(film, n, sp)
     C.setup(secs, seed=sp.get("seed", 7))
     S = getattr(sets, sp["set"])(**sp.get("set_args", {}))
-    mark = S["marks"][sp.get("mark", "hero")]
+    mark = S["marks"].get(sp.get("mark", "hero"), Vector((0, 0, 0)))   # a set camera needs no mark
     S["here"] = mark   # the shot's mark: extras build around it
     rigs = {}
     for entry in sp.get("cast", []):

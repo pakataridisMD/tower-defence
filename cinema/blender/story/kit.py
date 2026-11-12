@@ -236,8 +236,8 @@ def falling_stars(S, n=30, start=1.0, seed=13):
 
 
 def silent(seconds=6.0):
-    """A shot with no voice line."""
-    return dict(seconds=seconds)
+    """A shot with no voice line: black (a beat of silence, or a title card laid over in the cut)."""
+    return dict(seconds=seconds, set="black", cam=[(0, (0, -5, 1.6), (90, 0, 0))])
 
 
 # ------------------------------------------------------------------ the land hordes (each land turned on its own people)

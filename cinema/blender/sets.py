@@ -572,7 +572,8 @@ def hollow(seed=31):
         bpy.ops.mesh.primitive_ico_sphere_add(radius=0.8, location=(x, y, flat_stage(h)(x, y) + 0.6)); bpy.context.object.data.materials.append(GF)
         C.light("POINT", (x, y, flat_stage(h)(x, y) + 2), (0, 0, 0), 2500, (0.75, 0.77, 0.82), 1, "grey_fire")
     C.world(density=0.006, sky=0.0, colour=(0.05, 0.05, 0.055))
-    C.light("AREA", (0, 60, 150), (0, 0, 0), 2e5, (0.7, 0.72, 0.78), 200, "stone_sky_glow")   # dull light off the stone sky
+    C.light("AREA", (0, 60, 150), (0, 0, 0), 8e5, (0.7, 0.72, 0.78), 260, "stone_sky_glow")
+    C.moon(2.5, rot=(50, 0, 160))   # a cold key off the stone sky   # dull light off the stone sky
     bounded_fog(800, 150)
     return {"marks": {"hero": Vector((0, 0, 0)), "gate": Vector((fx, fy - 32, 0))},
             "cams": {"wide": [(0, (8, -20, 5), (82, 0, 12))], "close": [(0, (2.5, -6.5, 1.8), (88, 0, 20))]}}
@@ -631,10 +632,12 @@ def hall(ruined=False, heart=True, dawn=False, seed=17):
         if ruined:
             C.rough_up(c, 0.15, 1.0, subdiv=3)
     if not ruined:   # dome and wall
-        bpy.ops.mesh.primitive_uv_sphere_add(radius=16, segments=48, ring_count=24, location=(0, 4, 11))
-        d = bpy.context.object; d.scale = (1, 1, 0.55); d.data.materials.append(STONE)
-        bm = d.data
-        for p in bm.polygons:
+        bm = bmesh.new(); bmesh.ops.create_uvsphere(bm, u_segments=48, v_segments=24, radius=17)
+        bmesh.ops.delete(bm, geom=[v for v in bm.verts if v.co.z < -0.01], context="VERTS")   # the upper half only
+        me = bpy.data.meshes.new("dome"); bm.to_mesh(me); bm.free()
+        d = bpy.data.objects.new("dome", me); C.sc.collection.objects.link(d)
+        d.location = (0, 4, 11); d.scale = (1, 1, 0.55); d.data.materials.append(STONE)
+        for p in me.polygons:
             p.use_smooth = True
         bpy.ops.mesh.primitive_cylinder_add(vertices=96, radius=17, depth=11, location=(0, 4, 5.5), end_fill_type="NOTHING"); w = bpy.context.object
         w.data.materials.append(STONE); w.modifiers.new("s", "SOLIDIFY").thickness = 0.6
@@ -646,12 +649,19 @@ def hall(ruined=False, heart=True, dawn=False, seed=17):
         a = math.pi / 2 + 2 * math.pi * (k + 0.5) / 6
         x, y = math.cos(a) * 9, math.sin(a) * 9 + 4
         bpy.ops.mesh.primitive_cylinder_add(radius=0.35, depth=1.2, location=(x, y, 0.6)); bpy.context.object.data.materials.append(C.M("iron"))
-        C.light("POINT", (x, y, 1.6), (0, 0, 0), 500, fire, 0.4, "brazier")
+        C.light("POINT", (x, y, 1.6), (0, 0, 0), 1500, fire, 0.4, "brazier")
     if dawn:   # a beam of white light down through the roof
         C.light("SPOT", (0, 6, 30), (0, 0, 0), 2e5, (1.0, 0.97, 0.9), 0.5, "dawn_beam").data.spot_size = 0.25
-    C.world(density=0.02, sky=0.0, colour=(0.03, 0.03, 0.035))
+    C.world(density=0.006, sky=0.0, colour=(0.03, 0.03, 0.035))
     bounded_fog(60, 30, -2)
+    C.light("AREA", (0, 2, 18), (0, 0, 0), 3000 if not ruined else 1500, (1.0, 0.9, 0.8) if not ruined else (0.7, 0.72, 0.78), 12, "hall_fill")
     if ruined:
         C.light("AREA", (0, 4, 40), (0, 0, 0), 2e4, (0.7, 0.72, 0.78), 30, "stone_sky_glow")
-    return {"marks": {"hero": Vector((0, 0, 0)), "dais": Vector((0, 6, 0.9)), "door": Vector((0, -12, 0))},
+    return {"marks": {"hero": Vector((0, 0, 0)), "dais": Vector((0, 6, 0.9)), "door": Vector((0, -9, 0))},
             "cams": {"wide": [(0, (0, -15, 3.5), (84, 0, 0))], "close": [(0, (2.5, -6.5, 1.8), (88, 0, 20))]}}
+
+
+def black():
+    """Nothing: a black frame (silent beats, title cards)."""
+    C.world(density=0.0, sky=0.0, colour=(0, 0, 0))
+    return {"marks": {"hero": Vector((0, 0, 0))}, "cams": {}}
