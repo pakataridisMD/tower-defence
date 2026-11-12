@@ -11,12 +11,13 @@ for i, (x, y, s) in enumerate(((-2.5, 3, 1.4), (2.8, 5, 2.2), (-5, 9, 3.0), (6, 
 C.world(density=0.02, sky=0.08, colour=(0.02, 0.025, 0.05))
 C.light("AREA", (1.5, 3.5, 3.2), (-45, 0, 160), 900, (0.55, 0.68, 1.0), 2.5, "rim")
 C.light("AREA", (-3.5, -2.5, 2.2), (70, 0, -55), 120, (0.4, 0.5, 0.8), 3, "fill")
-C.light("AREA", (2.5, -2.0, 2.0), (70, 0, 50), 260, (1.0, 0.62, 0.35), 1.0, "warm_key")
+C.light("AREA", (2.5, -2.0, 2.0), (70, 0, 50), 220, (1.0, 0.78, 0.6), 1.0, "warm_key")
 rig = hero.build_human(name, (0, 0, 0), -0.35, "Idle")
+k = hero.HUMANS[name][0].get("height", 2.1) / 2.1   # frame taller heroes the same way
 if shot == "close":
-    cam = C.camera(70, 2.8, 2.6)
-    C.key_cam(cam, [(0, (0.9, -2.5, 1.85), (90, 0, 20))])
+    cam = C.camera(70, 2.8, 2.6 * k)
+    C.key_cam(cam, [(0, (0.9 * k, -2.5 * k, 1.85 * k), (90, 0, 20))])
 else:
-    cam = C.camera(32, 4.0, 3.6)
-    C.key_cam(cam, [(0, (1.2, -3.4, 0.55), (96, 0, 19))])
+    cam = C.camera(30, 4.0, 4.6 * k)
+    C.key_cam(cam, [(0, (1.5 * k, -4.4 * k, 0.8 * k), (94, 0, 19))])
 C.render(default_res=60, default_samples=48)

@@ -58,9 +58,17 @@ def _lerp_pairs(v, names):
     return {mid: 1 - (v - 0.5) * 2, hi: (v - 0.5) * 2}
 
 
-def macro_targets(gender=0.5, muscle=0.5, weight=0.5, height=0.5, proportions=1.0, race="caucasian"):
-    """The macro modifier targets and weights for a young adult, as MakeHuman mixes them."""
+def macro_targets(gender=0.5, muscle=0.5, weight=0.5, height=0.5, proportions=1.0, race="caucasian", age=0.5):
+    """The macro modifier targets and weights, as MakeHuman mixes them. age 0.5 = 25 years, 1.0 = 90."""
     t = {}
+    ages = {"young": 1.0} if age <= 0.5 else {"young": 1 - (age - 0.5) * 2, "old": (age - 0.5) * 2}
+    for a, aw in ages.items():
+        if aw > 0:
+            _macro_age(t, a, aw, gender, muscle, weight, height, proportions, race)
+    return t
+
+
+def _macro_age(t, age, aw, gender, muscle, weight, height, proportions, race):
     genders = {"female": 1 - gender, "male": gender}
     musc = _lerp_pairs(muscle, ("minmuscle", "averagemuscle", "maxmuscle"))
     wei = _lerp_pairs(weight, ("minweight", "averageweight", "maxweight"))
@@ -68,19 +76,18 @@ def macro_targets(gender=0.5, muscle=0.5, weight=0.5, height=0.5, proportions=1.
     for g, gw in genders.items():
         if gw <= 0:
             continue
-        t["macrodetails/%s-%s-young" % (race, g)] = gw
+        t["macrodetails/%s-%s-%s" % (race, g, age)] = gw * aw
         for m, mw in musc.items():
             for w, ww in wei.items():
-                k = gw * mw * ww
+                k = gw * mw * ww * aw
                 if k <= 0:
                     continue
-                t["macrodetails/universal-%s-young-%s-%s" % (g, m, w)] = k
+                t["macrodetails/universal-%s-%s-%s-%s" % (g, age, m, w)] = k
                 for hname, hw in hei.items():
                     if hw > 0:
-                        t["macrodetails/height/%s-young-%s-%s-%s" % (g, m, w, hname)] = k * hw
+                        t["macrodetails/height/%s-%s-%s-%s-%s" % (g, age, m, w, hname)] = k * hw
                 if proportions > 0:
-                    t["macrodetails/proportions/%s-young-%s-%s-idealproportions" % (g, m, w)] = k * proportions
-    return t
+                    t["macrodetails/proportions/%s-%s-%s-%s-idealproportions" % (g, age, m, w)] = k * proportions
 
 
 def mask(name):
@@ -109,13 +116,13 @@ def _to_blender(p, s):
     return Vector((p[0] * s, -p[2] * s, p[1] * s))
 
 
-def body(name="mh_body", height=2.15, gender=0.5, muscle=0.5, weight=0.5, tall=0.5, proportions=1.0,
+def body(name="mh_body", height=2.15, gender=0.5, muscle=0.5, weight=0.5, tall=0.5, proportions=1.0, age=0.5,
          targets=None, helpers=("helper-l-eye", "helper-r-eye")):
     """Build a morphed, T-posed body mesh. Returns (body, extras, joints): `extras` are helper meshes (eyes...),
     `joints` maps MakeHuman joint names to Blender positions in the T-pose."""
     verts, faces, uvs, guv = _obj()
     co = [list(v) for v in verts]
-    tw = macro_targets(gender, muscle, weight, tall, proportions)
+    tw = macro_targets(gender, muscle, weight, tall, proportions, age=age)
     tw.update(targets or {})
     for rel, w in tw.items():
         if not w:

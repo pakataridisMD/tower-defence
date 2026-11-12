@@ -113,7 +113,9 @@ def stand_up(parts, rig):
         side, along = o["hold_side"], o["hold_along"]
         g = bpy.data.objects[rig["grip" + side]]
         p = g.matrix_world.translation
-        o.matrix_world = Matrix.Translation(p + Vector((0, 0, along)))
+        dx = o.get("hold_dx", 0.0) * (-1 if side == ".r" else 1)
+        off = rig.matrix_world.to_3x3().normalized() @ Vector((dx, 0, 0))
+        o.matrix_world = Matrix.Translation(p + off + Vector((0, 0, along))) @ rig.matrix_world.to_3x3().normalized().to_4x4()
 
 
 # ------------------------------------------------------------------ body
@@ -414,8 +416,10 @@ def relax_arms(rig, degrees=28.0, posture=None):
     ad = rig.animation_data_create()
     keep = ad.action
     ad.action = act
-    for s, side in ((".l", 1), (".r", -1)):
+    for s, side in ((".l", 1), (".r", -1), ("", 1)):
         for bone, (deg, ax) in posture.items():
+            if (s == "") != (bone in ("hips", "spine", "chest", "head")):
+                continue
             b = rig.data.bones.get(bone + s)
             if b is None or not deg:
                 continue
@@ -645,7 +649,8 @@ def cloth_panel(name, width, length, top, mat, front=True):
 
 
 def comb_hair(rig, scalp_pts, centre, name="hair", length=0.06, comb=(0, 1, -0.5), lift=0.004, segs=6,
-              radius=0.0011, melanin=0.6, redness=0.95, jitter=0.3, seed=3):
+              radius=0.0011, melanin=0.6, redness=0.95, jitter=0.3, seed=3, wrap_above=-99.0, push=0.35, bone="head",
+              colour=None):
     """Combed hair as real curves: every strand starts on the scalp and wraps around the head along `comb`
     (back and down by default), a little off the skin. The hair object rides on the head bone."""
     import random as R
@@ -660,11 +665,16 @@ def comb_hair(rig, scalp_pts, centre, name="hair", length=0.06, comb=(0, 1, -0.5
         d = Vector(comb(p) if callable(comb) else comb) + Vector((R.uniform(-1, 1), R.uniform(-1, 1), R.uniform(-1, 1))) * jitter
         for k in range(segs):
             pos.append(p.copy())
-            n = (p - centre).normalized()
-            t = d - n * d.dot(n)
-            if t.length < 1e-6:
-                t = Vector((0, 1, 0))
-            p = centre + ((p + t.normalized() * step) - centre).normalized() * (r0 + lift * (1 + k * 0.6))
+            if p.z > wrap_above:   # on the head: follow the skull
+                n = (p - centre).normalized()
+                t = d - n * d.dot(n)
+                if t.length < 1e-6:
+                    t = Vector((0, 1, 0))
+                p = centre + ((p + t.normalized() * step) - centre).normalized() * (r0 + lift * (1 + k * 0.6))
+            else:                  # hanging (long hair, beards): fall along d, pushed out from the body's axis
+                out = Vector((p.x - centre.x, p.y - centre.y, 0))
+                out = out.normalized() if out.length > 1e-6 else Vector((0, -1, 0))
+                p = p + (d.normalized() + out * push).normalized() * step
     cv.attributes["position"].data.foreach_set("vector", [c for v in pos for c in v])
     rad = cv.attributes.get("radius") or cv.attributes.new("radius", "FLOAT", "POINT")
     rad.data.foreach_set("value", [radius * (1 - 0.8 * (k / (segs - 1))) for _ in scalp_pts for k in range(segs)])
@@ -674,12 +684,18 @@ def comb_hair(rig, scalp_pts, centre, name="hair", length=0.06, comb=(0, 1, -0.5
     for n in list(nt.nodes):
         if n.type != "OUTPUT_MATERIAL":
             nt.nodes.remove(n)
-    hb = nt.nodes.new("ShaderNodeBsdfHairPrincipled"); hb.parametrization = "MELANIN"
-    hb.inputs["Melanin"].default_value = melanin; hb.inputs["Melanin Redness"].default_value = redness
-    hb.inputs["Roughness"].default_value = 0.4; hb.inputs["Random Color"].default_value = 0.15
+    hb = nt.nodes.new("ShaderNodeBsdfHairPrincipled")
+    if colour:
+        hb.parametrization = "COLOR"; hb.inputs["Color"].default_value = (*colour, 1)
+    else:
+        hb.parametrization = "MELANIN"
+        hb.inputs["Melanin"].default_value = melanin; hb.inputs["Melanin Redness"].default_value = redness
+    hb.inputs["Roughness"].default_value = 0.4
+    if "Random Color" in hb.inputs:
+        hb.inputs["Random Color"].default_value = 0.15
     nt.links.new(hb.outputs[0], out.inputs["Surface"])
     cv.materials.append(m)
-    on_bone(o, rig, "head")
+    on_bone(o, rig, bone)
     return o
 
 
@@ -791,7 +807,7 @@ def tamsin_mh(rig, body, ex, J):
     parts.append(wear(body, "hair", lambda c: (c.z > eye.z + 0.075 - 0.45 * ax(c) if c.y < eye.y + 0.05 else
                                               c.z > eye.z + (0.0 if ax(c) < 0.062 else 0.04) - 0.5 * max(0.0, c.y - eye.y - 0.05) and c.z > J["jaw"].z - 0.0),
                       HAIR, 0.002, 0.003))
-    hair_keep = lambda c: (c.z > eye.z + 0.075 - 0.45 * ax(c) if c.y < eye.y + 0.05 else
+    hair_keep = lambda c: ax(c) < 0.13 and c.z > neck and (c.z > eye.z + 0.075 - 0.45 * ax(c) if c.y < eye.y + 0.05 else
                            c.z > eye.z + (0.0 if ax(c) < 0.062 else 0.04) - 0.5 * max(0.0, c.y - eye.y - 0.05) and c.z > J["jaw"].z)
     hc = Vector((0, J["head"].y + 0.01, (J["head"].z + J["head-2"].z) / 2))
     parts.append(comb_hair(rig, scalp_points(body, hair_keep, 22000), hc, "tamsin_hair", 0.07,
@@ -827,6 +843,7 @@ def tamsin_mh(rig, body, ex, J):
     return [body] + parts + [pole, cage, flame, lo]
 
 
+POSTURES = {}
 HUMANS = {"tamsin": (dict(height=2.1, gender=0.0, muscle=0.8, weight=0.4, tall=0.3,
                           targets={"nose/nose-hump-incr": 0.6}), tamsin_mh)}
 
@@ -865,7 +882,198 @@ def build_human(name, loc=(0, 0, 0), rot_z=0.0, action="Idle", phase=0.0, soft=N
         soften(rig, action, phase, amount=soft)
     else:
         C.play(rig, action, phase)
-    relax_arms(rig, posture=HUMAN_POSTURE)
+    relax_arms(rig, posture=POSTURES.get(name, HUMAN_POSTURE))
     C.sc.frame_set(C.sc.frame_start)
     stand_up(parts, rig)
     return rig
+
+
+# ------------------------------------------------------------------ shared kit for robed and gowned figures
+def skirt(name, J, top_z, bottom_z, r_top, r_bottom, mat, rig, y_off=0.0, leg_share=0.55, folds=0.03, rings=28, segs=64,
+          flat=0.85):
+    """A long robe or gown skirt: a flared tube from the waist to the floor. Its top rides on the hips and its lower
+    part follows the thighs about halfway, blended across the middle, so it swings with a stride but never splits."""
+    bm = bmesh.new()
+    cy = J["pelvis"].y + y_off
+    rows = []
+    for i in range(rings + 1):
+        t = i / rings
+        z = top_z + (bottom_z - top_z) * t
+        r = r_top + (r_bottom - r_top) * (t ** 0.8)
+        rows.append([bm.verts.new((math.cos(a) * r, cy + math.sin(a) * r * flat, z))
+                     for a in (2 * math.pi * k / segs for k in range(segs))])
+    for i in range(rings):
+        for k in range(segs):
+            bm.faces.new((rows[i][k], rows[i][(k + 1) % segs], rows[i + 1][(k + 1) % segs], rows[i + 1][k]))
+    me = bpy.data.meshes.new(name); bm.to_mesh(me); bm.free()
+    o = bpy.data.objects.new(name, me); C.sc.collection.objects.link(o)
+    gh, gl, gr = (o.vertex_groups.new(name=n) for n in ("hips", "upperleg.l", "upperleg.r"))
+    for v in me.vertices:
+        t = (top_z - v.co.z) / (top_z - bottom_z)
+        share = leg_share * min(1.0, max(0.0, t * 1.3 - 0.1))
+        fl = min(1.0, max(0.0, 0.5 + v.co.x / 0.18))
+        gh.add([v.index], 1 - share, "REPLACE"); gl.add([v.index], share * fl, "REPLACE"); gr.add([v.index], share * (1 - fl), "REPLACE")
+    o.parent = rig
+    o.modifiers.new("rig", "ARMATURE").object = rig
+    tx = bpy.data.textures.new(name + "_folds", "WOOD"); tx.wood_type = "BANDNOISE"; tx.noise_scale = 0.08; tx.turbulence = 3
+    d = o.modifiers.new("folds", "DISPLACE"); d.texture = tx; d.direction = "NORMAL"; d.strength = folds; d.texture_coords = "OBJECT"
+    o.modifiers.new("thick", "SOLIDIFY").thickness = 0.008
+    o.modifiers.new("sub", "SUBSURF").levels = 1
+    o.data.materials.append(mat)
+    for p in me.polygons:
+        p.use_smooth = True
+    return o
+
+
+def robe_cloth(name, rgb, patches=0.0, rough=0.9, sheen=0.25):
+    """Woven wool: fine weave bump, mottled tone, optional darker patches (sewn-on repairs)."""
+    m = cloth(name, rgb, rough)
+    nt = m.node_tree; b = nt.nodes["Principled BSDF"]
+    b.inputs["Sheen Weight"].default_value = sheen
+    tc = nt.nodes.new("ShaderNodeTexCoord")
+    nz = nt.nodes.new("ShaderNodeTexNoise"); nz.inputs["Scale"].default_value = 9; nz.inputs["Detail"].default_value = 4
+    nt.links.new(tc.outputs["Object"], nz.inputs["Vector"])
+    cr = nt.nodes.new("ShaderNodeValToRGB")
+    cr.color_ramp.elements[0].color = (rgb[0] * 0.7, rgb[1] * 0.7, rgb[2] * 0.7, 1)
+    cr.color_ramp.elements[1].color = (rgb[0] * 1.2, rgb[1] * 1.2, rgb[2] * 1.2, 1)
+    nt.links.new(nz.outputs["Fac"], cr.inputs["Fac"])
+    col = cr.outputs["Color"]
+    if patches:
+        vo = nt.nodes.new("ShaderNodeTexVoronoi"); vo.inputs["Scale"].default_value = 11
+        nt.links.new(tc.outputs["Object"], vo.inputs["Vector"])
+        th = nt.nodes.new("ShaderNodeMath"); th.operation = "GREATER_THAN"; th.inputs[1].default_value = 1 - patches
+        nt.links.new(vo.outputs["Color"], th.inputs[0])
+        mx = nt.nodes.new("ShaderNodeMix"); mx.data_type = "RGBA"
+        mx.inputs[7].default_value = (rgb[0] * 0.75, rgb[1] * 0.76, rgb[2] * 0.78, 1)
+        nt.links.new(th.outputs[0], mx.inputs["Factor"]); nt.links.new(col, mx.inputs[6]); col = mx.outputs[2]
+    nt.links.new(col, b.inputs["Base Color"])
+    return m
+
+
+def lantern_staff(rig, name, length=2.5, light_rgb=(1.0, 0.72, 0.35), energy=70, flame_mat=None, side=".r", grip=0.35):
+    """A tall staff with a brass lantern hung from a crook at the top (Oswin's silhouette)."""
+    WOOD = cloth(name + "_wood", (0.13, 0.08, 0.045), 0.7)
+    BRASS = C.mat(name + "_brass", (0.75, 0.52, 0.22), 0.3, metal=1.0)
+    parts = []
+    bpy.ops.mesh.primitive_cylinder_add(radius=0.026, depth=length, vertices=16)
+    st = bpy.context.object; st.name = name + "_staff"; st.data.materials.append(WOOD)
+    tx = bpy.data.textures.new(name + "_gnarl", "CLOUDS"); tx.noise_scale = 0.15
+    d = st.modifiers.new("gnarl", "DISPLACE"); d.texture = tx; d.strength = 0.012
+    st.modifiers.new("sub", "SUBSURF").levels = 1
+    hold(st, rig, side, length * 0.5 - grip * length); parts.append(st)
+    top = length * 0.5 - grip * length + length / 2
+    bpy.ops.mesh.primitive_torus_add(major_radius=0.12, minor_radius=0.022, major_segments=24)
+    cr = bpy.context.object; cr.name = name + "_crook"; cr.rotation_euler = (math.radians(90), 0, 0)
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+    cr.data.materials.append(WOOD)
+    bm = bmesh.new(); bm.from_mesh(cr.data)   # keep the top half of the ring: a hook bent over to one side
+    bmesh.ops.delete(bm, geom=[v for v in bm.verts if v.co.z < -0.01 and v.co.x < 0.0], context="VERTS"); bm.to_mesh(cr.data); bm.free()
+    hold(cr, rig, side, top - 0.0); cr["hold_dx"] = 0.12; parts.append(cr)
+    for nm, (r, dpt, z) in (("cap", (0.05, 0.03, 0.0)), ("cage", (0.075, 0.18, -0.12)), ("base", (0.06, 0.03, -0.22))):
+        bpy.ops.mesh.primitive_cylinder_add(radius=r, depth=dpt, vertices=8)
+        o = bpy.context.object; o.name = name + "_lantern_" + nm; o.data.materials.append(BRASS)
+        if nm == "cage":
+            o.modifiers.new("wire", "WIREFRAME").thickness = 0.01
+        hold(o, rig, side, top - 0.06 + z); o["hold_dx"] = 0.24; parts.append(o)
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=0.045)
+    fl = bpy.context.object; fl.name = name + "_flame"; fl.data.materials.append(flame_mat or C.M("lantern"))
+    hold(fl, rig, side, top - 0.18); fl["hold_dx"] = 0.24; parts.append(fl)
+    li = bpy.data.lights.new(name + "_light", "POINT"); li.energy = energy; li.color = light_rgb; li.shadow_soft_size = 0.05
+    lo = bpy.data.objects.new(name + "_light", li); C.sc.collection.objects.link(lo)
+    hold(lo, rig, side, top - 0.18); lo["hold_dx"] = 0.24; parts.append(lo)
+    return parts
+
+
+def wide_hat(rig, J, mat, brim=0.27, crown_h=0.2, tilt=-8.0):
+    """A wide-brimmed traveller's hat with a soft dented crown, the brim drooping a little, on the head bone."""
+    top = J["head-2"].z; hy = J["head"].y
+    bpy.ops.mesh.primitive_circle_add(radius=brim, vertices=64, fill_type="NGON", location=(0, hy, top - 0.07))
+    b = bpy.context.object; b.name = "hat_brim"; b.data.materials.append(mat)
+    bpy.ops.object.mode_set(mode="EDIT"); bpy.ops.mesh.inset(thickness=brim * 0.55); bpy.ops.mesh.poke()
+    bpy.ops.object.mode_set(mode="OBJECT")
+    b.modifiers.new("thick", "SOLIDIFY").thickness = 0.01
+    tx = bpy.data.textures.new("brim_wave", "CLOUDS"); tx.noise_scale = 0.25
+    dw = b.modifiers.new("wave", "DISPLACE"); dw.texture = tx; dw.strength = 0.04; dw.direction = "Z"
+    b.modifiers.new("sub", "SUBSURF").levels = 2
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=1, segments=48, ring_count=24, location=(0, hy + 0.01, top - 0.07))
+    c = bpy.context.object; c.name = "hat_crown"; c.data.materials.append(mat)
+    bm = bmesh.new(); bm.from_mesh(c.data)
+    bmesh.ops.delete(bm, geom=[v for v in bm.verts if v.co.z < -0.05], context="VERTS"); bm.to_mesh(c.data); bm.free()
+    c.scale = (0.14, 0.15, crown_h)
+    tx2 = bpy.data.textures.new("hat_dent", "CLOUDS"); tx2.noise_scale = 0.4
+    dd = c.modifiers.new("dent", "DISPLACE"); dd.texture = tx2; dd.strength = 0.08
+    c.modifiers.new("thick", "SOLIDIFY").thickness = 0.01
+    c.modifiers.new("sub", "SUBSURF").levels = 1
+    for o in (b, c):
+        o.rotation_euler.x = math.radians(tilt)
+        bpy.context.view_layer.objects.active = o
+        bpy.ops.object.shade_smooth()
+        on_bone(o, rig, "head")
+    return [b, c]
+
+
+def face_and_hair_points(J):
+    eye = J["l-eye"]; hy = J["head"].y
+    ax = lambda c: abs(c.x)
+    scalp = lambda c: ax(c) < 0.13 and c.z > J["neck"].z and (c.z > eye.z + 0.075 - 0.45 * ax(c) if c.y < eye.y + 0.05 else
+                       c.z > eye.z + (0.0 if ax(c) < 0.062 else 0.04) - 0.5 * max(0.0, c.y - eye.y - 0.05) and c.z > J["jaw"].z)
+    centre = Vector((0, hy + 0.01, (J["head"].z + J["head-2"].z) / 2))
+    return scalp, centre
+
+
+def oswin_mh(rig, body, ex, J):
+    """Oswin the Grey Lantern: 80s, tall, thin, a little stooped, long white beard, patched grey travelling robes,
+    wide-brimmed grey hat, a staff with a brass lantern hung from its crook (warm yellow light)."""
+    SK = skin_mat_real((0.52, 0.34, 0.27), lips=(0.36, 0.17, 0.15), lids=(0.33, 0.2, 0.18))
+    GREY = robe_cloth("oswin_robe", (0.085, 0.088, 0.092), patches=0.05)
+    FELT = robe_cloth("oswin_felt", (0.11, 0.11, 0.105), rough=0.95, sheen=0.4)
+    LEATHER = C.mat("oswin_leather", (0.09, 0.06, 0.04), 0.6)
+    body.data.materials.append(SK)
+    sh, el, wr = J["l-shoulder"], J["l-elbow"], J["l-hand"]
+    neck, pel, kn, an = J["neck"].z, J["pelvis"].z, J["l-knee"].z, J["l-ankle"].z
+    s4 = J["spine-4"].z
+    eye = J["l-eye"]
+    ax = lambda c: abs(c.x)
+    parts = []
+    parts.append(wear(body, "robe_top", lambda c: (ax(c) < sh.x + 0.02 and pel - 0.12 < c.z < neck - 0.02)
+                      or (ax(c) >= sh.x + 0.02 and ax(c) < wr.x - 0.02 and c.z > neck - 0.4), GREY, 0.025, 0.01, smooth=20))
+    parts.append(skirt("robe_skirt", J, s4 + 0.02, 0.03, 0.2, 0.44, GREY, rig, folds=0.035, leg_share=0.7))
+    parts.append(wear(body, "trousers", lambda c: c.z < pel and c.z > an + 0.1, cloth("oswin_hose", (0.05, 0.05, 0.05)), 0.008, 0.006))
+    belt = plate("rope_belt", (0.36, 0.28, 0.035), (0, J["pelvis"].y, s4 + 0.03), LEATHER, 0.01, 0.8); on_bone(belt, rig, "hips"); parts.append(belt)
+    for side, sd in ((".l", 1), (".r", -1)):
+        S = lambda c, sd=sd: c.x * sd > 0
+        parts.append(hull_plate(body, rig, "boot" + side, lambda c, S=S: S(c) and c.z < an + 0.05 and ax(c) < 0.4,
+                                LEATHER, "foot" + side, 0.02, voxel=0.02, scale=(1.05, 1.05, 1.1)))
+    hide_under(body, lambda c: c.z < an + 0.07)
+    parts += wide_hat(rig, J, FELT)
+    scalp, hc = face_and_hair_points(J)
+    WHITE = (0.82, 0.8, 0.76)
+    # long white hair from under the hat, hanging to the shoulders
+    parts.append(comb_hair(rig, scalp_points(body, lambda c: scalp(c) and c.z < eye.z + 0.09 and c.y > eye.y + 0.07, 9000), hc, "oswin_hair", 0.26,
+                           (0, 0.6, -1), segs=9, wrap_above=eye.z - 0.02, colour=WHITE, jitter=0.25, radius=0.0012))
+    # beard and moustache: from the jaw, cheeks and upper lip, falling to the chest
+    mz = J["mouth"].z
+    chin = lambda c: (c.y < J["head"].y - 0.03 and J["jaw"].z - 0.075 < c.z < mz - 0.012 and ax(c) < 0.068)
+    parts.append(comb_hair(rig, scalp_points(body, chin, 16000, seed=8), hc, "oswin_beard", 0.3, (0, -0.25, -1), segs=10,
+                           lift=0.0, colour=WHITE, jitter=0.12, radius=0.0016, push=0.25, wrap_above=99.0))
+    lip = lambda c: (c.y < J["head"].y - 0.06 and mz + 0.006 < c.z < mz + 0.022 and ax(c) < 0.03)
+    parts.append(comb_hair(rig, scalp_points(body, lip, 2500, seed=10), hc, "oswin_moustache", 0.07,
+                           lambda p: (0.7 * p.x / max(abs(p.x), 1e-3), -0.35, -1.4), segs=6, lift=0.0, colour=WHITE, jitter=0.1,
+                           radius=0.0014, push=0.2, wrap_above=99.0))
+    brow = lambda c: eye.z + 0.02 < c.z < eye.z + 0.036 and 0.01 < ax(c) < 0.064 and c.y < eye.y
+    parts.append(comb_hair(rig, scalp_points(body, brow, 1500, seed=9), hc, "oswin_brows", 0.03,
+                           lambda p: (1 if p.x > 0 else -1, -0.3, -0.35), segs=4, colour=WHITE, jitter=0.2, radius=0.0012))
+    # a heavy wool mantle over the shoulders, darker than the robe
+    MANT = robe_cloth("oswin_mantle", (0.06, 0.062, 0.066), patches=0.04)
+    parts.append(wear(body, "mantle", lambda c: (ax(c) < sh.x + 0.16 and J["spine-1"].z - 0.12 < c.z < neck + 0.02 and ax(c) < 0.35)
+                      , MANT, 0.032, 0.012, smooth=14))
+    for h in ex:
+        parts += eyes_for(rig, h, iris_rgb=(0.12, 0.14, 0.2))
+    parts += lantern_staff(rig, "oswin", 2.45)
+    return [body] + parts
+
+
+POSTURES["oswin"] = dict(HUMAN_POSTURE, chest=(10.0, (1, 0, 0)), head=(-6.0, (1, 0, 0)))
+HUMANS["oswin"] = (dict(height=2.3, gender=1.0, muscle=0.25, weight=0.2, tall=0.85, age=0.92,
+                        targets={"nose/nose-hump-incr": 0.4, "cheek/l-cheek-bones-incr": 0.5, "cheek/r-cheek-bones-incr": 0.5}),
+                   oswin_mh)
