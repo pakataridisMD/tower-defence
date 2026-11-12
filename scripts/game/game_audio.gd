@@ -63,7 +63,7 @@ func setup(p_sim: RunSim, p_board_offset: Vector2) -> void:
 	sim.changed.connect(_on_changed)
 	sim.tree.changed.connect(_on_tree_changed)
 	for signal_name: StringName in [&"boss_arrived", &"towers_silenced", &"enemy_blinked", &"enemy_escaped",
-			&"structure_destroyed", &"phase_changed"]:
+			&"structure_destroyed", &"phase_changed", &"enemy_power"]:
 		if sim.has_signal(signal_name):
 			sim.connect(signal_name, Callable(self, "_on_" + signal_name))
 	_snapshot_towers()
@@ -403,3 +403,17 @@ func _on_structure_destroyed(structure: SimEnemy) -> void:
 
 func _on_phase_changed(_phase: int) -> void:
 	play(&"assault_phase")
+
+
+## The horde's powers (see EnemyData.power): each kind's own sound, kept under the battle.
+const POWER_SOUNDS := {
+	&"fall": [&"death_grunt", -4.0], &"rise": [&"status_curse", -3.0], &"phase": [&"death_shade", -9.0],
+	&"war_cry": [&"boss_gorrath_enrage", -10.0], &"mend": [&"skill_entangle", -12.0],
+	&"harden": [&"impact_earth", -5.0], &"block": [&"hit_armour", -3.0], &"breath": [&"boss_warden_enrage", -2.0],
+}
+
+
+func _on_enemy_power(enemy: SimEnemy, power: StringName, _targets: Array) -> void:
+	var sound: Array = POWER_SOUNDS.get(power, [])
+	if not sound.is_empty():
+		play(sound[0], enemy.position, sound[1])

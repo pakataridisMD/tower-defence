@@ -192,3 +192,71 @@ func test_board_marks_upgrades_hits_and_statuses() -> void:
 			sim.step(RunSim.STEP)
 	await wait_process_frames(2)
 	assert_gt(tower.damage_dealt, 0.0, "the tower fought")
+
+
+## Every enemy with a power has the frames to show it, and every hand-drawn enemy can die on screen.
+func test_powers_and_deaths_have_frames() -> void:
+	for enemy_id: StringName in registry.enemies:
+		var data: EnemyData = registry.enemies[enemy_id]
+		var meta := BoardArt.enemy_info(enemy_id)
+		if not data.power.is_empty():
+			assert_true(meta.has("power"), "%s has power frames" % enemy_id)
+		for anim: String in ["power", "death"]:
+			var spec: Dictionary = meta.get(anim, {})
+			for f in int(spec.get("frames", 0)):
+				_assert_lit(ART + "enemies/%s_%s_%d" % [enemy_id, anim, f])
+		if meta.get("drawn", false):
+			assert_true(meta.has("death"), "%s has death frames" % enemy_id)
+
+
+## A power plays its animation and holds a lasting one; a grunt lies in its death frames until it rises;
+## a killed enemy leaves a body that plays out its death.
+func test_the_board_shows_powers_and_deaths() -> void:
+	Progress.use_memory_profile()
+	var game: Game = GAME_SCENE.instantiate()
+	add_child_autofree(game)
+	await wait_process_frames(2)
+	var art: BoardArt = game.board.art
+	var sim: RunSim = game.sim
+	var wave := WaveData.new()
+	wave.element = &"fire"
+	var groups: Array[SpawnGroup] = []
+	for id: StringName in [&"grunt", &"splitter", &"mender"]:
+		var group := SpawnGroup.new()
+		group.enemy = id
+		group.count = 1
+		group.spawn_interval = 0.1
+		groups.append(group)
+	wave.groups = groups
+	var waves := WaveSet.new()
+	waves.id = &"test"
+	waves.health_growth = 1.0
+	waves.waves = [wave] as Array[WaveData]
+	sim.config.wave_set = waves
+	sim.start_next_wave()
+	for i in 30:
+		sim._spawn(RunSim.STEP)
+	await wait_process_frames(2)
+	var by_id := {}
+	for enemy in sim.enemies:
+		by_id[enemy.data.id] = enemy
+	var splitter: SimEnemy = by_id[&"splitter"]
+	splitter.power_timer = 0.0
+	sim._damage(splitter, 1.0, null)
+	await wait_process_frames(2)
+	var stone: BoardArt.EnemyVisual = art._enemies[splitter.id]
+	assert_eq(stone.anim, &"power", "it plays its power")
+	stone.anim_time = 10.0
+	await wait_process_frames(1)
+	assert_eq(stone.body.texture, stone.power_frames[stone.power_hold], "and holds it while it is stone")
+	var grunt: SimEnemy = by_id[&"grunt"]
+	grunt.has_power = true
+	sim._damage(grunt, 99999.0, null)
+	await wait_process_frames(2)
+	var bones: BoardArt.EnemyVisual = art._enemies[grunt.id]
+	assert_eq(bones.anim, &"fall")
+	assert_true(bones.death_frames.has(bones.body.texture), "it lies in its death frames")
+	var mender: SimEnemy = by_id[&"mender"]
+	sim._damage(mender, 99999.0, null)
+	await wait_process_frames(2)
+	assert_eq(art._corpses.size(), 1, "the dead mender leaves a body")

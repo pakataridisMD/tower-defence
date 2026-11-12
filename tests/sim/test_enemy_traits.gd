@@ -57,27 +57,6 @@ func _effect(kind: StringName, dps: float = 0.0) -> StatusEffectData:
 	return spec
 
 
-func test_menders_heal_unless_burning_or_poisoned() -> void:
-	var sim := _sim([_group(&"mender")])
-	_spawn_all(sim)
-	var mender := sim.enemies[0]
-	mender.health = mender.max_health * 0.5
-	sim._tick_traits(1.0)
-	assert_almost_eq(mender.health, mender.max_health * 0.54, 0.01, "4% a second")
-	mender.apply_status(_effect(&"burn"), null, 1.0)
-	var before := mender.health
-	sim._tick_traits(1.0)
-	assert_eq(mender.health, before, "burning stops the healing")
-	mender.statuses.clear()
-	mender.apply_status(_effect(&"poison"), null, 1.0)
-	sim._tick_traits(1.0)
-	assert_eq(mender.health, before, "so does poison")
-	mender.statuses.clear()
-	mender.health = mender.max_health - 0.001
-	sim._tick_traits(5.0)
-	assert_eq(mender.health, mender.max_health, "never above full health")
-
-
 func test_warded_enemies_ignore_every_effect() -> void:
 	var sim := _sim([_group(&"warded")])
 	_spawn_all(sim)

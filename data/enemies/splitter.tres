@@ -6,10 +6,14 @@
 script = ExtResource("1_enemy")
 id = &"splitter"
 display_name = "Splitter"
-max_health = 90.0
+max_health = 80.0
 speed = 62.0
 bounty = 4
 leak_damage = 1
-description = "Bursts into three Shardlings when it dies."
 split_into = &"shardling"
 split_count = 3
+power = &"harden"
+power_interval = 8.0
+power_duration = 1.5
+power_amount = 0.6
+description = "A stone golem that turns to solid rock when struck. Bursts into three Shardlings when it dies."

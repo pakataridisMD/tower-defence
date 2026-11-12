@@ -2386,7 +2386,18 @@ def drawn_enemy(eid: str) -> dict | None:
         strip = Image.open(os.path.join(DRAWN, f"{eid}_walk{suffix}.png")).convert("RGBA")
         for f in range(count):
             strip.crop((f * w, 0, f * w + w, h)).save(os.path.join(OUT, "enemies", f"{eid}_{f}{suffix}.png"))
-    return {"size": [w, h], "anchor": list(info["feet"]), "frames": count, "drawn": True}
+    meta = {"size": [w, h], "anchor": list(info["feet"]), "frames": count, "drawn": True}
+    # Its power and its death (tools/art/gen_enemy_powers.py), cut into <id>_power_<n> and <id>_death_<n>.
+    for anim in ("power", "death"):
+        spec = info["anims"].get(anim)
+        if spec is None or not os.path.exists(os.path.join(DRAWN, f"{eid}_{anim}.png")):
+            continue
+        for suffix in ("", "_n"):
+            strip = Image.open(os.path.join(DRAWN, f"{eid}_{anim}{suffix}.png")).convert("RGBA")
+            for f in range(spec["frames"]):
+                strip.crop((f * w, 0, f * w + w, h)).save(os.path.join(OUT, "enemies", f"{eid}_{anim}_{f}{suffix}.png"))
+        meta[anim] = {"frames": spec["frames"], "fps": spec["fps"], "hold": spec.get("hold", -1)}
+    return meta
 
 
 def enemy_art(eid: str) -> dict:
