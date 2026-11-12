@@ -43,3 +43,4 @@ assets/fonts/** -filter -diff -merge -text
 assets/art/worldmap/** -filter -diff -merge -text
 # The studio splash sound is rendered by tools/sfx/intro.py; plain Git like the other sounds.
 assets/audio/intro/** -filter -diff -merge -text
+assets/audio/voice/** -filter -diff -merge -text

@@ -2387,8 +2387,9 @@ def drawn_enemy(eid: str) -> dict | None:
         for f in range(count):
             strip.crop((f * w, 0, f * w + w, h)).save(os.path.join(OUT, "enemies", f"{eid}_{f}{suffix}.png"))
     meta = {"size": [w, h], "anchor": list(info["feet"]), "frames": count, "drawn": True}
-    # Its power and its death (tools/art/gen_enemy_powers.py), cut into <id>_power_<n> and <id>_death_<n>.
-    for anim in ("power", "death"):
+    # Its power and its death (tools/art/gen_enemy_powers.py), cut into <id>_power_<n> and <id>_death_<n>,
+    # and a boss's moves (tools/art/import_boss_moves.py) the same way.
+    for anim in ("power", "death", "idle", "talk", "attack", "roar", "cast", "slam", "guard", "hurt", "rise"):
         spec = info["anims"].get(anim)
         if spec is None or not os.path.exists(os.path.join(DRAWN, f"{eid}_{anim}.png")):
             continue

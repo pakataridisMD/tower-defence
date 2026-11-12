@@ -1,0 +1,216 @@
+{
+ "_about": "What each boss says in battle (tools/voice/boss_lines.py records them; BossVoice plays them). Keys are game enemy ids. speaker = a cast.json voice; style = narrate.py STYLES (+ corrupted). Line kinds: arrive (first seen), taunt (while it strikes), heal, shield, bind (heal / barrier / binding or silencing towers), summon, fireball, destroy (a tower burnt down), enrage, hurt (half its life gone or its barrier broken), transform (a new form), flee, death. A kind a boss has no line for falls back to taunt. [tags] are ElevenLabs v3 acting directions. share = another boss whose lines this one uses.",
+ "bosses": {
+  "vael_orrun": {
+   "speaker": "vael_orrun", "style": "sovereign",
+   "lines": {
+    "arrive": ["[slowly] Two thousand years behind a door. [growls] Did you think I would knock?"],
+    "taunt": ["Every stone you stand on was mine.", "[laughs darkly] Kneel, and your city may keep its name."],
+    "fireball": ["[roaring] Burn!"],
+    "destroy": ["[laughs darkly] Ash. Like the rest of them."],
+    "heal": ["My wounds close. Yours will not."],
+    "shield": ["Strike, little queen. I am older than your steel."],
+    "bind": ["Be still. [whispers] Be still."],
+    "enrage": ["[furious] Enough!"],
+    "hurt": ["[snarling] You draw blood from a king?"],
+    "transform": ["[roaring] You have not seen me. Not yet."]
+   }
+  },
+  "vael_orrun_wrath": {
+   "speaker": "vael_orrun", "style": "sovereign",
+   "lines": {
+    "arrive": ["[roaring] Look at what your fathers made of me!"],
+    "taunt": ["[growling] I will wear my crown over your skull."],
+    "fireball": ["[screaming] Burn with them!"],
+    "destroy": ["Another one falls."],
+    "enrage": ["[roaring] I will unmake you all!"],
+    "hurt": ["[snarls] Is that all the six left you?"],
+    "transform": ["[roaring] Then let there be nothing left of me!"]
+   },
+   "share": "vael_orrun"
+  },
+  "vael_orrun_unmade": {
+   "speaker": "vael_orrun", "style": "sovereign",
+   "lines": {
+    "arrive": ["[hoarse] There is no king left. Only the hunger."],
+    "taunt": ["[whispers] Do you hear it too?"],
+    "fireball": ["[screaming] All of it! Burn all of it!"],
+    "hurt": ["[gasping] Not like this. Not again."],
+    "flee": ["[cold] This is not the end of the song."]
+   },
+   "share": "vael_orrun_wrath"
+  },
+  "ashen_regent": {
+   "speaker": "cassivane", "style": "mortal",
+   "lines": {
+    "arrive": ["Stand aside. I do this for my daughter, not for him."],
+    "taunt": ["You cannot win this, Spirewright.", "Every life lost here will be paid back. I promised that."],
+    "heal": ["Not yet. I am not finished."],
+    "shield": ["Shields up. Hold the line!"],
+    "bind": ["Silence those towers."],
+    "enrage": ["[desperate] She is waiting for me!"],
+    "hurt": ["[pained] I have bled worse for less."],
+    "flee": ["[breathless] Fall back! This is not over."]
+   }
+  },
+  "sundered_heart": {
+   "speaker": "cassivane", "style": "sovereign",
+   "lines": {
+    "arrive": ["[agonized] Ysolde... it burns. It burns and it will not stop."],
+    "taunt": ["[sobbing] I only wanted her back.", "Fire, water, stone. I am all of it now."],
+    "heal": ["The stone mends me. It will not let me die."],
+    "summon": ["[growls] Guards! To me!"],
+    "enrage": ["[screaming] Make it stop!"],
+    "hurt": ["[gasping] Yes. Break it. Break it!"],
+    "death": ["[whispers] Ilyra... forgive me."]
+   }
+  },
+  "saltmother": {
+   "speaker": "saltmother", "style": "herald",
+   "lines": {
+    "arrive": ["[whispers] The sea gave me back. It kept everything else."],
+    "taunt": ["Come closer. The water is so cold, and so quiet.", "I prayed to the tide for forty years. Now it answers only me."],
+    "heal": ["[softly] The tide returns what it takes."],
+    "bind": ["Drown, little towers. Drown and be still."],
+    "enrage": ["[screams] I will drag your city under!"],
+    "hurt": ["[gasping] Salt in the wound."],
+    "death": ["[whispers] At last. The shore."]
+   }
+  },
+  "gorrath": {
+   "speaker": "gorrath", "style": "herald",
+   "lines": {
+    "arrive": ["[deep] I held the Kharum Pass for a month. I will hold this road forever."],
+    "taunt": ["Stone does not bleed. Stone does not tire.", "Strike harder. The mountain is laughing."],
+    "shield": ["Stand fast. I am the wall now."],
+    "bind": ["Crumble."],
+    "enrage": ["[roaring] Break! Break like the pass broke!"],
+    "hurt": ["[grunts] A crack. Only a crack."],
+    "death": ["[slowly] Tell the Stoneborn... I held."]
+   }
+  },
+  "pale_vesper": {
+   "speaker": "pale_vesper", "style": "herald",
+   "lines": {
+    "arrive": ["[sings softly] Hush now. The bells are ringing for you."],
+    "taunt": ["I sang at a thousand funerals. Yours will be my favourite.", "[laughs softly] The dead are listening. Can you hear them hum?"],
+    "heal": ["[humming] A song to close the wounds."],
+    "bind": ["Shh. Your towers are sleeping."],
+    "enrage": ["[shrieking] Wake! All of you, wake!"],
+    "hurt": ["You broke my note."],
+    "death": ["[whispers] The Marshal. It was the Marshal."]
+   }
+  },
+  "ashwick": {
+   "speaker": "ashwick", "style": "herald",
+   "lines": {
+    "arrive": ["[breathless] I have a letter! I have to deliver the letter!"],
+    "taunt": ["[manic laugh] I can't stop running. I can't stop burning!", "Out of my way! The Marshal is waiting!"],
+    "heal": ["The fire eats the hurt. It eats everything."],
+    "shield": ["Too hot to touch! Too hot!"],
+    "enrage": ["[screaming] It hurts! Make it stop hurting!"],
+    "hurt": ["[crying out] That's not fair!"],
+    "death": ["[softly] Can I rest now?"]
+   }
+  },
+  "vholt": {
+   "speaker": "vholt", "style": "herald",
+   "lines": {
+    "arrive": ["[shouting] Ride with me, storm! One more charge!"],
+    "taunt": ["I taught Kaela everything. Not everything I knew.", "The sky is mine. Look up, and despair."],
+    "shield": ["Lightning, around me!"],
+    "bind": ["Ground them. Every one."],
+    "enrage": ["[roaring] Thunder, take them!"],
+    "hurt": ["[grunts] Clean hit. She taught you well."],
+    "death": ["[weakly] Clean. The way I taught her."]
+   }
+  },
+  "mother_briar": {
+   "speaker": "mother_briar", "style": "herald",
+   "lines": {
+    "arrive": ["[gently] Hush, children. Mother Briar is here to make it better."],
+    "taunt": ["Every thorn in me was planted with love.", "[sweetly] Lie down in the roots. Sleep."],
+    "heal": ["[soothing] There. There. All mended."],
+    "bind": ["Roots, take their hands."],
+    "enrage": ["[snarling] Then rot, you ungrateful things!"],
+    "hurt": ["[hissing] You cut my garden."],
+    "death": ["[whispers] The thorns are letting go."]
+   }
+  },
+  "cinder_tyrant": {
+   "speaker": "ignar", "style": "corrupted",
+   "lines": {
+    "arrive": ["[roaring] Who wakes the fire? The fire is hungry!"],
+    "taunt": ["I was a king of flame. Now I am only flame.", "[growling] The whisper says burn. So I burn."],
+    "heal": ["Ash to ember. Ember to blaze."],
+    "bind": ["Melt."],
+    "enrage": ["[bellowing] Everything burns! Everything!"],
+    "hurt": ["[pained] Put me out... No! Burn!"],
+    "death": ["[gasping] I remember my name."]
+   }
+  },
+  "thunderhead": {
+   "speaker": "aurath", "style": "corrupted",
+   "lines": {
+    "arrive": ["[whispers] Be still, the voice said. [shouting] We will not be still!"],
+    "taunt": ["We are the wind that tore your roofs away.", "Two voices. One storm."],
+    "shield": ["The eye of the storm. Calm. Untouchable."],
+    "bind": ["Be still. Be still."],
+    "enrage": ["[shrieking] Tear the sky open!"],
+    "hurt": ["[gasping] The clouds are breaking."],
+    "death": ["[softly] Quiet. Finally, quiet."]
+   }
+  },
+  "broodmother": {
+   "speaker": "elowen", "style": "corrupted",
+   "lines": {
+    "arrive": ["[tired] So many children. All of them hungry."],
+    "taunt": ["Grow. Grow and devour.", "[weary laugh] I am so old, and I cannot stop growing."],
+    "heal": ["New bark. New flesh."],
+    "summon": ["Go, my children. Feed."],
+    "enrage": ["[shrieking] My children! You hurt my children!"],
+    "hurt": ["[groans] The old wood splits."],
+    "death": ["[relieved] One seed left. Plant it far from here."]
+   }
+  },
+  "leviathan": {
+   "speaker": "thalassa", "style": "corrupted",
+   "lines": {
+    "arrive": ["[echoing] I remember every ship that sank in me."],
+    "taunt": ["I will remember you too. Every scream.", "The tide is rising, and it does not forgive."],
+    "shield": ["Below the waves, nothing can touch me."],
+    "bind": ["Sink."],
+    "enrage": ["[roaring] Drown! Drown them all!"],
+    "hurt": ["[groaning] An old wound. I remember it."],
+    "death": ["[whispers] I will tell you what we did."]
+   }
+  },
+  "mountain_titan": {
+   "speaker": "orrok", "style": "corrupted",
+   "lines": {
+    "arrive": ["[very slowly] Two thousand years... of silence."],
+    "taunt": ["Small things. Loud things.", "The mountain does not move. You move."],
+    "heal": ["Stone grows back."],
+    "shield": ["Stand. Behind. Stone."],
+    "enrage": ["[roaring] Crush!"],
+    "hurt": ["[rumbling] Hm. That was felt."],
+    "death": ["[softly] Thank you."]
+   }
+  },
+  "hollow_king": {
+   "speaker": "nyxara", "style": "corrupted",
+   "lines": {
+    "arrive": ["The crown is heavy. The crown is mine. [whispers] Help me."],
+    "taunt": ["I hear what walks beneath your land.", "[laughs darkly] Fight it? I am it."],
+    "shield": ["The void wraps me. Cold. Safe."],
+    "bind": ["Shadows, hold them."],
+    "enrage": ["[screaming] Get out of my head!"],
+    "hurt": ["[gasping] Yes. Crack the crown."],
+    "death": ["[whispers] Not yet. I am still in here."]
+   }
+  },
+  "hollow_shade": {
+   "share": "hollow_king", "only": ["taunt", "hurt"]
+  }
+ }
+}

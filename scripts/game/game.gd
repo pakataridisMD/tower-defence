@@ -35,6 +35,8 @@ var story_overlay: StoryOverlay
 ## The cinematic playing over the run, or null.
 var cinematic: CinematicPlayer
 var audio: GameAudio
+## Boss moves and battle lines.
+var bosses: BossDirector
 var music: BattleMusic
 var paused := false
 var audio_panel: AudioPanel
@@ -89,6 +91,9 @@ func _build_views() -> void:
 	music = BattleMusic.new()
 	add_child(music)
 	music.setup(sim)
+	bosses = BossDirector.new()
+	add_child(bosses)
+	bosses.setup(sim, board.art)
 
 	post_layer = CanvasLayer.new()
 	post_layer.name = "BoardPost"
