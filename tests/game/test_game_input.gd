@@ -454,6 +454,95 @@ func test_panning_stops_at_the_edge_of_the_map() -> void:
 	assert_almost_eq(far_corner, BoardCamera.VIEW_RECT.end, Vector2(1, 1), "and so does the bottom-right")
 
 
+func test_the_mouse_at_a_screen_edge_pans_that_way() -> void:
+	var screen := game.get_viewport().get_visible_rect()
+	game.camera.set_view(1.0, game.sim.config.map.size_in_pixels() * 0.5)
+	var start := game.board.position
+	var middle_y := screen.position.y + screen.size.y * 0.5
+	assert_true(game.camera.edge_pan(0.1, Vector2(screen.position.x + 1, middle_y)), "the left edge pans")
+	assert_gt(game.board.position.x, start.x, "the map slides right, so the view moves left")
+	assert_eq(game.board.position.y, start.y, "and not up or down")
+	start = game.board.position
+	game.camera.edge_pan(0.1, Vector2(screen.end.x - 2, middle_y))
+	assert_lt(game.board.position.x, start.x, "the right edge pans the other way, even over the side panel")
+	start = game.board.position
+	game.camera.edge_pan(0.1, Vector2(screen.position.x + screen.size.x * 0.4, screen.end.y - 2))
+	assert_lt(game.board.position.y, start.y, "the bottom edge pans down")
+
+
+func test_the_mouse_away_from_the_edges_leaves_the_map_still() -> void:
+	game.camera.set_view(1.0, game.sim.config.map.size_in_pixels() * 0.5)
+	var start := game.board.position
+	assert_false(game.camera.edge_pan(0.1, BoardCamera.VIEW_CENTER))
+	assert_eq(game.board.position, start)
+
+
+func test_the_edge_pan_eases_in_and_stops_at_the_map_edge() -> void:
+	var screen := Rect2(0, 0, 1920, 1080)
+	assert_eq(BoardCamera.edge_push(Vector2(BoardCamera.EDGE_MARGIN + 1, 500), screen), Vector2.ZERO)
+	var soft := BoardCamera.edge_push(Vector2(BoardCamera.EDGE_MARGIN - 4, 500), screen)
+	var hard := BoardCamera.edge_push(Vector2(0, 500), screen)
+	assert_true(soft.x < 0.0 and soft.x > hard.x, "weaker a little way in")
+	assert_eq(hard, Vector2(-1, 0), "full speed at the edge")
+	assert_eq(BoardCamera.edge_push(Vector2(1919, 0), screen), Vector2(1, -1), "corners pan both ways")
+	assert_eq(BoardCamera.edge_push(Vector2(3000, 500), screen), Vector2.ZERO, "nothing outside the window")
+	game.camera.set_view(1.0, Vector2.ZERO)
+	for i in 100:
+		game.camera.edge_pan(0.1, Vector2(1, 1))
+	assert_eq(game.board.position, BoardCamera.VIEW_RECT.position, "the top-left corner stops at the view's corner")
+
+
+func test_the_edge_pan_waits_while_a_menu_is_open_or_the_window_is_in_the_background() -> void:
+	var screen := game.get_viewport().get_visible_rect()
+	var left := Vector2(screen.position.x + 1, screen.position.y + screen.size.y * 0.5)
+	game.camera.set_view(1.0, game.sim.config.map.size_in_pixels() * 0.5)
+	var start := game.board.position
+	game.pause_menu.show()
+	assert_false(game.camera.edge_pan(0.1, left), "not under the pause menu")
+	game.pause_menu.hide()
+	game.camera.edge_scroll = false
+	assert_false(game.camera.edge_pan(0.1, left), "not when switched off")
+	game.camera.edge_scroll = true
+	var motion := InputEventMouseMotion.new()
+	motion.position = left
+	_push(motion)
+	game.camera._process(0.1)
+	assert_ne(game.board.position, start, "pushing the mouse there pans each frame")
+	start = game.board.position
+	game.camera.notification(Node.NOTIFICATION_APPLICATION_FOCUS_OUT)
+	game.camera._process(0.1)
+	assert_eq(game.board.position, start, "not while the window is in the background")
+	game.camera.notification(Node.NOTIFICATION_APPLICATION_FOCUS_IN)
+	game.camera.notification(Node.NOTIFICATION_WM_MOUSE_EXIT)
+	game.camera._process(0.1)
+	assert_eq(game.board.position, start, "not while the mouse is outside the window")
+	game.camera.notification(Node.NOTIFICATION_WM_MOUSE_ENTER)
+	motion.position = BoardCamera.VIEW_CENTER
+	_push(motion)
+
+
+func test_the_edge_pan_waits_while_the_mouse_is_on_a_button() -> void:
+	var screen := game.get_viewport().get_visible_rect()
+	var button := Button.new()
+	button.text = "near the edge"
+	game.hud.add_child(button)
+	button.position = Vector2(screen.position.x, screen.position.y + 400)
+	button.size = Vector2(120, 40)
+	game.camera.set_view(1.0, game.sim.config.map.size_in_pixels() * 0.5)
+	var on_button := button.get_global_rect().get_center()
+	on_button.x = screen.position.x + 2
+	var motion := InputEventMouseMotion.new()
+	motion.position = on_button
+	motion.global_position = on_button
+	_push(motion)
+	await get_tree().process_frame
+	if game.get_viewport().gui_get_hovered_control() == button:
+		assert_false(game.camera.edge_pan(0.1, on_button), "a button at the edge keeps the map still")
+	else:
+		pass_test("headless window did not report hover; covered on the desktop")
+	button.free()
+
+
 func test_clicks_still_land_on_the_right_cell_when_zoomed_in() -> void:
 	game.sim.allocate_node(&"fire_entry")
 	game.camera.set_view(2.0, game.sim.config.map.cell_center(grass_cell))

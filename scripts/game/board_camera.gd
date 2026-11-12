@@ -7,7 +7,8 @@ extends Node
 ## so the pixel art stays crisp at every step. A map starts zoomed out so all of it shows.
 ##
 ## Mouse wheel or pinch zooms toward the cursor, middle-drag or a two-finger swipe pans, the arrow
-## keys pan, + and - zoom, and Home shows the whole map again.
+## keys pan, + and - zoom, and Home shows the whole map again. Pushing the mouse against an edge of the
+## screen pans that way, as in an RTS (see edge_pan).
 
 ## Screen area the board is shown in: left of the side panel, under the top bar.
 const VIEW_RECT := Rect2(12, 88, 1560, 984)
@@ -16,6 +17,12 @@ const VIEW_CENTER := Vector2(12 + 780, 88 + 492)
 const ZOOMS: Array[float] = [0.5, 1.0, 1.5, 2.0]
 ## Screen pixels per second the arrow keys pan.
 const KEY_PAN_SPEED := 900.0
+## How close to an edge of the screen, in screen pixels, the mouse starts panning the board that way.
+const EDGE_MARGIN := 24.0
+## Within this many pixels of the edge the edge pan runs at full speed; it eases in from EDGE_MARGIN.
+const EDGE_FULL := 6.0
+## Screen pixels per second the edge pan moves at full speed.
+const EDGE_PAN_SPEED := 1100.0
 ## Seconds a zoom step takes to ease in.
 const ZOOM_TIME := 0.14
 
@@ -33,6 +40,14 @@ var _target_zoom := 1.0
 var _anchor_board := Vector2.ZERO
 var _anchor_screen := Vector2.ZERO
 var _dragging := false
+## Pushing the mouse against an edge of the screen pans the board.
+var edge_scroll := true
+## False while the game window is in the background or the mouse is outside it, so the edge pan stops.
+var _app_focused := true
+var _mouse_inside := true
+## Where the mouse last moved to on screen; the edge pan waits until the mouse has moved at all.
+var _mouse_at := Vector2.ZERO
+var _mouse_seen := false
 
 
 func setup(p_board: Node2D, p_map_size: Vector2) -> void:
@@ -129,6 +144,75 @@ func _process(delta: float) -> void:
 		keys.y -= 1.0
 	if keys != Vector2.ZERO and not _blocked():
 		pan(keys * KEY_PAN_SPEED * delta)
+	if _mouse_seen and _app_focused and _mouse_inside and not _dragging:
+		edge_pan(delta, _mouse_at)
+
+
+func _input(event: InputEvent) -> void:
+	var motion := event as InputEventMouseMotion
+	if motion != null:
+		_mouse_at = motion.position
+		_mouse_seen = true
+		_mouse_inside = true
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_APPLICATION_FOCUS_OUT:
+			_app_focused = false
+		NOTIFICATION_APPLICATION_FOCUS_IN:
+			_app_focused = true
+		NOTIFICATION_WM_MOUSE_EXIT:
+			_mouse_inside = false
+		NOTIFICATION_WM_MOUSE_ENTER:
+			_mouse_inside = true
+
+
+## Pans the board toward the screen edge the mouse is pushed against, for `delta` seconds. Does nothing
+## while a panel covers the board or the mouse is on a button, slider or text field. The thin strip
+## along the screen edge counts even over the HUD's side panel and top bar, so every edge works.
+## Returns true if it panned.
+func edge_pan(delta: float, mouse: Vector2) -> bool:
+	if board == null or not edge_scroll or _blocked():
+		return false
+	var push := edge_push(mouse, get_viewport().get_visible_rect())
+	if push == Vector2.ZERO or _over_control(mouse):
+		return false
+	var before := board.position
+	pan(-push * EDGE_PAN_SPEED * delta)
+	return board.position != before
+
+
+## Which way, and how hard (0 to 1 per axis), the mouse pushes against the edges of `screen`. Right
+## and down are positive.
+static func edge_push(mouse: Vector2, screen: Rect2) -> Vector2:
+	var push := Vector2.ZERO
+	if not screen.grow(1.0).has_point(mouse):
+		return push
+	for axis in 2:
+		var from_start := mouse[axis] - screen.position[axis]
+		var from_end := screen.end[axis] - 1.0 - mouse[axis]
+		if from_start < EDGE_MARGIN:
+			push[axis] = -_edge_strength(from_start)
+		elif from_end < EDGE_MARGIN:
+			push[axis] = _edge_strength(from_end)
+	return push
+
+
+static func _edge_strength(distance: float) -> float:
+	return clampf((EDGE_MARGIN - distance) / (EDGE_MARGIN - EDGE_FULL), 0.0, 1.0)
+
+
+## True when the mouse is on something you click or drag (a button, a slider, a text field), so an
+## edge pan never starts while the player aims at a HUD button that sits near the edge.
+func _over_control(mouse: Vector2) -> bool:
+	var hovered := get_viewport().gui_get_hovered_control()
+	if hovered == null or not hovered.is_visible_in_tree():
+		return false
+	if not hovered.get_global_rect().has_point(mouse):
+		return false
+	return hovered is BaseButton or hovered is Range or hovered is LineEdit or hovered is TextEdit \
+		or hovered is ItemList or hovered is Tree
 
 
 func _unhandled_input(event: InputEvent) -> void:

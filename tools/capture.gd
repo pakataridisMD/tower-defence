@@ -24,6 +24,8 @@ extends Node
 ## Add --look[=stage,stage] for the graphics look test: in each stage (the fire and jungle lands by default)
 ## one of each base tower is built in a row by the road, then the whole map, the row up close at x1
 ## and x2, and the same row at night are taken.
+## Add --edge to film the edge pan: zoomed in on a battle, the mouse is pushed against each edge of the
+## screen in turn, saved as numbered frames in <out>/edge/ (make a clip from them).
 ## Add --story to take the cinematic player, a Herald's boss banner, the final level's defence and counter-attack and
 ## the campaign map with the citadel on it.
 
@@ -52,6 +54,7 @@ var _heroes := false
 var _menu := false
 var _map := false
 var _bigmaps := false
+var _edge := false
 var _powers := false
 var _landmarks := false
 var _horde := &""
@@ -71,6 +74,8 @@ func _ready() -> void:
 			_campaign = true
 		elif arg == "--ui":
 			_ui = true
+		elif arg == "--edge":
+			_edge = true
 		elif arg == "--story":
 			_story = true
 		elif arg == "--heroes":
@@ -109,6 +114,8 @@ func _ready() -> void:
 		_run_map()
 	elif _bigmaps:
 		_run_big_maps()
+	elif _edge:
+		_run_edge()
 	elif _story:
 		_run_story()
 	elif _heroes:
@@ -822,6 +829,60 @@ func _clip(clip_name: String, game: Game, site: Landmarks.Site, frames: int) -> 
 		await RenderingServer.frame_post_draw
 		get_viewport().get_texture().get_image().get_region(region).save_png(folder.path_join("%03d.png" % i))
 	print("Saved clip ", folder)
+
+
+## A battle zoomed in, with a drawn mouse pointer pushed against the left, bottom, right and top edges.
+func _run_edge() -> void:
+	Progress.active_stage = &"ember_2"
+	var game := GAME_SCENE.instantiate() as Game
+	game.autoplay = true
+	add_child(game)
+	await _wait(0.2)
+	game.sim.wave_index = 6
+	game.sim.gold = 6000
+	game.sim.tree.points = 14
+	await _until(func() -> bool: return game.sim.state == RunSim.State.WAVE and game.sim.time_in_wave > 8.0 \
+			or game.sim.is_over())
+	game.camera.set_view(1.5, game.sim.config.map.size_in_pixels() * 0.5)
+	var pointer_layer := CanvasLayer.new()
+	pointer_layer.layer = 100
+	add_child(pointer_layer)
+	var pointer := Polygon2D.new()
+	pointer.polygon = PackedVector2Array([Vector2(0, 0), Vector2(0, 34), Vector2(9, 26), Vector2(15, 40),
+		Vector2(21, 37), Vector2(15, 24), Vector2(26, 24)])
+	pointer.color = Color.WHITE
+	var outline := Line2D.new()
+	outline.points = pointer.polygon
+	outline.closed = true
+	outline.width = 2.5
+	outline.default_color = Color.BLACK
+	pointer.add_child(outline)
+	pointer_layer.add_child(pointer)
+	var screen := get_viewport().get_visible_rect()
+	var middle := BoardCamera.VIEW_CENTER
+	var stops: Array[Vector2] = [middle, Vector2(screen.position.x + 1, middle.y), middle,
+		Vector2(middle.x, screen.end.y - 2), Vector2(screen.end.x - 2, middle.y), Vector2(middle.x + 300, middle.y),
+		Vector2(middle.x - 200, screen.position.y + 1), middle]
+	var folder := _out.path_join("edge")
+	DirAccess.make_dir_recursive_absolute(folder)
+	var frame := 0
+	var at := middle
+	for index in range(1, stops.size()):
+		var target: Vector2 = stops[index]
+		# Glide to the next stop, then hold there so the board has time to slide.
+		for step in 50:
+			at = at.lerp(target, 0.18) if step < 20 else target
+			pointer.position = at
+			var motion := InputEventMouseMotion.new()
+			motion.position = at
+			motion.global_position = at
+			get_tree().root.push_input(motion, true)
+			await RenderingServer.frame_post_draw
+			get_viewport().get_texture().get_image().save_png(folder.path_join("%04d.png" % frame))
+			frame += 1
+	print("Saved clip ", folder)
+	game.free()
+	get_tree().quit()
 
 
 func _wait(seconds: float) -> void:
