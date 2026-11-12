@@ -385,6 +385,8 @@ func _run_story() -> void:
 	assault.sim.wave_index = assault.sim.config.stage.counter_wave - 1
 	assault.sim.start_next_wave()
 	assault.sim.gold = 2400
+	# No towers were built in the waves skipped: keep the run alive for the picture.
+	assault.sim.lives = 9999
 	Engine.time_scale = 4.0
 	await _until(func() -> bool: return assault.sim.allies.size() >= 24 and assault.sim.time_in_wave > 40.0 \
 			or assault.sim.is_over())
