@@ -897,7 +897,17 @@ def write_assault(order, c):
     t.write(f"data/campaigns/{c['id']}.tres", fields)
 
 
+# The six lands are fought in order, each opening when the one before it is finished: every stage is
+# tuned for the meta tree, sigils and heroes a player has by then (tools/meta_pacing.gd), which only
+# holds if they arrive in that order.
+def chain_lands():
+    lands = [c for c in CAMPAIGNS if c["element"]]
+    for before, land in zip(lands, lands[1:]):
+        land.setdefault("requires", [before["id"]])
+
+
 def main():
+    chain_lands()
     for order, c in enumerate(CAMPAIGNS):
         write_campaign(order, c)
     write_assault(len(CAMPAIGNS), ASSAULT)

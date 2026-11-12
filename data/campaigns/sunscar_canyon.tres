@@ -109,6 +109,7 @@ order = 4
 element = &"earth"
 tagline = "The Sky against the Stone"
 description = "Storm's horde pours down the canyon walls in armour. Earth's heavy blows and shattering hits crack what lightning cannot."
+requires_campaigns = Array[StringName]([&"frostmere"])
 stages = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r5"), SubResource("r8"), SubResource("r10")])
 reward_name = "Sigil of Stone"
 reward_description = "Earth towers deal 10% increased damage in every run."

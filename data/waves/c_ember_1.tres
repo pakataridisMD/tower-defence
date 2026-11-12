@@ -743,5 +743,5 @@ script = ExtResource("1_s")
 id = &"c_ember_1"
 display_name = "Ashfall Road"
 health_growth = 1.1
-health_scale = 2.2
+health_scale = 3.14
 waves = Array[ExtResource("3_s")]([SubResource("r6"), SubResource("r12"), SubResource("r20"), SubResource("r27"), SubResource("r36"), SubResource("r46"), SubResource("r57"), SubResource("r66"), SubResource("r79"), SubResource("r90")])

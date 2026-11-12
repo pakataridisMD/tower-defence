@@ -108,6 +108,7 @@ order = 1
 element = &"storm"
 tagline = "The Stone against the Sky"
 description = "The high grass is flattened and the storms have stopped. Earth's horde climbs the plateau, and the Splitters break into swarms that only lightning can catch."
+requires_campaigns = Array[StringName]([&"ember_reach"])
 stages = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r5"), SubResource("r8"), SubResource("r10")])
 reward_name = "Sigil of Thunder"
 reward_description = "Storm towers attack 8% faster in every run."

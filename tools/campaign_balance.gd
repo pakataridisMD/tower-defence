@@ -3,7 +3,7 @@ extends SceneTree
 ## campaign (see tools/campaign/gen_campaign.py). No meta tree bonuses, Normal difficulty.
 ##
 ##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune] [--skirmish] [--compare]
-##       [--heroes] [--list]
+##       [--heroes] [--list] [--no-meta] [--check]
 ##
 ## --tune searches each stage's health scale so the bot wins keeping a target share of its lives,
 ## and prints lines for tools/campaign/tuning.py. The bot levels its towers and casts its skills,
@@ -14,6 +14,13 @@ extends SceneTree
 ## party of the three heroes who would have joined by then, with and without heroes and skills, to
 ## see how much of a run they carry next to the towers. --list prints the stage ids, so CI can tune
 ## them one stage per process, side by side.
+##
+## Every stage is played (and tuned) by the player a new player would be by then: the profile in
+## tools/campaign/meta_profiles.json for that stage, with its meta tree, the sigils of the lands
+## already finished and the heroes who have joined. tools/meta_pacing.gd -- --profiles=<path> writes
+## that file. --no-meta plays with an empty profile instead, as before.
+
+const PROFILES := "res://tools/campaign/meta_profiles.json"
 
 ## Share of lives the bot should keep, by stage position in an element campaign and in the Convergence.
 const TARGETS: Array[float] = [0.6, 0.45, 0.3, 0.2]
@@ -49,6 +56,9 @@ func _initialize() -> void:
 					data.power = &""
 	var tune := OS.get_cmdline_user_args().has("--tune")
 	var meta := MetaProgress.new(registry, PlayerProfile.new())
+	_registry = registry
+	if not OS.get_cmdline_user_args().has("--no-meta"):
+		_load_profiles()
 	if OS.get_cmdline_user_args().has("--list"):
 		for campaign in meta.campaigns_in_order():
 			for stage in campaign.stages:
@@ -71,6 +81,7 @@ func _initialize() -> void:
 		registry.free()
 		quit()
 		return
+	var lost := 0
 	for campaign in meta.campaigns_in_order():
 		for i in campaign.stages.size():
 			var stage := campaign.stages[i]
@@ -82,12 +93,41 @@ func _initialize() -> void:
 				continue
 			var started := Time.get_ticks_msec()
 			var sim := _play(meta, stage)
+			if sim.state != RunSim.State.WON:
+				lost += 1
 			print("%-11s %-26s %s wave %2d/%2d  lives %3d/%3d  stars %d  towers %2d  gold %5d  %s  (%d ms)" % [
 				stage.id, stage.display_name, "WON " if sim.state == RunSim.State.WON else "LOST",
 				sim.wave_index, sim.total_waves(), sim.lives, sim.starting_lives, MetaProgress.stars_for(sim),
 				sim.towers.size(), sim.gold, _wave_summary(), Time.get_ticks_msec() - started])
 	registry.free()
-	quit()
+	# Plain play exits with 1 if the bot lost a stage, so CI can check the balance (--check is the
+	# same as no option; it only says so in the workflow).
+	quit(1 if lost > 0 else 0)
+
+
+var _registry: Node
+## The expected profile before each stage, by stage id, from PROFILES. Empty plays with no meta.
+var _profiles: Dictionary = {}
+var _metas: Dictionary = {}
+
+
+func _load_profiles() -> void:
+	if not FileAccess.file_exists(PROFILES):
+		print("No %s: playing with an empty profile" % PROFILES)
+		return
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(PROFILES))
+	if parsed is Dictionary:
+		_profiles = parsed
+
+
+## The stage's run, as the expected player of that point in the campaign would start it.
+func _config(meta: MetaProgress, stage: StageData) -> RunConfig:
+	if not _profiles.has(String(stage.id)):
+		return meta.stage_config(stage.id)
+	if not _metas.has(stage.id):
+		_metas[stage.id] = MetaProgress.new(_registry, PlayerProfile.from_dict(_profiles[String(stage.id)]))
+	var stage_meta: MetaProgress = _metas[stage.id]
+	return stage_meta.add_heroes(stage_meta.stage_config(stage.id))
 
 
 ## How long each wave of the last _play took, in seconds from its start until its last enemy fell.
@@ -95,7 +135,7 @@ var _wave_seconds: PackedFloat32Array = []
 
 
 func _play(meta: MetaProgress, stage: StageData) -> RunSim:
-	var sim := RunSim.new(meta.stage_config(stage.id))
+	var sim := RunSim.new(_config(meta, stage))
 	var bot := AutoPlayer.for_sim(sim)
 	_wave_seconds.clear()
 	sim.wave_cleared.connect(func(_n: int, _p: int, _g: int) -> void: _wave_seconds.append(sim.time_in_wave))
@@ -291,7 +331,7 @@ func _tune(meta: MetaProgress, stage: StageData, target: float) -> void:
 		for wave in bosses:
 			wave.health_multiplier = value
 	set_boss.call(0.02)
-	var health := _bisect(meta, stage, target + (0.1 if not bosses.is_empty() else 0.0), 0.1, 5.0,
+	var health := _bisect(meta, stage, target + (0.1 if not bosses.is_empty() else 0.0), 0.1, 20.0,
 			func(value: float) -> void: waves.health_scale = value)
 	waves.health_scale = health
 	var boss := 0.0
@@ -300,7 +340,7 @@ func _tune(meta: MetaProgress, stage: StageData, target: float) -> void:
 	for attempt in 6:
 		if bosses.is_empty():
 			break
-		boss = _bisect(meta, stage, target * 0.5, 0.1, 4.0, set_boss)
+		boss = _bisect(meta, stage, target * 0.5, 0.1, 8.0, set_boss)
 		if boss > 0.2:
 			break
 		health = snappedf(health * 0.8, 0.01)

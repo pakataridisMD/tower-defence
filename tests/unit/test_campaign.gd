@@ -94,15 +94,19 @@ func test_wardens_resist_their_home_element() -> void:
 		assert_eq(boss.element, campaign.element, "%s's Warden is %s" % [campaign_id, campaign.element])
 
 
-func test_a_new_player_can_start_any_element_campaign_but_not_the_convergence() -> void:
+func test_the_lands_open_one_after_another_and_the_convergence_last() -> void:
 	var meta := _meta()
-	for campaign_id in ELEMENT_CAMPAIGNS:
-		var first: StageData = (registry.campaigns[campaign_id] as CampaignData).stages[0]
-		assert_true(meta.is_stage_unlocked(first.id), first.id)
-		var second: StageData = (registry.campaigns[campaign_id] as CampaignData).stages[1]
-		assert_false(meta.is_stage_unlocked(second.id), second.id)
-	assert_false(meta.is_campaign_unlocked(&"convergence"))
-	assert_false(meta.is_stage_unlocked(&"converge_1"))
+	assert_true(meta.is_stage_unlocked(&"ember_1"), "a new player starts in the Ember Reach")
+	for i in ELEMENT_CAMPAIGNS.size():
+		var campaign: CampaignData = registry.campaigns[ELEMENT_CAMPAIGNS[i]]
+		assert_true(meta.is_stage_unlocked(campaign.stages[0].id), "%s opens after the land before it" % campaign.id)
+		assert_false(meta.is_stage_unlocked(campaign.stages[1].id), campaign.stages[1].id)
+		if i + 1 < ELEMENT_CAMPAIGNS.size():
+			var next: CampaignData = registry.campaigns[ELEMENT_CAMPAIGNS[i + 1]]
+			assert_false(meta.is_stage_unlocked(next.stages[0].id), "%s waits for %s" % [next.id, campaign.id])
+		assert_false(meta.is_campaign_unlocked(&"convergence"))
+		_win_campaign(meta, ELEMENT_CAMPAIGNS[i])
+	assert_true(meta.is_stage_unlocked(&"converge_1"))
 
 
 func test_winning_a_stage_opens_the_next() -> void:

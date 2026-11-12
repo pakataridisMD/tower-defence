@@ -108,6 +108,7 @@ order = 3
 element = &"water"
 tagline = "The Flame against the Ice"
 description = "The lake is boiling at the edges. Fire's horde marches across the ice, and its runners are fast. Slow them, freeze them, drown them."
+requires_campaigns = Array[StringName]([&"verdant_deep"])
 stages = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r5"), SubResource("r8"), SubResource("r10")])
 reward_name = "Sigil of the Tide"
 reward_description = "Water towers have 8% increased range in every run."
