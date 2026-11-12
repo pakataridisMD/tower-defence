@@ -118,7 +118,7 @@ LINES = {
         "victory": ["[joyful, through tears] It's down. Light the lanterns, all of them!"],
     },
     "gale": {
-        "muster": ["Galeborn! Ride!", "Hawks up! Over the horde and onto the walls!", "Storm's coming! Get out of our way!"],
+        "muster": ["Ride, Galeborn, ride!", "Hawks up! Over the horde and onto the walls!", "Storm's coming! Get out of our way!"],
         "charge": ["Lances down! Charge!", "Hit them like thunder!"],
         "fight": ["Lightning, take them! Next one!", "Faster! Faster!", "Hah! Did you see that?"],
         "siege": ["Hit the spires from above!", "Bring the lightning down on that gate!"],

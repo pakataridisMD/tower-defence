@@ -151,3 +151,13 @@ func test_ranks_spread_units_across_the_road() -> void:
 	var champion := SimAlly.new(99, registry.allies[&"champion_tamsin"], 1.0)
 	assert_eq(AllyArt.lateral_for(champion), 0.0, "a hero keeps the middle of the road")
 	assert_not_null(sim)
+
+
+func test_every_line_is_recorded() -> void:
+	var voice := _voice(_counter_sim())
+	for table: Dictionary in [voice.lines, voice.champions]:
+		for who: String in table:
+			for kind: String in table[who]:
+				for entry: Dictionary in table[who][kind]:
+					var path := ArmyVoice.AUDIO_DIR + "%s/%s.ogg" % [who, entry["id"]]
+					assert_true(ResourceLoader.exists(path), "recording " + path)
