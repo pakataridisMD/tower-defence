@@ -1,0 +1,38 @@
+{
+  "id": "realm_storm_3_calm",
+  "title": "Shattered Sky",
+  "duration": 109.7143,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 27.43,
+      "name": "B"
+    },
+    {
+      "time": 54.86,
+      "name": "C"
+    },
+    {
+      "time": 82.29,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 109.7143,
+  "loop_samples": 4838400,
+  "handover_seconds": 109.7143,
+  "bpm": 140,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "realm_storm_3_calm.ogg",
+    "wave": "realm_storm_3_wave.ogg",
+    "boss": "realm_storm_3_boss.ogg"
+  }
+}

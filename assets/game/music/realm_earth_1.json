@@ -1,0 +1,38 @@
+{
+  "id": "realm_earth_1_calm",
+  "title": "The Stone Remembers",
+  "duration": 83.4783,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 20.87,
+      "name": "B"
+    },
+    {
+      "time": 41.74,
+      "name": "C"
+    },
+    {
+      "time": 62.61,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 83.4783,
+  "loop_samples": 3681391,
+  "handover_seconds": 83.4783,
+  "bpm": 92,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "realm_earth_1_calm.ogg",
+    "wave": "realm_earth_1_wave.ogg",
+    "boss": "realm_earth_1_boss.ogg"
+  }
+}
