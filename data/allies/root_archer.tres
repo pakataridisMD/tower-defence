@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"root_archer"
+display_name = "Deepwood Archers"
+title = "Poison arrows"
+description = "Archers of the Deepwood. Their arrows are cut from thorn and keep working after they land."
+role = 1
+element = &"nature"
+order = 6
+cost = 110
+cooldown = 6.0
+count = 3
+max_health = 40.0
+armour = 0.0
+speed = 58.0
+blocks = false
+damage = 10.0
+attack_interval = 1.0
+attack_range = 230.0
+dot_damage = 5.0
+dot_duration = 4.0
+dot_kind = &"poison"

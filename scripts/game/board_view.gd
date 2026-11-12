@@ -295,6 +295,8 @@ func _draw() -> void:
 		_draw_structure(structure)
 	for enemy in sim.enemies:
 		_draw_enemy(enemy)
+	for ally in sim.allies:
+		_draw_ally(ally)
 	for tower in sim.towers:
 		if tower.silenced > 0.0:
 			_draw_silenced(tower)
@@ -525,9 +527,36 @@ func _draw_enemy_ground() -> void:
 	draw_dashed_line(Vector2(left, 0), Vector2(left, map.size_in_pixels().y), Color(1.0, 0.35, 0.45, 0.4 + 0.3 * pulse), 3.0, 14.0)
 
 
+## A unit of the counter-attack: a marker when it has no art, and its health bar.
+func _draw_ally(ally: SimAlly) -> void:
+	if not ally.alive:
+		return
+	var drawn := art != null and AllyArt.has_art(ally.data)
+	var radius := 14.0 if ally.is_champion() else 10.0
+	if not drawn:
+		var color := UiStyle.GOLD if ally.is_champion() else Color(0.75, 0.2, 0.2)
+		if not ally.data.element.is_empty():
+			color = sim.config.element_color(ally.data.element)
+		draw_circle(ally.position, radius + 3.0, Color(0.95, 0.85, 0.55))
+		draw_circle(ally.position, radius, Color(0.12, 0.1, 0.14))
+		draw_circle(ally.position, radius - 3.0, color)
+	var tall := 112.0 if ally.is_champion() else 70.0
+	var width := 30.0 if ally.is_champion() else 22.0
+	var k := label_scale()
+	width *= k
+	var top := (BoardArt.ENEMY_DROP * BoardArt.SCALE - tall) if drawn else -radius - 10.0
+	var top_left := ally.position + Vector2(-width * 0.5, top - 4.0 * (k - 1.0))
+	if ally.health < ally.max_health or ally.is_champion():
+		draw_rect(Rect2(top_left - Vector2(1, 1) * k, Vector2(width + 2.0 * k, 5.0 * k)), Color(0, 0, 0, 0.75))
+		draw_rect(Rect2(top_left, Vector2(width * ally.health / ally.max_health, 3.0 * k)), UiStyle.GOLD if ally.is_champion() else Color(0.45, 0.75, 1.0))
+
+
 ## A building of the enemy base: its health bar, and a shield while it cannot be hurt yet.
 func _draw_structure(structure: SimEnemy) -> void:
 	if not structure.alive:
+		return
+	if art != null and art.citadel != null and art.citadel.structure == structure:
+		_draw_citadel(structure)
 		return
 	var height := BoardArt.enemy_height(structure.data.id) if art != null else 0.0
 	if height <= 0.0:
@@ -545,6 +574,30 @@ func _draw_structure(structure: SimEnemy) -> void:
 	draw_rect(Rect2(top_left - Vector2(2, 2), Vector2(width + 4, 10)), Color(0, 0, 0, 0.8))
 	var color := UiStyle.BAD if sim.is_vulnerable(structure) else Color(0.6, 0.55, 0.7)
 	draw_rect(Rect2(top_left, Vector2(width * maxf(0.0, structure.health) / structure.max_health, 6)), color)
+
+
+## The citadel: a ward of violet light over it until the counter-attack, then a long health bar over
+## its gates, where the army fights.
+func _draw_citadel(structure: SimEnemy) -> void:
+	var gates := art.citadel.gate_points()
+	if gates.is_empty():
+		return
+	var top := gates[0].y - 150.0
+	var bottom := gates[gates.size() - 1].y + 150.0
+	var x := gates[0].x
+	if not sim.is_vulnerable(structure):
+		var shimmer := 0.3 + 0.12 * sin(Time.get_ticks_msec() * 0.003)
+		for gate in gates:
+			draw_arc(gate + Vector2(26, 0), 64.0, PI * 0.5, PI * 1.5, 24, Color(0.8, 0.6, 1.0, shimmer), 3.0, true)
+		draw_line(Vector2(x - 6, top), Vector2(x - 6, bottom), Color(0.75, 0.5, 1.0, shimmer * 0.8), 2.0)
+		return
+	var k := label_scale()
+	var width := 240.0 * k
+	var at := Vector2(x + 200.0 - width * 0.5, top - 30.0)
+	draw_rect(Rect2(at - Vector2(3, 3) * k, Vector2(width + 6.0 * k, 16.0 * k)), Color(0, 0, 0, 0.85))
+	draw_rect(Rect2(at, Vector2(width * maxf(0.0, structure.health) / structure.max_health, 10.0 * k)), UiStyle.BAD)
+	var font := ThemeDB.fallback_font
+	draw_string(font, at + Vector2(0, -6.0 * k), structure.data.display_name, HORIZONTAL_ALIGNMENT_LEFT, -1, int(14 * k), Color(1, 0.85, 0.85))
 
 
 ## A silenced tower shows a crossed-out ring until it can fire again.

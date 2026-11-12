@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"vael_orrun_unmade"
+display_name = "Vael-Orrun, the Unmade"
+max_health = 4800.0
+speed = 15.0
+armour = 3.0
+bounty = 800
+leak_damage = 999
+tags = Array[StringName]([&"boss", &"overlord"])
+description = "The shell is gone. What is left is the Unmaking itself, burning in the shape of a king. It silences every tower near it, and nothing slows it for long. Break it and it flees back to its citadel."
+prismatic_interval = 4.0
+silence_interval = 6.0
+silence_radius = 260.0
+silence_duration = 3.0
+flee_when_beaten = true

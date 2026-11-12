@@ -23,6 +23,8 @@ signal next_stage_pressed
 signal hero_pressed(hero_id: StringName)
 ## The selected hero's Move button.
 signal move_pressed
+## A unit picked in the muster bar of the counter-attack.
+signal muster_pressed(ally_id: StringName)
 
 const TOP_BAR_HEIGHT := 72.0
 const SIDE_PANEL_X := 1584.0
@@ -88,19 +90,30 @@ var _end_meta: Label
 var _end_stage: RichTextLabel
 var _campaign_button: Button
 var _next_stage_button: Button
+## The muster bar of the final assault's counter-attack, or null in any other stage.
+var muster: MusterBar
 
 
 func setup(p_sim: RunSim) -> void:
 	sim = p_sim
-	theme = UiStyle.make_theme()
+	theme = UiStyle.hud_theme()
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_build_top_bar()
 	_build_side_panel()
 	_build_message()
+	_build_muster()
 	_build_end_panel()
+	# Everything in the HUD, and whatever it adds later (hero buttons, choices), uses the pixel fonts.
+	UiStyle.pixel_fonts(self)
+	get_tree().node_added.connect(_on_node_added)
 	sim.wave_cleared.connect(_on_wave_cleared)
 	sim.wave_started.connect(_announce_wave)
+
+
+func _on_node_added(node: Node) -> void:
+	if node is Control and is_ancestor_of(node):
+		UiStyle.pixel_fonts.call_deferred(node)
 
 
 ## "Wave 7", and on a second line how it comes: "Runner packs, a flank attack and a closing surge."
@@ -144,8 +157,8 @@ func _build_top_bar() -> void:
 	# Every item has a set width, so a long wave description can never push the buttons off the screen.
 	_gold = _stat(row, &"coin", UiStyle.GOLD, 78, "Gold")
 	_lives = _stat(row, &"heart", UiStyle.LIFE, 54, "Lives")
-	_wave = _fixed_label(row, 24, UiStyle.TEXT, 168)
-	_stage = _fixed_label(row, 18, UiStyle.TEXT_DIM, 210 if sim.party.is_empty() else 150)
+	_wave = _fixed_label(row, 24, UiStyle.TEXT, 140)
+	_stage = _fixed_label(row, 18, UiStyle.TEXT_DIM, 200 if sim.party.is_empty() else 120)
 	_hero_row = HBoxContainer.new()
 	_hero_row.add_theme_constant_override("separation", 4)
 	row.add_child(_hero_row)
@@ -156,23 +169,23 @@ func _build_top_bar() -> void:
 	_next.bbcode_enabled = true
 	_next.scroll_active = false
 	_next.autowrap_mode = TextServer.AUTOWRAP_OFF
-	_next.custom_minimum_size = Vector2(240, 52)
+	_next.custom_minimum_size = Vector2(200, 52)
 	_next.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_next.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_next.add_theme_font_size_override("normal_font_size", 17)
 	_next.add_theme_font_size_override("bold_font_size", 17)
 	row.add_child(_next)
-	_web_button = _bar_button(row, 290)
+	_web_button = _bar_button(row, 268)
 	_web_button.pressed.connect(func() -> void: web_pressed.emit())
-	_speed_button = _bar_button(row, 160)
+	_speed_button = _bar_button(row, 140)
 	_speed_button.pressed.connect(func() -> void: speed_pressed.emit())
-	var audio_button := _bar_button(row, 120)
+	var audio_button := _bar_button(row, 112)
 	audio_button.text = "Audio (O)"
 	audio_button.tooltip_text = "Volume and mute for music, effects, interface and voices. M mutes everything."
 	audio_button.pressed.connect(func() -> void: audio_pressed.emit())
-	_wave_button = _bar_button(row, 232)
+	_wave_button = _bar_button(row, 206)
 	_wave_button.pressed.connect(func() -> void: start_wave_pressed.emit())
-	_menu_button = _bar_button(row, 128)
+	_menu_button = _bar_button(row, 118)
 	_menu_button.text = "Menu (Esc)"
 	_menu_button.tooltip_text = "Pause the run: resume, exit to the main menu, audio settings, or quit to the desktop."
 	_menu_button.pressed.connect(func() -> void: pause_menu_pressed.emit())
@@ -213,7 +226,7 @@ func _fixed_label(row: HBoxContainer, font_size: int, color: Color, width: float
 
 
 func _bar_button(row: HBoxContainer, width: float) -> Button:
-	var button := UiStyle.button("", 19)
+	var button := UiStyle.button("", 24)
 	button.custom_minimum_size = Vector2(width, 0)
 	button.clip_text = true
 	row.add_child(button)
@@ -243,8 +256,8 @@ func _build_side_panel() -> void:
 		tab.custom_minimum_size = Vector2(0, 30)
 		tab.clip_text = true
 		# The open tab wears the gold frame.
-		tab.add_theme_stylebox_override("pressed", UiStyle.button_box("picked", 5, 4))
-		tab.add_theme_stylebox_override("hover_pressed", UiStyle.button_box("picked", 5, 4))
+		tab.add_theme_stylebox_override("pressed", UiStyle.menu_button_box("picked", 5, 4))
+		tab.add_theme_stylebox_override("hover_pressed", UiStyle.menu_button_box("picked", 5, 4))
 		tab.pressed.connect(show_shop_tier.bind(tier))
 		tabs.add_child(tab)
 		_tier_tabs[tier] = tab
@@ -323,7 +336,7 @@ func _build_side_panel() -> void:
 ## A section title with a dim note beside it, such as the keys that work there.
 func _heading(title: String, note: String) -> HBoxContainer:
 	var row := HBoxContainer.new()
-	row.add_child(UiStyle.label(title, 22))
+	row.add_child(UiStyle.menu_title(title, 32))
 	var hint := UiStyle.label(note, 14, UiStyle.TEXT_DIM)
 	hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -360,11 +373,24 @@ func _build_skills(column: VBoxContainer) -> void:
 		_skill_ids.append(skill_id)
 
 
+func _build_muster() -> void:
+	if not sim.is_counter_assault() or sim.config.allies.is_empty():
+		return
+	muster = MusterBar.new()
+	muster.setup(sim)
+	muster.position = Vector2(24, 912)
+	muster.size = Vector2(1536, 144)
+	muster.muster_pressed.connect(func(ally_id: StringName) -> void: muster_pressed.emit(ally_id))
+	add_child(muster)
+
+
 func _build_message() -> void:
 	_message = UiStyle.label("", 30)
+	_message.add_theme_color_override("font_outline_color", UiStyle.MENU_INK)
+	_message.add_theme_constant_override("outline_size", 8)
 	_message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_message.position = Vector2(24, 108)
-	_message.size = Vector2(1536, 40)
+	_message.size = Vector2(1536, 90)
 	_message.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_message)
 
@@ -590,7 +616,7 @@ func _hero_info(tower: SimTower) -> String:
 func _refresh() -> void:
 	_gold.text = "%d" % sim.gold
 	_lives.text = "%d" % sim.lives
-	_wave.text = "Wave %d / %d" % [sim.wave_number(), sim.total_waves()]
+	_wave.text = "Wave %d / %d" % [mini(sim.wave_number(), sim.total_waves()), sim.total_waves()]
 	var where: PackedStringArray = []
 	var difficulty := sim.config.difficulty
 	if difficulty != null and difficulty.order > 0:
@@ -616,6 +642,10 @@ func _refresh() -> void:
 			_wave_button.text = "Start wave (Space)"
 		RunSim.State.WAVE:
 			_wave_button.text = "Wave in progress"
+			if sim.rolls_on() and sim.next_wave_in() > 0.0:
+				_wave_button.text = "Next wave in %d s" % ceili(sim.next_wave_in())
+			elif sim.counter_started:
+				_wave_button.text = "Counter-attack!"
 		_:
 			_wave_button.text = "Run over"
 	var number := 0

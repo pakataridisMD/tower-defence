@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_mirelle"
+display_name = "Mirelle the Tide-Seer"
+title = "Seer of Frostmere"
+description = "The Tide-Seer slows the horde and mends the line."
+role = 5
+element = &"water"
+hero = &"mirelle"
+order = 104
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 380.0
+armour = 4.0
+speed = 55.0
+blocks = false
+damage = 20.0
+attack_interval = 1.0
+attack_range = 200.0
+slow = 0.4
+slow_duration = 2.0
+heal_amount = 0.06
+heal_radius = 180.0
+heal_interval = 2.0

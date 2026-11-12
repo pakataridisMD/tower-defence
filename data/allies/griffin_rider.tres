@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"griffin_rider"
+display_name = "Highwind Hawk-Riders"
+title = "From the sky"
+description = "Galeborn riders on the great storm-hawks of the high Steppe. They fly over the horde and strike the citadel's walls."
+role = 0
+element = &"storm"
+order = 16
+cost = 200
+cooldown = 10.0
+count = 2
+max_health = 120.0
+armour = 2.0
+speed = 120.0
+flying = true
+blocks = false
+damage = 22.0
+attack_interval = 1.0
+attack_range = 60.0
+siege_multiplier = 1.5

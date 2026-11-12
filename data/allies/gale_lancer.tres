@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"gale_lancer"
+display_name = "Galeborn Sky-Lancers"
+title = "Storm cavalry"
+description = "Riders of the Steppe. They hit like thunder and get where they are going before anyone else."
+role = 0
+element = &"storm"
+order = 5
+cost = 140
+cooldown = 7.0
+count = 2
+max_health = 130.0
+armour = 3.0
+speed = 110.0
+damage = 26.0
+attack_interval = 1.5
+attack_range = 44.0

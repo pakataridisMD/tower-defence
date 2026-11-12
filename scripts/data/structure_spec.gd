@@ -19,3 +19,6 @@ extends Resource
 ## Health of what it releases, as a share of a normal enemy of its kind at this wave. Echoes are
 ## weaker copies.
 @export var release_health: float = 1.0
+## Cells it covers, as a rectangle in grid cells (its own cell included). Empty covers only `cell`.
+## Nothing can be built there.
+@export var footprint: Rect2i

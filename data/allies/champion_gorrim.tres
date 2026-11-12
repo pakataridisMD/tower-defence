@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AllyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/ally_data.gd" id="1_ally"]
+
+[resource]
+script = ExtResource("1_ally")
+id = &"champion_gorrim"
+display_name = "Gorrim Stonebeard"
+title = "Shield of the Canyon"
+description = "The Shield of the Canyon. Nothing gets past him."
+role = 5
+element = &"earth"
+hero = &"gorrim"
+order = 105
+cost = 320
+cooldown = 45.0
+count = 1
+max_alive = 1
+max_health = 900.0
+armour = 18.0
+speed = 42.0
+damage = 26.0
+attack_interval = 1.2
+attack_range = 40.0

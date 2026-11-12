@@ -25,6 +25,8 @@ const SKILL_CROWD := 4
 const SKILL_BOARD_CROWD := 6
 ## A skill that pushes enemies back is kept for when one is this far along its road.
 const SKILL_PUSH_PROGRESS := 0.65
+## Simulation steps between building rounds while waves roll in without a break.
+const BUILD_IN_WAVE_STEPS := 120
 ## What the bot expects an ascension to add to a tower's damage, as a share.
 const ASCEND_GAIN := 0.35
 
@@ -41,6 +43,18 @@ var skills := true
 var heroes := true
 ## Turn off to stop the bot at the top level instead of ascending.
 var ascends := true
+## Turn off to leave the counter-attack's units unmustered.
+var musters := true
+## The order the bot musters troops in the counter-attack, round and round. Champions come first
+## whenever one is ready.
+var muster_plan: Array[StringName] = [
+	&"footman", &"crossbowman", &"pikeman", &"tide_priestess", &"ironbreaker", &"banner_bearer",
+	&"battering_ram", &"footman", &"root_archer", &"ember_knight", &"lantern_cleric", &"sunstone_catapult",
+	&"spire_golem", &"firebrand", &"pearl_marine", &"stormcaller", &"gale_lancer", &"griffin_rider",
+	&"veil_blade", &"hollow_hunter", &"warhound",
+]
+## The road the bot marches on. Its army stays together.
+var muster_lane := 0
 ## How far the bot trusts an upgrade against a new tower. At 1 it takes its own sums at face value;
 ## lower leans toward building more towers.
 var upgrade_bias := 0.6
@@ -48,6 +62,9 @@ var upgrade_bias := 0.6
 var _path_samples := PackedVector2Array()
 var _coverage_cache: Dictionary[Vector3i, int] = {}
 var _skill_wait := 0
+var _muster_wait := 0
+var _build_wait := 0
+var _muster_next := 0
 
 
 func _init(
@@ -77,7 +94,7 @@ static func for_sim(p_sim: RunSim) -> AutoPlayer:
 		bot = AutoPlayer.new(p_sim, plan[0], plan[1])
 	# An assault is long and pushes across the whole map, so it takes more towers.
 	if p_sim.is_assault():
-		bot.max_towers = 70
+		bot.max_towers = 100 if p_sim.is_counter_assault() else 70
 	return bot
 
 
@@ -145,9 +162,58 @@ static func _hybrid(config: RunConfig, a: StringName, b: StringName) -> StringNa
 ## before every simulation step.
 func act() -> void:
 	if sim.state == RunSim.State.BUILDING:
+		# The final level counts its breaks down: wait them out as a person would, building.
+		if sim.is_counter_assault() and sim.break_time_left >= 0.0:
+			spend_points()
+			build_towers()
+			sim.tick_break(RunSim.STEP)
+			return
 		play_build_phase()
 	elif sim.state == RunSim.State.WAVE:
 		use_skills()
+		play_wave_step()
+
+
+## What the bot does in a wave besides its skills: in the final level it builds while the waves roll
+## in and musters its army in the counter-attack. Cheap to call every step.
+func play_wave_step() -> void:
+	if sim.state != RunSim.State.WAVE:
+		return
+	muster_army()
+	# The final assault's waves roll into each other with no break: build while they come.
+	if sim.rolls_on():
+		_build_wait -= 1
+		if _build_wait <= 0:
+			_build_wait = BUILD_IN_WAVE_STEPS
+			spend_points()
+			build_towers()
+
+
+## In the counter-attack: musters every champion who is ready, then troops in the plan's order.
+func muster_army() -> void:
+	if not musters or not sim.counter_started or sim.is_over():
+		return
+	_muster_wait -= 1
+	if _muster_wait > 0:
+		return
+	_muster_wait = SKILL_CHECK_STEPS
+	for ally in sim.ally_list():
+		if ally.is_champion() and sim.muster_error(ally.id, muster_lane).is_empty():
+			sim.muster(ally.id, muster_lane)
+	if muster_plan.is_empty():
+		return
+	for i in muster_plan.size():
+		var id := muster_plan[(_muster_next + i) % muster_plan.size()]
+		if not sim.config.allies.has(id):
+			continue
+		if sim.muster_error(id, muster_lane).is_empty():
+			sim.muster(id, muster_lane)
+			_muster_next = (_muster_next + i + 1) % muster_plan.size()
+			return
+		# Wait for the next one in the plan if it only lacks gold, so cheap troops do not crowd out
+		# the war machines.
+		if sim.muster_cooldown_left(id) <= 0.0 and sim.gold < sim.ally_price(id):
+			return
 
 
 ## Spend points and gold, then start the next wave. Does nothing unless the sim is building.

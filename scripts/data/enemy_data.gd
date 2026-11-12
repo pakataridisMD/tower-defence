@@ -80,6 +80,25 @@ extends Resource
 ## with the power are marked out (a grunt's eyes burn).
 @export_range(0.0, 1.0) var power_share: float = 1.0
 
+@export_group("Forms")
+## Id of the enemy it becomes when its health runs out, instead of dying: a boss's next, worse form.
+## It stands still and cannot be hurt for transform_seconds while it changes, then fights on at the
+## new form's full health.
+@export var next_form: StringName
+@export var transform_seconds: float = 3.0
+## When its health runs out it does not die: it turns and flees back up its road, beyond reach, and
+## leaves the board where it came in. It costs no lives and pays its bounty.
+@export var flee_when_beaten: bool = false
+@export_group("Counter-attack")
+## Damage per second it deals to the player's mustered units it fights, at wave 1 (it grows with the
+## enemy's health). 0 uses a default from its leak damage.
+@export var attack_damage: float = 0.0
+## A building's defences: every bolt_interval seconds it strikes up to bolt_count of the player's
+## units within bolt_radius pixels for bolt_damage each (at wave 1, growing like its health).
+@export var bolt_interval: float = 0.0
+@export var bolt_damage: float = 0.0
+@export var bolt_radius: float = 0.0
+@export var bolt_count: int = 1
 @export_group("Structure")
 ## A building of the enemy base in an assault: it never moves and never leaks. Towers shoot it
 ## once nothing that walks is in range. See StageData.structures.
@@ -130,6 +149,10 @@ func trait_words() -> PackedStringArray:
 		words.append("enrages")
 	if escape_below > 0.0:
 		words.append("escapes when beaten")
+	if not next_form.is_empty():
+		words.append("changes form")
+	if flee_when_beaten:
+		words.append("flees when beaten")
 	match power:
 		&"rise":
 			words.append("rises once")
