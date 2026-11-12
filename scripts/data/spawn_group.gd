@@ -75,3 +75,15 @@ func pack_of(index: int) -> int:
 func duration() -> float:
 	var times := spawn_times()
 	return times[-1] if not times.is_empty() else 0.0
+
+
+## A copy of the group with `multiplier` times as many enemies, spaced closer by the same amount so
+## it lasts about as long: packs grow instead of coming more often.
+func scaled(multiplier: float) -> SpawnGroup:
+	var copy := duplicate() as SpawnGroup
+	copy.count = maxi(1, roundi(count * multiplier))
+	var actual := float(copy.count) / float(maxi(count, 1))
+	if pattern == Pattern.PACKS:
+		copy.pack_size = maxi(1, roundi(pack_size * actual))
+	copy.spawn_interval = spawn_interval / actual
+	return copy

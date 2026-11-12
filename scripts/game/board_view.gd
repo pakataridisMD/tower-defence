@@ -55,6 +55,10 @@ var _ground: Node2D
 var art: BoardArt
 ## Draws the defended city's name over the art, or null.
 var _names: Node2D
+## Draws the army's health bars, the champions' names and what the units shout, over the art.
+var _army_layer: Node2D
+## Words over units' heads: [ally, text, seconds shown, seconds to show].
+var _speech: Array[Array] = []
 
 
 ## A short-lived visual: a lightning arc, an explosion, floating gold text or a leak flash.
@@ -94,6 +98,11 @@ func setup(p_sim: RunSim) -> void:
 		_ground.show_behind_parent = true
 		_ground.draw.connect(_draw_ground_layer)
 		add_child(_ground)
+	_army_layer = Node2D.new()
+	_army_layer.z_index = 8
+	_army_layer.material = overlay
+	_army_layer.draw.connect(_draw_army_layer)
+	add_child(_army_layer)
 	sim.chain_fired.connect(_on_chain_fired)
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.enemy_killed.connect(_on_enemy_killed)
@@ -198,6 +207,14 @@ func _process(delta: float) -> void:
 		if effect.time < effect.duration:
 			active.append(effect)
 	_effects = active
+	var speaking: Array[Array] = []
+	for words in _speech:
+		words[2] += delta
+		if words[2] < words[3] and (words[0] as SimAlly).alive:
+			speaking.append(words)
+	_speech = speaking
+	if not sim.allies.is_empty() or not _speech.is_empty():
+		_army_layer.queue_redraw()
 	if selected != null and not sim.towers.has(selected):
 		select(null)
 	hover_cell = sim.config.map.cell_at(_mouse)
@@ -527,28 +544,104 @@ func _draw_enemy_ground() -> void:
 	draw_dashed_line(Vector2(left, 0), Vector2(left, map.size_in_pixels().y), Color(1.0, 0.35, 0.45, 0.4 + 0.3 * pulse), 3.0, 14.0)
 
 
-## A unit of the counter-attack: a marker when it has no art, and its health bar.
+## A unit of the counter-attack with no art of its own: a marker. Its bar is drawn over the art by
+## _draw_army_layer.
 func _draw_ally(ally: SimAlly) -> void:
-	if not ally.alive:
+	if not ally.alive or (art != null and AllyArt.has_art(ally.data)):
 		return
-	var drawn := art != null and AllyArt.has_art(ally.data)
 	var radius := 14.0 if ally.is_champion() else 10.0
-	if not drawn:
-		var color := UiStyle.GOLD if ally.is_champion() else Color(0.75, 0.2, 0.2)
-		if not ally.data.element.is_empty():
-			color = sim.config.element_color(ally.data.element)
-		draw_circle(ally.position, radius + 3.0, Color(0.95, 0.85, 0.55))
-		draw_circle(ally.position, radius, Color(0.12, 0.1, 0.14))
-		draw_circle(ally.position, radius - 3.0, color)
-	var tall := 112.0 if ally.is_champion() else 70.0
-	var width := 30.0 if ally.is_champion() else 22.0
+	var color := UiStyle.GOLD if ally.is_champion() else Color(0.75, 0.2, 0.2)
+	if not ally.data.element.is_empty():
+		color = sim.config.element_color(ally.data.element)
+	draw_circle(ally.position, radius + 3.0, Color(0.95, 0.85, 0.55))
+	draw_circle(ally.position, radius, Color(0.12, 0.1, 0.14))
+	draw_circle(ally.position, radius - 3.0, color)
+
+
+## Shows words over a unit's head for a while (ArmyVoice calls it when a unit shouts).
+func say(ally: SimAlly, text: String, seconds: float = 2.4) -> void:
+	for words in _speech:
+		if words[0] == ally:
+			words[1] = text
+			words[2] = 0.0
+			words[3] = seconds
+			return
+	_speech.append([ally, text, 0.0, seconds])
+
+
+## Words being shown over units' heads now: [ally, text, seconds shown, seconds to show].
+func speech() -> Array[Array]:
+	return _speech
+
+
+## Where a unit's head is drawn, in board pixels.
+func ally_top(ally: SimAlly) -> Vector2:
+	if art != null and AllyArt.has_art(ally.data):
+		return art.army.top(ally)
+	return ally.position + Vector2(0, -(14.0 if ally.is_champion() else 10.0) - 6.0)
+
+
+## Over the art: a health bar on every unit of the army (a champion's in gold, with its name), and
+## the words a unit shouts in a small dark box over its head.
+func _draw_army_layer() -> void:
 	var k := label_scale()
-	width *= k
-	var top := (BoardArt.ENEMY_DROP * BoardArt.SCALE - tall) if drawn else -radius - 10.0
-	var top_left := ally.position + Vector2(-width * 0.5, top - 4.0 * (k - 1.0))
-	if ally.health < ally.max_health or ally.is_champion():
-		draw_rect(Rect2(top_left - Vector2(1, 1) * k, Vector2(width + 2.0 * k, 5.0 * k)), Color(0, 0, 0, 0.75))
-		draw_rect(Rect2(top_left, Vector2(width * ally.health / ally.max_health, 3.0 * k)), UiStyle.GOLD if ally.is_champion() else Color(0.45, 0.75, 1.0))
+	var on := _army_layer
+	for ally in sim.allies:
+		if not ally.alive:
+			continue
+		var head := ally_top(ally)
+		var champion := ally.is_champion()
+		var width := (46.0 if champion else 26.0) * k
+		var tall := (6.0 if champion else 4.0) * k
+		var at := head + Vector2(-width * 0.5, -tall - 6.0 * k)
+		var share := clampf(ally.health / ally.max_health, 0.0, 1.0)
+		on.draw_rect(Rect2(at - Vector2(1.5, 1.5) * k, Vector2(width + 3.0 * k, tall + 3.0 * k)), Color(0, 0, 0, 0.8))
+		on.draw_rect(Rect2(at, Vector2(width, tall)), Color(0.22, 0.06, 0.06, 0.9))
+		on.draw_rect(Rect2(at, Vector2(width * share, tall)), _ally_bar_color(ally, share))
+		if champion:
+			# A notch every quarter, and the hero's name.
+			for q in [0.25, 0.5, 0.75]:
+				on.draw_rect(Rect2(at + Vector2(width * q - 0.5 * k, 0), Vector2(1.0 * k, tall)), Color(0, 0, 0, 0.55))
+			var size := roundi(13 * k)
+			# The first name only: heroes march together, and full names would run into each other.
+			var label := ally.data.display_name.get_slice(" ", 0)
+			var label_width := _font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, size).x
+			var spot := Vector2(head.x - label_width * 0.5, at.y - 4.0 * k)
+			on.draw_string_outline(_font, spot, label, HORIZONTAL_ALIGNMENT_LEFT, -1, size, roundi(4 * k), Color(0, 0, 0, 0.85))
+			on.draw_string(_font, spot, label, HORIZONTAL_ALIGNMENT_LEFT, -1, size, UiStyle.GOLD)
+	for words in _speech:
+		_draw_words(on, words[0], words[1], words[2], words[3], k)
+
+
+func _ally_bar_color(ally: SimAlly, share: float) -> Color:
+	if ally.is_champion():
+		return UiStyle.GOLD.lerp(UiStyle.BAD, clampf((0.4 - share) / 0.4, 0.0, 1.0))
+	if share > 0.6:
+		return Color(0.42, 0.85, 0.42)
+	if share > 0.3:
+		return Color(0.95, 0.78, 0.25)
+	return Color(0.95, 0.3, 0.22)
+
+
+func _draw_words(on: Node2D, ally: SimAlly, text: String, shown: float, length: float, k: float) -> void:
+	var alpha := clampf(shown / 0.15, 0.0, 1.0) * clampf((length - shown) / 0.35, 0.0, 1.0)
+	var size := roundi(15 * k)
+	var text_size := _font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, size)
+	var pad := Vector2(7, 4) * k
+	var head := ally_top(ally)
+	var rise := 4.0 * k * minf(1.0, shown / 0.2)
+	var bottom := head.y - (30.0 if ally.is_champion() else 16.0) * k - rise
+	var box := Rect2(Vector2(head.x - text_size.x * 0.5 - pad.x, bottom - text_size.y - pad.y * 2.0), text_size + pad * 2.0)
+	var fill := Color(0.06, 0.05, 0.07, 0.86 * alpha)
+	var edge := Color(UiStyle.GOLD if ally.is_champion() else Color(0.85, 0.8, 0.7), 0.9 * alpha)
+	on.draw_rect(box, fill)
+	on.draw_rect(box, edge, false, 1.5 * k)
+	var tip := PackedVector2Array([Vector2(head.x - 5.0 * k, box.end.y), Vector2(head.x + 5.0 * k, box.end.y),
+		Vector2(head.x, box.end.y + 6.0 * k)])
+	on.draw_colored_polygon(tip, fill)
+	var ink := Color(1.0, 0.92, 0.7) if ally.is_champion() else UiStyle.TEXT
+	on.draw_string(_font, Vector2(box.position.x + pad.x, box.end.y - pad.y - text_size.y * 0.22), text, HORIZONTAL_ALIGNMENT_LEFT,
+		-1, size, Color(ink, alpha))
 
 
 ## A building of the enemy base: its health bar, and a shield while it cannot be hurt yet.

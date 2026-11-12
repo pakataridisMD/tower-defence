@@ -12,7 +12,7 @@
 TUNING["ember_1"] = {"health": 3.05}
 TUNING["ember_2"] = {"health": 3.93, "boss": 0.45}
 TUNING["ember_3"] = {"health": 4.67, "boss": 1.33}
-TUNING["ember_4"] = {"health": 5.71, "boss": 0.53}
+TUNING["ember_4"] = {"health": 5.71, "boss": 0.45}
 TUNING["storm_1"] = {"health": 4.89}
 TUNING["storm_2"] = {"health": 5.71, "boss": 0.77}
 TUNING["storm_3"] = {"health": 4.79, "boss": 3.24}
@@ -45,3 +45,12 @@ TUNING["assault_1"] = {"health": 2.3, "boss": 0.04, "lives": 30}
 # meta tree: it found 0.95, but the Water/Earth/Void plan only scrapes through there, so this sits a
 # little lower.
 TUNING["prototype"] = {"health": 0.85}
+# The land skirmish maps' own waves (data/waves/skirmish_<map>.tres), from
+# `campaign_balance.gd -- --skirmish --map=<map>` with no meta tree, x0.95. gen_campaign.py triples them
+# (SKIRMISH_HARDNESS), as it does the prototype waves above.
+TUNING["skirmish_cinderfall"] = {"health": 0.3}
+TUNING["skirmish_stormcrown"] = {"health": 0.41}
+TUNING["skirmish_thornwild"] = {"health": 0.49}
+TUNING["skirmish_frozen_ford"] = {"health": 0.35}
+TUNING["skirmish_red_gorge"] = {"health": 0.35}
+TUNING["skirmish_riftwalk"] = {"health": 0.5}

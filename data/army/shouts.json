@@ -1,0 +1,1287 @@
+{
+ "_about": "Battle shouts of the counter-attack. Written by tools/army/shouts.py; do not edit by hand. Audio: assets/audio/army/<voice or hero>/<id>.ogg. A [tag] leading a line is for the voice only.",
+ "voices": {
+  "line": {
+   "who": "Solenne Footmen, Lantern Pikemen, Forge-Knights, the Banner",
+   "units": [
+    "footman",
+    "pikeman",
+    "ember_knight",
+    "banner_bearer"
+   ]
+  },
+  "wall": {
+   "who": "Wallguard Crossbows, Firebrands, Pearlhaven Harpooners",
+   "units": [
+    "crossbowman",
+    "firebrand",
+    "pearl_marine"
+   ]
+  },
+  "stone": {
+   "who": "Stoneborn Shieldbreakers",
+   "units": [
+    "ironbreaker"
+   ]
+  },
+  "veil": {
+   "who": "Deepwood Archers, Veilwalker Shades and Hollow-Hunters",
+   "units": [
+    "root_archer",
+    "veil_blade",
+    "hollow_hunter"
+   ]
+  },
+  "order": {
+   "who": "Order Lantern-Bearers, Tidefolk Ice-Seers",
+   "units": [
+    "lantern_cleric",
+    "tide_priestess"
+   ]
+  },
+  "gale": {
+   "who": "Galeborn Sky-Lancers, Stormcallers, Hawk-Riders",
+   "units": [
+    "gale_lancer",
+    "stormcaller",
+    "griffin_rider"
+   ]
+  },
+  "crew": {
+   "who": "Spirewright crews of the Ram, the Catapult and the Golem",
+   "units": [
+    "battering_ram",
+    "sunstone_catapult",
+    "spire_golem"
+   ]
+  }
+ },
+ "lines": {
+  "line": {
+   "muster": [
+    {
+     "id": "line_muster_1",
+     "text": "Solenne, with me! Up the road!"
+    },
+    {
+     "id": "line_muster_2",
+     "text": "Shields up! We march on Nhal Vorath!"
+    },
+    {
+     "id": "line_muster_3",
+     "text": "Form the line! The Lanternguard goes first!"
+    }
+   ],
+   "charge": [
+    {
+     "id": "line_charge_1",
+     "text": "Here they come! Hold the line!"
+    },
+    {
+     "id": "line_charge_2",
+     "text": "Unbound ahead! Shields together!"
+    }
+   ],
+   "fight": [
+    {
+     "id": "line_fight_1",
+     "text": "Push! Push them back to the Gate!"
+    },
+    {
+     "id": "line_fight_2",
+     "text": "Don't give them a step!"
+    },
+    {
+     "id": "line_fight_3",
+     "text": "Close the gap! Close it!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "line_siege_1",
+     "text": "We're at the wall! Hit it!"
+    },
+    {
+     "id": "line_siege_2",
+     "text": "Break the gate! Again!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "line_hurt_1",
+     "text": "[pained] I'm hit! Keep going!"
+    }
+   ],
+   "death": [
+    {
+     "id": "line_death_1",
+     "text": "[pained scream] Aaargh!"
+    },
+    {
+     "id": "line_death_2",
+     "text": "[choking gasp] Nnh... no..."
+    }
+   ],
+   "bolt": [
+    {
+     "id": "line_bolt_1",
+     "text": "Spires! Raise shields!"
+    }
+   ],
+   "crack": [
+    {
+     "id": "line_crack_1",
+     "text": "It's cracking! Keep hitting it!"
+    },
+    {
+     "id": "line_crack_2",
+     "text": "The wall's giving way!"
+    }
+   ],
+   "victory": [
+    {
+     "id": "line_victory_1",
+     "text": "[triumphant roar] Nhal Vorath is down! For Solenne!"
+    }
+   ]
+  },
+  "wall": {
+   "muster": [
+    {
+     "id": "wall_muster_1",
+     "text": "Crossbows, forward! Stay behind the shields!"
+    },
+    {
+     "id": "wall_muster_2",
+     "text": "Wallguard! Loose on my mark!"
+    },
+    {
+     "id": "wall_muster_3",
+     "text": "Fire up! Let's burn them out!"
+    }
+   ],
+   "charge": [
+    {
+     "id": "wall_charge_1",
+     "text": "Unbound in range! Loose!"
+    },
+    {
+     "id": "wall_charge_2",
+     "text": "Target the big ones!"
+    }
+   ],
+   "fight": [
+    {
+     "id": "wall_fight_1",
+     "text": "Reload! Reload!"
+    },
+    {
+     "id": "wall_fight_2",
+     "text": "Keep it coming! Don't stop shooting!"
+    },
+    {
+     "id": "wall_fight_3",
+     "text": "That's for the Lumen Gate!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "wall_siege_1",
+     "text": "Aim for the gate! Bring it down!"
+    },
+    {
+     "id": "wall_siege_2",
+     "text": "Every bolt on that wall!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "wall_hurt_1",
+     "text": "[pained] Argh, I'm bleeding! Cover me!"
+    }
+   ],
+   "death": [
+    {
+     "id": "wall_death_1",
+     "text": "[pained scream] Aaah!"
+    },
+    {
+     "id": "wall_death_2",
+     "text": "[sharp cry] Nngh!"
+    }
+   ],
+   "bolt": [
+    {
+     "id": "wall_bolt_1",
+     "text": "Down! The spires are firing!"
+    }
+   ],
+   "crack": [
+    {
+     "id": "wall_crack_1",
+     "text": "Look at it shake! Keep shooting!"
+    },
+    {
+     "id": "wall_crack_2",
+     "text": "We're breaking it!"
+    }
+   ],
+   "victory": [
+    {
+     "id": "wall_victory_1",
+     "text": "[triumphant] It's falling! It's really falling!"
+    }
+   ]
+  },
+  "stone": {
+   "muster": [
+    {
+     "id": "stone_muster_1",
+     "text": "Stoneborn! Hammers up!"
+    },
+    {
+     "id": "stone_muster_2",
+     "text": "We built walls for two thousand years. We know how to break one."
+    },
+    {
+     "id": "stone_muster_3",
+     "text": "Out of the way. We've a wall to knock down."
+    }
+   ],
+   "charge": [
+    {
+     "id": "stone_charge_1",
+     "text": "Let them come. Stone doesn't move."
+    },
+    {
+     "id": "stone_charge_2",
+     "text": "Into them, lads!"
+    }
+   ],
+   "fight": [
+    {
+     "id": "stone_fight_1",
+     "text": "[grunts] Is that all the Hollow's got?"
+    },
+    {
+     "id": "stone_fight_2",
+     "text": "Stand firm! Like the Canyon!"
+    },
+    {
+     "id": "stone_fight_3",
+     "text": "Hit it again!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "stone_siege_1",
+     "text": "Find the seam. Then hit the seam."
+    },
+    {
+     "id": "stone_siege_2",
+     "text": "Rune-hammers on the gate! Now!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "stone_hurt_1",
+     "text": "[grunts] Barely a scratch. Keep swinging."
+    }
+   ],
+   "death": [
+    {
+     "id": "stone_death_1",
+     "text": "[deep groan] Hrrgh..."
+    },
+    {
+     "id": "stone_death_2",
+     "text": "[roar, cut short] Raaah--"
+    }
+   ],
+   "bolt": [
+    {
+     "id": "stone_bolt_1",
+     "text": "Let the spires spit. Keep hammering."
+    }
+   ],
+   "crack": [
+    {
+     "id": "stone_crack_1",
+     "text": "Hear that? That's the stone giving up."
+    },
+    {
+     "id": "stone_crack_2",
+     "text": "There's the seam! Wider!"
+    }
+   ],
+   "victory": [
+    {
+     "id": "stone_victory_1",
+     "text": "[booming laugh] Down it comes! Mind your heads!"
+    }
+   ]
+  },
+  "veil": {
+   "muster": [
+    {
+     "id": "veil_muster_1",
+     "text": "We know the dark. Follow us in."
+    },
+    {
+     "id": "veil_muster_2",
+     "text": "Quietly now. Let the shield wall make the noise."
+    },
+    {
+     "id": "veil_muster_3",
+     "text": "Into the shadows. Find the big ones."
+    }
+   ],
+   "charge": [
+    {
+     "id": "veil_charge_1",
+     "text": "There. Under the arm. Strike."
+    },
+    {
+     "id": "veil_charge_2",
+     "text": "They can't see us. Go."
+    }
+   ],
+   "fight": [
+    {
+     "id": "veil_fight_1",
+     "text": "Thorn-arrows. Let them rot."
+    },
+    {
+     "id": "veil_fight_2",
+     "text": "One more. Then the next."
+    },
+    {
+     "id": "veil_fight_3",
+     "text": "I walked the Hollow. You don't frighten me."
+    }
+   ],
+   "siege": [
+    {
+     "id": "veil_siege_1",
+     "text": "The gate has weak joints. Here, and here."
+    },
+    {
+     "id": "veil_siege_2",
+     "text": "Cut the ropes behind the gate!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "veil_hurt_1",
+     "text": "[hisses in pain] Careless. Won't happen again."
+    }
+   ],
+   "death": [
+    {
+     "id": "veil_death_1",
+     "text": "[sharp gasp] Ah..."
+    },
+    {
+     "id": "veil_death_2",
+     "text": "[low groan] Mmh..."
+    }
+   ],
+   "bolt": [
+    {
+     "id": "veil_bolt_1",
+     "text": "Spires. Into the shadows."
+    }
+   ],
+   "crack": [
+    {
+     "id": "veil_crack_1",
+     "text": "It's bleeding. Keep cutting."
+    },
+    {
+     "id": "veil_crack_2",
+     "text": "The stone's splitting."
+    }
+   ],
+   "victory": [
+    {
+     "id": "veil_victory_1",
+     "text": "[quietly, satisfied] It's done. Vael's house falls."
+    }
+   ]
+  },
+  "order": {
+   "muster": [
+    {
+     "id": "order_muster_1",
+     "text": "Lanterns lit! Stay in the light!"
+    },
+    {
+     "id": "order_muster_2",
+     "text": "The Order marches. Wounded, come to me!"
+    },
+    {
+     "id": "order_muster_3",
+     "text": "The Tidefolk are with you. We'll close your wounds."
+    }
+   ],
+   "charge": [
+    {
+     "id": "order_charge_1",
+     "text": "Stay close to the lanterns!"
+    },
+    {
+     "id": "order_charge_2",
+     "text": "Hold on, I'm coming!"
+    }
+   ],
+   "fight": [
+    {
+     "id": "order_fight_1",
+     "text": "Stand in the light! It will mend you!"
+    },
+    {
+     "id": "order_fight_2",
+     "text": "Breathe. You're not done yet."
+    },
+    {
+     "id": "order_fight_3",
+     "text": "Who's hurt? Here!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "order_siege_1",
+     "text": "Push them to the gate! We'll keep you standing!"
+    },
+    {
+     "id": "order_siege_2",
+     "text": "Lanterns forward! Light the wall!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "order_hurt_1",
+     "text": "[pained] I can still heal, keep going!"
+    }
+   ],
+   "death": [
+    {
+     "id": "order_death_1",
+     "text": "[soft cry] Oh..."
+    },
+    {
+     "id": "order_death_2",
+     "text": "[gasp] Ahh..."
+    }
+   ],
+   "bolt": [
+    {
+     "id": "order_bolt_1",
+     "text": "Wounded! Back to the lanterns!"
+    }
+   ],
+   "crack": [
+    {
+     "id": "order_crack_1",
+     "text": "The wall is breaking! Hold on!"
+    },
+    {
+     "id": "order_crack_2",
+     "text": "Almost there! Don't fall now!"
+    }
+   ],
+   "victory": [
+    {
+     "id": "order_victory_1",
+     "text": "[joyful, through tears] It's down. Light the lanterns, all of them!"
+    }
+   ]
+  },
+  "gale": {
+   "muster": [
+    {
+     "id": "gale_muster_1",
+     "text": "Ride, Galeborn, ride!"
+    },
+    {
+     "id": "gale_muster_2",
+     "text": "Hawks up! Over the horde and onto the walls!"
+    },
+    {
+     "id": "gale_muster_3",
+     "text": "Storm's coming! Get out of our way!"
+    }
+   ],
+   "charge": [
+    {
+     "id": "gale_charge_1",
+     "text": "Lances down! Charge!"
+    },
+    {
+     "id": "gale_charge_2",
+     "text": "Hit them like thunder!"
+    }
+   ],
+   "fight": [
+    {
+     "id": "gale_fight_1",
+     "text": "Lightning, take them! Next one!"
+    },
+    {
+     "id": "gale_fight_2",
+     "text": "Faster! Faster!"
+    },
+    {
+     "id": "gale_fight_3",
+     "text": "Hah! Did you see that?"
+    }
+   ],
+   "siege": [
+    {
+     "id": "gale_siege_1",
+     "text": "Hit the spires from above!"
+    },
+    {
+     "id": "gale_siege_2",
+     "text": "Bring the lightning down on that gate!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "gale_hurt_1",
+     "text": "[pained] I'm hit! Still flying!"
+    }
+   ],
+   "death": [
+    {
+     "id": "gale_death_1",
+     "text": "[falling scream] Aaaah!"
+    },
+    {
+     "id": "gale_death_2",
+     "text": "[cry] No!"
+    }
+   ],
+   "bolt": [
+    {
+     "id": "gale_bolt_1",
+     "text": "Spire fire! Break left!"
+    }
+   ],
+   "crack": [
+    {
+     "id": "gale_crack_1",
+     "text": "It's cracking! Again! Again!"
+    },
+    {
+     "id": "gale_crack_2",
+     "text": "Look at the walls! They're coming down!"
+    }
+   ],
+   "victory": [
+    {
+     "id": "gale_victory_1",
+     "text": "[whooping] It's down! Ride, ride, ride!"
+    }
+   ]
+  },
+  "crew": {
+   "muster": [
+    {
+     "id": "crew_muster_1",
+     "text": "Get that ram moving! Put your backs into it!"
+    },
+    {
+     "id": "crew_muster_2",
+     "text": "Catapult up! Sunstone shards, and mind your fingers!"
+    },
+    {
+     "id": "crew_muster_3",
+     "text": "Spirewrights! Wake the golem and walk it in!"
+    }
+   ],
+   "charge": [
+    {
+     "id": "crew_charge_1",
+     "text": "Don't stop for the horde! The gate's the job!"
+    },
+    {
+     "id": "crew_charge_2",
+     "text": "Keep rolling, lads!"
+    }
+   ],
+   "fight": [
+    {
+     "id": "crew_fight_1",
+     "text": "Keep the wheels turning!"
+    },
+    {
+     "id": "crew_fight_2",
+     "text": "Load! Wind! Loose!"
+    },
+    {
+     "id": "crew_fight_3",
+     "text": "Steady, steady!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "crew_siege_1",
+     "text": "And swing! And swing!"
+    },
+    {
+     "id": "crew_siege_2",
+     "text": "Right on the gate! Beautiful!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "crew_hurt_1",
+     "text": "[grunts] She's taking a beating, keep pushing!"
+    }
+   ],
+   "death": [
+    {
+     "id": "crew_death_1",
+     "text": "[groan] Agh... keep it going..."
+    },
+    {
+     "id": "crew_death_2",
+     "text": "[shout, cut short] Look out--"
+    }
+   ],
+   "bolt": [
+    {
+     "id": "crew_bolt_1",
+     "text": "Spire fire! Get under the roof!"
+    }
+   ],
+   "crack": [
+    {
+     "id": "crew_crack_1",
+     "text": "She's cracking! Hit the same spot!"
+    },
+    {
+     "id": "crew_crack_2",
+     "text": "That gate's going! Once more!"
+    }
+   ],
+   "victory": [
+    {
+     "id": "crew_victory_1",
+     "text": "[gruff laugh] Ha! Told you she'd come down!"
+    }
+   ]
+  }
+ },
+ "champions": {
+  "tamsin": {
+   "muster": [
+    {
+     "id": "tamsin_muster",
+     "text": "Lanternguard, on me! We take that gate today."
+    }
+   ],
+   "fight": [
+    {
+     "id": "tamsin_fight",
+     "text": "Keep your shields up. I'm not writing any more letters home."
+    }
+   ],
+   "siege": [
+    {
+     "id": "tamsin_siege",
+     "text": "We came through the Rift for this. Hit it!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "tamsin_hurt",
+     "text": "[pained] I've had worse. Keep moving!"
+    }
+   ],
+   "death": [
+    {
+     "id": "tamsin_death",
+     "text": "[weakly] Finish it... for Solenne..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "tamsin_crack",
+     "text": "It's coming down! Everyone, together!"
+    }
+   ]
+  },
+  "brannoc": {
+   "muster": [
+    {
+     "id": "brannoc_muster",
+     "text": "Out of my way! This hammer was made for gates!"
+    }
+   ],
+   "fight": [
+    {
+     "id": "brannoc_fight",
+     "text": "Come here, Unbound! I'll beat you flat like iron!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "brannoc_siege",
+     "text": "Every blow I strike is for the Reach! Again!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "brannoc_hurt",
+     "text": "[grunts] Ha! You hit like a cold forge!"
+    }
+   ],
+   "death": [
+    {
+     "id": "brannoc_death",
+     "text": "[roaring, then fading] The fire... goes out..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "brannoc_crack",
+     "text": "Hear it ring? It's breaking!"
+    }
+   ]
+  },
+  "kaela": {
+   "muster": [
+    {
+     "id": "kaela_muster",
+     "text": "Galeborn, follow me! Nobody rides ahead of the Marshal!"
+    }
+   ],
+   "fight": [
+    {
+     "id": "kaela_fight",
+     "text": "Too slow! The Steppe rides faster than you!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "kaela_siege",
+     "text": "Straight at the gate! Don't stop for anything!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "kaela_hurt",
+     "text": "[pained] I'm still in the saddle!"
+    }
+   ],
+   "death": [
+    {
+     "id": "kaela_death",
+     "text": "[gasping] Ride... ride on without me..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "kaela_crack",
+     "text": "It's cracking! Don't give them time to breathe!"
+    }
+   ]
+  },
+  "sylvaine": {
+   "muster": [
+    {
+     "id": "sylvaine_muster",
+     "text": "The Deepwood's archers are with you. Keep your heads down."
+    }
+   ],
+   "fight": [
+    {
+     "id": "sylvaine_fight",
+     "text": "Every arrow finds its mark."
+    }
+   ],
+   "siege": [
+    {
+     "id": "sylvaine_siege",
+     "text": "The gate has joints. My arrows will find them."
+    }
+   ],
+   "hurt": [
+    {
+     "id": "sylvaine_hurt",
+     "text": "[pained] A scratch. My bow is steady."
+    }
+   ],
+   "death": [
+    {
+     "id": "sylvaine_death",
+     "text": "[softly] The Deepwood... will remember..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "sylvaine_crack",
+     "text": "The wall is splitting. Keep at it."
+    }
+   ]
+  },
+  "mirelle": {
+   "muster": [
+    {
+     "id": "mirelle_muster",
+     "text": "I've seen this moment. We win it if we hold together."
+    }
+   ],
+   "fight": [
+    {
+     "id": "mirelle_fight",
+     "text": "Ice, take their feet! Now strike!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "mirelle_siege",
+     "text": "The tide is with us. Push them to the gate!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "mirelle_hurt",
+     "text": "[pained] I didn't see that one coming."
+    }
+   ],
+   "death": [
+    {
+     "id": "mirelle_death",
+     "text": "[fading] I saw... the ending... it's good..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "mirelle_crack",
+     "text": "It's breaking! Just like I saw!"
+    }
+   ]
+  },
+  "gorrim": {
+   "muster": [
+    {
+     "id": "gorrim_muster",
+     "text": "Behind my shield. Nothing gets past Gorrim."
+    }
+   ],
+   "fight": [
+    {
+     "id": "gorrim_fight",
+     "text": "Hit my shield all day. Won't do you any good."
+    }
+   ],
+   "siege": [
+    {
+     "id": "gorrim_siege",
+     "text": "Stone breaks stone. Let me at that gate."
+    }
+   ],
+   "hurt": [
+    {
+     "id": "gorrim_hurt",
+     "text": "[grunts] My shield's dented. I'm not."
+    }
+   ],
+   "death": [
+    {
+     "id": "gorrim_death",
+     "text": "[deep groan] Hold... the line..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "gorrim_crack",
+     "text": "There! The wall's giving! Push!"
+    }
+   ]
+  },
+  "corvin": {
+   "muster": [
+    {
+     "id": "corvin_muster",
+     "text": "I've walked the Rift my whole life. I know the way in."
+    }
+   ],
+   "fight": [
+    {
+     "id": "corvin_fight",
+     "text": "You're slow. That's going to cost you."
+    }
+   ],
+   "siege": [
+    {
+     "id": "corvin_siege",
+     "text": "Every wall has a weak point. That one's mine."
+    }
+   ],
+   "hurt": [
+    {
+     "id": "corvin_hurt",
+     "text": "[hisses] Clever. Not clever enough."
+    }
+   ],
+   "death": [
+    {
+     "id": "corvin_death",
+     "text": "[quiet] Should have... seen that one..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "corvin_crack",
+     "text": "It's cracking. Keep cutting!"
+    }
+   ]
+  },
+  "ilyra": {
+   "muster": [
+    {
+     "id": "ilyra_muster",
+     "text": "I've been inside these walls. I know how they break."
+    }
+   ],
+   "fight": [
+    {
+     "id": "ilyra_fight",
+     "text": "You kept me in the dark for years. Now you'll see what I learned."
+    }
+   ],
+   "siege": [
+    {
+     "id": "ilyra_siege",
+     "text": "Down, Nhal Vorath! I'm not your prisoner anymore!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "ilyra_hurt",
+     "text": "[pained] I've felt worse in your cells!"
+    }
+   ],
+   "death": [
+    {
+     "id": "ilyra_death",
+     "text": "[whispering] Father... I'm sorry..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "ilyra_crack",
+     "text": "It's breaking! Tear it all down!"
+    }
+   ]
+  },
+  "seraphel": {
+   "muster": [
+    {
+     "id": "seraphel_muster",
+     "text": "The Dawnblade is drawn! Into the dark!"
+    }
+   ],
+   "fight": [
+    {
+     "id": "seraphel_fight",
+     "text": "Sunstone light burns hollow things! Burn!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "seraphel_siege",
+     "text": "Let the light into Nhal Vorath!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "seraphel_hurt",
+     "text": "[pained] The light still burns!"
+    }
+   ],
+   "death": [
+    {
+     "id": "seraphel_death",
+     "text": "[fading] Carry... the light..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "seraphel_crack",
+     "text": "The walls are breaking! Shine through!"
+    }
+   ]
+  },
+  "oswin": {
+   "muster": [
+    {
+     "id": "oswin_muster",
+     "text": "I held this Gate shut with my own hands. Now we go through."
+    }
+   ],
+   "fight": [
+    {
+     "id": "oswin_fight",
+     "text": "Stand in my light, all of you. It holds."
+    }
+   ],
+   "siege": [
+    {
+     "id": "oswin_siege",
+     "text": "Old Vael was a beautiful city once. Bring down what he made of it."
+    }
+   ],
+   "hurt": [
+    {
+     "id": "oswin_hurt",
+     "text": "[pained, wry] I'm too old for this. Keep going!"
+    }
+   ],
+   "death": [
+    {
+     "id": "oswin_death",
+     "text": "[softly] Keep... the lantern lit..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "oswin_crack",
+     "text": "There! It breaks! Don't stop!"
+    }
+   ]
+  },
+  "ignar": {
+   "muster": [
+    {
+     "id": "ignar_muster",
+     "text": "Two thousand years ago I helped shut you in here, Vael-Orrun. I've come to finish it."
+    }
+   ],
+   "fight": [
+    {
+     "id": "ignar_fight",
+     "text": "Burn, Unbound! Burn to ash!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "ignar_siege",
+     "text": "Fire against stone! Melt it down!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "ignar_hurt",
+     "text": "[roars] You can't put out a fire like me!"
+    }
+   ],
+   "death": [
+    {
+     "id": "ignar_death",
+     "text": "[fading rumble] The cinders... cool..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "ignar_crack",
+     "text": "Your house is burning, Vael!"
+    }
+   ]
+  },
+  "aurath": {
+   "muster": [
+    {
+     "id": "aurath_muster",
+     "text": "The storm has come down the Rift! Nhal Vorath will hear it!"
+    }
+   ],
+   "fight": [
+    {
+     "id": "aurath_fight",
+     "text": "Lightning! Take them all!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "aurath_siege",
+     "text": "Break, walls! Break under the storm!"
+    }
+   ],
+   "hurt": [
+    {
+     "id": "aurath_hurt",
+     "text": "[snarls] You cannot wound the sky!"
+    }
+   ],
+   "death": [
+    {
+     "id": "aurath_death",
+     "text": "[fading] The storm... passes..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "aurath_crack",
+     "text": "Thunder on your walls, Vael-Orrun!"
+    }
+   ]
+  },
+  "elowen": {
+   "muster": [
+    {
+     "id": "elowen_muster",
+     "text": "Stand up, wounded! The Evergreen is here!"
+    }
+   ],
+   "fight": [
+    {
+     "id": "elowen_fight",
+     "text": "Roots, hold them! Grow, and hold!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "elowen_siege",
+     "text": "Roots break stone. Slowly, then all at once."
+    }
+   ],
+   "hurt": [
+    {
+     "id": "elowen_hurt",
+     "text": "[pained] I bend. I don't break."
+    }
+   ],
+   "death": [
+    {
+     "id": "elowen_death",
+     "text": "[softly] Plant me... somewhere green..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "elowen_crack",
+     "text": "The roots are in the walls! It's splitting!"
+    }
+   ]
+  },
+  "thalassa": {
+   "muster": [
+    {
+     "id": "thalassa_muster",
+     "text": "The Deep has followed me down the Rift. It's hungry."
+    }
+   ],
+   "fight": [
+    {
+     "id": "thalassa_fight",
+     "text": "Drown in it!"
+    }
+   ],
+   "siege": [
+    {
+     "id": "thalassa_siege",
+     "text": "Water breaks every wall in time. Today it's quick."
+    }
+   ],
+   "hurt": [
+    {
+     "id": "thalassa_hurt",
+     "text": "[pained] The tide always comes back."
+    }
+   ],
+   "death": [
+    {
+     "id": "thalassa_death",
+     "text": "[fading] Back... to the Deep..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "thalassa_crack",
+     "text": "The walls are breaking! Flood them!"
+    }
+   ]
+  },
+  "orrok": {
+   "muster": [
+    {
+     "id": "orrok_muster",
+     "text": "The Mountain walks. Walls of Vael, you are mine."
+    }
+   ],
+   "fight": [
+    {
+     "id": "orrok_fight",
+     "text": "Small things. Out of my path."
+    }
+   ],
+   "siege": [
+    {
+     "id": "orrok_siege",
+     "text": "I am older than these walls. I will outlast them."
+    }
+   ],
+   "hurt": [
+    {
+     "id": "orrok_hurt",
+     "text": "[deep rumble] A pebble against a mountain."
+    }
+   ],
+   "death": [
+    {
+     "id": "orrok_death",
+     "text": "[deep, fading] The mountain... sleeps..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "orrok_crack",
+     "text": "Crumble."
+    }
+   ]
+  },
+  "nyxara": {
+   "muster": [
+    {
+     "id": "nyxara_muster",
+     "text": "I know this dark. I shut you into it myself, Vael-Orrun."
+    }
+   ],
+   "fight": [
+    {
+     "id": "nyxara_fight",
+     "text": "Look at me, Unbound. You can't, can you?"
+    }
+   ],
+   "siege": [
+    {
+     "id": "nyxara_siege",
+     "text": "Your walls were never yours, Vael. They were your prison."
+    }
+   ],
+   "hurt": [
+    {
+     "id": "nyxara_hurt",
+     "text": "[hisses] You'll pay for that."
+    }
+   ],
+   "death": [
+    {
+     "id": "nyxara_death",
+     "text": "[whispering] Into the dark... again..."
+    }
+   ],
+   "crack": [
+    {
+     "id": "nyxara_crack",
+     "text": "It's breaking. Your prison is breaking, Vael."
+    }
+   ]
+  }
+ }
+}

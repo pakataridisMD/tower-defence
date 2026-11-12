@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="TowerData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tower_data.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/data/ascendancy_data.gd" id="asc_script"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="mod_script"]
+
+[sub_resource type="Resource" id="Asc_stormlash_m0"]
+script = ExtResource("mod_script")
+stat = &"chain_count"
+value = 2.0
+
+[sub_resource type="Resource" id="Asc_stormlash"]
+script = ExtResource("asc_script")
+id = &"stormlash"
+display_name = "Stormlash"
+description = "Bolts strike at once and chain to 2 more enemies."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_stormlash_m0")])
+
+[sub_resource type="Resource" id="Asc_railspike_m0"]
+script = ExtResource("mod_script")
+stat = &"damage"
+kind = 2
+value = 0.8
+
+[sub_resource type="Resource" id="Asc_railspike_m1"]
+script = ExtResource("mod_script")
+stat = &"armour_ignore"
+value = 0.5
+
+[sub_resource type="Resource" id="Asc_railspike"]
+script = ExtResource("asc_script")
+id = &"railspike"
+display_name = "Railspike"
+description = "Bolts deal 80% more damage and ignore half of armour."
+modifiers = Array[ExtResource("mod_script")]([SubResource("Asc_railspike_m0"), SubResource("Asc_railspike_m1")])
+
+[resource]
+script = ExtResource("1_tower")
+id = &"storm_skyneedle"
+display_name = "Skyneedle"
+description = "Long range. A needle of a tower that fires a stream of thin bolts at enemies across most of the map. Too light to hurt armoured enemies much."
+elements = Array[StringName]([&"storm"])
+cost = 120
+requires_nodes = Array[StringName]([&"storm_core"])
+tags = Array[StringName]([&"longshot"])
+damage = 2.5
+attacks_per_second = 4.5
+attack_range = 1250.0
+projectile_speed = 3200.0
+chain_range = 110.0
+chain_falloff = 0.3
+ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_stormlash"), SubResource("Asc_railspike")])

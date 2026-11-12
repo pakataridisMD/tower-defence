@@ -52,6 +52,8 @@ var profile: PlayerProfile
 var tree: TreeState
 var selected_map: StringName = &""
 var selected_difficulty: StringName = &""
+## True when the next skirmish is endless.
+var endless := false
 ## What the last recorded run paid for, for the end screen: a new record, a replay reward, or
 ## nothing new.
 var last_run_note := ""
@@ -66,6 +68,7 @@ func _init(p_registry: Node, p_profile: PlayerProfile) -> void:
 	tree.restore(profile.meta_nodes)
 	selected_map = profile.last_map
 	selected_difficulty = profile.last_difficulty
+	endless = profile.last_endless
 	_sync_profile()
 
 
@@ -159,6 +162,17 @@ func select_difficulty(id: StringName) -> bool:
 	return true
 
 
+## Makes the next skirmish endless, or a normal run of the map's waves.
+func set_endless(on: bool) -> void:
+	endless = on
+	_sync_profile()
+
+
+## Most waves cleared in an endless skirmish on a map, or 0.
+func endless_best(map_id: StringName) -> int:
+	return profile.endless_best.get(map_id, 0)
+
+
 # --- Runs ------------------------------------------------------------------------
 
 ## Everything the next run needs: the chosen map and difficulty, the meta tree's bonuses, and the
@@ -169,6 +183,7 @@ func run_config() -> RunConfig:
 	config.run_modifiers.append_array(campaign_rewards())
 	config.locked_tree_nodes = locked_in_run_nodes()
 	config.difficulty = registry.difficulties.get(selected_difficulty)
+	config.endless = endless
 	return config
 
 
@@ -180,11 +195,13 @@ static func run_score(sim: RunSim) -> int:
 	return roundi(sim.config.rules.meta_points_after_run(sim.wave_index, won) * multiplier)
 
 
-## The key a run's record is kept under: the campaign stage, or the skirmish map.
+## The key a run's record is kept under: the campaign stage, or the skirmish map (endless runs keep
+## their own records, "endless:<map id>").
 static func record_key(sim: RunSim) -> StringName:
 	if sim.config.stage != null:
 		return sim.config.stage.id
-	return StringName("skirmish:%s" % (sim.config.map.id if sim.config.map != null else &""))
+	var mode := "endless" if sim.is_endless() else "skirmish"
+	return StringName("%s:%s" % [mode, sim.config.map.id if sim.config.map != null else &""])
 
 
 ## Meta points a finished run would pay, without recording it.
@@ -223,6 +240,8 @@ func record_run(sim: RunSim) -> int:
 	if sim.state == RunSim.State.WON:
 		profile.runs_won += 1
 	profile.best_waves = maxi(profile.best_waves, sim.wave_index)
+	if sim.is_endless() and sim.config.map != null:
+		profile.endless_best[sim.config.map.id] = maxi(endless_best(sim.config.map.id), sim.wave_index)
 	profile.enemies_killed += sim.kills
 	return earned
 
@@ -555,6 +574,7 @@ func _sync_profile() -> void:
 		selected_difficulty = _first_open_difficulty()
 	profile.last_map = selected_map
 	profile.last_difficulty = selected_difficulty
+	profile.last_endless = endless
 
 
 func _first_open_map() -> StringName:

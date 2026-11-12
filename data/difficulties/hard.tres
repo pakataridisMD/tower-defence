@@ -5,8 +5,9 @@
 [resource]
 script = ExtResource("1_difficulty")
 id = &"hard"
-display_name = "Hard"
-description = "Enemies have 40% more health. Runs earn 50% more meta points."
+display_name = "Grim"
+description = "Hard. Every wave brings twice as many enemies, each with twice the health. Runs earn 50% more meta points."
 order = 1
-enemy_health_multiplier = 1.4
+enemy_health_multiplier = 2.0
+enemy_count_multiplier = 2.0
 meta_point_multiplier = 1.5

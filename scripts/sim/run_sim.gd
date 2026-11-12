@@ -83,6 +83,8 @@ const BUILDING_REACH := 150.0
 ## A unit this many pixels from the start of its road (a gate of the citadel), plus its reach,
 ## strikes the citadel.
 const GATE_REACH := 30.0
+## Minor enemies in the campaign have this share of their health (bosses and skirmish keep all).
+const CAMPAIGN_MINOR_HEALTH := 0.5
 ## A beaten boss flees this many times as fast as it walked.
 const FLEE_SPEED := 3.0
 ## In the counter-attack the horde keeps coming: the wave starts again this many seconds after its
@@ -91,6 +93,14 @@ const COUNTER_LOOP_GAP := 4.0
 const COUNTER_LOOP_GROWTH := 0.06
 ## A blow at least does this share of its damage, whatever the armour.
 const ALLY_MIN_DAMAGE := 0.2
+## Endless skirmish: every this many waves the horde doubles, in numbers and in health.
+const ENDLESS_STEP := 5
+## Endless skirmish: past the wave set, its last this many waves come round again and again.
+const ENDLESS_LOOP := 5
+## No wave brings more enemies than this, however hard the difficulty: past it, a bigger horde comes
+## as the same number of stronger enemies instead (the same total health), so the game stays smooth.
+## 2,000 enemies on the board at once takes about 18 ms a step; 500 takes about 4.
+const MAX_WAVE_ENEMIES := 600
 
 var config: RunConfig
 var state := State.BUILDING
@@ -181,6 +191,10 @@ var _roll_wait := 0.0
 var _muster_cooldowns: Dictionary[StringName, float] = {}
 ## Gold from the camp's supply not yet paid out, under a whole coin.
 var _supply := 0.0
+## The wave being fought as it really comes: grown by the difficulty (and in endless, the round).
+var _wave_as_fought: WaveData
+## Extra health for the enemies of a wave whose numbers hit MAX_WAVE_ENEMIES.
+var _crowd_health := 1.0
 
 
 func _init(p_config: RunConfig) -> void:
@@ -191,7 +205,7 @@ func _init(p_config: RunConfig) -> void:
 	if config.stage != null:
 		base_gold = config.stage.starting_gold if config.stage.starting_gold > 0 else base_gold
 		base_lives = config.stage.starting_lives if config.stage.starting_lives > 0 else base_lives
-	gold = roundi(StatCalculator.compute(&"starting_gold", base_gold, config.run_modifiers))
+	gold = roundi(StatCalculator.compute(&"starting_gold", base_gold, config.run_modifiers) * config.starting_gold_multiplier())
 	lives = roundi(StatCalculator.compute(&"starting_lives", base_lives, config.run_modifiers))
 	starting_lives = lives
 	var start_points := roundi(StatCalculator.compute(&"starting_tree_points", rules.starting_tree_points, config.run_modifiers))
@@ -217,27 +231,106 @@ func _init(p_config: RunConfig) -> void:
 
 # --- Queries -----------------------------------------------------------------
 
+## Waves in the wave set. An endless run goes on past them (see is_endless()).
 func total_waves() -> int:
 	return config.wave_set.waves.size()
 
 
 ## The wave being fought, or the next one while building. Null once the run is over. In an assault
-## the last wave repeats until the enemy base falls.
+## the last wave repeats until the enemy base falls; in an endless run the last ENDLESS_LOOP waves
+## of the set come round again and again.
 func current_wave() -> WaveData:
 	var index := wave_index
 	if index >= total_waves():
 		if is_assault() and not is_over() and total_waves() > 0:
 			return config.wave_set.waves[total_waves() - 1]
+		if is_endless() and total_waves() > 0:
+			return config.wave_set.waves[_set_index(index)]
 		return null
 	return config.wave_set.waves[index]
 
 
-## 1-based number of the current or next wave. In an assault it keeps counting past the wave set,
-## and enemy health keeps growing with it.
+## 1-based number of the current or next wave. In an assault and in an endless run it keeps
+## counting past the wave set.
 func wave_number() -> int:
-	if is_assault():
+	if is_assault() or is_endless():
 		return wave_index + 1
 	return mini(wave_index + 1, total_waves())
+
+
+## True for an endless skirmish: no last wave, and the horde doubles every ENDLESS_STEP waves.
+func is_endless() -> bool:
+	return config.endless and config.stage == null and not is_assault()
+
+
+## Which wave of the set a wave (0-based) is: itself, or for an endless run past the set, one of its
+## last ENDLESS_LOOP waves in turn.
+func _set_index(index: int) -> int:
+	var count := total_waves()
+	if index < count or count == 0:
+		return index
+	var loop := mini(ENDLESS_LOOP, count)
+	return count - loop + (index - count) % loop
+
+
+## How many times the horde has doubled in an endless run by this wave (1-based): 0 for waves 1 to
+## ENDLESS_STEP, 1 for the next ENDLESS_STEP, and so on. Always 0 outside endless.
+func endless_round(number: int = -1) -> int:
+	if not is_endless():
+		return 0
+	var n := wave_number() if number < 0 else number
+	return maxi(n - 1, 0) / ENDLESS_STEP
+
+
+## How much bigger and stronger an endless run has made the horde by this wave: 2 to the round.
+func endless_multiplier(number: int = -1) -> float:
+	return pow(2.0, endless_round(number))
+
+
+## How many times as many enemies the wave brings as the wave set says: the difficulty's multiplier,
+## doubled every round of an endless run.
+func enemy_count_multiplier(number: int = -1) -> float:
+	return config.enemy_count_multiplier() * endless_multiplier(number)
+
+
+## Enemy health growth for the current wave: the wave set's growth, the difficulty and the endless
+## round. Skills, hero abilities and mustered units keep pace with it.
+func health_growth() -> float:
+	var number := wave_number()
+	if is_endless():
+		number = _set_index(wave_index) + 1
+	return config.wave_set.health_multiplier(number) * config.enemy_health_multiplier() * endless_multiplier()
+
+
+## The current or next wave as it really comes: with the difficulty's (and the endless round's)
+## extra enemies. Null when there is none.
+func wave_as_it_comes() -> WaveData:
+	if state == State.WAVE and _wave_as_fought != null:
+		return _wave_as_fought
+	var wave := current_wave()
+	return _grow_wave(wave)[0] if wave != null else null
+
+
+## [the wave as it comes, extra health for each enemy]: more enemies (never more bosses), and past
+## MAX_WAVE_ENEMIES, stronger ones instead, with the same health in total.
+func _grow_wave(wave: WaveData) -> Array:
+	var wanted := enemy_count_multiplier()
+	if is_equal_approx(wanted, 1.0):
+		return [wave, 1.0]
+	var fixed: Dictionary = {}
+	var crowd := 0
+	for group in wave.groups:
+		if group == null:
+			continue
+		var data: EnemyData = config.enemies.get(group.enemy)
+		if data != null and data.tags.has(&"boss"):
+			fixed[group.enemy] = true
+		else:
+			crowd += group.count
+	var multiplier := wanted
+	if crowd > 0 and crowd * wanted > MAX_WAVE_ENEMIES:
+		multiplier = maxf(1.0, float(MAX_WAVE_ENEMIES) / crowd)
+	return [wave.scaled(multiplier, fixed), wanted / multiplier]
 
 
 ## True when the run is an assault on the enemy base: it is won by bringing down its buildings.
@@ -482,7 +575,7 @@ func _plan_cast(skill: SkillData, at: Vector2) -> SimSkillCast:
 	if config.element_index(skill.element) >= 0:
 		cast.elements.append(config.element_index(skill.element))
 	# Skill damage keeps pace with enemy health, wave by wave.
-	var growth := config.wave_set.health_multiplier(wave_number()) * config.enemy_health_multiplier()
+	var growth := health_growth()
 	var tags := skill.all_tags()
 	cast.damage = StatCalculator.compute(&"skill_damage", skill.damage + rank.damage_bonus, _modifiers, tags) * rank.power * growth
 	cast.radius = skill.radius * rank.reach
@@ -638,7 +731,7 @@ func _land_strike(cast: SimSkillCast, blow: SimSkillCast.Blow) -> void:
 		zone.duration = cast.rank.zone_time
 		zone.time_left = cast.rank.zone_time
 		zone.tick = SimSkillCast.ZONE_TICK
-		var growth := config.wave_set.health_multiplier(wave_number()) * config.enemy_health_multiplier()
+		var growth := health_growth()
 		zone.damage_per_second = cast.rank.zone_damage * cast.rank.power * growth
 		zone.finale_damage = cast.rank.finale_damage * cast.rank.power * growth
 		cast.zones.append(zone)
@@ -829,10 +922,13 @@ func hybrid_options(tower: SimTower) -> Array[StringName]:
 	var result: Array[StringName] = []
 	if tower == null or tower.ascendancy != null or tower.is_hero():
 		return result
+	# Long-range towers are a line of their own: they never fuse, and nothing fuses into them.
+	if tower.data.is_longshot():
+		return result
 	var own := tower.data.elements
 	for id: StringName in config.towers:
 		var data: TowerData = config.towers[id]
-		if data.elements.size() != own.size() + 1 or not is_unlocked(id):
+		if data.elements.size() != own.size() + 1 or data.is_longshot() or not is_unlocked(id):
 			continue
 		if own.all(func(element_id: StringName) -> bool: return data.elements.has(element_id)):
 			result.append(id)
@@ -972,7 +1068,10 @@ func _begin_wave() -> void:
 	time_in_wave = 0.0
 	break_time_left = -1.0
 	_wave_element = config.element_index(wave.element)
-	_spawner.start(wave, lane_curves.size())
+	var grown := _grow_wave(wave)
+	_wave_as_fought = grown[0]
+	_crowd_health = grown[1]
+	_spawner.start(_wave_as_fought, lane_curves.size())
 	_taken_this_break.clear()
 	for tower in _heroes_on_board.values():
 		tower.moved_this_break = false
@@ -1110,7 +1209,7 @@ func _loop_counter_wave(delta: float) -> void:
 	if _counter_loop_wait <= 0.0 and current_wave() != null:
 		counter_loops += 1
 		_counter_loop_wait = COUNTER_LOOP_GAP
-		_spawner.start(current_wave(), lane_curves.size())
+		_spawner.start(_wave_as_fought if _wave_as_fought != null else current_wave(), lane_curves.size())
 
 
 ## Counts down the break before a wave that starts on its own. Call it while building; the game
@@ -1125,10 +1224,10 @@ func tick_break(delta: float) -> bool:
 
 
 func _spawn(delta: float) -> void:
-	var multiplier := config.wave_set.health_multiplier(wave_number()) * config.enemy_health_multiplier()
+	var multiplier := health_growth()
 	var wave := current_wave()
 	if wave != null:
-		multiplier *= wave.health_multiplier
+		multiplier *= wave.health_multiplier * _crowd_health
 	multiplier *= 1.0 + COUNTER_LOOP_GROWTH * counter_loops
 	for spawn in _spawner.advance(delta):
 		var group := spawn.group
@@ -1160,11 +1259,24 @@ func _open_lane(lane: int) -> int:
 ## A new enemy on a lane. An enemy with its own element keeps it whatever the wave.
 func _make_enemy(data: EnemyData, multiplier: float, lane: int, element: int, progress: float) -> SimEnemy:
 	var enemy := SimEnemy.new(_new_id(), data, multiplier)
+	var share := minor_health_share(data)
+	if share != 1.0:
+		enemy.max_health *= share
+		enemy.health = enemy.max_health
+		enemy.shell *= share
 	enemy.lane = lane
 	enemy.element = config.element_index(data.element) if not data.element.is_empty() else element
 	enemy.progress = maxf(0.0, progress)
 	enemy.position = lane_curves[lane].sample_baked(enemy.progress)
 	return enemy
+
+
+## Share of its health a minor enemy (not a boss or a building) keeps in the campaign. Skirmish
+## enemies and bosses keep all of it.
+func minor_health_share(data: EnemyData) -> float:
+	if config.stage == null or data.tags.has(&"boss") or data.tags.has(&"structure"):
+		return 1.0
+	return CAMPAIGN_MINOR_HEALTH
 
 
 ## Enemies that come out of another: splitting on death, or summoned by a boss. They appear a little
@@ -1475,12 +1587,19 @@ func _find_target(tower: SimTower) -> SimEnemy:
 	var best: SimEnemy = null
 	var best_left := INF
 	var reach := tower.range_now()
+	var weakest := tower.data.targeting == TowerData.Targeting.WEAKEST
 	for enemy in _hash.query(tower.position, reach):
 		# An Umbral Stalker is only seen up close.
 		if enemy.has_power and enemy.data.power == &"stalk" \
 				and enemy.position.distance_to(tower.position) > reach * enemy.data.power_amount:
 			continue
 		var left := distance_to_exit(enemy) if not enemy.structure else 1.0e9 + enemy.health
+		if weakest and not enemy.structure:
+			# Skip one the shots already flying at it will finish.
+			if enemy.incoming >= enemy.health:
+				continue
+			# Least health first; of equals, the one nearer the exit.
+			left = enemy.health * 1.0e5 + distance_to_exit(enemy)
 		if left < best_left:
 			best_left = left
 			best = enemy
@@ -1500,6 +1619,9 @@ func _attack(tower: SimTower, target: SimEnemy) -> void:
 	shot.source = tower
 	shot.damage = tower.damage_now()
 	shot.splash_radius = tower.splash_radius
+	if tower.data.targeting == TowerData.Targeting.WEAKEST:
+		shot.reserved = shot.damage
+		target.incoming += shot.reserved
 	projectiles.append(shot)
 
 
@@ -1545,6 +1667,8 @@ func _update_projectiles(delta: float) -> void:
 
 func _land(shot: SimProjectile) -> void:
 	shot.done = true
+	if shot.reserved > 0.0 and shot.target != null:
+		shot.target.incoming = maxf(0.0, shot.target.incoming - shot.reserved)
 	if shot.splash_radius > 0.0:
 		for enemy in _hash.query(shot.position, shot.splash_radius):
 			_hit(shot.source, enemy, shot.damage)
@@ -1711,7 +1835,7 @@ func _finish_wave() -> void:
 	projectiles.clear()
 	_bursts.clear()
 	_casts.clear()
-	if wave_index >= total_waves() and not is_assault():
+	if wave_index >= total_waves() and not is_assault() and not is_endless():
 		_end_run(true)
 	else:
 		state = State.BUILDING
@@ -1814,7 +1938,7 @@ func _on_structure_fallen(structure: SimEnemy) -> void:
 	for lane in structure.closes_lanes:
 		_closed_lanes[lane] = true
 	# What comes out of a fallen building is as strong as the wave being fought.
-	var multiplier := config.wave_set.health_multiplier(wave_number()) * config.enemy_health_multiplier()
+	var multiplier := health_growth()
 	for i in structure.releases.size():
 		var data: EnemyData = config.enemies.get(structure.releases[i])
 		if data == null:
@@ -2037,7 +2161,7 @@ func use_hero_ability(hero_id: StringName, at: Vector2 = Vector2.ZERO) -> bool:
 
 ## Ability damage keeps pace with enemy health, as skill damage does.
 func _ability_growth() -> float:
-	return config.wave_set.health_multiplier(wave_number()) * config.enemy_health_multiplier()
+	return health_growth()
 
 
 ## One enemy struck by a hero's ability. Returns 1 if it was there to be hit.
@@ -2415,7 +2539,7 @@ func _use_horde_power(enemy: SimEnemy) -> void:
 		&"grow":
 			if enemy.stacks < int(data.power_limit):
 				enemy.stacks += 1
-				var more := data.max_health * enemy.health_multiplier * data.power_amount
+				var more := data.max_health * enemy.health_multiplier * data.power_amount * minor_health_share(data)
 				enemy.max_health += more
 				enemy.health += more
 				enemy.power_timer = data.power_interval
@@ -2497,7 +2621,7 @@ func ally_list() -> Array[AllyData]:
 
 ## How much a unit mustered now is grown: the wave's health growth, as skill damage is.
 func muster_growth() -> float:
-	return config.wave_set.health_multiplier(wave_number()) * config.enemy_health_multiplier()
+	return health_growth()
 
 
 func ally_price(ally_id: StringName) -> int:

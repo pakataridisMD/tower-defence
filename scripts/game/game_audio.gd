@@ -131,7 +131,7 @@ func _on_wave_started(number: int) -> void:
 	_sim_time = 0.0
 	_queue.clear()
 	var wave := sim.current_wave()
-	if number >= sim.total_waves():
+	if number >= sim.total_waves() and not sim.is_endless():
 		play(&"wave_start_final")
 	elif wave != null and wave.is_boss:
 		# The battle music plays its own boss entrance; two stingers at once would be mush.
