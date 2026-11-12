@@ -31,6 +31,9 @@ extends Node
 ## loaded back from a slot.
 ## Add --story to take the cinematic player, a Herald's boss banner, the final level's defence and counter-attack and
 ## the campaign map with the citadel on it.
+## Add --army to film the counter-attack up close: a mixed army with champions marching on the citadel,
+## fighting the horde and breaking the gates, saved as stills in <out> and numbered frames in <out>/army/.
+## Add --frames=N with --army to set how many frames it films (0 takes the stills only).
 
 const MENU_SCENE := preload("res://scenes/main.tscn")
 const META_TREE_SCENE := preload("res://scenes/meta/meta_tree.tscn")
@@ -61,6 +64,8 @@ var _bigmaps := false
 var _edge := false
 var _powers := false
 var _landmarks := false
+var _army := false
+var _army_frames := 600
 var _horde := &""
 var _look: PackedStringArray = []
 ## With --look: shoot the towers' effects in a fight (shots, hits, a Meteor and a Doom) instead of the look shots.
@@ -99,6 +104,10 @@ func _ready() -> void:
 			_bigmaps = true
 		elif arg == "--powers":
 			_powers = true
+		elif arg == "--army":
+			_army = true
+		elif arg.begins_with("--frames="):
+			_army_frames = int(arg.trim_prefix("--frames="))
 		elif arg == "--landmarks":
 			_landmarks = true
 		elif arg.begins_with("--horde="):
@@ -123,6 +132,8 @@ func _ready() -> void:
 		_run_tower_looks()
 	elif not _look.is_empty():
 		_run_look()
+	elif _army:
+		_run_army()
 	elif _longshot:
 		_run_longshot()
 	elif _powers:
@@ -1109,3 +1120,82 @@ func _shot(shot_name: String) -> void:
 	var path := _out.path_join(shot_name + ".png")
 	var error := get_viewport().get_texture().get_image().save_png(path)
 	print("Saved %s (%s)" % [path, error_string(error)])
+
+
+## The counter-attack up close: a squad of every kind and a few champions march on one road, the
+## camera rides with the front of the army, then sits on the gates while the citadel cracks.
+func _run_army() -> void:
+	Progress.active_stage = &"assault_1"
+	Progress.mark_seen(&"the_turning")
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.3)
+	var sim := game.sim
+	sim.wave_index = sim.config.stage.counter_wave - 1
+	sim.start_next_wave()
+	sim.lives = 9999
+	# The road nearest the middle of the map, so the camera can ride with it.
+	var lane := 0
+	var middle := sim.config.map.size_in_pixels().y * 0.5
+	for i in sim.lane_curves.size():
+		var y := sim.lane_curves[i].sample_baked(sim.lane_lengths[i] * 0.5).y
+		if absf(y - middle) < absf(sim.lane_curves[lane].sample_baked(sim.lane_lengths[lane] * 0.5).y - middle):
+			lane = i
+	var order: Array[StringName] = [&"footman", &"pikeman", &"champion_tamsin", &"crossbowman", &"ember_knight",
+		&"lantern_cleric", &"banner_bearer", &"champion_brannoc", &"ironbreaker", &"warhound", &"root_archer",
+		&"stormcaller", &"champion_kaela", &"battering_ram", &"spire_golem", &"veil_blade", &"griffin_rider",
+		&"gale_lancer", &"tide_priestess", &"firebrand", &"pearl_marine", &"hollow_hunter", &"sunstone_catapult"]
+	var queue := order.duplicate()
+	var follow := Vector2.INF
+	var folder := _out.path_join("army")
+	DirAccess.make_dir_recursive_absolute(folder)
+	var frame := 0
+	var shots := {60: "army_march", 260: "army_clash", 460: "army_battle"}
+	var steps := maxi(_army_frames, 520)
+	for step in steps:
+		if not queue.is_empty() and step % 6 == 0:
+			sim.gold = 99999
+			var id: StringName = queue[0]
+			if sim.config.allies.has(id):
+				sim._muster_cooldowns.erase(id)
+				sim.muster(id, lane)
+			queue.pop_front()
+		follow = _follow_army(game, lane, follow)
+		await get_tree().process_frame
+		if shots.has(step):
+			await _shot(shots[step])
+		if step < _army_frames:
+			await RenderingServer.frame_post_draw
+			get_viewport().get_texture().get_image().save_png(folder.path_join("%04d.png" % frame))
+			frame += 1
+	# At the gates: the citadel's bar and the army breaking it.
+	var citadel: SimEnemy = sim.structures[0]
+	Engine.time_scale = 4.0
+	for id in [&"footman", &"pikeman", &"battering_ram", &"ironbreaker", &"champion_gorrim", &"lantern_cleric"]:
+		sim._muster_cooldowns.erase(id)
+		sim.gold = 99999
+		sim.muster(id, lane)
+	await _until(func() -> bool: return citadel.health < 0.7 * citadel.max_health or sim.is_over())
+	Engine.time_scale = 1.0
+	game.camera.set_view(1.6, sim.lane_curves[lane].sample_baked(60.0) + Vector2(80, 0))
+	await _wait(1.0)
+	await _shot("army_gates")
+	print("Army lines spoken: %d" % game.army_voice.said.size())
+	for line in game.army_voice.said:
+		print("  ", line["id"])
+	print("Saved %d frames to %s" % [frame, folder])
+	get_tree().quit()
+
+
+## Rides with the front of the army on a road: the unit nearest the citadel, eased.
+func _follow_army(game: Game, lane: int, follow: Vector2) -> Vector2:
+	var front: SimAlly = null
+	for ally in game.sim.allies:
+		if ally.alive and ally.lane == lane and (front == null or ally.progress < front.progress):
+			front = ally
+	if front == null:
+		return follow
+	var at := front.position + Vector2(-60, 40)
+	follow = at if follow == Vector2.INF else follow.lerp(at, 0.05)
+	game.camera.set_view(1.6, follow)
+	return follow

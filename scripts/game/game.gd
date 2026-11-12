@@ -35,6 +35,8 @@ var story_overlay: StoryOverlay
 ## The cinematic playing over the run, or null.
 var cinematic: CinematicPlayer
 var audio: GameAudio
+## The army's shouts in the counter-attack.
+var army_voice: ArmyVoice
 var music: BattleMusic
 var paused := false
 var audio_panel: AudioPanel
@@ -126,6 +128,9 @@ func _build_views() -> void:
 	music = BattleMusic.new()
 	add_child(music)
 	music.setup(sim)
+	army_voice = ArmyVoice.new()
+	add_child(army_voice)
+	army_voice.setup(sim, board)
 
 	post_layer = CanvasLayer.new()
 	post_layer.name = "BoardPost"

@@ -61,7 +61,8 @@ func test_citadel_has_art() -> void:
 	assert_true(ResourceLoader.exists(CitadelArt.DIR + "citadel_cracks.png"), "cracks")
 
 
-## Every unit of the counter-attack walks, strikes and dies, and every champion has its hero's sprite.
+## Every unit of the counter-attack walks, stands, strikes, flinches, cries out and dies, and every champion
+## has its hero's sprite.
 func test_every_ally_has_art() -> void:
 	for ally_id: StringName in registry.allies:
 		var data: AllyData = registry.allies[ally_id]
@@ -69,7 +70,7 @@ func test_every_ally_has_art() -> void:
 		if data.is_champion():
 			continue
 		var info: Dictionary = AllyArt.meta()[String(ally_id)]
-		for anim in ["walk", "attack", "death"]:
+		for anim in ["walk", "idle", "attack", "hurt", "cry", "death"]:
 			assert_true(info["anims"].has(anim), "%s %s" % [ally_id, anim])
 			_assert_lit(AllyArt.DIR + "%s_%s" % [ally_id, anim])
 
