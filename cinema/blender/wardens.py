@@ -99,13 +99,13 @@ def basalt(name, core, crack_rgb=(1.0, 0.33, 0.05), crack_w=0.008, glow=4.0, cor
     return m
 
 
-def storm_cloud(name, rgb=(0.5, 0.53, 0.6), density=90.0, bolt_rgb=(0.75, 0.85, 1.0), bolts=35.0, black=False):
+def storm_cloud(name, rgb=(0.22, 0.24, 0.29), density=40.0, bolt_rgb=(0.75, 0.85, 1.0), bolts=35.0, black=False):
     """A body of cloud: a volume with drifting density, its surface clear except for branching lightning veins."""
     m, nt, out = _blank(name)
     tc = _n(nt, "ShaderNodeTexCoord")
-    no = _n(nt, "ShaderNodeTexNoise", _noise_dimensions="4D", Scale=5.0, Detail=10.0, Roughness=0.6)
+    no = _n(nt, "ShaderNodeTexNoise", _noise_dimensions="4D", Scale=11.0, Detail=12.0, Roughness=0.65)
     nt.links.new(tc.outputs["Object"], no.inputs["Vector"]); _animate_w(no)
-    dm = _n(nt, "ShaderNodeMapRange"); dm.inputs[1].default_value = 0.3; dm.inputs[2].default_value = 0.58
+    dm = _n(nt, "ShaderNodeMapRange"); dm.inputs[1].default_value = 0.42; dm.inputs[2].default_value = 0.68
     dm.inputs[3].default_value = 0.0; dm.inputs[4].default_value = density
     nt.links.new(no.outputs["Fac"], dm.inputs[0])
     vol = _n(nt, "ShaderNodeVolumePrincipled", Anisotropy=0.3)
@@ -195,12 +195,12 @@ def mountain_stone(name, rgb=(0.3, 0.28, 0.25), moss=0.7, lichen=False):
     return m
 
 
-def starfield(name, cloth=False, black=False):
+def starfield(name, cloth=False, black=False, sc=(90.0, 35.0), nebula=0.12, big=1.0):
     """Night sky: black with fine stars and a faint violet nebula (Nyxara's face and train)."""
     m, nt, out = _blank(name)
     tc = _n(nt, "ShaderNodeTexCoord")
     em_total = None
-    for sc, size, s in ((90.0, 0.05, 16.0), (35.0, 0.045, 40.0)):
+    for sc, size, s in ((sc[0], 0.05 * big, 16.0), (sc[1], 0.045 * big, 40.0)):
         vo = _n(nt, "ShaderNodeTexVoronoi", _feature="F1", Scale=sc, Randomness=1.0)
         nt.links.new(tc.outputs["Object"], vo.inputs["Vector"])
         th = _n(nt, "ShaderNodeMapRange"); th.inputs[1].default_value = size; th.inputs[2].default_value = 0.0
@@ -220,7 +220,7 @@ def starfield(name, cloth=False, black=False):
     neb = _n(nt, "ShaderNodeTexNoise", Scale=2.5, Detail=8.0)
     nt.links.new(tc.outputs["Object"], neb.inputs["Vector"])
     nm = _n(nt, "ShaderNodeMapRange"); nm.inputs[1].default_value = 0.5; nm.inputs[2].default_value = 0.75
-    nm.inputs[3].default_value = 0.0; nm.inputs[4].default_value = 0.0 if black else 0.12
+    nm.inputs[3].default_value = 0.0; nm.inputs[4].default_value = 0.0 if black else nebula
     nt.links.new(neb.outputs["Fac"], nm.inputs[0])
     b = _n(nt, "ShaderNodeBsdfPrincipled", Roughness=0.85 if cloth else 0.35)
     b.inputs["Base Color"].default_value = (0.004, 0.004, 0.006, 1)
@@ -311,20 +311,20 @@ def point_light(f, name, loc, rgb, energy, bone, size=0.1):
     return lo
 
 
-def flame_crown(f, n=9, r=0.1, h=0.16, rgb=(1.0, 0.45, 0.08), smoke=False):
+def flame_crown(f, n=13, r=0.1, h=0.2, rgb=(1.0, 0.45, 0.08), smoke=False):
     """A crown of slow flames standing on the head (Ignar). smoke: black smoke instead (the Cinder Tyrant)."""
     top = f.J["head-2"].z - 0.01; cy = f.J["head"].y + 0.005
-    M = flame_mat("crown_flame", rgb, 14) if not smoke else C.mat("crown_smoke", (0.01, 0.01, 0.01), 1.0)
+    M = flame_mat("crown_flame", rgb, 1.6) if not smoke else C.mat("crown_smoke", (0.01, 0.01, 0.01), 1.0)
     for i in range(n):
         a = 2 * math.pi * i / n
         hh = h * (0.7 + 0.6 * ((i * 37) % 7) / 7)
-        bpy.ops.mesh.primitive_cone_add(vertices=12, radius1=0.028, radius2=0.002, depth=hh,
+        bpy.ops.mesh.primitive_cone_add(vertices=12, radius1=0.016, radius2=0.001, depth=hh,
                                         location=(math.cos(a) * r, cy + math.sin(a) * r * 0.9, top + hh / 2))
         o = bpy.context.object; o.name = "crown_flame"; o.rotation_euler = (math.sin(a) * -0.25, math.cos(a) * 0.25, 0)
         o.modifiers.new("sub", "SUBSURF").levels = 2
         o.data.materials.append(M); bpy.ops.object.shade_smooth(); H.on_bone(o, f.rig, "head"); f.add(o)
     if not smoke:
-        point_light(f, "crown_fire", (0, cy, top + 0.08), rgb, 25, "head", 0.08)
+        point_light(f, "crown_fire", (0, cy, top + 0.12), rgb, 6, "head", 0.08)
 
 
 def branch_crown(f, n=44, seed=3, blossom=(0.95, 0.93, 0.9), grey=False):
@@ -398,15 +398,15 @@ def pines(f, sites, seed=8, dead=False):
         bpy.ops.mesh.primitive_cylinder_add(radius=0.004, depth=h * 0.4, location=(x, y, z + h * 0.2)); t = bpy.context.object
         t.data.materials.append(TR)
         tiers = []
-        for k in range(4):
-            rr = h * (0.28 - k * 0.055)
-            bpy.ops.mesh.primitive_cone_add(vertices=10, radius1=rr, radius2=0.0, depth=h * 0.38, location=(x, y, z + h * (0.3 + k * 0.18)))
-            tiers.append(bpy.context.object)
+        for k in range(7):
+            rr = h * (0.3 - k * 0.038) * R.uniform(0.85, 1.15)
+            bpy.ops.mesh.primitive_cone_add(vertices=14, radius1=rr, radius2=rr * 0.15, depth=h * 0.22, location=(x, y, z + h * (0.22 + k * 0.11)))
+            c = bpy.context.object; c.rotation_euler = (R.uniform(-0.15, 0.15), R.uniform(-0.15, 0.15), R.uniform(0, 6.3)); tiers.append(c)
         for c in tiers:
             c.data.materials.append(NEED)
         tree = K._join([t] + tiers, "pine")
-        d = tree.modifiers.new("ragged", "DISPLACE"); tx = bpy.data.textures.new("pine_rag", "CLOUDS"); tx.noise_scale = 0.01
-        d.texture = tx; d.strength = 0.006
+        d = tree.modifiers.new("ragged", "DISPLACE"); tx = bpy.data.textures.new("pine_rag", "CLOUDS"); tx.noise_scale = 0.006
+        d.texture = tx; d.strength = 0.012
         H.on_bone(tree, f.rig, bone); f.add(tree)
 
 
@@ -448,7 +448,7 @@ def ignar(rig, body, ex, J, corrupt=False):
     lumpy(body, 0.06, 0.018, "VORONOI")
     glow_eyes(f, (1.0, 0.5, 0.1) if not corrupt else (0.9, 0.9, 1.0), 25, 0.8)
     point_light(f, "molten_core", Vector(core) + Vector((0, -0.2, 0)), rgb, 60, "chest", 0.15)
-    flame_crown(f, rgb=rgb if not corrupt else (0.9, 0.9, 1.0), smoke=corrupt)
+    flame_crown(f, rgb=(1.0, 0.2, 0.02) if not corrupt else (0.9, 0.9, 1.0), smoke=corrupt)
     return [body] + f.parts
 
 
@@ -456,12 +456,11 @@ def aurath(rig, body, ex, J, corrupt=False):
     """Aurath of the Storms. A tall rider-shape of cloud, lightning for veins, never quite solid; a white lightning
     spine. (corrupt: the Thunderhead, the cloud gone solid and black.)"""
     f = Fig(rig, body, ex, J)
-    skin_as(body, storm_cloud("storm_body", density=90 if not corrupt else 300, black=corrupt))
-    lumpy(body, 0.08, 0.03)
+    skin_as(body, storm_cloud("storm_body", density=10 if not corrupt else 300, black=corrupt))
+    lumpy(body, 0.06, 0.05)
     BOLT = H.glow_mat("bolt", (0.8, 0.88, 1.0), 40)
     f.add(H.wear(body, "lightning_spine", lambda c: abs(c.x) < 0.012 and f.pel - 0.15 < c.z < J["head-2"].z, BOLT, 0.004, 0.0))
-    glow_eyes(f, (0.8, 0.9, 1.0), 40, 2.0)
-    point_light(f, "storm_heart", (0, J["spine-1"].y, f.s2), (0.7, 0.8, 1.0), 40, "chest", 0.3)
+    glow_eyes(f, (0.8, 0.9, 1.0), 25, 0.3)
     return [body] + f.parts
 
 
@@ -485,9 +484,9 @@ def thalassa(rig, body, ex, J, corrupt=False):
     skin_as(body, sea_glass("sea_glass"))
     glow_eyes(f, (0.6, 0.95, 0.9), 8, 0.5)
     hc = f.hc
-    float_up = lambda p: (0.5 * (p.x - hc.x) / max(abs(p.x - hc.x), 0.02), 0.7, 0.9)
-    f.add(H.comb_hair(rig, H.scalp_points(body, f.scalp, 12000, seed=31), hc, "floating_hair", 0.42, float_up, segs=12,
-                      lift=0.0, jitter=0.7, radius=0.0018, push=0.5, wrap_above=99.0, colour=(0.12, 0.38, 0.38)))
+    float_up = lambda p: (0.4 * (p.x - hc.x) / max(abs(p.x - hc.x), 0.02), 1.0, 0.45)
+    f.add(H.comb_hair(rig, H.scalp_points(body, f.scalp, 7000, seed=31), hc, "floating_hair", 0.6, float_up, segs=16,
+                      lift=0.0, jitter=0.35, radius=0.0022, push=0.3, wrap_above=99.0, colour=(0.08, 0.3, 0.3), wave=0.12))
     bells_in_hair(f)
     point_light(f, "deep_glow", (0, J["spine-1"].y, f.s2), (0.4, 0.85, 0.8), 6, "chest", 0.01)
     return [body] + f.parts
@@ -498,8 +497,8 @@ def orrok(rig, body, ex, J, corrupt=False):
     geodes. (corrupt: the Mountain Titan, grey lichen over his eyes, his trees dead.)"""
     f = Fig(rig, body, ex, J)
     skin_as(body, mountain_stone("mountain", (0.2, 0.19, 0.17), lichen=corrupt))
-    lumpy(body, 0.05, 0.035, "VORONOI", "boulders")
-    lumpy(body, 0.02, 0.012)
+    lumpy(body, 0.07, 0.04)
+    lumpy(body, 0.02, 0.012, name="grain")
     GEO = C.mat("geode", (1.0, 0.55, 0.1), 0.15, emit=(1.0, 0.5, 0.08), strength=8 if not corrupt else 0.5)
     glow_eyes(f, (1.0, 0.55, 0.1), 0, 0.6 if not corrupt else 0.0, 1.05, mat=GEO)
     sh = f.sh; y = J["spine-1"].y
@@ -507,8 +506,12 @@ def orrok(rig, body, ex, J, corrupt=False):
     for sd in (1, -1):
         for (dx, dy, dz) in ((-0.1, 0.0, 0.06), (-0.03, 0.05, 0.05), (0.04, -0.02, 0.04), (-0.06, 0.08, 0.02), (0.0, -0.06, 0.03)):
             sites.append((sd * (sh.x + dx), y + dy, sh.z + dz, "upperarm" + (".l" if sd > 0 else ".r") if dx > 0 else "chest"))
+    ROCK = mountain_stone("mountain_plates", (0.22, 0.2, 0.18), moss=0.9, lichen=corrupt)
+    n0 = len(f.parts)
+    K.plate_set(f, ROCK, pauldron=1.7, chest=0.06)
+    for p in f.parts[n0:]:
+        lumpy(p, 0.05, 0.045, name="chips")
     pines(f, sites, dead=corrupt)
-    moss_strands(f, lambda c: abs(c.x) < f.sh.x + 0.08 and c.z > f.sh.z - 0.05 and c.z < f.neck + 0.02, 2500, 0.05, 22)
     return [body] + f.parts
 
 
@@ -516,11 +519,11 @@ def nyxara(rig, body, ex, J, corrupt=False):
     """Nyxara of the Hollow. Very tall, slender, a starfield where her face should be, a long black train full of slow
     stars, the broken iron crown in her hand."""
     f = Fig(rig, body, ex, J)
-    f.skin((0.42, 0.4, 0.46), iris=(0.1, 0.1, 0.1))
+    f.skin((0.07, 0.065, 0.09), iris=(0.1, 0.1, 0.1))
     no_eyes(f)
     hy = J["head"].y
     face = lambda c: c.y < hy - 0.035 and f.jaw.z - 0.03 < c.z < f.eye.z + 0.07 and abs(c.x) < 0.075
-    face_poly_material(body, starfield("star_face", black=corrupt), face)
+    face_poly_material(body, starfield("star_face", black=corrupt, sc=(70.0, 28.0), nebula=1.0, big=1.8), face)
     if corrupt:   # the Hollow King: two lights left in the black
         for sx in (-1, 1):
             bpy.ops.mesh.primitive_uv_sphere_add(radius=0.008, location=(sx * f.eye.x, f.eye.y - 0.02, f.eye.z))
@@ -529,7 +532,7 @@ def nyxara(rig, body, ex, J, corrupt=False):
     f.add(H.wear(body, "gown", lambda c: f.torso(f.pel - 0.1, f.neck - 0.02, 0.025)(c) or f.sleeves(0.03)(c), SKY, 0.016, 0.008, smooth=12))
     f.add(H.skirt("gown_skirt", J, f.s4 + 0.02, -0.01, 0.15, 0.42, SKY, rig, folds=0.04, rings=32))
     f.hide_legs()
-    f.add(H.head_veil(rig, J, SKY, drop=0.55, open_front=1.0))
+    K.hair(f, 0.7, 16000, comb_front=(0, 1, 0.05), comb_back=(0, 0.3, -1), hang_below=f.eye.z - 0.02, jitter=0.2, colour=(0.015, 0.015, 0.02))
     train(f, SKY)
     if not corrupt:
         broken_crown(f)

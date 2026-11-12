@@ -652,7 +652,7 @@ def cloth_panel(name, width, length, top, mat, front=True):
 
 def comb_hair(rig, scalp_pts, centre, name="hair", length=0.06, comb=(0, 1, -0.5), lift=0.004, segs=6,
               radius=0.0011, melanin=0.6, redness=0.95, jitter=0.3, seed=3, wrap_above=-99.0, push=0.35, bone="head",
-              colour=None):
+              colour=None, wave=0.0):
     """Combed hair as real curves: every strand starts on the scalp and wraps around the head along `comb`
     (back and down by default), a little off the skin. The hair object rides on the head bone."""
     import random as R
@@ -667,6 +667,8 @@ def comb_hair(rig, scalp_pts, centre, name="hair", length=0.06, comb=(0, 1, -0.5
         d = Vector(comb(p) if callable(comb) else comb) + Vector((R.uniform(-1, 1), R.uniform(-1, 1), R.uniform(-1, 1))) * jitter
         for k in range(segs):
             pos.append(p.copy())
+            if wave:   # a slow random walk of the direction: floating, wavy strands
+                d = (d.normalized() + Vector((R.uniform(-1, 1), R.uniform(-1, 1), R.uniform(-1, 1))) * wave)
             if p.z > wrap_above:   # on the head: follow the skull
                 n = (p - centre).normalized()
                 t = d - n * d.dot(n)

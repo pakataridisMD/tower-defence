@@ -2,7 +2,7 @@
 -- OUT --hero tamsin --shot close|full --frames N N"""
 import sys, os, math
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-import bpy, cine3d as C, hero, cast, wardens
+import bpy, cine3d as C, hero, cast, wardens, heralds
 name = C.opt("--hero", "tamsin"); shot = C.opt("--shot", "close")
 C.setup(2.0)
 g = C.box("ground", (0, 0, -0.05), (60, 60, 0.1), C.M("mud"))
