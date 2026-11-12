@@ -1,0 +1,109 @@
+{
+  "source": "Poly Haven (polyhaven.com), all CC0 1.0",
+  "assets": [
+    {
+      "id": "namaqualand_cliff_02",
+      "type": "model",
+      "role": "large rock/cliff",
+      "files": [
+        "namaqualand_cliff_02_1k.gltf",
+        "textures/namaqualand_cliff_02_diff_1k.jpg",
+        "textures/namaqualand_cliff_02_nor_gl_1k.jpg",
+        "namaqualand_cliff_02.bin",
+        "textures/namaqualand_cliff_02_arm_1k.jpg"
+      ],
+      "license": "CC0",
+      "source": "https://polyhaven.com/a/namaqualand_cliff_02"
+    },
+    {
+      "id": "mountainside",
+      "type": "model",
+      "role": "large rock/cliff",
+      "files": [
+        "mountainside_1k.gltf",
+        "textures/mountainside_arm_1k.jpg",
+        "textures/mountainside_diff_1k.jpg",
+        "mountainside.bin",
+        "textures/mountainside_nor_gl_1k.jpg"
+      ],
+      "license": "CC0",
+      "source": "https://polyhaven.com/a/mountainside"
+    },
+    {
+      "id": "rock_face_02",
+      "type": "model",
+      "role": "large rock/cliff",
+      "files": [
+        "rock_face_02_1k.gltf",
+        "textures/rock_face_02_nor_gl_1k.jpg",
+        "textures/rock_face_02_arm_1k.jpg",
+        "rock_face_02.bin",
+        "textures/rock_face_02_diff_1k.jpg"
+      ],
+      "license": "CC0",
+      "source": "https://polyhaven.com/a/rock_face_02"
+    },
+    {
+      "id": "dark_rock_02",
+      "type": "texture",
+      "role": "rock/cliff face",
+      "files": [
+        "dark_rock_02_diff_1k.jpg",
+        "dark_rock_02_nor_gl_1k.jpg",
+        "dark_rock_02_rough_1k.jpg",
+        "dark_rock_02_disp_1k.jpg"
+      ],
+      "license": "CC0",
+      "source": "https://polyhaven.com/a/dark_rock_02"
+    },
+    {
+      "id": "castle_wall_slates",
+      "type": "texture",
+      "role": "weathered stone castle wall",
+      "files": [
+        "castle_wall_slates_diff_1k.jpg",
+        "castle_wall_slates_nor_gl_1k.jpg",
+        "castle_wall_slates_rough_1k.jpg",
+        "castle_wall_slates_disp_1k.jpg"
+      ],
+      "license": "CC0",
+      "source": "https://polyhaven.com/a/castle_wall_slates"
+    },
+    {
+      "id": "gray_rocks",
+      "type": "texture",
+      "role": "gravel/rocky ground",
+      "files": [
+        "gray_rocks_diff_1k.jpg",
+        "gray_rocks_nor_gl_1k.jpg",
+        "gray_rocks_rough_1k.jpg",
+        "gray_rocks_disp_1k.jpg"
+      ],
+      "license": "CC0",
+      "source": "https://polyhaven.com/a/gray_rocks"
+    },
+    {
+      "id": "brown_mud_02",
+      "type": "texture",
+      "role": "dirt/mud",
+      "files": [
+        "brown_mud_02_diff_1k.jpg",
+        "brown_mud_02_nor_gl_1k.jpg",
+        "brown_mud_02_rough_1k.jpg",
+        "brown_mud_02_disp_1k.jpg"
+      ],
+      "license": "CC0",
+      "source": "https://polyhaven.com/a/brown_mud_02"
+    },
+    {
+      "id": "fouriesburg_mountain_cloudy",
+      "type": "hdri",
+      "role": "overcast mountain sky",
+      "files": [
+        "fouriesburg_mountain_cloudy_1k.hdr"
+      ],
+      "license": "CC0",
+      "source": "https://polyhaven.com/a/fouriesburg_mountain_cloudy"
+    }
+  ]
+}
