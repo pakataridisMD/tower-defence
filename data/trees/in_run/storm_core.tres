@@ -1,21 +1,23 @@
 [gd_resource type="Resource" script_class="TreeNodeData" format=3]
 
-[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_d7ke8"]
-[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_3xyl6"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
 
-[sub_resource type="Resource" id="Resource_vmgqw"]
-script = ExtResource("1_d7ke8")
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
 stat = &"attacks_per_second"
 kind = 1
-value = 0.15
+value = 0.06
 required_tags = Array[StringName]([&"storm"])
 
 [resource]
-script = ExtResource("2_3xyl6")
+script = ExtResource("2_node")
 id = &"storm_core"
-display_name = "Charged Air"
-description = "Storm towers attack 15% faster."
+display_name = "Gathering Storm"
+description = "Storm towers attack 6% faster."
+kind = 3
 region = &"storm"
-position = Vector2(182, -105)
-links = Array[StringName]([&"storm_entry"])
-modifiers = Array[ExtResource("1_d7ke8")]([SubResource("Resource_vmgqw")])
+cost = 2
+position = Vector2(333, -192)
+links = Array[StringName]([&"storm_c_300", &"storm_r2_385"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

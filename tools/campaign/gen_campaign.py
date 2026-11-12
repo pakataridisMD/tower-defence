@@ -189,8 +189,8 @@ CAMPAIGNS = [
                        "elements are yours again, and every horde comes at once.",
         "requires": ["ember_reach", "thunder_steppe", "verdant_deep", "frostmere", "sunscar_canyon", "hollow_rift"],
         "signature": "warded", "second": "splitter",
-        "reward": ("Crown of the Ring", "One more skill point at the start of every run, and every tower deals 5% more damage.",
-                   [("starting_tree_points", 0, 1, []), ("damage", 2, 0.05, [])]),
+        "reward": ("Crown of the Ring", "Three more skill points at the start of every run, and every tower deals 5% more damage.",
+                   [("starting_tree_points", 0, 3, []), ("damage", 2, 0.05, [])]),
         "stages": [
             ("converge_1", "Shattered Crossroads", "Two roads meet at the edge of the heartland. Two hordes walk them.",
              {"lanes": [[(-1, 2), (13, 2), (13, 9), (18, 9), (18, 5), (24, 5)],

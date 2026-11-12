@@ -1550,7 +1550,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"water"
 is_boss = true
-health_multiplier = 0.59
+health_multiplier = 3.55
 description = "A marching column, brutes under escort, Warded packs, Barkhulks, a flank attack and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r179"), SubResource("r180"), SubResource("r181"), SubResource("r182"), SubResource("r183"), SubResource("r184"), SubResource("r185"), SubResource("r186"), SubResource("r187"), SubResource("r188"), SubResource("r189")])
 
@@ -1559,5 +1559,5 @@ script = ExtResource("1_s")
 id = &"c_void_4"
 display_name = "Throne of the Hollow King"
 health_growth = 1.1
-health_scale = 15.6
+health_scale = 13.49
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r15"), SubResource("r24"), SubResource("r36"), SubResource("r45"), SubResource("r59"), SubResource("r71"), SubResource("r84"), SubResource("r100"), SubResource("r114"), SubResource("r129"), SubResource("r146"), SubResource("r162"), SubResource("r178"), SubResource("r190")])

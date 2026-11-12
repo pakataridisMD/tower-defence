@@ -7,15 +7,17 @@
 script = ExtResource("1_mod")
 stat = &"aura_radius"
 kind = 1
-value = 0.25
+value = 0.05
 required_tags = Array[StringName]([&"void"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"void_ccw"
-display_name = "Long Shadow"
-description = "Auras from void towers reach 25% further."
+display_name = "Wide Shadow I"
+description = "Auras from void towers reach 5% farther."
+kind = 2
 region = &"void"
-position = Vector2(-186, -40)
+cost = 1
+position = Vector2(-212, -37)
 links = Array[StringName]([&"void_entry"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

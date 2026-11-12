@@ -7,15 +7,17 @@
 script = ExtResource("1_mod")
 stat = &"slow_duration"
 kind = 1
-value = 0.3
+value = 0.05
 required_tags = Array[StringName]([&"water"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"water_cw"
-display_name = "Cold Current"
-description = "Slows from water towers last 30% longer."
+display_name = "Cold Snap I"
+description = "Slows from water towers last 5% longer."
+kind = 2
 region = &"water"
-position = Vector2(-59, 181)
+cost = 1
+position = Vector2(-74, 202)
 links = Array[StringName]([&"water_entry"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])
