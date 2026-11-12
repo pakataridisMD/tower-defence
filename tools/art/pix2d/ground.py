@@ -78,8 +78,72 @@ STYLES = {
         "bank": pal("120e0e", "1c1616"),
         "cobble": True, "flower_rate": 0.0, "tuft_rate": 0.12,
         "props": {"tree": [("dead_tree_0", 3), ("dead_tree_1", 2), ("basalt_cols", 2)],
-                  "small": [("basalt_rock_0", 3), ("basalt_rock_1", 2), ("ember_shard", 2),
+                  "small": [("basalt_rock_0", 3), ("basalt_rock_1", 2), ("ember_shard", 1),
                             ("ash_tuft_0", 3), ("ash_tuft_1", 3), ("charred_log", 1), ("skull_rock", 1)]},
+    },
+    "storm": {  # a windswept plateau of pale grass, slate outcrops
+        "kind": "grass",
+        "ground": pal("3e4c40", "4a5a4a", "5a6c56", "6c7e64", "809274"),
+        "tuft": pal("3a4838", "56684e", "74865e", "92a476", "b4c494"),
+        "road": pal("2e333a", "3a4048", "474e58", "555d68", "646d78", "77808a"),
+        "bank": pal("1e2228", "2a2f36"),
+        "cobble": True, "dirt_patches": 0.0, "slate": True,
+        "flowers": [pal("c8d4e4", "eef4ff"), pal("8aa0d0", "b8c8f0")],
+        "flower_rate": 0.7, "tuft_rate": 0.9, "litter": None,
+        "props": {"tree": [("pine_0", 3), ("standing_stone", 2), ("dead_tree_1", 1)],
+                  "small": [("rock_0", 3), ("rock_1", 3), ("slate_shard", 3), ("steppe_tuft_0", 4), ("steppe_tuft_1", 4),
+                            ("storm_crystal", 1), ("flowers_0", 1)]},
+    },
+    "void": {  # the rift: violet grass under no stars
+        "kind": "grass",
+        "ground": pal("140f1c", "1b1426", "231a30", "2c213c", "372a4a"),
+        "tuft": pal("1e1630", "30244a", "463668", "5e4a88", "8068b0"),
+        "road": pal("0e0c12", "16121c", "1e1a26", "282230", "322a3c", "3e3448"),
+        "bank": pal("08060c", "100c14"),
+        "cobble": True, "dirt_patches": 0.0,
+        "flowers": [pal("8a5ad0", "c8a0ff"), pal("3aa0b0", "80f0ff")],
+        "flower_rate": 0.8, "tuft_rate": 0.6, "litter": None, "glow_flowers": True,
+        "props": {"tree": [("void_tree", 3), ("rift_spire", 2)],
+                  "small": [("void_shard", 3), ("obsidian_rock", 3), ("void_tuft_0", 4), ("void_tuft_1", 4),
+                            ("void_bloom", 2)]},
+    },
+    "earth": {  # a red sandstone canyon floor of cracked slabs
+        "kind": "basalt", "plate": 16,
+        "ground": pal("5a2c1c", "6e3622", "82422a", "985232", "ac623c", "c07448"),
+        "ash": pal("b07850", "c08a5c", "d09c6c"),
+        "tuft": pal("5a4424", "74582e", "8e6e3a", "a88648", "c4a060"),
+        "road": pal("7a5e40", "8a6c4a", "9a7a54", "aa8a60", "ba9a6e", "ccac7e"),
+        "bank": pal("4a2e1e", "5e3a26"),
+        "cobble": False, "flower_rate": 0.0, "tuft_rate": 0.2,
+        "props": {"tree": [("mesa_rock", 3), ("cactus_tall", 2)],
+                  "small": [("sand_rock_0", 3), ("sand_rock_1", 2), ("cactus_small", 2), ("dry_tuft_0", 4),
+                            ("dry_tuft_1", 3), ("bones", 1), ("skull_rock", 1)]},
+    },
+    "water": {  # a frozen lakeshore under snow
+        "kind": "snow",
+        "ground": pal("8a98ac", "a2b0c2", "bac6d4", "d0dae4", "e6eef4"),
+        "ice": pal("2a4a6a", "4a7aa8", "7ab4e0", "b4e0f8", "eefaff"),
+        "tuft": pal("5a4a34", "7a6440", "967e50", "b09a68", "cab680"),
+        "road": pal("3e5670", "4a6480", "587490", "6a86a0", "7e98b0", "96aec2"),
+        "bank": pal("2a3a4c", "34465a"),
+        "cobble": True, "tuft_rate": 0.25,
+        "props": {"tree": [("snow_pine", 4), ("ice_spire", 1)],
+                  "small": [("snow_rock_0", 3), ("snow_rock_1", 2), ("reed_0", 4), ("reed_1", 3), ("ice_chunk", 2),
+                            ("snow_bush", 2)]},
+    },
+    "heart": {  # the heart of the ring: old flagstones with grass in the joints, gold road, prisms
+        "kind": "basalt", "plate": 9,
+        "ground": pal("6a645a", "7c766a", "8e887a", "a29a8a", "b6ae9c", "c8c0ae"),
+        "ash": pal("94a070", "a4b07c", "b4c08a"),
+        "seam_fill": pal("4a6a34", "567a3c"),
+        "sparks": pal("ffe07a", "ffffff"),
+        "tuft": pal("4a6634", "5e7c40", "78964e", "92b060", "b0c878"),
+        "road": pal("6a5430", "806638", "967a44", "ac8e52", "c2a462", "d6ba74"),
+        "bank": pal("40321c", "54422a"),
+        "cobble": True, "flower_rate": 0.0, "tuft_rate": 0.25,
+        "props": {"tree": [("marble_pillar", 3), ("oak_1", 2)],
+                  "small": [("prism_shard", 2), ("rock_0", 2), ("flowers_0", 3), ("flowers_1", 3), ("pale_tuft_0", 3),
+                            ("pale_tuft_1", 3), ("bush_round", 2)]},
     },
 }
 
@@ -214,11 +278,25 @@ def paint_grass(st, W, H, road_d, half, rng):
                 rgb[iy - 1, ix] = hexc("6a4c2e")
                 rgb[iy + 1, ix] = tones[0]
                 height[iy, ix] = 0.8
+    # slate outcrops breaking through the turf (storm plateau)
+    if st.get("slate"):
+        ident, d1, d2 = voronoi(H, W, 10, rng)
+        out = (fbm(H, W, [44, 18], rng) > 0.66) & (road_d > half + 4)
+        sl = pal("2e333c", "3e4550", "525a66", "68717e", "828c98")
+        per = rng.random(ident.max() + 1)
+        lvl = (per[ident] * 2.99).astype(int) + 1
+        rgb[out] = sl[lvl[out]]
+        gy, gx = np.gradient(d2 - d1)
+        rim = out & ((d2 - d1) < 2.2)
+        rgb[rim & ((gx + gy) > 0.1)] = sl[4]
+        rgb[out & ((d2 - d1) < 1.0)] = sl[0]
+        height[out] = 0.8
     # tufts, denser on the lighter patches
     field = fbm(H, W, [28, 11], rng)
     dens = np.clip(st["tuft_rate"] * np.clip((field - 0.42) * 3.0, 0, 1) * (0.5 + level / (len(tones) - 1)), 0, 1)
     tufts(rgb, height, road_d > half + 2, dens, st["tuft"], rng)
     # flower clusters
+    glow_px = []
     for _ in range(int(W * H / 2400 * st.get("flower_rate", 1.0))):
         cx_, cy_ = int(rng.integers(4, W - 4)), int(rng.integers(4, H - 4))
         if road_d[cy_, cx_] < half + 4:
@@ -230,18 +308,25 @@ def paint_grass(st, W, H, road_d, half, rng):
             rgb[y, x] = col[0]
             rgb[y - 1, x] = col[1]
             height[y - 1:y + 1, x] = 0.9
+            if st.get("glow_flowers"):
+                glow_px.append((x, y - 1, col[1]))
     # pebbles
     stone = pal("3e3a36", "5a5650", "7a746a", "9a9488", "bab4a6")
     for _ in range(int(W * H / 1800)):
         x, y = int(rng.integers(2, W - 3)), int(rng.integers(2, H - 3))
         if road_d[y, x] > half + 2:
             pebble(rgb, height, x, y, stone)
-    return rgb, height, np.zeros((H, W, 4), np.uint8)
+    glow = np.zeros((H, W, 4), np.uint8)
+    for (x, y, c) in glow_px:
+        glow[y, x, :3] = c.astype(np.uint8)
+        glow[y, x, 3] = 200
+    return rgb, height, glow
 
 
 def paint_basalt(st, W, H, road_d, half, rng):
+    """Plates: cracked basalt (fire), sandstone slabs (earth) or old flagstones (heart). Lava only where st has it."""
     tones = st["ground"]
-    ident, d1, d2 = voronoi(H, W, 12, rng)
+    ident, d1, d2 = voronoi(H, W, st.get("plate", 12), rng)
     per = rng.random(ident.max() + 1)
     big = fbm(H, W, [70, 30], rng)
     t = np.clip(per[ident] * 0.55 + big * 0.7 - 0.05, 0, 0.999)
@@ -261,9 +346,15 @@ def paint_basalt(st, W, H, road_d, half, rng):
     height[seam] = -0.5
     # lava runs in some seams only, in long veins
     glow = np.zeros((H, W, 4), np.uint8)
-    lava = st["lava"]
+    if st.get("seam_fill") is not None:                      # grass or sand grown into the seams
+        rgb[seam] = st["seam_fill"][(yy + xx) % len(st["seam_fill"])][seam]
+    lava = st.get("lava")
     vein = fbm(H, W, [90, 40], rng)
-    hot = seam & (np.abs(vein - 0.6) < 0.045) & (road_d > half + 3)
+    if lava is None:
+        lava = np.zeros((5, 3))
+        hot = np.zeros((H, W), bool)
+    else:
+        hot = seam & (np.abs(vein - 0.6) < 0.045) & (road_d > half + 3)
     hot_core = hot & ((d2 - d1) < 0.7)
     rgb[hot] = lava[2]
     rgb[hot_core] = lava[3]
@@ -277,7 +368,7 @@ def paint_basalt(st, W, H, road_d, half, rng):
     glow[warm, :3] = lava[0].astype(np.uint8)
     glow[warm, 3] = 120
     # pools of lava where veins are hottest
-    pool = (vein > 0.78) & (d1 < 5.5) & (road_d > half + 6) & (per[ident] > 0.8)
+    pool = (vein > 0.78) & (d1 < 5.5) & (road_d > half + 6) & (per[ident] > 0.8) & (st.get("lava") is not None)
     rgb[pool] = lava[1]
     inner = pool & (d1 < 3.5)
     rgb[inner] = lava[2]
@@ -295,11 +386,12 @@ def paint_basalt(st, W, H, road_d, half, rng):
     # sparse charred tufts, embers
     tufts(rgb, height, (road_d > half + 2) & ~hot & ~pool, np.full((H, W), st["tuft_rate"]), st["tuft"], rng,
           spacing=(7, 6))
-    for _ in range(int(W * H / 900)):
+    sparks = st.get("sparks", lava[2:4] if st.get("lava") is not None else None)
+    for _ in range(int(W * H / 900) if sparks is not None else 0):
         x, y = int(rng.integers(1, W - 1)), int(rng.integers(1, H - 1))
         if road_d[y, x] < half + 1 or hot[y, x]:
             continue
-        c = lava[3] if rng.random() < 0.4 else lava[2]
+        c = sparks[1] if rng.random() < 0.4 else sparks[0]
         rgb[y, x] = c
         glow[y, x, :3] = c.astype(np.uint8)
         glow[y, x, 3] = 200
@@ -364,7 +456,40 @@ def paint_road(st, rgb, height, glow, road_d, dist, half, rng):
             pebble(rgb, height, x, y, road)
 
 
-PAINTERS = {"grass": paint_grass, "basalt": paint_basalt}
+def paint_snow(st, W, H, road_d, half, rng):
+    """Snow: soft drifts in a few flat tones with lit crests, patches of blue ice, reeds poking through."""
+    tones = st["ground"]
+    base = fbm(H, W, [50, 20, 8], rng)
+    level = np.clip((base * 1.3 - 0.15) * len(tones), 0, len(tones) - 1).astype(int)
+    rgb = tones[level].copy()
+    height = level * 0.3
+    lips(level, rgb, tones, height)
+    ice_t = st["ice"]
+    ident, d1, d2 = voronoi(H, W, 9, rng)
+    icy = (fbm(H, W, [60, 24], rng) > 0.64) & (road_d > half + 4)
+    seam = (d2 - d1) < 1.1
+    rgb[icy] = ice_t[2]
+    gy, gx = np.gradient(d2 - d1)
+    rgb[icy & ((d2 - d1) < 2.4) & ((gx + gy) > 0.1)] = ice_t[3]
+    rgb[icy & seam] = ice_t[1]
+    height[icy] = 0.1
+    glow = np.zeros((H, W, 4), np.uint8)
+    for _ in range(int(W * H / 700)):
+        x, y = int(rng.integers(1, W - 1)), int(rng.integers(1, H - 1))
+        if icy[y, x]:
+            rgb[y, x] = ice_t[4]
+            glow[y, x, :3] = ice_t[4].astype(np.uint8)
+            glow[y, x, 3] = 140
+    tufts(rgb, height, (road_d > half + 2) & ~icy, np.full((H, W), st["tuft_rate"]), st["tuft"], rng, spacing=(8, 7))
+    stone = pal("4a5262", "6a7486", "8e98a8", "b0b8c6", "d6dce6")
+    for _ in range(int(W * H / 2600)):
+        x, y = int(rng.integers(2, W - 3)), int(rng.integers(2, H - 3))
+        if road_d[y, x] > half + 2:
+            pebble(rgb, height, x, y, stone)
+    return rgb, height, glow
+
+
+PAINTERS = {"grass": paint_grass, "basalt": paint_basalt, "snow": paint_snow}
 
 
 # ------------------------------------------------------------------------------------------------ one map

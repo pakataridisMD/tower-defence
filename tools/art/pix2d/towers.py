@@ -149,9 +149,14 @@ def orb(s, cx, cy, r, tones, rim=None):
 
 
 def glow_image(s):
+    """The pixels the game adds on top, unlit, so they shine at night. Dimmer tones are added at half strength so a
+    big glowing area (a crystal, a column of water) does not wash out to white; the hot cores stay full."""
     from PIL import Image
     a = (s.glow & s.a).astype(np.uint8) * 255
-    return Image.fromarray(np.dstack([s.rgb, a]), "RGBA")
+    rgb = s.rgb.astype(np.float32)
+    lum = rgb @ np.array([0.3, 0.55, 0.15], np.float32)
+    k = np.where(lum > 175, 0.95, 0.5)[..., None]
+    return Image.fromarray(np.dstack([np.clip(rgb * k, 0, 255).astype(np.uint8), a]), "RGBA")
 
 
 def meta_for(s, element, muzzle_y, light_y=None, energy=1.0, rng=110, height=40, muzzle_x=0, emitter=None):
@@ -390,3 +395,7 @@ def void_obelisk():
     s.ink()
     s.pxs([(cx - 11, ey + 6), (cx + 12, ey - 5), (cx - 9, ey - 9)], VOIDC[3], glow=True)
     return s, meta_for(s, "void", ey, energy=0.9, rng=100, height=44)
+
+
+import towers_duals  # noqa: E402,F401  (registers the dual-element towers)
+import towers_triples  # noqa: E402,F401  (registers the triple-element towers)

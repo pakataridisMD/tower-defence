@@ -6,2757 +6,333 @@
 "biome": "nature",
 "props": [
 {
-"kind": "mushroom_1",
+"kind": "jungle_1",
 "pos": [
-526,
-604
-],
-"cell": [
-16,
-18
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-109,
-221
-],
-"cell": [
-3,
-6
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-801,
-255
-],
-"cell": [
-25,
-7
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-832,
-179
-],
-"cell": [
-25,
-5
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-227,
-712
-],
-"cell": [
-7,
-22
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-1203,
-385
-],
-"cell": [
-37,
-12
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-323,
-695
-],
-"cell": [
-10,
-21
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-348,
-385
-],
-"cell": [
-10,
-12
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-755,
-289
-],
-"cell": [
-23,
-9
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-1033,
-438
-],
-"cell": [
-32,
-13
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-679,
-767
-],
-"cell": [
-21,
-23
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-43,
-410
-],
-"cell": [
-1,
-12
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-325,
-691
-],
-"cell": [
-10,
-21
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-106,
-480
-],
-"cell": [
-3,
-14
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-641,
-543
-],
-"cell": [
-20,
-16
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-1335,
-163
+1315,
+503
 ],
 "cell": [
 41,
-5
+15
 ],
 "flip": true
 },
 {
-"kind": "bush_1",
+"kind": "jungle_0",
 "pos": [
-768,
-810
-],
-"cell": [
-24,
-25
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-805,
-305
-],
-"cell": [
-25,
-9
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-51,
-413
-],
-"cell": [
-1,
-12
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-941,
-67
-],
-"cell": [
-29,
-2
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-845,
-665
-],
-"cell": [
-26,
-20
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-71,
-403
-],
-"cell": [
-2,
-12
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-545,
-822
-],
-"cell": [
-17,
-25
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-1339,
-533
-],
-"cell": [
-41,
-16
-],
-"flip": false
-},
-{
-"kind": "stone_1",
-"pos": [
-1265,
-129
-],
-"cell": [
-39,
-4
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-14,
-107
-],
-"cell": [
-0,
-3
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-772,
-453
-],
-"cell": [
-24,
-14
-],
-"flip": false
-},
-{
-"kind": "stone_1",
-"pos": [
-513,
-531
-],
-"cell": [
-16,
-16
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-919,
+1321,
 182
 ],
 "cell": [
-28,
+41,
 5
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-977,
-782
-],
-"cell": [
-30,
-24
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-78,
-68
-],
-"cell": [
-2,
-2
 ],
 "flip": true
 },
 {
-"kind": "mushroom_1",
+"kind": "jungle_1",
 "pos": [
-51,
-35
+34,
+808
 ],
 "cell": [
 1,
-1
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-98,
-198
-],
-"cell": [
-3,
-6
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-431,
-629
-],
-"cell": [
-13,
-19
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-902,
-798
-],
-"cell": [
-28,
-24
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1114,
-48
-],
-"cell": [
-34,
-1
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-865,
-716
-],
-"cell": [
-27,
-22
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-87,
-391
-],
-"cell": [
-2,
-12
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-980,
-366
-],
-"cell": [
-30,
-11
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-717,
-601
-],
-"cell": [
-22,
-18
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1073,
-233
-],
-"cell": [
-33,
-7
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-556,
-495
-],
-"cell": [
-17,
-15
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-631,
-757
-],
-"cell": [
-19,
-23
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-1080,
-825
-],
-"cell": [
-33,
-25
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-19,
-171
-],
-"cell": [
-0,
-5
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-965,
-587
-],
-"cell": [
-30,
-18
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-1207,
-535
-],
-"cell": [
-37,
-16
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-705,
-651
-],
-"cell": [
-22,
-20
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-82,
-279
-],
-"cell": [
-2,
-8
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1284,
-243
-],
-"cell": [
-40,
-7
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-479,
-47
-],
-"cell": [
-14,
-1
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-130,
-54
-],
-"cell": [
-4,
-1
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1143,
-513
-],
-"cell": [
-35,
-16
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-594,
-208
-],
-"cell": [
-18,
-6
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-1305,
-141
-],
-"cell": [
-40,
-4
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-189,
-274
-],
-"cell": [
-5,
-8
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-125,
-437
-],
-"cell": [
-3,
-13
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-1060,
-66
-],
-"cell": [
-33,
-2
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-134,
-657
-],
-"cell": [
-4,
-20
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-1195,
-797
-],
-"cell": [
-37,
-24
-],
-"flip": false
-},
-{
-"kind": "mushroom_0",
-"pos": [
-277,
-207
-],
-"cell": [
-8,
-6
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-443,
-727
-],
-"cell": [
-13,
-22
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-262,
-509
-],
-"cell": [
-8,
-15
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-119,
-635
-],
-"cell": [
-3,
-19
-],
-"flip": false
-},
-{
-"kind": "mushroom_0",
-"pos": [
-21,
-636
-],
-"cell": [
-0,
-19
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-1162,
-604
-],
-"cell": [
-36,
-18
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-510,
-409
-],
-"cell": [
-15,
-12
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-703,
-289
-],
-"cell": [
-21,
-9
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-926,
-523
-],
-"cell": [
-28,
-16
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-174,
-195
-],
-"cell": [
-5,
-6
-],
-"flip": false
-},
-{
-"kind": "stone_1",
-"pos": [
-15,
-525
-],
-"cell": [
-0,
-16
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-1136,
-374
-],
-"cell": [
-35,
-11
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-1214,
-468
-],
-"cell": [
-37,
-14
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-22,
-120
-],
-"cell": [
-0,
-3
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1330,
-310
-],
-"cell": [
-41,
-9
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-363,
-708
-],
-"cell": [
-11,
-22
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-1108,
-524
-],
-"cell": [
-34,
-16
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-258,
-257
-],
-"cell": [
-8,
-8
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-1323,
-754
-],
-"cell": [
-41,
-23
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-924,
-229
-],
-"cell": [
-28,
-7
-],
-"flip": false
-},
-{
-"kind": "mushroom_0",
-"pos": [
-1019,
-284
-],
-"cell": [
-31,
-8
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1288,
-665
-],
-"cell": [
-40,
-20
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-918,
-64
-],
-"cell": [
-28,
-1
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-74,
-766
-],
-"cell": [
-2,
-23
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-187,
-658
-],
-"cell": [
-5,
-20
-],
-"flip": true
-},
-{
-"kind": "stone_1",
-"pos": [
-1292,
-158
-],
-"cell": [
-40,
-4
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1179,
-28
-],
-"cell": [
-36,
-0
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-270,
-215
-],
-"cell": [
-8,
-6
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-1185,
-114
-],
-"cell": [
-37,
-3
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1046,
-452
-],
-"cell": [
-32,
-14
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-17,
-416
-],
-"cell": [
-0,
-12
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-526,
-401
-],
-"cell": [
-16,
-12
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-861,
-26
-],
-"cell": [
-26,
-0
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-619,
-743
-],
-"cell": [
-19,
-23
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-331,
-495
-],
-"cell": [
-10,
-15
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-400,
-359
-],
-"cell": [
-12,
-11
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-667,
-769
-],
-"cell": [
-20,
-24
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1277,
-796
-],
-"cell": [
-39,
-24
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-1207,
-412
-],
-"cell": [
-37,
-12
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-370,
-489
-],
-"cell": [
-11,
-15
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-571,
-170
-],
-"cell": [
-17,
-5
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-940,
-645
-],
-"cell": [
-29,
-20
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-402,
-263
-],
-"cell": [
-12,
-8
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-51,
-637
-],
-"cell": [
-1,
-19
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-975,
-718
-],
-"cell": [
-30,
-22
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-868,
-206
-],
-"cell": [
-27,
-6
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-664,
-22
-],
-"cell": [
-20,
-0
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-1006,
-276
-],
-"cell": [
-31,
-8
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-324,
-139
-],
-"cell": [
-10,
-4
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-548,
-734
-],
-"cell": [
-17,
-22
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-773,
-170
-],
-"cell": [
-24,
-5
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-1037,
-210
-],
-"cell": [
-32,
-6
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-179,
-804
-],
-"cell": [
-5,
 25
 ],
 "flip": true
 },
 {
-"kind": "mushroom_1",
+"kind": "jungle_1",
 "pos": [
-93,
-318
+21,
+559
 ],
 "cell": [
-2,
-9
+0,
+17
 ],
 "flip": true
 },
 {
-"kind": "tuft_0",
+"kind": "jungle_1",
 "pos": [
-988,
+1193,
 816
 ],
 "cell": [
-30,
+37,
 25
 ],
 "flip": true
 },
 {
-"kind": "fern_1",
+"kind": "jungle_0",
 "pos": [
-47,
-430
-],
-"cell": [
-1,
-13
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-451,
-74
-],
-"cell": [
-14,
-2
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-1284,
-409
-],
-"cell": [
-40,
-12
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-892,
-781
-],
-"cell": [
-27,
-24
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-684,
-449
-],
-"cell": [
-21,
-14
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-889,
-550
-],
-"cell": [
-27,
-17
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-361,
-205
-],
-"cell": [
-11,
-6
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-1307,
-366
-],
-"cell": [
-40,
-11
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-133,
-763
-],
-"cell": [
-4,
-23
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1340,
-693
+1314,
+487
 ],
 "cell": [
 41,
-21
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-513,
-522
-],
-"cell": [
-16,
-16
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-741,
-577
-],
-"cell": [
-23,
-18
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-441,
-34
-],
-"cell": [
-13,
-1
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-322,
-364
-],
-"cell": [
-10,
-11
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-644,
-795
-],
-"cell": [
-20,
-24
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-158,
-331
-],
-"cell": [
-4,
-10
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-1195,
-326
-],
-"cell": [
-37,
-10
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-173,
-722
-],
-"cell": [
-5,
-22
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-675,
-652
-],
-"cell": [
-21,
-20
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-378,
-43
-],
-"cell": [
-11,
-1
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-471,
-243
-],
-"cell": [
-14,
-7
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-471,
-559
-],
-"cell": [
-14,
-17
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1009,
-743
-],
-"cell": [
-31,
-23
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-103,
-269
-],
-"cell": [
-3,
-8
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-284,
-29
-],
-"cell": [
-8,
-0
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-359,
-828
-],
-"cell": [
-11,
-25
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-1148,
-612
-],
-"cell": [
-35,
-19
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-265,
-824
-],
-"cell": [
-8,
-25
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-333,
-181
-],
-"cell": [
-10,
-5
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-467,
-426
-],
-"cell": [
-14,
-13
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-34,
-377
-],
-"cell": [
-1,
-11
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-1167,
-344
-],
-"cell": [
-36,
-10
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-785,
-277
-],
-"cell": [
-24,
-8
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-188,
-352
-],
-"cell": [
-5,
-10
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1076,
-565
-],
-"cell": [
-33,
-17
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-470,
-515
-],
-"cell": [
-14,
-16
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-298,
-359
-],
-"cell": [
-9,
-11
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-965,
-217
-],
-"cell": [
-30,
-6
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1288,
-512
-],
-"cell": [
-40,
 15
 ],
 "flip": true
 },
 {
-"kind": "fern_0",
+"kind": "jungle_0",
 "pos": [
-8,
-121
+773,
+581
+],
+"cell": [
+24,
+18
+],
+"flip": true
+},
+{
+"kind": "jungle_0",
+"pos": [
+15,
+435
 ],
 "cell": [
 0,
-3
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-228,
-789
-],
-"cell": [
-7,
-24
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-721,
-448
-],
-"cell": [
-22,
-13
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-695,
-713
-],
-"cell": [
-21,
-22
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-354,
-295
-],
-"cell": [
-11,
-9
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-943,
-197
-],
-"cell": [
-29,
-6
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-1124,
-292
-],
-"cell": [
-35,
-9
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-768,
-540
-],
-"cell": [
-23,
-16
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-329,
-443
-],
-"cell": [
-10,
 13
 ],
 "flip": false
 },
 {
-"kind": "stone_1",
+"kind": "jungle_0",
 "pos": [
-1330,
-220
+910,
+36
 ],
 "cell": [
-41,
-6
+28,
+1
+],
+"flip": false
+},
+{
+"kind": "jungle_0",
+"pos": [
+277,
+493
+],
+"cell": [
+8,
+15
 ],
 "flip": true
 },
 {
-"kind": "tuft_0",
+"kind": "jungle_1",
 "pos": [
-776,
+1290,
+568
+],
+"cell": [
+40,
+17
+],
+"flip": false
+},
+{
+"kind": "jungle_0",
+"pos": [
+1324,
 610
 ],
 "cell": [
-24,
+41,
 19
 ],
-"flip": false
+"flip": true
 },
 {
-"kind": "tuft_0",
+"kind": "jungle_0",
 "pos": [
-1190,
-236
+1299,
+546
 ],
 "cell": [
-37,
-7
+40,
+17
+],
+"flip": true
+},
+{
+"kind": "jungle_0",
+"pos": [
+862,
+313
+],
+"cell": [
+26,
+9
 ],
 "flip": false
 },
 {
-"kind": "fern_0",
+"kind": "jungle_1",
 "pos": [
-928,
-363
+944,
+312
+],
+"cell": [
+29,
+9
+],
+"flip": true
+},
+{
+"kind": "pine_0",
+"pos": [
+1248,
+823
+],
+"cell": [
+38,
+25
+],
+"flip": true
+},
+{
+"kind": "jungle_0",
+"pos": [
+356,
+802
+],
+"cell": [
+11,
+25
+],
+"flip": true
+},
+{
+"kind": "jungle_1",
+"pos": [
+1320,
+71
+],
+"cell": [
+41,
+2
+],
+"flip": false
+},
+{
+"kind": "jungle_0",
+"pos": [
+898,
+366
 ],
 "cell": [
 28,
 11
 ],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-325,
-766
-],
-"cell": [
-10,
-23
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-186,
-776
-],
-"cell": [
-5,
-24
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-141,
-643
-],
-"cell": [
-4,
-20
-],
 "flip": false
 },
 {
-"kind": "fern_0",
+"kind": "jungle_0",
 "pos": [
-746,
-803
+87,
+266
 ],
 "cell": [
-23,
-25
-],
-"flip": false
-},
-{
-"kind": "stone_1",
-"pos": [
-1074,
-258
-],
-"cell": [
-33,
+2,
 8
 ],
 "flip": true
 },
 {
-"kind": "bush_1",
+"kind": "jungle_0",
 "pos": [
-1124,
-319
-],
-"cell": [
-35,
-9
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-20,
-540
-],
-"cell": [
-0,
-16
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-1139,
-800
-],
-"cell": [
-35,
-24
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-432,
-41
-],
-"cell": [
-13,
-1
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-609,
-18
-],
-"cell": [
-19,
-0
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-1058,
-749
-],
-"cell": [
-33,
-23
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-1050,
-191
-],
-"cell": [
 32,
-5
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-439,
-430
+396
 ],
 "cell": [
-13,
-13
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-215,
-684
-],
-"cell": [
-6,
-21
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-284,
-685
-],
-"cell": [
-8,
-21
-],
-"flip": false
-},
-{
-"kind": "mushroom_0",
-"pos": [
-1269,
-749
-],
-"cell": [
-39,
-23
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-692,
-789
-],
-"cell": [
-21,
-24
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1283,
-68
-],
-"cell": [
-40,
-2
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-892,
-164
-],
-"cell": [
-27,
-5
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1228,
-797
-],
-"cell": [
-38,
-24
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-151,
-56
-],
-"cell": [
-4,
-1
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-1300,
-549
-],
-"cell": [
-40,
-17
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-1092,
-319
-],
-"cell": [
-34,
-9
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-70,
-683
-],
-"cell": [
-2,
-21
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-1291,
-741
-],
-"cell": [
-40,
-23
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-816,
-456
-],
-"cell": [
-25,
-14
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-719,
-104
-],
-"cell": [
-22,
-3
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-638,
-227
-],
-"cell": [
-19,
-7
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-803,
-185
-],
-"cell": [
-25,
-5
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-690,
-559
-],
-"cell": [
-21,
-17
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-754,
-31
-],
-"cell": [
-23,
-0
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-1319,
-296
-],
-"cell": [
-41,
-9
-],
-"flip": false
-},
-{
-"kind": "mushroom_0",
-"pos": [
-264,
-552
-],
-"cell": [
-8,
-17
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-464,
-144
-],
-"cell": [
-14,
-4
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-564,
-431
-],
-"cell": [
-17,
-13
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-516,
-770
-],
-"cell": [
-16,
-24
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-86,
-709
-],
-"cell": [
-2,
-22
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1318,
-39
-],
-"cell": [
-41,
-1
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-1055,
-735
-],
-"cell": [
-32,
-22
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-568,
-464
-],
-"cell": [
-17,
-14
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-977,
-422
-],
-"cell": [
-30,
-13
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-748,
-459
-],
-"cell": [
-23,
-14
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-959,
-792
-],
-"cell": [
-29,
-24
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-332,
-65
-],
-"cell": [
-10,
-2
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-136,
-57
-],
-"cell": [
-4,
-1
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-289,
-818
-],
-"cell": [
-9,
-25
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-917,
-302
-],
-"cell": [
-28,
-9
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-817,
-178
-],
-"cell": [
-25,
-5
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-963,
-589
-],
-"cell": [
-30,
-18
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-700,
-409
-],
-"cell": [
-21,
+1,
 12
 ],
+"flip": true
+},
+{
+"kind": "pine_0",
+"pos": [
+1299,
+611
+],
+"cell": [
+40,
+19
+],
+"flip": true
+},
+{
+"kind": "jungle_1",
+"pos": [
+262,
+314
+],
+"cell": [
+8,
+9
+],
 "flip": false
 },
 {
-"kind": "fern_1",
+"kind": "jungle_1",
 "pos": [
-1200,
-812
+1331,
+411
 ],
 "cell": [
-37,
-25
+41,
+12
 ],
 "flip": true
 },
 {
-"kind": "tuft_1",
+"kind": "pine_0",
 "pos": [
-912,
-458
-],
-"cell": [
-28,
-14
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-1305,
-209
-],
-"cell": [
-40,
-6
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-1294,
-666
-],
-"cell": [
-40,
-20
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-359,
-355
-],
-"cell": [
-11,
-11
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1087,
+170,
 340
 ],
 "cell": [
-33,
+5,
 10
 ],
 "flip": true
 },
 {
-"kind": "mushroom_1",
+"kind": "pine_0",
 "pos": [
-530,
-528
+892,
+811
 ],
 "cell": [
-16,
-16
+27,
+25
 ],
 "flip": true
 },
 {
-"kind": "tuft_1",
+"kind": "jungle_1",
 "pos": [
-753,
-593
+274,
+204
 ],
 "cell": [
-23,
-18
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-1332,
-502
-],
-"cell": [
-41,
-15
+8,
+6
 ],
 "flip": true
 },
 {
-"kind": "fern_0",
+"kind": "pine_0",
 "pos": [
-332,
-513
-],
-"cell": [
-10,
-16
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-800,
-313
-],
-"cell": [
-25,
-9
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-54,
-255
-],
-"cell": [
-1,
-7
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-957,
+953,
 368
 ],
 "cell": [
@@ -2766,1501 +342,925 @@
 "flip": true
 },
 {
-"kind": "fern_0",
+"kind": "jungle_1",
 "pos": [
-511,
-669
+1331,
+668
 ],
 "cell": [
-15,
+41,
 20
-],
-"flip": false
-},
-{
-"kind": "mushroom_0",
-"pos": [
-96,
-98
-],
-"cell": [
-2,
-3
 ],
 "flip": true
 },
 {
-"kind": "tuft_0",
+"kind": "jungle_1",
 "pos": [
-844,
-89
+775,
+793
 ],
 "cell": [
-26,
-2
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-255,
-429
-],
-"cell": [
-7,
-13
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-657,
-506
-],
-"cell": [
-20,
-15
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-160,
-436
-],
-"cell": [
-5,
-13
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-375,
-781
-],
-"cell": [
-11,
+24,
 24
 ],
 "flip": false
 },
 {
-"kind": "fern_0",
+"kind": "pine_0",
 "pos": [
-776,
-249
+402,
+816
 ],
 "cell": [
-24,
-7
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1328,
-820
-],
-"cell": [
-41,
+12,
 25
 ],
 "flip": false
 },
 {
-"kind": "tuft_1",
+"kind": "pine_0",
 "pos": [
-702,
-384
+1024,
+825
 ],
 "cell": [
-21,
-11
+31,
+25
 ],
 "flip": false
 },
 {
-"kind": "tuft_1",
+"kind": "pine_0",
 "pos": [
-1317,
-506
+326,
+812
+],
+"cell": [
+10,
+25
+],
+"flip": false
+},
+{
+"kind": "jungle_1",
+"pos": [
+1333,
+374
 ],
 "cell": [
 41,
-15
+11
 ],
 "flip": true
 },
 {
-"kind": "tuft_0",
+"kind": "jungle_1",
 "pos": [
-1136,
-709
+110,
+818
 ],
 "cell": [
-35,
+3,
+25
+],
+"flip": true
+},
+{
+"kind": "jungle_0",
+"pos": [
+689,
+592
+],
+"cell": [
+21,
+18
+],
+"flip": false
+},
+{
+"kind": "jungle_0",
+"pos": [
+11,
+111
+],
+"cell": [
+0,
+3
+],
+"flip": false
+},
+{
+"kind": "jungle_0",
+"pos": [
+73,
+337
+],
+"cell": [
+2,
+10
+],
+"flip": false
+},
+{
+"kind": "pine_0",
+"pos": [
+41,
+724
+],
+"cell": [
+1,
 22
 ],
 "flip": true
 },
 {
-"kind": "tuft_1",
+"kind": "jungle_1",
 "pos": [
-765,
-524
+453,
+31
 ],
 "cell": [
-23,
-16
+14,
+0
 ],
 "flip": false
 },
 {
-"kind": "tuft_1",
+"kind": "pine_0",
 "pos": [
-277,
-388
+480,
+38
 ],
 "cell": [
-8,
-12
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-877,
-394
-],
-"cell": [
-27,
-12
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-540,
-491
-],
-"cell": [
-16,
-15
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1118,
-60
-],
-"cell": [
-34,
+15,
 1
 ],
+"flip": false
+},
+{
+"kind": "jungle_1",
+"pos": [
+1335,
+331
+],
+"cell": [
+41,
+10
+],
 "flip": true
 },
 {
-"kind": "fern_1",
+"kind": "jungle_1",
 "pos": [
-526,
-824
+1238,
+742
 ],
 "cell": [
-16,
-25
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-797,
-759
-],
-"cell": [
-24,
+38,
 23
 ],
 "flip": true
 },
 {
-"kind": "mushroom_0",
+"kind": "tuft_0",
 "pos": [
-569,
-432
-],
-"cell": [
-17,
-13
-],
-"flip": true
-},
-{
-"kind": "stone_1",
-"pos": [
-568,
-178
-],
-"cell": [
-17,
-5
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-104,
-422
-],
-"cell": [
-3,
-13
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-1151,
-208
-],
-"cell": [
-35,
-6
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-582,
+701,
 84
 ],
 "cell": [
-18,
+21,
 2
-],
-"flip": false
-},
-{
-"kind": "stone_1",
-"pos": [
-769,
-718
-],
-"cell": [
-24,
-22
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-250,
-814
-],
-"cell": [
-7,
-25
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-24,
-788
-],
-"cell": [
-0,
-24
 ],
 "flip": true
 },
 {
-"kind": "fern_0",
+"kind": "fern_a",
 "pos": [
-1186,
-467
+313,
+606
 ],
 "cell": [
-37,
-14
+9,
+18
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+1130,
+626
+],
+"cell": [
+35,
+19
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1183,
+394
+],
+"cell": [
+36,
+12
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+925,
+522
+],
+"cell": [
+28,
+16
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+247,
+144
+],
+"cell": [
+7,
+4
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+764,
+615
+],
+"cell": [
+23,
+19
+],
+"flip": true
+},
+{
+"kind": "bush_berry",
+"pos": [
+989,
+352
+],
+"cell": [
+30,
+10
 ],
 "flip": false
 },
 {
 "kind": "tuft_0",
 "pos": [
-602,
-199
+814,
+272
 ],
 "cell": [
-18,
-6
+25,
+8
 ],
-"flip": true
+"flip": false
 },
 {
-"kind": "tuft_1",
+"kind": "log",
 "pos": [
-693,
-61
+961,
+59
 ],
 "cell": [
-21,
+30,
 1
 ],
 "flip": true
 },
 {
-"kind": "bush_1",
+"kind": "log",
 "pos": [
-1157,
-88
+771,
+626
+],
+"cell": [
+24,
+19
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+736,
+436
+],
+"cell": [
+23,
+13
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+809,
+220
+],
+"cell": [
+25,
+6
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+1020,
+378
+],
+"cell": [
+31,
+11
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+241,
+175
+],
+"cell": [
+7,
+5
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+486,
+823
+],
+"cell": [
+15,
+25
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+916,
+788
+],
+"cell": [
+28,
+24
+],
+"flip": true
+},
+{
+"kind": "stump",
+"pos": [
+858,
+221
+],
+"cell": [
+26,
+6
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+723,
+555
+],
+"cell": [
+22,
+17
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+652,
+551
+],
+"cell": [
+20,
+17
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+141,
+408
+],
+"cell": [
+4,
+12
+],
+"flip": true
+},
+{
+"kind": "mushroom_1",
+"pos": [
+1123,
+485
+],
+"cell": [
+35,
+15
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+88,
+613
+],
+"cell": [
+2,
+19
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+142,
+628
+],
+"cell": [
+4,
+19
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+94,
+774
+],
+"cell": [
+2,
+24
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+847,
+328
+],
+"cell": [
+26,
+10
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+118,
+30
+],
+"cell": [
+3,
+0
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1025,
+727
+],
+"cell": [
+32,
+22
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+544,
+208
+],
+"cell": [
+16,
+6
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+1111,
+236
+],
+"cell": [
+34,
+7
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+971,
+774
+],
+"cell": [
+30,
+24
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+64,
+13
+],
+"cell": [
+2,
+0
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+862,
+363
+],
+"cell": [
+26,
+11
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+44,
+630
+],
+"cell": [
+1,
+19
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+524,
+825
+],
+"cell": [
+16,
+25
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+405,
+528
+],
+"cell": [
+12,
+16
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+551,
+745
+],
+"cell": [
+17,
+23
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+427,
+784
+],
+"cell": [
+13,
+24
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+830,
+183
+],
+"cell": [
+25,
+5
+],
+"flip": false
+},
+{
+"kind": "stump",
+"pos": [
+54,
+782
+],
+"cell": [
+1,
+24
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+782,
+208
+],
+"cell": [
+24,
+6
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+223,
+31
+],
+"cell": [
+6,
+0
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+1182,
+513
+],
+"cell": [
+36,
+16
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+671,
+50
+],
+"cell": [
+20,
+1
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+432,
+815
+],
+"cell": [
+13,
+25
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1167,
+84
 ],
 "cell": [
 36,
 2
 ],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-893,
-343
-],
-"cell": [
-27,
-10
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-1272,
-318
-],
-"cell": [
-39,
-9
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-1119,
-363
-],
-"cell": [
-34,
-11
-],
 "flip": true
 },
 {
-"kind": "mushroom_0",
+"kind": "rock_mossy",
 "pos": [
-744,
-556
-],
-"cell": [
-23,
-17
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-1106,
-729
-],
-"cell": [
-34,
-22
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-725,
-769
-],
-"cell": [
-22,
-24
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-1287,
-295
-],
-"cell": [
-40,
-9
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-222,
-32
-],
-"cell": [
-6,
-1
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-116,
-371
-],
-"cell": [
-3,
-11
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-262,
-623
+258,
+416
 ],
 "cell": [
 8,
-19
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-905,
-346
-],
-"cell": [
-28,
-10
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-938,
-735
-],
-"cell": [
-29,
-22
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1197,
-44
-],
-"cell": [
-37,
-1
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-188,
-190
-],
-"cell": [
-5,
-5
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-320,
-796
-],
-"cell": [
-9,
-24
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-376,
-686
-],
-"cell": [
-11,
-21
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-253,
-699
-],
-"cell": [
-7,
-21
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-299,
-761
-],
-"cell": [
-9,
-23
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-915,
-604
-],
-"cell": [
-28,
-18
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-580,
-142
-],
-"cell": [
-18,
-4
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-743,
-370
-],
-"cell": [
-23,
-11
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-254,
-347
-],
-"cell": [
-7,
-10
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-952,
-477
-],
-"cell": [
-29,
-14
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-338,
-255
-],
-"cell": [
-10,
-7
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-100,
-648
-],
-"cell": [
-3,
-20
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1134,
-387
-],
-"cell": [
-35,
 12
 ],
 "flip": false
 },
 {
-"kind": "bush_0",
+"kind": "mushroom_1",
 "pos": [
-578,
-27
+452,
+192
 ],
 "cell": [
-18,
-0
+14,
+6
 ],
 "flip": true
 },
 {
-"kind": "bush_1",
+"kind": "tuft_0",
 "pos": [
-568,
-824
+1204,
+471
 ],
 "cell": [
-17,
+37,
+14
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+44,
+688
+],
+"cell": [
+1,
+21
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+1073,
+820
+],
+"cell": [
+33,
+25
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+1158,
+417
+],
+"cell": [
+36,
+13
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+510,
+674
+],
+"cell": [
+15,
+21
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+600,
+424
+],
+"cell": [
+18,
+13
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+656,
+618
+],
+"cell": [
+20,
+19
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+728,
+523
+],
+"cell": [
+22,
+16
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+725,
+460
+],
+"cell": [
+22,
+14
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+1288,
+808
+],
+"cell": [
+40,
 25
 ],
 "flip": false
 },
 {
-"kind": "tuft_0",
+"kind": "bush_round",
 "pos": [
-948,
-604
-],
-"cell": [
-29,
-18
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-1045,
-404
-],
-"cell": [
-32,
-12
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-1339,
-356
-],
-"cell": [
-41,
-11
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-833,
-679
-],
-"cell": [
-26,
-21
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-957,
-243
-],
-"cell": [
-29,
-7
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-651,
-272
-],
-"cell": [
-20,
-8
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-742,
-236
-],
-"cell": [
-23,
-7
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-740,
-540
-],
-"cell": [
-23,
-16
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-212,
-658
-],
-"cell": [
-6,
-20
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-143,
-157
-],
-"cell": [
-4,
-4
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-1060,
-193
-],
-"cell": [
-33,
-6
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-55,
-595
-],
-"cell": [
-1,
-18
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-880,
-755
-],
-"cell": [
-27,
-23
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-479,
-537
-],
-"cell": [
-14,
-16
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-745,
-405
-],
-"cell": [
-23,
-12
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-324,
-175
-],
-"cell": [
-10,
-5
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-85,
-531
-],
-"cell": [
-2,
-16
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-227,
-17
-],
-"cell": [
-7,
-0
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-1076,
-218
-],
-"cell": [
-33,
-6
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-656,
-738
-],
-"cell": [
-20,
-23
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-521,
-147
-],
-"cell": [
-16,
-4
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-766,
-313
-],
-"cell": [
-23,
-9
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-1267,
-750
-],
-"cell": [
-39,
-23
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-758,
-600
-],
-"cell": [
-23,
-18
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-765,
-659
-],
-"cell": [
-23,
-20
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1069,
-606
-],
-"cell": [
-33,
-18
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-360,
-69
-],
-"cell": [
-11,
-2
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-1028,
-629
-],
-"cell": [
-32,
-19
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-177,
-254
-],
-"cell": [
-5,
-7
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-1042,
-153
-],
-"cell": [
-32,
-4
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-38,
-790
-],
-"cell": [
-1,
-24
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-348,
-314
-],
-"cell": [
-10,
-9
-],
-"flip": false
-},
-{
-"kind": "stone_1",
-"pos": [
-68,
-614
-],
-"cell": [
-2,
-19
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-775,
-450
-],
-"cell": [
-24,
-14
-],
-"flip": false
-},
-{
-"kind": "mushroom_0",
-"pos": [
-715,
-696
-],
-"cell": [
-22,
-21
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-538,
-598
-],
-"cell": [
-16,
-18
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1268,
-69
-],
-"cell": [
-39,
-2
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-186,
-699
-],
-"cell": [
-5,
-21
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-232,
-780
-],
-"cell": [
-7,
-24
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-352,
-312
-],
-"cell": [
-10,
-9
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-760,
-761
-],
-"cell": [
-23,
-23
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-104,
-46
-],
-"cell": [
-3,
-1
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-671,
-410
-],
-"cell": [
-20,
-12
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-1325,
-367
-],
-"cell": [
-41,
-11
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-233,
-794
-],
-"cell": [
-7,
-24
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1306,
-147
-],
-"cell": [
-40,
-4
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-1130,
-580
-],
-"cell": [
-35,
-18
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-822,
-55
-],
-"cell": [
-25,
-1
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-1052,
-732
-],
-"cell": [
-32,
-22
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1120,
-717
-],
-"cell": [
-34,
-22
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-1136,
-357
-],
-"cell": [
-35,
-11
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-65,
-787
-],
-"cell": [
-2,
-24
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-617,
-712
-],
-"cell": [
-19,
-22
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-938,
-393
-],
-"cell": [
-29,
-12
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-603,
-267
-],
-"cell": [
-18,
-8
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-1295,
-204
-],
-"cell": [
-40,
-6
-],
-"flip": false
-},
-{
-"kind": "stone_1",
-"pos": [
-982,
-230
+968,
+652
 ],
 "cell": [
 30,
-7
-],
-"flip": true
-},
-{
-"kind": "stone_1",
-"pos": [
-601,
-13
-],
-"cell": [
-18,
-0
-],
-"flip": false
-},
-{
-"kind": "stone_1",
-"pos": [
-1081,
-773
-],
-"cell": [
-33,
-24
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-896,
-212
-],
-"cell": [
-28,
-6
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-438,
-38
-],
-"cell": [
-13,
-1
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-741,
 20
 ],
-"cell": [
-23,
-0
-],
 "flip": false
 },
 {
-"kind": "tuft_1",
+"kind": "log",
 "pos": [
-87,
-763
+989,
+811
 ],
 "cell": [
-2,
-23
+30,
+25
 ],
-"flip": false
+"flip": true
 },
 {
-"kind": "mushroom_1",
+"kind": "log",
 "pos": [
-51,
-313
+648,
+374
 ],
 "cell": [
-1,
-9
+20,
+11
 ],
-"flip": false
+"flip": true
 },
 {
 "kind": "tuft_0",
 "pos": [
-406,
-440
+391,
+755
 ],
 "cell": [
 12,
-13
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-953,
-745
-],
-"cell": [
-29,
 23
 ],
 "flip": true
@@ -4268,163 +1268,247 @@
 {
 "kind": "mushroom_1",
 "pos": [
-73,
-597
+127,
+161
 ],
 "cell": [
-2,
-18
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-789,
-749
-],
-"cell": [
-24,
-23
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1199,
-470
-],
-"cell": [
-37,
-14
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-380,
-247
-],
-"cell": [
-11,
-7
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-1114,
-549
-],
-"cell": [
-34,
-17
-],
-"flip": false
-},
-{
-"kind": "stone_1",
-"pos": [
-993,
-51
-],
-"cell": [
-31,
-1
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-78,
-605
-],
-"cell": [
-2,
-18
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-441,
-383
-],
-"cell": [
-13,
-11
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-849,
-689
-],
-"cell": [
-26,
-21
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-301,
-264
-],
-"cell": [
-9,
-8
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-1320,
-110
-],
-"cell": [
-41,
-3
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-580,
-204
-],
-"cell": [
-18,
-6
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-339,
-170
-],
-"cell": [
-10,
+3,
 5
 ],
 "flip": true
 },
 {
-"kind": "bush_1",
+"kind": "bush_round",
 "pos": [
-659,
+939,
+371
+],
+"cell": [
+29,
+11
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+1198,
+559
+],
+"cell": [
+37,
+17
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+329,
+820
+],
+"cell": [
+10,
+25
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+732,
+470
+],
+"cell": [
+22,
+14
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+330,
+261
+],
+"cell": [
+10,
+8
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1213,
+432
+],
+"cell": [
+37,
+13
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+1277,
+80
+],
+"cell": [
+39,
+2
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+714,
+185
+],
+"cell": [
+22,
+5
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+49,
+819
+],
+"cell": [
+1,
+25
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+143,
+755
+],
+"cell": [
+4,
+23
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+378,
+385
+],
+"cell": [
+11,
+12
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+629,
+450
+],
+"cell": [
+19,
+14
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+727,
+377
+],
+"cell": [
+22,
+11
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+110,
+469
+],
+"cell": [
+3,
+14
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+743,
+39
+],
+"cell": [
+23,
+1
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+517,
+18
+],
+"cell": [
+16,
+0
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+254,
+528
+],
+"cell": [
+7,
+16
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1016,
+303
+],
+"cell": [
+31,
+9
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+392,
+517
+],
+"cell": [
+12,
+16
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+654,
 26
 ],
 "cell": [
@@ -4434,94 +1518,22 @@
 "flip": true
 },
 {
-"kind": "fern_1",
+"kind": "bush_berry",
 "pos": [
-805,
-57
-],
-"cell": [
-25,
-1
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-72,
-532
-],
-"cell": [
-2,
-16
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-1298,
-664
-],
-"cell": [
-40,
-20
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-125,
-62
+127,
+217
 ],
 "cell": [
 3,
-1
+6
 ],
 "flip": true
 },
 {
-"kind": "tuft_1",
+"kind": "flowers_1",
 "pos": [
-984,
-385
-],
-"cell": [
-30,
-12
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-163,
-757
-],
-"cell": [
-5,
-23
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-289,
-801
-],
-"cell": [
-9,
-25
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-1219,
-452
+1218,
+451
 ],
 "cell": [
 38,
@@ -4530,130 +1542,826 @@
 "flip": true
 },
 {
-"kind": "fern_1",
+"kind": "fern_a",
 "pos": [
-238,
-114
+1112,
+461
 ],
 "cell": [
-7,
-3
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-948,
-340
-],
-"cell": [
-29,
-10
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-33,
-713
-],
-"cell": [
-1,
-22
+34,
+14
 ],
 "flip": false
 },
 {
-"kind": "fern_0",
+"kind": "bush_round",
 "pos": [
-21,
-508
+1104,
+356
 ],
 "cell": [
-0,
-15
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-578,
-820
-],
-"cell": [
-18,
-25
+34,
+11
 ],
 "flip": false
 },
 {
-"kind": "tuft_0",
+"kind": "bush_berry",
 "pos": [
-1290,
-585
+865,
+56
 ],
 "cell": [
-40,
-18
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1133,
-201
-],
-"cell": [
-35,
-6
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-138,
-158
-],
-"cell": [
-4,
-4
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-678,
-439
-],
-"cell": [
-21,
-13
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-753,
-58
-],
-"cell": [
-23,
+27,
 1
 ],
 "flip": false
 },
 {
-"kind": "tuft_1",
+"kind": "fern_a",
 "pos": [
-410,
-317
+432,
+59
+],
+"cell": [
+13,
+1
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+1098,
+700
+],
+"cell": [
+34,
+21
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+301,
+636
+],
+"cell": [
+9,
+19
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+932,
+521
+],
+"cell": [
+29,
+16
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+991,
+307
+],
+"cell": [
+30,
+9
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+918,
+582
+],
+"cell": [
+28,
+18
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+567,
+221
+],
+"cell": [
+17,
+6
+],
+"flip": false
+},
+{
+"kind": "stump",
+"pos": [
+125,
+438
+],
+"cell": [
+3,
+13
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+832,
+711
+],
+"cell": [
+25,
+22
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+446,
+190
+],
+"cell": [
+13,
+5
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+1126,
+560
+],
+"cell": [
+35,
+17
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+46,
+701
+],
+"cell": [
+1,
+21
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+352,
+514
+],
+"cell": [
+11,
+16
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+168,
+798
+],
+"cell": [
+5,
+24
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+777,
+531
+],
+"cell": [
+24,
+16
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+47,
+400
+],
+"cell": [
+1,
+12
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+1003,
+341
+],
+"cell": [
+31,
+10
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+653,
+260
+],
+"cell": [
+20,
+8
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+979,
+253
+],
+"cell": [
+30,
+7
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+312,
+749
+],
+"cell": [
+9,
+23
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+479,
+230
+],
+"cell": [
+14,
+7
+],
+"flip": false
+},
+{
+"kind": "mushroom_0",
+"pos": [
+919,
+284
+],
+"cell": [
+28,
+8
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+22,
+416
+],
+"cell": [
+0,
+12
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+582,
+585
+],
+"cell": [
+18,
+18
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+258,
+679
+],
+"cell": [
+8,
+21
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+947,
+551
+],
+"cell": [
+29,
+17
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+701,
+823
+],
+"cell": [
+21,
+25
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+701,
+611
+],
+"cell": [
+21,
+19
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+1222,
+521
+],
+"cell": [
+38,
+16
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+987,
+387
+],
+"cell": [
+30,
+12
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+921,
+168
+],
+"cell": [
+28,
+5
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+623,
+712
+],
+"cell": [
+19,
+22
+],
+"flip": true
+},
+{
+"kind": "bush_berry",
+"pos": [
+1044,
+768
+],
+"cell": [
+32,
+24
+],
+"flip": false
+},
+{
+"kind": "stump",
+"pos": [
+651,
+684
+],
+"cell": [
+20,
+21
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1304,
+518
+],
+"cell": [
+40,
+16
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+485,
+743
+],
+"cell": [
+15,
+23
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+472,
+458
+],
+"cell": [
+14,
+14
+],
+"flip": false
+},
+{
+"kind": "log",
+"pos": [
+1197,
+49
+],
+"cell": [
+37,
+1
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+129,
+329
+],
+"cell": [
+4,
+10
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+32,
+172
+],
+"cell": [
+1,
+5
+],
+"flip": true
+},
+{
+"kind": "bush_berry",
+"pos": [
+63,
+822
+],
+"cell": [
+1,
+25
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+1010,
+431
+],
+"cell": [
+31,
+13
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+318,
+208
+],
+"cell": [
+9,
+6
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+191,
+321
+],
+"cell": [
+5,
+10
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+126,
+251
+],
+"cell": [
+3,
+7
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+404,
+640
+],
+"cell": [
+12,
+19
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+732,
+177
+],
+"cell": [
+22,
+5
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+707,
+231
+],
+"cell": [
+22,
+7
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+856,
+166
+],
+"cell": [
+26,
+5
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+118,
+603
+],
+"cell": [
+3,
+18
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+569,
+365
+],
+"cell": [
+17,
+11
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+669,
+186
+],
+"cell": [
+20,
+5
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+307,
+421
+],
+"cell": [
+9,
+13
+],
+"flip": false
+},
+{
+"kind": "stump",
+"pos": [
+1160,
+30
+],
+"cell": [
+36,
+0
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+836,
+209
+],
+"cell": [
+26,
+6
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+82,
+240
+],
+"cell": [
+2,
+7
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+898,
+250
+],
+"cell": [
+28,
+7
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+1009,
+758
+],
+"cell": [
+31,
+23
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+125,
+707
+],
+"cell": [
+3,
+22
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1165,
+615
+],
+"cell": [
+36,
+19
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+145,
+32
+],
+"cell": [
+4,
+1
+],
+"flip": false
+},
+{
+"kind": "mushroom_0",
+"pos": [
+707,
+413
+],
+"cell": [
+22,
+12
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1277,
+98
+],
+"cell": [
+39,
+3
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+23,
+452
+],
+"cell": [
+0,
+14
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+550,
+435
+],
+"cell": [
+17,
+13
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+390,
+305
 ],
 "cell": [
 12,
@@ -4662,442 +2370,70 @@
 "flip": true
 },
 {
-"kind": "mushroom_0",
+"kind": "bush_round",
 "pos": [
-1303,
-457
+701,
+451
 ],
 "cell": [
-40,
+21,
 14
 ],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-370,
-125
-],
-"cell": [
-11,
-3
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-693,
-430
-],
-"cell": [
-21,
-13
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-882,
-335
-],
-"cell": [
-27,
-10
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-264,
-765
-],
-"cell": [
-8,
-23
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-307,
-59
-],
-"cell": [
-9,
-1
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-302,
-131
-],
-"cell": [
-9,
-4
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-294,
-144
-],
-"cell": [
-9,
-4
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-577,
-362
-],
-"cell": [
-18,
-11
-],
 "flip": true
 },
 {
-"kind": "bush_0",
+"kind": "bush_berry",
 "pos": [
-685,
-654
-],
-"cell": [
-21,
-20
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-1230,
-725
-],
-"cell": [
-38,
+115,
 22
 ],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1157,
-811
-],
 "cell": [
-36,
-25
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-956,
-54
-],
-"cell": [
-29,
-1
+3,
+0
 ],
 "flip": false
 },
 {
-"kind": "fern_0",
+"kind": "bush_round",
 "pos": [
-144,
-417
-],
-"cell": [
-4,
-13
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-1247,
-799
-],
-"cell": [
-38,
-24
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-1151,
-444
-],
-"cell": [
-35,
-13
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-573,
-481
-],
-"cell": [
-17,
-15
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-111,
-201
+103,
+398
 ],
 "cell": [
 3,
-6
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-178,
-456
-],
-"cell": [
-5,
-14
+12
 ],
 "flip": false
 },
 {
-"kind": "tuft_0",
+"kind": "rock_mossy",
 "pos": [
-102,
-742
+118,
+691
 ],
 "cell": [
 3,
-23
+21
 ],
 "flip": true
 },
 {
-"kind": "tuft_0",
+"kind": "log",
 "pos": [
-679,
-383
-],
-"cell": [
-21,
-11
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-793,
-299
-],
-"cell": [
-24,
-9
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1292,
-440
-],
-"cell": [
-40,
-13
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-117,
-484
-],
-"cell": [
-3,
-15
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-291,
-377
-],
-"cell": [
-9,
-11
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-763,
-714
-],
-"cell": [
-23,
-22
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-1194,
-761
-],
-"cell": [
-37,
-23
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-184,
-288
-],
-"cell": [
-5,
-9
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-806,
-241
-],
-"cell": [
-25,
-7
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-1232,
-54
-],
-"cell": [
-38,
-1
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-1009,
-648
-],
-"cell": [
-31,
-20
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-502,
-290
-],
-"cell": [
-15,
-9
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-1259,
-163
+1277,
+319
 ],
 "cell": [
 39,
-5
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-1287,
-623
-],
-"cell": [
-40,
-19
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-993,
-250
-],
-"cell": [
-31,
-7
+9
 ],
 "flip": true
 },
 {
-"kind": "tuft_1",
+"kind": "fern_a",
 "pos": [
-69,
-753
-],
-"cell": [
-2,
-23
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-52,
-604
+59,
+587
 ],
 "cell": [
 1,
@@ -5106,561 +2442,1413 @@
 "flip": false
 },
 {
-"kind": "fern_0",
+"kind": "bush_round",
 "pos": [
-370,
+904,
+285
+],
+"cell": [
+28,
+8
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+871,
+188
+],
+"cell": [
+27,
+5
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+728,
+472
+],
+"cell": [
+22,
+14
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1325,
+295
+],
+"cell": [
+41,
+9
+],
+"flip": true
+},
+{
+"kind": "bush_berry",
+"pos": [
+490,
+365
+],
+"cell": [
+15,
+11
+],
+"flip": true
+},
+{
+"kind": "mushroom_1",
+"pos": [
+316,
+692
+],
+"cell": [
+9,
+21
+],
+"flip": false
+},
+{
+"kind": "log",
+"pos": [
+1324,
+159
+],
+"cell": [
+41,
+4
+],
+"flip": false
+},
+{
+"kind": "mushroom_0",
+"pos": [
+552,
+157
+],
+"cell": [
+17,
+4
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+1212,
+78
+],
+"cell": [
+37,
+2
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+379,
+189
+],
+"cell": [
+11,
+5
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+1120,
+164
+],
+"cell": [
+35,
+5
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+938,
+581
+],
+"cell": [
+29,
+18
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+579,
+496
+],
+"cell": [
+18,
+15
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+15,
+592
+],
+"cell": [
+0,
+18
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+308,
+457
+],
+"cell": [
+9,
+14
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+223,
+520
+],
+"cell": [
+6,
+16
+],
+"flip": false
+},
+{
+"kind": "mushroom_0",
+"pos": [
+626,
+260
+],
+"cell": [
+19,
+8
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+110,
+696
+],
+"cell": [
+3,
+21
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+27,
+247
+],
+"cell": [
+0,
+7
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+16,
+265
+],
+"cell": [
+0,
+8
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1310,
+291
+],
+"cell": [
+40,
+9
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+1003,
+541
+],
+"cell": [
+31,
+16
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+485,
+753
+],
+"cell": [
+15,
+23
+],
+"flip": false
+},
+{
+"kind": "mushroom_0",
+"pos": [
+598,
+58
+],
+"cell": [
+18,
+1
+],
+"flip": true
+},
+{
+"kind": "bush_berry",
+"pos": [
+529,
+790
+],
+"cell": [
+16,
+24
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1193,
+83
+],
+"cell": [
+37,
+2
+],
+"flip": false
+},
+{
+"kind": "log",
+"pos": [
+110,
+666
+],
+"cell": [
+3,
+20
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+1289,
+400
+],
+"cell": [
+40,
+12
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+416,
+328
+],
+"cell": [
+12,
+10
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+375,
+767
+],
+"cell": [
+11,
+23
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+38,
+86
+],
+"cell": [
+1,
+2
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+639,
+789
+],
+"cell": [
+19,
+24
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+484,
+748
+],
+"cell": [
+15,
+23
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+982,
+414
+],
+"cell": [
+30,
+12
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+713,
+233
+],
+"cell": [
+22,
+7
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+132,
+830
+],
+"cell": [
+4,
+25
+],
+"flip": false
+},
+{
+"kind": "stump",
+"pos": [
+801,
+38
+],
+"cell": [
+25,
+1
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+1162,
+226
+],
+"cell": [
+36,
+7
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+1333,
+760
+],
+"cell": [
+41,
+23
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+1132,
+244
+],
+"cell": [
+35,
+7
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+1303,
+578
+],
+"cell": [
+40,
+18
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+456,
+226
+],
+"cell": [
+14,
+7
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+687,
+202
+],
+"cell": [
+21,
+6
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+451,
+799
+],
+"cell": [
+14,
+24
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+706,
+511
+],
+"cell": [
+22,
+15
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+1032,
+346
+],
+"cell": [
+32,
+10
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+896,
+217
+],
+"cell": [
+28,
+6
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+763,
+821
+],
+"cell": [
+23,
+25
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+490,
+463
+],
+"cell": [
+15,
+14
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+740,
+22
+],
+"cell": [
+23,
+0
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+50,
+755
+],
+"cell": [
+1,
+23
+],
+"flip": false
+},
+{
+"kind": "log",
+"pos": [
+315,
+709
+],
+"cell": [
+9,
+22
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+908,
+168
+],
+"cell": [
+28,
+5
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+836,
+803
+],
+"cell": [
+26,
+25
+],
+"flip": true
+},
+{
+"kind": "stump",
+"pos": [
+1128,
+616
+],
+"cell": [
+35,
+19
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+228,
+480
+],
+"cell": [
+7,
+14
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+276,
+503
+],
+"cell": [
+8,
+15
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+1193,
+410
+],
+"cell": [
+37,
+12
+],
+"flip": false
+},
+{
+"kind": "log",
+"pos": [
+1269,
+175
+],
+"cell": [
+39,
+5
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+782,
+592
+],
+"cell": [
+24,
+18
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+925,
+500
+],
+"cell": [
+28,
+15
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+1065,
+611
+],
+"cell": [
+33,
+19
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+1208,
+361
+],
+"cell": [
+37,
+11
+],
+"flip": true
+},
+{
+"kind": "mushroom_1",
+"pos": [
+1110,
+547
+],
+"cell": [
+34,
+17
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1104,
+240
+],
+"cell": [
+34,
+7
+],
+"flip": false
+},
+{
+"kind": "log",
+"pos": [
+373,
+268
+],
+"cell": [
+11,
+8
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+934,
+643
+],
+"cell": [
+29,
+20
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+982,
+550
+],
+"cell": [
+30,
+17
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+557,
+822
+],
+"cell": [
+17,
+25
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+951,
+309
+],
+"cell": [
+29,
+9
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+1336,
+738
+],
+"cell": [
+41,
+23
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+1143,
+49
+],
+"cell": [
+35,
+1
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+254,
+764
+],
+"cell": [
+7,
+23
+],
+"flip": false
+},
+{
+"kind": "mushroom_0",
+"pos": [
+1158,
+546
+],
+"cell": [
+36,
+17
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+1261,
+52
+],
+"cell": [
+39,
+1
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+1190,
+804
+],
+"cell": [
+37,
+25
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+946,
+635
+],
+"cell": [
+29,
+19
+],
+"flip": false
+},
+{
+"kind": "mushroom_0",
+"pos": [
+936,
+536
+],
+"cell": [
+29,
+16
+],
+"flip": true
+},
+{
+"kind": "bush_berry",
+"pos": [
+357,
+278
+],
+"cell": [
+11,
+8
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+56,
+30
+],
+"cell": [
+1,
+0
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+675,
+608
+],
+"cell": [
+21,
+19
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+258,
+488
+],
+"cell": [
+8,
+15
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+326,
+811
+],
+"cell": [
+10,
+25
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+384,
+428
+],
+"cell": [
+11,
+13
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+1009,
+517
+],
+"cell": [
+31,
+16
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+1134,
+363
+],
+"cell": [
+35,
+11
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1221,
+137
+],
+"cell": [
+38,
+4
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+676,
+769
+],
+"cell": [
+21,
+24
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+1023,
+157
+],
+"cell": [
+31,
+4
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+337,
+271
+],
+"cell": [
+10,
+8
+],
+"flip": false
+},
+{
+"kind": "log",
+"pos": [
+851,
+345
+],
+"cell": [
+26,
+10
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+15,
+360
+],
+"cell": [
+0,
+11
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+761,
+768
+],
+"cell": [
+23,
+23
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+1189,
+108
+],
+"cell": [
+37,
+3
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+987,
+641
+],
+"cell": [
+30,
+20
+],
+"flip": true
+},
+{
+"kind": "mushroom_1",
+"pos": [
+279,
+115
+],
+"cell": [
+8,
+3
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+445,
+530
+],
+"cell": [
+13,
+16
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+651,
+443
+],
+"cell": [
+20,
+13
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+337,
+719
+],
+"cell": [
+10,
+22
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+278,
+36
+],
+"cell": [
+8,
+1
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+924,
+206
+],
+"cell": [
+28,
+6
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+155,
+52
+],
+"cell": [
+4,
+1
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+568,
+811
+],
+"cell": [
+17,
+25
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+695,
+437
+],
+"cell": [
+21,
+13
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+372,
 627
 ],
 "cell": [
 11,
 19
 ],
-"flip": false
+"flip": true
 },
 {
-"kind": "bush_0",
+"kind": "bush_round",
 "pos": [
-1310,
-806
+134,
+744
 ],
 "cell": [
-40,
-25
+4,
+23
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+693,
+222
+],
+"cell": [
+21,
+6
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+620,
+743
+],
+"cell": [
+19,
+23
 ],
 "flip": true
 },
 {
 "kind": "mushroom_0",
 "pos": [
-751,
-290
+606,
+281
 ],
 "cell": [
-23,
+18,
+8
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+125,
+494
+],
+"cell": [
+3,
+15
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+1250,
+718
+],
+"cell": [
+39,
+22
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+352,
+493
+],
+"cell": [
+10,
+15
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+1159,
+292
+],
+"cell": [
+36,
 9
 ],
 "flip": false
 },
 {
-"kind": "bush_1",
+"kind": "flowers_1",
 "pos": [
-409,
-798
-],
-"cell": [
-12,
-24
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-1002,
-762
-],
-"cell": [
-31,
-23
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-1199,
-380
-],
-"cell": [
-37,
-11
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-722,
-727
-],
-"cell": [
-22,
-22
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-77,
-85
+76,
+431
 ],
 "cell": [
 2,
-2
+13
 ],
-"flip": true
+"flip": false
 },
 {
-"kind": "fern_1",
+"kind": "bush_round",
 "pos": [
-1162,
-41
+1086,
+62
 ],
 "cell": [
-36,
+33,
 1
 ],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-1293,
-201
-],
-"cell": [
-40,
-6
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-186,
-787
-],
-"cell": [
-5,
-24
-],
 "flip": false
 },
 {
-"kind": "fern_0",
+"kind": "fern_b",
 "pos": [
-758,
-155
+802,
+407
 ],
 "cell": [
-23,
-4
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-713,
-528
-],
-"cell": [
-22,
-16
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-861,
-222
-],
-"cell": [
-26,
-6
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-524,
-479
-],
-"cell": [
-16,
-14
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-738,
-674
-],
-"cell": [
-23,
-21
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1030,
-740
-],
-"cell": [
-32,
-23
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1112,
-160
-],
-"cell": [
-34,
-5
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1274,
-60
-],
-"cell": [
-39,
-1
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-272,
-66
-],
-"cell": [
-8,
-2
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-160,
-696
-],
-"cell": [
-4,
-21
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-556,
-460
-],
-"cell": [
-17,
-14
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-855,
-162
-],
-"cell": [
-26,
-5
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-911,
-523
-],
-"cell": [
-28,
-16
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-229,
-826
-],
-"cell": [
-7,
-25
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-734,
-720
-],
-"cell": [
-22,
-22
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-79,
-387
-],
-"cell": [
-2,
+25,
 12
 ],
 "flip": true
 },
 {
-"kind": "tuft_1",
+"kind": "fern_a",
 "pos": [
-854,
-206
-],
-"cell": [
-26,
-6
-],
-"flip": true
-},
-{
-"kind": "stone_1",
-"pos": [
-16,
-597
-],
-"cell": [
-0,
-18
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-704,
-645
-],
-"cell": [
-22,
-20
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-1009,
-382
-],
-"cell": [
-31,
-11
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-312,
-329
-],
-"cell": [
-9,
-10
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-674,
-191
-],
-"cell": [
-21,
-5
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-493,
-824
-],
-"cell": [
-15,
-25
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-907,
-453
-],
-"cell": [
-28,
-14
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-616,
-66
-],
-"cell": [
-19,
-2
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-26,
-509
-],
-"cell": [
-0,
-15
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-539,
-571
-],
-"cell": [
-16,
-17
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-119,
-671
-],
-"cell": [
-3,
-20
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-446,
-158
-],
-"cell": [
-13,
-4
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-751,
-686
-],
-"cell": [
-23,
-21
-],
-"flip": false
-},
-{
-"kind": "mushroom_0",
-"pos": [
-651,
-487
-],
-"cell": [
-20,
-15
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1042,
-635
+1038,
+709
 ],
 "cell": [
 32,
-19
+22
 ],
 "flip": true
 },
 {
-"kind": "tuft_1",
+"kind": "bush_round",
 "pos": [
-791,
-817
-],
-"cell": [
-24,
-25
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-11,
-795
-],
-"cell": [
-0,
-24
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-276,
-297
-],
-"cell": [
-8,
-9
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-1053,
+1038,
 538
 ],
 "cell": [
@@ -5670,718 +3858,82 @@
 "flip": true
 },
 {
-"kind": "tuft_0",
-"pos": [
-965,
-429
-],
-"cell": [
-30,
-13
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-1140,
-512
-],
-"cell": [
-35,
-15
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-38,
-41
-],
-"cell": [
-1,
-1
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-1232,
-733
-],
-"cell": [
-38,
-22
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-1103,
-428
-],
-"cell": [
-34,
-13
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-336,
-655
-],
-"cell": [
-10,
-20
-],
-"flip": false
-},
-{
 "kind": "mushroom_0",
 "pos": [
-1173,
-757
+162,
+756
 ],
 "cell": [
-36,
+5,
 23
 ],
 "flip": false
 },
 {
-"kind": "tuft_0",
+"kind": "rock_mossy",
 "pos": [
-799,
-91
-],
-"cell": [
-24,
-2
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-698,
-632
-],
-"cell": [
-21,
-19
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1283,
-546
-],
-"cell": [
-40,
-17
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-137,
-212
-],
-"cell": [
-4,
-6
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-728,
-811
-],
-"cell": [
-22,
-25
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-558,
-371
-],
-"cell": [
-17,
-11
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-55,
-460
-],
-"cell": [
-1,
-14
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-291,
-615
-],
-"cell": [
-9,
-19
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-897,
-364
-],
-"cell": [
-28,
-11
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-163,
-175
-],
-"cell": [
-5,
-5
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-1266,
-148
+1263,
+792
 ],
 "cell": [
 39,
-4
+24
 ],
 "flip": false
 },
 {
-"kind": "mushroom_0",
+"kind": "flowers_1",
 "pos": [
-1114,
-149
+501,
+651
 ],
 "cell": [
-34,
-4
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-363,
-205
-],
-"cell": [
-11,
-6
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-239,
-473
-],
-"cell": [
-7,
-14
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1275,
-56
-],
-"cell": [
-39,
-1
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-544,
-214
-],
-"cell": [
-16,
-6
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-103,
-435
-],
-"cell": [
-3,
-13
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-22,
-347
-],
-"cell": [
-0,
-10
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-1239,
-133
-],
-"cell": [
-38,
-4
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-1295,
-385
-],
-"cell": [
-40,
-12
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-259,
-395
-],
-"cell": [
-8,
-12
-],
-"flip": false
-},
-{
-"kind": "mushroom_0",
-"pos": [
-591,
-60
-],
-"cell": [
-18,
-1
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-814,
-490
-],
-"cell": [
-25,
-15
+15,
+20
 ],
 "flip": true
 },
 {
 "kind": "mushroom_1",
 "pos": [
-574,
-269
-],
-"cell": [
-17,
-8
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1197,
-569
+1192,
+69
 ],
 "cell": [
 37,
-17
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-1164,
-747
-],
-"cell": [
-36,
-23
+2
 ],
 "flip": true
 },
 {
-"kind": "mushroom_0",
+"kind": "fern_a",
 "pos": [
-504,
-156
+1020,
+194
 ],
 "cell": [
-15,
-4
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-1339,
-324
-],
-"cell": [
-41,
-10
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-718,
-572
-],
-"cell": [
-22,
-17
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-603,
-583
-],
-"cell": [
-18,
-18
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-1127,
-223
-],
-"cell": [
-35,
+31,
 6
 ],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-288,
-172
-],
-"cell": [
-9,
-5
-],
 "flip": false
 },
 {
-"kind": "fern_0",
+"kind": "fern_a",
 "pos": [
-186,
-677
+1199,
+442
 ],
 "cell": [
-5,
-21
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-131,
-822
-],
-"cell": [
-4,
-25
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-331,
-502
-],
-"cell": [
-10,
-15
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-139,
-110
-],
-"cell": [
-4,
-3
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-757,
-156
-],
-"cell": [
-23,
-4
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-209,
-744
-],
-"cell": [
-6,
-23
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-220,
-685
-],
-"cell": [
-6,
-21
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-968,
-327
-],
-"cell": [
-30,
-10
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-257,
-450
-],
-"cell": [
-8,
-14
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-731,
-18
-],
-"cell": [
-22,
-0
-],
-"flip": false
-},
-{
-"kind": "stone_1",
-"pos": [
-1241,
-127
-],
-"cell": [
-38,
-3
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-869,
-230
-],
-"cell": [
-27,
-7
-],
-"flip": false
-},
-{
-"kind": "stone_1",
-"pos": [
-903,
-830
-],
-"cell": [
-28,
-25
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-1311,
-366
-],
-"cell": [
-40,
-11
-],
-"flip": false
-},
-{
-"kind": "mushroom_0",
-"pos": [
-1052,
-231
-],
-"cell": [
-32,
-7
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-501,
-657
-],
-"cell": [
-15,
-20
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-681,
-419
-],
-"cell": [
-21,
+37,
 13
 ],
 "flip": false
 },
 {
-"kind": "tuft_1",
-"pos": [
-102,
-739
-],
-"cell": [
-3,
-23
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-984,
-239
-],
-"cell": [
-30,
-7
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-301,
-827
-],
-"cell": [
-9,
-25
-],
-"flip": true
-},
-{
-"kind": "fern_1",
+"kind": "fern_a",
 "pos": [
 940,
-55
+33
 ],
 "cell": [
 29,
@@ -6390,1174 +3942,1078 @@
 "flip": false
 },
 {
-"kind": "bush_0",
+"kind": "flowers_1",
 "pos": [
-482,
-543
+72,
+584
 ],
 "cell": [
-15,
-16
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-553,
-21
-],
-"cell": [
-17,
-0
-],
-"flip": false
-},
-{
-"kind": "stone_1",
-"pos": [
-953,
-822
-],
-"cell": [
-29,
-25
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1020,
-423
-],
-"cell": [
-31,
-13
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-113,
-599
-],
-"cell": [
-3,
+2,
 18
 ],
 "flip": true
 },
 {
-"kind": "bush_0",
+"kind": "log",
 "pos": [
-471,
-755
+737,
+33
+],
+"cell": [
+23,
+1
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+468,
+538
 ],
 "cell": [
 14,
-23
+16
 ],
 "flip": false
 },
 {
-"kind": "fern_1",
+"kind": "tuft_0",
 "pos": [
-253,
-508
-],
-"cell": [
-7,
-15
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-1003,
-497
-],
-"cell": [
-31,
-15
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-825,
-643
-],
-"cell": [
-25,
-20
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-1157,
-763
-],
-"cell": [
-36,
-23
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-37,
-94
-],
-"cell": [
-1,
-2
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-925,
-196
-],
-"cell": [
-28,
-6
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-985,
-469
-],
-"cell": [
-30,
-14
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-747,
-740
-],
-"cell": [
-23,
-23
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-642,
-489
-],
-"cell": [
-20,
-15
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-1118,
-17
-],
-"cell": [
-34,
-0
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-676,
-261
+697,
+596
 ],
 "cell": [
 21,
-8
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-392,
-744
-],
-"cell": [
-12,
-23
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-1037,
-594
-],
-"cell": [
-32,
 18
 ],
 "flip": false
 },
 {
-"kind": "tuft_1",
+"kind": "tuft_0",
 "pos": [
-508,
-448
+286,
+432
 ],
 "cell": [
-15,
-14
+8,
+13
 ],
 "flip": true
 },
 {
-"kind": "mushroom_0",
+"kind": "tuft_0",
 "pos": [
-1040,
-445
+1007,
+569
+],
+"cell": [
+31,
+17
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+140,
+806
+],
+"cell": [
+4,
+25
+],
+"flip": false
+},
+{
+"kind": "stump",
+"pos": [
+378,
+395
+],
+"cell": [
+11,
+12
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1041,
+466
 ],
 "cell": [
 32,
-13
+14
 ],
 "flip": false
 },
 {
-"kind": "mushroom_0",
+"kind": "fern_a",
 "pos": [
-746,
-718
+798,
+297
 ],
 "cell": [
-23,
-22
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-662,
-68
-],
-"cell": [
-20,
-2
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-117,
-90
-],
-"cell": [
-3,
-2
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-1078,
-761
-],
-"cell": [
-33,
-23
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-255,
-221
-],
-"cell": [
-7,
-6
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-876,
-289
-],
-"cell": [
-27,
+24,
 9
 ],
 "flip": true
 },
 {
-"kind": "fern_0",
+"kind": "flowers_1",
 "pos": [
-230,
-28
+575,
+83
 ],
 "cell": [
-7,
-0
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-807,
-669
-],
-"cell": [
-25,
-20
+17,
+2
 ],
 "flip": true
 },
 {
-"kind": "bush_0",
+"kind": "bush_berry",
 "pos": [
-822,
-791
+103,
+303
 ],
 "cell": [
-25,
+3,
+9
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+909,
+774
+],
+"cell": [
+28,
 24
 ],
 "flip": true
 },
 {
-"kind": "stone_1",
+"kind": "fern_a",
 "pos": [
-791,
-723
+303,
+364
 ],
 "cell": [
-24,
-22
+9,
+11
 ],
 "flip": false
 },
 {
-"kind": "fern_0",
+"kind": "mushroom_1",
 "pos": [
-370,
-650
-],
-"cell": [
-11,
-20
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-881,
-597
-],
-"cell": [
-27,
-18
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-46,
-601
-],
-"cell": [
-1,
-18
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-526,
-820
+543,
+281
 ],
 "cell": [
 16,
-25
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1319,
-589
-],
-"cell": [
-41,
-18
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-1257,
-70
-],
-"cell": [
-39,
-2
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-669,
-809
-],
-"cell": [
-20,
-25
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-28,
-313
-],
-"cell": [
-0,
-9
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-57,
-718
-],
-"cell": [
-1,
-22
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-831,
-728
-],
-"cell": [
-25,
-22
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-911,
-412
-],
-"cell": [
-28,
-12
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1283,
-355
-],
-"cell": [
-40,
-11
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-126,
-163
-],
-"cell": [
-3,
-5
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-762,
-632
-],
-"cell": [
-23,
-19
-],
-"flip": true
-},
-{
-"kind": "stone_1",
-"pos": [
-862,
-379
-],
-"cell": [
-26,
-11
-],
-"flip": false
-},
-{
-"kind": "tuft_0",
-"pos": [
-120,
-144
-],
-"cell": [
-3,
-4
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-428,
-598
-],
-"cell": [
-13,
-18
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-674,
-756
-],
-"cell": [
-21,
-23
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1239,
-730
-],
-"cell": [
-38,
-22
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-294,
-417
-],
-"cell": [
-9,
-13
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-933,
-250
-],
-"cell": [
-29,
-7
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-378,
-33
-],
-"cell": [
-11,
-1
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1011,
-502
-],
-"cell": [
-31,
-15
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-47,
-275
-],
-"cell": [
-1,
 8
 ],
 "flip": false
 },
 {
-"kind": "tuft_1",
+"kind": "fern_a",
 "pos": [
-295,
-151
-],
-"cell": [
-9,
-4
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1143,
-379
-],
-"cell": [
-35,
-11
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-1286,
-239
-],
-"cell": [
-40,
-7
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-327,
-720
-],
-"cell": [
-10,
-22
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-121,
-327
-],
-"cell": [
-3,
-10
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-685,
-396
-],
-"cell": [
-21,
-12
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-853,
-675
-],
-"cell": [
-26,
-21
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-795,
-404
-],
-"cell": [
-24,
-12
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-176,
-177
-],
-"cell": [
-5,
-5
-],
-"flip": false
-},
-{
-"kind": "tuft_1",
-"pos": [
-729,
-679
-],
-"cell": [
-22,
-21
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-788,
-426
-],
-"cell": [
-24,
-13
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1305,
-297
-],
-"cell": [
-40,
-9
-],
-"flip": true
-},
-{
-"kind": "fern_0",
-"pos": [
-301,
-269
-],
-"cell": [
-9,
-8
-],
-"flip": true
-},
-{
-"kind": "bush_0",
-"pos": [
-838,
-208
-],
-"cell": [
-26,
-6
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-502,
-140
-],
-"cell": [
-15,
-4
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-723,
-765
-],
-"cell": [
-22,
-23
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-1031,
-214
-],
-"cell": [
-32,
-6
-],
-"flip": true
-},
-{
-"kind": "mushroom_0",
-"pos": [
-548,
-537
-],
-"cell": [
-17,
-16
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1115,
-175
-],
-"cell": [
-34,
-5
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-639,
-590
-],
-"cell": [
-19,
-18
-],
-"flip": true
-},
-{
-"kind": "tuft_0",
-"pos": [
-548,
-543
-],
-"cell": [
-17,
-16
-],
-"flip": false
-},
-{
-"kind": "bush_0",
-"pos": [
-1330,
-53
+1323,
+764
 ],
 "cell": [
 41,
-1
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1101,
-302
-],
-"cell": [
-34,
-9
+23
 ],
 "flip": true
 },
 {
-"kind": "mushroom_1",
+"kind": "fern_a",
 "pos": [
-137,
-720
-],
-"cell": [
-4,
-22
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-159,
-672
-],
-"cell": [
-4,
-21
-],
-"flip": true
-},
-{
-"kind": "stone_1",
-"pos": [
-464,
-401
+456,
+539
 ],
 "cell": [
 14,
-12
+16
 ],
 "flip": true
 },
 {
-"kind": "tuft_0",
+"kind": "bush_berry",
 "pos": [
-890,
-273
+939,
+468
 ],
 "cell": [
-27,
-8
-],
-"flip": true
-},
-{
-"kind": "tuft_1",
-"pos": [
-1281,
-285
-],
-"cell": [
-40,
-8
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-574,
-561
-],
-"cell": [
-17,
-17
-],
-"flip": true
-},
-{
-"kind": "bush_1",
-"pos": [
-430,
-493
-],
-"cell": [
-13,
-15
-],
-"flip": true
-},
-{
-"kind": "fern_1",
-"pos": [
-61,
-460
-],
-"cell": [
-1,
+29,
 14
 ],
 "flip": false
 },
 {
-"kind": "bush_1",
+"kind": "bush_berry",
 "pos": [
-189,
-270
+289,
+129
 ],
 "cell": [
-5,
-8
-],
-"flip": false
-},
-{
-"kind": "bush_1",
-"pos": [
-756,
-705
-],
-"cell": [
-23,
-22
+9,
+4
 ],
 "flip": true
 },
 {
-"kind": "bush_1",
+"kind": "log",
 "pos": [
-583,
-276
+908,
+380
 ],
 "cell": [
-18,
-8
+28,
+11
 ],
 "flip": true
 },
 {
-"kind": "tuft_1",
+"kind": "flowers_1",
 "pos": [
-371,
-614
+843,
+316
 ],
 "cell": [
-11,
-19
-],
-"flip": false
-},
-{
-"kind": "fern_1",
-"pos": [
-724,
-739
-],
-"cell": [
-22,
-23
+26,
+9
 ],
 "flip": true
 },
 {
 "kind": "tuft_0",
 "pos": [
-733,
-102
+521,
+760
 ],
 "cell": [
-22,
+16,
+23
+],
+"flip": true
+},
+{
+"kind": "stump",
+"pos": [
+1298,
+99
+],
+"cell": [
+40,
 3
 ],
 "flip": true
 },
 {
-"kind": "bush_1",
+"kind": "bush_round",
 "pos": [
-560,
-690
+598,
+397
 ],
 "cell": [
-17,
-21
+18,
+12
 ],
 "flip": true
 },
 {
-"kind": "bush_1",
+"kind": "log",
 "pos": [
-473,
-28
+131,
+401
 ],
 "cell": [
-14,
-0
-],
-"flip": false
-},
-{
-"kind": "mushroom_0",
-"pos": [
-373,
-741
-],
-"cell": [
-11,
-23
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-414,
-655
-],
-"cell": [
-12,
-20
+4,
+12
 ],
 "flip": true
 },
 {
-"kind": "tuft_0",
+"kind": "flowers_1",
 "pos": [
-1093,
-154
+979,
+787
 ],
 "cell": [
-34,
-4
+30,
+24
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1267,
+108
+],
+"cell": [
+39,
+3
 ],
 "flip": true
 },
 {
 "kind": "mushroom_1",
 "pos": [
+739,
+807
+],
+"cell": [
+23,
+25
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+1041,
+735
+],
+"cell": [
+32,
+22
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+189,
+340
+],
+"cell": [
+5,
+10
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+69,
+690
+],
+"cell": [
+2,
+21
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+466,
+484
+],
+"cell": [
+14,
+15
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+272,
+53
+],
+"cell": [
+8,
+1
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+176,
+540
+],
+"cell": [
+5,
+16
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1260,
+98
+],
+"cell": [
+39,
+3
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
 760,
-64
+583
+],
+"cell": [
+23,
+18
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+257,
+389
+],
+"cell": [
+8,
+12
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+949,
+435
+],
+"cell": [
+29,
+13
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+1054,
+749
+],
+"cell": [
+32,
+23
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+134,
+765
+],
+"cell": [
+4,
+23
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+1284,
+642
+],
+"cell": [
+40,
+20
+],
+"flip": true
+},
+{
+"kind": "mushroom_1",
+"pos": [
+55,
+543
+],
+"cell": [
+1,
+16
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+222,
+117
+],
+"cell": [
+6,
+3
+],
+"flip": false
+},
+{
+"kind": "mushroom_0",
+"pos": [
+1177,
+342
+],
+"cell": [
+36,
+10
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+540,
+222
+],
+"cell": [
+16,
+6
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+6,
+465
+],
+"cell": [
+0,
+14
+],
+"flip": false
+},
+{
+"kind": "log",
+"pos": [
+721,
+689
+],
+"cell": [
+22,
+21
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+139,
+410
+],
+"cell": [
+4,
+12
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+1130,
+73
+],
+"cell": [
+35,
+2
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+189,
+535
+],
+"cell": [
+5,
+16
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+1334,
+364
+],
+"cell": [
+41,
+11
+],
+"flip": false
+},
+{
+"kind": "stump",
+"pos": [
+27,
+322
+],
+"cell": [
+0,
+10
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+86,
+449
+],
+"cell": [
+2,
+14
+],
+"flip": false
+},
+{
+"kind": "log",
+"pos": [
+42,
+435
+],
+"cell": [
+1,
+13
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+527,
+265
+],
+"cell": [
+16,
+8
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+684,
+195
+],
+"cell": [
+21,
+6
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+892,
+495
+],
+"cell": [
+27,
+15
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+266,
+782
+],
+"cell": [
+8,
+24
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+718,
+62
+],
+"cell": [
+22,
+1
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+486,
+573
+],
+"cell": [
+15,
+17
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+163,
+13
+],
+"cell": [
+5,
+0
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+178,
+776
+],
+"cell": [
+5,
+24
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1283,
+792
+],
+"cell": [
+40,
+24
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+409,
+425
+],
+"cell": [
+12,
+13
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+95,
+83
+],
+"cell": [
+2,
+2
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1168,
+287
+],
+"cell": [
+36,
+8
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+337,
+406
+],
+"cell": [
+10,
+12
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+198,
+24
+],
+"cell": [
+6,
+0
+],
+"flip": false
+},
+{
+"kind": "log",
+"pos": [
+1027,
+532
+],
+"cell": [
+32,
+16
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+108,
+150
+],
+"cell": [
+3,
+4
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+1174,
+248
+],
+"cell": [
+36,
+7
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+312,
+498
+],
+"cell": [
+9,
+15
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+357,
+124
+],
+"cell": [
+11,
+3
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1073,
+68
+],
+"cell": [
+33,
+2
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1192,
+640
+],
+"cell": [
+37,
+19
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+1331,
+683
+],
+"cell": [
+41,
+21
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+44,
+316
+],
+"cell": [
+1,
+9
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+1111,
+217
+],
+"cell": [
+34,
+6
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+684,
+239
+],
+"cell": [
+21,
+7
+],
+"flip": true
+},
+{
+"kind": "mushroom_1",
+"pos": [
+317,
+681
+],
+"cell": [
+9,
+21
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+207,
+706
+],
+"cell": [
+6,
+22
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+99,
+575
+],
+"cell": [
+3,
+17
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+1177,
+354
+],
+"cell": [
+36,
+11
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+722,
+378
+],
+"cell": [
+22,
+11
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1128,
+649
+],
+"cell": [
+35,
+20
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+21,
+118
+],
+"cell": [
+0,
+3
+],
+"flip": false
+},
+{
+"kind": "stump",
+"pos": [
+759,
+368
+],
+"cell": [
+23,
+11
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+545,
+372
+],
+"cell": [
+17,
+11
+],
+"flip": true
+},
+{
+"kind": "mushroom_1",
+"pos": [
+37,
+517
+],
+"cell": [
+1,
+16
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+764,
+74
 ],
 "cell": [
 23,
@@ -7566,58 +5022,946 @@
 "flip": true
 },
 {
-"kind": "bush_1",
+"kind": "bush_round",
 "pos": [
-735,
-508
+996,
+18
 ],
 "cell": [
-22,
-15
-],
-"flip": false
-},
-{
-"kind": "fern_0",
-"pos": [
-1268,
-334
-],
-"cell": [
-39,
-10
+31,
+0
 ],
 "flip": true
 },
 {
-"kind": "bush_1",
+"kind": "mushroom_1",
 "pos": [
-557,
-272
+1138,
+771
 ],
 "cell": [
-17,
-8
+35,
+24
 ],
 "flip": false
 },
 {
-"kind": "tuft_1",
+"kind": "mushroom_1",
 "pos": [
-497,
-731
+391,
+522
 ],
 "cell": [
-15,
+12,
+16
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+27,
+126
+],
+"cell": [
+0,
+3
+],
+"flip": true
+},
+{
+"kind": "mushroom_1",
+"pos": [
+904,
+525
+],
+"cell": [
+28,
+16
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+184,
+378
+],
+"cell": [
+5,
+11
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+762,
+262
+],
+"cell": [
+23,
+8
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+80,
+790
+],
+"cell": [
+2,
+24
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+250,
+412
+],
+"cell": [
+7,
+12
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+48,
+561
+],
+"cell": [
+1,
+17
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1173,
+641
+],
+"cell": [
+36,
+20
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+521,
+221
+],
+"cell": [
+16,
+6
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+1134,
+480
+],
+"cell": [
+35,
+14
+],
+"flip": true
+},
+{
+"kind": "mushroom_1",
+"pos": [
+304,
+193
+],
+"cell": [
+9,
+6
+],
+"flip": false
+},
+{
+"kind": "bush_berry",
+"pos": [
+827,
+103
+],
+"cell": [
+25,
+3
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+1332,
+381
+],
+"cell": [
+41,
+11
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+273,
+170
+],
+"cell": [
+8,
+5
+],
+"flip": true
+},
+{
+"kind": "bush_berry",
+"pos": [
+361,
+34
+],
+"cell": [
+11,
+1
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+374,
+702
+],
+"cell": [
+11,
+21
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+364,
+38
+],
+"cell": [
+11,
+1
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+807,
+240
+],
+"cell": [
+25,
+7
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1019,
+401
+],
+"cell": [
+31,
+12
+],
+"flip": false
+},
+{
+"kind": "mushroom_0",
+"pos": [
+233,
+58
+],
+"cell": [
+7,
+1
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+1178,
+509
+],
+"cell": [
+36,
+15
+],
+"flip": true
+},
+{
+"kind": "bush_berry",
+"pos": [
+366,
+135
+],
+"cell": [
+11,
+4
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+25,
+29
+],
+"cell": [
+0,
+0
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+12,
+587
+],
+"cell": [
+0,
+18
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+82,
+537
+],
+"cell": [
+2,
+16
+],
+"flip": false
+},
+{
+"kind": "log",
+"pos": [
+825,
+316
+],
+"cell": [
+25,
+9
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+81,
+197
+],
+"cell": [
+2,
+6
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+74,
+642
+],
+"cell": [
+2,
+20
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+850,
+250
+],
+"cell": [
+26,
+7
+],
+"flip": true
+},
+{
+"kind": "stump",
+"pos": [
+652,
+686
+],
+"cell": [
+20,
+21
+],
+"flip": false
+},
+{
+"kind": "stump",
+"pos": [
+1119,
+292
+],
+"cell": [
+34,
+9
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+274,
+678
+],
+"cell": [
+8,
+21
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1163,
+243
+],
+"cell": [
+36,
+7
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+318,
+788
+],
+"cell": [
+9,
+24
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+1239,
+810
+],
+"cell": [
+38,
+25
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+600,
+575
+],
+"cell": [
+18,
+17
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+1280,
+514
+],
+"cell": [
+39,
+16
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+762,
+308
+],
+"cell": [
+23,
+9
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+25,
+812
+],
+"cell": [
+0,
+25
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+1039,
+391
+],
+"cell": [
+32,
+12
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+1245,
+780
+],
+"cell": [
+38,
+24
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+725,
+268
+],
+"cell": [
+22,
+8
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+1328,
+468
+],
+"cell": [
+41,
+14
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+734,
+287
+],
+"cell": [
+22,
+8
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1155,
+352
+],
+"cell": [
+36,
+11
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+361,
+73
+],
+"cell": [
+11,
+2
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+1229,
+186
+],
+"cell": [
+38,
+5
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+982,
+50
+],
+"cell": [
+30,
+1
+],
+"flip": true
+},
+{
+"kind": "mushroom_1",
+"pos": [
+118,
+242
+],
+"cell": [
+3,
+7
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+1195,
+724
+],
+"cell": [
+37,
+22
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+1187,
+726
+],
+"cell": [
+37,
+22
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+48,
+618
+],
+"cell": [
+1,
+19
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1322,
+326
+],
+"cell": [
+41,
+10
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+637,
+178
+],
+"cell": [
+19,
+5
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+680,
+600
+],
+"cell": [
+21,
+18
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+1247,
+726
+],
+"cell": [
+38,
 22
 ],
 "flip": false
 },
 {
-"kind": "fern_0",
+"kind": "mushroom_1",
+"pos": [
+529,
+204
+],
+"cell": [
+16,
+6
+],
+"flip": true
+},
+{
+"kind": "bush_berry",
+"pos": [
+511,
+784
+],
+"cell": [
+15,
+24
+],
+"flip": true
+},
+{
+"kind": "mushroom_1",
+"pos": [
+786,
+40
+],
+"cell": [
+24,
+1
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+322,
+134
+],
+"cell": [
+10,
+4
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+854,
+169
+],
+"cell": [
+26,
+5
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+245,
+720
+],
+"cell": [
+7,
+22
+],
+"flip": false
+},
+{
+"kind": "mushroom_0",
+"pos": [
+128,
+602
+],
+"cell": [
+3,
+18
+],
+"flip": true
+},
+{
+"kind": "bush_berry",
+"pos": [
+590,
+162
+],
+"cell": [
+18,
+5
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+363,
+345
+],
+"cell": [
+11,
+10
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+390,
+398
+],
+"cell": [
+12,
+12
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+713,
+484
+],
+"cell": [
+22,
+15
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+724,
+611
+],
+"cell": [
+22,
+19
+],
+"flip": false
+},
+{
+"kind": "mushroom_0",
+"pos": [
+638,
+484
+],
+"cell": [
+19,
+15
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+285,
+166
+],
+"cell": [
+8,
+5
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+909,
+798
+],
+"cell": [
+28,
+24
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+987,
+449
+],
+"cell": [
+30,
+14
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+509,
+469
+],
+"cell": [
+15,
+14
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+587,
+567
+],
+"cell": [
+18,
+17
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+677,
+507
+],
+"cell": [
+21,
+15
+],
+"flip": false
+},
+{
+"kind": "bush_round",
 "pos": [
 464,
-397
+390
 ],
 "cell": [
 14,
@@ -7626,10 +5970,214 @@
 "flip": true
 },
 {
-"kind": "tuft_1",
+"kind": "fern_a",
 "pos": [
-1275,
-665
+887,
+498
+],
+"cell": [
+27,
+15
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+606,
+380
+],
+"cell": [
+18,
+11
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+109,
+510
+],
+"cell": [
+3,
+15
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+976,
+794
+],
+"cell": [
+30,
+24
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+198,
+818
+],
+"cell": [
+6,
+25
+],
+"flip": true
+},
+{
+"kind": "log",
+"pos": [
+25,
+168
+],
+"cell": [
+0,
+5
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+1190,
+87
+],
+"cell": [
+37,
+2
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+78,
+378
+],
+"cell": [
+2,
+11
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+341,
+485
+],
+"cell": [
+10,
+15
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+463,
+631
+],
+"cell": [
+14,
+19
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1313,
+11
+],
+"cell": [
+41,
+0
+],
+"flip": false
+},
+{
+"kind": "log",
+"pos": [
+528,
+65
+],
+"cell": [
+16,
+2
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+1108,
+626
+],
+"cell": [
+34,
+19
+],
+"flip": false
+},
+{
+"kind": "stump",
+"pos": [
+630,
+614
+],
+"cell": [
+19,
+19
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+250,
+472
+],
+"cell": [
+7,
+14
+],
+"flip": true
+},
+{
+"kind": "stump",
+"pos": [
+618,
+725
+],
+"cell": [
+19,
+22
+],
+"flip": false
+},
+{
+"kind": "stump",
+"pos": [
+806,
+814
+],
+"cell": [
+25,
+25
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+1277,
+648
 ],
 "cell": [
 39,
@@ -7638,112 +6186,532 @@
 "flip": true
 },
 {
-"kind": "bush_0",
+"kind": "stump",
 "pos": [
-827,
-74
+773,
+202
 ],
 "cell": [
-25,
-2
+24,
+6
 ],
 "flip": true
 },
 {
-"kind": "bush_1",
+"kind": "tuft_0",
 "pos": [
-359,
-439
+1230,
+90
 ],
 "cell": [
-11,
-13
+38,
+2
 ],
 "flip": false
 },
 {
-"kind": "tuft_1",
+"kind": "stump",
 "pos": [
-786,
-711
+1250,
+737
+],
+"cell": [
+39,
+23
+],
+"flip": true
+},
+{
+"kind": "stump",
+"pos": [
+754,
+396
+],
+"cell": [
+23,
+12
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+900,
+586
+],
+"cell": [
+28,
+18
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+796,
+736
 ],
 "cell": [
 24,
-22
+23
+],
+"flip": true
+},
+{
+"kind": "bush_berry",
+"pos": [
+1036,
+53
+],
+"cell": [
+32,
+1
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+509,
+481
+],
+"cell": [
+15,
+15
+],
+"flip": true
+},
+{
+"kind": "rock_mossy",
+"pos": [
+610,
+388
+],
+"cell": [
+19,
+12
 ],
 "flip": false
 },
 {
-"kind": "fern_0",
+"kind": "fern_a",
 "pos": [
-1317,
-596
+1296,
+456
 ],
 "cell": [
-41,
-18
+40,
+14
 ],
 "flip": false
 },
 {
-"kind": "tuft_1",
+"kind": "stump",
 "pos": [
-538,
-762
+567,
+530
 ],
 "cell": [
-16,
+17,
+16
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+396,
+801
+],
+"cell": [
+12,
+25
+],
+"flip": false
+},
+{
+"kind": "tuft_0",
+"pos": [
+283,
+680
+],
+"cell": [
+8,
+21
+],
+"flip": false
+},
+{
+"kind": "fern_a",
+"pos": [
+648,
+568
+],
+"cell": [
+20,
+17
+],
+"flip": false
+},
+{
+"kind": "mushroom_0",
+"pos": [
+548,
+828
+],
+"cell": [
+17,
+25
+],
+"flip": false
+},
+{
+"kind": "rock_mossy",
+"pos": [
+1082,
+34
+],
+"cell": [
+33,
+1
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+320,
+19
+],
+"cell": [
+10,
+0
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+1150,
+754
+],
+"cell": [
+35,
 23
 ],
 "flip": false
 },
 {
-"kind": "tuft_1",
+"kind": "flowers_1",
 "pos": [
-301,
-367
+352,
+799
 ],
 "cell": [
-9,
+10,
+24
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+112,
+222
+],
+"cell": [
+3,
+6
+],
+"flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+438,
+611
+],
+"cell": [
+13,
+19
+],
+"flip": true
+},
+{
+"kind": "stump",
+"pos": [
+874,
+300
+],
+"cell": [
+27,
+9
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+6,
+302
+],
+"cell": [
+0,
+9
+],
+"flip": false
+},
+{
+"kind": "mushroom_1",
+"pos": [
+946,
+377
+],
+"cell": [
+29,
 11
 ],
 "flip": true
 },
 {
-"kind": "tuft_1",
+"kind": "stump",
 "pos": [
-66,
-326
+106,
+299
 ],
 "cell": [
-2,
-10
+3,
+9
+],
+"flip": true
+},
+{
+"kind": "stump",
+"pos": [
+284,
+15
+],
+"cell": [
+8,
+0
 ],
 "flip": false
 },
 {
-"kind": "fern_1",
+"kind": "rock_mossy",
 "pos": [
-663,
-186
+288,
+729
 ],
 "cell": [
-20,
-5
+8,
+22
+],
+"flip": true
+},
+{
+"kind": "tuft_0",
+"pos": [
+520,
+557
+],
+"cell": [
+16,
+17
 ],
 "flip": false
 },
 {
-"kind": "bush_1",
+"kind": "bush_round",
 "pos": [
-237,
-146
+276,
+25
 ],
 "cell": [
-7,
-4
+8,
+0
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+61,
+25
+],
+"cell": [
+1,
+0
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+584,
+422
+],
+"cell": [
+18,
+13
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+96,
+237
+],
+"cell": [
+3,
+7
+],
+"flip": true
+},
+{
+"kind": "fern_a",
+"pos": [
+754,
+504
+],
+"cell": [
+23,
+15
 ],
 "flip": false
+},
+{
+"kind": "bush_round",
+"pos": [
+60,
+63
+],
+"cell": [
+1,
+1
+],
+"flip": true
+},
+{
+"kind": "fern_b",
+"pos": [
+1281,
+436
+],
+"cell": [
+40,
+13
+],
+"flip": true
+},
+{
+"kind": "mushroom_0",
+"pos": [
+509,
+13
+],
+"cell": [
+15,
+0
+],
+"flip": true
+},
+{
+"kind": "stump",
+"pos": [
+635,
+486
+],
+"cell": [
+19,
+15
+],
+"flip": true
+},
+{
+"kind": "flowers_1",
+"pos": [
+410,
+785
+],
+"cell": [
+12,
+24
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+341,
+760
+],
+"cell": [
+10,
+23
+],
+"flip": true
+},
+{
+"kind": "mushroom_1",
+"pos": [
+597,
+395
+],
+"cell": [
+18,
+12
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+690,
+395
+],
+"cell": [
+21,
+12
+],
+"flip": false
+},
+{
+"kind": "flowers_1",
+"pos": [
+382,
+734
+],
+"cell": [
+11,
+22
+],
+"flip": true
+},
+{
+"kind": "bush_round",
+"pos": [
+524,
+50
+],
+"cell": [
+16,
+1
+],
+"flip": false
+},
+{
+"kind": "fern_b",
+"pos": [
+673,
+369
+],
+"cell": [
+21,
+11
+],
+"flip": true
 }
 ]
 }

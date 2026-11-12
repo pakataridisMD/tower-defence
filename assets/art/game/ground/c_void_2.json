@@ -6,502 +6,310 @@
 "biome": "void",
 "props": [
 {
-"kind": "mushroom_1",
+"kind": "rift_spire",
 "pos": [
-1110,
-677
-],
-"cell": [
-34,
-21
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-634,
-622
-],
-"cell": [
-19,
-19
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-36,
-463
-],
-"cell": [
-1,
-14
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-523,
-727
-],
-"cell": [
-16,
-22
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-418,
-462
-],
-"cell": [
-13,
-14
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-506,
-410
-],
-"cell": [
-15,
-12
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-668,
-746
-],
-"cell": [
-20,
-23
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-255,
+1196,
 716
 ],
 "cell": [
-7,
+37,
 22
 ],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-266,
-199
-],
-"cell": [
-8,
-6
-],
 "flip": false
 },
 {
-"kind": "obsidian_shard",
+"kind": "rift_spire",
 "pos": [
-401,
-93
-],
-"cell": [
-12,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-653,
-527
-],
-"cell": [
-20,
-16
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-950,
-145
-],
-"cell": [
-29,
-4
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-505,
-579
-],
-"cell": [
-15,
-18
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1094,
-613
-],
-"cell": [
-34,
-19
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-479,
-193
-],
-"cell": [
-14,
-6
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-205,
-209
-],
-"cell": [
-6,
-6
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-671,
-496
-],
-"cell": [
-20,
-15
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-750,
-394
-],
-"cell": [
-23,
-12
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-562,
-14
-],
-"cell": [
-17,
-0
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-986,
-353
-],
-"cell": [
-30,
-11
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1320,
-497
-],
-"cell": [
-41,
-15
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-103,
-272
-],
-"cell": [
-3,
-8
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-469,
-244
-],
-"cell": [
-14,
-7
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-280,
-239
-],
-"cell": [
-8,
-7
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1249,
-400
-],
-"cell": [
-39,
-12
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-96,
-39
-],
-"cell": [
-2,
-1
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-269,
-355
-],
-"cell": [
-8,
-11
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1185,
-36
-],
-"cell": [
-37,
-1
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-782,
-73
-],
-"cell": [
-24,
-2
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-352,
-376
+350,
+159
 ],
 "cell": [
 10,
-11
+4
 ],
 "flip": true
 },
 {
-"kind": "void_crystal",
+"kind": "void_tree",
 "pos": [
-939,
-629
+1312,
+644
 ],
 "cell": [
-29,
-19
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-392,
-197
-],
-"cell": [
-12,
-6
+40,
+20
 ],
 "flip": false
 },
 {
-"kind": "void_tuft_1",
+"kind": "void_tree",
 "pos": [
-751,
-180
+903,
+165
 ],
 "cell": [
-23,
+28,
 5
 ],
 "flip": false
 },
 {
-"kind": "void_tuft_0",
+"kind": "void_tree",
 "pos": [
-794,
-383
+608,
+576
 ],
 "cell": [
-24,
-11
+19,
+18
 ],
 "flip": false
 },
 {
-"kind": "void_tuft_1",
+"kind": "void_tree",
 "pos": [
-1240,
-724
+1050,
+206
 ],
 "cell": [
-38,
-22
+32,
+6
 ],
 "flip": false
 },
 {
-"kind": "rift_stone",
+"kind": "void_tree",
 "pos": [
-958,
-681
+196,
+688
 ],
 "cell": [
-29,
+6,
 21
 ],
 "flip": false
 },
 {
-"kind": "void_tuft_0",
+"kind": "void_tree",
 "pos": [
-306,
-589
+10,
+278
 ],
 "cell": [
-9,
-18
+0,
+8
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+1049,
+86
+],
+"cell": [
+32,
+2
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+437,
+31
+],
+"cell": [
+13,
+0
 ],
 "flip": true
 },
 {
-"kind": "mushroom_1",
+"kind": "rift_spire",
 "pos": [
-256,
-729
+396,
+140
 ],
 "cell": [
-7,
+12,
+4
+],
+"flip": true
+},
+{
+"kind": "void_tree",
+"pos": [
+1314,
+306
+],
+"cell": [
+41,
+9
+],
+"flip": true
+},
+{
+"kind": "rift_spire",
+"pos": [
+667,
+466
+],
+"cell": [
+20,
+14
+],
+"flip": true
+},
+{
+"kind": "rift_spire",
+"pos": [
+96,
+107
+],
+"cell": [
+3,
+3
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+968,
+706
+],
+"cell": [
+30,
 22
 ],
 "flip": false
 },
 {
-"kind": "void_crystal",
+"kind": "rift_spire",
 "pos": [
-224,
-221
+639,
+456
+],
+"cell": [
+19,
+14
+],
+"flip": true
+},
+{
+"kind": "rift_spire",
+"pos": [
+199,
+799
 ],
 "cell": [
 6,
-6
+24
 ],
 "flip": true
 },
 {
-"kind": "void_tuft_1",
+"kind": "void_tree",
 "pos": [
-564,
-536
+143,
+814
 ],
 "cell": [
-17,
-16
+4,
+25
 ],
 "flip": true
 },
 {
-"kind": "void_tuft_0",
+"kind": "rift_spire",
 "pos": [
-729,
-648
+824,
+93
+],
+"cell": [
+25,
+2
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+723,
+817
 ],
 "cell": [
 22,
-20
+25
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+631,
+438
+],
+"cell": [
+19,
+13
 ],
 "flip": true
 },
 {
-"kind": "void_tuft_1",
+"kind": "rift_spire",
+"pos": [
+974,
+578
+],
+"cell": [
+30,
+18
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+707,
+472
+],
+"cell": [
+22,
+14
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+953,
+368
+],
+"cell": [
+29,
+11
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+354,
+820
+],
+"cell": [
+11,
+25
+],
+"flip": true
+},
+{
+"kind": "void_tree",
 "pos": [
 7,
-115
+120
 ],
 "cell": [
 0,
@@ -510,10 +318,1954 @@
 "flip": true
 },
 {
+"kind": "rift_spire",
+"pos": [
+235,
+664
+],
+"cell": [
+7,
+20
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+1006,
+251
+],
+"cell": [
+31,
+7
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+849,
+804
+],
+"cell": [
+26,
+25
+],
+"flip": true
+},
+{
+"kind": "void_tree",
+"pos": [
+597,
+486
+],
+"cell": [
+18,
+15
+],
+"flip": true
+},
+{
+"kind": "rift_spire",
+"pos": [
+449,
+556
+],
+"cell": [
+14,
+17
+],
+"flip": true
+},
+{
+"kind": "void_tree",
+"pos": [
+936,
+147
+],
+"cell": [
+29,
+4
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+308,
+817
+],
+"cell": [
+9,
+25
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+703,
+444
+],
+"cell": [
+21,
+13
+],
+"flip": true
+},
+{
+"kind": "void_tree",
+"pos": [
+1050,
+42
+],
+"cell": [
+32,
+1
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+6,
+325
+],
+"cell": [
+0,
+10
+],
+"flip": true
+},
+{
+"kind": "void_tree",
+"pos": [
+631,
+548
+],
+"cell": [
+19,
+17
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+487,
+42
+],
+"cell": [
+15,
+1
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+372,
+163
+],
+"cell": [
+11,
+5
+],
+"flip": true
+},
+{
+"kind": "rift_spire",
+"pos": [
+213,
+418
+],
+"cell": [
+6,
+13
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+209,
+302
+],
+"cell": [
+6,
+9
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+52,
+639
+],
+"cell": [
+1,
+19
+],
+"flip": true
+},
+{
+"kind": "void_tree",
+"pos": [
+273,
+742
+],
+"cell": [
+8,
+23
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+1150,
+796
+],
+"cell": [
+35,
+24
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+1293,
+784
+],
+"cell": [
+40,
+24
+],
+"flip": true
+},
+{
+"kind": "void_tree",
+"pos": [
+788,
+796
+],
+"cell": [
+24,
+24
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+464,
+336
+],
+"cell": [
+14,
+10
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+1258,
+620
+],
+"cell": [
+39,
+19
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+325,
+71
+],
+"cell": [
+10,
+2
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+1018,
+805
+],
+"cell": [
+31,
+25
+],
+"flip": true
+},
+{
+"kind": "void_tree",
+"pos": [
+261,
+756
+],
+"cell": [
+8,
+23
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+1322,
+714
+],
+"cell": [
+41,
+22
+],
+"flip": true
+},
+{
+"kind": "void_tree",
+"pos": [
+1287,
+665
+],
+"cell": [
+40,
+20
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+922,
+187
+],
+"cell": [
+28,
+5
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+624,
+608
+],
+"cell": [
+19,
+18
+],
+"flip": true
+},
+{
+"kind": "rift_spire",
+"pos": [
+10,
+394
+],
+"cell": [
+0,
+12
+],
+"flip": true
+},
+{
+"kind": "rift_spire",
+"pos": [
+278,
+729
+],
+"cell": [
+8,
+22
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+1174,
+701
+],
+"cell": [
+36,
+21
+],
+"flip": true
+},
+{
+"kind": "rift_spire",
+"pos": [
+652,
+377
+],
+"cell": [
+20,
+11
+],
+"flip": true
+},
+{
+"kind": "void_tree",
+"pos": [
+157,
+63
+],
+"cell": [
+4,
+1
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+175,
+303
+],
+"cell": [
+5,
+9
+],
+"flip": true
+},
+{
+"kind": "rift_spire",
+"pos": [
+1292,
+797
+],
+"cell": [
+40,
+24
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+256,
+816
+],
+"cell": [
+7,
+25
+],
+"flip": false
+},
+{
+"kind": "rift_spire",
+"pos": [
+350,
+215
+],
+"cell": [
+10,
+6
+],
+"flip": true
+},
+{
+"kind": "rift_spire",
+"pos": [
+385,
+72
+],
+"cell": [
+12,
+2
+],
+"flip": false
+},
+{
+"kind": "void_tree",
+"pos": [
+633,
+580
+],
+"cell": [
+19,
+18
+],
+"flip": true
+},
+{
+"kind": "rift_spire",
+"pos": [
+40,
+170
+],
+"cell": [
+1,
+5
+],
+"flip": false
+},
+{
 "kind": "void_tuft_0",
 "pos": [
-330,
-319
+626,
+719
+],
+"cell": [
+19,
+22
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+87,
+456
+],
+"cell": [
+2,
+14
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+369,
+268
+],
+"cell": [
+11,
+8
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+991,
+671
+],
+"cell": [
+30,
+20
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+717,
+96
+],
+"cell": [
+22,
+3
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+438,
+782
+],
+"cell": [
+13,
+24
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+506,
+667
+],
+"cell": [
+15,
+20
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+311,
+794
+],
+"cell": [
+9,
+24
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+497,
+356
+],
+"cell": [
+15,
+11
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+564,
+176
+],
+"cell": [
+17,
+5
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+229,
+468
+],
+"cell": [
+7,
+14
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1229,
+739
+],
+"cell": [
+38,
+23
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+813,
+108
+],
+"cell": [
+25,
+3
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+299,
+193
+],
+"cell": [
+9,
+6
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+140,
+749
+],
+"cell": [
+4,
+23
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+987,
+416
+],
+"cell": [
+30,
+12
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1212,
+677
+],
+"cell": [
+37,
+21
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1316,
+276
+],
+"cell": [
+41,
+8
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+849,
+49
+],
+"cell": [
+26,
+1
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1052,
+337
+],
+"cell": [
+32,
+10
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1172,
+379
+],
+"cell": [
+36,
+11
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+766,
+332
+],
+"cell": [
+23,
+10
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+727,
+758
+],
+"cell": [
+22,
+23
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+264,
+114
+],
+"cell": [
+8,
+3
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+200,
+428
+],
+"cell": [
+6,
+13
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+707,
+770
+],
+"cell": [
+22,
+24
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+82,
+488
+],
+"cell": [
+2,
+15
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+667,
+539
+],
+"cell": [
+20,
+16
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+971,
+110
+],
+"cell": [
+30,
+3
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+518,
+144
+],
+"cell": [
+16,
+4
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+18,
+433
+],
+"cell": [
+0,
+13
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+462,
+738
+],
+"cell": [
+14,
+23
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+590,
+667
+],
+"cell": [
+18,
+20
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1021,
+29
+],
+"cell": [
+31,
+0
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+549,
+744
+],
+"cell": [
+17,
+23
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1166,
+209
+],
+"cell": [
+36,
+6
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1076,
+422
+],
+"cell": [
+33,
+13
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+735,
+707
+],
+"cell": [
+22,
+22
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1201,
+803
+],
+"cell": [
+37,
+25
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+532,
+741
+],
+"cell": [
+16,
+23
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1202,
+442
+],
+"cell": [
+37,
+13
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+384,
+623
+],
+"cell": [
+12,
+19
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+798,
+398
+],
+"cell": [
+24,
+12
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+620,
+668
+],
+"cell": [
+19,
+20
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+726,
+55
+],
+"cell": [
+22,
+1
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+238,
+60
+],
+"cell": [
+7,
+1
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+366,
+27
+],
+"cell": [
+11,
+0
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+305,
+120
+],
+"cell": [
+9,
+3
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1299,
+224
+],
+"cell": [
+40,
+6
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1150,
+321
+],
+"cell": [
+35,
+10
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+768,
+637
+],
+"cell": [
+23,
+19
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+673,
+702
+],
+"cell": [
+21,
+21
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+80,
+10
+],
+"cell": [
+2,
+0
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+92,
+401
+],
+"cell": [
+2,
+12
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+355,
+245
+],
+"cell": [
+11,
+7
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1016,
+745
+],
+"cell": [
+31,
+23
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+432,
+639
+],
+"cell": [
+13,
+19
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1166,
+419
+],
+"cell": [
+36,
+13
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+733,
+421
+],
+"cell": [
+22,
+13
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1253,
+651
+],
+"cell": [
+39,
+20
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+927,
+257
+],
+"cell": [
+28,
+8
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+770,
+61
+],
+"cell": [
+24,
+1
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+299,
+80
+],
+"cell": [
+9,
+2
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+653,
+466
+],
+"cell": [
+20,
+14
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+285,
+737
+],
+"cell": [
+8,
+23
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+829,
+65
+],
+"cell": [
+25,
+2
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+152,
+17
+],
+"cell": [
+4,
+0
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+661,
+581
+],
+"cell": [
+20,
+18
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+188,
+641
+],
+"cell": [
+5,
+20
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1043,
+276
+],
+"cell": [
+32,
+8
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+770,
+179
+],
+"cell": [
+24,
+5
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+295,
+147
+],
+"cell": [
+9,
+4
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1115,
+169
+],
+"cell": [
+34,
+5
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+63,
+510
+],
+"cell": [
+1,
+15
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+536,
+649
+],
+"cell": [
+16,
+20
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+486,
+133
+],
+"cell": [
+15,
+4
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+415,
+419
+],
+"cell": [
+12,
+13
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+437,
+292
+],
+"cell": [
+13,
+9
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+808,
+289
+],
+"cell": [
+25,
+9
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1081,
+81
+],
+"cell": [
+33,
+2
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1143,
+64
+],
+"cell": [
+35,
+2
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+581,
+586
+],
+"cell": [
+18,
+18
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1249,
+380
+],
+"cell": [
+39,
+11
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+654,
+263
+],
+"cell": [
+20,
+8
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+153,
+316
+],
+"cell": [
+4,
+9
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1053,
+753
+],
+"cell": [
+32,
+23
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+995,
+591
+],
+"cell": [
+31,
+18
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+421,
+333
+],
+"cell": [
+13,
+10
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+150,
+138
+],
+"cell": [
+4,
+4
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+1161,
+752
+],
+"cell": [
+36,
+23
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+208,
+579
+],
+"cell": [
+6,
+18
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+169,
+30
+],
+"cell": [
+5,
+0
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1027,
+299
+],
+"cell": [
+32,
+9
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+703,
+51
+],
+"cell": [
+21,
+1
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+840,
+677
+],
+"cell": [
+26,
+21
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1161,
+630
+],
+"cell": [
+36,
+19
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+247,
+676
+],
+"cell": [
+7,
+21
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+699,
+506
+],
+"cell": [
+21,
+15
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+298,
+110
+],
+"cell": [
+9,
+3
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+114,
+405
+],
+"cell": [
+3,
+12
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1050,
+807
+],
+"cell": [
+32,
+25
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1062,
+501
+],
+"cell": [
+33,
+15
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+347,
+626
+],
+"cell": [
+10,
+19
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1072,
+708
+],
+"cell": [
+33,
+22
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+1211,
+233
+],
+"cell": [
+37,
+7
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+203,
+55
+],
+"cell": [
+6,
+1
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+76,
+531
+],
+"cell": [
+2,
+16
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+221,
+336
+],
+"cell": [
+6,
+10
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+179,
+815
+],
+"cell": [
+5,
+25
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+427,
+675
+],
+"cell": [
+13,
+21
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1070,
+417
+],
+"cell": [
+33,
+13
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+737,
+32
+],
+"cell": [
+23,
+1
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1305,
+455
+],
+"cell": [
+40,
+14
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1298,
+235
+],
+"cell": [
+40,
+7
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+241,
+751
+],
+"cell": [
+7,
+23
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+1043,
+540
+],
+"cell": [
+32,
+16
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+93,
+718
+],
+"cell": [
+2,
+22
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+33,
+307
+],
+"cell": [
+1,
+9
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+60,
+172
+],
+"cell": [
+1,
+5
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+895,
+58
+],
+"cell": [
+27,
+1
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+169,
+338
+],
+"cell": [
+5,
+10
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+335,
+296
 ],
 "cell": [
 10,
@@ -522,652 +2274,16 @@
 "flip": false
 },
 {
-"kind": "mushroom_1",
-"pos": [
-759,
-435
-],
-"cell": [
-23,
-13
-],
-"flip": false
-},
-{
 "kind": "void_tuft_1",
 "pos": [
-1325,
-495
-],
-"cell": [
-41,
-15
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1257,
-162
-],
-"cell": [
-39,
-5
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-138,
-806
-],
-"cell": [
-4,
-25
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-810,
-559
-],
-"cell": [
-25,
-17
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-817,
-596
-],
-"cell": [
-25,
-18
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-20,
-192
-],
-"cell": [
-0,
-5
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1124,
-773
-],
-"cell": [
-35,
-24
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-728,
-622
-],
-"cell": [
-22,
-19
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-676,
-358
-],
-"cell": [
-21,
-11
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-244,
-259
-],
-"cell": [
-7,
-8
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-1126,
-755
-],
-"cell": [
-35,
-23
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1007,
-709
-],
-"cell": [
-31,
-22
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-128,
-681
-],
-"cell": [
-4,
-21
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-570,
-205
-],
-"cell": [
-17,
-6
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-719,
-91
-],
-"cell": [
-22,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1228,
-821
-],
-"cell": [
-38,
-25
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-26,
-144
-],
-"cell": [
-0,
-4
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-29,
-119
-],
-"cell": [
-0,
-3
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-981,
-518
-],
-"cell": [
-30,
-16
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-917,
-441
-],
-"cell": [
-28,
-13
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-766,
-756
-],
-"cell": [
-23,
-23
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1077,
-163
-],
-"cell": [
-33,
-5
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-989,
-398
-],
-"cell": [
-30,
-12
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-921,
-823
-],
-"cell": [
-28,
-25
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-36,
-145
-],
-"cell": [
-1,
-4
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1027,
-699
-],
-"cell": [
 32,
-21
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-1092,
-822
+51
 ],
 "cell": [
-34,
-25
+0,
+1
 ],
 "flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-432,
-347
-],
-"cell": [
-13,
-10
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-494,
-79
-],
-"cell": [
-15,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-490,
-385
-],
-"cell": [
-15,
-12
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1338,
-433
-],
-"cell": [
-41,
-13
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-42,
-655
-],
-"cell": [
-1,
-20
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-621,
-619
-],
-"cell": [
-19,
-19
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-894,
-500
-],
-"cell": [
-27,
-15
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1110,
-752
-],
-"cell": [
-34,
-23
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-886,
-712
-],
-"cell": [
-27,
-22
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-708,
-768
-],
-"cell": [
-22,
-23
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-54,
-494
-],
-"cell": [
-1,
-15
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-535,
-732
-],
-"cell": [
-16,
-22
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-402,
-136
-],
-"cell": [
-12,
-4
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-468,
-702
-],
-"cell": [
-14,
-21
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-1272,
-587
-],
-"cell": [
-39,
-18
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-1226,
-818
-],
-"cell": [
-38,
-25
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-251,
-136
-],
-"cell": [
-7,
-4
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-969,
-813
-],
-"cell": [
-30,
-25
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-235,
-769
-],
-"cell": [
-7,
-24
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-692,
-672
-],
-"cell": [
-21,
-20
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-688,
-627
-],
-"cell": [
-21,
-19
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-337,
-333
-],
-"cell": [
-10,
-10
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-608,
-717
-],
-"cell": [
-19,
-22
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1332,
-708
-],
-"cell": [
-41,
-22
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1145,
-753
-],
-"cell": [
-35,
-23
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-477,
-493
-],
-"cell": [
-14,
-15
-],
-"flip": false
 },
 {
 "kind": "void_tuft_0",
@@ -1179,85 +2295,49 @@
 24,
 12
 ],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1160,
-407
-],
-"cell": [
-36,
-12
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-225,
-481
-],
-"cell": [
-7,
-15
-],
 "flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-749,
-119
-],
-"cell": [
-23,
-3
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-87,
-88
-],
-"cell": [
-2,
-2
-],
-"flip": false
 },
 {
 "kind": "void_tuft_0",
 "pos": [
-367,
-474
+404,
+726
 ],
 "cell": [
-11,
+12,
+22
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1173,
+782
+],
+"cell": [
+36,
+24
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+952,
+464
+],
+"cell": [
+29,
 14
 ],
 "flip": false
 },
 {
-"kind": "void_tuft_1",
+"kind": "void_shard",
 "pos": [
-1331,
-410
-],
-"cell": [
-41,
-12
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-1043,
-130
+1055,
+131
 ],
 "cell": [
 32,
@@ -1268,35 +2348,131 @@
 {
 "kind": "void_tuft_1",
 "pos": [
-1123,
-812
+1235,
+340
 ],
 "cell": [
-35,
+38,
+10
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+94,
+809
+],
+"cell": [
+2,
 25
 ],
 "flip": false
 },
 {
-"kind": "void_tuft_1",
+"kind": "void_bloom",
 "pos": [
-744,
-679
+1076,
+765
 ],
 "cell": [
-23,
-21
+33,
+23
 ],
 "flip": true
 },
 {
-"kind": "mushroom_1",
+"kind": "obsidian_rock",
 "pos": [
-1266,
-418
+1177,
+308
 ],
 "cell": [
-39,
+36,
+9
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+344,
+44
+],
+"cell": [
+10,
+1
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+556,
+496
+],
+"cell": [
+17,
+15
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+630,
+460
+],
+"cell": [
+19,
+14
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+955,
+355
+],
+"cell": [
+29,
+11
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+745,
+412
+],
+"cell": [
+23,
+12
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+473,
+238
+],
+"cell": [
+14,
+7
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1225,
+423
+],
+"cell": [
+38,
 13
 ],
 "flip": true
@@ -1304,107 +2480,167 @@
 {
 "kind": "void_tuft_1",
 "pos": [
-487,
-724
+574,
+560
+],
+"cell": [
+17,
+17
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+494,
+429
 ],
 "cell": [
 15,
-22
+13
 ],
 "flip": false
 },
 {
-"kind": "void_crystal",
+"kind": "void_tuft_0",
 "pos": [
-484,
-637
+1282,
+453
 ],
 "cell": [
-15,
-19
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-947,
-401
-],
-"cell": [
-29,
-12
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-744,
-174
-],
-"cell": [
-23,
-5
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-607,
-80
-],
-"cell": [
-18,
-2
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-260,
-257
-],
-"cell": [
-8,
-8
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1094,
-210
-],
-"cell": [
-34,
-6
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-475,
-822
-],
-"cell": [
-14,
-25
+40,
+14
 ],
 "flip": true
 },
 {
 "kind": "void_tuft_0",
 "pos": [
-406,
-520
+1059,
+644
 ],
 "cell": [
-12,
+33,
+20
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+1041,
+328
+],
+"cell": [
+32,
+10
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1214,
+797
+],
+"cell": [
+37,
+24
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+20,
+658
+],
+"cell": [
+0,
+20
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1302,
+722
+],
+"cell": [
+40,
+22
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+557,
+233
+],
+"cell": [
+17,
+7
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+222,
+689
+],
+"cell": [
+6,
+21
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1221,
+705
+],
+"cell": [
+38,
+22
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+784,
+365
+],
+"cell": [
+24,
+11
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+731,
+679
+],
+"cell": [
+22,
+21
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1241,
+532
+],
+"cell": [
+38,
 16
 ],
 "flip": true
@@ -1412,140 +2648,152 @@
 {
 "kind": "void_tuft_1",
 "pos": [
-974,
-814
+379,
+140
 ],
 "cell": [
-30,
-25
+11,
+4
 ],
 "flip": false
 },
 {
-"kind": "obsidian_shard",
+"kind": "void_shard",
 "pos": [
-1292,
-260
+1243,
+191
 ],
 "cell": [
-40,
-8
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-90,
-557
-],
-"cell": [
-2,
-17
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-311,
-61
-],
-"cell": [
-9,
-1
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-540,
-597
-],
-"cell": [
-16,
-18
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-232,
-820
-],
-"cell": [
-7,
-25
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-588,
-185
-],
-"cell": [
-18,
+38,
 5
 ],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-105,
-415
-],
-"cell": [
-3,
-12
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-937,
-312
-],
-"cell": [
-29,
-9
-],
 "flip": false
 },
 {
 "kind": "void_tuft_1",
 "pos": [
-844,
-814
-],
-"cell": [
-26,
-25
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-813,
-710
+812,
+673
 ],
 "cell": [
 25,
+21
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+967,
+573
+],
+"cell": [
+30,
+17
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+361,
+713
+],
+"cell": [
+11,
 22
 ],
 "flip": false
 },
 {
+"kind": "void_shard",
+"pos": [
+350,
+689
+],
+"cell": [
+10,
+21
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+482,
+814
+],
+"cell": [
+15,
+25
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+986,
+584
+],
+"cell": [
+30,
+18
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1059,
+14
+],
+"cell": [
+33,
+0
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+470,
+539
+],
+"cell": [
+14,
+16
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1203,
+719
+],
+"cell": [
+37,
+22
+],
+"flip": true
+},
+{
 "kind": "void_tuft_1",
 "pos": [
-215,
-605
+562,
+825
+],
+"cell": [
+17,
+25
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+201,
+591
 ],
 "cell": [
 6,
@@ -1554,226 +2802,130 @@
 "flip": false
 },
 {
-"kind": "rift_stone",
+"kind": "obsidian_rock",
 "pos": [
-672,
-114
-],
-"cell": [
-21,
-3
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1003,
-750
+998,
+680
 ],
 "cell": [
 31,
-23
+21
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+84,
+613
+],
+"cell": [
+2,
+19
 ],
 "flip": true
 },
 {
-"kind": "rift_stone",
+"kind": "obsidian_rock",
 "pos": [
-486,
-166
+203,
+29
 ],
 "cell": [
-15,
-5
+6,
+0
 ],
-"flip": true
+"flip": false
 },
 {
-"kind": "void_tuft_1",
+"kind": "void_bloom",
 "pos": [
-233,
-605
+886,
+594
 ],
 "cell": [
-7,
+27,
 18
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-575,
-204
-],
-"cell": [
-17,
-6
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-427,
-197
-],
-"cell": [
-13,
-6
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-787,
-291
-],
-"cell": [
-24,
-9
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-766,
-709
-],
-"cell": [
-23,
-22
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-21,
-196
-],
-"cell": [
-0,
-6
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-711,
-39
-],
-"cell": [
-22,
-1
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-142,
-198
-],
-"cell": [
-4,
-6
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1314,
-591
-],
-"cell": [
-41,
-18
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1020,
-119
-],
-"cell": [
-31,
-3
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1024,
-268
-],
-"cell": [
-31,
-8
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-339,
-463
-],
-"cell": [
-10,
-14
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1069,
-332
-],
-"cell": [
-33,
-10
 ],
 "flip": true
 },
 {
 "kind": "void_tuft_0",
 "pos": [
-365,
-179
+575,
+634
 ],
 "cell": [
-11,
-5
+17,
+19
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1194,
+643
+],
+"cell": [
+37,
+20
 ],
 "flip": false
 },
 {
 "kind": "void_tuft_1",
 "pos": [
-730,
-261
+354,
+288
 ],
 "cell": [
-22,
+11,
 8
 ],
 "flip": false
 },
 {
-"kind": "void_crystal",
+"kind": "void_tuft_0",
 "pos": [
-802,
-496
+1290,
+481
+],
+"cell": [
+40,
+15
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+712,
+159
+],
+"cell": [
+22,
+4
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1284,
+418
+],
+"cell": [
+40,
+13
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+801,
+502
 ],
 "cell": [
 25,
@@ -1782,10 +2934,1918 @@
 "flip": false
 },
 {
-"kind": "mushroom_1",
+"kind": "void_tuft_0",
 "pos": [
-1243,
-218
+605,
+111
+],
+"cell": [
+18,
+3
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+843,
+188
+],
+"cell": [
+26,
+5
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+958,
+191
+],
+"cell": [
+29,
+5
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+236,
+554
+],
+"cell": [
+7,
+17
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+1259,
+160
+],
+"cell": [
+39,
+4
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+773,
+785
+],
+"cell": [
+24,
+24
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+1178,
+778
+],
+"cell": [
+36,
+24
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1001,
+222
+],
+"cell": [
+31,
+6
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1286,
+365
+],
+"cell": [
+40,
+11
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+380,
+92
+],
+"cell": [
+11,
+2
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+641,
+80
+],
+"cell": [
+20,
+2
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+44,
+549
+],
+"cell": [
+1,
+17
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1279,
+340
+],
+"cell": [
+39,
+10
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+573,
+45
+],
+"cell": [
+17,
+1
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+123,
+151
+],
+"cell": [
+3,
+4
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+987,
+364
+],
+"cell": [
+30,
+11
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+574,
+41
+],
+"cell": [
+17,
+1
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+751,
+81
+],
+"cell": [
+23,
+2
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+197,
+326
+],
+"cell": [
+6,
+10
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+256,
+473
+],
+"cell": [
+8,
+14
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+299,
+220
+],
+"cell": [
+9,
+6
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1197,
+334
+],
+"cell": [
+37,
+10
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1141,
+793
+],
+"cell": [
+35,
+24
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1278,
+418
+],
+"cell": [
+39,
+13
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1159,
+344
+],
+"cell": [
+36,
+10
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1333,
+724
+],
+"cell": [
+41,
+22
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+705,
+653
+],
+"cell": [
+22,
+20
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+304,
+94
+],
+"cell": [
+9,
+2
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+394,
+642
+],
+"cell": [
+12,
+20
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+396,
+74
+],
+"cell": [
+12,
+2
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+701,
+239
+],
+"cell": [
+21,
+7
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+315,
+229
+],
+"cell": [
+9,
+7
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+513,
+112
+],
+"cell": [
+16,
+3
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+948,
+540
+],
+"cell": [
+29,
+16
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+856,
+666
+],
+"cell": [
+26,
+20
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1235,
+733
+],
+"cell": [
+38,
+22
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+514,
+35
+],
+"cell": [
+16,
+1
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+912,
+498
+],
+"cell": [
+28,
+15
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+512,
+754
+],
+"cell": [
+15,
+23
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+642,
+459
+],
+"cell": [
+20,
+14
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+718,
+435
+],
+"cell": [
+22,
+13
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+72,
+537
+],
+"cell": [
+2,
+16
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+224,
+234
+],
+"cell": [
+7,
+7
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+535,
+73
+],
+"cell": [
+16,
+2
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+190,
+631
+],
+"cell": [
+5,
+19
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+934,
+744
+],
+"cell": [
+29,
+23
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+793,
+482
+],
+"cell": [
+24,
+15
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+1244,
+355
+],
+"cell": [
+38,
+11
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1046,
+526
+],
+"cell": [
+32,
+16
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+580,
+67
+],
+"cell": [
+18,
+2
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+969,
+214
+],
+"cell": [
+30,
+6
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+782,
+502
+],
+"cell": [
+24,
+15
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+73,
+269
+],
+"cell": [
+2,
+8
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+746,
+731
+],
+"cell": [
+23,
+22
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+813,
+633
+],
+"cell": [
+25,
+19
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+226,
+446
+],
+"cell": [
+7,
+13
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+674,
+817
+],
+"cell": [
+21,
+25
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+101,
+35
+],
+"cell": [
+3,
+1
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1185,
+443
+],
+"cell": [
+37,
+13
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+100,
+282
+],
+"cell": [
+3,
+8
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+661,
+113
+],
+"cell": [
+20,
+3
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+787,
+186
+],
+"cell": [
+24,
+5
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+599,
+179
+],
+"cell": [
+18,
+5
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+355,
+74
+],
+"cell": [
+11,
+2
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1336,
+713
+],
+"cell": [
+41,
+22
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1259,
+470
+],
+"cell": [
+39,
+14
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+740,
+165
+],
+"cell": [
+23,
+5
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1250,
+688
+],
+"cell": [
+39,
+21
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1065,
+664
+],
+"cell": [
+33,
+20
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1053,
+449
+],
+"cell": [
+32,
+14
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+496,
+312
+],
+"cell": [
+15,
+9
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+70,
+797
+],
+"cell": [
+2,
+24
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1040,
+188
+],
+"cell": [
+32,
+5
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1241,
+488
+],
+"cell": [
+38,
+15
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+190,
+422
+],
+"cell": [
+5,
+13
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+638,
+295
+],
+"cell": [
+19,
+9
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+346,
+493
+],
+"cell": [
+10,
+15
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+763,
+185
+],
+"cell": [
+23,
+5
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+418,
+369
+],
+"cell": [
+13,
+11
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+995,
+340
+],
+"cell": [
+31,
+10
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1236,
+703
+],
+"cell": [
+38,
+21
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+520,
+35
+],
+"cell": [
+16,
+1
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+139,
+48
+],
+"cell": [
+4,
+1
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+417,
+785
+],
+"cell": [
+13,
+24
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1272,
+202
+],
+"cell": [
+39,
+6
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+575,
+338
+],
+"cell": [
+17,
+10
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+238,
+783
+],
+"cell": [
+7,
+24
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+1164,
+457
+],
+"cell": [
+36,
+14
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+868,
+90
+],
+"cell": [
+27,
+2
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+222,
+675
+],
+"cell": [
+6,
+21
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+934,
+386
+],
+"cell": [
+29,
+12
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+392,
+817
+],
+"cell": [
+12,
+25
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+394,
+538
+],
+"cell": [
+12,
+16
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+63,
+782
+],
+"cell": [
+1,
+24
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+285,
+113
+],
+"cell": [
+8,
+3
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1069,
+289
+],
+"cell": [
+33,
+9
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+832,
+40
+],
+"cell": [
+25,
+1
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+242,
+191
+],
+"cell": [
+7,
+5
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+658,
+13
+],
+"cell": [
+20,
+0
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+89,
+517
+],
+"cell": [
+2,
+16
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+520,
+827
+],
+"cell": [
+16,
+25
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+419,
+126
+],
+"cell": [
+13,
+3
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+162,
+300
+],
+"cell": [
+5,
+9
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+327,
+234
+],
+"cell": [
+10,
+7
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+97,
+560
+],
+"cell": [
+3,
+17
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+521,
+783
+],
+"cell": [
+16,
+24
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1084,
+733
+],
+"cell": [
+33,
+22
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+314,
+805
+],
+"cell": [
+9,
+25
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+400,
+779
+],
+"cell": [
+12,
+24
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1161,
+629
+],
+"cell": [
+36,
+19
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+65,
+311
+],
+"cell": [
+2,
+9
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+259,
+382
+],
+"cell": [
+8,
+11
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1143,
+52
+],
+"cell": [
+35,
+1
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+994,
+439
+],
+"cell": [
+31,
+13
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+646,
+757
+],
+"cell": [
+20,
+23
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+358,
+264
+],
+"cell": [
+11,
+8
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+969,
+355
+],
+"cell": [
+30,
+11
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+965,
+64
+],
+"cell": [
+30,
+1
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1233,
+768
+],
+"cell": [
+38,
+24
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1090,
+617
+],
+"cell": [
+34,
+19
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+300,
+661
+],
+"cell": [
+9,
+20
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1027,
+693
+],
+"cell": [
+32,
+21
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+292,
+135
+],
+"cell": [
+9,
+4
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+881,
+708
+],
+"cell": [
+27,
+22
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+43,
+313
+],
+"cell": [
+1,
+9
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+1226,
+444
+],
+"cell": [
+38,
+13
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1272,
+613
+],
+"cell": [
+39,
+19
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+73,
+58
+],
+"cell": [
+2,
+1
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1143,
+365
+],
+"cell": [
+35,
+11
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+931,
+27
+],
+"cell": [
+29,
+0
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+919,
+633
+],
+"cell": [
+28,
+19
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+235,
+321
+],
+"cell": [
+7,
+10
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+947,
+636
+],
+"cell": [
+29,
+19
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+429,
+523
+],
+"cell": [
+13,
+16
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+319,
+181
+],
+"cell": [
+9,
+5
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1102,
+719
+],
+"cell": [
+34,
+22
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+727,
+494
+],
+"cell": [
+22,
+15
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+736,
+613
+],
+"cell": [
+23,
+19
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+746,
+624
+],
+"cell": [
+23,
+19
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1041,
+267
+],
+"cell": [
+32,
+8
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+146,
+81
+],
+"cell": [
+4,
+2
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+977,
+484
+],
+"cell": [
+30,
+15
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+703,
+639
+],
+"cell": [
+21,
+19
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+354,
+826
+],
+"cell": [
+11,
+25
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1135,
+161
+],
+"cell": [
+35,
+5
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+593,
+733
+],
+"cell": [
+18,
+22
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+498,
+93
+],
+"cell": [
+15,
+2
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+824,
+333
+],
+"cell": [
+25,
+10
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+655,
+558
+],
+"cell": [
+20,
+17
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1188,
+775
+],
+"cell": [
+37,
+24
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+316,
+627
+],
+"cell": [
+9,
+19
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+936,
+227
+],
+"cell": [
+29,
+7
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1293,
+773
+],
+"cell": [
+40,
+24
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+219,
+322
+],
+"cell": [
+6,
+10
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+570,
+27
+],
+"cell": [
+17,
+0
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+51,
+440
+],
+"cell": [
+1,
+13
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+679,
+133
+],
+"cell": [
+21,
+4
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+368,
+701
+],
+"cell": [
+11,
+21
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1008,
+686
+],
+"cell": [
+31,
+21
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+1231,
+193
 ],
 "cell": [
 38,
@@ -1796,192 +4856,264 @@
 {
 "kind": "void_tuft_1",
 "pos": [
-957,
-394
+494,
+732
 ],
 "cell": [
-29,
-12
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-26,
-400
-],
-"cell": [
-0,
-12
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1112,
-642
-],
-"cell": [
-34,
-20
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-843,
-640
-],
-"cell": [
-26,
-19
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-590,
-601
-],
-"cell": [
-18,
-18
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1097,
-649
-],
-"cell": [
-34,
-20
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-741,
-204
-],
-"cell": [
-23,
-6
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-645,
-708
-],
-"cell": [
-20,
+15,
 22
 ],
 "flip": true
 },
 {
+"kind": "void_tuft_1",
+"pos": [
+1223,
+32
+],
+"cell": [
+38,
+1
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+380,
+175
+],
+"cell": [
+11,
+5
+],
+"flip": true
+},
+{
 "kind": "void_tuft_0",
 "pos": [
-1050,
-808
+1061,
+150
 ],
 "cell": [
-32,
-25
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-1193,
-287
-],
-"cell": [
-37,
-8
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-304,
-284
-],
-"cell": [
-9,
-8
+33,
+4
 ],
 "flip": false
 },
 {
-"kind": "rift_stone",
+"kind": "obsidian_rock",
 "pos": [
-996,
-752
+337,
+341
 ],
 "cell": [
-31,
-23
+10,
+10
 ],
 "flip": false
 },
 {
-"kind": "obsidian_shard",
+"kind": "void_bloom",
 "pos": [
-102,
-460
+192,
+291
 ],
 "cell": [
-3,
-14
+5,
+9
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+726,
+666
+],
+"cell": [
+22,
+20
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+374,
+796
+],
+"cell": [
+11,
+24
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+743,
+441
+],
+"cell": [
+23,
+13
 ],
 "flip": false
 },
 {
 "kind": "void_tuft_1",
 "pos": [
-222,
-682
+723,
+263
 ],
 "cell": [
-6,
-21
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1106,
-193
-],
-"cell": [
-34,
-6
+22,
+8
 ],
 "flip": true
 },
 {
-"kind": "void_crystal",
+"kind": "void_tuft_1",
 "pos": [
-1094,
-487
+924,
+31
 ],
 "cell": [
-34,
-15
+28,
+0
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1060,
+530
+],
+"cell": [
+33,
+16
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+227,
+742
+],
+"cell": [
+7,
+23
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+931,
+309
+],
+"cell": [
+29,
+9
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+889,
+669
+],
+"cell": [
+27,
+20
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+753,
+182
+],
+"cell": [
+23,
+5
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+790,
+476
+],
+"cell": [
+24,
+14
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+74,
+273
+],
+"cell": [
+2,
+8
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+4,
+97
+],
+"cell": [
+0,
+3
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+252,
+746
+],
+"cell": [
+7,
+23
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1065,
+308
+],
+"cell": [
+33,
+9
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+617,
+567
+],
+"cell": [
+19,
+17
 ],
 "flip": false
 },
@@ -1989,610 +5121,10 @@
 "kind": "void_tuft_0",
 "pos": [
 104,
-256
+771
 ],
 "cell": [
 3,
-7
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-348,
-739
-],
-"cell": [
-10,
-23
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1126,
-522
-],
-"cell": [
-35,
-16
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1317,
-508
-],
-"cell": [
-41,
-15
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-412,
-357
-],
-"cell": [
-12,
-11
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-52,
-484
-],
-"cell": [
-1,
-15
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-249,
-751
-],
-"cell": [
-7,
-23
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-125,
-35
-],
-"cell": [
-3,
-1
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-185,
-737
-],
-"cell": [
-5,
-23
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-47,
-641
-],
-"cell": [
-1,
-20
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-509,
-775
-],
-"cell": [
-15,
-24
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-669,
-162
-],
-"cell": [
-20,
-5
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-50,
-643
-],
-"cell": [
-1,
-20
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-165,
-502
-],
-"cell": [
-5,
-15
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1179,
-392
-],
-"cell": [
-36,
-12
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-91,
-715
-],
-"cell": [
-2,
-22
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1010,
-740
-],
-"cell": [
-31,
-23
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1328,
-387
-],
-"cell": [
-41,
-12
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-214,
-472
-],
-"cell": [
-6,
-14
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-850,
-143
-],
-"cell": [
-26,
-4
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-1111,
-496
-],
-"cell": [
-34,
-15
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-434,
-43
-],
-"cell": [
-13,
-1
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-847,
-604
-],
-"cell": [
-26,
-18
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1297,
-382
-],
-"cell": [
-40,
-11
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-639,
-830
-],
-"cell": [
-19,
-25
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-88,
-568
-],
-"cell": [
-2,
-17
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-80,
-442
-],
-"cell": [
-2,
-13
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-864,
-444
-],
-"cell": [
-27,
-13
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-513,
-164
-],
-"cell": [
-16,
-5
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1244,
-207
-],
-"cell": [
-38,
-6
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-105,
-96
-],
-"cell": [
-3,
-2
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1007,
-33
-],
-"cell": [
-31,
-1
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1129,
-329
-],
-"cell": [
-35,
-10
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-419,
-155
-],
-"cell": [
-13,
-4
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-245,
-195
-],
-"cell": [
-7,
-6
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-583,
-85
-],
-"cell": [
-18,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-203,
-365
-],
-"cell": [
-6,
-11
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1037,
-670
-],
-"cell": [
-32,
-20
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-934,
-794
-],
-"cell": [
-29,
-24
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-654,
-606
-],
-"cell": [
-20,
-18
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1232,
-297
-],
-"cell": [
-38,
-9
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1168,
-70
-],
-"cell": [
-36,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1123,
-344
-],
-"cell": [
-35,
-10
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1282,
-311
-],
-"cell": [
-40,
-9
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-567,
-746
-],
-"cell": [
-17,
-23
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-964,
-580
-],
-"cell": [
-30,
-18
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-232,
-602
-],
-"cell": [
-7,
-18
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1010,
-821
-],
-"cell": [
-31,
-25
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-742,
-574
-],
-"cell": [
-23,
-17
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-763,
-163
-],
-"cell": [
-23,
-5
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-867,
-783
-],
-"cell": [
-27,
 24
 ],
 "flip": false
@@ -2600,456 +5132,384 @@
 {
 "kind": "void_tuft_0",
 "pos": [
-1258,
-374
-],
-"cell": [
-39,
-11
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1309,
-799
-],
-"cell": [
-40,
-24
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-757,
-339
-],
-"cell": [
-23,
-10
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1093,
-527
-],
-"cell": [
-34,
-16
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-606,
-358
-],
-"cell": [
-18,
-11
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1010,
-764
-],
-"cell": [
-31,
-23
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-718,
-381
-],
-"cell": [
-22,
-11
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-488,
-210
-],
-"cell": [
-15,
-6
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1302,
-344
-],
-"cell": [
-40,
-10
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-980,
-494
-],
-"cell": [
-30,
-15
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-543,
-73
-],
-"cell": [
-16,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-85,
-644
-],
-"cell": [
-2,
-20
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-376,
-419
-],
-"cell": [
-11,
-13
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-631,
-506
-],
-"cell": [
-19,
-15
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-159,
-159
-],
-"cell": [
 4,
-4
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-797,
-824
-],
-"cell": [
-24,
-25
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-695,
-424
-],
-"cell": [
-21,
-13
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1304,
-478
-],
-"cell": [
-40,
-14
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-495,
-406
-],
-"cell": [
-15,
-12
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-513,
-11
-],
-"cell": [
-16,
-0
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-203,
-51
-],
-"cell": [
-6,
-1
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1323,
-387
-],
-"cell": [
-41,
-12
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-530,
-166
-],
-"cell": [
-16,
-5
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-767,
-405
-],
-"cell": [
-23,
-12
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1090,
-495
-],
-"cell": [
-34,
-15
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-435,
-746
-],
-"cell": [
-13,
-23
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-272,
-271
-],
-"cell": [
-8,
-8
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-287,
-440
-],
-"cell": [
-8,
-13
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-739,
-798
-],
-"cell": [
-23,
-24
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-659,
-176
-],
-"cell": [
-20,
-5
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1086,
-279
-],
-"cell": [
-33,
-8
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-75,
-24
-],
-"cell": [
-2,
-0
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-960,
-807
-],
-"cell": [
-30,
-25
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-157,
-592
-],
-"cell": [
-4,
-18
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-952,
-734
-],
-"cell": [
-29,
-22
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-451,
-283
-],
-"cell": [
-14,
-8
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-31,
-39
+10
 ],
 "cell": [
 0,
-1
+0
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+591,
+775
+],
+"cell": [
+18,
+24
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1303,
+277
+],
+"cell": [
+40,
+8
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1174,
+665
+],
+"cell": [
+36,
+20
 ],
 "flip": false
 },
 {
 "kind": "void_tuft_0",
 "pos": [
-905,
-726
+344,
+624
+],
+"cell": [
+10,
+19
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+775,
+285
+],
+"cell": [
+24,
+8
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+913,
+555
 ],
 "cell": [
 28,
+17
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+856,
+723
+],
+"cell": [
+26,
 22
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+1193,
+807
+],
+"cell": [
+37,
+25
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+88,
+623
+],
+"cell": [
+2,
+19
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+413,
+345
+],
+"cell": [
+12,
+10
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+965,
+647
+],
+"cell": [
+30,
+20
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+167,
+609
+],
+"cell": [
+5,
+19
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+188,
+126
+],
+"cell": [
+5,
+3
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1182,
+747
+],
+"cell": [
+36,
+23
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1238,
+230
+],
+"cell": [
+38,
+7
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+436,
+665
+],
+"cell": [
+13,
+20
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+622,
+775
+],
+"cell": [
+19,
+24
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+431,
+391
+],
+"cell": [
+13,
+12
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+567,
+102
+],
+"cell": [
+17,
+3
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1229,
+349
+],
+"cell": [
+38,
+10
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+618,
+226
+],
+"cell": [
+19,
+7
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+366,
+694
+],
+"cell": [
+11,
+21
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+879,
+403
+],
+"cell": [
+27,
+12
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+488,
+743
+],
+"cell": [
+15,
+23
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+523,
+149
+],
+"cell": [
+16,
+4
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1224,
+368
+],
+"cell": [
+38,
+11
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+131,
+107
+],
+"cell": [
+4,
+3
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+999,
+527
+],
+"cell": [
+31,
+16
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+935,
+805
+],
+"cell": [
+29,
+25
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1179,
+422
+],
+"cell": [
+36,
+13
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+795,
+205
+],
+"cell": [
+24,
+6
 ],
 "flip": true
 },
@@ -3057,127 +5517,19 @@
 "kind": "void_tuft_0",
 "pos": [
 49,
-149
+264
 ],
 "cell": [
 1,
-4
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-932,
-786
-],
-"cell": [
-29,
-24
+8
 ],
 "flip": false
 },
 {
-"kind": "void_tuft_0",
+"kind": "obsidian_rock",
 "pos": [
-1012,
-74
-],
-"cell": [
-31,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-921,
-164
-],
-"cell": [
-28,
-5
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-640,
-568
-],
-"cell": [
-20,
-17
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1178,
+101,
 433
-],
-"cell": [
-36,
-13
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-348,
-433
-],
-"cell": [
-10,
-13
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-699,
-293
-],
-"cell": [
-21,
-9
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-954,
-810
-],
-"cell": [
-29,
-25
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-333,
-318
-],
-"cell": [
-10,
-9
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-100,
-447
 ],
 "cell": [
 3,
@@ -3186,14 +5538,590 @@
 "flip": true
 },
 {
-"kind": "rift_stone",
+"kind": "void_bloom",
 "pos": [
-418,
-311
+208,
+85
 ],
 "cell": [
-13,
+6,
+2
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+315,
+93
+],
+"cell": [
+9,
+2
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+104,
+15
+],
+"cell": [
+3,
+0
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+71,
+772
+],
+"cell": [
+2,
+24
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+579,
+156
+],
+"cell": [
+18,
+4
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1263,
+504
+],
+"cell": [
+39,
+15
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+846,
+770
+],
+"cell": [
+26,
+24
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+214,
+566
+],
+"cell": [
+6,
+17
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1337,
+137
+],
+"cell": [
+41,
+4
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1007,
+752
+],
+"cell": [
+31,
+23
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+739,
+776
+],
+"cell": [
+23,
+24
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+520,
+108
+],
+"cell": [
+16,
+3
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1318,
+803
+],
+"cell": [
+41,
+25
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+134,
+329
+],
+"cell": [
+4,
+10
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+221,
+664
+],
+"cell": [
+6,
+20
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+825,
+782
+],
+"cell": [
+25,
+24
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+788,
+322
+],
+"cell": [
+24,
+10
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+248,
+594
+],
+"cell": [
+7,
+18
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1312,
+764
+],
+"cell": [
+41,
+23
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+475,
+719
+],
+"cell": [
+14,
+22
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+735,
+502
+],
+"cell": [
+22,
+15
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1130,
+827
+],
+"cell": [
+35,
+25
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+484,
+96
+],
+"cell": [
+15,
+3
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+545,
+107
+],
+"cell": [
+17,
+3
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1261,
+727
+],
+"cell": [
+39,
+22
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+750,
+74
+],
+"cell": [
+23,
+2
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+754,
+111
+],
+"cell": [
+23,
+3
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+717,
+367
+],
+"cell": [
+22,
+11
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+144,
+399
+],
+"cell": [
+4,
+12
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1338,
+648
+],
+"cell": [
+41,
+20
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1056,
+401
+],
+"cell": [
+33,
+12
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+823,
+294
+],
+"cell": [
+25,
 9
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+16,
+583
+],
+"cell": [
+0,
+18
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+125,
+67
+],
+"cell": [
+3,
+2
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+378,
+625
+],
+"cell": [
+11,
+19
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+22,
+358
+],
+"cell": [
+0,
+11
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1254,
+294
+],
+"cell": [
+39,
+9
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1137,
+517
+],
+"cell": [
+35,
+16
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+718,
+209
+],
+"cell": [
+22,
+6
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+399,
+466
+],
+"cell": [
+12,
+14
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+255,
+345
+],
+"cell": [
+7,
+10
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+231,
+707
+],
+"cell": [
+7,
+22
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1203,
+153
+],
+"cell": [
+37,
+4
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1311,
+341
+],
+"cell": [
+40,
+10
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+208,
+39
+],
+"cell": [
+6,
+1
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+983,
+566
+],
+"cell": [
+30,
+17
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+895,
+762
+],
+"cell": [
+27,
+23
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1212,
+436
+],
+"cell": [
+37,
+13
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1228,
+443
+],
+"cell": [
+38,
+13
 ],
 "flip": true
 },
@@ -3207,205 +6135,469 @@
 7,
 25
 ],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-662,
-291
-],
-"cell": [
-20,
-9
-],
 "flip": false
 },
 {
-"kind": "void_tuft_1",
+"kind": "obsidian_rock",
 "pos": [
-448,
-711
-],
-"cell": [
-13,
-22
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-57,
-297
-],
-"cell": [
-1,
-9
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-917,
-62
-],
-"cell": [
-28,
-1
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-216,
-227
+219,
+383
 ],
 "cell": [
 6,
-7
+11
 ],
 "flip": false
 },
 {
-"kind": "void_crystal",
+"kind": "void_bloom",
 "pos": [
-347,
-725
+1128,
+175
 ],
 "cell": [
-10,
-22
+35,
+5
 ],
-"flip": true
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+229,
+798
+],
+"cell": [
+7,
+24
+],
+"flip": false
 },
 {
 "kind": "void_tuft_0",
 "pos": [
-76,
-559
+250,
+464
 ],
 "cell": [
-2,
-17
+7,
+14
 ],
 "flip": false
 },
 {
-"kind": "rift_stone",
+"kind": "void_tuft_1",
 "pos": [
-1340,
-124
+506,
+631
 ],
 "cell": [
-41,
-3
+15,
+19
 ],
-"flip": true
+"flip": false
 },
 {
-"kind": "obsidian_shard",
+"kind": "void_bloom",
 "pos": [
-923,
-660
+234,
+665
 ],
 "cell": [
-28,
+7,
 20
 ],
 "flip": true
 },
 {
+"kind": "void_tuft_1",
+"pos": [
+209,
+128
+],
+"cell": [
+6,
+4
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+633,
+287
+],
+"cell": [
+19,
+8
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1132,
+164
+],
+"cell": [
+35,
+5
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+631,
+66
+],
+"cell": [
+19,
+2
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+38,
+33
+],
+"cell": [
+1,
+1
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+925,
+137
+],
+"cell": [
+28,
+4
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+467,
+51
+],
+"cell": [
+14,
+1
+],
+"flip": true
+},
+{
 "kind": "void_tuft_0",
 "pos": [
-996,
-410
+645,
+791
 ],
 "cell": [
-31,
-12
+20,
+24
 ],
 "flip": true
 },
 {
-"kind": "void_crystal",
+"kind": "obsidian_rock",
 "pos": [
-700,
-486
+1051,
+275
 ],
 "cell": [
-21,
-15
+32,
+8
 ],
 "flip": true
 },
 {
-"kind": "obsidian_shard",
+"kind": "obsidian_rock",
 "pos": [
-337,
-193
+1238,
+828
 ],
 "cell": [
-10,
-6
+38,
+25
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+266,
+701
+],
+"cell": [
+8,
+21
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+199,
+60
+],
+"cell": [
+6,
+1
 ],
 "flip": true
 },
 {
-"kind": "mushroom_1",
+"kind": "void_bloom",
 "pos": [
-28,
-517
+842,
+312
 ],
 "cell": [
-0,
-16
+26,
+9
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+532,
+683
+],
+"cell": [
+16,
+21
 ],
 "flip": true
 },
 {
-"kind": "rift_stone",
+"kind": "void_tuft_1",
 "pos": [
-911,
-436
+720,
+171
 ],
 "cell": [
-28,
-13
+22,
+5
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+105,
+464
+],
+"cell": [
+3,
+14
 ],
 "flip": false
 },
 {
 "kind": "void_tuft_0",
 "pos": [
-843,
-303
+773,
+20
 ],
 "cell": [
-26,
-9
+24,
+0
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+20,
+402
+],
+"cell": [
+0,
+12
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1288,
+548
+],
+"cell": [
+40,
+17
 ],
 "flip": true
 },
 {
-"kind": "obsidian_shard",
+"kind": "void_shard",
 "pos": [
-835,
-729
+326,
+704
 ],
 "cell": [
-26,
-22
+10,
+21
 ],
 "flip": true
 },
 {
-"kind": "void_crystal",
+"kind": "void_tuft_0",
 "pos": [
-313,
-225
+1009,
+407
+],
+"cell": [
+31,
+12
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+746,
+202
+],
+"cell": [
+23,
+6
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1077,
+153
+],
+"cell": [
+33,
+4
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1057,
+175
+],
+"cell": [
+33,
+5
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+932,
+498
+],
+"cell": [
+29,
+15
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1012,
+24
+],
+"cell": [
+31,
+0
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+1094,
+136
+],
+"cell": [
+34,
+4
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+177,
+384
+],
+"cell": [
+5,
+12
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+891,
+133
+],
+"cell": [
+27,
+4
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1142,
+385
+],
+"cell": [
+35,
+12
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1291,
+211
+],
+"cell": [
+40,
+6
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+519,
+588
+],
+"cell": [
+16,
+18
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+302,
+230
 ],
 "cell": [
 9,
@@ -3414,21 +6606,213 @@
 "flip": true
 },
 {
-"kind": "rift_stone",
+"kind": "obsidian_rock",
 "pos": [
-364,
-377
+433,
+653
 ],
 "cell": [
-11,
-11
+13,
+20
 ],
-"flip": true
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+1102,
+653
+],
+"cell": [
+34,
+20
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+522,
+69
+],
+"cell": [
+16,
+2
+],
+"flip": false
 },
 {
 "kind": "void_tuft_0",
 "pos": [
-306,
+783,
+488
+],
+"cell": [
+24,
+15
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1100,
+442
+],
+"cell": [
+34,
+13
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+431,
+820
+],
+"cell": [
+13,
+25
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1235,
+138
+],
+"cell": [
+38,
+4
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+99,
+625
+],
+"cell": [
+3,
+19
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+618,
+224
+],
+"cell": [
+19,
+7
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+257,
+183
+],
+"cell": [
+8,
+5
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1128,
+187
+],
+"cell": [
+35,
+5
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+949,
+677
+],
+"cell": [
+29,
+21
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+782,
+485
+],
+"cell": [
+24,
+15
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+568,
+657
+],
+"cell": [
+17,
+20
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+723,
+735
+],
+"cell": [
+22,
+22
+],
+"flip": true
+},
+{
+"kind": "void_bloom",
+"pos": [
+1236,
+791
+],
+"cell": [
+38,
+24
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+648,
+204
+],
+"cell": [
+20,
+6
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+299,
 621
 ],
 "cell": [
@@ -3440,4560 +6824,408 @@
 {
 "kind": "void_tuft_1",
 "pos": [
-1082,
-642
-],
-"cell": [
-33,
-20
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-988,
-31
-],
-"cell": [
-30,
-0
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-301,
-692
-],
-"cell": [
-9,
-21
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1224,
-314
-],
-"cell": [
-38,
-9
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-240,
-566
-],
-"cell": [
-7,
-17
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-9,
-71
-],
-"cell": [
-0,
-2
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-961,
-680
-],
-"cell": [
-30,
-21
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-529,
-656
-],
-"cell": [
-16,
-20
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-463,
-746
-],
-"cell": [
-14,
-23
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-898,
-665
-],
-"cell": [
-28,
-20
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-497,
-119
-],
-"cell": [
-15,
-3
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-84,
-557
-],
-"cell": [
-2,
-17
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1051,
-772
-],
-"cell": [
-32,
-24
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-954,
-232
-],
-"cell": [
-29,
-7
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-110,
-496
-],
-"cell": [
-3,
-15
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-230,
-188
-],
-"cell": [
-7,
-5
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-932,
-14
-],
-"cell": [
-29,
-0
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-848,
-142
-],
-"cell": [
-26,
-4
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-1236,
-560
-],
-"cell": [
-38,
-17
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-138,
-773
-],
-"cell": [
-4,
-24
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-810,
-711
-],
-"cell": [
-25,
-22
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-180,
-103
-],
-"cell": [
-5,
-3
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-944,
-306
-],
-"cell": [
-29,
-9
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-187,
-342
-],
-"cell": [
-5,
-10
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-55,
-341
+48,
+623
 ],
 "cell": [
 1,
-10
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-6,
-369
-],
-"cell": [
-0,
-11
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-184,
-14
-],
-"cell": [
-5,
-0
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-306,
-303
-],
-"cell": [
-9,
-9
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-721,
-362
-],
-"cell": [
-22,
-11
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1150,
-261
-],
-"cell": [
-35,
-8
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-846,
-666
-],
-"cell": [
-26,
-20
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-954,
-661
-],
-"cell": [
-29,
-20
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-613,
-71
-],
-"cell": [
-19,
-2
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-206,
-196
-],
-"cell": [
-6,
-6
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-508,
-765
-],
-"cell": [
-15,
-23
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-60,
-680
-],
-"cell": [
-1,
-21
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-997,
-184
-],
-"cell": [
-31,
-5
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-1191,
-787
-],
-"cell": [
-37,
-24
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-63,
-796
-],
-"cell": [
-1,
-24
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1202,
-683
-],
-"cell": [
-37,
-21
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-214,
-750
-],
-"cell": [
-6,
-23
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1207,
-368
-],
-"cell": [
-37,
-11
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-215,
-395
-],
-"cell": [
-6,
-12
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-1289,
-266
-],
-"cell": [
-40,
-8
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-834,
-784
-],
-"cell": [
-26,
-24
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-241,
-677
-],
-"cell": [
-7,
-21
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-129,
-658
-],
-"cell": [
-4,
-20
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-781,
-575
-],
-"cell": [
-24,
-17
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-202,
-712
-],
-"cell": [
-6,
-22
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-225,
-71
-],
-"cell": [
-7,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-877,
-222
-],
-"cell": [
-27,
-6
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-1159,
-98
-],
-"cell": [
-36,
-3
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1295,
-515
-],
-"cell": [
-40,
-16
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-642,
-265
-],
-"cell": [
-20,
-8
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-120,
-510
-],
-"cell": [
-3,
-15
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-683,
-675
-],
-"cell": [
-21,
-21
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-159,
-607
-],
-"cell": [
-4,
-18
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1026,
-492
-],
-"cell": [
-32,
-15
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-11,
-783
-],
-"cell": [
-0,
-24
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-760,
-201
-],
-"cell": [
-23,
-6
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-260,
-73
-],
-"cell": [
-8,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-503,
-420
-],
-"cell": [
-15,
-13
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1278,
-651
-],
-"cell": [
-39,
-20
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-800,
-377
-],
-"cell": [
-25,
-11
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-435,
-657
-],
-"cell": [
-13,
-20
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-214,
-742
-],
-"cell": [
-6,
-23
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-988,
-110
-],
-"cell": [
-30,
-3
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1254,
-35
-],
-"cell": [
-39,
-1
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-56,
-40
-],
-"cell": [
-1,
-1
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-643,
-702
-],
-"cell": [
-20,
-21
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1173,
-438
-],
-"cell": [
-36,
-13
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-638,
-397
-],
-"cell": [
-19,
-12
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-626,
-55
-],
-"cell": [
-19,
-1
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1329,
-811
-],
-"cell": [
-41,
-25
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-449,
-752
-],
-"cell": [
-14,
-23
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-614,
-97
-],
-"cell": [
-19,
-3
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-79,
-480
-],
-"cell": [
-2,
-15
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1195,
-250
-],
-"cell": [
-37,
-7
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-443,
-546
-],
-"cell": [
-13,
-17
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-641,
-598
-],
-"cell": [
-20,
-18
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-318,
-730
-],
-"cell": [
-9,
-22
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-687,
-683
-],
-"cell": [
-21,
-21
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-657,
-303
-],
-"cell": [
-20,
-9
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-388,
-636
-],
-"cell": [
-12,
 19
 ],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-467,
-777
-],
-"cell": [
-14,
-24
-],
 "flip": true
 },
 {
 "kind": "void_tuft_1",
 "pos": [
-1097,
-191
-],
-"cell": [
-34,
-5
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-106,
-635
-],
-"cell": [
-3,
-19
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-399,
-216
-],
-"cell": [
-12,
-6
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-884,
-609
-],
-"cell": [
-27,
-19
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-428,
-801
-],
-"cell": [
-13,
-25
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1220,
-250
-],
-"cell": [
-38,
-7
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1205,
-348
-],
-"cell": [
-37,
-10
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-898,
-384
-],
-"cell": [
-28,
-11
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-608,
-506
-],
-"cell": [
-18,
-15
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1219,
-828
-],
-"cell": [
-38,
-25
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-453,
-211
-],
-"cell": [
-14,
-6
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-1035,
-257
-],
-"cell": [
-32,
-8
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-697,
-823
-],
-"cell": [
-21,
-25
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-950,
-565
-],
-"cell": [
-29,
-17
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-572,
-552
-],
-"cell": [
-17,
-17
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-90,
-120
-],
-"cell": [
-2,
-3
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-867,
-220
-],
-"cell": [
-27,
-6
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-90,
-632
-],
-"cell": [
-2,
-19
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-232,
-389
-],
-"cell": [
-7,
-12
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-440,
-676
-],
-"cell": [
-13,
-21
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-111,
-252
-],
-"cell": [
-3,
-7
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1010,
-211
-],
-"cell": [
-31,
-6
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-227,
-704
-],
-"cell": [
-7,
-22
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1043,
-533
-],
-"cell": [
-32,
-16
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-803,
-74
-],
-"cell": [
-25,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1241,
-677
-],
-"cell": [
-38,
-21
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-913,
-384
-],
-"cell": [
-28,
-12
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-314,
-213
-],
-"cell": [
-9,
-6
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1336,
-823
-],
-"cell": [
-41,
-25
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1011,
-85
-],
-"cell": [
-31,
-2
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-180,
-552
-],
-"cell": [
-5,
-17
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1237,
-449
-],
-"cell": [
-38,
-14
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-608,
-55
-],
-"cell": [
-19,
-1
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-352,
-521
-],
-"cell": [
-11,
-16
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-370,
-368
-],
-"cell": [
-11,
-11
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-429,
-25
-],
-"cell": [
-13,
-0
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-799,
-753
-],
-"cell": [
-24,
-23
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-973,
-662
-],
-"cell": [
-30,
-20
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1015,
-30
-],
-"cell": [
-31,
-0
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1082,
-757
-],
-"cell": [
-33,
-23
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-763,
-576
-],
-"cell": [
-23,
-17
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1116,
-533
-],
-"cell": [
-34,
-16
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-292,
-129
-],
-"cell": [
-9,
-4
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-341,
-449
-],
-"cell": [
 10,
-14
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-248,
-721
-],
-"cell": [
-7,
-22
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-705,
-90
-],
-"cell": [
-22,
-2
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-403,
-684
-],
-"cell": [
-12,
-21
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1307,
-357
-],
-"cell": [
-40,
-11
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-278,
-771
-],
-"cell": [
-8,
-24
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-449,
-49
-],
-"cell": [
-14,
-1
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-92,
-142
-],
-"cell": [
-2,
-4
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-215,
-722
-],
-"cell": [
-6,
-22
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1030,
-672
-],
-"cell": [
-32,
-20
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-446,
-427
-],
-"cell": [
-13,
-13
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1037,
-455
-],
-"cell": [
-32,
-14
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1298,
-257
-],
-"cell": [
-40,
-8
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-416,
-637
-],
-"cell": [
-13,
-19
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-774,
-165
-],
-"cell": [
-24,
-5
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-933,
-58
-],
-"cell": [
-29,
-1
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-901,
-302
-],
-"cell": [
-28,
-9
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1205,
-180
-],
-"cell": [
-37,
-5
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-928,
-788
-],
-"cell": [
-29,
-24
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-224,
-319
-],
-"cell": [
-6,
-9
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1304,
-170
-],
-"cell": [
-40,
-5
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1064,
-716
-],
-"cell": [
-33,
-22
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-1014,
-280
-],
-"cell": [
-31,
-8
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-1139,
-533
-],
-"cell": [
-35,
-16
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-813,
-281
-],
-"cell": [
-25,
-8
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1270,
-389
-],
-"cell": [
-39,
-12
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1324,
-441
-],
-"cell": [
-41,
-13
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-50,
-99
-],
-"cell": [
-1,
-3
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1337,
-649
-],
-"cell": [
-41,
-20
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-566,
-673
-],
-"cell": [
-17,
-21
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-126,
-502
-],
-"cell": [
-3,
-15
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-347,
-210
-],
-"cell": [
-10,
-6
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-424,
-345
-],
-"cell": [
-13,
-10
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-936,
-284
-],
-"cell": [
-29,
-8
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-295,
-426
-],
-"cell": [
-9,
-13
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-319,
-751
-],
-"cell": [
-9,
-23
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-440,
-682
-],
-"cell": [
-13,
-21
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-707,
-69
-],
-"cell": [
-22,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-696,
-52
-],
-"cell": [
-21,
-1
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-21,
-78
+629
 ],
 "cell": [
 0,
-2
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-986,
-8
-],
-"cell": [
-30,
-0
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-722,
-742
-],
-"cell": [
-22,
-23
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-627,
-288
-],
-"cell": [
-19,
-8
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1041,
-173
-],
-"cell": [
-32,
-5
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-693,
-151
-],
-"cell": [
-21,
-4
+19
 ],
 "flip": false
 },
 {
-"kind": "void_crystal",
+"kind": "obsidian_rock",
 "pos": [
-1278,
-495
+1264,
+776
 ],
 "cell": [
 39,
-15
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-241,
-384
-],
-"cell": [
-7,
-12
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-695,
-190
-],
-"cell": [
-21,
-5
+24
 ],
 "flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1023,
-665
-],
-"cell": [
-31,
-20
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-347,
-474
-],
-"cell": [
-10,
-14
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-222,
-626
-],
-"cell": [
-6,
-19
-],
-"flip": true
 },
 {
 "kind": "void_tuft_0",
 "pos": [
 546,
-542
+594
 ],
 "cell": [
 17,
-16
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-273,
-384
-],
-"cell": [
-8,
-11
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-478,
-22
-],
-"cell": [
-14,
-0
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1160,
-356
-],
-"cell": [
-36,
-11
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1242,
-784
-],
-"cell": [
-38,
-24
+18
 ],
 "flip": false
 },
 {
 "kind": "void_tuft_0",
 "pos": [
-905,
-798
+739,
+782
 ],
 "cell": [
-28,
+23,
 24
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-463,
-217
-],
-"cell": [
-14,
-6
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-882,
-622
-],
-"cell": [
-27,
-19
 ],
 "flip": true
 },
 {
 "kind": "void_tuft_0",
 "pos": [
-949,
-144
+567,
+178
 ],
 "cell": [
-29,
-4
+17,
+5
 ],
 "flip": true
 },
 {
-"kind": "void_crystal",
+"kind": "void_tuft_0",
 "pos": [
-812,
-278
+804,
+688
 ],
 "cell": [
 25,
-8
+21
 ],
 "flip": true
 },
 {
-"kind": "void_tuft_0",
+"kind": "void_bloom",
 "pos": [
-629,
-279
-],
-"cell": [
-19,
-8
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-269,
-443
-],
-"cell": [
-8,
-13
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-672,
-446
-],
-"cell": [
-20,
-13
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-621,
-218
-],
-"cell": [
-19,
-6
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-116,
-8
-],
-"cell": [
-3,
-0
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1294,
-602
-],
-"cell": [
-40,
-18
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1322,
-804
-],
-"cell": [
-41,
-25
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-155,
-741
-],
-"cell": [
-4,
-23
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-500,
-418
-],
-"cell": [
 15,
-13
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-1056,
-198
+513
 ],
 "cell": [
-32,
-6
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-902,
-53
-],
-"cell": [
-28,
-1
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1340,
-13
-],
-"cell": [
-41,
-0
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-950,
-188
-],
-"cell": [
-29,
-5
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1224,
-652
-],
-"cell": [
-38,
-20
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-787,
-542
-],
-"cell": [
-24,
+0,
 16
 ],
 "flip": false
 },
 {
-"kind": "void_tuft_0",
+"kind": "obsidian_rock",
 "pos": [
-924,
-791
+891,
+462
 ],
 "cell": [
-28,
-24
+27,
+14
 ],
-"flip": false
+"flip": true
 },
 {
-"kind": "void_tuft_1",
+"kind": "obsidian_rock",
 "pos": [
-993,
-797
-],
-"cell": [
-31,
-24
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1305,
-378
-],
-"cell": [
-40,
-11
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-691,
+358,
 642
 ],
 "cell": [
-21,
+11,
 20
 ],
 "flip": true
 },
 {
-"kind": "void_tuft_0",
+"kind": "void_bloom",
 "pos": [
-902,
-781
-],
-"cell": [
-28,
-24
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1074,
-790
-],
-"cell": [
-33,
-24
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-939,
-559
-],
-"cell": [
-29,
-17
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-147,
-747
-],
-"cell": [
-4,
-23
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-501,
-158
-],
-"cell": [
-15,
-4
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-1227,
-539
-],
-"cell": [
-38,
-16
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-162,
-561
-],
-"cell": [
-5,
-17
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-1313,
-664
-],
-"cell": [
-41,
-20
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1037,
-827
-],
-"cell": [
-32,
-25
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-555,
-209
-],
-"cell": [
-17,
-6
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1279,
-421
-],
-"cell": [
-39,
-13
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-1015,
-33
-],
-"cell": [
-31,
-1
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-195,
-651
-],
-"cell": [
-6,
-20
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-505,
-432
-],
-"cell": [
-15,
-13
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1275,
-675
-],
-"cell": [
-39,
-21
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-350,
-181
-],
-"cell": [
-10,
-5
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-284,
-13
-],
-"cell": [
-8,
-0
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-123,
-785
-],
-"cell": [
-3,
-24
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-697,
-453
-],
-"cell": [
-21,
-14
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1264,
-674
-],
-"cell": [
-39,
-21
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1320,
-124
-],
-"cell": [
-41,
-3
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-186,
-595
-],
-"cell": [
-5,
-18
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1300,
-622
-],
-"cell": [
-40,
-19
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-501,
-380
-],
-"cell": [
-15,
-11
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-208,
-730
-],
-"cell": [
-6,
-22
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1034,
-717
-],
-"cell": [
-32,
-22
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-82,
-181
-],
-"cell": [
-2,
-5
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-107,
-790
-],
-"cell": [
-3,
-24
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-230,
-400
-],
-"cell": [
-7,
-12
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-127,
-790
-],
-"cell": [
-3,
-24
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-934,
-829
-],
-"cell": [
-29,
-25
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-676,
-702
-],
-"cell": [
-21,
-21
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-630,
-396
-],
-"cell": [
-19,
-12
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-184,
-326
-],
-"cell": [
-5,
-10
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-557,
-15
-],
-"cell": [
-17,
-0
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-608,
-674
-],
-"cell": [
-18,
-21
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-745,
-101
-],
-"cell": [
-23,
-3
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-599,
-460
-],
-"cell": [
-18,
-14
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-676,
+851,
 687
-],
-"cell": [
-21,
-21
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1310,
-682
-],
-"cell": [
-40,
-21
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1285,
-345
-],
-"cell": [
-40,
-10
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1068,
-210
-],
-"cell": [
-33,
-6
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-811,
-180
-],
-"cell": [
-25,
-5
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-607,
-830
-],
-"cell": [
-18,
-25
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1010,
-726
-],
-"cell": [
-31,
-22
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-599,
-73
-],
-"cell": [
-18,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-223,
-719
-],
-"cell": [
-6,
-22
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-754,
-573
-],
-"cell": [
-23,
-17
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-937,
-538
-],
-"cell": [
-29,
-16
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-154,
-354
-],
-"cell": [
-4,
-11
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-493,
-450
-],
-"cell": [
-15,
-14
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1296,
-243
-],
-"cell": [
-40,
-7
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-359,
-309
-],
-"cell": [
-11,
-9
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-754,
-514
-],
-"cell": [
-23,
-16
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-85,
-156
-],
-"cell": [
-2,
-4
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-807,
-59
-],
-"cell": [
-25,
-1
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-645,
-459
-],
-"cell": [
-20,
-14
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-1103,
-497
-],
-"cell": [
-34,
-15
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-155,
-83
-],
-"cell": [
-4,
-2
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1179,
-201
-],
-"cell": [
-36,
-6
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-921,
-269
-],
-"cell": [
-28,
-8
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-272,
-66
-],
-"cell": [
-8,
-2
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-135,
-66
-],
-"cell": [
-4,
-2
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-709,
-700
-],
-"cell": [
-22,
-21
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-1224,
-679
-],
-"cell": [
-38,
-21
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-899,
-134
-],
-"cell": [
-28,
-4
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1234,
-307
-],
-"cell": [
-38,
-9
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1335,
-765
-],
-"cell": [
-41,
-23
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-959,
-48
-],
-"cell": [
-29,
-1
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1256,
-731
-],
-"cell": [
-39,
-22
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-502,
-736
-],
-"cell": [
-15,
-22
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1233,
-442
-],
-"cell": [
-38,
-13
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-375,
-410
-],
-"cell": [
-11,
-12
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-972,
-300
-],
-"cell": [
-30,
-9
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-152,
-429
-],
-"cell": [
-4,
-13
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1251,
-292
-],
-"cell": [
-39,
-9
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-727,
-656
-],
-"cell": [
-22,
-20
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-519,
-685
-],
-"cell": [
-16,
-21
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-984,
-558
-],
-"cell": [
-30,
-17
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-481,
-601
-],
-"cell": [
-15,
-18
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-468,
-308
-],
-"cell": [
-14,
-9
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1077,
-754
-],
-"cell": [
-33,
-23
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-951,
-304
-],
-"cell": [
-29,
-9
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-242,
-435
-],
-"cell": [
-7,
-13
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-518,
-798
-],
-"cell": [
-16,
-24
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1028,
-258
-],
-"cell": [
-32,
-8
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-36,
-483
-],
-"cell": [
-1,
-15
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1015,
-653
-],
-"cell": [
-31,
-20
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1245,
-595
-],
-"cell": [
-38,
-18
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-528,
-115
-],
-"cell": [
-16,
-3
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-139,
-758
-],
-"cell": [
-4,
-23
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-940,
-229
-],
-"cell": [
-29,
-7
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1241,
-695
-],
-"cell": [
-38,
-21
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1338,
-687
-],
-"cell": [
-41,
-21
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1017,
-12
-],
-"cell": [
-31,
-0
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-434,
-689
-],
-"cell": [
-13,
-21
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-679,
-293
-],
-"cell": [
-21,
-9
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1100,
-723
-],
-"cell": [
-34,
-22
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1180,
-49
-],
-"cell": [
-36,
-1
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1266,
-210
-],
-"cell": [
-39,
-6
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1155,
-789
-],
-"cell": [
-36,
-24
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-252,
-11
-],
-"cell": [
-7,
-0
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-586,
-450
-],
-"cell": [
-18,
-14
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-402,
-311
-],
-"cell": [
-12,
-9
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-996,
-541
-],
-"cell": [
-31,
-16
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-742,
-816
-],
-"cell": [
-23,
-25
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-674,
-694
-],
-"cell": [
-21,
-21
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-453,
-472
-],
-"cell": [
-14,
-14
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1302,
-158
-],
-"cell": [
-40,
-4
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-6,
-442
-],
-"cell": [
-0,
-13
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1277,
-570
-],
-"cell": [
-39,
-17
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-453,
-38
-],
-"cell": [
-14,
-1
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1314,
-625
-],
-"cell": [
-41,
-19
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-379,
-333
-],
-"cell": [
-11,
-10
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1049,
-802
-],
-"cell": [
-32,
-25
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-591,
-718
-],
-"cell": [
-18,
-22
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-485,
-340
-],
-"cell": [
-15,
-10
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-764,
-376
-],
-"cell": [
-23,
-11
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-480,
-694
-],
-"cell": [
-15,
-21
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-845,
-86
 ],
 "cell": [
 26,
-2
+21
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+462,
+778
+],
+"cell": [
+14,
+24
 ],
 "flip": true
 },
 {
-"kind": "void_tuft_1",
+"kind": "void_tuft_0",
 "pos": [
-926,
-353
+826,
+359
 ],
 "cell": [
-28,
+25,
 11
 ],
 "flip": false
 },
 {
-"kind": "void_crystal",
+"kind": "void_bloom",
 "pos": [
-1076,
-632
+60,
+442
 ],
 "cell": [
-33,
-19
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-868,
-720
-],
-"cell": [
-27,
-22
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-420,
-258
-],
-"cell": [
-13,
-8
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-989,
-28
-],
-"cell": [
-30,
-0
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-702,
-435
-],
-"cell": [
-21,
+1,
 13
 ],
 "flip": false
 },
 {
-"kind": "obsidian_shard",
+"kind": "void_tuft_0",
 "pos": [
-1314,
-657
-],
-"cell": [
-41,
-20
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1056,
-307
-],
-"cell": [
-33,
-9
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-260,
-570
-],
-"cell": [
-8,
-17
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-972,
-713
-],
-"cell": [
-30,
-22
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-180,
-316
+187,
+389
 ],
 "cell": [
 5,
-9
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-641,
-33
-],
-"cell": [
-20,
-1
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-865,
-55
-],
-"cell": [
-27,
-1
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-395,
-457
-],
-"cell": [
-12,
-14
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-955,
-574
-],
-"cell": [
-29,
-17
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-499,
-686
-],
-"cell": [
-15,
-21
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-772,
-633
-],
-"cell": [
-24,
-19
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1062,
-290
-],
-"cell": [
-33,
-9
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-686,
-748
-],
-"cell": [
-21,
-23
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-391,
-408
-],
-"cell": [
-12,
 12
 ],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-25,
-58
-],
-"cell": [
-0,
-1
-],
-"flip": false
-},
-{
-"kind": "rift_stone",
-"pos": [
-185,
-301
-],
-"cell": [
-5,
-9
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-622,
-288
-],
-"cell": [
-19,
-8
-],
 "flip": false
 },
 {
 "kind": "void_tuft_1",
 "pos": [
-636,
-464
+714,
+197
 ],
 "cell": [
-19,
-14
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-494,
-242
-],
-"cell": [
-15,
-7
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-496,
-202
-],
-"cell": [
-15,
+22,
 6
 ],
 "flip": false
 },
 {
-"kind": "void_tuft_1",
+"kind": "void_shard",
 "pos": [
-557,
-130
+1328,
+102
 ],
 "cell": [
-17,
-4
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-1095,
-23
-],
-"cell": [
-34,
-0
+41,
+3
 ],
 "flip": false
 },
 {
-"kind": "rift_stone",
+"kind": "void_tuft_1",
 "pos": [
-273,
-49
+1206,
+476
 ],
 "cell": [
-8,
+37,
+14
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1195,
+351
+],
+"cell": [
+37,
+10
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+604,
+765
+],
+"cell": [
+18,
+23
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1168,
+760
+],
+"cell": [
+36,
+23
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+537,
+821
+],
+"cell": [
+16,
+25
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+630,
+59
+],
+"cell": [
+19,
 1
 ],
 "flip": false
 },
 {
-"kind": "obsidian_shard",
+"kind": "obsidian_rock",
 "pos": [
-712,
-790
+1294,
+338
 ],
 "cell": [
-22,
-24
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-325,
-298
-],
-"cell": [
-10,
-9
+40,
+10
 ],
 "flip": false
 },
 {
 "kind": "void_tuft_1",
 "pos": [
-598,
-356
+1196,
+392
 ],
 "cell": [
-18,
+37,
+12
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+279,
+667
+],
+"cell": [
+8,
+20
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+1110,
+558
+],
+"cell": [
+34,
+17
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+35,
+427
+],
+"cell": [
+1,
+13
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+900,
+365
+],
+"cell": [
+28,
 11
 ],
 "flip": true
 },
 {
-"kind": "void_tuft_1",
-"pos": [
-805,
-97
-],
-"cell": [
-25,
-3
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-938,
-576
-],
-"cell": [
-29,
-17
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1291,
-92
-],
-"cell": [
-40,
-2
-],
-"flip": false
-},
-{
 "kind": "void_tuft_0",
 "pos": [
-182,
-584
+23,
+388
 ],
 "cell": [
-5,
-18
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-892,
-684
-],
-"cell": [
-27,
-21
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-485,
-99
-],
-"cell": [
-15,
-3
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1039,
-343
-],
-"cell": [
-32,
-10
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1097,
-149
-],
-"cell": [
-34,
-4
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1114,
-61
-],
-"cell": [
-34,
-1
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-38,
-629
-],
-"cell": [
-1,
-19
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-470,
-812
-],
-"cell": [
-14,
-25
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-554,
-784
-],
-"cell": [
-17,
-24
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-638,
-767
-],
-"cell": [
-19,
-23
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-703,
-17
-],
-"cell": [
-21,
-0
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1319,
-692
-],
-"cell": [
-41,
-21
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1259,
-201
-],
-"cell": [
-39,
-6
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1319,
-350
-],
-"cell": [
-41,
-10
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-653,
-398
-],
-"cell": [
-20,
+0,
 12
 ],
 "flip": false
 },
 {
-"kind": "void_tuft_0",
+"kind": "void_tuft_1",
 "pos": [
-385,
-218
+663,
+628
 ],
 "cell": [
-12,
-6
+20,
+19
 ],
 "flip": true
 },
 {
-"kind": "mushroom_1",
+"kind": "void_tuft_0",
 "pos": [
-72,
-213
+1150,
+262
+],
+"cell": [
+35,
+8
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+95,
+35
 ],
 "cell": [
 2,
-6
+1
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+123,
+414
+],
+"cell": [
+3,
+12
 ],
 "flip": false
 },
@@ -8001,34 +7233,46 @@
 "kind": "void_tuft_1",
 "pos": [
 388,
-227
+156
 ],
 "cell": [
 12,
-7
+4
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1027,
+410
+],
+"cell": [
+32,
+12
 ],
 "flip": true
 },
 {
-"kind": "void_tuft_1",
+"kind": "void_tuft_0",
 "pos": [
-8,
-587
+640,
+189
 ],
 "cell": [
-0,
-18
+19,
+5
 ],
-"flip": true
+"flip": false
 },
 {
 "kind": "void_tuft_1",
 "pos": [
-849,
-25
+584,
+13
 ],
 "cell": [
-26,
+18,
 0
 ],
 "flip": false
@@ -8036,23 +7280,251 @@
 {
 "kind": "void_tuft_1",
 "pos": [
-1146,
-295
+10,
+96
 ],
 "cell": [
-35,
-9
+0,
+3
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+51,
+611
+],
+"cell": [
+1,
+19
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+196,
+368
+],
+"cell": [
+6,
+11
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+978,
+86
+],
+"cell": [
+30,
+2
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1043,
+47
+],
+"cell": [
+32,
+1
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+122,
+763
+],
+"cell": [
+3,
+23
 ],
 "flip": false
 },
 {
 "kind": "void_tuft_1",
 "pos": [
-810,
-819
+282,
+795
 ],
 "cell": [
-25,
+8,
+24
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+731,
+730
+],
+"cell": [
+22,
+22
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+1117,
+661
+],
+"cell": [
+34,
+20
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1317,
+275
+],
+"cell": [
+41,
+8
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1260,
+207
+],
+"cell": [
+39,
+6
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+1158,
+66
+],
+"cell": [
+36,
+2
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+183,
+119
+],
+"cell": [
+5,
+3
+],
+"flip": false
+},
+{
+"kind": "void_bloom",
+"pos": [
+657,
+803
+],
+"cell": [
+20,
+25
+],
+"flip": false
+},
+{
+"kind": "void_shard",
+"pos": [
+945,
+807
+],
+"cell": [
+29,
+25
+],
+"flip": true
+},
+{
+"kind": "void_shard",
+"pos": [
+122,
+706
+],
+"cell": [
+3,
+22
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+478,
+606
+],
+"cell": [
+14,
+18
+],
+"flip": true
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1140,
+653
+],
+"cell": [
+35,
+20
+],
+"flip": false
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+978,
+142
+],
+"cell": [
+30,
+4
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+1001,
+780
+],
+"cell": [
+31,
+24
+],
+"flip": false
+},
+{
+"kind": "void_tuft_1",
+"pos": [
+300,
+824
+],
+"cell": [
+9,
 25
 ],
 "flip": true
@@ -8060,120 +7532,108 @@
 {
 "kind": "void_tuft_0",
 "pos": [
-912,
-363
-],
-"cell": [
-28,
-11
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-803,
-396
-],
-"cell": [
-25,
-12
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-117,
+1021,
 192
 ],
 "cell": [
-3,
+31,
 5
 ],
 "flip": false
 },
 {
-"kind": "void_crystal",
+"kind": "void_tuft_1",
 "pos": [
-899,
-149
+28,
+596
 ],
 "cell": [
-28,
-4
+0,
+18
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+1234,
+775
+],
+"cell": [
+38,
+24
 ],
 "flip": true
 },
 {
-"kind": "void_tuft_1",
+"kind": "obsidian_rock",
 "pos": [
-920,
-155
+54,
+199
 ],
 "cell": [
-28,
-4
+1,
+6
+],
+"flip": true
+},
+{
+"kind": "void_tuft_0",
+"pos": [
+752,
+775
+],
+"cell": [
+23,
+24
+],
+"flip": false
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+568,
+78
+],
+"cell": [
+17,
+2
+],
+"flip": true
+},
+{
+"kind": "obsidian_rock",
+"pos": [
+30,
+243
+],
+"cell": [
+0,
+7
 ],
 "flip": false
 },
 {
 "kind": "void_tuft_0",
 "pos": [
-257,
-659
+734,
+547
 ],
 "cell": [
-8,
-20
+22,
+17
 ],
 "flip": false
 },
 {
-"kind": "obsidian_shard",
+"kind": "void_bloom",
 "pos": [
-634,
-695
+650,
+211
 ],
 "cell": [
-19,
-21
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-207,
-760
-],
-"cell": [
-6,
-23
-],
-"flip": false
-},
-{
-"kind": "void_crystal",
-"pos": [
-396,
-449
-],
-"cell": [
-12,
-14
-],
-"flip": true
-},
-{
-"kind": "rift_stone",
-"pos": [
-9,
-246
-],
-"cell": [
-0,
-7
+20,
+6
 ],
 "flip": true
 },
@@ -8181,385 +7641,37 @@
 "kind": "void_tuft_1",
 "pos": [
 910,
-788
+242
 ],
 "cell": [
 28,
-24
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-337,
-375
-],
-"cell": [
-10,
-11
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-114,
-276
-],
-"cell": [
-3,
-8
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-439,
-34
-],
-"cell": [
-13,
-1
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-202,
-325
-],
-"cell": [
-6,
-10
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-859,
-669
-],
-"cell": [
-26,
-20
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-870,
-30
-],
-"cell": [
-27,
-0
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-250,
-30
-],
-"cell": [
-7,
-0
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-569,
-73
-],
-"cell": [
-17,
-2
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1031,
-383
-],
-"cell": [
-32,
-11
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1267,
-335
-],
-"cell": [
-39,
-10
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-232,
-152
-],
-"cell": [
-7,
-4
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-468,
-226
-],
-"cell": [
-14,
 7
 ],
 "flip": false
 },
 {
-"kind": "void_crystal",
+"kind": "void_bloom",
 "pos": [
-10,
-147
+933,
+185
 ],
 "cell": [
-0,
-4
+29,
+5
 ],
 "flip": false
 },
 {
-"kind": "void_tuft_1",
+"kind": "obsidian_rock",
 "pos": [
-490,
-314
+152,
+356
 ],
 "cell": [
-15,
-9
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-527,
-108
-],
-"cell": [
-16,
-3
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-283,
-128
-],
-"cell": [
-8,
-4
-],
-"flip": true
-},
-{
-"kind": "void_crystal",
-"pos": [
-653,
-661
-],
-"cell": [
-20,
-20
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-751,
-365
-],
-"cell": [
-23,
+4,
 11
 ],
 "flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-341,
-746
-],
-"cell": [
-10,
-23
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-802,
-569
-],
-"cell": [
-25,
-17
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-18,
-701
-],
-"cell": [
-0,
-21
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-135,
-199
-],
-"cell": [
-4,
-6
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-1338,
-795
-],
-"cell": [
-41,
-24
-],
-"flip": false
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-392,
-519
-],
-"cell": [
-12,
-16
-],
-"flip": false
-},
-{
-"kind": "mushroom_1",
-"pos": [
-1207,
-453
-],
-"cell": [
-37,
-14
-],
-"flip": true
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-146,
-585
-],
-"cell": [
-4,
-18
-],
-"flip": false
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-299,
-582
-],
-"cell": [
-9,
-18
-],
-"flip": false
-},
-{
-"kind": "void_tuft_0",
-"pos": [
-1254,
-468
-],
-"cell": [
-39,
-14
-],
-"flip": true
-},
-{
-"kind": "void_tuft_1",
-"pos": [
-337,
-470
-],
-"cell": [
-10,
-14
-],
-"flip": true
-},
-{
-"kind": "mushroom_1",
-"pos": [
-499,
-301
-],
-"cell": [
-15,
-9
-],
-"flip": true
-},
-{
-"kind": "obsidian_shard",
-"pos": [
-1165,
-19
-],
-"cell": [
-36,
-0
-],
-"flip": false
 }
 ]
 }

@@ -377,3 +377,204 @@ def make_all(folder):
             glow_image(s).save(os.path.join(folder, name + "_glow.png"))
         info[name] = {"size": [s.w, s.h], "sways": sways, "glow": glow}
     return info
+
+
+# ------------------------------------------------------------------------------------------------ other lands
+SLATE_P = ramp("5c6474", spread=0.5, shift=0.0)
+SANDP = ramp("b07048", spread=0.5)
+SANDP_D = ramp("8a4e32", spread=0.45)
+SNOW = [hexc(c) for c in ("8a98ac", "a8b6c8", "c8d4e0", "e4ecf4", "fafcff")]
+ICE_P = [hexc(c) for c in ("2a4a6a", "4a7aa8", "7ab4e0", "b4e0f8", "eefaff")]
+VOID_P = [hexc(c) for c in ("2a1048", "5a2a98", "8e5cd9", "c8a0ff", "f4e8ff")]
+OBS_P = ramp("2e2638", spread=0.45, shift=0.0)
+MARBLE_P = ramp("c8c4ba", spread=0.45, shift=0.02)
+CACTUS = ramp("4a8a4a", spread=0.5)
+
+
+@prop()
+def standing_stone():
+    s = Sprite(16, 30)
+    block(s, 3, 4, 12, 29, SLATE_P, depth=3, chips=3, seed=40, moss=3)
+    s.line(6, 9, 6, 13, (120, 170, 230), glow=False)
+    s.line(6, 11, 9, 9, (120, 170, 230))
+    s.ink()
+    return s
+
+
+@prop()
+def slate_shard():
+    return _rock(13, 10, SLATE_P, 41, moss=1)
+
+
+@prop(glow=True)
+def void_tree():
+    s = Sprite(30, 42)
+    bark = ramp("3a2a4a", spread=0.4)
+    s.part(s.poly([(12, 41), (13, 22), (11, 14), (15, 18), (17, 10), (18, 22), (17, 41)]), bark)
+    for (x0, y0, x1, y1) in ((13, 24, 4, 14), (4, 14, 2, 8), (17, 20, 26, 12), (12, 14, 9, 4)):
+        s.line(x0, y0, x1, y1, bark[2])
+        s.line(x0 + 1, y0, x1 + 1, y1, bark[1])
+    for (x, y) in ((3, 8), (26, 11), (9, 4), (21, 15)):
+        s.fill(s.ellipse(x, y, 1.6, 1.6), VOID_P[3], glow=True)
+    s.ink()
+    return s
+
+
+@prop(glow=True)
+def rift_spire():
+    s = Sprite(18, 34)
+    s.part(s.poly([(3, 33), (14, 33), (11, 10), (8, 2), (6, 10)]), OBS_P, flat=True)
+    s.line(4, 32, 7, 9, OBS_P[4])
+    s.line(8, 28, 9, 12, VOID_P[3], glow=True)
+    s.ink()
+    return s
+
+
+@prop(glow=True)
+def void_shard():
+    s = Sprite(12, 14)
+    for (pts, tone) in (([(1, 13), (3, 6), (5, 13)], VOID_P[1]), ([(6, 13), (8, 7), (11, 13)], VOID_P[1]),
+                        ([(3, 13), (5, 2), (8, 13)], VOID_P[2])):
+        s.fill(s.poly(pts), tone, glow=True)
+    s.line(5, 4, 5, 10, VOID_P[4], glow=True)
+    s.ink((30, 10, 50))
+    return s
+
+
+@prop()
+def obsidian_rock():
+    return _rock(14, 10, OBS_P, 42)
+
+
+@prop(glow=True)
+def void_bloom():
+    s = _flowers([VOID_P[3], (128, 240, 255)], 43)
+    for x in range(s.w):
+        for y in range(s.h):
+            if s.a[y, x] and tuple(s.rgb[y, x]) in (tuple(VOID_P[3]), (128, 240, 255)):
+                s.glow[y, x] = True
+    return s
+
+
+@prop()
+def mesa_rock():
+    s = Sprite(30, 30)
+    block(s, 2, 16, 26, 29, SANDP_D, depth=3, chips=3, seed=44, strata=4)
+    block(s, 6, 4, 21, 16, SANDP, depth=3, chips=2, seed=45, strata=3)
+    s.ink()
+    return s
+
+
+@prop(sways=False)
+def cactus_tall():
+    s = Sprite(18, 32)
+    s.part(s.capsule(9, 30, 9, 4, 3.4), CACTUS)
+    s.part(s.capsule(4, 18, 4, 10, 2.2), CACTUS, bias=-0.1)
+    s.part(s.capsule(4, 18, 8, 19, 2.0), CACTUS, bias=-0.1)
+    s.part(s.capsule(14, 14, 14, 7, 2.2), CACTUS)
+    s.part(s.capsule(14, 14, 10, 15, 2.0), CACTUS)
+    for y in range(6, 30, 3):
+        s.px(9, y, CACTUS[4])
+    s.px(9, 2, hexc("f070a0"))
+    s.ink()
+    return s
+
+
+@prop()
+def cactus_small():
+    s = Sprite(10, 12)
+    s.part(s.capsule(5, 11, 5, 4, 2.6), CACTUS)
+    s.px(5, 5, CACTUS[4])
+    s.px(5, 8, CACTUS[4])
+    s.ink()
+    return s
+
+
+@prop()
+def sand_rock_0():
+    return _rock(12, 9, SANDP, 46)
+
+
+@prop()
+def sand_rock_1():
+    return _rock(18, 12, SANDP_D, 47)
+
+
+@prop(sways=True)
+def snow_pine():
+    s = Sprite(26, 52)
+    s.part(s.rect(12, 42, 15, 52), BARK)
+    for k, (y, w) in enumerate(((44, 12), (36, 10), (28, 8), (20, 6), (12, 4))):
+        s.part(s.poly([(13 - w, y), (13 + w, y), (16 + w * 0.3, y - 3), (13, y - 11), (10 - w * 0.3, y - 3)]), PINE, bias=-0.05 * k)
+        s.fill(s.poly([(13 - w * 0.8, y - 2), (13, y - 10), (13 + w * 0.5, y - 4), (13, y - 6)]), SNOW[3])
+        s.line(13 - w + 1, y, 13 - w * 0.4, y - 1, SNOW[2])
+    s.ink()
+    return s
+
+
+@prop(glow=True)
+def ice_spire():
+    s = Sprite(18, 32)
+    s.fill(s.poly([(2, 31), (15, 31), (11, 8), (8, 1), (6, 9)]), ICE_P[2])
+    s.fill(s.poly([(2, 31), (8, 31), (8, 1), (6, 9)]), ICE_P[3])
+    s.line(5, 28, 7, 6, ICE_P[4], glow=True)
+    s.ink((30, 50, 80))
+    return s
+
+
+@prop()
+def snow_rock_0():
+    s = _rock(12, 9, ramp("6a7486", spread=0.5), 48)
+    s.fill(s.poly([(1, 4), (4, 1), (9, 1), (11, 4)]) & s.a, SNOW[3])
+    return s
+
+
+@prop()
+def snow_rock_1():
+    s = _rock(17, 12, ramp("5a6474", spread=0.5), 49)
+    s.fill(s.poly([(1, 5), (5, 1), (13, 1), (16, 5)]) & s.a, SNOW[3])
+    return s
+
+
+@prop(glow=True)
+def ice_chunk():
+    s = Sprite(12, 10)
+    s.fill(s.poly([(1, 9), (2, 4), (6, 1), (10, 3), (11, 9)]), ICE_P[2])
+    s.fill(s.poly([(2, 4), (6, 1), (10, 3), (6, 5)]), ICE_P[4], glow=True)
+    s.ink((30, 50, 80))
+    return s
+
+
+@prop(sways=True)
+def snow_bush():
+    s = Sprite(18, 12)
+    canopy(s, [(5, 8, 5, 3.6, True), (12, 8, 5, 3.6, True), (9, 6, 6, 4, False)], ramp("6a7a5a", spread=0.5),
+           ramp("4e5a44", spread=0.45), np.random.default_rng(50), flecks=4)
+    s.fill(s.poly([(3, 5), (9, 2), (15, 5), (9, 4)]) & s.a, SNOW[3])
+    s.ink()
+    return s
+
+
+@prop()
+def marble_pillar():
+    s = Sprite(16, 36)
+    block(s, 2, 30, 13, 35, MARBLE_P, depth=2, seed=51)
+    s.part(s.rect(4, 8, 11, 30), MARBLE_P, flat=True)
+    for x in (5, 7, 9):
+        s.line(x, 9, x, 29, MARBLE_P[1])
+    s.fill(s.poly([(4, 8), (6, 4), (8, 6), (11, 3), (11, 8)]), MARBLE_P[3])
+    s.px(6, 20, MOSS[3])
+    s.px(5, 21, MOSS[2])
+    s.ink()
+    return s
+
+
+@prop(glow=True)
+def prism_shard():
+    s = Sprite(12, 14)
+    cols = [hexc("ff9a6a"), hexc("ffe07a"), hexc("9af07a"), hexc("7ad0ff"), hexc("caa0ff")]
+    s.fill(s.poly([(2, 13), (5, 2), (9, 4), (10, 13)]), hexc("d8e8f0"))
+    for k, c in enumerate(cols):
+        s.line(3 + k * 1.5, 12, 5 + k * 1, 4, c, glow=True)
+    s.ink((60, 60, 80))
+    return s
