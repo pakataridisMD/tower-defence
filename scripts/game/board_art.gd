@@ -99,6 +99,8 @@ var landmarks: LandmarkArt
 var citadel: CitadelArt
 ## The army mustered in the counter-attack.
 var army: AllyArt
+## The player's skills: comets, the tsunami, rock spikes, vines, lightning, the void rift.
+var skill_fx: SkillFx
 
 
 ## Something with a contact shadow and a sun shadow that follows it.
@@ -189,6 +191,13 @@ class EnemyVisual:
 	var anim_time := 0.0
 	## Above 0, it faces its power's target for this many more seconds instead of where it walks.
 	var face_time := 0.0
+	## Thrown into the air by a skill: seconds left, the whole flight, and how high it goes (art pixels).
+	var toss := 0.0
+	var toss_total := 0.0
+	var toss_height := 0.0
+	## Pushed back along the road: where it is drawn against where it stands, sliding back to it.
+	var slide := Vector2.ZERO
+	var last_knock := 0.0
 	var face_left := false
 	## Seconds until a power that never fires (an aura, a trait) is shown off again.
 	var idle_power := 0.0
@@ -296,6 +305,9 @@ func setup(p_sim: RunSim) -> void:
 	_build_citadel()
 	army = AllyArt.new(self)
 	_build_fireflies()
+	skill_fx = SkillFx.new()
+	add_child(skill_fx)
+	skill_fx.setup(self)
 	sim.chain_fired.connect(_on_chain_fired)
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.enemy_killed.connect(_on_enemy_killed)
@@ -933,7 +945,27 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 			visual.gear.flip_h = left
 			visual.gear_glow.flip_h = left
 	visual.last_x = pos.x
-	visual.root.position = pos
+	# Pushed back by a skill: it is carried back along the ground instead of jumping.
+	if enemy.knockback_taken > visual.last_knock + 0.01:
+		visual.slide += visual.root.position - pos
+	visual.last_knock = enemy.knockback_taken
+	visual.slide = visual.slide.move_toward(Vector2.ZERO, delta * maxf(90.0, visual.slide.length() * 5.0))
+	visual.root.position = pos + visual.slide
+	# Thrown into the air: up and down on an arc, turning over, landing with a bump.
+	var lift := 0.0
+	var spin := 0.0
+	if visual.toss > 0.0:
+		visual.toss = maxf(0.0, visual.toss - delta)
+		var u := 1.0 - visual.toss / maxf(0.01, visual.toss_total)
+		lift = sin(u * PI) * visual.toss_height
+		spin = sin(u * TAU) * 0.35 * (1.0 if enemy.id % 2 == 0 else -1.0)
+	visual.body.position = Vector2(0, -roundf(lift))
+	visual.body.rotation = spin
+	if visual.gear != null:
+		visual.gear.position = visual.body.position
+		visual.gear.rotation = spin
+		visual.gear_glow.position = visual.body.position
+		visual.gear_glow.rotation = spin
 	if enemy.health < visual.last_health - 0.01:
 		visual.flash = 1.0
 	visual.last_health = enemy.health
@@ -970,6 +1002,17 @@ func _update_enemy(visual: EnemyVisual, delta: float) -> void:
 	visual.body.modulate = color.lerp(Color(1.8, 1.8, 1.8), visual.flash * 0.7)
 	if visual.gear != null:
 		visual.gear.modulate = Color(1, 1, 1).lerp(Color(1.8, 1.8, 1.8), visual.flash * 0.7)
+
+
+## Throws an enemy into the air for `seconds`, up to `height` art pixels, as a skill's blow lands.
+## Bosses keep their feet.
+func toss_enemy(enemy: SimEnemy, seconds: float, height: float) -> void:
+	var visual: EnemyVisual = _enemies.get(enemy.id)
+	if visual == null or enemy.data.tags.has(&"boss") or enemy.data.structure or seconds <= 0.0:
+		return
+	visual.toss_total = clampf(seconds, 0.35, 1.2)
+	visual.toss = visual.toss_total
+	visual.toss_height = height / visual.size_scale
 
 
 ## Enemies take the colour of their element.
@@ -1743,49 +1786,23 @@ func _on_allies_mustered(squad: Array[SimAlly]) -> void:
 	_burst(at, Color(1.0, 0.8, 0.4), 16, 26.0)
 
 
-## A cast skill: a blast where it lands, or a wave of light across the whole board, and sparks on
-## every enemy it reached.
+## A cast skill: a ring that marks where an aimed skill will come down, or a flare on every tower when
+## it is a boon for them. What lands (comets, waves, vines, lightning) is drawn by SkillFx as it lands.
 func _on_skill_used(skill: SkillData, board_at: Vector2) -> void:
 	var at := _art_pos(board_at)
 	var color := sim.config.element_color(skill.element).lerp(Color.WHITE, 0.25)
 	var bright := color.lerp(Color.WHITE, 0.5)
-	var light_radius := 0.0
 	if skill.is_targeted():
-		var radius := skill.radius / SCALE
-		light_radius = radius * 2.2
+		var radius := sim.skill_radius(skill.id) / SCALE
 		_ring(at, color, radius, radius * 0.97, 0.9, 2.0)
-		if skill.damage > 0.0:
-			# It lands: a flash, flying sparks and a shock wave out to its edge.
-			_play_fx("blast_" + String(skill.element), at, radius / BLAST_RADIUS)
-			_ring(at, bright, radius * 0.1, radius, 0.4, 2.0)
-			_ring(at, color, radius * 0.05, radius * 0.8, 0.7)
-			_burst(at, bright, 60, 80.0)
-			_burst(at, color.darkened(0.25), 36, 46.0, false)
-		else:
-			# It takes hold instead of hitting: the ring closes in.
-			_ring(at, bright, radius, 4.0, 0.5, 2.0)
-			_ring(at, color, radius * 0.8, 2.0, 0.75)
-			_burst(at, color, 34, 30.0, false)
-	else:
+		_ring(at, bright, radius, 4.0, 0.5, 2.0)
+	elif not skill.modifiers.is_empty():
+		# A boon for the towers: every one of them flares.
+		for visual: TowerVisual in _towers.values():
+			_ring(visual.root.position + Vector2(0, -8), bright, 3.0, 18.0, 0.6)
+			_sparks(visual.root.position + Vector2(0, -26), bright, 6, 11.0)
 		var reach := sim.config.map.size_in_pixels().length() * 0.5 / SCALE
-		light_radius = reach
 		_ring(at, bright, 8.0, reach, 0.9, 2.0)
-		_ring(at, color, 4.0, reach * 0.85, 1.2, 2.0)
-		if not skill.modifiers.is_empty():
-			# A boon for the towers: every one of them flares.
-			for visual: TowerVisual in _towers.values():
-				_ring(visual.root.position + Vector2(0, -8), bright, 3.0, 18.0, 0.6)
-				_sparks(visual.root.position + Vector2(0, -26), bright, 6, 11.0)
-	for enemy in sim.enemies:
-		if enemy.alive and (not skill.is_targeted() or enemy.position.distance_to(board_at) <= skill.radius):
-			_sparks(_art_pos(enemy.position) + Vector2(0, ENEMY_DROP - 5), bright, 6, 9.0)
-	var light := _flash_light(color, 2.4, light_radius, 30.0)
-	if light != null:
-		light.position = at
-		_air.add_child(light)
-		var tween := create_tween()
-		tween.tween_property(light, "energy", 0.0, 0.6)
-		tween.tween_callback(func() -> void: _release_light(light))
 
 
 func _burst(at: Vector2, color: Color, amount: int, speed: float, glowing := true) -> void:

@@ -59,6 +59,7 @@ func setup(p_sim: RunSim, p_board_offset: Vector2) -> void:
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.run_ended.connect(_on_run_ended)
 	sim.skill_used.connect(_on_skill_used)
+	sim.skill_struck.connect(_on_skill_struck)
 	sim.tower_attacked.connect(_on_tower_attacked)
 	sim.changed.connect(_on_changed)
 	sim.tree.changed.connect(_on_tree_changed)
@@ -233,6 +234,24 @@ func _on_enemy_killed(enemy: SimEnemy, _killer: SimTower, bounty: int) -> void:
 func _on_skill_used(skill: SkillData, at: Vector2) -> void:
 	play(StringName("skill_" + skill.id), at)
 	_skill_waiting[skill.id] = true
+
+
+## Each blow of a skill as it lands: comets and collapsing rifts boom, boulders and lightning crack,
+## vines and waves hit with their element's impact.
+func _on_skill_struck(cast: SimSkillCast, blow: SimSkillCast.Blow, hit: Array[SimEnemy]) -> void:
+	match blow.kind:
+		&"strike":
+			if cast.skill.element == &"fire":
+				play(&"explosion_large" if blow.main else &"explosion_medium", blow.at)
+			elif cast.skill.is_targeted():
+				play(StringName("impact_" + cast.skill.element), blow.at)
+		&"bolt":
+			play(StringName("impact_" + cast.skill.element), blow.at)
+		&"finale":
+			play(&"explosion_large", blow.at)
+		&"sweep":
+			if not hit.is_empty():
+				play(&"impact_water", hit[0].position, -6.0)
 
 
 func _impact_of(tower: SimTower) -> StringName:

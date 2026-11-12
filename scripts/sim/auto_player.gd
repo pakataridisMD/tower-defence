@@ -39,6 +39,11 @@ var max_towers := 40
 ## Turn off to make the bot play like a beginner: no levels, no skills.
 var upgrades := true
 var skills := true
+## Turn on to have the bot buy skill levels with gold it can spare (it keeps half for towers).
+## Off by default, so the campaign is tuned against towers and plain skills.
+var skill_upgrades := false
+## Gold the bot spent on skill levels this run.
+var skill_gold := 0
 ## Turn off to leave the heroes unsummoned.
 var heroes := true
 ## Turn off to stop the bot at the top level instead of ascending.
@@ -221,8 +226,27 @@ func play_build_phase() -> void:
 	if sim.state != RunSim.State.BUILDING:
 		return
 	spend_points()
+	upgrade_skills()
 	build_towers()
 	sim.start_next_wave()
+
+
+## Buys the next level of the lowest open skill while that leaves at least as much gold again for
+## towers.
+func upgrade_skills() -> void:
+	if not skill_upgrades:
+		return
+	while true:
+		var best: StringName = &""
+		for skill in sim.skill_list():
+			if not sim.is_skill_unlocked(skill.id) or sim.skill_upgrade_cost(skill.id) < 0:
+				continue
+			if best.is_empty() or sim.skill_level(skill.id) < sim.skill_level(best):
+				best = skill.id
+		if best.is_empty() or sim.gold < sim.skill_upgrade_cost(best) * 2:
+			return
+		skill_gold += sim.skill_upgrade_cost(best)
+		sim.upgrade_skill(best)
 
 
 ## Casts every skill that is ready and has something worth hitting. Cheap to call every step.

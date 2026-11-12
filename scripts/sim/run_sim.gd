@@ -396,6 +396,14 @@ func skill_level(skill_id: StringName) -> int:
 	return skill_levels.get(skill_id, 1)
 
 
+## How far an aimed skill reaches at its level now, in board pixels.
+func skill_radius(skill_id: StringName) -> float:
+	var skill: SkillData = config.skills.get(skill_id)
+	if skill == null:
+		return 0.0
+	return skill.radius * skill.rank(skill_level(skill_id)).reach
+
+
 ## Gold to take the skill to its next level, or -1 when it is at its last.
 func skill_upgrade_cost(skill_id: StringName) -> int:
 	var skill: SkillData = config.skills.get(skill_id)
