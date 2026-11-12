@@ -17,6 +17,9 @@ var run_modifiers: Array[Modifier] = []
 var locked_tree_nodes: Array[StringName] = []
 ## The difficulty level picked for the run. Null plays at normal strength.
 var difficulty: DifficultyData
+## Endless skirmish: after the last wave the waves keep coming, and every RunSim.ENDLESS_STEP waves they
+## bring twice as many enemies with twice the health (see RunSim).
+var endless := false
 ## Skill web nodes taken for free at the start, such as a campaign stage's starting nodes.
 var granted_tree_nodes: Array[StringName] = []
 ## The campaign stage being played and its campaign, or null in a skirmish.
@@ -49,6 +52,16 @@ static func from_registry(registry: Node, map_id: StringName) -> RunConfig:
 ## Every enemy's health is multiplied by this.
 func enemy_health_multiplier() -> float:
 	return difficulty.enemy_health_multiplier if difficulty != null else 1.0
+
+
+## Every wave brings this many times as many enemies (bosses excepted).
+func enemy_count_multiplier() -> float:
+	return difficulty.enemy_count_multiplier if difficulty != null else 1.0
+
+
+## Starting gold is multiplied by this (the difficulty's).
+func starting_gold_multiplier() -> float:
+	return difficulty.starting_gold_multiplier if difficulty != null else 1.0
 
 
 func element_index(id: StringName) -> int:

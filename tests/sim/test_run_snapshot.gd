@@ -50,6 +50,9 @@ func _free_cell(sim: RunSim, hero: StringName) -> Vector2i:
 ## A run two waves in: a levelled fire tower, the skill web, a summoned hero, gold and lives spent.
 func _played() -> RunSim:
 	var sim := _sim([&"tamsin"])
+	# The skirmish waves are three times as tough as they were (gen_campaign.SKIRMISH_HARDNESS), and
+	# one tower and a hero do not hold them: plenty of lives, as this test is about saving, not balance.
+	sim.lives = 500
 	sim.tree.points = 4
 	assert_true(sim.allocate_node(&"fire_entry"))
 	sim.gold = 2000

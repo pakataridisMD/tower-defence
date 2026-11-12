@@ -251,7 +251,8 @@ func _validate_difficulties(errors: PackedStringArray) -> void:
 	if difficulties.is_empty():
 		errors.append("No difficulty levels in %s" % DIFFICULTIES_DIR)
 	for difficulty: DifficultyData in difficulties.values():
-		if difficulty.enemy_health_multiplier <= 0.0 or difficulty.meta_point_multiplier < 0.0:
+		if difficulty.enemy_health_multiplier <= 0.0 or difficulty.meta_point_multiplier < 0.0 \
+				or difficulty.enemy_count_multiplier <= 0.0:
 			errors.append("Difficulty '%s': multipliers must be above 0" % difficulty.id)
 
 

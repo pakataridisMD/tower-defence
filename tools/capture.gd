@@ -24,11 +24,16 @@ extends Node
 ## Add --look[=stage,stage] for the graphics look test: in each stage (the fire and jungle lands by default)
 ## one of each base tower is built in a row by the road, then the whole map, the row up close at x1
 ## and x2, and the same row at night are taken.
+## Add --weather for the weather test: in a land of each kind, the battle under each of its weathers
+##   (clear with wind, rain, thunderstorm, snow, blizzard, ashfall, dust storm), by day and by night, and
+##   frames of a gust bowing the trees (in <out>/gust).
 ## Add --edge to film the edge pan: zoomed in on a battle, the mouse is pushed against each edge of the
 ## screen in turn, saved as numbered frames in <out>/edge/ (make a clip from them).
 ## Add --bosses to take the bosses' abilities: the red glow on boss stages on the map, a boss healing, raising
 ## its barrier and binding towers, and Vael-Orrun's fireball burning a tower down, plus frames for clips
 ## (<out>/bosses/<boss>/NNNN.png).
+## Add --skirmish to take the Skirmish page (a hard level and Endless picked), a battle on each land
+## skirmish map on Merciless, and an endless run once the horde has doubled three times.
 ## Add --saves to take the saved games: the title screen with Continue and New game, the new game
 ## question, Load game with two games' autosaves and the slots, the Esc menu during a campaign battle
 ## with its Save and Load buttons, Save game there with an overwrite question, and a battle loaded back.
@@ -65,6 +70,7 @@ var _menu := false
 var _saves := false
 var _map := false
 var _bigmaps := false
+var _skirmish := false
 var _edge := false
 var _powers := false
 var _landmarks := false
@@ -74,6 +80,17 @@ var _horde := &""
 var _look: PackedStringArray = []
 ## With --look: shoot the towers' effects in a fight (shots, hits, a Meteor and a Doom) instead of the look shots.
 var _fx_shots := false
+var _weather := false
+## The weather test: stage, then the kinds of weather to shoot there.
+const WEATHER_SHOTS := [
+	["nature_2", [Weather.Kind.CLEAR, Weather.Kind.RAIN, Weather.Kind.STORM]],
+	["storm_1", [Weather.Kind.STORM]],
+	["water_3", [Weather.Kind.SNOW, Weather.Kind.BLIZZARD]],
+	["ember_1", [Weather.Kind.ASH]],
+	["earth_1", [Weather.Kind.DUST]],
+	["void_1", [Weather.Kind.ASH]],
+]
+
 ## --towers[=a,b]: every look of these towers (levels 1-3 and both ascendancies) built beside the road,
 ## shot by day and night and filmed idling and firing (frames under clips/towers_<stage>).
 var _tower_looks: PackedStringArray = []
@@ -108,6 +125,8 @@ func _ready() -> void:
 			_map = true
 		elif arg == "--bigmaps":
 			_bigmaps = true
+		elif arg == "--skirmish":
+			_skirmish = true
 		elif arg == "--powers":
 			_powers = true
 		elif arg == "--army":
@@ -118,6 +137,8 @@ func _ready() -> void:
 			_landmarks = true
 		elif arg.begins_with("--horde="):
 			_horde = StringName(arg.trim_prefix("--horde="))
+		elif arg == "--weather":
+			_weather = true
 		elif arg == "--fx":
 			_fx_shots = true
 		elif arg == "--longshot":
@@ -138,6 +159,8 @@ func _ready() -> void:
 		_run_tower_looks()
 	elif not _look.is_empty():
 		_run_look()
+	elif _weather:
+		_run_weather()
 	elif _army:
 		_run_army()
 	elif _longshot:
@@ -154,6 +177,8 @@ func _ready() -> void:
 		_run_map()
 	elif _bigmaps:
 		_run_big_maps()
+	elif _skirmish:
+		_run_skirmish()
 	elif _edge:
 		_run_edge()
 	elif _story:
@@ -341,6 +366,58 @@ func _run_map() -> void:
 	get_tree().quit()
 
 
+## Land skirmish maps to shoot on Merciless: map, wave to jump to (counted from 0), seconds into it.
+const SKIRMISH_SHOTS := [
+	[&"cinderfall", 5, 12.0], [&"stormcrown", 5, 12.0], [&"thornwild", 5, 12.0], [&"frozen_ford", 5, 12.0],
+	[&"red_gorge", 5, 12.0], [&"riftwalk", 5, 12.0],
+]
+
+
+func _run_skirmish() -> void:
+	var profile := _demo_profile()
+	profile.meta_points_earned = 400
+	profile.meta_nodes.append_array([&"expedition_scouts", &"expedition_hardened", &"expedition_hard",
+			&"expedition_nightmare"])
+	Progress.use_memory_profile(profile)
+	Progress.select_difficulty(&"merciless")
+	Progress.set_endless(true)
+	var menu := MENU_SCENE.instantiate()
+	add_child(menu)
+	await _wait(0.5)
+	menu.open_page(&"skirmish")
+	await _wait(0.4)
+	await _shot("skirmish_page")
+	menu.free()
+	Progress.set_endless(false)
+	for entry: Array in SKIRMISH_SHOTS:
+		Progress.select_map(entry[0])
+		Progress.play_skirmish()
+		await _battle("skirmish_%s" % entry[0], entry[1], entry[2])
+	# Endless on Grim at wave 16: the horde has doubled three times (x8 on top of Grim's x2).
+	Progress.select_map(&"switchback")
+	Progress.select_difficulty(&"hard")
+	Progress.set_endless(true)
+	await _battle("endless_wave16", 15, 10.0)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+## Plays the next run with the bot from a later wave with plenty of gold, and takes one shot.
+func _battle(shot_name: String, wave: int, seconds: float) -> void:
+	var game := GAME_SCENE.instantiate() as Game
+	game.autoplay = true
+	add_child(game)
+	await _wait(0.2)
+	game.sim.wave_index = wave
+	game.sim.gold = 9000
+	game.sim.tree.points = 14
+	await _until(func() -> bool: return game.sim.state == RunSim.State.WAVE and game.sim.time_in_wave > seconds \
+			or game.sim.is_over())
+	await _shot(shot_name)
+	game.free()
+	await _wait(0.1)
+
+
 func _run_campaign() -> void:
 	Progress.use_memory_profile(_campaign_profile())
 	var screen := CAMPAIGN_SCENE.instantiate() as CampaignScreen
@@ -413,6 +490,63 @@ func _run_look() -> void:
 		game.camera.set_view(1.0, row)
 		await _wait(2.5)
 		await _shot("look_%s_night" % stage)
+		game.free()
+		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+func _run_weather() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	for entry: Array in WEATHER_SHOTS:
+		var stage: String = entry[0]
+		Progress.active_stage = StringName(stage)
+		var game := GAME_SCENE.instantiate() as Game
+		game.autoplay = true
+		add_child(game)
+		await _wait(0.2)
+		var sim := game.sim
+		sim.tree.points = 30
+		for id: StringName in [&"fire_entry", &"storm_entry", &"nature_entry", &"water_entry", &"earth_entry", &"void_entry"]:
+			sim.allocate_node(id)
+		sim.gold = 9000
+		var row := _look_row(game)
+		sim.wave_index = 6
+		var sky := game.board.art.weather
+		print("Weather in %s: %s" % [stage, sky.weather.spells(40).map(
+				func(s: Array) -> String: return "%s waves %d-%d" % [Weather.describe(s[0]), s[1], s[2]])])
+		await _until(func() -> bool: return sim.state == RunSim.State.WAVE and sim.time_in_wave > 6.0 or sim.is_over())
+		game.camera.set_view(1.0, row)
+		for kind: Weather.Kind in entry[1]:
+			var label := Weather.describe(kind).to_lower().replace(" ", "_")
+			sky.force(kind)
+			_light(game.board.art, DayNight.DAY)
+			await _wait(2.5)
+			if kind == Weather.Kind.STORM:
+				sky.strike(row / BoardArt.SCALE + Vector2(-60, -10))
+				await _wait(0.05)
+			await _shot("weather_%s_%s" % [stage, label])
+			if kind != Weather.Kind.CLEAR:
+				game.camera.set_view(game.camera.min_zoom, sim.config.map.size_in_pixels() / 2.0)
+				await _wait(0.6)
+				await _shot("weather_%s_%s_whole" % [stage, label])
+				game.camera.set_view(1.0, row)
+			_light(game.board.art, DayNight.NIGHT)
+			await _wait(2.0)
+			await _shot("weather_%s_%s_night" % [stage, label])
+		if stage == "nature_2":
+			# Frames of the trees bowing as gusts sweep through, close up.
+			sky.force(Weather.Kind.CLEAR)
+			_light(game.board.art, DayNight.DAY)
+			game.camera.set_view(2.0, row)
+			sky._gust_wait = 0.0
+			var folder := _out.path_join("gust")
+			DirAccess.make_dir_recursive_absolute(folder)
+			for i in 40:
+				await _wait(0.1)
+				await RenderingServer.frame_post_draw
+				get_viewport().get_texture().get_image().save_png(folder.path_join("%03d.png" % i))
+			print("Saved clip ", folder)
 		game.free()
 		await _wait(0.1)
 	print("Screenshots saved to ", _out)

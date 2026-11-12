@@ -9,7 +9,9 @@ extends SceneTree
 ## and prints lines for tools/campaign/tuning.py. The bot levels its towers and casts its skills,
 ## but it never sells, never fuses a tower and follows one fixed plan, so a person still has room
 ## to do better. --skirmish does the same for the skirmish waves (data/waves/prototype.tres),
-## against two different plans. --compare plays everything with several kinds of bot (with and
+## against two different plans; add --map=<id> for another skirmish map's own waves. The number it
+## prints goes into tuning.py as it is: gen_campaign.py multiplies every skirmish wave set by
+## SKIRMISH_HARDNESS on top (skirmish is three times harder than this tuning). --compare plays everything with several kinds of bot (with and
 ## without skills and upgrades), to see what each habit is worth. --heroes plays every stage with a
 ## party of the three heroes who would have joined by then, with and without heroes and skills, to
 ## see how much of a run they carry next to the towers. --list prints the stage ids, so CI can tune
@@ -76,6 +78,9 @@ func _initialize() -> void:
 		registry.free()
 		quit()
 		return
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--map="):
+			_skirmish_map = StringName(arg.trim_prefix("--map="))
 	if OS.get_cmdline_user_args().has("--skirmish"):
 		_tune_skirmish(registry)
 		registry.free()
@@ -109,6 +114,8 @@ func _initialize() -> void:
 
 
 var _registry: Node
+## The map --skirmish tunes.
+var _skirmish_map := SKIRMISH_MAP
 ## The expected profile before each stage, by stage id, from PROFILES. Empty plays with no meta.
 var _profiles: Dictionary = {}
 var _metas: Dictionary = {}
@@ -311,7 +318,7 @@ func _compare_heroes(meta: MetaProgress, only: String) -> void:
 
 ## Plays a skirmish run with one plan and returns the share of lives it kept, or -1 if it lost.
 func _play_skirmish(registry: Node, nodes: Array[StringName], towers: Array[StringName]) -> float:
-	var sim := RunSim.new(RunConfig.from_registry(registry, SKIRMISH_MAP))
+	var sim := RunSim.new(RunConfig.from_registry(registry, _skirmish_map))
 	var bot := AutoPlayer.new(sim, nodes, towers)
 	var elapsed := 0.0
 	while not sim.is_over() and elapsed < 4000.0:
@@ -324,7 +331,7 @@ func _play_skirmish(registry: Node, nodes: Array[StringName], towers: Array[Stri
 ## Bisects the skirmish waves' health scale: the highest at which both plans still win and keep
 ## SKIRMISH_TARGET of their lives between them.
 func _tune_skirmish(registry: Node) -> void:
-	var config := RunConfig.from_registry(registry, SKIRMISH_MAP)
+	var config := RunConfig.from_registry(registry, _skirmish_map)
 	var waves := config.wave_set
 	var low := 0.1
 	var high := 5.0
