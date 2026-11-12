@@ -1,9 +1,9 @@
 class_name MainMenu
 extends Control
 ## The title screen: what the player sees when the game opens. A painted dusk view of Solenne with
-## the menu on the left: Continue, Campaign, Skirmish, Heroes, Talents, Codex, Settings, Credits
-## and Quit, each with its key. Skirmish, Heroes, Codex, Settings and Credits open as pages over the
-## picture; Campaign and Talents open their own screens. Esc goes back from a page, and on the
+## the menu on the left: Continue, Campaign, Skirmish, Saved games, Heroes, Talents, Codex, Settings,
+## Credits and Quit, each with its key. Skirmish, Saved games, Heroes, Codex, Settings and Credits open
+## as pages over the picture; Campaign and Talents open their own screens. Esc goes back from a page, and on the
 ## title screen asks before quitting. Music plays behind it all (MenuMusic). When the game opens,
 ## the studio splash (StudioSplash, scenes/splash.tscn) plays first.
 ##
@@ -13,6 +13,7 @@ extends Control
 const GAME_SCENE := "res://scenes/game/game.tscn"
 const META_TREE_SCENE := "res://scenes/meta/meta_tree.tscn"
 const CAMPAIGN_SCENE := "res://scenes/campaign/campaign_map.tscn"
+const MENU_SCENE := "res://scenes/main.tscn"
 const LOGO_SCALE := 3.0
 const MENU_WIDTH := 616.0
 
@@ -29,6 +30,8 @@ var _home: Control
 var continue_stage: StringName = &""
 ## The title screen's music (off in Settings > Sound > Menu music).
 var music: MenuMusic
+## A line to show once when the title screen opens, such as "Loaded slot 3". Set before reloading.
+static var notice := ""
 
 
 func _ready() -> void:
@@ -56,6 +59,22 @@ func _ready() -> void:
 	if StudioSplash.fade_into_menu:
 		StudioSplash.fade_into_menu = false
 		_fade_in_from_black()
+	if not notice.is_empty():
+		_show_notice(notice)
+		notice = ""
+
+
+## A gold line at the bottom of the title screen that fades after a few seconds.
+func _show_notice(text: String) -> void:
+	var line := UiStyle.menu_label(text, "button", 40, UiStyle.MENU_GOLD_LIGHT)
+	line.name = "Notice"
+	line.position = Vector2(64, 1000)
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_home.add_child(line)
+	var tween := line.create_tween()
+	tween.tween_interval(3.0)
+	tween.tween_property(line, "modulate:a", 0.0, 1.0)
+	tween.tween_callback(line.queue_free)
 
 
 ## After the studio splash: the title screen rises out of the splash's black.
@@ -128,6 +147,7 @@ func _build_menu() -> void:
 	var stars := _campaign_stars()
 	_add(column, &"campaign", "Campaign", "C", "campaign", stars, open_campaign)
 	_add(column, &"skirmish", "Skirmish", "S", "skirmish", "", open_page.bind(&"skirmish"))
+	_add(column, &"saves", "Saved games", "L", "saves", _saves_note(), open_saves.bind(&"load"))
 	var joined := meta.joined_heroes().size()
 	_add(column, &"heroes", "Heroes", "H", "heroes", "%d of %d" % [joined, meta.heroes_in_order().size()],
 			open_page.bind(&"heroes"))
@@ -228,6 +248,15 @@ func _campaign_stars() -> String:
 	return "%d / %d stars" % [earned, total] if earned > 0 else ""
 
 
+## "3 saved" next to Saved games, or nothing before the first save.
+func _saves_note() -> String:
+	var count := 0
+	for slot in range(1, SaveSlots.COUNT + 1):
+		if Progress.has_slot(slot):
+			count += 1
+	return "%d saved" % count if count > 0 else ""
+
+
 func _records_text() -> String:
 	var profile := Progress.meta.profile
 	if profile.runs_played == 0:
@@ -276,6 +305,11 @@ func _page(id: StringName) -> MenuPage:
 			made = SettingsPage.new()
 		&"credits":
 			made = CreditsPage.new()
+		&"saves":
+			var saves := SavesPage.new()
+			saves.load_confirmed.connect(load_slot)
+			saves.saved.connect(func(_slot: int) -> void: buttons[&"saves"].note = _saves_note())
+			made = saves
 	if made == null:
 		return null
 	made.hide()
@@ -284,6 +318,26 @@ func _page(id: StringName) -> MenuPage:
 	move_child(quit_dialog, -1)
 	pages[id] = made
 	return made
+
+
+## Opens Saved games on its Save or Load tab.
+func open_saves(on_mode: StringName) -> void:
+	open_page(&"saves")
+	var saves := pages.get(&"saves") as SavesPage
+	if saves != null:
+		saves.show_mode(on_mode)
+
+
+## Loads a slot the player said yes to: a saved run opens the battle where it was, a save of
+## progress only brings the title screen back with it.
+func load_slot(slot: int) -> void:
+	if not Progress.has_slot(slot):
+		return
+	if Progress.load_from_slot(slot):
+		get_tree().change_scene_to_file(GAME_SCENE)
+		return
+	notice = "Loaded slot %d." % slot
+	get_tree().change_scene_to_file(MENU_SCENE)
 
 
 func continue_story() -> void:
@@ -387,6 +441,12 @@ func _unhandled_input(event: InputEvent) -> void:
 				return
 		get_viewport().set_input_as_handled()
 		return
+	if page == &"saves":
+		# Handled first: loading a slot leaves this scene.
+		get_viewport().set_input_as_handled()
+		if not (pages[page] as SavesPage).handle_key(key.keycode) and key.keycode in [KEY_ESCAPE, KEY_BACKSPACE]:
+			close_page()
+		return
 	if not page.is_empty():
 		match key.keycode:
 			KEY_ESCAPE, KEY_BACKSPACE:
@@ -412,6 +472,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			open_campaign()
 		KEY_S:
 			open_page(&"skirmish")
+		KEY_L:
+			open_saves(&"load")
 		KEY_H:
 			open_page(&"heroes")
 		KEY_T, KEY_M:
