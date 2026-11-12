@@ -23,6 +23,8 @@ var base_speed: float
 var progress := 0.0
 var position := Vector2.ZERO
 var alive := true
+## Damage of shots in flight towards it from towers that target the weakest enemy.
+var incoming := 0.0
 var leaked := false
 var statuses: Dictionary[StringName, SimStatus] = {}
 var stun_immunity := 0.0

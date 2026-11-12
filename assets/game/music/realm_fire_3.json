@@ -1,0 +1,38 @@
+{
+  "id": "realm_fire_3_calm",
+  "title": "Forge of Teeth",
+  "duration": 69.5652,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 17.39,
+      "name": "B"
+    },
+    {
+      "time": 34.78,
+      "name": "C"
+    },
+    {
+      "time": 52.17,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 69.5652,
+  "loop_samples": 3067826,
+  "handover_seconds": 69.5652,
+  "bpm": 138,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "realm_fire_3_calm.ogg",
+    "wave": "realm_fire_3_wave.ogg",
+    "boss": "realm_fire_3_boss.ogg"
+  }
+}

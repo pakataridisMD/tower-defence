@@ -1,0 +1,1322 @@
+{
+ "earth_monolith": {
+  "sheet": "towers/anim/earth_monolith",
+  "cell": [
+   72,
+   97
+  ],
+  "anchor": [
+   36,
+   90
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "fire_brazier": {
+  "sheet": "towers/anim/fire_brazier",
+  "cell": [
+   72,
+   97
+  ],
+  "anchor": [
+   36,
+   90
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "fire_flare_battery": {
+  "sheet": "towers/anim/fire_flare_battery",
+  "cell": [
+   78,
+   113
+  ],
+  "anchor": [
+   39,
+   106
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_abyss": {
+  "sheet": "towers/anim/hybrid_abyss",
+  "cell": [
+   76,
+   91
+  ],
+  "anchor": [
+   38,
+   84
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_blightroot": {
+  "sheet": "towers/anim/hybrid_blightroot",
+  "cell": [
+   76,
+   101
+  ],
+  "anchor": [
+   38,
+   94
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_bog": {
+  "sheet": "towers/anim/hybrid_bog",
+  "cell": [
+   76,
+   91
+  ],
+  "anchor": [
+   38,
+   84
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_gravity_well": {
+  "sheet": "towers/anim/hybrid_gravity_well",
+  "cell": [
+   76,
+   101
+  ],
+  "anchor": [
+   38,
+   94
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_ironbark": {
+  "sheet": "towers/anim/hybrid_ironbark",
+  "cell": [
+   78,
+   103
+  ],
+  "anchor": [
+   39,
+   96
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_lodestone": {
+  "sheet": "towers/anim/hybrid_lodestone",
+  "cell": [
+   76,
+   101
+  ],
+  "anchor": [
+   38,
+   94
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_magma": {
+  "sheet": "towers/anim/hybrid_magma",
+  "cell": [
+   76,
+   91
+  ],
+  "anchor": [
+   38,
+   84
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_plasma": {
+  "sheet": "towers/anim/hybrid_plasma",
+  "cell": [
+   72,
+   103
+  ],
+  "anchor": [
+   36,
+   96
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_quagmire": {
+  "sheet": "towers/anim/hybrid_quagmire",
+  "cell": [
+   78,
+   83
+  ],
+  "anchor": [
+   39,
+   76
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_riftstorm": {
+  "sheet": "towers/anim/hybrid_riftstorm",
+  "cell": [
+   72,
+   107
+  ],
+  "anchor": [
+   36,
+   100
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_soulflame": {
+  "sheet": "towers/anim/hybrid_soulflame",
+  "cell": [
+   72,
+   101
+  ],
+  "anchor": [
+   36,
+   94
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_squall": {
+  "sheet": "towers/anim/hybrid_squall",
+  "cell": [
+   72,
+   109
+  ],
+  "anchor": [
+   36,
+   102
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_steam": {
+  "sheet": "towers/anim/hybrid_steam",
+  "cell": [
+   74,
+   99
+  ],
+  "anchor": [
+   37,
+   92
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_thornstorm": {
+  "sheet": "towers/anim/hybrid_thornstorm",
+  "cell": [
+   74,
+   103
+  ],
+  "anchor": [
+   37,
+   96
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "hybrid_wildfire": {
+  "sheet": "towers/anim/hybrid_wildfire",
+  "cell": [
+   76,
+   101
+  ],
+  "anchor": [
+   38,
+   94
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "nature_eyrie": {
+  "sheet": "towers/anim/nature_eyrie",
+  "cell": [
+   80,
+   123
+  ],
+  "anchor": [
+   40,
+   116
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "nature_thornbush": {
+  "sheet": "towers/anim/nature_thornbush",
+  "cell": [
+   74,
+   97
+  ],
+  "anchor": [
+   37,
+   90
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "storm_skyneedle": {
+  "sheet": "towers/anim/storm_skyneedle",
+  "cell": [
+   66,
+   135
+  ],
+  "anchor": [
+   33,
+   128
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "storm_spire": {
+  "sheet": "towers/anim/storm_spire",
+  "cell": [
+   68,
+   101
+  ],
+  "anchor": [
+   34,
+   94
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_abyssal_trench": {
+  "sheet": "towers/anim/triple_abyssal_trench",
+  "cell": [
+   88,
+   107
+  ],
+  "anchor": [
+   44,
+   100
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_amber_spire": {
+  "sheet": "towers/anim/triple_amber_spire",
+  "cell": [
+   80,
+   117
+  ],
+  "anchor": [
+   40,
+   110
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_boiling_marsh": {
+  "sheet": "towers/anim/triple_boiling_marsh",
+  "cell": [
+   86,
+   101
+  ],
+  "anchor": [
+   43,
+   94
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_cinderstorm": {
+  "sheet": "towers/anim/triple_cinderstorm",
+  "cell": [
+   86,
+   117
+  ],
+  "anchor": [
+   43,
+   110
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_drowned_garden": {
+  "sheet": "towers/anim/triple_drowned_garden",
+  "cell": [
+   86,
+   107
+  ],
+  "anchor": [
+   43,
+   100
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_hellforge": {
+  "sheet": "towers/anim/triple_hellforge",
+  "cell": [
+   84,
+   107
+  ],
+  "anchor": [
+   42,
+   100
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_mire_colossus": {
+  "sheet": "towers/anim/triple_mire_colossus",
+  "cell": [
+   88,
+   103
+  ],
+  "anchor": [
+   44,
+   96
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_mistwraith": {
+  "sheet": "towers/anim/triple_mistwraith",
+  "cell": [
+   80,
+   113
+  ],
+  "anchor": [
+   40,
+   106
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_obsidian_geyser": {
+  "sheet": "towers/anim/triple_obsidian_geyser",
+  "cell": [
+   82,
+   113
+  ],
+  "anchor": [
+   41,
+   106
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_plague_storm": {
+  "sheet": "towers/anim/triple_plague_storm",
+  "cell": [
+   86,
+   117
+  ],
+  "anchor": [
+   43,
+   110
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_polar_rift": {
+  "sheet": "towers/anim/triple_polar_rift",
+  "cell": [
+   86,
+   113
+  ],
+  "anchor": [
+   43,
+   106
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_rainwild": {
+  "sheet": "towers/anim/triple_rainwild",
+  "cell": [
+   88,
+   117
+  ],
+  "anchor": [
+   44,
+   110
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_starfall": {
+  "sheet": "towers/anim/triple_starfall",
+  "cell": [
+   82,
+   117
+  ],
+  "anchor": [
+   41,
+   110
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_storm_eye": {
+  "sheet": "towers/anim/triple_storm_eye",
+  "cell": [
+   86,
+   117
+  ],
+  "anchor": [
+   43,
+   110
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_thunder_geyser": {
+  "sheet": "towers/anim/triple_thunder_geyser",
+  "cell": [
+   80,
+   115
+  ],
+  "anchor": [
+   40,
+   108
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_thunderforge": {
+  "sheet": "towers/anim/triple_thunderforge",
+  "cell": [
+   84,
+   117
+  ],
+  "anchor": [
+   42,
+   110
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_tidal_dynamo": {
+  "sheet": "towers/anim/triple_tidal_dynamo",
+  "cell": [
+   86,
+   113
+  ],
+  "anchor": [
+   43,
+   106
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_tombroot": {
+  "sheet": "towers/anim/triple_tombroot",
+  "cell": [
+   86,
+   113
+  ],
+  "anchor": [
+   43,
+   106
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_witchfire": {
+  "sheet": "towers/anim/triple_witchfire",
+  "cell": [
+   84,
+   111
+  ],
+  "anchor": [
+   42,
+   104
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "triple_worldforge": {
+  "sheet": "towers/anim/triple_worldforge",
+  "cell": [
+   84,
+   115
+  ],
+  "anchor": [
+   42,
+   108
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "void_obelisk": {
+  "sheet": "towers/anim/void_obelisk",
+  "cell": [
+   72,
+   101
+  ],
+  "anchor": [
+   36,
+   94
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ },
+ "water_wellspring": {
+  "sheet": "towers/anim/water_wellspring",
+  "cell": [
+   74,
+   93
+  ],
+  "anchor": [
+   37,
+   86
+  ],
+  "stages": [
+   "l1",
+   "l2",
+   "l3",
+   "a0",
+   "a1"
+  ],
+  "lift": [
+   0,
+   0,
+   0,
+   3,
+   3
+  ],
+  "idle": 8,
+  "idle_fps": 8,
+  "attack": 6,
+  "attack_fps": 18,
+  "attack_peak": 2
+ }
+}

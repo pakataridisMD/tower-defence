@@ -29,8 +29,14 @@ extends Node
 ## Add --bosses to take the bosses' abilities: the red glow on boss stages on the map, a boss healing, raising
 ## its barrier and binding towers, and Vael-Orrun's fireball burning a tower down, plus frames for clips
 ## (<out>/bosses/<boss>/NNNN.png).
+## Add --saves to take the saved games: the title screen with Continue and New game, the new game
+## question, Load game with two games' autosaves and the slots, the Esc menu during a campaign battle
+## with its Save and Load buttons, Save game there with an overwrite question, and a battle loaded back.
 ## Add --story to take the cinematic player, a Herald's boss banner, the final level's defence and counter-attack and
 ## the campaign map with the citadel on it.
+## Add --army to film the counter-attack up close: a mixed army with champions marching on the citadel,
+## fighting the horde and breaking the gates, saved as stills in <out> and numbered frames in <out>/army/.
+## Add --frames=N with --army to set how many frames it films (0 takes the stills only).
 
 const MENU_SCENE := preload("res://scenes/main.tscn")
 const META_TREE_SCENE := preload("res://scenes/meta/meta_tree.tscn")
@@ -56,15 +62,23 @@ var _story := false
 var _bosses := false
 var _heroes := false
 var _menu := false
+var _saves := false
 var _map := false
 var _bigmaps := false
 var _edge := false
 var _powers := false
 var _landmarks := false
+var _army := false
+var _army_frames := 600
 var _horde := &""
 var _look: PackedStringArray = []
 ## With --look: shoot the towers' effects in a fight (shots, hits, a Meteor and a Doom) instead of the look shots.
 var _fx_shots := false
+## --towers[=a,b]: every look of these towers (levels 1-3 and both ascendancies) built beside the road,
+## shot by day and night and filmed idling and firing (frames under clips/towers_<stage>).
+var _tower_looks: PackedStringArray = []
+## --longshot: the three long-range towers built in the middle of a map, firing across it.
+var _longshot := false
 
 
 func _ready() -> void:
@@ -88,18 +102,30 @@ func _ready() -> void:
 			_heroes = true
 		elif arg == "--menu":
 			_menu = true
+		elif arg == "--saves":
+			_saves = true
 		elif arg == "--map":
 			_map = true
 		elif arg == "--bigmaps":
 			_bigmaps = true
 		elif arg == "--powers":
 			_powers = true
+		elif arg == "--army":
+			_army = true
+		elif arg.begins_with("--frames="):
+			_army_frames = int(arg.trim_prefix("--frames="))
 		elif arg == "--landmarks":
 			_landmarks = true
 		elif arg.begins_with("--horde="):
 			_horde = StringName(arg.trim_prefix("--horde="))
 		elif arg == "--fx":
 			_fx_shots = true
+		elif arg == "--longshot":
+			_longshot = true
+		elif arg.begins_with("--towers"):
+			_tower_looks = arg.trim_prefix("--towers").trim_prefix("=").split(",", false)
+			if _tower_looks.is_empty():
+				_tower_looks = PackedStringArray(["fire_brazier", "storm_spire"])
 		elif arg.begins_with("--look"):
 			_look = arg.trim_prefix("--look").trim_prefix("=").split(",", false)
 			if _look.is_empty():
@@ -108,14 +134,22 @@ func _ready() -> void:
 	Progress.use_memory_profile(_demo_profile())
 	# The map's glide down from the whole world would still be moving in the first shots.
 	CampaignScreen.intro_played = true
-	if not _look.is_empty():
+	if not _tower_looks.is_empty():
+		_run_tower_looks()
+	elif not _look.is_empty():
 		_run_look()
+	elif _army:
+		_run_army()
+	elif _longshot:
+		_run_longshot()
 	elif _powers:
 		_run_powers()
 	elif _landmarks:
 		_run_landmarks()
 	elif _menu:
 		_run_menu()
+	elif _saves:
+		_run_saves()
 	elif _map:
 		_run_map()
 	elif _bigmaps:
@@ -381,6 +415,132 @@ func _run_look() -> void:
 		await _shot("look_%s_night" % stage)
 		game.free()
 		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+## Each tower in --towers five times over (levels 1, 2, 3 and both ascendancies) in the free cells nearest
+## a bend of the road, then stills by day and night and a clip of them idling and firing at a wave.
+func _run_tower_looks() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	Progress.active_stage = &"ember_4"
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.2)
+	var sim := game.sim
+	sim.tree.points = 60
+	for id: StringName in [&"fire_entry", &"storm_entry", &"nature_entry", &"water_entry", &"earth_entry", &"void_entry"]:
+		sim.allocate_node(id)
+	var map := sim.config.map
+	var path := map.path_points(0)
+	var target := path[int(path.size() * 0.3)]
+	var cells: Array[Vector2i] = []
+	for y in map.grid_size.y:
+		for x in map.grid_size.x:
+			cells.append(Vector2i(x, y))
+	cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		return map.cell_center(a).distance_to(target) < map.cell_center(b).distance_to(target))
+	var built: Array[Vector2] = []
+	for tower_id in _tower_looks:
+		for stage in 5:
+			for cell in cells:
+				sim.gold = 99999
+				if not sim.can_place(StringName(tower_id), cell):
+					continue
+				var tower := sim.place_tower(StringName(tower_id), cell)
+				if tower == null:
+					continue
+				for i in mini(stage, 2):
+					sim.level_up(tower)
+				if stage >= 3:
+					sim.ascend(tower, tower.data.ascendancies[stage - 3].id)
+				built.append(map.cell_center(cell))
+				break
+	var middle := Vector2.ZERO
+	for p in built:
+		middle += p
+	middle /= maxf(built.size(), 1.0)
+	sim.wave_index = 6
+	_light(game.board.art, DayNight.DAY)
+	game.camera.set_view(1.5, middle)
+	# The stage's title card fades first.
+	await _wait(6.0)
+	await _shot("towers_day")
+	_light(game.board.art, DayNight.NIGHT)
+	await _wait(2.5)
+	await _shot("towers_night")
+	_light(game.board.art, DayNight.DUSK)
+	sim.start_next_wave()
+	await _until(func() -> bool:
+		for enemy in sim.enemies:
+			if enemy.position.distance_to(middle) < 300.0:
+				return true
+		return sim.is_over())
+	var folder := _out.path_join("clips").path_join("towers")
+	DirAccess.make_dir_recursive_absolute(folder)
+	for i in 70:
+		await _wait(0.06)
+		await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png(folder.path_join("%03d.png" % i))
+	await _shot("towers_fight")
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+const LONGSHOT_TOWERS: Array[StringName] = [&"storm_skyneedle", &"nature_eyrie", &"fire_flare_battery"]
+
+
+## The long-range towers: built near the middle of a map in a wave, the whole board with the
+## Skyneedle's range showing, then closer looks at the towers and their shots.
+func _run_longshot() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	Progress.active_stage = &"storm_2"
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.2)
+	var sim := game.sim
+	sim.tree.points = 30
+	for element in ["storm", "nature", "fire"]:
+		sim.allocate_node(StringName("%s_entry" % element))
+		sim.allocate_node(StringName("%s_core" % element))
+	sim.gold = 9000
+	sim.lives = 9999
+	var map := sim.config.map
+	var middle := map.cell_center(map.grid_size / 2)
+	var cells: Array[Vector2i] = []
+	for y in map.grid_size.y:
+		for x in map.grid_size.x:
+			cells.append(Vector2i(x, y))
+	cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:
+		return map.cell_center(a).distance_to(middle) < map.cell_center(b).distance_to(middle))
+	var built: Array[SimTower] = []
+	for tower_id in LONGSHOT_TOWERS:
+		for cell in cells:
+			if sim.can_place(tower_id, cell) and (built.is_empty() or built.all(
+					func(t: SimTower) -> bool: return absi(t.cell.x - cell.x) + absi(t.cell.y - cell.y) >= 4)):
+				built.append(sim.place_tower(tower_id, cell))
+				break
+	var centre := Vector2.ZERO
+	for tower in built:
+		centre += tower.position
+	centre /= maxf(built.size(), 1.0)
+	_light(game.board.art, DayNight.DAY)
+	sim.wave_index = 4
+	sim.start_next_wave()
+	await _until(func() -> bool: return sim.time_in_wave > 16.0 or sim.is_over())
+	game.board.select(built[0])
+	await _wait(0.3)
+	await _shot("longshot_whole_skyneedle_range")
+	game.board.select(null)
+	game.camera.set_view(1.0, centre)
+	await _wait(0.5)
+	await _shot("longshot_x1")
+	game.camera.set_view(2.0, centre)
+	await _wait(0.4)
+	await _shot("longshot_x2")
+	await _wait(0.25)
+	await _shot("longshot_x2_b")
+	game.free()
 	print("Screenshots saved to ", _out)
 	get_tree().quit()
 
@@ -731,6 +891,73 @@ func _run_menu() -> void:
 	get_tree().quit()
 
 
+func _run_saves() -> void:
+	var first: CampaignData = Progress.meta.campaigns_in_order()[0]
+	Progress.meta.profile.stage_stars[first.stages[0].id] = 3
+	# A few slots filled: battles the bot played a few waves into, and a save from the menu.
+	for spec: Array in [[1, first.stages[1].id, 5], [2, &"", 3], [4, first.stages[2].id, 8]]:
+		if (spec[1] as StringName).is_empty():
+			Progress.play_skirmish()
+		else:
+			Progress.meta.profile.stage_stars[first.stages[1].id] = 2
+			Progress.play_stage(spec[1])
+		var sim := RunSim.new(Progress.run_config())
+		var bot := AutoPlayer.for_sim(sim)
+		var elapsed := 0.0
+		while not sim.is_over() and elapsed < 4000.0 and not (sim.wave_index >= spec[2] and sim.state == RunSim.State.BUILDING):
+			bot.act()
+			sim.step(RunSim.STEP)
+			elapsed += RunSim.STEP
+		Progress.save_to_slot(spec[0], RunSnapshot.capture(sim))
+		# Game 1 left its last battle in the middle: its autosave holds it.
+		Progress.autosave_run = RunSnapshot.capture(sim)
+		Progress.autosave()
+	Progress.save_to_slot(7)
+	# A second game, started and played a little, then back to Game 1.
+	Progress.new_game()
+	Progress.meta.profile.stage_stars[first.stages[0].id] = 1
+	Progress.autosave()
+	Progress.load_autosave(1)
+	Progress.pending_run = {}
+	Progress.play_skirmish()
+	var menu := MENU_SCENE.instantiate()
+	add_child(menu)
+	await _wait(0.5)
+	_hover(menu.buttons[&"continue"].get_global_rect().get_center())
+	await _wait(0.2)
+	await _shot("saves_title")
+	menu.ask_new_game()
+	await _wait(0.3)
+	await _shot("saves_new_game")
+	menu.new_game_dialog.hide()
+	menu.open_saves(&"load")
+	_hover(Vector2(4, 4))
+	await _wait(0.3)
+	await _shot("saves_load")
+	menu.free()
+
+	# Load the first slot: the battle comes back where it was saved.
+	Progress.load_from_slot(1)
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.8)
+	await _shot("saves_loaded_battle")
+	game.open_pause_menu()
+	await _wait(0.3)
+	await _shot("saves_pause_menu")
+	game._start_wave()
+	game.close_pause_menu()
+	await _wait(2.0)
+	game.open_saves(&"save")
+	await _wait(0.3)
+	await _shot("saves_in_battle")
+	game.saves_page.ask(&"save", 1)
+	await _wait(0.3)
+	await _shot("saves_overwrite")
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
 func _run() -> void:
 	var menu := MENU_SCENE.instantiate()
 	add_child(menu)
@@ -1037,3 +1264,82 @@ func _shot(shot_name: String) -> void:
 	var path := _out.path_join(shot_name + ".png")
 	var error := get_viewport().get_texture().get_image().save_png(path)
 	print("Saved %s (%s)" % [path, error_string(error)])
+
+
+## The counter-attack up close: a squad of every kind and a few champions march on one road, the
+## camera rides with the front of the army, then sits on the gates while the citadel cracks.
+func _run_army() -> void:
+	Progress.active_stage = &"assault_1"
+	Progress.mark_seen(&"the_turning")
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.3)
+	var sim := game.sim
+	sim.wave_index = sim.config.stage.counter_wave - 1
+	sim.start_next_wave()
+	sim.lives = 9999
+	# The road nearest the middle of the map, so the camera can ride with it.
+	var lane := 0
+	var middle := sim.config.map.size_in_pixels().y * 0.5
+	for i in sim.lane_curves.size():
+		var y := sim.lane_curves[i].sample_baked(sim.lane_lengths[i] * 0.5).y
+		if absf(y - middle) < absf(sim.lane_curves[lane].sample_baked(sim.lane_lengths[lane] * 0.5).y - middle):
+			lane = i
+	var order: Array[StringName] = [&"footman", &"pikeman", &"champion_tamsin", &"crossbowman", &"ember_knight",
+		&"lantern_cleric", &"banner_bearer", &"champion_brannoc", &"ironbreaker", &"warhound", &"root_archer",
+		&"stormcaller", &"champion_kaela", &"battering_ram", &"spire_golem", &"veil_blade", &"griffin_rider",
+		&"gale_lancer", &"tide_priestess", &"firebrand", &"pearl_marine", &"hollow_hunter", &"sunstone_catapult"]
+	var queue := order.duplicate()
+	var follow := Vector2.INF
+	var folder := _out.path_join("army")
+	DirAccess.make_dir_recursive_absolute(folder)
+	var frame := 0
+	var shots := {60: "army_march", 260: "army_clash", 460: "army_battle"}
+	var steps := maxi(_army_frames, 520)
+	for step in steps:
+		if not queue.is_empty() and step % 6 == 0:
+			sim.gold = 99999
+			var id: StringName = queue[0]
+			if sim.config.allies.has(id):
+				sim._muster_cooldowns.erase(id)
+				sim.muster(id, lane)
+			queue.pop_front()
+		follow = _follow_army(game, lane, follow)
+		await get_tree().process_frame
+		if shots.has(step):
+			await _shot(shots[step])
+		if step < _army_frames:
+			await RenderingServer.frame_post_draw
+			get_viewport().get_texture().get_image().save_png(folder.path_join("%04d.png" % frame))
+			frame += 1
+	# At the gates: the citadel's bar and the army breaking it.
+	var citadel: SimEnemy = sim.structures[0]
+	Engine.time_scale = 4.0
+	for id in [&"footman", &"pikeman", &"battering_ram", &"ironbreaker", &"champion_gorrim", &"lantern_cleric"]:
+		sim._muster_cooldowns.erase(id)
+		sim.gold = 99999
+		sim.muster(id, lane)
+	await _until(func() -> bool: return citadel.health < 0.7 * citadel.max_health or sim.is_over())
+	Engine.time_scale = 1.0
+	game.camera.set_view(1.6, sim.lane_curves[lane].sample_baked(60.0) + Vector2(80, 0))
+	await _wait(1.0)
+	await _shot("army_gates")
+	print("Army lines spoken: %d" % game.army_voice.said.size())
+	for line in game.army_voice.said:
+		print("  ", line["id"])
+	print("Saved %d frames to %s" % [frame, folder])
+	get_tree().quit()
+
+
+## Rides with the front of the army on a road: the unit nearest the citadel, eased.
+func _follow_army(game: Game, lane: int, follow: Vector2) -> Vector2:
+	var front: SimAlly = null
+	for ally in game.sim.allies:
+		if ally.alive and ally.lane == lane and (front == null or ally.progress < front.progress):
+			front = ally
+	if front == null:
+		return follow
+	var at := front.position + Vector2(-60, 40)
+	follow = at if follow == Vector2.INF else follow.lerp(at, 0.05)
+	game.camera.set_view(1.6, follow)
+	return follow

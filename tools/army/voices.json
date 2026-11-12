@@ -1,0 +1,45 @@
+{
+ "_about": "Troop voices for the army's shouts (tools/army/voice_shouts.py). Heroes use tools/voice/cast.json.",
+ "gale": {
+  "voice": "Raya - Loud and Reassuring",
+  "voice_id": "3t6439mGAsHvQFPpoPdf",
+  "owner": "e21da34db31d58704b7b2776dcf7db1c31b464e5bffd71727d5f1c4abafafa87",
+  "style": "mortal",
+  "why": "Loud warrior-princess voice with emotional depth: wild Galeborn riders shouting over the wind."
+ },
+ "line": {
+  "voice": "Andy",
+  "voice_id": "kVBPcEMsUF1nsAO1oNWw",
+  "owner": "ad827f2c0300d36094ca79e518b1a5df8c3609eb269353c30dcec3ac8878a437",
+  "style": "mortal",
+  "why": "Gruff, high-energy middle-aged British character voice made for games: the infantry sergeant."
+ },
+ "order": {
+  "voice": "Beth - Calm, Gentle and Nurturing",
+  "voice_id": "8N2ng9i2uiUWqstgmWlH",
+  "owner": "19fcb4e5d0eecf957a34b0ee7f007dfaf98b53a2e66fc5185dbec50e9de84e3e",
+  "style": "mortal",
+  "why": "Warm, steady British woman's voice: a cleric who stays calm under fire."
+ },
+ "stone": {
+  "voice": "Dennis Garber - Slow, Deep and Gravely",
+  "voice_id": "zBjSpfcokeTupfIZ8Ryx",
+  "owner": "8f5cded66f2f06294c02ac8987056e983835ebe3671a49c5856d95264f9a65c5",
+  "style": "mortal",
+  "why": "Slow, deep, gruff and gravelly: Stoneborn shieldbreakers (distinct from Gorrim, Gorrath and Orrok)."
+ },
+ "veil": {
+  "voice": "Romulus - Deep, Mysterious",
+  "voice_id": "7lJ2JuXZKHyck5zlS7XQ",
+  "owner": "69e483c3cb987826e17cdc53d50341dd001f54027dbb6892bb0b7bc933d061ce",
+  "style": "mortal",
+  "why": "Deep, dark and calm, deliberate delivery: cold, quiet Veilwalker hunters."
+ },
+ "wall": {
+  "voice": "Lola - Female Action Character",
+  "voice_id": "KzAyD2tTf9r77ytc2bYC",
+  "owner": "4b939ae9ec7cfd4faecea4e2897cec7bbdf098e3bce27f7c7193179b7729ac35",
+  "style": "mortal",
+  "why": "Powerful, commanding female voice with battle-hardened grit: the hard, loud crossbow line."
+ }
+}
