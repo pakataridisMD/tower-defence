@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"stormrider"
+display_name = "Stormrider"
+max_health = 85.0
+speed = 88.0
+armour = 1.0
+bounty = 6
+leak_damage = 1
+description = "A dead sky-rider on a lightning-maned horse. Every hit it takes spurs it faster for a moment."
+element = &"storm"
+power = &"spur"
+power_duration = 2.0
+power_amount = 0.15
+power_limit = 0.6
+horde = &"sky"
+lore = "Aurath ruled from the saddle, and his riders died in it. The storm still rides them. Lance couched, mane crackling, a Stormrider takes every wound as the touch of a spur."

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"lightdrinker"
+display_name = "Lightdrinker"
+max_health = 65.0
+speed = 68.0
+bounty = 5
+leak_damage = 1
+description = "A Veilwalker who spent all her light on starcraft. Her black lantern dims the towers near her."
+element = &"void"
+power = &"eclipse"
+power_interval = 9.0
+power_duration = 4.0
+power_radius = 170.0
+power_amount = 0.35
+horde = &"hollow"
+lore = "Every spell of starcraft darkens something of the caster: hair, eyes, shadow. Lightdrinkers kept casting after the light ran out, and now they borrow it. Her lantern burns black, and towers in its gloom strike like men fighting in the dark."

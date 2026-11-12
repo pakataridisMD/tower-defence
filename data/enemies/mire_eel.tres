@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"mire_eel"
+display_name = "Mire Eel"
+max_health = 46.0
+speed = 92.0
+bounty = 4
+leak_damage = 1
+tags = Array[StringName]([&"fast"])
+description = "A drowned eel as long as a boat. Every few seconds it dives under the road, out of reach, and swims faster."
+element = &"water"
+power = &"submerge"
+power_interval = 7.0
+power_duration = 2.0
+power_amount = 0.6
+horde = &"tide"
+lore = "Tidelore remembers everything water has touched, and the deep remembers its eels. They slide up the flooded roads in the dark of the Tide's rain, a lantern lure swinging over a mouth of needles, and vanish under the mud the moment anything looks at them."

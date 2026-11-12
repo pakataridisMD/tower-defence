@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"voidmaw"
+display_name = "Voidmaw"
+max_health = 130.0
+speed = 55.0
+armour = 2.0
+bounty = 8
+leak_damage = 2
+description = "A thing that is nearly all mouth. It heals whenever the horde dies near it."
+element = &"void"
+power = &"devour"
+power_radius = 160.0
+power_amount = 0.15
+horde = &"hollow"
+lore = "Something grew in the dark at the bottom of the Rift while the Veilwalkers mapped the stars above it. It has a crown of eyes and a mouth full of other stars, and it follows the horde for what falls."

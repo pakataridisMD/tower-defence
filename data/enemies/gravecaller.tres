@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"gravecaller"
+display_name = "Gravecaller"
+max_health = 80.0
+speed = 60.0
+bounty = 6
+leak_damage = 1
+description = "A deathwalker who walks the road of the dead the wrong way. He calls the horde's fallen back up."
+element = &"void"
+power = &"raise"
+power_interval = 8.0
+power_radius = 180.0
+power_amount = 0.4
+power_limit = 2.0
+horde = &"hollow"
+lore = "Veilwalkers walk the dead to the edge of the dark and leave them there. The Gravecallers walk back carrying them. Where the horde falls near one, the dead get up again, slower, quieter, still marching."

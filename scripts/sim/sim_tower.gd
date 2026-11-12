@@ -41,6 +41,16 @@ var cooldown := 0.0
 var silenced := 0.0
 ## Attacks made so far, for the siege shots of an assault (see RunSim.SIEGE_EVERY).
 var shots := 0
+## What the horde's powers do to it for a while (see EnemyData.power): a Fogwife's fog takes range off,
+## a Netcaster's net slows its attacks, a Lightdrinker's eclipse dims its damage. Seconds left and how much.
+var fog_left := 0.0
+var fog := 0.0
+var net_left := 0.0
+var net := 0.0
+var eclipse_left := 0.0
+var eclipse := 0.0
+## True while a Voiceless stands near: its hits put no effects on anyone. Recomputed every step.
+var hushed := false
 
 var damage := 0.0
 var attacks_per_second := 1.0
@@ -185,3 +195,25 @@ func effect_spec(kind: StringName) -> StatusEffectData:
 		if spec.kind == kind:
 			return spec
 	return null
+
+
+## Range now, after fog.
+func range_now() -> float:
+	return attack_range * (1.0 - clampf(fog, 0.0, 0.9) if fog_left > 0.0 else 1.0)
+
+
+## Damage per hit now, after an eclipse.
+func damage_now() -> float:
+	return damage * (1.0 - clampf(eclipse, 0.0, 0.9) if eclipse_left > 0.0 else 1.0)
+
+
+## Attacks per second now, after a net.
+func rate_now() -> float:
+	return attacks_per_second * (1.0 - clampf(net, 0.0, 0.9) if net_left > 0.0 else 1.0)
+
+
+## Counts down fog, nets and eclipses.
+func tick_hexes(delta: float) -> void:
+	fog_left = maxf(0.0, fog_left - delta)
+	net_left = maxf(0.0, net_left - delta)
+	eclipse_left = maxf(0.0, eclipse_left - delta)

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"voiceless"
+display_name = "Voiceless"
+max_health = 70.0
+speed = 64.0
+bounty = 6
+leak_damage = 1
+description = "A stormsinger who sang her voice away. Towers near her deal damage but their burns, slows and curses do nothing."
+element = &"storm"
+power = &"hush"
+power_radius = 160.0
+horde = &"sky"
+lore = "Stormsong costs the singer's breath and voice. The Voiceless sang until both were gone and kept on singing, mouths sewn shut, hands conducting. Where they walk, the towers' arts fall as silent as they are."

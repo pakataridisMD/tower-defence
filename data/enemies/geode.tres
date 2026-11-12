@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"geode"
+display_name = "Geode Brute"
+max_health = 160.0
+speed = 50.0
+armour = 2.0
+bounty = 9
+leak_damage = 2
+tags = Array[StringName]([&"armoured"])
+description = "A boulder split open on a heart of crystal. Splash, chains and bursts lose most of their bite on its facets."
+element = &"earth"
+power = &"facets"
+power_amount = 0.65
+horde = &"stone"
+lore = "The deepest halls of Kharum hold stones that were never cut, only listened to. Orrok's voice woke them. They stand up split open on hearts of violet crystal, and any blow spread thin across them is scattered like light through a prism."

@@ -61,6 +61,27 @@ var shield_up := false
 ## Seconds left of a war cry's speed, and how much faster it runs meanwhile.
 var haste_left := 0.0
 var haste := 0.0
+# The six hordes' powers (see EnemyData.power).
+## What is left of its ice shell (power "rime_shell").
+var shell := 0.0
+## Hits stacked up (power "accrete") or times grown (power "grow").
+var stacks := 0
+## Armour lent by a Runebearer nearby, recomputed every step.
+var bonus_armour := 0.0
+## True while a Menhir Walker stands near it: no slow holds it and nothing pushes it back. Every step.
+var steady := false
+## True while a Greenwitch is near it: poison heals it. Every step.
+var remedied := false
+## Counts up by the share of hits it dodges; a hit passes through each time it reaches 1 (power "smoke").
+var dodge := 0.0
+## Speed gained by walking unchecked (power "momentum") and from the pack (power "swarm").
+var momentum := 0.0
+var swarm := 0.0
+## Speed from being struck (power "spur"), and for how long.
+var spur := 0.0
+var spur_left := 0.0
+## Raised by a Gravecaller: it pays no bounty and cannot be raised again.
+var raised := false
 
 
 func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
@@ -78,6 +99,8 @@ func _init(p_id: int, p_data: EnemyData, p_health_multiplier: float) -> void:
 	# Spread evenly: the golden ratio walks round the unit interval without bunching.
 	has_power = not p_data.power.is_empty() and fposmod(float(p_id) * 0.618034, 1.0) < p_data.power_share
 	shield_up = has_power and p_data.power == &"block"
+	if has_power and p_data.power == &"rime_shell":
+		shell = p_data.max_health * p_health_multiplier * p_data.power_amount
 	structure = p_data.structure
 	max_health = p_data.max_health * p_health_multiplier
 	health = max_health
@@ -89,11 +112,33 @@ func speed() -> float:
 	if structure or statuses.has(&"stun") or statuses.has(&"root") or downed > 0.0 or is_hardened():
 		return 0.0
 	var slow := 0.0
-	for status: SimStatus in statuses.values():
-		slow = maxf(slow, status.slow)
+	if not unshakable():
+		for status: SimStatus in statuses.values():
+			slow = maxf(slow, status.slow)
 	var rage := data.enrage_speed if enraged else 1.0
 	var cry := 1.0 + haste if haste_left > 0.0 else 1.0
-	return base_speed * rage * cry * (1.0 - clampf(slow, 0.0, 0.9))
+	var boost := 1.0 + momentum + swarm + (spur if spur_left > 0.0 else 0.0)
+	if power_left > 0.0 and (data.power == &"charge" or data.power == &"submerge"):
+		boost += data.power_amount
+	return base_speed * rage * cry * boost * (1.0 - clampf(slow, 0.0, 0.9))
+
+
+## True when nothing can slow it or push it back: a Menhir Walker stands near, or it is charging.
+func unshakable() -> bool:
+	return steady or (power_left > 0.0 and data.power == &"charge")
+
+
+## True while it is under the road (power "submerge").
+func is_submerged() -> bool:
+	return power_left > 0.0 and data.power == &"submerge"
+
+
+## True while any status slows it.
+func is_slowed() -> bool:
+	for status: SimStatus in statuses.values():
+		if status.slow > 0.0:
+			return true
+	return false
 
 
 ## True while it is phased out (power "phase").
@@ -109,7 +154,7 @@ func is_hardened() -> bool:
 ## True while nothing can touch it: lying in a heap before it rises, or phased out. Towers do not
 ## aim at it, and hits, effects and pushes pass it by.
 func untouchable() -> bool:
-	return downed > 0.0 or is_phased()
+	return downed > 0.0 or is_phased() or is_submerged()
 
 
 ## True when it is free to use its power: it has one, and nothing holds it.
@@ -129,14 +174,14 @@ func damage_taken_bonus() -> float:
 func effective_armour() -> float:
 	var shatter: SimStatus = statuses.get(&"shatter")
 	if shatter == null:
-		return armour
-	return maxf(0.0, armour - shatter.armour_reduction * shatter.stacks)
+		return armour + bonus_armour
+	return maxf(0.0, armour + bonus_armour - shatter.armour_reduction * shatter.stacks)
 
 
 ## Pushes the enemy back along the path, up to its knockback allowance. Bosses take half.
 ## Returns how far it moved.
 func knock_back(distance: float) -> float:
-	if untouchable():
+	if untouchable() or unshakable():
 		return 0.0
 	if data.tags.has(&"boss"):
 		distance *= 0.5

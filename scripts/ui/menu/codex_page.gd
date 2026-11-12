@@ -14,6 +14,8 @@ var _picture: TextureRect
 var _name: Label
 var _caption: Label
 var _text: Label
+## A foe's story, under its numbers.
+var _lore: Label
 var _stats: GridContainer
 var _count: Label
 
@@ -78,6 +80,10 @@ func _init() -> void:
 	_stats.add_theme_constant_override("h_separation", 24)
 	_stats.add_theme_constant_override("v_separation", 6)
 	column.add_child(_stats)
+	_lore = UiStyle.menu_label("", "body", 24, UiStyle.MENU_GOLD.darkened(0.25))
+	_lore.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_lore.custom_minimum_size = Vector2(660, 0)
+	column.add_child(_lore)
 	var spacer := Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(spacer)
@@ -147,6 +153,7 @@ func select(id: StringName) -> void:
 	selected = id
 	for child in _stats.get_children():
 		child.queue_free()
+	_lore.text = ""
 	match tab:
 		0:
 			var t: TowerData = DataRegistry.towers.get(id)
@@ -173,7 +180,10 @@ func select(id: StringName) -> void:
 				parts.append(String(e.element).to_upper())
 			for tag in e.tags:
 				parts.append(String(tag).to_upper())
+			if not e.horde.is_empty():
+				parts.append("OF THE " + String(e.horde).to_upper())
 			_caption.text = "  -  ".join(parts)
+			_lore.text = e.lore
 			_text.text = e.description
 			if not e.power_text().is_empty():
 				_text.text += "\n\n" + e.power_text()

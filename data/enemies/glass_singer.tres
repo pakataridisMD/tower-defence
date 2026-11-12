@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"glass_singer"
+display_name = "Glass-Singer"
+max_health = 65.0
+speed = 66.0
+bounty = 6
+leak_damage = 1
+description = "A cold old Kindler who sings glass into being. She wards three allies with glass that stops a tower's blow."
+element = &"fire"
+power = &"glass_ward"
+power_interval = 7.0
+power_radius = 160.0
+power_limit = 3.0
+horde = &"flame"
+lore = "Kindlers pay with their own heat. The Glass-Singers sang sand into glass until they had none left: their arms are blue, their rune tattoos still glowing. Their song hangs panes of ringing glass before the horde, and each one stops a single blow before it shatters."

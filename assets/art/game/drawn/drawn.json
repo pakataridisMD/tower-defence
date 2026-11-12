@@ -65,6 +65,156 @@
   ],
   "source": "ashwick"
  },
+ "barkhulk": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 8,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "grow"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   64,
+   110
+  ],
+  "frame": [
+   128,
+   142
+  ],
+  "source": "barkhulk"
+ },
+ "brass_juggernaut": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "momentum"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   64,
+   98
+  ],
+  "frame": [
+   128,
+   130
+  ],
+  "source": "brass_juggernaut"
+ },
+ "briar_stag": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 14,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "bound"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   62,
+   88
+  ],
+  "frame": [
+   124,
+   120
+  ],
+  "source": "briar_stag"
+ },
+ "briarling": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 14,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "swarm"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   46,
+   60
+  ],
+  "frame": [
+   92,
+   92
+  ],
+  "source": "briarling"
+ },
+ "brinecaller": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "douse"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   54,
+   84
+  ],
+  "frame": [
+   108,
+   116
+  ],
+  "source": "brinecaller"
+ },
  "broodmother": {
   "anims": {
    "attack": {
@@ -171,6 +321,36 @@
   ],
   "source": "cinder_tyrant"
  },
+ "cinderhound": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 12,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "fireborn"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   61,
+   70
+  ],
+  "frame": [
+   122,
+   102
+  ],
+  "source": "cinderhound"
+ },
  "crownless_throne": {
   "anims": {
    "attack": {
@@ -203,6 +383,66 @@
    276
   ],
   "source": "crownless_throne"
+ },
+ "fogwife": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 12,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "fog"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   54,
+   88
+  ],
+  "frame": [
+   108,
+   120
+  ],
+  "source": "fogwife"
+ },
+ "gale_harpy": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 14,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "tailwind"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   61,
+   86
+  ],
+  "frame": [
+   122,
+   118
+  ],
+  "source": "gale_harpy"
  },
  "gatemaw": {
   "anims": {
@@ -237,6 +477,66 @@
   ],
   "source": "gatemaw"
  },
+ "geode": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 12,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "facets"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   63,
+   90
+  ],
+  "frame": [
+   126,
+   122
+  ],
+  "source": "geode"
+ },
+ "glass_singer": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "glass_ward"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   54,
+   84
+  ],
+  "frame": [
+   108,
+   116
+  ],
+  "source": "glass_singer"
+ },
  "gorrath": {
   "anims": {
    "attack": {
@@ -269,6 +569,66 @@
    212
   ],
   "source": "gorrath"
+ },
+ "gravecaller": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "raise"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   55,
+   86
+  ],
+  "frame": [
+   110,
+   118
+  ],
+  "source": "gravecaller"
+ },
+ "greenwitch": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "remedy"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   54,
+   84
+  ],
+  "frame": [
+   108,
+   116
+  ],
+  "source": "greenwitch"
  },
  "grunt": {
   "anims": {
@@ -409,6 +769,36 @@
   ],
   "source": "tidal_leviathan"
  },
+ "lightdrinker": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "eclipse"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   53,
+   88
+  ],
+  "frame": [
+   106,
+   120
+  ],
+  "source": "lightdrinker"
+ },
  "mender": {
   "anims": {
    "attack": {
@@ -448,6 +838,66 @@
    114
   ],
   "source": "elf"
+ },
+ "menhir": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "steadfast"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   54,
+   106
+  ],
+  "frame": [
+   108,
+   138
+  ],
+  "source": "menhir"
+ },
+ "mire_eel": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 12,
+    "frames": 6,
+    "hold": 5,
+    "loop": false,
+    "power": "submerge"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   67,
+   64
+  ],
+  "frame": [
+   134,
+   96
+  ],
+  "source": "mire_eel"
  },
  "mirror_spire": {
   "anims": {
@@ -548,6 +998,66 @@
   ],
   "source": "mountain_titan"
  },
+ "netcaster": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 14,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "net"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   56,
+   82
+  ],
+  "frame": [
+   112,
+   114
+  ],
+  "source": "netcaster"
+ },
+ "oathbroken": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 12,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "accrete"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   56,
+   80
+  ],
+  "frame": [
+   112,
+   112
+  ],
+  "source": "oathbroken"
+ },
  "pale_vesper": {
   "anims": {
    "attack": {
@@ -580,6 +1090,96 @@
    206
   ],
   "source": "vesper"
+ },
+ "quarry_hound": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 14,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "charge"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   61,
+   72
+  ],
+  "frame": [
+   122,
+   104
+  ],
+  "source": "quarry_hound"
+ },
+ "rimeback": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "rime_shell"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   67,
+   78
+  ],
+  "frame": [
+   134,
+   110
+  ],
+  "source": "rimeback"
+ },
+ "runebearer": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "bulwark"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   56,
+   98
+  ],
+  "frame": [
+   112,
+   130
+  ],
+  "source": "runebearer"
  },
  "runner": {
   "anims": {
@@ -654,6 +1254,36 @@
   ],
   "source": "ourra"
  },
+ "seedsower": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 12,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "sow"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   54,
+   84
+  ],
+  "frame": [
+   108,
+   116
+  ],
+  "source": "seedsower"
+ },
  "shardling": {
   "anims": {
    "attack": {
@@ -686,6 +1316,96 @@
    102
   ],
   "source": "orb_earth"
+ },
+ "slagwalker": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 14,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "meltdown"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   59,
+   86
+  ],
+  "frame": [
+   118,
+   118
+  ],
+  "source": "slagwalker"
+ },
+ "smoke_wraith": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 16,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "smoke"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   54,
+   88
+  ],
+  "frame": [
+   108,
+   120
+  ],
+  "source": "smoke_wraith"
+ },
+ "spark_wisp": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 14,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "static"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   46,
+   64
+  ],
+  "frame": [
+   92,
+   96
+  ],
+  "source": "spark_wisp"
  },
  "splitter": {
   "anims": {
@@ -726,6 +1446,66 @@
    128
   ],
   "source": "golem"
+ },
+ "squall_witch": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 12,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "gust"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   57,
+   86
+  ],
+  "frame": [
+   114,
+   118
+  ],
+  "source": "squall_witch"
+ },
+ "stormrider": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 14,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "spur"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   65,
+   90
+  ],
+  "frame": [
+   130,
+   122
+  ],
+  "source": "stormrider"
  },
  "sundered_heart": {
   "anims": {
@@ -793,6 +1573,36 @@
   ],
   "source": "thunderhead"
  },
+ "umbral_stalker": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 14,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "stalk"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   63,
+   68
+  ],
+  "frame": [
+   126,
+   100
+  ],
+  "source": "umbral_stalker"
+ },
  "vael_orrun": {
   "anims": {
    "attack": {
@@ -858,6 +1668,96 @@
    186
   ],
   "source": "vholt"
+ },
+ "voiceless": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 10,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "hush"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   54,
+   84
+  ],
+  "frame": [
+   108,
+   116
+  ],
+  "source": "voiceless"
+ },
+ "voidmaw": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 12,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "devour"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   60,
+   82
+  ],
+  "frame": [
+   120,
+   114
+  ],
+  "source": "voidmaw"
+ },
+ "wailing_widow": {
+  "anims": {
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "power": {
+    "fps": 12,
+    "frames": 8,
+    "hold": -1,
+    "loop": false,
+    "power": "wail"
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   53,
+   86
+  ],
+  "frame": [
+   106,
+   118
+  ],
+  "source": "wailing_widow"
  },
  "warded": {
   "anims": {

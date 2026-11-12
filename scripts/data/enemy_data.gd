@@ -70,6 +70,48 @@ extends Resource
 ##            outright. Skills, bursts and burns get past it.
 ## &"breath" - every power_interval seconds it breathes fire on the strongest tower within
 ##             power_radius pixels, which stops attacking for power_duration seconds.
+## The thirty kinds of the six hordes (tools/campaign/horde.py) have one power each:
+## &"douse" - every power_interval s it washes burns, poison and slows off allies within power_radius.
+## &"net" - every power_interval s it nets the strongest tower within power_radius: it attacks
+##          power_amount slower for power_duration s.
+## &"submerge" - every power_interval s it dives under the road for power_duration s: out of reach, and
+##               power_amount faster.
+## &"fog" - every power_interval s towers within power_radius lose power_amount of their range for
+##          power_duration s.
+## &"rime_shell" - a shell worth power_amount of its health soaks up damage; it grows back power_interval s
+##                 after it breaks.
+## &"accrete" - every tower hit adds power_amount armour, up to power_limit hits.
+## &"charge" - every power_interval s it charges for power_duration s: power_amount faster, and it cannot be
+##             slowed or pushed back meanwhile.
+## &"bulwark" - other enemies within power_radius gain power_amount armour.
+## &"facets" - splash, chain, skill and burst damage to it is cut by power_amount.
+## &"steadfast" - enemies within power_radius, itself too, cannot be slowed or pushed back.
+## &"eclipse" - every power_interval s towers within power_radius deal power_amount less damage for
+##              power_duration s.
+## &"stalk" - towers only see it within power_amount of their range.
+## &"raise" - every power_interval s it raises up to power_limit of the horde that died within power_radius
+##            in the last few seconds, at power_amount of their health and paying no bounty.
+## &"wail" - when it dies, towers within power_radius are silenced for power_duration s.
+## &"devour" - when another enemy dies within power_radius, it heals power_amount of its health.
+## &"fireborn" - burns heal it instead of hurting it, and slows wear off power_amount times as fast.
+## &"smoke" - power_amount of tower hits pass straight through it (every third or so, in turn).
+## &"glass_ward" - every power_interval s it wards up to power_limit allies within power_radius: each ward
+##                 blocks the next tower hit, as a shield does.
+## &"meltdown" - every tower hit strips power_amount armour off it.
+## &"momentum" - it gains power_amount speed a second, up to power_limit; a slow, stun, root or push resets it.
+## &"tailwind" - every power_interval s it and the enemies within power_radius are carried power_amount
+##               pixels down the road.
+## &"static" - the tower that kills it is silenced for power_duration s.
+## &"hush" - towers within power_radius still hit but put no effects on anyone.
+## &"spur" - every tower hit makes it power_amount faster for power_duration s, stacking up to power_limit.
+## &"gust" - every power_interval s it blows every tower shot within power_radius out of the air.
+## &"swarm" - every other enemy of its kind within power_radius makes it power_amount faster, up to power_limit.
+## &"sow" - every power_interval s it plants a seed on the road that sprouts power_amount of the `summon`
+##          enemy power_duration s later.
+## &"remedy" - poison on enemies within power_radius, itself too, heals them instead.
+## &"bound" - when it is slowed and the power is ready, it leaps power_amount pixels down the road and
+##            shakes the slow off. Then it waits power_interval s.
+## &"grow" - every power_interval s it grows by power_amount of its health, up to power_limit times.
 ## Stunned or rooted enemies cannot use a power.
 @export var power: StringName
 @export var power_interval: float = 0.0
@@ -79,6 +121,15 @@ extends Resource
 ## Share of this kind that carries the power, 0 to 1, picked evenly as they come. Below 1 the ones
 ## with the power are marked out (a grunt's eyes burn).
 @export_range(0.0, 1.0) var power_share: float = 1.0
+## A cap some powers need: stacks of accrete or grow, allies warded, the dead raised, the most speed gained.
+@export var power_limit: float = 0.0
+
+@export_group("Lore")
+## Which land's horde it marches with: &"tide", &"stone", &"hollow", &"flame", &"sky" or &"grove". Empty
+## for the first horde and the bosses.
+@export var horde: StringName
+## A short paragraph for the codex.
+@export_multiline var lore: String
 
 @export_group("Structure")
 ## A building of the enemy base in an assault: it never moves and never leaks. Towers shoot it
@@ -104,6 +155,66 @@ func power_text() -> String:
 			return "Raises its shield every %.1f s: the next tower hit is blocked outright." % power_interval
 		&"breath":
 			return "Every %.0f s it breathes fire on the strongest tower near it, silencing it for %.1f s." % [power_interval, power_duration]
+		&"douse":
+			return "Every %.0f s it washes burns, poison and slows off the horde around it." % power_interval
+		&"net":
+			return "Every %.0f s it nets the strongest tower near it: that tower attacks %d%% slower for %.1f s." % [power_interval, roundi(power_amount * 100.0), power_duration]
+		&"submerge":
+			return "Every %.0f s it dives under the road for %.1f s: nothing can reach it, and it swims %d%% faster." % [power_interval, power_duration, roundi(power_amount * 100.0)]
+		&"fog":
+			return "Every %.0f s its fog takes %d%% off the range of the towers near it for %.1f s." % [power_interval, roundi(power_amount * 100.0), power_duration]
+		&"rime_shell":
+			return "An ice shell worth %d%% of its health soaks up damage. It grows back %.0f s after it breaks." % [roundi(power_amount * 100.0), power_interval]
+		&"accrete":
+			return "Every tower hit grows %d more armour over it, up to %d." % [roundi(power_amount), roundi(power_amount * power_limit)]
+		&"charge":
+			return "Every %.0f s it charges for %.1f s, %d%% faster. Charging, it cannot be slowed or pushed." % [power_interval, power_duration, roundi(power_amount * 100.0)]
+		&"bulwark":
+			return "The horde near it has %d more armour." % roundi(power_amount)
+		&"facets":
+			return "Splash, chains, skills and bursts deal %d%% less damage to it." % roundi(power_amount * 100.0)
+		&"steadfast":
+			return "The horde near it, and it, cannot be slowed or pushed back."
+		&"eclipse":
+			return "Every %.0f s its black lantern dims the towers near it: %d%% less damage for %.1f s." % [power_interval, roundi(power_amount * 100.0), power_duration]
+		&"stalk":
+			return "Towers only see it within %d%% of their range." % roundi(power_amount * 100.0)
+		&"raise":
+			return "Every %.0f s it raises up to %d of the horde that fell near it, at %d%% health." % [power_interval, roundi(power_limit), roundi(power_amount * 100.0)]
+		&"wail":
+			return "When it dies, the towers near it are silenced for %.1f s." % power_duration
+		&"devour":
+			return "When the horde dies near it, it heals %d%% of its health." % roundi(power_amount * 100.0)
+		&"fireborn":
+			return "Burns heal it instead of hurting it, and slows wear off %d times as fast." % roundi(power_amount)
+		&"smoke":
+			return "About %d%% of tower hits go straight through it." % roundi(power_amount * 100.0)
+		&"glass_ward":
+			return "Every %.0f s it wards up to %d of the horde near it in glass that blocks the next tower hit." % [power_interval, roundi(power_limit)]
+		&"meltdown":
+			return "Every tower hit knocks %.1f armour off its slag plate." % power_amount
+		&"momentum":
+			return "It gains %d%% speed every second, up to %d%%. A slow, stun or push resets it." % [roundi(power_amount * 100.0), roundi(power_limit * 100.0)]
+		&"tailwind":
+			return "Every %.0f s its wings carry it and the horde near it down the road." % power_interval
+		&"static":
+			return "The tower that kills it is silenced for %.1f s." % power_duration
+		&"hush":
+			return "Towers near it put no burns, slows, stuns or curses on anyone."
+		&"spur":
+			return "Every hit makes it %d%% faster for %.0f s, stacking up to %d%%." % [roundi(power_amount * 100.0), power_duration, roundi(power_limit * 100.0)]
+		&"gust":
+			return "Every %.0f s it blows the towers' shots near it out of the air." % power_interval
+		&"swarm":
+			return "Every other of its kind near it makes it %d%% faster, up to %d%%." % [roundi(power_amount * 100.0), roundi(power_limit * 100.0)]
+		&"sow":
+			return "Every %.0f s it plants a seed that sprouts %d more %.0f s later." % [power_interval, roundi(power_amount), power_duration]
+		&"remedy":
+			return "Poison heals the horde near her instead of hurting it."
+		&"bound":
+			return "Slowed, it leaps clear down the road and shakes it off. Then it needs %.0f s." % power_interval
+		&"grow":
+			return "Every %.0f s it grows %d%% more health, up to %d times." % [power_interval, roundi(power_amount * 100.0), roundi(power_limit)]
 	return ""
 
 
@@ -145,6 +256,66 @@ func trait_words() -> PackedStringArray:
 			words.append("blocks hits")
 		&"breath":
 			words.append("scorches towers")
+		&"douse":
+			words.append("cleanses the horde")
+		&"net":
+			words.append("nets towers")
+		&"submerge":
+			words.append("dives under")
+		&"fog":
+			words.append("fogs towers")
+		&"rime_shell":
+			words.append("ice shell")
+		&"accrete":
+			words.append("armours up when hit")
+		&"charge":
+			words.append("charges")
+		&"bulwark":
+			words.append("armours the horde")
+		&"facets":
+			words.append("resists splash")
+		&"steadfast":
+			words.append("steadies the horde")
+		&"eclipse":
+			words.append("dims towers")
+		&"stalk":
+			words.append("hidden")
+		&"raise":
+			words.append("raises the dead")
+		&"wail":
+			words.append("death wail")
+		&"devour":
+			words.append("feeds on the dead")
+		&"fireborn":
+			words.append("healed by fire")
+		&"smoke":
+			words.append("dodges hits")
+		&"glass_ward":
+			words.append("wards the horde")
+		&"meltdown":
+			words.append("armour melts")
+		&"momentum":
+			words.append("builds speed")
+		&"tailwind":
+			words.append("tailwind")
+		&"static":
+			words.append("shocks its killer")
+		&"hush":
+			words.append("hushes towers")
+		&"spur":
+			words.append("spurred by hits")
+		&"gust":
+			words.append("blows shots away")
+		&"swarm":
+			words.append("pack speed")
+		&"sow":
+			words.append("sows Briarlings")
+		&"remedy":
+			words.append("poison heals")
+		&"bound":
+			words.append("leaps free")
+		&"grow":
+			words.append("grows")
 	if armour >= 10.0:
 		words.append("heavily armoured")
 	return words

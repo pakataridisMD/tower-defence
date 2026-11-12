@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"spark_wisp"
+display_name = "Spark Wisp"
+max_health = 28.0
+speed = 118.0
+bounty = 3
+leak_damage = 1
+tags = Array[StringName]([&"fast"])
+description = "A crackling scrap of a dead stormsinger's last note. The tower that kills it is shocked silent for 2 s."
+element = &"storm"
+power = &"static"
+power_duration = 2.0
+horde = &"sky"
+lore = "A stormsinger's last note does not end when the singer does. On the Steppe they drift in shoals, skulls of white light inside balls of lightning, and they give the shock back to whatever puts them out."

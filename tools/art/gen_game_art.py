@@ -2400,9 +2400,12 @@ def drawn_enemy(eid: str) -> dict | None:
     return meta
 
 
-def enemy_art(eid: str) -> dict:
+def enemy_art(eid: str) -> dict | None:
+    """Its hand-drawn art if there is some, else the code-drawn recipe, else None."""
     drawn = drawn_enemy(eid)
-    return drawn if drawn is not None else ENEMIES[eid]()
+    if drawn is not None:
+        return drawn
+    return ENEMIES[eid]() if eid in ENEMIES else None
 
 
 def main() -> None:
@@ -2417,8 +2420,9 @@ def main() -> None:
     if enemies_only:
         art["enemies"] = {}
         for eid in sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("data/enemies/*.tres")):
-            if eid in ENEMIES:
-                art["enemies"][eid] = enemy_art(eid)
+            meta = enemy_art(eid)
+            if meta is not None:
+                art["enemies"][eid] = meta
         with open(os.path.join(OUT, "art.json"), "w") as fh:
             json.dump(art, fh, indent=1)
         print("Wrote the enemies in", OUT, "and", write_missing_imports(), "import files")
@@ -2439,8 +2443,9 @@ def main() -> None:
         print("Wrote the towers in", OUT, "and", write_missing_imports(), "import files")
         return
     for eid in sorted(os.path.splitext(os.path.basename(p))[0] for p in glob.glob("data/enemies/*.tres")):
-        if eid in ENEMIES:
-            art["enemies"][eid] = enemy_art(eid)
+        meta = enemy_art(eid)
+        if meta is not None:
+            art["enemies"][eid] = meta
         else:
             print("No art recipe for enemy", eid, "- the game draws a placeholder")
     art["props"] = make_props()

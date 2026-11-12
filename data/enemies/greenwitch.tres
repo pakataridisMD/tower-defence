@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"greenwitch"
+display_name = "Greenwitch"
+max_health = 70.0
+speed = 64.0
+bounty = 6
+leak_damage = 1
+description = "A Deepwood apothecary. Poison on the horde near her heals it instead of hurting it."
+element = &"nature"
+power = &"remedy"
+power_radius = 150.0
+horde = &"grove"
+lore = "Healing and poison are the same craft in the Green Realm, a matter of dose. The Greenwitches never forgot it. Around her, the venom of Nature's own towers turns to medicine."

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"barkhulk"
+display_name = "Barkhulk"
+max_health = 180.0
+speed = 42.0
+armour = 3.0
+bounty = 11
+leak_damage = 3
+tags = Array[StringName]([&"armoured"])
+description = "An ancient oak torn up and walking. Every 6 s it grows, gaining a tenth more health, up to five times."
+element = &"nature"
+power = &"grow"
+power_interval = 6.0
+power_amount = 0.1
+power_limit = 5.0
+horde = &"grove"
+lore = "Rootcraft costs time, and the Barkhulks are made of it: oaks older than the Concord, torn up by the roots when the Green Queen's madness called them. They keep growing as they walk. The longer one lives, the bigger it gets."

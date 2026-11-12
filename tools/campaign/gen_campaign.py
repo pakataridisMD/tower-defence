@@ -22,6 +22,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import maps  # noqa: E402  (the big winding maps are grown from the sketches below)
+import horde as hordes  # noqa: E402  (the thirty kinds of the six hordes, tools/campaign/horde.py)
 
 RING = ["fire", "storm", "nature", "water", "earth", "void"]
 NAMES = {"fire": "Fire", "storm": "Storm", "nature": "Nature", "water": "Water", "earth": "Earth", "void": "Void"}
@@ -182,7 +183,7 @@ CAMPAIGNS = [
         ],
     },
     {
-        "id": "convergence", "element": "", "name": "The Convergence",
+        "id": "convergence", "element": "", "name": "The Convergence", "all_hordes": True,
         "tagline": "Every element, every road",
         "description": "With the six Wardens freed, every road on the ring leads to its broken heart. All six "
                        "elements are yours again, and every horde comes at once.",
@@ -405,6 +406,21 @@ STREAM, PACKS, SURGE, SCATTER = 0, 1, 2, 3
 
 ENEMY_NAMES = {"grunt": "Grunt", "runner": "Runner", "brute": "Brute", "mender": "Mender", "splitter": "Splitter",
                "warded": "Warded", "shardling": "Shardling"}
+ENEMY_NAMES.update({r[0]: r[1] for r in hordes.ROSTER})
+# Each kind of the six hordes: health, and how it walks in (a pack, a line or a few heavy ones apart).
+HORDE_HEALTH = {r[0]: r[3] for r in hordes.ROSTER}
+# The horde that invades each element campaign's land (horde.HOSTS), and every kind in roster order.
+HORDE_OF = {h["campaign"]: host for host, h in hordes.HOSTS.items()}
+ALL_HORDE = [r[0] for r in hordes.ROSTER]
+
+
+def horde_kinds(campaign, stage_index):
+    """The kinds of the land's own horde met by this stage: two in the first stage, then one more per
+    stage. The Convergence and the assault meet all thirty."""
+    host = HORDE_OF.get(campaign.get("id", ""))
+    if host is None:
+        return ALL_HORDE if campaign.get("all_hordes") else []
+    return hordes.ids_of(host)[:2 + stage_index]
 
 
 def G(enemy, count, interval, delay=0.0, pattern=STREAM, lane=-1, pack=5, gap=4.0, element=None):
@@ -536,6 +552,49 @@ def beat_second(w, c):
                                                  G("runner", 2 * c["p"], 0.6, 2.0, SCATTER)])
 
 
+def beat_horde(w, c):
+    """The land's own horde: one of its kinds each wave (the stage's newest every third wave), two
+    from the sixth wave on. Light kinds come in packs, heavy ones a few and far apart."""
+    kinds = c.get("horde", [])
+    if not kinds:
+        return
+    at = c["w"] * 7 + c["stage"] * 3 if len(kinds) > 6 else c["w"] + c["stage"]
+    picks = [kinds[-1] if c["w"] % 3 == 0 and c["stage"] > 0 and len(kinds) <= 6 else kinds[at % len(kinds)]]
+    if c["w"] >= 6 and len(kinds) > 1:
+        other = kinds[(at + 1) % len(kinds)]
+        if other not in picks:
+            picks.append(other)
+    groups = []
+    base = 2 + c["w"] // 3 + c["stage"]
+    for k, kind in enumerate(picks):
+        hp = HORDE_HEALTH[kind]
+        delay = 2.5 * k
+        if hp <= 30:
+            n = base * 2.5
+            groups.append(G(kind, n, tight(c, 0.3), delay, PACKS, pack=6, gap=3.0))
+        elif hp <= 60:
+            groups.append(G(kind, base * 1.4, tight(c, 0.5), delay, PACKS, pack=4, gap=3.0))
+        elif hp <= 100:
+            groups.append(G(kind, base * 0.9, 1.0, delay))
+        elif hp <= 150:
+            groups.append(G(kind, base * 0.55, 1.8, delay))
+        else:
+            groups.append(G(kind, base * 0.4, 2.6, delay))
+    names = [plural(ENEMY_NAMES[kind]) for kind in picks]
+    w.beat(" and ".join(names), groups)
+
+
+def plural(name):
+    """'Fogwives', 'Squall Witches', 'the Oathbroken', 'Voiceless'."""
+    if name.endswith("wife"):
+        return name[:-4] + "wives"
+    if name.endswith("ch"):
+        return name + "es"
+    if name in ("Oathbroken", "Voiceless"):
+        return "the " + name
+    return name + "s"
+
+
 def beat_swarm(w, c):
     kind = "splitter" if c["w"] % 2 else "mender"
     w.beat("a mixed swarm", [G(kind, 2 + c["w"] // 3, 1.0, pattern=SCATTER), G("grunt", 3 * c["p"], 0.7, 1.0, SCATTER)])
@@ -581,7 +640,8 @@ def context(campaign, stage_index, w, n, lanes, converge=False):
     beats = 1 + w // 3 + stage_index // 2 + (1 if converge else 0)
     p *= 0.7 + 0.3 * min((w - 1) / 4.0, 1.0)
     return {"w": w, "n": n, "stage": stage_index, "p": p, "beats": beats, "lanes": lanes,
-            "sig": campaign.get("signature", "grunt"), "second": campaign.get("second", "brute")}
+            "sig": campaign.get("signature", "grunt"), "second": campaign.get("second", "brute"),
+            "horde": horde_kinds(campaign, stage_index)}
 
 
 def plan_waves(campaign, stage_index, n, extra, lanes=1):
@@ -607,6 +667,9 @@ def plan_waves(campaign, stage_index, n, extra, lanes=1):
             required.append(beat_second)
         if converge and w >= 3:
             required.append(beat_swarm)
+        # The land's own horde, from the second wave on.
+        if w >= 2 and c["horde"]:
+            required.append(beat_horde)
         boss = False
         if w == n and "boss" in extra:
             # The Warden: an opening column, then the Warden under escort, its brood behind it.
@@ -616,6 +679,7 @@ def plan_waves(campaign, stage_index, n, extra, lanes=1):
             beat_bosses(wave, [extra["boss"]], 0.0)
             beat_escort(wave, c)
             beat_signature(wave, c)
+            beat_horde(wave, c)
             beat_flank(wave, c)
             beat_surge(wave, c)
             # The Warden leads the list (the game and the tests look for it there).
@@ -627,6 +691,7 @@ def plan_waves(campaign, stage_index, n, extra, lanes=1):
             beat_bosses(wave, extra["boss_pair"], 6.0)
             beat_runner_packs(wave, c)
             beat_swarm(wave, c)
+            beat_horde(wave, c)
             (beat_pincer if lanes > 1 else beat_flank)(wave, c)
             beat_surge(wave, c)
             wave.groups.sort(key=lambda g: 0 if g["enemy"] in extra["boss_pair"] else 1)
@@ -637,6 +702,7 @@ def plan_waves(campaign, stage_index, n, extra, lanes=1):
             beat_bosses(wave, extra["echoes"][w], 8.0)
             beat_runner_packs(wave, c)
             beat_swarm(wave, c)
+            beat_horde(wave, c)
             beat_flank(wave, c)
             beat_surge(wave, c)
         else:
@@ -768,7 +834,7 @@ def plan_assault_waves(stage):
     extras = ["mender", "splitter", "warded", "brute"]
     lanes = len(stage["lanes"])
     for w in range(1, stage["waves"] + 1):
-        horde = {"signature": extras[w % 4], "second": extras[(w + 1) % 4]}
+        horde = {"signature": extras[w % 4], "second": extras[(w + 1) % 4], "all_hordes": True}
         c = context(horde, 1, w, stage["waves"], lanes)
         c["p"] = 1.1 + 0.05 * (w - 1)
         c["beats"] = 1 + w // 12
@@ -779,6 +845,8 @@ def plan_assault_waves(stage):
             required.append(beat_second)
         if w % 3 == 0:
             required.append(beat_escort)
+        if w >= 2:
+            required.append(beat_horde)
         wave = compose(c, required, closer=False)
         boss = w in stage["echoes"]
         if boss:

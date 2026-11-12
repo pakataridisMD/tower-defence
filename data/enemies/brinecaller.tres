@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_enemy"]
+
+[resource]
+script = ExtResource("1_enemy")
+id = &"brinecaller"
+display_name = "Brinecaller"
+max_health = 70.0
+speed = 66.0
+bounty = 5
+leak_damage = 1
+description = "A drowned tide-priest. Its brine puts out burns and washes poison and frost off the horde around it."
+element = &"water"
+power = &"douse"
+power_interval = 6.0
+power_radius = 150.0
+horde = &"tide"
+lore = "Tidefolk priests are drowned under the ice to be initiated and brought back up by their own people. These were brought back by the Saltmother instead. They came up still praying, salt in their mouths, ladling the cold sea over anything that burns."
