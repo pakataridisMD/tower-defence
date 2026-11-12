@@ -29,10 +29,11 @@ EYES = (255, 244, 214)
 INK = (14, 6, 8)
 
 
-def _flame(s, x, y, h, w, seed):
+def _flame(s, x, y, h, w, seed, pal=None):
     """A tall pillar of fire rising from (x, y): wavering tongues of five heats, hottest at the root."""
     rng = np.random.default_rng(seed)
-    for layer, col in enumerate(HOT[1:]):
+    pal = pal or HOT
+    for layer, col in enumerate(pal[1:]):
         sc = 1.0 - layer * 0.18
         for k in range(7):
             dx = (k - 3) * w * 0.24 * sc
@@ -49,7 +50,7 @@ def _flame(s, x, y, h, w, seed):
             s.fill(s.poly(pts + right[::-1]), col, glow=True)
         s.fill(s.ellipse(x, y - 2, w * 0.6 * sc + 1, w * 0.3 * sc + 1), col, glow=True)
     for _ in range(14):                                                                   # sparks flying off the top
-        s.px(x + rng.uniform(-w, w), y - h * rng.uniform(0.6, 1.25), HOT[int(rng.integers(2, 5))], glow=True)
+        s.px(x + rng.uniform(-w, w), y - h * rng.uniform(0.6, 1.25), pal[int(rng.integers(2, len(pal) - 1))], glow=True)
 
 
 def _shards(s, pts, tones, seed, n=7, ln=(10, 26), down=True):
@@ -272,6 +273,25 @@ def _veins(s, m, x0, y0, x1, y1, r0, r1, n, seed):
         _vein(s, m, br, 0.7)
 
 
+_FORM = [1]
+
+
+def _fissure(s, m, x, y, a, ln, seed, w=1.3):
+    """A jagged crack of Heartstone fire splitting the muscle open."""
+    rng = np.random.default_rng(seed)
+    pts = [(x, y)]
+    for _ in range(int(ln / 5)):
+        a += rng.uniform(-0.6, 0.6)
+        x, y = x + math.cos(a) * 5, y + math.sin(a) * 5
+        pts.append((x, y))
+    for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+        s.fill(s.capsule(x0, y0, x1, y1, w + 0.8) & m & ~s.glow, FLESH[0])
+    for k, ((x0, y0), (x1, y1)) in enumerate(zip(pts, pts[1:])):
+        ww = w * (1 - k / len(pts) * 0.6)
+        s.fill(s.capsule(x0, y0, x1, y1, ww) & m, HOT[1], glow=True)
+        s.fill(s.capsule(x0, y0, x1, y1, ww * 0.45) & m, HOT[3], glow=True)
+
+
 def _mlimb(s, x0, y0, x1, y1, r0, r1, belly=0.38, bk=1.0, veins=2, seed=0):
     """A hard-muscled limb in flat planes: dark base, lit side, a bulging belly with a hot spot, a seam on the shadow side."""
     m = s.capsule(x0, y0, x1, y1, r0, r1)
@@ -292,6 +312,12 @@ def _mlimb(s, x0, y0, x1, y1, r0, r1, belly=0.38, bk=1.0, veins=2, seed=0):
     _fibres(s, m, x0, y0, x1, y1, r0, r1)
     _veins(s, m, x0, y0, x1, y1, r0, r1, veins, seed)
     s.px(bx + nx * r * 0.6, by + ny * r * 0.6, (236, 160, 140))                                   # a wet glint
+    if _FORM[0] >= 2:                                                                            # the Wrath: split by fire
+        rng = np.random.default_rng(seed + 7)
+        for _ in range(2):
+            tt = rng.uniform(0.15, 0.6)
+            px_, py_ = _axis(x0, y0, x1, y1, r0, r1, tt, rng.uniform(-0.4, 0.4))
+            _fissure(s, m, px_, py_, math.atan2(y1 - y0, x1 - x0) + rng.uniform(-0.5, 0.5), L * 0.45, int(rng.integers(1e6)))
     return m
 
 
@@ -375,8 +401,12 @@ def _drip(s, x, y, ln, seed=0):
     s.px(x - 0.4, y + ln, BLOOD[3])
 
 
-def vael_bare(pose=None, pad=0):
-    """Vael-Orrun, bare: the same floating pose, stripped to a naked hide of dark, hard muscle."""
+def vael_bare(pose=None, pad=0, form=1):
+    """Vael-Orrun, bare: the same floating pose, stripped to a naked hide of dark, hard muscle.
+
+    form 2 (the Wrath): the hide splits on Heartstone fire, the chest bursts open, a second pair of horns, six eyes,
+    fire pouring off the shoulders."""
+    _FORM[0] = form
     s = Sprite(300, 440, pose, pad, origin=(0, 40))
     cx = 150
     # ---- hips, under the thighs
@@ -449,12 +479,21 @@ def vael_bare(pose=None, pad=0):
         s.px(x - 1, y0 + 2, BLOOD[2])
         s.fill(s.ellipse(x - 1, y0 + ln + 1, 1.3, 1.8), BLOOD[1])
         s.px(x - 1.4, y0 + ln, BLOOD[3])
-    core = s.ellipse(150, 132, 9, 22)
+    if form >= 2:
+        for k in range(9):
+            a = -math.pi / 2 + k * 0.7 + 0.3
+            _fissure(s, torso | hips, 150 + math.cos(a) * 10, 136 + math.sin(a) * 20, a, 34 + (k % 3) * 10, 300 + k, 1.6)
+    core = s.ellipse(150, 132, 9, 22) if form == 1 else s.ellipse(150, 134, 15, 30)
     for r, col in ((1.0, HOT[0]), (0.8, HOT[1]), (0.6, HOT[2]), (0.4, HOT[3]), (0.22, HOT[4]), (0.1, HOT[5])):
-        s.fill(s.ellipse(150, 132, 9 * r + 0.5, 22 * r + 0.5) & core, col, glow=True)
+        s.fill(s.ellipse(150, 132 + (form > 1) * 2, (9 + 6 * (form > 1)) * r + 0.5, (22 + 8 * (form > 1)) * r + 0.5) & core, col, glow=True)
     for k in range(5):                                                                           # rib bars across the light
         y = 116 + k * 7
         w = 10 - abs(k - 2) * 1.5
+        if form >= 2:                                                                            # ribs snapped and splayed open
+            for sg in (-1, 1):
+                s.fill(s.poly([(150 + sg * 9, y + 1), (150 + sg * (w + 12), y - 4), (150 + sg * (w + 13), y - 1), (150 + sg * 9, y + 5)]), BONE[1])
+                s.line(150 + sg * 9, y + 1, 150 + sg * (w + 12), y - 4, BONE[3])
+            continue
         s.fill(s.poly([(150 - w - 3, y), (150, y + 3), (150 + w + 3, y), (150 + w + 3, y + 3), (150, y + 6), (150 - w - 3, y + 3)]),
                BONE[1])
         s.line(150 - w - 3, y, 150, y + 3, BONE[2])
@@ -477,6 +516,9 @@ def vael_bare(pose=None, pad=0):
             tip = (bx + math.cos(a) * L, by + math.sin(a) * L)
             s.fill(s.poly([(bx - 3, by + 2), (bx + 3, by + 2), tip]), BONE[1])
             s.line(bx + sgn * -2, by, tip[0], tip[1], BONE[2])
+    if form >= 2:                                                                                # fire pouring off the shoulders
+        _flame(s, 116, 108, 66, 18, 41)
+        _flame(s, 184, 108, 72, 18, 43)
     # ---- neck and traps
     s.fill(s.poly([(136, 92), (164, 92), (176, 110), (124, 110)]), FLESH[1])
     s.fill(s.poly([(136, 92), (150, 92), (150, 110), (124, 110)]), FLESH[2])
@@ -495,6 +537,11 @@ def vael_bare(pose=None, pad=0):
         tip = (cx + math.cos(a) * (L + 16), 74 + math.sin(a) * (L + 16))
         s.fill(s.poly([(cx + math.cos(a - 0.12) * 12, 74 + math.sin(a - 0.12) * 12),
                        (cx + math.cos(a + 0.12) * 12, 74 + math.sin(a + 0.12) * 12), tip]), SIL_D[2])
+    if form >= 2:
+        for sgn in (-1, 1):                                                                      # a second pair, sweeping out
+            pts = _curve((cx + sgn * 13, 70), (cx + sgn * 44, 66), (cx + sgn * 56, 34), 12)
+            s.fill(_ribbon(s, pts, 4.5, 0.6), BONE[1])
+            s.fill(_ribbon(s, pts[:8], 1.8, 0.5), BONE[2])
     for sgn in (-1, 1):
         pts = _curve((cx + sgn * 10, 62), (cx + sgn * 34, 44), (cx + sgn * 20, 10), 12)
         s.fill(_ribbon(s, pts, 5, 0.7), BONE[1])
@@ -509,6 +556,10 @@ def vael_bare(pose=None, pad=0):
     s.fill(s.poly([(cx - 13, 76), (cx - 3, 81), (cx - 4, 84), (cx - 12, 81)]), EYES, glow=True)     # eyes of white fire
     s.fill(s.poly([(cx + 13, 76), (cx + 3, 81), (cx + 4, 84), (cx + 12, 81)]), EYES, glow=True)
     s.pxs([(cx - 12, 77), (cx + 12, 77), (cx - 10, 82), (cx + 10, 82)], HOT[3], glow=True)
+    if form >= 2:                                                                                # four more eyes torn open above
+        for sgn in (-1, 1):
+            s.fill(s.poly([(cx + sgn * 10, 66), (cx + sgn * 3, 70), (cx + sgn * 3, 72), (cx + sgn * 10, 69)]), EYES, glow=True)
+            s.fill(s.poly([(cx + sgn * 7, 59), (cx + sgn * 2, 62), (cx + sgn * 2, 64), (cx + sgn * 7, 62)]), HOT[4], glow=True)
     s.line(cx - 11, 86, cx - 6, 92, FLESH[3])                                                   # cheekbones
     s.line(cx + 11, 86, cx + 6, 92, FLESH[0])
     _vein(s, head, [(cx - 14, 72), (cx - 12, 66), (cx - 13, 61)], 0.8)                          # temples throbbing
@@ -562,6 +613,200 @@ def vael_bare(pose=None, pad=0):
     return s
 
 
-ASCEND = {"vael_ascend": vael_ascend, "vael_bare": vael_bare}
+def vael_bare_wrath(pose=None, pad=0):
+    return vael_bare(pose, pad, form=2)
+
+
+# ---- form 3, the Unmade: the flesh burnt off, a charred skeleton wreathed in the grey fire of the Unmaking
+CHAR = [(10, 8, 12), (30, 27, 34), (62, 58, 68), (112, 108, 120), (186, 184, 198)]
+GREYF = [(50, 46, 70), (98, 94, 126), (152, 150, 180), (208, 208, 228), (242, 242, 252), (255, 255, 255)]
+VOID = [(6, 4, 10), (16, 12, 22), (30, 24, 40)]
+
+
+def _bone(s, x0, y0, x1, y1, r0, r1=None, knob=1.4):
+    """A long bone: a lit shaft and knobbed ends."""
+    r1 = r0 if r1 is None else r1
+    m = s.capsule(x0, y0, x1, y1, r0, r1)
+    s.fill(m, CHAR[1])
+    s.a |= m
+    nx, ny, _, _ = _nrm(x0, y0, x1, y1)
+    s.fill(s.capsule(x0 + nx * r0 * 0.4, y0 + ny * r0 * 0.4, x1 + nx * r1 * 0.4, y1 + ny * r1 * 0.4, r0 * 0.5, r1 * 0.5) & m, CHAR[2])
+    s.line(x0 + nx * r0 * 0.5, y0 + ny * r0 * 0.5, x1 + nx * r1 * 0.5, y1 + ny * r1 * 0.5, CHAR[3])
+    for (x, y, r) in ((x0, y0, r0), (x1, y1, r1)):
+        k = s.ellipse(x, y, r * knob + 0.5, r * knob + 0.5)
+        s.fill(k, CHAR[1])
+        s.fill(s.ellipse(x - 0.6, y - 0.8, r * 0.8, r * 0.6), CHAR[3])
+        s.a |= k
+    return m
+
+
+def _gfire(s, x, y, h, w, seed, pal=None):
+    """Separate licking tongues of fire, each swaying, hottest at the root (reads as fire, not a cone)."""
+    pal = pal or GREYF
+    rng = np.random.default_rng(seed)
+    n = 6
+    for k in range(n):
+        dx = (k / (n - 1) - 0.5) * 2 * w + rng.uniform(-2, 2)
+        hh = h * rng.uniform(0.35, 1.0) * (1.0 - abs(dx) / (w * 2.2))
+        ph, amp = rng.uniform(0, 6.28), rng.uniform(2, 4.5)
+        pts = [(x + dx * (1 - 0.4 * j / 10) + math.sin(ph + j * 0.7) * amp * j / 10, y - hh * j / 10) for j in range(11)]
+        for frac, ww, col in ((1.0, 3.6, pal[1]), (0.75, 2.4, pal[2]), (0.5, 1.5, pal[3]), (0.28, 0.9, pal[4])):
+            m = int(round(10 * frac)) + 1
+            s.fill(_ribbon(s, pts[:m], ww, 0.3), col, glow=True)
+    s.fill(s.ellipse(x, y, w * 0.9 + 2, 3), pal[3], glow=True)
+    for _ in range(10):
+        s.px(x + rng.uniform(-w, w), y - h * rng.uniform(0.7, 1.3), pal[int(rng.integers(2, 5))], glow=True)
+
+
+def _wisps(s, x, y, ln, seed, sway=1):
+    """Tatters of void smoke trailing down."""
+    rng = np.random.default_rng(seed)
+    for k in range(5):
+        pts = [(x + rng.uniform(-6, 6), y)]
+        for j in range(6):
+            px_, py_ = pts[-1]
+            pts.append((px_ + sway * rng.uniform(-2, 4), py_ + ln / 6))
+        s.fill(_ribbon(s, pts, rng.uniform(3, 5), 0.5), VOID[int(rng.integers(0, 3))])
+
+
+def vael_unmade(pose=None, pad=0):
+    """Vael-Orrun, the Unmade: what is left when the Wrath burns through. Charred bone, void smoke where flesh was,
+    a white-hot Heartstone in an open cage of ribs, and the colourless fire of the Unmaking pouring off him."""
+    s = Sprite(300, 440, pose, pad, origin=(0, 40))
+    cx = 150
+    # ---- void smoke hanging where the body was
+    s.g("body")
+    yy, xx = np.mgrid[0:s.h, 0:s.w]
+    dith = ((xx + yy) % 2 == 0)
+    smoke = s.ellipse(150, 168, 30, 42) & dith                                                   # a dithered smoke where the gut was
+    s.fill(smoke, VOID[1])
+    s.a |= smoke
+    _wisps(s, 140, 196, 70, 5)
+    _wisps(s, 160, 196, 60, 6)
+    # ---- legs of bone
+    for grp, sub, (hx, hy), (kx, ky), (ax, ay), fs in (("leg_f", "shin_f", (138, 216), (129, 284), (125, 338), -1),
+                                                       ("leg_n", "shin_n", (162, 216), (170, 282), (168, 336), 1)):
+        s.g(grp, hx, hy)
+        _bone(s, hx, hy, kx, ky, 5.5, 4.4)
+        s.g(sub, kx, ky, grp)
+        _bone(s, kx, ky + 2, ax, ay, 4.2, 3.2)
+        _bone(s, kx + fs * 4, ky + 4, ax + fs * 4, ay - 2, 1.6, 1.4, knob=1.0)                    # the fibula
+        for k, dx in enumerate((-5, -2, 2, 5)):                                                  # foot bones and talons
+            _bone(s, ax, ay + 2, ax + dx, ay + 16, 1.4, 1.2, knob=1.1)
+            s.fill(s.capsule(ax + dx, ay + 16, ax + dx * 1.2, ay + 24, 1.6, 0.8), CLAW[1])
+            s.fill(s.capsule(ax + dx * 1.2, ay + 24, ax + dx * 1.2 - fs * 2.5, ay + 27, 0.9, 0.4), CLAW[0])
+    # ---- pelvis and spine
+    s.g("body")
+    for sg in (-1, 1):                                                                           # the hip bone: two flared wings
+        wing = s.poly([(150 + sg * 6, 204), (150 + sg * 18, 192), (150 + sg * 32, 184), (150 + sg * 34, 192), (150 + sg * 26, 212),
+                       (150 + sg * 12, 226), (150 + sg * 6, 226)])
+        s.fill(wing, CHAR[2] if sg < 0 else CHAR[1])
+        s.a |= wing
+        s.line(150 + sg * 18, 193, 150 + sg * 32, 185, CHAR[3])
+        s.fill(s.ellipse(150 + sg * 14, 213, 3.5, 4.5), VOID[0])
+    sac = s.poly([(144, 196), (156, 196), (154, 222), (150, 230), (146, 222)])
+    s.fill(sac, CHAR[2])
+    s.a |= sac
+    for k in range(13):                                                                          # vertebrae
+        y = 196 - k * 7.5
+        s.fill(s.ellipse(150, y, 4.5, 3), CHAR[2])
+        s.px(149, y - 1, CHAR[3])
+        s.a |= s.ellipse(150, y, 4.5, 3)
+    # ---- the open cage of ribs and the white-hot Heartstone inside
+    core = s.ellipse(150, 140, 13, 28)
+    for r, col in ((1.4, GREYF[0]), (1.0, GREYF[1]), (0.75, GREYF[2]), (0.5, GREYF[3]), (0.3, GREYF[4]), (0.14, GREYF[5])):
+        s.fill(s.ellipse(150, 140, 13 * r + 0.5, 28 * r + 0.5), col, glow=True)
+    for k, col in enumerate(RING):                                                               # the six stolen colours
+        a = k / 6 * 6.28
+        s.px(150 + math.cos(a) * 6, 140 + math.sin(a) * 14, col, glow=True)
+    for k in range(7):                                                                           # ribs curving out and back, broken in front
+        y = 110 + k * 10
+        w = 40 - abs(k - 2.5) * 4
+        for sg in (-1, 1):
+            pts = _curve((150 + sg * 4, y), (150 + sg * (w + 6), y - 2), (150 + sg * (w * 0.7), y + 18), 8)
+            m = _ribbon(s, pts, 2.6, 1.2)
+            s.fill(m, CHAR[2] if sg < 0 else CHAR[1])
+            s.a |= m
+            s.line(pts[0][0], pts[0][1] - 1, pts[3][0], pts[3][1] - 1.5, CHAR[3])
+    for sg in (-1, 1):                                                                           # collarbones and the spines of the back
+        _bone(s, 150 + sg * 6, 106, 150 + sg * 40, 112, 2.6, 2.2)
+        for k in range(5):
+            a = -math.pi / 2 + sg * (0.3 + k * 0.24)
+            bx, by = cx + sg * (18 + k * 6), 106 + k * 2
+            L = 34 + (k % 2) * 14 - k * 2
+            tip = (bx + math.cos(a) * L, by + math.sin(a) * L)
+            s.fill(s.poly([(bx - 3, by + 2), (bx + 3, by + 2), tip]), CHAR[1])
+            s.line(bx, by, tip[0], tip[1], CHAR[3])
+    # ---- the skull
+    s.g("head", cx, 104)
+    for sgn in (-1, 1):                                                                          # four horns, longer than ever
+        for (p0, p1, p2, w0) in (((cx + sgn * 10, 62), (cx + sgn * 36, 40), (cx + sgn * 22, 2), 5.5),
+                                 ((cx + sgn * 13, 70), (cx + sgn * 48, 64), (cx + sgn * 62, 26), 4.5)):
+            pts = _curve(p0, p1, p2, 12)
+            s.fill(_ribbon(s, pts, w0, 0.7), CHAR[1])
+            s.fill(_ribbon(s, pts[:8], w0 * 0.4, 0.5), CHAR[3])
+    head = s.poly([(cx - 14, 58), (cx + 14, 58), (cx + 17, 72), (cx + 12, 88), (cx - 12, 88), (cx - 17, 72)])
+    s.fill(head, CHAR[2])
+    s.a |= head
+    s.fill(s.poly([(cx, 58), (cx + 14, 58), (cx + 17, 72), (cx + 12, 88), (cx, 88)]), CHAR[1])
+    s.line(cx - 12, 60, cx - 2, 59, CHAR[4])
+    for sgn in (-1, 1):                                                                          # deep sockets, a pin of white in each
+        s.fill(s.poly([(cx + sgn * 14, 72), (cx + sgn * 3, 76), (cx + sgn * 4, 84), (cx + sgn * 13, 80)]), VOID[0])
+        s.fill(s.ellipse(cx + sgn * 8, 79, 1.6, 1.4), GREYF[5], glow=True)
+    s.fill(s.poly([(cx - 2, 84), (cx + 2, 84), (cx, 89)]), VOID[0])                              # the nose hole
+    s.g("jaw", cx, 90, "head")
+    jaw = s.poly([(cx - 12, 88), (cx + 12, 88), (cx + 8, 102), (cx - 8, 102)])
+    s.fill(jaw, CHAR[1])
+    s.a |= jaw
+    s.fill(s.poly([(cx - 9, 91), (cx + 9, 91), (cx + 6, 99), (cx - 6, 99)]), GREYF[2], glow=True)  # grey fire in the throat
+    for x in (cx - 8, cx - 4, cx, cx + 4, cx + 8):                                              # teeth
+        s.fill(s.poly([(x - 1.3, 88), (x + 1.3, 88), (x, 94)]), CHAR[4])
+    # ---- arms of bone, raised
+    for grp, sub, (sx, sy), (ex, ey), (hx, hy) in (("arm_f", "fore_f", (110, 114), (74, 100), (50, 72)),
+                                                   ("weapon", "hand_w", (190, 116), (230, 124), (260, 102))):
+        s.g(grp, sx, sy)
+        _bone(s, sx, sy, ex, ey, 5.2, 4.2)
+        s.g(sub, ex, ey, grp)
+        nx, ny, ux, uy = _nrm(ex, ey, hx, hy)
+        _bone(s, ex + nx * 2.5, ey + ny * 2.5, hx + nx * 2, hy + ny * 2, 2.2, 1.8, knob=1.1)          # radius and ulna
+        _bone(s, ex - nx * 2.5, ey - ny * 2.5, hx - nx * 1.5, hy - ny * 1.5, 2.0, 1.6, knob=1.1)
+        ang = math.atan2(hy - ey, hx - ex)
+        for k, sp in enumerate((-0.6, -0.2, 0.2, 0.6)):                                         # finger bones and talons
+            fa = ang + sp
+            k1 = (hx + math.cos(fa) * 9, hy + math.sin(fa) * 9)
+            k2 = (k1[0] + math.cos(fa + 0.3) * 8, k1[1] + math.sin(fa + 0.3) * 8)
+            _bone(s, hx, hy, *k1, 1.5, 1.3, knob=1.1)
+            _bone(s, *k1, *k2, 1.3, 1.1, knob=1.0)
+            c2 = (k2[0] + math.cos(fa + 0.7) * 7, k2[1] + math.sin(fa + 0.7) * 7)
+            s.fill(s.capsule(*k2, *c2, 1.6, 0.4), CLAW[0])
+        _gfire(s, hx, hy - 2, 62, 9, sx)                                            # the Unmaking in both hands
+    # ---- the grey fire pouring off the bones
+    s.g("body")
+    _gfire(s, 120, 112, 84, 12, 61)
+    _gfire(s, 180, 112, 92, 12, 63)
+    _gfire(s, 150, 124, 40, 6, 67)                                                    # up through the ribs
+    s.g("head")
+    _gfire(s, cx, 58, 70, 12, 65)
+    # ---- rim: the edges catch the cold light
+    s.g("body")
+    claw = np.zeros_like(s.a)
+    for c in CLAW + VOID:
+        claw |= np.all(s.rgb == np.array(c, np.uint8), axis=-1)
+    claw &= s.a
+    keep = s.rgb[claw].copy()
+    a = s.a & ~s.glow
+    up = a & ~np.roll(s.a, 1, 0)
+    lf = a & ~np.roll(s.a, 1, 1)
+    rt = a & ~np.roll(s.a, -1, 1)
+    s.rgb[(lf | rt) & ~up] = GREYF[1]
+    s.rgb[up] = GREYF[2]
+    s.rgb[claw] = keep
+    s.ink((6, 4, 10))
+    _dust(s, 60, 3, [GREYF[1], GREYF[2], GREYF[3]])
+    s.shadow(150, 404, 40, 3)
+    return s
+
+
+ASCEND = {"vael_ascend": vael_ascend, "vael_bare": vael_bare, "vael_bare_wrath": vael_bare_wrath, "vael_unmade": vael_unmade}
 CREATURES.update(ASCEND)
 BOSSES.update(ASCEND)

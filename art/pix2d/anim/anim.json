@@ -1151,6 +1151,70 @@
    280
   ]
  },
+ "vael_bare": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   180,
+   466
+  ],
+  "frame": [
+   360,
+   500
+  ]
+ },
+ "vael_bare_wrath": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   180,
+   466
+  ],
+  "frame": [
+   360,
+   500
+  ]
+ },
  "vael_orrun": {
   "anims": {
    "attack": {
@@ -1181,6 +1245,38 @@
   "frame": [
    232,
    392
+  ]
+ },
+ "vael_unmade": {
+  "anims": {
+   "attack": {
+    "fps": 14,
+    "frames": 8,
+    "loop": false
+   },
+   "death": {
+    "fps": 10,
+    "frames": 8,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
+   },
+   "walk": {
+    "fps": 10,
+    "frames": 8,
+    "loop": true
+   }
+  },
+  "feet": [
+   180,
+   466
+  ],
+  "frame": [
+   360,
+   500
   ]
  },
  "vesper": {
