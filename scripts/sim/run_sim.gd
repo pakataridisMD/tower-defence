@@ -33,6 +33,8 @@ signal enemy_power(enemy: SimEnemy, power: StringName, targets: Array)
 signal enemy_blinked(enemy: SimEnemy, from: Vector2)
 ## A boss escaped the board when badly hurt (see EnemyData.escape_below).
 signal enemy_escaped(enemy: SimEnemy)
+## The ground broke open: from the next wave on, part of the horde comes out of this cave (see Caves).
+signal cave_opened(cave: Caves.Cave)
 ## A building of the enemy base fell in an assault.
 signal structure_destroyed(structure: SimEnemy)
 ## Every building of an assault phase fell. `phase` is the new phase; above the stage's last phase
@@ -151,6 +153,15 @@ var _structure_cells: Dictionary[Vector2i, SimEnemy] = {}
 var landmarks: Array[Landmarks.Site] = []
 ## Cells the camps and the city stand on, to the site on each.
 var _landmark_cells: Dictionary[Vector2i, Landmarks.Site] = {}
+## Caves that broke open during the run, oldest first. Each has its own lane after the map's roads.
+var caves: Array[Caves.Cave] = []
+## The wave the next cave first sends enemies in; it opens in the break before. 0 when no more come.
+var next_cave_wave := 0
+## Cells cave mounds stand on, to their cave.
+var _cave_cells: Dictionary[Vector2i, Caves.Cave] = {}
+## Cells of the map's own roads (not the caves' digs).
+var _road_cells: Dictionary[Vector2i, bool] = {}
+var _cave_rng := RandomNumberGenerator.new()
 ## The heroes the player can summon in this run, in key order.
 var party: Array[HeroData] = []
 ## Summoned heroes by hero id.
@@ -215,8 +226,12 @@ func _init(p_config: RunConfig) -> void:
 	path_curve = lane_curves[0]
 	path_length = lane_lengths[0]
 	_path_cells = config.map.path_cells()
+	_road_cells = _path_cells.duplicate()
 	_place_structures()
 	_place_landmarks()
+	_cave_rng.seed = config.cave_seed if config.cave_seed != 0 else hash(str(config.map.id) + ":" + (str(config.stage.id) if config.stage != null else ""))
+	if caves_come():
+		next_cave_wave = Caves.next_wave(1, _cave_rng)
 	for hero in config.heroes:
 		if hero != null and not party.has(hero) and party.size() < HeroData.MAX_PARTY:
 			party.append(hero)
@@ -541,6 +556,64 @@ func landmark_at(cell: Vector2i) -> Landmarks.Site:
 	return _landmark_cells.get(cell)
 
 
+## The cave whose mound stands on a cell, or null.
+func cave_at(cell: Vector2i) -> Caves.Cave:
+	return _cave_cells.get(cell)
+
+
+## True when caves break open in this run: every run but an assault on the enemy's base.
+func caves_come() -> bool:
+	return config.caves and not is_assault()
+
+
+## Opens the next cave if its wave is the one about to start. Called in the break after each wave.
+func _open_due_cave() -> void:
+	if next_cave_wave <= 0 or wave_number() < next_cave_wave:
+		return
+	var wave := next_cave_wave
+	next_cave_wave = Caves.next_wave(next_cave_wave, _cave_rng) if caves.size() + 1 < Caves.MAX_CAVES else 0
+	var spawns := PackedVector2Array()
+	var bases := PackedVector2Array()
+	for lane in config.map.lane_count():
+		var points := config.map.path_points(lane)
+		if points.size() >= 2:
+			spawns.append(points[0])
+			bases.append(points[points.size() - 1])
+	for site in landmarks:
+		if site.kind == &"city":
+			for cell in site.cells:
+				bases.append(config.map.cell_center(cell))
+	for cave in caves:
+		spawns.append(config.map.cell_center(cave.cell))
+	var blocked := func(cell: Vector2i) -> bool:
+		return _tower_at.has(cell) or _landmark_cells.has(cell) or _structure_cells.has(cell) \
+				or _cave_cells.has(cell) or (_path_cells.has(cell) and not _road_cells.has(cell))
+	var cave := Caves.find(config.map, lane_curves, lane_lengths, func(cell: Vector2i) -> bool: return _road_cells.has(cell),
+			blocked, spawns, bases, _cave_rng)
+	if cave == null:
+		# No room anywhere (the player built over everything): this one never opens.
+		return
+	cave.wave = wave
+	add_cave(cave)
+
+
+## Puts a cave on the board with its own lane: its mound and dig can no longer be built on.
+func add_cave(cave: Caves.Cave) -> void:
+	var curve := Curve2D.new()
+	for point in Caves.lane_points(config.map, cave, lane_curves[cave.joins_lane], lane_lengths[cave.joins_lane]):
+		curve.add_point(point)
+	cave.lane = lane_curves.size()
+	lane_curves.append(curve)
+	lane_lengths.append(curve.get_baked_length())
+	for cell in cave.cells:
+		_cave_cells[cell] = cave
+	for cell in cave.dig:
+		_path_cells[cell] = true
+	caves.append(cave)
+	cave_opened.emit(cave)
+	changed.emit()
+
+
 func is_path(cell: Vector2i) -> bool:
 	return _path_cells.has(cell)
 
@@ -567,6 +640,8 @@ func placement_error(tower_id: StringName, cell: Vector2i) -> String:
 		return "The enemy's building stands here"
 	if _landmark_cells.has(cell):
 		return "The enemy's war camp stands here" if _landmark_cells[cell].kind == &"camp" else "The city stands here"
+	if _cave_cells.has(cell):
+		return "An enemy cave yawns here"
 	var limit := build_limit()
 	if limit >= 0 and cell.x > limit:
 		return "The enemy still holds this ground: bring down its buildings first"
@@ -1576,6 +1651,7 @@ func _finish_wave() -> void:
 		state = State.BUILDING
 		if config.stage != null and config.stage.auto_wave_delay > 0.0:
 			break_time_left = config.stage.auto_wave_delay
+		_open_due_cave()
 	wave_cleared.emit(wave_index, rewards[0], rewards[1])
 	changed.emit()
 
@@ -1760,6 +1836,8 @@ func _cell_error(cell: Vector2i) -> String:
 		return "Heroes stand beside the road, not on it"
 	if _landmark_cells.has(cell):
 		return "The enemy's war camp stands here" if _landmark_cells[cell].kind == &"camp" else "The city stands here"
+	if _cave_cells.has(cell):
+		return "An enemy cave yawns here"
 	if _tower_at.has(cell):
 		return "There is already a tower here"
 	if boss_powers.is_ruin(cell):

@@ -60,6 +60,7 @@ var muster_lane := 0
 var upgrade_bias := 0.6
 
 var _path_samples := PackedVector2Array()
+var _caves_seen := 0
 var _coverage_cache: Dictionary[Vector3i, int] = {}
 var _skill_wait := 0
 var _muster_wait := 0
@@ -377,6 +378,7 @@ func _cheapest_open_node() -> StringName:
 ## Spends the gold, best buy first: another tower where it covers the most road, or a level (or
 ## an ascension) for a tower that already stands in a good spot.
 func build_towers() -> void:
+	_see_new_caves()
 	summon_heroes()
 	for purchase in 400:
 		var tower_id := _affordable_tower() if sim.towers.size() < max_towers else &""
@@ -486,6 +488,25 @@ func siege_value(cell: Vector2i, reach: float) -> int:
 		if sim.is_vulnerable(structure) and structure.position.distance_to(center) <= reach:
 			score += SIEGE_WEIGHT
 	return score
+
+
+## A new cave's dig is road worth covering too (the rest of its lane is a road already sampled).
+## Polled rather than connected: a signal from the sim back to the bot would keep both alive.
+func _see_new_caves() -> void:
+	while _caves_seen < sim.caves.size():
+		_add_dig(sim.caves[_caves_seen])
+		_caves_seen += 1
+
+
+func _add_dig(cave: Caves.Cave) -> void:
+	var dig := Curve2D.new()
+	for point in cave.dig_points:
+		dig.add_point(point)
+	var offset := 0.0
+	while offset <= dig.get_baked_length():
+		_path_samples.append(dig.sample_baked(offset))
+		offset += PATH_SAMPLE_SPACING
+	_coverage_cache.clear()
 
 
 ## How many path sample points lie within reach of a cell's centre.

@@ -70,7 +70,10 @@ func _ready() -> void:
 	var args := OS.get_cmdline_user_args()
 	autoplay = autoplay or args.has("--autoplay")
 	quit_at_end = quit_at_end or args.has("--quit-at-end")
-	sim = RunSim.new(Progress.run_config())
+	var config := Progress.run_config()
+	# The caves open somewhere new each run (a loaded run keeps its own).
+	config.cave_seed = randi() + 1
+	sim = RunSim.new(config)
 	var loaded := _restore_saved_run()
 	story = Story.shared()
 	_build_views()

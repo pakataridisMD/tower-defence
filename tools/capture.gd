@@ -21,6 +21,8 @@ extends Node
 ## with the camera close and following them.
 ## Add --landmarks to take the enemy war camps and the defended cities at the road ends in every land,
 ## by day, at night and burning, plus frames for short clips (<out>/clips/<name>/NNN.png).
+## Add --caves to take the enemy caves: in a few lands a cave breaks open beside the bot's towers (frames of
+## it heaving up in <out>/clips/cave_<stage>/), then the whole map and close-ups with the horde pouring out.
 ## Add --look[=stage,stage] for the graphics look test: in each stage (the fire and jungle lands by default)
 ## one of each base tower is built in a row by the road, then the whole map, the row up close at x1
 ## and x2, and the same row at night are taken.
@@ -76,6 +78,7 @@ var _powers := false
 ## With --bosses[=id,...]: film each boss on the road doing every move, with the voice cues.
 var _bosses: PackedStringArray = []
 var _landmarks := false
+var _caves := false
 var _army := false
 var _army_frames := 600
 var _horde := &""
@@ -139,6 +142,8 @@ func _ready() -> void:
 			_army = true
 		elif arg.begins_with("--frames="):
 			_army_frames = int(arg.trim_prefix("--frames="))
+		elif arg == "--caves":
+			_caves = true
 		elif arg == "--landmarks":
 			_landmarks = true
 		elif arg.begins_with("--horde="):
@@ -175,6 +180,8 @@ func _ready() -> void:
 		_run_powers()
 	elif not _bosses.is_empty():
 		_run_bosses()
+	elif _caves:
+		_run_caves()
 	elif _landmarks:
 		_run_landmarks()
 	elif _menu:
@@ -1375,6 +1382,68 @@ func _run_landmarks() -> void:
 				await _crop("landmark_%s_city_burning" % stage, game, site)
 				if stage == LANDMARK_CLIPS[0]:
 					await _clip("%s_city_burning" % stage, game, site, 40)
+		game.free()
+		await _wait(0.1)
+	print("Screenshots saved to ", _out)
+	get_tree().quit()
+
+
+const CAVE_STAGES: Array[StringName] = [&"ember_2", &"nature_1", &"water_1", &"void_1"]
+
+
+## In each land the bot builds, a cave breaks open (filmed), then a wave pours out of it and a second one opens.
+func _run_caves() -> void:
+	Progress.use_memory_profile(_campaign_profile())
+	for stage: StringName in CAVE_STAGES:
+		Progress.active_stage = stage
+		var game := GAME_SCENE.instantiate() as Game
+		add_child(game)
+		await _wait(0.3)
+		var sim := game.sim
+		var art := game.board.art
+		_light(art, DayNight.DAY)
+		sim.wave_index = 4
+		sim.gold = 2500
+		sim.tree.points = 10
+		var bot := AutoPlayer.for_sim(sim)
+		bot.spend_points()
+		bot.build_towers()
+		await _wait(0.4)
+		sim.next_cave_wave = sim.wave_number()
+		sim._open_due_cave()
+		if sim.caves.is_empty():
+			push_warning("No room for a cave in %s" % stage)
+			game.free()
+			continue
+		var cave := sim.caves[-1]
+		var at := sim.config.map.cell_center(cave.cell)
+		game.camera.set_view(2.0, at)
+		var region := Rect2i(Rect2(BoardCamera.VIEW_CENTER - Vector2(420, 300), Vector2(840, 600)))
+		var folder := _out.path_join("clips").path_join("cave_%s" % stage)
+		DirAccess.make_dir_recursive_absolute(folder)
+		for i in 30:
+			await RenderingServer.frame_post_draw
+			get_viewport().get_texture().get_image().get_region(region).save_png(folder.path_join("%03d.png" % i))
+			await _wait(0.07)
+		await _wait(0.6)
+		await _shot("cave_%s_open" % stage)
+		game.camera.set_view(game.camera.min_zoom, sim.config.map.size_in_pixels() * 0.5)
+		game._start_wave()
+		var out_of_cave := func() -> bool:
+			var count := 0
+			for enemy in sim.enemies:
+				if enemy.lane == cave.lane and enemy.progress > 200.0:
+					count += 1
+			return count >= 5 or sim.state != RunSim.State.WAVE
+		await _until(out_of_cave)
+		await _wait(0.5)
+		await _shot("cave_%s_map" % stage)
+		game.camera.set_view(1.5, at + Vector2(0, 40))
+		await _wait(0.3)
+		await _shot("cave_%s_horde" % stage)
+		_light(art, DayNight.NIGHT)
+		await _wait(1.2)
+		await _shot("cave_%s_night" % stage)
 		game.free()
 		await _wait(0.1)
 	print("Screenshots saved to ", _out)
