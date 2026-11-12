@@ -1369,7 +1369,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"water"
 is_boss = true
-health_multiplier = 3.24
+health_multiplier = 1.97
 description = "A marching column, brutes under escort, Splitter packs, a pincer, Brutes in a line, runner packs, the Oathbroken and Quarry Hounds and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r156"), SubResource("r157"), SubResource("r158"), SubResource("r159"), SubResource("r160"), SubResource("r161"), SubResource("r162"), SubResource("r163"), SubResource("r164"), SubResource("r165"), SubResource("r166"), SubResource("r167"), SubResource("r168"), SubResource("r169"), SubResource("r170"), SubResource("r171")])
 
@@ -1378,5 +1378,5 @@ script = ExtResource("1_s")
 id = &"c_storm_3"
 display_name = "The Long Squall"
 health_growth = 1.1
-health_scale = 4.79
+health_scale = 5.26
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r16"), SubResource("r26"), SubResource("r37"), SubResource("r45"), SubResource("r58"), SubResource("r69"), SubResource("r81"), SubResource("r95"), SubResource("r110"), SubResource("r123"), SubResource("r139"), SubResource("r155"), SubResource("r172")])

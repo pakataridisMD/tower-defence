@@ -5,19 +5,19 @@
 
 [sub_resource type="Resource" id="Resource_m0"]
 script = ExtResource("1_mod")
-stat = &"poison_duration"
-kind = 1
-value = 0.05
+stat = &"bounty_bonus"
+kind = 0
+value = 1.0
 required_tags = Array[StringName]([&"nature"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"nature_r2_385"
-display_name = "Slow Rot III"
-description = "Poison from nature towers lasts 5% longer."
-kind = 2
+display_name = "Bounty of the Wild"
+description = "Kills by nature towers earn 1 extra gold."
+kind = 3
 region = &"nature"
-cost = 1
+cost = 2
 position = Vector2(247, 295)
 links = Array[StringName]([&"nature_r2_300"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

@@ -5,19 +5,26 @@
 
 [sub_resource type="Resource" id="Resource_m0"]
 script = ExtResource("1_mod")
-stat = &"bounty_bonus"
-kind = 0
-value = 1.0
+stat = &"poison_duration"
+kind = 1
+value = 0.15
+required_tags = Array[StringName]([&"nature"])
+
+[sub_resource type="Resource" id="Resource_m1"]
+script = ExtResource("1_mod")
+stat = &"cost"
+kind = 1
+value = -0.04
 required_tags = Array[StringName]([&"nature"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"nature_r2_640"
-display_name = "Bounty of the Wild"
-description = "Kills by nature towers earn 1 extra gold."
+display_name = "Thorn Wall"
+description = "Poison from nature towers lasts 15% longer. Nature towers cost 4% less gold."
 kind = 3
 region = &"nature"
 cost = 3
 position = Vector2(411, 490)
 links = Array[StringName]([&"nature_r2_555"])
-modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0"), SubResource("Resource_m1")])

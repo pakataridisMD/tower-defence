@@ -333,28 +333,25 @@ func _best_aim(skill: SkillData, alive: Array[SimEnemy]) -> Vector3:
 	return best
 
 
-## Takes the planned nodes in order, with the nodes on the way to each. Once every planned node is
-## taken (or out of reach), the rest of the points go on the cheapest open nodes of the planned
+## Takes the planned nodes in order, with the nodes on the way to each, saving up for the next one
+## when it costs more than the bot has. Once every planned node is taken (or out of reach), the rest of the points go on the cheapest open nodes of the planned
 ## elements, nearest the Origin first. Keystones are left alone: they need a plan of their own.
 func spend_points() -> void:
-	var took_one := true
-	while took_one and sim.tree.points > 0:
-		took_one = false
-		for id in node_priority:
-			if sim.allocate_node(id):
-				took_one = true
-				break
-		if not took_one and _plan_done():
-			var next := _cheapest_open_node()
-			took_one = not next.is_empty() and sim.allocate_node(next)
+	while sim.tree.points > 0:
+		var target := _next_planned_node()
+		if target.is_empty():
+			target = _cheapest_open_node()
+		# A planned node it cannot afford yet is saved up for, as a person would.
+		if target.is_empty() or not sim.allocate_node(target):
+			return
 
 
-## True when no planned node is left that the bot could still save up for.
-func _plan_done() -> bool:
+## The first planned node not yet taken that can still be reached, or empty when the plan is done.
+func _next_planned_node() -> StringName:
 	for id in node_priority:
 		if not sim.tree.is_allocated(id) and sim.tree.path_cost(id) >= 0:
-			return false
-	return true
+			return id
+	return &""
 
 
 func _cheapest_open_node() -> StringName:

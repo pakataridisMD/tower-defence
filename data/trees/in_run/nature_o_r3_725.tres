@@ -13,7 +13,7 @@ required_tags = Array[StringName]([&"nature"])
 [resource]
 script = ExtResource("2_node")
 id = &"nature_o_r3_725"
-display_name = "Slow Rot VI"
+display_name = "Slow Rot V"
 description = "Poison from nature towers lasts 6% longer."
 kind = 2
 region = &"nature"
