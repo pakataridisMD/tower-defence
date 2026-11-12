@@ -241,7 +241,7 @@ vol.inputs["Density"].default_value = 0.008; vol.inputs["Color"].default_value =
 world.node_tree.links.new(vol.outputs[0], world.node_tree.nodes["World Output"].inputs["Volume"])
 moon = bpy.data.objects.new("moon", bpy.data.lights.new("moon", "SUN")); sc.collection.objects.link(moon)
 moon.data.energy = 4.0; moon.data.color = (0.45, 0.58, 1.0); moon.data.angle = 0.02
-moon.rotation_euler = (math.radians(20), math.radians(-25), math.radians(170))
+moon.rotation_euler = (math.radians(35), math.radians(-30), math.radians(150))
 gaplight = bpy.data.objects.new("gaplight", bpy.data.lights.new("gaplight", "AREA")); sc.collection.objects.link(gaplight)
 gaplight.data.energy = 60000; gaplight.data.color = (0.7, 0.74, 0.85); gaplight.data.size = 2; gaplight.data.size_y = 50
 gaplight.data.shape = "RECTANGLE"; gaplight.location = (0, FRAME_Y - 3, 57); gaplight.rotation_euler = (math.radians(-90), 0, 0)
@@ -259,6 +259,16 @@ rim.location = (5, 1, 6); rim.rotation_euler = (math.radians(-60), math.radians(
 fill = bpy.data.objects.new("fill", bpy.data.lights.new("fill", "AREA")); sc.collection.objects.link(fill)
 fill.data.energy = 120; fill.data.color = (1.0, 0.7, 0.45); fill.data.size = 3
 fill.location = (2.0, 16.0, 3.0); fill.rotation_euler = (math.radians(70), 0, math.radians(200))
+# Braziers along the road: warm pools of firelight on the walls under the cold moon.
+FIRE = mat("fire", (1.0, 0.45, 0.12), 0.5, emit=(1.0, 0.42, 0.1), strength=18)
+for k in range(6):
+    for side in (-1, 1):
+        x, y = side * (7.5 + k * 0.6), 8 - k * 17 + (4 if side > 0 else 0)
+        bpy.ops.mesh.primitive_cylinder_add(radius=0.5, depth=1.6, location=(x, y, 0.8)); bpy.context.object.data.materials.append(IRON)
+        bpy.ops.mesh.primitive_ico_sphere_add(radius=0.45, subdivisions=2, location=(x, y, 1.75)); bpy.context.object.data.materials.append(FIRE)
+        bpy.context.object.scale = (1, 1, 1.5)
+        fl = bpy.data.objects.new("brazier", bpy.data.lights.new("brazier", "POINT")); sc.collection.objects.link(fl)
+        fl.data.energy = 500; fl.data.color = (1.0, 0.5, 0.18); fl.data.shadow_soft_size = 0.6; fl.location = (x, y, 2.4)
 cam = bpy.data.objects.new("cam", bpy.data.cameras.new("cam")); sc.collection.objects.link(cam); sc.camera = cam
 cam.data.lens = 24; cam.data.sensor_width = 36
 cam.data.dof.use_dof = True; cam.data.dof.aperture_fstop = 4.0; cam.data.dof.focus_object = tamsin
