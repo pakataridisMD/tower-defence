@@ -50,7 +50,7 @@ TUNING["prototype"] = {"health": 0.85}
 # (SKIRMISH_HARDNESS), as it does the prototype waves above.
 TUNING["skirmish_cinderfall"] = {"health": 0.3}
 TUNING["skirmish_stormcrown"] = {"health": 0.41}
-TUNING["skirmish_thornwild"] = {"health": 0.49}
-TUNING["skirmish_frozen_ford"] = {"health": 0.35}
-TUNING["skirmish_red_gorge"] = {"health": 0.35}
-TUNING["skirmish_riftwalk"] = {"health": 0.5}
+TUNING["skirmish_thornwild"] = {"health": 0.55}
+TUNING["skirmish_frozen_ford"] = {"health": 0.32}
+TUNING["skirmish_red_gorge"] = {"health": 0.42}
+TUNING["skirmish_riftwalk"] = {"health": 0.49}
