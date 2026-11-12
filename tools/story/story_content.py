@@ -599,9 +599,29 @@ cin("epilogue", "The Seventh Colour", "After the final assault is won. Then the 
          "felt every one of them.",
          "Ysolde, older, grey hair, still blindfolded, on the walls of a rebuilt Solenne, sun on her face. "
          "Credits roll."),
+    )
+
+# The post-credits reveal (Part 2 tease). Only the Hush speaks: no narrator, almost no sound. It shows,
+# without naming it, that Vael-Orrun and the Regent were both its hands, and that the war was its door.
+cin("the_hush", "One Door", "Straight after the epilogue's credits.",
     shot("", "After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six "
-         "colours... then, faintly, a seventh. Ilyra, alone, leans in to look. Deep inside the seventh colour, "
-         "something with no colour at all opens, like an eye.", duration=6.0),
+         "colours... then, faintly, a seventh. Ilyra, alone, leans in to look.", duration=5.0),
+    shot("He was the first to listen.\n\nI taught him how a world goes quiet.",
+         "Two thousand years ago: the vault under burning Vael. The young Keeper, Vael-Orrun, kneels in the "
+         "dark with his wife's ring in his fist, listening. Grey creeps into his eyes from the edges.",
+         speaker="the_hush"),
+    shot("The Regent thought he bargained with a king.\n\nHe bargained with me, wearing a king's voice.",
+         "Six years ago: Cassivane at his daughter's grave in the rain. Above him, a thin crack of starless "
+         "dark opens in the night sky.", speaker="the_hush"),
+    shot("I could never open the door from my side.\n\nYou opened it from yours.",
+         "The Crack in the Hollow Rift seen from the far side, from the Outer Hollow: wide open where the "
+         "Concord marched through. The six Wardens' light spills in from the world beyond it.",
+         speaker="the_hush"),
+    shot("Your High King was never my enemy. He was my hand.\n\nSo were you.",
+         "Ilyra, frozen in front of the Heartstone. Reflected in both her eyes, very small, something with no "
+         "colour at all.", speaker="the_hush"),
+    shot("", "Deep inside the seventh colour of the Heartstone, something with no colour at all opens, like "
+         "an eye.", duration=4.0),
     shot("Seven crowns. One door.\n\nThank you.",
          "Black. No sound at all for a moment before the voice, and none after. Title card: TO BE CONTINUED.",
          speaker="the_hush"),
@@ -760,6 +780,8 @@ ASSAULT = {
         {"name": "The Crownless Throne", "minutes": 10, "boss": "vael_orrun", "cinematic": "crownless_throne"},
     ],
     "outro": "epilogue",
+    # Plays straight after the outro: the reveal of the Hush.
+    "post_credits": "the_hush",
 }
 
 
@@ -845,7 +867,7 @@ def main():
     with open(os.path.join(root, "docs/story/scripts.md"), "w", encoding="utf-8") as f:
         f.write(screenplay())
     # sanity checks
-    used = {"prologue", ASSAULT["intro"], ASSAULT["outro"]} | {b["cinematic"] for b in BEATS}
+    used = {"prologue", ASSAULT["intro"], ASSAULT["outro"], ASSAULT["post_credits"]} | {b["cinematic"] for b in BEATS}
     used |= {m["cinematic"] for m in ASSAULT["movements"] if m["cinematic"]}
     for s in STAGE_SCENES.values():
         used |= {s.get(k) for k in ("before", "after", "lost") if s.get(k)}

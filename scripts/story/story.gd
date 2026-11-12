@@ -35,7 +35,7 @@ var stage_scenes: Dictionary = {}
 var night_from_stages_won := 0
 ## The named boss of a stage, by stage id (a character id).
 var stage_bosses: Dictionary = {}
-## The final assault: {intro, outro, movements: [{name, minutes, boss, cinematic}]}.
+## The final assault: {intro, outro, post_credits, movements: [{name, minutes, boss, cinematic}]}.
 var assault: Dictionary = {}
 ## The city each stage defends, by stage id: {name, fall_text, capital}.
 var cities: Dictionary = {}
@@ -206,6 +206,7 @@ func all_triggered_cinematics() -> Array[StringName]:
 					add.call(moment.get("cinematic"))
 	add.call(assault.get("intro"))
 	add.call(assault.get("outro"))
+	add.call(assault.get("post_credits"))
 	for movement: Variant in assault.get("movements", []):
 		if movement is Dictionary:
 			add.call(movement.get("cinematic"))
@@ -265,6 +266,11 @@ func due_after_win(stage_id: StringName, stages_won: int, seen: Array[StringName
 		own = StringName(str(assault["outro"]))
 	if not own.is_empty() and cinematics.has(own) and not seen.has(own):
 		result.push_front(own)
+		# The reveal after the credits follows the ending straight away.
+		var after_credits := StringName(str(assault.get("post_credits", "")))
+		if own == StringName(str(assault.get("outro", ""))) and cinematics.has(after_credits) \
+				and not seen.has(after_credits):
+			result.insert(1, after_credits)
 	return result
 
 

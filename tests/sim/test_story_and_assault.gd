@@ -235,7 +235,18 @@ func test_a_stage_scene_comes_before_the_beats() -> void:
 func test_the_assault_opens_with_its_intro_and_ends_with_the_epilogue() -> void:
 	var story := Story.load_from("res://data/story")
 	assert_true(story.due_before_stage(&"assault_1", [] as Array[StringName]).has(&"assault_intro"))
-	assert_eq(story.due_after_win(&"assault_1", 0, [] as Array[StringName])[0], &"epilogue")
+	var ending := story.due_after_win(&"assault_1", 0, [] as Array[StringName])
+	assert_eq(ending[0], &"epilogue")
+	assert_eq(ending[1], &"the_hush", "the dark god's reveal follows the credits")
+
+
+func test_the_hush_stays_out_of_sight_until_its_own_scene() -> void:
+	var story := Story.load_from("res://data/story")
+	assert_true(story.has_cinematic(&"the_hush"))
+	for shot: Dictionary in story.cinematic(&"epilogue")["shots"]:
+		assert_ne(str(shot.get("speaker", "")), "the_hush", "the epilogue itself no longer reveals it")
+	for shot: Dictionary in story.cinematic(&"the_hush")["shots"]:
+		assert_true(str(shot.get("speaker", "")) in ["the_hush", "narrator"], "only the Hush speaks")
 
 
 # --- Saving ----------------------------------------------------------------------

@@ -41,6 +41,7 @@ Narration is read by the narrator (Queen Ysolde, deep calm female voice). Lines 
 | `mirror_spire` | The Mirror Spire | During the final assault, at the start of the second movement. |
 | `crownless_throne` | The Crownless Throne | During the final assault, at the start of the third movement (the Vael-Orrun fight). |
 | `epilogue` | The Seventh Colour | After the final assault is won. Then the credits. |
+| `the_hush` | One Door | Straight after the epilogue's credits. |
 
 Beats keyed to stages won (any campaign order): `regents_counsel` after 6, `night_of_falling_stars` after 12, `long_night` after 18. Land stages are fought at night from 12 stages won on.
 
@@ -790,7 +791,7 @@ It was the Seventh's.
 
 ## The Seventh Colour (`epilogue`)
 
-*After the final assault is won. Then the credits.* About 1:34.
+*After the final assault is won. Then the credits.* About 1:23.
 
 **1. [The six Wardens in a ring around Vael-Orrun, hands joined, their light rising.]**
 
@@ -832,9 +833,41 @@ That is what we fought for. Not the land. Them.
 *(pause)*  
 But I have felt every one of them.
 
-**9. [After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six colours... then, faintly, a seventh. Ilyra, alone, leans in to look. Deep inside the seventh colour, something with no colour at all opens, like an eye.]**
+---
 
-**10. [Black. No sound at all for a moment before the voice, and none after. Title card: TO BE CONTINUED.]**
+## One Door (`the_hush`)
+
+*Straight after the epilogue's credits.* About 0:48.
+
+**1. [After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six colours... then, faintly, a seventh. Ilyra, alone, leans in to look.]**
+
+**2. [Two thousand years ago: the vault under burning Vael. The young Keeper, Vael-Orrun, kneels in the dark with his wife's ring in his fist, listening. Grey creeps into his eyes from the edges.]**
+
+> **???:** He was the first to listen.  
+*(pause)*  
+I taught him how a world goes quiet.
+
+**3. [Six years ago: Cassivane at his daughter's grave in the rain. Above him, a thin crack of starless dark opens in the night sky.]**
+
+> **???:** The Regent thought he bargained with a king.  
+*(pause)*  
+He bargained with me, wearing a king's voice.
+
+**4. [The Crack in the Hollow Rift seen from the far side, from the Outer Hollow: wide open where the Concord marched through. The six Wardens' light spills in from the world beyond it.]**
+
+> **???:** I could never open the door from my side.  
+*(pause)*  
+You opened it from yours.
+
+**5. [Ilyra, frozen in front of the Heartstone. Reflected in both her eyes, very small, something with no colour at all.]**
+
+> **???:** Your High King was never my enemy. He was my hand.  
+*(pause)*  
+So were you.
+
+**6. [Deep inside the seventh colour of the Heartstone, something with no colour at all opens, like an eye.]**
+
+**7. [Black. No sound at all for a moment before the voice, and none after. Title card: TO BE CONTINUED.]**
 
 > **???:** Seven crowns. One door.  
 *(pause)*  
