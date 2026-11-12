@@ -18,6 +18,11 @@ signal run_ended(won: bool)
 signal skill_used(skill: SkillData, at: Vector2)
 ## A boss came onto the board, walking in or released by another enemy.
 signal boss_arrived(enemy: SimEnemy)
+## A boss used one of its abilities: &"heal", &"shield", &"shield_break", &"bind" (targets: the towers
+## bound), &"fireball" (targets: [the tower it flies at]), &"destroy_tower" (targets: [the tower, already
+## gone from towers]), &"silence" (targets: towers), &"summon" (targets: the new enemies), &"blink" or
+## &"enrage". See BossAbilities.
+signal boss_ability(boss: SimEnemy, ability: StringName, targets: Array)
 ## A boss silenced these towers.
 signal towers_silenced(boss: SimEnemy, silenced: Array[SimTower])
 ## An enemy used its power (see EnemyData.power), or something happened to it: &"fall" and &"rise"
@@ -177,6 +182,8 @@ var _roll_wait := 0.0
 var _muster_cooldowns: Dictionary[StringName, float] = {}
 ## Gold from the camp's supply not yet paid out, under a whole coin.
 var _supply := 0.0
+## The bosses' healing, barriers, binding and fireballs, and the ruins they leave.
+var boss_powers: BossAbilities
 ## The wave being fought as it really comes: grown by the difficulty (and in endless, the round).
 var _wave_as_fought: WaveData
 ## Extra health for the enemies of a wave whose numbers hit MAX_WAVE_ENEMIES.
@@ -184,6 +191,7 @@ var _crowd_health := 1.0
 
 
 func _init(p_config: RunConfig) -> void:
+	boss_powers = BossAbilities.new(self)
 	config = p_config
 	var rules := config.rules
 	var base_gold := rules.starting_gold
@@ -564,6 +572,8 @@ func placement_error(tower_id: StringName, cell: Vector2i) -> String:
 		return "The enemy still holds this ground: bring down its buildings first"
 	if _tower_at.has(cell):
 		return "There is already a tower here"
+	if boss_powers.is_ruin(cell):
+		return "The ruin still burns: build here once the wave is over"
 	if gold < tower_price(tower_id):
 		return "Not enough gold"
 	return ""
@@ -747,6 +757,18 @@ func sell_tower(tower: SimTower) -> int:
 	return refund
 
 
+## A boss's fireball destroys a tower outright: no refund.
+func destroy_tower(tower: SimTower) -> void:
+	if not towers.has(tower):
+		return
+	towers.erase(tower)
+	_tower_at.erase(tower.cell)
+	if tower.is_hero():
+		_heroes_on_board.erase(tower.hero.id)
+	_recompute_towers()
+	changed.emit()
+
+
 func start_next_wave() -> bool:
 	if state != State.BUILDING or current_wave() == null:
 		return false
@@ -892,6 +914,7 @@ func _roll_wave() -> void:
 	var finished := current_wave()
 	wave_index += 1
 	var rewards := _pay_wave(finished)
+	boss_powers.clear()
 	wave_cleared.emit(wave_index, rewards[0], rewards[1])
 	_begin_wave()
 
@@ -935,9 +958,10 @@ func _spawn(delta: float) -> void:
 		var element := _wave_element
 		if not group.element.is_empty():
 			element = config.element_index(group.element)
-		var enemy := _make_enemy(data, multiplier, lane, element, 0.0)
+		var boss := data.tags.has(&"boss")
+		var enemy := _make_enemy(data, multiplier * (config.wave_set.boss_health_scale if boss else 1.0), lane, element, 0.0)
 		enemies.append(enemy)
-		if data.tags.has(&"boss"):
+		if boss:
 			boss_arrived.emit(enemy)
 
 
@@ -978,15 +1002,18 @@ func minor_health_share(data: EnemyData) -> float:
 
 ## Enemies that come out of another: splitting on death, or summoned by a boss. They appear a little
 ## behind it on its lane, with its strength and element.
-func _release_from(parent: SimEnemy, enemy_id: StringName, count: int) -> void:
+func _release_from(parent: SimEnemy, enemy_id: StringName, count: int) -> Array[SimEnemy]:
+	var released: Array[SimEnemy] = []
 	var data: EnemyData = config.enemies.get(enemy_id)
 	if data == null:
-		return
+		return released
 	for i in count:
 		var child := _make_enemy(data, parent.health_multiplier, parent.lane, parent.element, parent.progress - 14.0 * i)
 		_arrivals.append(child)
+		released.append(child)
 		if data.tags.has(&"boss"):
 			boss_arrived.emit(child)
+	return released
 
 
 func _move_enemies(delta: float) -> void:
@@ -1029,6 +1056,7 @@ func _move_enemies(delta: float) -> void:
 ## Healing, summoning and changing element, the horde's powers and the bosses' tricks.
 func _tick_traits(delta: float) -> void:
 	_tick_boss_tricks(delta)
+	boss_powers.tick(delta)
 	_tick_horde_auras(delta)
 	_tick_powers(delta)
 	_tick_seeds(delta)
@@ -1060,7 +1088,9 @@ func _tick_summons(enemy: SimEnemy, delta: float) -> void:
 		enemy.summon_timer -= delta
 		if enemy.summon_timer <= 0.0:
 			enemy.summon_timer += data.summon_interval
-			_release_from(enemy, data.summon, data.summon_count)
+			var called := _release_from(enemy, data.summon, data.summon_count)
+			if data.tags.has(&"boss") and not called.is_empty():
+				boss_ability.emit(enemy, &"summon", called)
 
 
 ## Shields, silences, blinks and rage. Buildings of the enemy base use them too, once they can be hurt.
@@ -1084,6 +1114,7 @@ func _tick_boss_tricks(delta: float) -> void:
 			continue
 		if data.enrage_below > 0.0 and not caster.enraged and caster.health < caster.max_health * data.enrage_below:
 			caster.enraged = true
+			boss_ability.emit(caster, &"enrage", [])
 		if data.ward_radius > 0.0 and data.ward_reduction > 0.0:
 			var reach := data.ward_radius * data.ward_radius
 			for other in enemies:
@@ -1107,6 +1138,7 @@ func _tick_boss_tricks(delta: float) -> void:
 					caster.progress += jump
 					caster.position = lane_curves[caster.lane].sample_baked(caster.progress)
 					enemy_blinked.emit(caster, from)
+					boss_ability.emit(caster, &"blink", [])
 
 
 ## Each kind of enemy's own power. See EnemyData.power.
@@ -1205,6 +1237,7 @@ func _silence_towers(caster: SimEnemy) -> void:
 			hit.append(tower)
 	if not hit.is_empty():
 		towers_silenced.emit(caster, hit)
+		boss_ability.emit(caster, &"silence", hit)
 
 
 func _tick_statuses(delta: float) -> void:
@@ -1415,6 +1448,11 @@ func _damage(enemy: SimEnemy, amount: float, source: SimTower) -> void:
 		amount *= 1.0 - enemy.ward
 	if enemy.is_hardened():
 		amount *= 1.0 - clampf(enemy.data.power_amount, 0.0, 0.95)
+	if enemy.barrier > 0.0:
+		# A boss's barrier soaks the blow up first.
+		amount = boss_powers.absorb(enemy, amount)
+		if amount <= 0.0:
+			return
 	if enemy.shell > 0.0:
 		# A Rimeback's ice soaks the blow up first.
 		var soaked := minf(enemy.shell, amount)
@@ -1531,6 +1569,7 @@ func _finish_wave() -> void:
 	var rewards := _pay_wave(finished)
 	projectiles.clear()
 	_bursts.clear()
+	boss_powers.clear()
 	if wave_index >= total_waves() and not is_assault() and not is_endless():
 		_end_run(true)
 	else:
@@ -1723,6 +1762,8 @@ func _cell_error(cell: Vector2i) -> String:
 		return "The enemy's war camp stands here" if _landmark_cells[cell].kind == &"camp" else "The city stands here"
 	if _tower_at.has(cell):
 		return "There is already a tower here"
+	if boss_powers.is_ruin(cell):
+		return "The ruin still burns: build here once the wave is over"
 	return ""
 
 

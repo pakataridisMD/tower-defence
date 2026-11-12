@@ -133,6 +133,9 @@ func _build_views() -> void:
 	add_child(camera)
 	camera.setup(board, sim.config.map.size_in_pixels())
 	board.view_rect = BoardCamera.VIEW_RECT
+	if board.art != null:
+		BossFx.new().setup(sim, board.art)
+	sim.boss_ability.connect(_on_boss_ability)
 
 	audio = GameAudio.new()
 	add_child(audio)
@@ -727,6 +730,21 @@ func _move_selected() -> void:
 		return
 	board.begin_moving(tower)
 	hud.show_message("%s: click a free tile to march to" % tower.hero.display_name)
+
+
+## Tells the player when a boss binds or burns down their towers, and lets go of a destroyed one.
+func _on_boss_ability(boss: SimEnemy, ability: StringName, targets: Array) -> void:
+	match ability:
+		&"fireball":
+			hud.show_message("%s hurls fire at your %s! Sell it now or lose it." % [boss.data.display_name,
+					(targets[0] as SimTower).data.display_name], UiStyle.BAD)
+		&"destroy_tower":
+			var tower: SimTower = targets[0]
+			if board.selected == tower:
+				board.select(null)
+			hud.show_message("%s destroyed your %s" % [boss.data.display_name, tower.data.display_name], UiStyle.BAD)
+		&"bind":
+			hud.show_message("%s binds %d of your towers" % [boss.data.display_name, targets.size()], UiStyle.BAD)
 
 
 func _on_hero_summoned(tower: SimTower) -> void:

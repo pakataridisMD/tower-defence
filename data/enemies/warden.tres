@@ -6,12 +6,15 @@
 script = ExtResource("1_b1i6m")
 id = &"warden"
 display_name = "Ashdrake"
-max_health = 1200.0
+max_health = 4800.0
 speed = 45.0
 armour = 8.0
 bounty = 50
 leak_damage = 10
 tags = Array[StringName]([&"boss"])
+shield_interval = 16.0
+shield_amount = 0.12
+shield_duration = 6.0
 power = &"breath"
 power_interval = 9.0
 power_duration = 2.5

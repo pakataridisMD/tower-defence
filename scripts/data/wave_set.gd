@@ -8,6 +8,9 @@ extends Resource
 @export var health_growth: float = 1.12
 ## Every enemy's health is multiplied by this in every wave, to tune a whole set at once.
 @export var health_scale: float = 1.0
+## Bosses' health is multiplied by this on top, so a stage can soften its bosses alone (see
+## tools/campaign/tuning.py "boss_life").
+@export var boss_health_scale: float = 1.0
 @export var waves: Array[WaveData] = []
 
 
