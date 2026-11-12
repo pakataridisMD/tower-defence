@@ -334,7 +334,7 @@ func _draw_subtitle(shot: Dictionary, alpha: float) -> void:
 		return
 	var reveal := clampf((_time - 0.3) / maxf(1.0, _length * 0.55), 0.0, 1.0)
 	var shown := text.substr(0, ceili(text.length() * reveal))
-	var speaker := str(shot.get("speaker", ""))
+	var speaker := story.speaker_name(StringName(str(shot.get("speaker", "")))) if story != null else ""
 	var width := minf(size.x - 240.0, 1400.0)
 	var left := (size.x - width) * 0.5
 	var top := size.y - BAR_HEIGHT - 150.0

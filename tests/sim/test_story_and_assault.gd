@@ -242,6 +242,8 @@ func test_the_assault_opens_with_its_intro_and_ends_with_the_epilogue() -> void:
 
 func test_the_hush_stays_out_of_sight_until_its_own_scene() -> void:
 	var story := Story.load_from("res://data/story")
+	assert_eq(story.speaker_name(&"the_hush"), "???", "its name stays hidden in the subtitles")
+	assert_eq(story.speaker_name(&"vael_orrun"), "Vael-Orrun")
 	assert_true(story.has_cinematic(&"the_hush"))
 	for shot: Dictionary in story.cinematic(&"epilogue")["shots"]:
 		assert_ne(str(shot.get("speaker", "")), "the_hush", "the epilogue itself no longer reveals it")

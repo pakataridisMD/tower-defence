@@ -297,6 +297,15 @@ func city(stage_id: StringName) -> Dictionary:
 
 
 ## The character who is this boss enemy, or an empty dictionary.
+## The name to show above a line: the character's name from characters.json (hidden characters keep
+## theirs, "???"), or the id itself for a speaker who is not a character, such as the narrator.
+func speaker_name(speaker: StringName) -> String:
+	if speaker.is_empty():
+		return ""
+	var person: Dictionary = characters.get(speaker, {})
+	return str(person.get("name", speaker))
+
+
 func character_for_enemy(enemy_id: StringName) -> Dictionary:
 	for person: Dictionary in characters.values():
 		if StringName(str(person.get("boss_enemy", ""))) == enemy_id:
