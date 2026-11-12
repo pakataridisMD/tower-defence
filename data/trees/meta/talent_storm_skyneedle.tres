@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"talent_storm_skyneedle"
+display_name = "Skyneedle"
+description = "Adds the Skyneedle (Storm) to your towers. In a run, take Gathering Storm in the skill web to build it."
+kind = 1
+region = &"longshots"
+cost = 10
+position = Vector2(250, 0)
+links = Array[StringName]([&"meta_start"])
+unlocks_towers = Array[StringName]([&"storm_skyneedle"])

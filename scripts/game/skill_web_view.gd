@@ -879,7 +879,7 @@ func _status(data: TreeNodeData, path: Array[StringName]) -> String:
 	if tree.is_allocated(data.id):
 		return "Taken. Right-click to refund." if can_refund.call(data.id) else taken_text
 	if tree.is_locked(data.id):
-		return "Locked. Unlock it in the meta tree."
+		return "Locked. Unlock it in Talents."
 	var closer := tree.excluded_by(data.id)
 	if not closer.is_empty():
 		return "Closed: you took %s instead. Refund it to choose this." % tree.graph.node(closer).display_name

@@ -392,6 +392,8 @@ func tower_price(tower_id: StringName) -> int:
 
 
 func is_unlocked(tower_id: StringName) -> bool:
+	if config.locked_towers.has(tower_id):
+		return false
 	if tree.unlocked_towers().has(tower_id):
 		return true
 	var data: TowerData = config.towers.get(tower_id)

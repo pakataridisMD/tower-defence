@@ -10,7 +10,12 @@ var grass_cell := Vector2i(-1, -1)
 
 
 func before_each() -> void:
-	Progress.use_memory_profile()
+	# Duals and triples are talents: this player has bought them all, so the web can open them.
+	var profile := PlayerProfile.new()
+	profile.meta_points_earned = 10000
+	for node_data: TreeNodeData in DataRegistry.meta_tree_nodes:
+		profile.meta_nodes.append(node_data.id)
+	Progress.use_memory_profile(profile)
 	game = GAME_SCENE.instantiate()
 	add_child_autofree(game)
 	await wait_process_frames(2)

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"talent_hybrid_lodestone"
+display_name = "Lodestone"
+description = "Adds the Lodestone (Storm + Earth) to your towers. In a run, take Superconductor and Avalanche in the skill web to build it."
+kind = 3
+region = &"duals"
+cost = 18
+position = Vector2(0, -700)
+links = Array[StringName]([&"talent_hybrid_magma", &"talent_hybrid_riftstorm"])
+unlocks_towers = Array[StringName]([&"hybrid_lodestone"])

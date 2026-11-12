@@ -8,7 +8,7 @@ extends SceneTree
 ##
 ## A lost stage is played again, up to --tries times (default 2), and every attempt pays its meta
 ## points like a real run. --quick plays only the first stage of each land. The bot spends points on
-## the cheapest open node, preferring the land it is about to play, and skips nodes with a
+## the cheapest open talent, preferring towers of the land it is about to play, and skips nodes with a
 ## downside (the player picks those on purpose). --no-spend keeps the points, to compare against a
 ## player who never opens the tree. The citadel assault is left out: it is its own mode.
 ## --profiles writes the player's profile as it stands before each stage (meta tree, finished
@@ -98,8 +98,8 @@ func _play(meta: MetaProgress, stage: StageData) -> RunSim:
 	return sim
 
 
-## Buys open nodes, cheapest first, the focus land's own nodes counting as half price, until no
-## open node is affordable.
+## Buys open talents, cheapest first, talents whose tower carries the focus land's element counting
+## as half price, until no open talent is affordable.
 func _spend(meta: MetaProgress, focus: StringName) -> void:
 	var graph := meta.tree.graph
 	while true:
@@ -109,12 +109,22 @@ func _spend(meta: MetaProgress, focus: StringName) -> void:
 			if not meta.tree.can_allocate(id) or _has_downside(graph.node(id)):
 				continue
 			var data := graph.node(id)
-			var score := float(data.cost) * (0.5 if data.region == focus and not focus.is_empty() else 1.0)
+			var score := float(data.cost) * (0.5 if _serves(meta, data, focus) else 1.0)
 			if score < best_score or (score == best_score and String(id) < String(best)):
 				best_score = score
 				best = id
 		if best.is_empty() or not meta.allocate(best):
 			return
+
+
+static func _serves(meta: MetaProgress, data: TreeNodeData, focus: StringName) -> bool:
+	if focus.is_empty():
+		return false
+	for tower_id in data.unlocks_towers:
+		var tower: TowerData = meta.registry.towers.get(tower_id)
+		if tower != null and tower.elements.has(focus):
+			return true
+	return data.region == focus
 
 
 static func _has_downside(data: TreeNodeData) -> bool:

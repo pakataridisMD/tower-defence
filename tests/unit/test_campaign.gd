@@ -197,8 +197,10 @@ func test_a_stage_closes_the_elements_it_does_not_allow() -> void:
 	assert_false(sim.tree.can_refund(&"fire_entry"), "the free node stays")
 	for id: StringName in [&"water_entry", &"nature_entry", &"earth_entry", &"bridge_bog", &"bridge_thornstorm"]:
 		assert_true(sim.tree.is_locked(id), "%s is closed" % id)
-	for id: StringName in [&"storm_entry", &"void_entry", &"bridge_plasma", &"bridge_soulflame"]:
+	for id: StringName in [&"storm_entry", &"void_entry"]:
 		assert_false(sim.tree.is_locked(id), "%s is open" % id)
+	for id: StringName in [&"bridge_plasma", &"bridge_soulflame"]:
+		assert_true(sim.tree.is_locked(id), "%s waits for its talent" % id)
 	assert_eq(sim.tree.points, registry.run_rules.starting_tree_points, "the free node costs nothing")
 
 
@@ -259,7 +261,7 @@ func test_replaying_a_won_stage_pays_almost_nothing() -> void:
 
 
 func test_old_saves_lose_points_farmed_by_replays() -> void:
-	var farmed := {"version": 3, "meta_points_earned": 5000, "meta_nodes": ["command_gold"],
+	var farmed := {"version": 3, "meta_points_earned": 5000, "meta_nodes": ["talent_hybrid_plasma"],
 		"campaign": {"stars": {"ember_1": 3}}}
 	var profile := PlayerProfile.from_dict(farmed)
 	assert_true(profile.needs_records)
@@ -268,7 +270,7 @@ func test_old_saves_lose_points_farmed_by_replays() -> void:
 	var worth: int = registry.run_rules.meta_points_after_run(waves, true) + 3
 	assert_eq(meta.profile.meta_points_earned, worth, "capped at what winning ember_1 is worth")
 	assert_eq(meta.profile.run_records[&"ember_1"], worth - 3)
-	assert_true(meta.tree.is_allocated(&"command_gold"), "nodes it can still afford stay taken")
+	assert_true(meta.tree.is_allocated(&"talent_hybrid_plasma"), "nodes it can still afford stay taken")
 	assert_eq(meta.record_run(_finished(meta, &"ember_1", true, 5)), MetaProgress.REPLAY_WIN_POINTS, "a replay now")
 	var honest := _meta(PlayerProfile.from_dict({"version": 3, "meta_points_earned": 4}))
 	assert_eq(honest.profile.meta_points_earned, 0, "nothing won, nothing kept")

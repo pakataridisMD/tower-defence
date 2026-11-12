@@ -21,8 +21,7 @@ const ICON_SIZE := 12
 ## Emblems drawn beside region names: elements in the in-run web, branches in the meta tree.
 const EMBLEMS := {
 	&"fire": &"flame", &"storm": &"bolt", &"nature": &"leaf", &"water": &"drop", &"earth": &"rock",
-	&"void": &"spiral", &"arsenal": &"swords", &"command": &"crown", &"expeditions": &"flag",
-	&"mastery": &"book", &"starpath": &"star",
+	&"void": &"spiral", &"longshots": &"range", &"duals": &"swords", &"triples": &"crown",
 }
 ## Icons for stats, matched by the stat name. Whole names first, then words inside the name.
 const STAT_ICONS := {

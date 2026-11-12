@@ -793,6 +793,8 @@ func _element_names(data: TowerData) -> String:
 ## Where a locked tower is unlocked: a skill web node, or the meta tree when that node is locked too.
 func _unlock_hint(tower_id: StringName) -> String:
 	var data: TowerData = sim.config.towers[tower_id]
+	if sim.config.locked_towers.has(tower_id):
+		return "Unlock in Talents: %s" % sim.config.locked_towers[tower_id]
 	if not data.requires_nodes.is_empty():
 		var needed: PackedStringArray = []
 		for node_data in sim.config.tree_nodes:
@@ -802,7 +804,7 @@ func _unlock_hint(tower_id: StringName) -> String:
 	for node_data in sim.config.tree_nodes:
 		if node_data.unlocks_towers.has(tower_id):
 			if sim.tree.is_locked(node_data.id):
-				return "Unlock in the meta tree"
+				return "Unlock in Talents"
 			return "Unlock: %s" % node_data.display_name
 	return "Locked"
 

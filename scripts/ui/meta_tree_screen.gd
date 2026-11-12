@@ -1,6 +1,6 @@
 extends Control
-## The meta tree, opened from the main menu as Talents. Every finished run pays meta points, and the
-## nodes bought with them count in every later run. Each change is saved straight away, and refunds
+## The meta tree, opened from the main menu as Talents. Every finished run pays meta points, and each
+## talent bought with them adds one tower (a dual, a triple or a long-range tower) to every later run. Each change is saved straight away, and refunds
 ## are always free. The tree is far bigger than the screen: drag or WASD to move, wheel to zoom.
 
 const MENU_SCENE := "res://scenes/main.tscn"
@@ -8,8 +8,8 @@ const REFUND_ALL_TEXT := "Refund all"
 const CONFIRM_TEXT := "Click again to refund all"
 ## How long the refund-all button waits for the confirming second click.
 const CONFIRM_SECONDS := 3.0
-## The Starpath ring road, drawn as a dotted circle behind its nodes (see tools/meta/gen_meta_tree.py).
-const RING_RADII: Array[float] = [560.0, 1080.0]
+## The rings the talents sit on, drawn as dotted circles behind them (see tools/meta/gen_meta_tree.py).
+const RING_RADII: Array[float] = [250.0, 470.0, 700.0, 950.0, 1190.0]
 
 var web: SkillWebView
 var refund_all: Button
@@ -22,9 +22,11 @@ static func branch_regions() -> Dictionary[StringName, SkillWebView.Region]:
 	var result: Dictionary[StringName, SkillWebView.Region] = {}
 	for id in MetaProgress.BRANCH_NAMES:
 		result[id] = SkillWebView.Region.new(MetaProgress.BRANCH_NAMES[id], MetaProgress.BRANCH_COLORS[id])
-	# The Starpath circles the whole tree, so a glow at its middle would sit on the Origin.
-	result[&"starpath"].aura = false
-	result[&"starpath"].label = false
+	# Every branch circles the whole wheel, so a glow at its middle would sit on the Origin, and a
+	# name by its farthest node would label only one spot of it.
+	for region: SkillWebView.Region in result.values():
+		region.aura = false
+		region.label = false
 	return result
 
 
@@ -39,12 +41,12 @@ func _ready() -> void:
 	web.count_noun = "talents"
 	web.subtitle = ("Meta points pay for records: %d for each new wave cleared on a stage or map and %d for its first " +
 		"win, plus a bonus for each stage's first win. Hard and Nightmare raise the record. Replays without a record " +
-		"pay %d, %d times per stage. Keystones change the rules, pick-one choices close their partner, and refunds " +
-		"are free: right-click a node at the tip of a branch.") % [rules.meta_points_per_wave, rules.meta_points_for_win,
+		"pay %d, %d times per stage. Every talent adds a tower to your runs and any talent can be bought at any time: " +
+		"duals near the middle, triples at the edge. The six base towers are always yours. Refunds are free: right-click a talent.") % [rules.meta_points_per_wave, rules.meta_points_for_win,
 		MetaProgress.REPLAY_WIN_POINTS, MetaProgress.REPLAY_LIMIT]
 	web.points_noun = "meta point"
 	web.close_text = "Back (Esc)"
-	web.taken_text = "Taken. Refund the nodes past it first."
+	web.taken_text = "Taken. Right-click to refund."
 	web.can_refund = func(id: StringName) -> bool: return Progress.meta.tree.can_refund(id)
 	add_child(web)
 	web.close_requested.connect(back_to_menu)

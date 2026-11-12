@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"talent_triple_cinderstorm"
+display_name = "Cinderstorm"
+description = "Adds the Cinderstorm (Fire + Storm + Nature) to your towers. In a run, take Stoked Coals, Gathering Storm and Toxic Sap in the skill web to build it."
+kind = 3
+region = &"triples"
+cost = 20
+position = Vector2(700, 0)
+links = Array[StringName]([&"talent_hybrid_wildfire"])
+unlocks_towers = Array[StringName]([&"triple_cinderstorm"])
