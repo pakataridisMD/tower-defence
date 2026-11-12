@@ -191,7 +191,7 @@ func test_kept_gold_earns_a_savings_bonus_at_the_end_of_a_wave() -> void:
 	var elapsed := 0.0
 	while sim.state == RunSim.State.WAVE and elapsed < 300.0:
 		elapsed += 0.05
-		var expected := mini(floori(sim.gold * 0.2), rules.savings_bonus_cap)
+		var expected := mini(floori(sim.gold * 0.2), rules.savings_cap_at(1))
 		sim.step(0.05)
 		if sim.state != RunSim.State.WAVE:
 			assert_eq(sim.last_savings_bonus, expected)
@@ -208,6 +208,16 @@ func test_the_savings_bonus_is_capped_and_never_negative() -> void:
 	assert_eq(rules.savings_bonus_for(99, 0.2), 19)
 	assert_eq(rules.savings_bonus_for(500, 0.2), 100)
 	assert_eq(rules.savings_bonus_for(100000, 0.2), rules.savings_bonus_cap)
+
+
+func test_the_savings_cap_grows_geometrically_from_the_first_wave() -> void:
+	var rules: RunRules = registry.run_rules
+	assert_eq(rules.savings_cap_at(1), 150, "the first wave keeps the base cap")
+	assert_eq(rules.savings_cap_at(2), 162)
+	assert_eq(rules.savings_cap_at(11), roundi(150 * pow(1.08, 10)))
+	assert_eq(rules.savings_bonus_for(100000, 0.2, 11), rules.savings_cap_at(11))
+	for wave in range(1, 60):
+		assert_true(rules.savings_cap_at(wave + 1) > rules.savings_cap_at(wave), "it always rises")
 
 
 func test_sell_refunds_never_pay_more_than_the_price() -> void:

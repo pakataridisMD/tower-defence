@@ -1554,7 +1554,7 @@ func _pay_wave(finished: WaveData) -> Array[int]:
 		points += roundi(run_stat(&"tree_points_per_boss", rules.tree_points_per_boss))
 	tree.points += points
 	# The savings bonus is worked out on the gold kept through the wave, before the wave's own pay.
-	last_savings_bonus = savings_bonus_now()
+	last_savings_bonus = _savings_bonus(wave_index)
 	var bonus := roundi(run_stat(&"gold_per_wave", rules.gold_per_wave)) + last_savings_bonus
 	gold += bonus
 	gold_earned += bonus
@@ -1566,8 +1566,18 @@ func _pay_wave(finished: WaveData) -> Array[int]:
 
 ## The savings bonus the gold held right now would earn if the wave ended now.
 func savings_bonus_now() -> int:
+	return _savings_bonus(wave_index + 1)
+
+
+## The savings bonus the gold held now earns for clearing wave `wave_number` (starts at 1).
+func _savings_bonus(wave_number: int) -> int:
 	var rules := config.rules
-	return rules.savings_bonus_for(gold, run_stat(&"savings_bonus", rules.savings_bonus))
+	return rules.savings_bonus_for(gold, run_stat(&"savings_bonus", rules.savings_bonus), wave_number)
+
+
+## The most the savings bonus can pay at the end of the wave being fought (or the next one).
+func savings_cap_now() -> int:
+	return config.rules.savings_cap_at(wave_index + 1)
 
 
 func _end_run(won: bool) -> void:

@@ -675,8 +675,8 @@ func _refresh() -> void:
 func _gold_hint() -> String:
 	var rules := sim.config.rules
 	var share := roundi(sim.run_stat(&"savings_bonus", rules.savings_bonus) * 100.0)
-	return "Gold\nSavings bonus: clearing a wave pays %d%% of the gold you kept (at most %d).\nRight now: +%d gold" % [
-		share, rules.savings_bonus_cap, sim.savings_bonus_now()]
+	return "Gold\nSavings bonus: clearing a wave pays %d%% of the gold you kept (at most %d this wave, rising 8%% a wave).\nRight now: +%d gold" % [
+		share, sim.savings_cap_now(), sim.savings_bonus_now()]
 
 
 ## "Savings +N" for the top bar while a wave is being fought, or nothing.
