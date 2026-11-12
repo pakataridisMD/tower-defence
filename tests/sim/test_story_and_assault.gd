@@ -219,15 +219,15 @@ func test_the_prologue_plays_once_before_the_first_stage() -> void:
 func test_beats_are_due_after_enough_wins_and_only_once() -> void:
 	var story := Story.load_from("res://data/story")
 	var seen: Array[StringName] = []
-	assert_false(story.due_after_win(&"", 5, seen).has(&"regents_counsel"))
-	assert_true(story.due_after_win(&"", 6, seen).has(&"regents_counsel"))
-	seen.append(&"regents_counsel")
 	assert_false(story.due_after_win(&"", 7, seen).has(&"regents_counsel"))
+	assert_true(story.due_after_win(&"", 8, seen).has(&"regents_counsel"))
+	seen.append(&"regents_counsel")
+	assert_false(story.due_after_win(&"", 9, seen).has(&"regents_counsel"))
 
 
 func test_a_stage_scene_comes_before_the_beats() -> void:
 	var story := Story.load_from("res://data/story")
-	var due := story.due_after_win(&"ember_2", 6, [] as Array[StringName])
+	var due := story.due_after_win(&"ember_2", 8, [] as Array[StringName])
 	assert_eq(due[0], &"ember_herald")
 	assert_true(due.has(&"regents_counsel"))
 
@@ -235,7 +235,28 @@ func test_a_stage_scene_comes_before_the_beats() -> void:
 func test_the_assault_opens_with_its_intro_and_ends_with_the_epilogue() -> void:
 	var story := Story.load_from("res://data/story")
 	assert_true(story.due_before_stage(&"assault_1", [] as Array[StringName]).has(&"assault_intro"))
-	assert_eq(story.due_after_win(&"assault_1", 0, [] as Array[StringName])[0], &"epilogue")
+	var ending := story.due_after_win(&"assault_1", 0, [] as Array[StringName])
+	assert_eq(ending.slice(0, 3), [&"the_truth", &"epilogue", &"the_hush"] as Array[StringName],
+			"the truth, then the epilogue, then the scene after the credits")
+	assert_eq(story.scene_at_wave(&"assault_1", 39), &"the_high_king")
+	assert_eq(story.scene_at_wave(&"assault_1", 40), &"the_turning")
+
+
+func test_winning_a_stage_saves_its_town() -> void:
+	var story := Story.load_from("res://data/story")
+	assert_true(bool(story.city(&"ember_1").get("saved", false)), "Kethra is saved")
+	assert_false(bool(story.city(&"converge_2").get("saved", true)), "only the Lumen Gate falls")
+	assert_true(bool(story.city(&"converge_3").get("capital", false)))
+
+
+func test_the_hush_stays_out_of_sight_until_its_own_scene() -> void:
+	var story := Story.load_from("res://data/story")
+	assert_eq(story.speaker_name(&"the_hush"), "???", "its name stays hidden in the subtitles")
+	assert_eq(story.speaker_name(&"vael_orrun"), "Vael-Orrun")
+	for shot: Dictionary in story.cinematic(&"epilogue")["shots"]:
+		assert_ne(str(shot.get("speaker", "")), "the_hush", "the epilogue itself does not reveal it")
+	for shot: Dictionary in story.cinematic(&"the_hush")["shots"]:
+		assert_true(str(shot.get("speaker", "")) in ["the_hush", "narrator"], "only the Hush speaks")
 
 
 # --- Saving ----------------------------------------------------------------------
@@ -282,3 +303,21 @@ func test_shots_keep_their_own_timing_without_music_markers() -> void:
 	else:
 		# Herald music is not written shot by shot, so its markers are not used for timing.
 		assert_ne(story.shot_markers(&"ember_herald").size(), 3)
+
+
+func test_a_finished_film_plays_instead_of_the_stills() -> void:
+	var player := CinematicPlayer.new()
+	player.story = Story.load_from("res://data/story")
+	player.story.video_path = "res://tests/fixtures/video/%s.ogv"
+	assert_eq(player.story.video_shot_times(&"the_hush"), PackedFloat32Array([0.0, 1.0, 2.0]))
+	assert_eq(Story.load_from("res://data/story").video_for(&"the_hush"), "", "no film yet in the game")
+	player.queue = [&"the_hush"] as Array[StringName]
+	player.change_scene_when_done = false
+	player.mark_seen = false
+	add_child_autofree(player)
+	assert_not_null(player._video, "the film plays")
+	assert_eq(player.current_shot(), 0, "no title card before a film")
+	watch_signals(player)
+	player.skip_cinematic()
+	assert_true(player.is_done())
+	assert_signal_emitted(player, "finished")

@@ -508,7 +508,7 @@ func _city_line(stage: StageData) -> Array:
 		return [("Defend %s" % name).to_upper(), UiStyle.MENU_GOLD]
 	if bool(city.get("saved", false)):
 		return [("%s is saved" % name).to_upper(), UiStyle.GOOD]
-	return [("%s has fallen. Its people got away." % name).to_upper(), UiStyle.MENU_DIM]
+	return [("%s has fallen" % name).to_upper(), UiStyle.MENU_DIM]
 
 
 ## Stars, waves and roads beside the battlefield picture.
@@ -756,7 +756,7 @@ func _draw_marks() -> void:
 			var walked := meta.stars(id) > 0
 			_draw_trail(_points(spot["trail"]), _campaign_color(DataRegistry.campaign_of(id)), 1.0 if walked else 0.6)
 	for id: StringName in _order:
-		if meta.stars(id) > 0 and id != SAVED_CITY:
+		if meta.stars(id) > 0 and _fallen(id):
 			_draw_smoke(id)
 	_draw_land_labels()
 	for id: StringName in _order:
@@ -792,6 +792,12 @@ func _draw_trail(points: PackedVector2Array, color: Color, strength: float) -> v
 		var i := mini(int(t), count - 2)
 		var at := screen[i].lerp(screen[i + 1], t - i)
 		_marks.draw_rect(Rect2(at - Vector2.ONE * width, Vector2.ONE * width * 2.0), Color(1, 0.97, 0.85, 0.9 * strength))
+
+
+## True for a town the story loses even when its stage is won (Solenne's outer wall).
+func _fallen(stage_id: StringName) -> bool:
+	var city := Story.shared().city(stage_id)
+	return not city.is_empty() and not bool(city.get("saved", true))
 
 
 ## Smoke over a city that has fallen, with embers glowing under it.
@@ -909,7 +915,7 @@ func _draw_city_name(stage_id: StringName, at: Vector2, half: float) -> void:
 		city = "The final assault"
 	if city.is_empty():
 		return
-	var fallen := Progress.meta.stars(stage_id) > 0 and stage_id != SAVED_CITY
+	var fallen := Progress.meta.stars(stage_id) > 0 and _fallen(stage_id)
 	var color := UiStyle.MENU_TEXT if not fallen else Color("aaa092")
 	if stage_id == SAVED_CITY:
 		color = UiStyle.MENU_GOLD_LIGHT

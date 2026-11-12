@@ -4,7 +4,7 @@
     {
       "id": "refugee_road",
       "cinematic": "regents_counsel",
-      "after_stages_won": 6
+      "after_stages_won": 8
     },
     {
       "id": "midpoint",
@@ -104,162 +104,201 @@
   "cities": {
     "ember_1": {
       "name": "Kethra",
-      "fall_text": "Kethra's forges go cold under a black tide of seawater and ash.",
-      "saved": false
+      "fall_text": "The sea stopped at the edge of town. Its forges never went out.",
+      "saved": true,
+      "capital": false
     },
     "ember_2": {
       "name": "Brazier Hold",
-      "fall_text": "The Lanternguard bring down Brazier Hold's gate behind the last cart.",
-      "saved": false
+      "fall_text": "The Saltmother is dead, and her cage is open.",
+      "saved": true,
+      "capital": false
     },
     "ember_3": {
       "name": "Vitrea",
-      "fall_text": "Vitrea's glass towers ring like bells as they shatter, all at once.",
-      "saved": false
+      "fall_text": "Not one glass tower cracked.",
+      "saved": true,
+      "capital": false
     },
     "ember_4": {
       "name": "Pyrrhenhall",
-      "fall_text": "The caldera floods. The Emberfolk walk west carrying their forge-fires in iron pots.",
-      "saved": false
+      "fall_text": "Ignar is awake, and the sea is draining off the mountain.",
+      "saved": true,
+      "capital": false
     },
     "storm_1": {
       "name": "Stonering Camp",
-      "fall_text": "The standing stones of Stonering Camp topple inward like a closing hand.",
-      "saved": false
+      "fall_text": "The standing stones still stand.",
+      "saved": true,
+      "capital": false
     },
     "storm_2": {
       "name": "Highwind",
-      "fall_text": "Highwind's wind-bridges are cut, so nothing can follow.",
-      "saved": false
+      "fall_text": "Gorrath is broken. Kaela Stormrider rides with us.",
+      "saved": true,
+      "capital": false
     },
     "storm_3": {
       "name": "Tarrow's Rest",
-      "fall_text": "The Galeborn set the grass alight behind Tarrow's Rest to slow the Stone.",
-      "saved": false
+      "fall_text": "The horses are safe in their pens.",
+      "saved": true,
+      "capital": false
     },
     "storm_4": {
       "name": "Aurvanis",
-      "fall_text": "The Sky-Moot rides away on ten thousand horses. Only the tent poles remain.",
-      "saved": false
+      "fall_text": "Aurath is awake, and the sky is moving again.",
+      "saved": true,
+      "capital": false
     },
     "nature_1": {
       "name": "Fernholt",
-      "fall_text": "The moss of Fernholt stops glowing. The village is silent by morning.",
-      "saved": false
+      "fall_text": "Its people are back in the branches.",
+      "saved": true,
+      "capital": false
     },
     "nature_2": {
       "name": "Elderhollow",
-      "fall_text": "The Deepwood seal Elderhollow's root-doors with their own hands.",
-      "saved": false
+      "fall_text": "The Pale Vesper is silent. Sylvaine Thornwhisper fights with us.",
+      "saved": true,
+      "capital": false
     },
     "nature_3": {
       "name": "Thornwall",
-      "fall_text": "The thorns of Thornwall turn on their own wall.",
-      "saved": false
+      "fall_text": "The dead under its trees lie still again.",
+      "saved": true,
+      "capital": false
     },
     "nature_4": {
       "name": "Sylvanmere",
-      "fall_text": "The Tree-City's people leave by its highest branches.",
-      "saved": false
+      "fall_text": "Elowen is awake, and the Hollow is leaving the forest.",
+      "saved": true,
+      "capital": false
     },
     "water_1": {
       "name": "Netmend",
-      "fall_text": "Netmend's nets burn on the ice.",
-      "saved": false
+      "fall_text": "The ice under it held.",
+      "saved": true,
+      "capital": false
     },
     "water_2": {
       "name": "Reedhaven",
-      "fall_text": "The reeds are fired, and Reedhaven's stilts go with them.",
-      "saved": false
+      "fall_text": "Ashwick is dead. Mirelle and forty children walked out of the ice.",
+      "saved": true,
+      "capital": false
     },
     "water_3": {
       "name": "Glasswater",
-      "fall_text": "The ice under Glasswater cracks, and the lake takes it whole.",
-      "saved": false
+      "fall_text": "The lake froze over again behind the last runner.",
+      "saved": true,
+      "capital": false
     },
     "water_4": {
       "name": "Pearlhaven",
-      "fall_text": "Pearlhaven's fleet sails west with every child of Frostmere aboard. The harbour boils.",
-      "saved": false
+      "fall_text": "Thalassa is awake, and the sea is freezing over.",
+      "saved": true,
+      "capital": false
     },
     "earth_1": {
       "name": "Dustmark",
-      "fall_text": "A dust storm buries Dustmark to its roofs.",
-      "saved": false
+      "fall_text": "The storm broke on its walls.",
+      "saved": true,
+      "capital": false
     },
     "earth_2": {
       "name": "The Kharum Terraces",
-      "fall_text": "The Stoneborn collapse the switchbacks onto the road themselves.",
-      "saved": false
+      "fall_text": "Vholt is dead. Gorrim Stonebeard fights with us.",
+      "saved": true,
+      "capital": false
     },
     "earth_3": {
       "name": "Mesa Kharn",
-      "fall_text": "Lightning splits Mesa Kharn in two.",
-      "saved": false
+      "fall_text": "The lightning never reached the mesa.",
+      "saved": true,
+      "capital": false
     },
     "earth_4": {
       "name": "Grundhallow",
-      "fall_text": "The Stoneborn seal the Deep Halls with their ancestors inside.",
-      "saved": false
+      "fall_text": "Orrok is awake, and the storm is leaving the canyon.",
+      "saved": true,
+      "capital": false
     },
     "void_1": {
       "name": "Lamplight",
-      "fall_text": "Lamplight's lamps are left burning for anyone still on the road.",
-      "saved": false
+      "fall_text": "Its lamps are still burning.",
+      "saved": true,
+      "capital": false
     },
     "void_2": {
       "name": "Vesperhold",
-      "fall_text": "Vesperhold's floating steps drift apart into the dark.",
-      "saved": false
+      "fall_text": "Mother Briar is dead. Corvin is free.",
+      "saved": true,
+      "capital": false
     },
     "void_3": {
       "name": "Twinmoor",
-      "fall_text": "Twinmoor's reflection walks away without it.",
-      "saved": false
+      "fall_text": "The thorns are dying back.",
+      "saved": true,
+      "capital": false
     },
     "void_4": {
       "name": "Umbrael",
-      "fall_text": "Umbrael's great telescope turns to face the Crack one last time, and falls.",
-      "saved": false
+      "fall_text": "Nyxara is awake. All six Wardens are free.",
+      "saved": true,
+      "capital": false
     },
     "converge_1": {
       "name": "Crossmere",
-      "fall_text": "Every road on the Ring met at Crossmere. Now none do.",
-      "saved": false
+      "fall_text": "Cassivane has fallen back, and left his daughter behind.",
+      "saved": true,
+      "capital": false
     },
     "converge_2": {
       "name": "The Lumen Gate",
-      "fall_text": "The first of Solenne's six walls falls. There is nowhere left to retreat to.",
-      "saved": false
+      "fall_text": "Solenne's outer wall is down. The other five still stand.",
+      "saved": false,
+      "capital": false
     },
     "converge_3": {
       "name": "Solenne",
-      "fall_text": "Solenne stands.",
-      "saved": true
+      "fall_text": "The Heartstone is safe, and the sun is up.",
+      "saved": true,
+      "capital": true
     }
   },
   "assault": {
     "intro": "assault_intro",
+    "waves": [
+      {
+        "wave": 39,
+        "cinematic": "the_high_king"
+      },
+      {
+        "wave": 40,
+        "cinematic": "the_turning"
+      }
+    ],
     "movements": [
       {
-        "name": "The Black Gate",
+        "name": "The Camp",
         "minutes": 10,
-        "boss": "gatemaw",
+        "boss": "echo_heralds",
         "cinematic": ""
       },
       {
-        "name": "The Mirror Spire",
+        "name": "The Outer Gate",
         "minutes": 10,
-        "boss": "echo_heralds",
-        "cinematic": "mirror_spire"
+        "boss": "",
+        "cinematic": ""
       },
       {
-        "name": "The Crownless Throne",
+        "name": "The High King",
         "minutes": 10,
         "boss": "vael_orrun",
-        "cinematic": "crownless_throne"
+        "cinematic": "the_high_king"
       }
     ],
-    "outro": "epilogue"
+    "truth": "the_truth",
+    "outro": "epilogue",
+    "post_credits": "the_hush"
   }
 }
