@@ -1,21 +1,23 @@
 [gd_resource type="Resource" script_class="TreeNodeData" format=3]
 
-[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_lykbl"]
-[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_41vtd"]
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
 
-[sub_resource type="Resource" id="Resource_xnf5i"]
-script = ExtResource("1_lykbl")
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
 stat = &"damage"
 kind = 1
-value = 0.15
+value = 0.08
 required_tags = Array[StringName]([&"fire"])
 
 [resource]
-script = ExtResource("2_41vtd")
+script = ExtResource("2_node")
 id = &"fire_core"
 display_name = "Stoked Coals"
-description = "Fire towers deal 15% increased damage."
+description = "Fire towers deal 8% more damage."
+kind = 3
 region = &"fire"
-position = Vector2(0, -210)
-links = Array[StringName]([&"fire_entry"])
-modifiers = Array[ExtResource("1_lykbl")]([SubResource("Resource_xnf5i")])
+cost = 2
+position = Vector2(0, -385)
+links = Array[StringName]([&"fire_c_300", &"fire_r2_385"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

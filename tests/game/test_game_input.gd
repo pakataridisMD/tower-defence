@@ -103,7 +103,7 @@ func test_right_click_refunds_a_node_taken_this_break() -> void:
 	_click(game.web.screen_position(&"fire_entry"))
 	_click(game.web.screen_position(&"fire_entry"), MOUSE_BUTTON_RIGHT)
 	assert_false(game.sim.tree.is_allocated(&"fire_entry"))
-	assert_eq(game.sim.tree.points, 1)
+	assert_eq(game.sim.tree.points, game.sim.config.rules.starting_tree_points)
 
 
 func test_nodes_cannot_be_refunded_once_the_wave_starts() -> void:

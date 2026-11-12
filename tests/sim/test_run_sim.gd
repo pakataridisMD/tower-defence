@@ -35,7 +35,7 @@ func test_run_starts_with_the_rules_values() -> void:
 	var sim := _sim()
 	assert_eq(sim.gold, 150)
 	assert_eq(sim.lives, 20)
-	assert_eq(sim.tree.points, 1)
+	assert_eq(sim.tree.points, registry.run_rules.starting_tree_points)
 	assert_eq(sim.total_waves(), 10)
 	assert_eq(sim.wave_number(), 1)
 
@@ -46,7 +46,7 @@ func test_run_modifiers_change_starting_values() -> void:
 		Modifier.create(&"starting_tree_points", Modifier.Kind.FLAT, 1.0),
 	])
 	assert_eq(sim.gold, 200)
-	assert_eq(sim.tree.points, 2)
+	assert_eq(sim.tree.points, registry.run_rules.starting_tree_points + 1)
 
 
 func test_towers_unlock_through_the_web() -> void:
@@ -92,6 +92,7 @@ func test_a_cleared_wave_pays_points_and_gold() -> void:
 	var bot := AutoPlayer.new(sim)
 	bot.build_towers()
 	var gold_before := sim.gold
+	var points_before := sim.tree.points
 	var enemies := sim.current_wave().enemy_count()
 	sim.lives = 999
 	assert_true(sim.start_next_wave())
@@ -100,7 +101,7 @@ func test_a_cleared_wave_pays_points_and_gold() -> void:
 	assert_eq(sim.state, RunSim.State.BUILDING)
 	assert_eq(sim.wave_index, 1)
 	assert_eq(sim.kills + sim.leaks, enemies, "every enemy of the wave was killed or leaked")
-	assert_eq(sim.tree.points, 1, "one point per wave")
+	assert_eq(sim.tree.points - points_before, registry.run_rules.tree_points_per_wave, "the points for one wave")
 	assert_true(sim.gold >= gold_before + 20, "wave bonus plus bounties")
 
 
@@ -128,16 +129,18 @@ func test_tree_bonuses_apply_to_towers_already_built() -> void:
 	sim.allocate_node(&"fire_entry")
 	var tower := sim.place_tower(&"fire_brazier", CELL)
 	assert_eq(tower.damage, 8.0)
+	# Taking the core takes the two travel nodes on the way: 3% + 3% + 8% increased damage.
 	sim.allocate_node(&"fire_core")
-	assert_almost_eq(tower.damage, 9.2, 0.0001)
+	assert_true(sim.tree.is_allocated(&"fire_core"))
+	assert_almost_eq(tower.damage, 8.0 * 1.14, 0.0001)
 
 
 func test_keystone_raises_tower_prices() -> void:
 	var sim := _sim()
-	sim.tree.points = 10
+	sim.tree.points = 100
 	for id: StringName in [&"storm_entry", &"storm_core", &"storm_notable", &"keystone_overcharge"]:
 		assert_true(sim.allocate_node(id), "took %s" % id)
-	assert_eq(sim.tower_price(&"fire_brazier"), 63)
+	assert_eq(sim.tower_price(&"fire_brazier"), 60, "20% more")
 
 
 func test_locked_nodes_cannot_be_taken() -> void:
@@ -175,7 +178,7 @@ func test_meta_bonuses_raise_wave_gold_and_sell_refunds() -> void:
 	AutoPlayer.new(sim).build_towers()
 	sim.start_next_wave()
 	_run_until_building(sim)
-	assert_signal_emitted_with_parameters(sim, "wave_cleared", [1, 1, rules.gold_per_wave + 10])
+	assert_signal_emitted_with_parameters(sim, "wave_cleared", [1, rules.tree_points_per_wave, rules.gold_per_wave + 10])
 
 
 func test_sell_refunds_never_pay_more_than_the_price() -> void:

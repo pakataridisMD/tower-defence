@@ -1112,11 +1112,17 @@ func _advance_act() -> void:
 	phase_changed.emit(structure_phase)
 
 
+## Takes a skill web node, and the nodes on the way to it when it is further out, if the points
+## cover them all.
 func allocate_node(id: StringName) -> bool:
-	if is_over() or not tree.allocate(id):
+	if is_over():
+		return false
+	var taken := tree.allocate_path(id)
+	if taken.is_empty():
 		return false
 	if state == State.BUILDING:
-		_taken_this_break[id] = true
+		for node_id in taken:
+			_taken_this_break[node_id] = true
 	_refresh_modifiers()
 	changed.emit()
 	return true

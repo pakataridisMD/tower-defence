@@ -7,13 +7,13 @@
 script = ExtResource("1_mod")
 stat = &"tree_points_per_boss"
 kind = 0
-value = 1.0
+value = 3.0
 
 [resource]
 script = ExtResource("2_node")
 id = &"expedition_trophies"
 display_name = "Trophy Hunter"
-description = "Boss waves give 1 more skill point."
+description = "Boss waves give 3 more skill points."
 kind = 3
 region = &"expeditions"
 cost = 8

@@ -7,15 +7,17 @@
 script = ExtResource("1_mod")
 stat = &"curse_strength"
 kind = 1
-value = 0.25
+value = 0.05
 required_tags = Array[StringName]([&"void"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"void_cw"
-display_name = "Dread"
-description = "Curses from void towers are 25% stronger."
+display_name = "Hex I"
+description = "Curses from void towers are 5% stronger."
+kind = 2
 region = &"void"
-position = Vector2(-127, -141)
+cost = 1
+position = Vector2(-138, -165)
 links = Array[StringName]([&"void_entry"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

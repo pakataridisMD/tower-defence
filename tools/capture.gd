@@ -72,6 +72,8 @@ var _bigmaps := false
 var _skirmish := false
 var _edge := false
 var _powers := false
+## With --bosses[=id,...]: film each boss on the road doing every move, with the voice cues.
+var _bosses: PackedStringArray = []
 var _landmarks := false
 var _skills := false
 var _army := false
@@ -127,6 +129,10 @@ func _ready() -> void:
 			_skirmish = true
 		elif arg == "--powers":
 			_powers = true
+		elif arg.begins_with("--bosses"):
+			_bosses = arg.trim_prefix("--bosses").trim_prefix("=").split(",", false)
+			if _bosses.is_empty():
+				_bosses = PackedStringArray(["vael_orrun", "gorrath", "cinder_tyrant", "pale_vesper", "vholt", "mountain_titan"])
 		elif arg == "--army":
 			_army = true
 		elif arg.begins_with("--frames="):
@@ -169,6 +175,8 @@ func _ready() -> void:
 		_run_longshot()
 	elif _powers:
 		_run_powers()
+	elif not _bosses.is_empty():
+		_run_bosses()
 	elif _landmarks:
 		_run_landmarks()
 	elif _menu:
@@ -998,6 +1006,16 @@ func _run() -> void:
 		_hover(game.web.screen_position(&"bridge_plasma"))
 		await _wait(0.2)
 		await _shot("skill_web_start")
+		game.web.show_whole_tree()
+		await _wait(0.3)
+		await _shot("skill_web_whole")
+		game.web.reset_view()
+		game.web.zoom_by(0.7, game.web.screen_position(&"start"))
+		game.web.pan_by(game.web.screen_position(&"start") - game.web.screen_position(&"fire_notable"))
+		await _wait(0.2)
+		_hover(game.web.screen_position(&"fire_notable"))
+		await _wait(0.2)
+		await _shot("skill_web_far")
 		print("Screenshots saved to ", _out)
 		get_tree().quit()
 		return
@@ -1072,6 +1090,79 @@ func _run_powers() -> void:
 			count[0] += 1
 		await get_tree().process_frame
 	print("Saved %d frames to %s" % [count[0], folder])
+	get_tree().quit()
+
+
+## Each boss in turn walks on, and is made to go through its moves while the camera follows it:
+## frames in <out>/bosses/f_NNNN.png and the voice lines it says, by frame, in <out>/bosses/cues.json
+## (tools/art/boss_film.py turns them into a film with sound). --fixed-fps 30 keeps frames and time in step.
+func _run_bosses() -> void:
+	var game := GAME_SCENE.instantiate() as Game
+	add_child(game)
+	await _wait(0.2)
+	game._speed_index = 0
+	game.hud.speed = Game.SPEEDS[0]
+	var waves := WaveSet.new()
+	waves.id = &"bosses"
+	waves.health_growth = 1.0
+	var list: Array[WaveData] = []
+	for boss_id in _bosses:
+		var wave := WaveData.new()
+		wave.element = &"void"
+		var group := SpawnGroup.new()
+		group.enemy = StringName(boss_id)
+		group.count = 1
+		wave.groups = [group] as Array[SpawnGroup]
+		list.append(wave)
+	waves.waves = list
+	game.sim.config.wave_set = waves
+	var folder := _out.path_join("bosses")
+	DirAccess.make_dir_recursive_absolute(folder)
+	var cues: Array = []
+	var count := [0]
+	game.bosses.voice.spoke.connect(func(_b: StringName, _k: StringName, text: String, _s: float) -> void:
+		cues.append({"frame": count[0], "file": game.bosses.voice.last_file, "text": text}))
+	var script := [[&"attack", &"taunt"], [&"cast", &"bind"], [&"slam", &""], [&"guard", &"shield"],
+		[&"hurt", &"hurt"], [&"roar", &"enrage"], [&"attack", &"taunt"]]
+	for boss_id in _bosses:
+		game.sim.start_next_wave()
+		await _until(func() -> bool: return not game.sim.enemies.is_empty())
+		var boss: SimEnemy = game.sim.enemies[0]
+		# Far enough along the road to be in the open.
+		# The lowest point of the middle of its road, so a tall boss has the whole map above it.
+		var length: float = game.sim.lane_lengths[boss.lane]
+		var best := length * 0.45
+		for k in 25:
+			var at := length * (0.2 + 0.025 * k)
+			if game.sim.lane_curves[boss.lane].sample_baked(at).y > game.sim.lane_curves[boss.lane].sample_baked(best).y:
+				best = at
+		boss.progress = best
+		boss.position = game.sim.lane_curves[boss.lane].sample_baked(boss.progress)
+		var tall := BoardArt.enemy_height(boss.data.id)
+		var zoom := 0.75 if tall > 300.0 else 1.0 if tall > 200.0 else 1.5
+		var step := 0
+		var next := 4.0
+		var t := 0.0
+		while t < 4.0 + script.size() * 2.6 + 1.0:
+			game.camera.set_view(zoom, boss.position + Vector2(0, -BoardArt.enemy_height(boss.data.id) * 0.25))
+			if t >= next and step < script.size():
+				var item: Array = script[step]
+				game.bosses.act(boss, item[0], item[1], item[0] == &"guard")
+				if item[0] == &"guard":
+					get_tree().create_timer(1.6).timeout.connect(func() -> void: game.board.art.release_boss_move(boss, &"guard"))
+				step += 1
+				next += 2.6
+			await RenderingServer.frame_post_draw
+			get_viewport().get_texture().get_image().save_png(folder.path_join("f_%04d.png" % count[0]))
+			count[0] += 1
+			t += 1.0 / 30.0
+			await get_tree().process_frame
+		boss.alive = false
+		await _until(func() -> bool: return game.sim.state != RunSim.State.WAVE)
+	var file := FileAccess.open(folder.path_join("cues.json"), FileAccess.WRITE)
+	file.store_string(JSON.stringify(cues, " "))
+	file.close()
+	print("Saved %d frames and %d voice cues to %s" % [count[0], cues.size(), folder])
 	get_tree().quit()
 
 

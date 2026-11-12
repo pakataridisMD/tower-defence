@@ -136,6 +136,33 @@ func path_to(id: StringName) -> Array[StringName]:
 	return path
 
 
+## Points needed to take `id` together with every node on the way to it (see path_to), or -1 when
+## it is taken, locked or cannot be reached.
+func path_cost(id: StringName) -> int:
+	var path := path_to(id)
+	if path.is_empty():
+		return -1
+	var total := 0
+	for i in range(1, path.size()):
+		total += graph.node(path[i]).cost
+	return total
+
+
+## Takes `id` and every node on the way to it, nearest first, when the points cover all of them.
+## Returns the ids taken; empty when nothing was.
+func allocate_path(id: StringName) -> Array[StringName]:
+	var taken: Array[StringName] = []
+	var cost := path_cost(id)
+	if cost < 0 or cost > points:
+		return taken
+	var path := path_to(id)
+	for i in range(1, path.size()):
+		if not allocate(path[i]):
+			break
+		taken.append(path[i])
+	return taken
+
+
 ## Takes the given nodes in any order, as far as links and points allow, for example when
 ## loading a save. Ids that cannot be taken (unknown, unlinked, or too expensive) are skipped.
 func restore(ids: Array[StringName]) -> void:

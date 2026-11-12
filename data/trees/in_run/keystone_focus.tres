@@ -7,22 +7,23 @@
 script = ExtResource("1_mod")
 stat = &"damage"
 kind = 2
-value = 0.6
+value = 0.4
 
 [sub_resource type="Resource" id="Resource_m1"]
 script = ExtResource("1_mod")
 stat = &"attacks_per_second"
 kind = 2
-value = -0.3
+value = -0.25
 
 [resource]
 script = ExtResource("2_node")
 id = &"keystone_focus"
 display_name = "Focus"
-description = "All towers deal 60% more damage, but attack 30% slower."
+description = "Pick one: closes Cinderheart. All towers deal 40% more damage. All towers attack 25% slower."
 kind = 5
-cost = 1
-position = Vector2(-95, -330)
-links = Array[StringName]([&"fire_notable"])
+cost = 6
+position = Vector2(-163, -1234)
+links = Array[StringName]([&"fire_o_l1_1150"])
+excludes = Array[StringName]([&"keystone_cinderheart"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0"), SubResource("Resource_m1")])
 icon = &"eye"

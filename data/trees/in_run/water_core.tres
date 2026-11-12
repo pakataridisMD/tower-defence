@@ -7,15 +7,17 @@
 script = ExtResource("1_mod")
 stat = &"damage"
 kind = 1
-value = 0.2
+value = 0.08
 required_tags = Array[StringName]([&"water"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"water_core"
-display_name = "Torrent"
-description = "Water towers deal 20% increased damage."
+display_name = "Deep Water"
+description = "Water towers deal 8% more damage."
+kind = 3
 region = &"water"
-position = Vector2(0, 210)
-links = Array[StringName]([&"water_entry"])
+cost = 2
+position = Vector2(0, 385)
+links = Array[StringName]([&"water_c_300", &"water_r2_385"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

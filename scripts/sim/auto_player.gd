@@ -370,14 +370,45 @@ func _ahead(enemy: SimEnemy, seconds: float) -> Vector2:
 	return curve.sample_baked(minf(enemy.progress + enemy.speed() * seconds, sim.lane_lengths[enemy.lane]))
 
 
+## Takes the planned nodes in order, with the nodes on the way to each, saving up for the next one
+## when it costs more than the bot has. Once every planned node is taken (or out of reach), the rest of the points go on the cheapest open nodes of the planned
+## elements, nearest the Origin first. Keystones are left alone: they need a plan of their own.
 func spend_points() -> void:
-	var took_one := true
-	while took_one and sim.tree.points > 0:
-		took_one = false
-		for id in node_priority:
-			if sim.allocate_node(id):
-				took_one = true
-				break
+	while sim.tree.points > 0:
+		var target := _next_planned_node()
+		if target.is_empty():
+			target = _cheapest_open_node()
+		# A planned node it cannot afford yet is saved up for, as a person would.
+		if target.is_empty() or not sim.allocate_node(target):
+			return
+
+
+## The first planned node not yet taken that can still be reached, or empty when the plan is done.
+func _next_planned_node() -> StringName:
+	for id in node_priority:
+		if not sim.tree.is_allocated(id) and sim.tree.path_cost(id) >= 0:
+			return id
+	return &""
+
+
+func _cheapest_open_node() -> StringName:
+	var regions: Dictionary[StringName, bool] = {}
+	for id in node_priority:
+		if sim.tree.graph.has_node_id(id):
+			regions[sim.tree.graph.node(id).region] = true
+	var best: StringName = &""
+	var best_key := Vector2(INF, INF)
+	for id in sim.tree.graph.ids():
+		var data := sim.tree.graph.node(id)
+		if data.kind == TreeNodeData.Kind.KEYSTONE or not sim.tree.can_allocate(id):
+			continue
+		if not data.region.is_empty() and not regions.has(data.region):
+			continue
+		var key := Vector2(data.cost, data.position.length())
+		if key.x < best_key.x or (key.x == best_key.x and key.y < best_key.y):
+			best_key = key
+			best = id
+	return best
 
 
 ## Spends the gold, best buy first: another tower where it covers the most road, or a level (or
