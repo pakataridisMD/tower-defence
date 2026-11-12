@@ -18,6 +18,10 @@ overwrites them. Change the tables below instead, then run:
     godot --headless -s tools/campaign_balance.gd   # the bot plays every stage
 """
 import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import maps  # noqa: E402  (the big winding maps are grown from the sketches below)
 
 RING = ["fire", "storm", "nature", "water", "earth", "void"]
 NAMES = {"fire": "Fire", "storm": "Storm", "nature": "Nature", "water": "Water", "earth": "Earth", "void": "Void"}
@@ -36,7 +40,9 @@ def neighbours(e):
 # ------------------------------------------------------------------------------------ campaigns
 # Each stage: id, name, story, waypoints (or lanes), waves, health scale, twist (stat, kind, value,
 # tags, text) or None, and extra stage settings.
-# Waypoints are grid cells (24 x 15) where the road turns; the ends may sit just outside the grid.
+# Waypoints are a sketch of the road on a 24 x 15 grid: the cells where it turns, with the ends just
+# outside the grid. tools/campaign/maps.py grows each sketch into the real map (maps.GRID, about three
+# times the area), bends the straights into curves and adds spawn holes (HOLES below).
 CAMPAIGNS = [
     {
         "id": "ember_reach", "element": "fire", "name": "The Ember Reach",
@@ -332,19 +338,57 @@ def modifier(t: Tres, stat, kind, value, tags) -> str:
 
 
 # ------------------------------------------------------------------------------------ maps
-def write_map(stage_id, name, roads, order, biome, wave_set):
+# Spawn holes per stage, by its place in an element campaign (the last is the Warden's stage). The
+# Convergence and the skirmish maps get one each; the assault has gates instead.
+HOLES = [1, 1, 1, 2]
+CONVERGE_HOLES = 1
+SKIRMISH_HOLES = 1
+
+
+def curve_text(points) -> str:
+    return "PackedVector2Array(%s)" % ", ".join(f"{x:g}, {y:g}" for x, y in points)
+
+
+def build_roads(stage_id, roads, holes=0, fixed_cells=(), jitter=True):
+    """The stage's roads on the big board: [(waypoints, curve, is_hole)], sketch lanes first."""
+    sketch = roads["lanes"] if isinstance(roads, dict) else [roads]
+    return maps.build(stage_id, sketch, holes=holes, fixed_cells=fixed_cells, jitter=jitter)
+
+
+def write_map(stage_id, name, roads, order, biome, wave_set, holes=0, fixed_cells=(), skirmish=False,
+              map_id=None, jitter=True, built=None):
     t = Tres("MapData")
     script = t.script("res://scripts/data/map_data.gd")
-    lanes = roads["lanes"] if isinstance(roads, dict) else [roads]
-    fields = [f"script = {script}", f"id = {sn('c_' + stage_id)}", f"display_name = {string(name)}",
-              f"order = {100 + order}", "grid_size = Vector2i(24, 15)", "cell_size = 64",
-              f"waypoints = {cells(lanes[0])}", f"wave_set = {sn(wave_set)}"]
+    lanes = built or build_roads(stage_id, roads, holes=holes, fixed_cells=fixed_cells, jitter=jitter)
+    map_id = map_id or "c_" + stage_id
+    fields = [f"script = {script}", f"id = {sn(map_id)}", f"display_name = {string(name)}",
+              f"order = {order}", f"grid_size = Vector2i({maps.GRID[0]}, {maps.GRID[1]})", "cell_size = 64",
+              f"waypoints = {cells(lanes[0][0])}", f"curve = {curve_text(lanes[0][1])}", f"wave_set = {sn(wave_set)}"]
     if len(lanes) > 1:
-        refs = [t.sub("res://scripts/data/map_lane.gd", [f"waypoints = {cells(lane)}"]) for lane in lanes[1:]]
+        refs = [t.sub("res://scripts/data/map_lane.gd", [f"waypoints = {cells(w)}", f"curve = {curve_text(c)}"])
+                for w, c, _hole in lanes[1:]]
         fields.append(f"extra_lanes = {typed(t, 'res://scripts/data/map_lane.gd', refs)}")
-    fields += [f"biome = {sn(biome)}", "skirmish = false"]
+    hole_lanes = [i for i, (_w, _c, hole) in enumerate(lanes) if hole]
+    if hole_lanes:
+        fields.append("hole_lanes = PackedInt32Array(%s)" % ", ".join(str(i) for i in hole_lanes))
+    fields += [f"biome = {sn(biome)}"]
+    if not skirmish:
+        fields.append("skirmish = false")
     # Ext resources must come before sub resources that use them; Tres sorts that out.
-    t.write(f"data/maps/c_{stage_id}.tres", fields)
+    t.write(f"data/maps/{map_id}.tres", fields)
+    return len(lanes)
+
+
+# The skirmish maps, sketched the same way.
+SKIRMISH_MAPS = [
+    ("switchback", "Switchback", 0, [(-1, 2), (19, 2), (19, 6), (4, 6), (4, 10), (19, 10), (19, 13), (24, 13)]),
+    ("serpentine", "Serpentine", 1, [(-1, 12), (4, 12), (4, 2), (10, 2), (10, 12), (16, 12), (16, 2), (21, 2), (21, 12), (24, 12)]),
+]
+
+
+def write_skirmish_maps():
+    for map_id, name, order, sketch in SKIRMISH_MAPS:
+        write_map(map_id, name, sketch, order, "meadow", "prototype", holes=SKIRMISH_HOLES, skirmish=True, map_id=map_id)
 
 
 # ------------------------------------------------------------------------------------ waves
@@ -635,10 +679,6 @@ def wave_fields(t, el, boss, groups, text, boss_health):
     return fields
 
 
-def lane_count(roads):
-    return len(roads["lanes"]) if isinstance(roads, dict) else 1
-
-
 def write_waves(campaign, stage_index, stage_id, name, n, extra, lanes=1):
     tune = TUNING.get(stage_id, {})
     t = Tres("WaveSet")
@@ -668,8 +708,10 @@ def write_campaign(order, c):
         sid, name, story, roads, n, _health, twist = stage[:7]
         extra = stage[7] if len(stage) > 7 else {}
         tune = TUNING.get(sid, {})
-        wave_set = write_waves(c, i, sid, name, n, extra, lane_count(roads))
-        write_map(sid, name, roads, order * 10 + i, biome, wave_set)
+        holes = HOLES[min(i, len(HOLES) - 1)] if home else CONVERGE_HOLES
+        built = build_roads(sid, roads, holes=holes)
+        wave_set = write_waves(c, i, sid, name, n, extra, len(built))
+        write_map(sid, name, roads, 100 + order * 10 + i, biome, wave_set, built=built)
         mods, rules = [], []
         allowed, starting = [], []
         if home:
@@ -802,12 +844,15 @@ def write_assault(order, c):
         f"script = {script}", f"id = {sn(wave_set)}", f"display_name = {string(st['name'])}",
         f"health_growth = {tune.get('growth', 1.09)}", f"health_scale = {tune.get('health', 1.0)}",
         f"waves = {typed(t, WAVE, refs)}"])
-    write_map(sid, st["name"], {"lanes": st["lanes"]}, order * 10, "void", wave_set)
+    cells_at = {e: maps.scale_cell(cell, st["lanes"]) for e, cell, *_ in st["structures"]}
+    write_map(sid, st["name"], {"lanes": st["lanes"]}, 100 + order * 10, "void", wave_set,
+              fixed_cells=[cell for _e, cell, *_ in st["structures"]], jitter=False)
     # Campaign and stage
     t = Tres("CampaignData")
     script = t.script("res://scripts/data/campaign_data.gd")
     srefs = []
-    for e, (x, y), ph, lane, closes, releases, release_health in st["structures"]:
+    for e, _cell, ph, lane, closes, releases, release_health in st["structures"]:
+        x, y = cells_at[e]
         fields = [f"enemy = {sn(e)}", f"cell = Vector2i({x}, {y})", f"phase = {ph}", f"lane = {lane}"]
         if closes:
             fields.append("closes_lanes = PackedInt32Array(%s)" % ", ".join(str(v) for v in closes))
@@ -816,6 +861,11 @@ def write_assault(order, c):
             if release_health != 1.0:
                 fields.append(f"release_health = {release_health}")
         srefs.append(t.sub(STRUCTURE, fields))
+    # The ground you hold ends as many cells short of each phase's building as it did on the small
+    # sketch, so towers at the front still reach it on the big map.
+    fronts = []
+    for (e, (sx, _sy), *_), v in zip(st["structures"], st["build_columns"]):
+        fronts.append(v if v < 0 else cells_at[e][0] - (sx - v))
     rules = [
         "Every element can be drafted. The horde comes down three roads from the fortress.",
         "The Black Gate: bring down the Gatemaw. It closes the two flank roads, and the six Heralds return as Echoes.",
@@ -834,7 +884,7 @@ def write_assault(order, c):
         fields.append(f"starting_lives = {tune['lives']}")
     fields += [f"first_clear_points = {st['first_clear']}",
                f"structures = {typed(t, STRUCTURE, srefs)}",
-               "build_columns = PackedInt32Array(%s)" % ", ".join(str(v) for v in st["build_columns"]),
+               "build_columns = PackedInt32Array(%s)" % ", ".join(str(v) for v in fronts),
                f"auto_wave_delay = {float(st['auto_wave_delay'])}"]
     stage_ref = t.sub(STAGE, fields)
     reward_name, reward_text, reward_mods = c["reward"]
@@ -851,6 +901,7 @@ def main():
     for order, c in enumerate(CAMPAIGNS):
         write_campaign(order, c)
     write_assault(len(CAMPAIGNS), ASSAULT)
+    write_skirmish_maps()
     write_skirmish(SKIRMISH)
     print("Wrote %d campaigns and %d stages" % (len(CAMPAIGNS) + 1, sum(len(c["stages"]) for c in CAMPAIGNS) + 1))
 

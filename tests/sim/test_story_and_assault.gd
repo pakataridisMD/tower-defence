@@ -3,6 +3,8 @@ extends GutTest
 ## the citadel (buildings, phases, build limit, the overlord), the story files and when their
 ## cinematics are due, saving what was seen, and the cinematic player.
 
+const TEST_ROAD := preload("res://tests/support/test_road.tres")
+
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
 
 var registry: Node
@@ -11,9 +13,11 @@ var registry: Node
 func before_each() -> void:
 	registry = autofree(DataRegistryScript.new())
 	registry.reload()
+	# The small 24 x 15 road these tests were written against (the real maps are bigger and curved).
+	registry.maps[&"test_road"] = TEST_ROAD
 
 
-func _sim(groups: Array[SpawnGroup], map_id: StringName = &"switchback") -> RunSim:
+func _sim(groups: Array[SpawnGroup], map_id: StringName = &"test_road") -> RunSim:
 	var config := RunConfig.from_registry(registry, map_id)
 	var wave := WaveData.new()
 	wave.element = &"fire"

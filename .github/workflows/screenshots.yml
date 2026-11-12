@@ -52,6 +52,13 @@ jobs:
             --resolution 1920x1080 --fixed-fps 30 res://tools/capture.tscn -- --map --out="$PWD/shots/map" 2>&1 | tail -n 20 || true
           ls -la shots/map
 
+      - name: Take the big maps
+        run: |
+          mkdir -p shots/bigmaps
+          xvfb-run -a -s "-screen 0 1920x1080x24" timeout 600 /tmp/godot/godot --rendering-driver opengl3 \
+            --resolution 1920x1080 --fixed-fps 30 res://tools/capture.tscn -- --bigmaps --out="$PWD/shots/bigmaps" 2>&1 | tail -n 30 || true
+          ls -la shots/bigmaps
+
       - name: Take a whole run
         run: |
           mkdir -p shots/run
@@ -73,4 +80,5 @@ jobs:
           python3 -m pip install -q pillow || true
           python3 tools/ci/print_shots.py shots/ui --quality=74 || true
           python3 tools/ci/print_shots.py shots/map --quality=74 || true
+          python3 tools/ci/print_shots.py shots/bigmaps --width=1280 --quality=70 || true
           python3 tools/ci/print_shots.py shots/run --width=1280 --quality=66 || true

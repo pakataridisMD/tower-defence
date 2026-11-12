@@ -86,7 +86,9 @@ static func find(map: MapData, is_path: Callable, blocked: Callable = Callable()
 					closed_sides.append(signi(aside))
 			for depth in DEPTH:
 				for side in range(-HALF_WIDTH, HALF_WIDTH + 1):
-					if closed_sides.has(signi(side)):
+					# The middle column is the road's own line, even where a curving road has already
+					# bent away from it.
+					if side == 0 or closed_sides.has(signi(side)):
 						continue
 					var cell := anchor + inward * depth + site.across() * side
 					if not map.is_inside(cell) or taken.has(cell) or is_path.call(cell):

@@ -2,6 +2,8 @@ extends GutTest
 ## The campaign's enemy traits (healing, splitting, summoning, warding, changing element), spawn
 ## groups with their own element, and maps with several roads.
 
+const TEST_ROAD := preload("res://tests/support/test_road.tres")
+
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
 
 var registry: Node
@@ -10,10 +12,12 @@ var registry: Node
 func before_each() -> void:
 	registry = autofree(DataRegistryScript.new())
 	registry.reload()
+	# The small 24 x 15 road these tests were written against (the real maps are bigger and curved).
+	registry.maps[&"test_road"] = TEST_ROAD
 
 
 ## A run on a real map with one wave of the given groups.
-func _sim(groups: Array[SpawnGroup], map_id: StringName = &"switchback", element: StringName = &"fire") -> RunSim:
+func _sim(groups: Array[SpawnGroup], map_id: StringName = &"test_road", element: StringName = &"fire") -> RunSim:
 	var config := RunConfig.from_registry(registry, map_id)
 	var wave := WaveData.new()
 	wave.element = element
@@ -63,7 +67,7 @@ func test_warded_enemies_ignore_every_effect() -> void:
 
 
 func test_splitters_burst_into_shardlings_with_their_element() -> void:
-	var sim := _sim([_group(&"splitter")], &"switchback", &"water")
+	var sim := _sim([_group(&"splitter")], &"test_road", &"water")
 	_spawn_all(sim)
 	var splitter := sim.enemies[0]
 	splitter.progress = 300.0
@@ -109,13 +113,13 @@ func test_bosses_summon_on_a_timer() -> void:
 
 
 func test_guardians_keep_their_own_element_in_any_wave() -> void:
-	var sim := _sim([_group(&"cinder_tyrant")], &"switchback", &"water")
+	var sim := _sim([_group(&"cinder_tyrant")], &"test_road", &"water")
 	_spawn_all(sim)
 	assert_eq(sim.enemies[0].element, sim.config.element_index(&"fire"))
 
 
 func test_groups_can_carry_their_own_element() -> void:
-	var sim := _sim([_group(&"grunt", 1, &"void"), _group(&"grunt", 1)], &"switchback", &"storm")
+	var sim := _sim([_group(&"grunt", 1, &"void"), _group(&"grunt", 1)], &"test_road", &"storm")
 	_spawn_all(sim)
 	var elements: Array[int] = []
 	for enemy in sim.enemies:
@@ -125,7 +129,7 @@ func test_groups_can_carry_their_own_element() -> void:
 
 
 func test_damage_uses_each_enemys_element() -> void:
-	var sim := _sim([_group(&"grunt", 1, &"water"), _group(&"grunt", 1, &"fire")], &"switchback", &"storm")
+	var sim := _sim([_group(&"grunt", 1, &"water"), _group(&"grunt", 1, &"fire")], &"test_road", &"storm")
 	sim.allocate_node(&"fire_entry")
 	var tower := sim.place_tower(&"fire_brazier", Vector2i(3, 3))
 	_spawn_all(sim)
@@ -140,7 +144,7 @@ func test_damage_uses_each_enemys_element() -> void:
 
 
 func test_prismatic_enemies_turn_round_the_ring() -> void:
-	var sim := _sim([_group(&"sundered_heart")], &"switchback", &"fire")
+	var sim := _sim([_group(&"sundered_heart")], &"test_road", &"fire")
 	_spawn_all(sim)
 	var heart := sim.enemies[0]
 	var start := heart.element
@@ -153,12 +157,15 @@ func test_prismatic_enemies_turn_round_the_ring() -> void:
 
 func test_shared_groups_take_turns_over_the_roads() -> void:
 	var sim := _sim([_group(&"grunt", 6)], &"c_converge_2")
-	assert_eq(sim.lane_curves.size(), 3)
+	var count := sim.lane_curves.size()
+	assert_gte(count, 3, "three roads, plus any spawn holes")
 	_spawn_all(sim)
 	var lanes: Array[int] = []
-	for enemy in sim.enemies:
-		lanes.append(enemy.lane)
-	assert_eq(lanes, [0, 1, 2, 0, 1, 2] as Array[int])
+	var expected: Array[int] = []
+	for i in sim.enemies.size():
+		lanes.append(sim.enemies[i].lane)
+		expected.append(i % count)
+	assert_eq(lanes, expected)
 
 
 func test_a_group_can_keep_to_one_road() -> void:
@@ -191,8 +198,11 @@ func test_every_road_of_a_map_is_path() -> void:
 	var map: MapData = registry.maps[&"c_converge_3"]
 	var cells := map.path_cells()
 	for lane in map.lane_count():
-		for point in map.lane_waypoints(lane):
-			assert_true(cells.has(point), "lane %d passes %s" % [lane, point])
+		var waypoints := map.lane_waypoints(lane)
+		for end in [waypoints[0], waypoints[waypoints.size() - 1]]:
+			assert_true(cells.has(end), "lane %d starts and ends on road at %s" % [lane, end])
+		for point in map.lane_curve(lane):
+			assert_true(cells.has(Vector2i(point.round())), "lane %d passes %s" % [lane, point])
 	assert_eq(map.path_errors(), PackedStringArray())
 
 

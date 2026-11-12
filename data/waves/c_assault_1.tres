@@ -3840,5 +3840,5 @@ script = ExtResource("1_s")
 id = &"c_assault_1"
 display_name = "Nhal Vorath"
 health_growth = 1.09
-health_scale = 0.51
+health_scale = 0.38
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r10"), SubResource("r19"), SubResource("r27"), SubResource("r36"), SubResource("r47"), SubResource("r56"), SubResource("r64"), SubResource("r76"), SubResource("r84"), SubResource("r93"), SubResource("r105"), SubResource("r114"), SubResource("r122"), SubResource("r136"), SubResource("r144"), SubResource("r155"), SubResource("r166"), SubResource("r177"), SubResource("r187"), SubResource("r201"), SubResource("r209"), SubResource("r220"), SubResource("r231"), SubResource("r242"), SubResource("r252"), SubResource("r266"), SubResource("r278"), SubResource("r289"), SubResource("r300"), SubResource("r311"), SubResource("r321"), SubResource("r335"), SubResource("r345"), SubResource("r356"), SubResource("r371"), SubResource("r383"), SubResource("r396"), SubResource("r410"), SubResource("r423")])

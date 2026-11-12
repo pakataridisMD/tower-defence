@@ -2104,26 +2104,112 @@ def read_map(path: str) -> dict:
     grid = re.search(r"grid_size = Vector2i\((\d+), (\d+)\)", main)
     cell = re.search(r"cell_size = (\d+)", main)
     biome = re.search(r'^biome = &"(\w+)"', main, re.M)
+    holes = re.search(r"^hole_lanes = PackedInt32Array\(([^)]*)\)", main, re.M)
 
     def points(line):
         return [(int(a), int(b)) for a, b in re.findall(r"Vector2i\((-?\d+), (-?\d+)\)", line)]
 
-    # Lane 0 is the map's own waypoints; extra lanes are sub-resources above it.
+    def curve(block):
+        found = re.search(r"^curve = PackedVector2Array\(([^)]*)\)", block, re.M)
+        if not found or not found.group(1).strip():
+            return []
+        values = [float(v) for v in found.group(1).split(",")]
+        return list(zip(values[0::2], values[1::2]))
+
+    # Lane 0 is the map's own waypoints; extra lanes are sub-resources above it, one block each.
     lanes = [points(re.search(r"^waypoints = (.*)", main, re.M).group(1))]
-    lanes += [points(line) for line in re.findall(r"^waypoints = (.*)", head, re.M)]
+    curves = [curve(main)]
+    for block in re.split(r"^\[sub_resource[^\n]*\n", head, flags=re.M)[1:]:
+        found = re.search(r"^waypoints = (.*)", block, re.M)
+        if found:
+            lanes.append(points(found.group(1)))
+            curves.append(curve(block))
     return {"id": mid, "grid": (int(grid.group(1)), int(grid.group(2))) if grid else (24, 15),
             "cell": int(cell.group(1)) if cell else 64, "waypoints": lanes[0], "lanes": lanes,
-            "biome": biome.group(1) if biome else "meadow"}
+            "curves": curves, "biome": biome.group(1) if biome else "meadow",
+            "holes": [int(v) for v in holes.group(1).split(",") if v.strip()] if holes else []}
 
 
-def distance_to_segments(px, py, pts) -> np.ndarray:
+def distance_to_segments(px, py, pts, reach=None) -> np.ndarray:
+    """Distance from every pixel to a polyline. With `reach`, only pixels within reach of a segment
+    are measured (the rest stay far away), which is much faster for long curved roads."""
     best = np.full(px.shape, 1e9)
+    h, w = px.shape
     for (ax, ay), (bx, by) in zip(pts[:-1], pts[1:]):
+        if reach is None:
+            ys, xs = slice(0, h), slice(0, w)
+        else:
+            x0, x1 = int(max(0, min(ax, bx) - reach)), int(min(w, max(ax, bx) + reach + 1))
+            y0, y1 = int(max(0, min(ay, by) - reach)), int(min(h, max(ay, by) + reach + 1))
+            if x0 >= x1 or y0 >= y1:
+                continue
+            ys, xs = slice(y0, y1), slice(x0, x1)
+        qx, qy = px[ys, xs], py[ys, xs]
         vx, vy = bx - ax, by - ay
         ll = max(vx * vx + vy * vy, 1e-9)
-        t = np.clip(((px - ax) * vx + (py - ay) * vy) / ll, 0, 1)
-        best = np.minimum(best, np.hypot(px - (ax + t * vx), py - (ay + t * vy)))
+        t = np.clip(((qx - ax) * vx + (qy - ay) * vy) / ll, 0, 1)
+        best[ys, xs] = np.minimum(best[ys, xs], np.hypot(qx - (ax + t * vx), qy - (ay + t * vy)))
     return best
+
+
+def map_roads(m: dict, cell_art: int) -> tuple[list, list]:
+    """Each lane's road in art pixels (its curve, or the straight lines between its waypoints), with
+    ends at the edge stretched so the road runs off the board, and the spawn holes' centres."""
+    W, H = m["grid"][0] * cell_art, m["grid"][1] * cell_art
+    roads, holes = [], []
+    curves = m.get("curves") or [[] for _ in m.get("lanes", [m["waypoints"]])]
+    for lane, (waypoints, line) in enumerate(zip(m.get("lanes", [m["waypoints"]]), curves)):
+        source = line if line else waypoints
+        pts = [((x + 0.5) * cell_art, (y + 0.5) * cell_art) for x, y in source]
+        if len(pts) >= 2:
+            for i, j in ((0, 1), (-1, -2)):
+                ax, ay = pts[i]
+                if 0 <= ax < W and 0 <= ay < H:
+                    continue  # the road starts on the board: a hole or a building
+                bx, by = pts[j]
+                d = math.hypot(ax - bx, ay - by) or 1
+                pts[i] = (ax + (ax - bx) / d * cell_art * 2, ay + (ay - by) / d * cell_art * 2)
+        roads.append(pts)
+        if lane in m.get("holes", []):
+            holes.append(pts[0])
+    return roads, holes
+
+
+def paint_hole(rgb, height, glow, b, cx, cy, cell_art, rng) -> None:
+    """A spawn hole: a ragged pit of churned earth with a dark throat, a rim of thrown-up dirt and a
+    faint glow of whatever is down there."""
+    H, W = height.shape
+    r = cell_art * 0.85
+    y0, y1 = int(max(0, cy - r * 2)), int(min(H, cy + r * 2))
+    x0, x1 = int(max(0, cx - r * 2)), int(min(W, cx + r * 2))
+    yy, xx = np.mgrid[y0:y1, x0:x1].astype(np.float64)
+    ang = np.arctan2(yy - cy, xx - cx)
+    ragged = 1.0 + 0.12 * np.sin(ang * 5 + rng.uniform(0, 6)) + 0.08 * np.sin(ang * 9 + rng.uniform(0, 6))
+    d = np.hypot((xx - cx) / 1.15, (yy - cy) / 0.85) / (r * ragged)
+    rim = (d >= 0.95) & (d < 1.45)
+    pit = d < 0.95
+    road = b["road"]
+    sub_rgb = rgb[y0:y1, x0:x1]
+    sub_h = height[y0:y1, x0:x1]
+    sub_g = glow[y0:y1, x0:x1]
+    t = np.clip(1.45 - d, 0, 0.999)
+    rim_col = ramp_pick(road[1:], np.clip(t * 1.4 + (rng.random(t.shape) - 0.5) * 0.25, 0, 0.999), dither=0.5)
+    sub_rgb[rim] = rim_col[rim]
+    sub_h[rim] = (0.9 - np.abs(d[rim] - 1.15) * 2.0)
+    depth = np.clip(d / 0.95, 0, 1)
+    throat = np.array(INK, dtype=np.float64)
+    wall = np.array(road[0], dtype=np.float64)
+    shade_t = np.clip(depth ** 1.6, 0, 1)[..., None]
+    pit_col = throat * (1 - shade_t) + wall * shade_t
+    # The far wall (top) catches the light, the near wall is in shadow.
+    lit = np.clip((cy - yy) / r, -1, 1)[..., None] * 0.18 * shade_t
+    pit_col = pit_col * (1 + lit)
+    sub_rgb[pit] = pit_col[pit]
+    sub_h[pit] = -1.0 + depth[pit] * 0.6
+    ember = b.get("tip", road[-1])
+    deep = d < 0.45
+    sub_g[deep, :3] = np.clip(np.array(ember) * 0.55, 0, 255).astype(np.uint8)
+    sub_g[deep, 3] = np.clip((0.45 - d[deep]) / 0.45 * 150, 0, 150).astype(np.uint8)
 
 
 def make_ground(m: dict, props_info: dict) -> None:
@@ -2133,16 +2219,12 @@ def make_ground(m: dict, props_info: dict) -> None:
     b = BIOMES.get(m.get("biome", "meadow"), BIOMES["meadow"])
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float64)
     dist = np.full((H, W), 1e9)
-    for lane in m.get("lanes", [m["waypoints"]]):
-        pts = [((x + 0.5) * cell_art, (y + 0.5) * cell_art) for x, y in lane]
-        # Stretch the ends so the road runs off the edge of the board.
-        if len(pts) >= 2:
-            for i, j in ((0, 1), (-1, -2)):
-                ax, ay = pts[i]
-                bx, by = pts[j]
-                d = math.hypot(ax - bx, ay - by) or 1
-                pts[i] = (ax + (ax - bx) / d * cell_art * 2, ay + (ay - by) / d * cell_art * 2)
-        dist = np.minimum(dist, distance_to_segments(xx, yy, pts))
+    roads, holes = map_roads(m, cell_art)
+    for pts in roads:
+        dist = np.minimum(dist, distance_to_segments(xx, yy, pts, reach=cell_art * 2.0))
+    hole_d = np.full((H, W), 1e9)
+    for hx, hy in holes:
+        hole_d = np.minimum(hole_d, np.hypot(xx - hx, yy - hy))
     half = cell_art * 0.46
     wobble = (fbm(H, W, [7, 3], rng) - 0.5) * 4.0
     road_d = dist + wobble
@@ -2221,6 +2303,8 @@ def make_ground(m: dict, props_info: dict) -> None:
             rgb[y, x] = b["tuft"][2]
             rgb[y - 1, x] = b["tuft"][3]
             height[y, x] = 0.4
+    for hx, hy in holes:
+        paint_hole(rgb, height, glow, b, hx, hy, cell_art, rng)
 
     folder = os.path.join(OUT, "ground")
     os.makedirs(folder, exist_ok=True)
@@ -2244,7 +2328,7 @@ def make_ground(m: dict, props_info: dict) -> None:
         x, y = float(rng.uniform(4, W - 4)), float(rng.uniform(8, H - 2))
         kind = kinds[int(rng.integers(0, len(kinds)))]
         size = props_info[kind]["size"]
-        if road_d[int(y), int(x)] < half + size[0] * 0.5 + 2:
+        if road_d[int(y), int(x)] < half + size[0] * 0.5 + 2 or hole_d[int(y), int(x)] < cell_art * 1.1 + size[0] * 0.5:
             continue
         cell = [int(x // cell_art), int(y // cell_art)]
         props.append({"kind": kind, "pos": [round(x), round(y)], "cell": cell, "flip": bool(rng.random() < 0.5)})

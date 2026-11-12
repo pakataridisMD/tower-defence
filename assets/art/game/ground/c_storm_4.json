@@ -1,222 +1,774 @@
 {
 "size": [
-768,
-480
+1344,
+832
 ],
 "biome": "storm",
 "props": [
 {
-"kind": "steppe_tuft_1",
-"pos": [
-543,
-211
-],
-"cell": [
-16,
-6
-],
-"flip": true
-},
-{
 "kind": "steppe_tuft_0",
 "pos": [
-650,
-206
-],
-"cell": [
-20,
-6
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-407,
-22
+389,
+525
 ],
 "cell": [
 12,
-0
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-459,
-218
-],
-"cell": [
-14,
-6
+16
 ],
 "flip": true
 },
 {
-"kind": "slate_0",
+"kind": "steppe_tuft_0",
 "pos": [
-659,
-175
+1026,
+33
 ],
 "cell": [
-20,
-5
+32,
+1
 ],
 "flip": false
 },
 {
 "kind": "steppe_tuft_0",
 "pos": [
-416,
-363
+55,
+775
 ],
 "cell": [
-13,
-11
+1,
+24
 ],
 "flip": false
 },
 {
-"kind": "slate_0",
+"kind": "steppe_tuft_0",
 "pos": [
-695,
-325
+167,
+327
 ],
 "cell": [
-21,
+5,
 10
 ],
 "flip": true
 },
 {
-"kind": "slate_0",
+"kind": "slate_1",
 "pos": [
-448,
-301
+634,
+628
 ],
 "cell": [
-14,
-9
-],
-"flip": true
-},
-{
-"kind": "storm_crystal",
-"pos": [
-302,
-171
-],
-"cell": [
-9,
-5
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-272,
-286
-],
-"cell": [
-8,
-8
+19,
+19
 ],
 "flip": false
 },
 {
-"kind": "steppe_tuft_1",
+"kind": "slate_0",
 "pos": [
-241,
-312
+1011,
+823
+],
+"cell": [
+31,
+25
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+248,
+387
 ],
 "cell": [
 7,
-9
+12
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+261,
+573
+],
+"cell": [
+8,
+17
 ],
 "flip": false
 },
 {
-"kind": "storm_crystal",
+"kind": "slate_1",
 "pos": [
-440,
-169
+648,
+358
 ],
 "cell": [
-13,
-5
+20,
+11
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+782,
+758
+],
+"cell": [
+24,
+23
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+460,
+807
+],
+"cell": [
+14,
+25
 ],
 "flip": true
 },
 {
 "kind": "slate_0",
 "pos": [
-762,
-46
+828,
+595
+],
+"cell": [
+25,
+18
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1081,
+341
+],
+"cell": [
+33,
+10
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+77,
+381
+],
+"cell": [
+2,
+11
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1055,
+325
+],
+"cell": [
+32,
+10
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1297,
+705
+],
+"cell": [
+40,
+22
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+789,
+201
+],
+"cell": [
+24,
+6
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+925,
+622
+],
+"cell": [
+28,
+19
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+862,
+457
+],
+"cell": [
+26,
+14
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+583,
+190
+],
+"cell": [
+18,
+5
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1126,
+685
+],
+"cell": [
+35,
+21
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+766,
+459
 ],
 "cell": [
 23,
+14
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+447,
+319
+],
+"cell": [
+13,
+9
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+443,
+64
+],
+"cell": [
+13,
+2
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+888,
+761
+],
+"cell": [
+27,
+23
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+994,
+815
+],
+"cell": [
+31,
+25
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+446,
+761
+],
+"cell": [
+13,
+23
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+700,
+61
+],
+"cell": [
+21,
 1
 ],
 "flip": true
 },
 {
-"kind": "slate_1",
-"pos": [
-695,
-392
-],
-"cell": [
-21,
-12
-],
-"flip": false
-},
-{
 "kind": "steppe_tuft_1",
 "pos": [
-8,
-116
+1224,
+493
 ],
 "cell": [
-0,
-3
-],
-"flip": false
-},
-{
-"kind": "slate_0",
-"pos": [
-646,
-318
-],
-"cell": [
-20,
-9
+38,
+15
 ],
 "flip": true
 },
 {
 "kind": "steppe_tuft_1",
 "pos": [
-367,
-74
+188,
+535
 ],
 "cell": [
-11,
-2
+5,
+16
 ],
 "flip": true
 },
 {
 "kind": "steppe_tuft_0",
 "pos": [
-531,
-217
+1108,
+823
 ],
 "cell": [
-16,
+34,
+25
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+431,
+29
+],
+"cell": [
+13,
+0
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+978,
+666
+],
+"cell": [
+30,
+20
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+43,
+615
+],
+"cell": [
+1,
+19
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+470,
+629
+],
+"cell": [
+14,
+19
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+128,
+545
+],
+"cell": [
+4,
+17
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1333,
+530
+],
+"cell": [
+41,
+16
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1147,
+651
+],
+"cell": [
+35,
+20
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1207,
+573
+],
+"cell": [
+37,
+17
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+1014,
+339
+],
+"cell": [
+31,
+10
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+121,
+58
+],
+"cell": [
+3,
+1
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+327,
+198
+],
+"cell": [
+10,
+6
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+483,
+11
+],
+"cell": [
+15,
+0
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+721,
+619
+],
+"cell": [
+22,
+19
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+563,
+620
+],
+"cell": [
+17,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+465,
+680
+],
+"cell": [
+14,
+21
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+852,
+341
+],
+"cell": [
+26,
+10
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+943,
+782
+],
+"cell": [
+29,
+24
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+198,
+465
+],
+"cell": [
+6,
+14
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1222,
+302
+],
+"cell": [
+38,
+9
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+572,
+441
+],
+"cell": [
+17,
+13
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+162,
+796
+],
+"cell": [
+5,
+24
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1024,
+621
+],
+"cell": [
+31,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+765,
+647
+],
+"cell": [
+23,
+20
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+303,
+610
+],
+"cell": [
+9,
+19
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+505,
+357
+],
+"cell": [
+15,
+11
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+601,
+765
+],
+"cell": [
+18,
+23
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+813,
+605
+],
+"cell": [
+25,
+18
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+703,
+162
+],
+"cell": [
+21,
+5
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+919,
+765
+],
+"cell": [
+28,
+23
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+549,
+613
+],
+"cell": [
+17,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+118,
+488
+],
+"cell": [
+3,
+15
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+57,
+498
+],
+"cell": [
+1,
+15
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+804,
+212
+],
+"cell": [
+25,
 6
 ],
 "flip": true
@@ -224,47 +776,335 @@
 {
 "kind": "steppe_tuft_1",
 "pos": [
-211,
-86
+661,
+391
 ],
 "cell": [
-6,
-2
+20,
+12
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+453,
+503
+],
+"cell": [
+14,
+15
 ],
 "flip": true
 },
 {
 "kind": "steppe_tuft_0",
 "pos": [
-209,
-381
+306,
+714
 ],
 "cell": [
-6,
-11
+9,
+22
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1171,
+794
+],
+"cell": [
+36,
+24
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1315,
+135
+],
+"cell": [
+41,
+4
 ],
 "flip": true
 },
 {
 "kind": "steppe_tuft_0",
 "pos": [
-286,
-363
+1314,
+142
 ],
 "cell": [
-8,
+41,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1277,
+40
+],
+"cell": [
+39,
+1
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+732,
+355
+],
+"cell": [
+22,
 11
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+176,
+183
+],
+"cell": [
+5,
+5
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+50,
+553
+],
+"cell": [
+1,
+17
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+24,
+310
+],
+"cell": [
+0,
+9
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+164,
+60
+],
+"cell": [
+5,
+1
 ],
 "flip": false
 },
 {
 "kind": "slate_0",
 "pos": [
-473,
-295
+589,
+512
+],
+"cell": [
+18,
+15
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+255,
+466
+],
+"cell": [
+7,
+14
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+250,
+534
+],
+"cell": [
+7,
+16
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+170,
+615
+],
+"cell": [
+5,
+19
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1204,
+636
+],
+"cell": [
+37,
+19
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+914,
+635
+],
+"cell": [
+28,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+231,
+215
+],
+"cell": [
+7,
+6
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+1317,
+664
+],
+"cell": [
+41,
+20
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1071,
+325
+],
+"cell": [
+33,
+10
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+466,
+635
 ],
 "cell": [
 14,
+19
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+931,
+530
+],
+"cell": [
+29,
+16
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+694,
+614
+],
+"cell": [
+21,
+19
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+1115,
+215
+],
+"cell": [
+34,
+6
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+58,
+561
+],
+"cell": [
+1,
+17
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+1188,
+503
+],
+"cell": [
+37,
+15
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1143,
+314
+],
+"cell": [
+35,
 9
 ],
 "flip": false
@@ -272,56 +1112,488 @@
 {
 "kind": "steppe_tuft_0",
 "pos": [
-624,
-457
+1229,
+812
 ],
 "cell": [
-19,
-14
-],
-"flip": true
-},
-{
-"kind": "standing_stone",
-"pos": [
-467,
-70
-],
-"cell": [
-14,
-2
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-280,
-458
-],
-"cell": [
-8,
-14
-],
-"flip": true
-},
-{
-"kind": "standing_stone",
-"pos": [
-354,
-472
-],
-"cell": [
-11,
-14
+38,
+25
 ],
 "flip": true
 },
 {
 "kind": "steppe_tuft_1",
 "pos": [
-577,
+1295,
+600
+],
+"cell": [
+40,
+18
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+429,
+114
+],
+"cell": [
+13,
+3
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1054,
+322
+],
+"cell": [
+32,
+10
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1080,
+797
+],
+"cell": [
+33,
+24
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+973,
+327
+],
+"cell": [
+30,
+10
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+980,
+770
+],
+"cell": [
+30,
+24
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+528,
+159
+],
+"cell": [
+16,
+4
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+247,
+177
+],
+"cell": [
+7,
+5
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+698,
+811
+],
+"cell": [
+21,
+25
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1197,
+51
+],
+"cell": [
+37,
+1
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+1321,
+72
+],
+"cell": [
+41,
+2
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+227,
+815
+],
+"cell": [
+7,
+25
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1019,
+176
+],
+"cell": [
+31,
+5
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+427,
+61
+],
+"cell": [
+13,
+1
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+654,
+397
+],
+"cell": [
+20,
 12
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+474,
+625
+],
+"cell": [
+14,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+621,
+609
+],
+"cell": [
+19,
+19
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+484,
+26
+],
+"cell": [
+15,
+0
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1237,
+184
+],
+"cell": [
+38,
+5
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+176,
+382
+],
+"cell": [
+5,
+11
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+240,
+403
+],
+"cell": [
+7,
+12
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+578,
+376
+],
+"cell": [
+18,
+11
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1312,
+604
+],
+"cell": [
+41,
+18
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+92,
+494
+],
+"cell": [
+2,
+15
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+81,
+260
+],
+"cell": [
+2,
+8
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1197,
+237
+],
+"cell": [
+37,
+7
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+723,
+454
+],
+"cell": [
+22,
+14
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1077,
+311
+],
+"cell": [
+33,
+9
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1192,
+38
+],
+"cell": [
+37,
+1
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+18,
+301
+],
+"cell": [
+0,
+9
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1059,
+204
+],
+"cell": [
+33,
+6
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+519,
+369
+],
+"cell": [
+16,
+11
+],
+"flip": false
+},
+{
+"kind": "standing_stone",
+"pos": [
+240,
+684
+],
+"cell": [
+7,
+21
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+290,
+23
+],
+"cell": [
+9,
+0
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+36,
+624
+],
+"cell": [
+1,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1229,
+184
+],
+"cell": [
+38,
+5
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1064,
+47
+],
+"cell": [
+33,
+1
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+358,
+700
+],
+"cell": [
+11,
+21
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+341,
+157
+],
+"cell": [
+10,
+4
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+606,
+16
 ],
 "cell": [
 18,
@@ -332,23 +1604,335 @@
 {
 "kind": "steppe_tuft_1",
 "pos": [
-219,
-197
+236,
+803
 ],
 "cell": [
-6,
+7,
+25
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+458,
+436
+],
+"cell": [
+14,
+13
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+1002,
+766
+],
+"cell": [
+31,
+23
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+269,
+597
+],
+"cell": [
+8,
+18
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+920,
+38
+],
+"cell": [
+28,
+1
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+818,
+149
+],
+"cell": [
+25,
+4
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+777,
+656
+],
+"cell": [
+24,
+20
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1328,
+680
+],
+"cell": [
+41,
+21
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+391,
+204
+],
+"cell": [
+12,
 6
 ],
 "flip": false
 },
 {
-"kind": "standing_stone",
+"kind": "steppe_tuft_1",
 "pos": [
-576,
-179
+719,
+690
 ],
 "cell": [
-18,
+22,
+21
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+30,
+244
+],
+"cell": [
+0,
+7
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+975,
+204
+],
+"cell": [
+30,
+6
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1200,
+373
+],
+"cell": [
+37,
+11
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+745,
+394
+],
+"cell": [
+23,
+12
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+794,
+181
+],
+"cell": [
+24,
+5
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+622,
+128
+],
+"cell": [
+19,
+4
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+493,
+365
+],
+"cell": [
+15,
+11
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+31,
+677
+],
+"cell": [
+0,
+21
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+889,
+685
+],
+"cell": [
+27,
+21
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+690,
+695
+],
+"cell": [
+21,
+21
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+943,
+277
+],
+"cell": [
+29,
+8
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+92,
+761
+],
+"cell": [
+2,
+23
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+421,
+150
+],
+"cell": [
+13,
+4
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+739,
+337
+],
+"cell": [
+23,
+10
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1121,
+185
+],
+"cell": [
+35,
+5
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+725,
+806
+],
+"cell": [
+22,
+25
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+354,
+798
+],
+"cell": [
+11,
+24
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+741,
+175
+],
+"cell": [
+23,
 5
 ],
 "flip": false
@@ -356,32 +1940,464 @@
 {
 "kind": "steppe_tuft_1",
 "pos": [
-390,
-289
+1167,
+598
+],
+"cell": [
+36,
+18
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+308,
+182
+],
+"cell": [
+9,
+5
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+386,
+812
 ],
 "cell": [
 12,
+25
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+602,
+490
+],
+"cell": [
+18,
+15
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1086,
+317
+],
+"cell": [
+33,
 9
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+818,
+216
+],
+"cell": [
+25,
+6
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+817,
+379
+],
+"cell": [
+25,
+11
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+669,
+805
+],
+"cell": [
+20,
+25
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+981,
+548
+],
+"cell": [
+30,
+17
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+654,
+164
+],
+"cell": [
+20,
+5
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+326,
+682
+],
+"cell": [
+10,
+21
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1214,
+273
+],
+"cell": [
+37,
+8
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+342,
+682
+],
+"cell": [
+10,
+21
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1115,
+639
+],
+"cell": [
+34,
+19
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+438,
+370
+],
+"cell": [
+13,
+11
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+1171,
+520
+],
+"cell": [
+36,
+16
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+729,
+75
+],
+"cell": [
+22,
+2
 ],
 "flip": true
 },
 {
 "kind": "slate_0",
 "pos": [
-668,
-329
+1075,
+398
 ],
 "cell": [
-20,
-10
+33,
+12
 ],
-"flip": false
+"flip": true
 },
 {
 "kind": "standing_stone",
 "pos": [
-123,
+687,
+200
+],
+"cell": [
+21,
+6
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1278,
+27
+],
+"cell": [
+39,
+0
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+714,
+301
+],
+"cell": [
+22,
+9
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+36,
+642
+],
+"cell": [
+1,
+20
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+159,
+817
+],
+"cell": [
+4,
+25
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1272,
+604
+],
+"cell": [
+39,
+18
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+720,
+315
+],
+"cell": [
+22,
+9
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+900,
+359
+],
+"cell": [
+28,
+11
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+790,
+179
+],
+"cell": [
+24,
+5
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+732,
+689
+],
+"cell": [
+22,
+21
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+69,
+183
+],
+"cell": [
+2,
+5
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+994,
+541
+],
+"cell": [
+31,
+16
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+248,
+625
+],
+"cell": [
+7,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+631,
+26
+],
+"cell": [
+19,
+0
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+717,
+795
+],
+"cell": [
+22,
+24
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+986,
+301
+],
+"cell": [
+30,
+9
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+435,
+683
+],
+"cell": [
+13,
+21
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+93,
+812
+],
+"cell": [
+2,
+25
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+1270,
+116
+],
+"cell": [
+39,
+3
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+406,
 191
+],
+"cell": [
+12,
+5
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+105,
+162
 ],
 "cell": [
 3,
@@ -390,13 +2406,193 @@
 "flip": false
 },
 {
-"kind": "steppe_tuft_1",
+"kind": "storm_crystal",
 "pos": [
-477,
-369
+165,
+693
 ],
 "cell": [
-14,
+5,
+21
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+841,
+327
+],
+"cell": [
+26,
+10
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1089,
+148
+],
+"cell": [
+34,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+546,
+215
+],
+"cell": [
+17,
+6
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1218,
+201
+],
+"cell": [
+38,
+6
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1292,
+704
+],
+"cell": [
+40,
+21
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+651,
+641
+],
+"cell": [
+20,
+20
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+373,
+705
+],
+"cell": [
+11,
+22
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+374,
+144
+],
+"cell": [
+11,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+582,
+67
+],
+"cell": [
+18,
+2
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+815,
+785
+],
+"cell": [
+25,
+24
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+54,
+438
+],
+"cell": [
+1,
+13
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+740,
+329
+],
+"cell": [
+23,
+10
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+1080,
+613
+],
+"cell": [
+33,
+19
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+708,
+360
+],
+"cell": [
+22,
+11
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1072,
+373
+],
+"cell": [
+33,
 11
 ],
 "flip": true
@@ -404,140 +2600,140 @@
 {
 "kind": "steppe_tuft_1",
 "pos": [
-216,
-189
+1174,
+444
 ],
 "cell": [
-6,
-5
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-438,
-75
-],
-"cell": [
-13,
-2
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-429,
-409
-],
-"cell": [
-13,
-12
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-147,
-217
-],
-"cell": [
-4,
-6
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-72,
-303
-],
-"cell": [
-2,
-9
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-157,
-399
-],
-"cell": [
-4,
-12
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-481,
-300
-],
-"cell": [
-15,
-9
-],
-"flip": true
-},
-{
-"kind": "slate_0",
-"pos": [
-481,
-118
-],
-"cell": [
-15,
-3
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-116,
-216
-],
-"cell": [
-3,
-6
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-9,
-260
-],
-"cell": [
-0,
-8
-],
-"flip": false
-},
-{
-"kind": "slate_1",
-"pos": [
-273,
-193
-],
-"cell": [
-8,
-6
+36,
+13
 ],
 "flip": true
 },
 {
 "kind": "storm_crystal",
 "pos": [
-708,
-12
+705,
+174
+],
+"cell": [
+22,
+5
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+523,
+784
+],
+"cell": [
+16,
+24
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1004,
+534
+],
+"cell": [
+31,
+16
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+788,
+649
+],
+"cell": [
+24,
+20
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+832,
+594
+],
+"cell": [
+26,
+18
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+982,
+133
+],
+"cell": [
+30,
+4
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+156,
+56
+],
+"cell": [
+4,
+1
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+687,
+778
+],
+"cell": [
+21,
+24
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+572,
+595
+],
+"cell": [
+17,
+18
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+403,
+50
+],
+"cell": [
+12,
+1
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+732,
+16
 ],
 "cell": [
 22,
@@ -548,35 +2744,23 @@
 {
 "kind": "steppe_tuft_1",
 "pos": [
-495,
-204
+840,
+285
 ],
 "cell": [
-15,
-6
+26,
+8
 ],
 "flip": true
 },
 {
-"kind": "steppe_tuft_0",
+"kind": "steppe_tuft_1",
 "pos": [
-378,
-169
+306,
+33
 ],
 "cell": [
-11,
-5
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-750,
-45
-],
-"cell": [
-23,
+9,
 1
 ],
 "flip": true
@@ -584,35 +2768,275 @@
 {
 "kind": "steppe_tuft_1",
 "pos": [
-386,
-25
+487,
+302
 ],
 "cell": [
-12,
-0
+15,
+9
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1149,
+77
+],
+"cell": [
+35,
+2
 ],
 "flip": true
 },
 {
-"kind": "slate_0",
+"kind": "steppe_tuft_1",
 "pos": [
-72,
-303
+1186,
+776
 ],
 "cell": [
-2,
-9
+37,
+24
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+821,
+366
+],
+"cell": [
+25,
+11
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+408,
+335
+],
+"cell": [
+12,
+10
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+258,
+491
+],
+"cell": [
+8,
+15
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+270,
+566
+],
+"cell": [
+8,
+17
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+1301,
+616
+],
+"cell": [
+40,
+19
 ],
 "flip": true
 },
 {
 "kind": "storm_crystal",
 "pos": [
-603,
-195
+623,
+175
+],
+"cell": [
+19,
+5
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1164,
+586
+],
+"cell": [
+36,
+18
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+610,
+334
+],
+"cell": [
+19,
+10
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+607,
+367
 ],
 "cell": [
 18,
+11
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+6,
+155
+],
+"cell": [
+0,
+4
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+688,
+33
+],
+"cell": [
+21,
+1
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+200,
+553
+],
+"cell": [
+6,
+17
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1044,
+159
+],
+"cell": [
+32,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+306,
+824
+],
+"cell": [
+9,
+25
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1237,
+766
+],
+"cell": [
+38,
+23
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+62,
+662
+],
+"cell": [
+1,
+20
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+574,
+66
+],
+"cell": [
+17,
+2
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+295,
+164
+],
+"cell": [
+9,
+5
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1163,
+338
+],
+"cell": [
+36,
+10
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+932,
+213
+],
+"cell": [
+29,
 6
 ],
 "flip": true
@@ -620,7 +3044,1207 @@
 {
 "kind": "steppe_tuft_0",
 "pos": [
-587,
+470,
+665
+],
+"cell": [
+14,
+20
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1251,
+242
+],
+"cell": [
+39,
+7
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+222,
+363
+],
+"cell": [
+6,
+11
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+176,
+116
+],
+"cell": [
+5,
+3
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1037,
+289
+],
+"cell": [
+32,
+9
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+1231,
+369
+],
+"cell": [
+38,
+11
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+10,
+292
+],
+"cell": [
+0,
+9
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+918,
+710
+],
+"cell": [
+28,
+22
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+857,
+628
+],
+"cell": [
+26,
+19
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+1305,
+524
+],
+"cell": [
+40,
+16
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+1221,
+193
+],
+"cell": [
+38,
+6
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+809,
+660
+],
+"cell": [
+25,
+20
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+457,
+475
+],
+"cell": [
+14,
+14
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+479,
+695
+],
+"cell": [
+14,
+21
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+582,
+338
+],
+"cell": [
+18,
+10
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+389,
+127
+],
+"cell": [
+12,
+3
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+380,
+612
+],
+"cell": [
+11,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+403,
+819
+],
+"cell": [
+12,
+25
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1139,
+210
+],
+"cell": [
+35,
+6
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+36,
+493
+],
+"cell": [
+1,
+15
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+936,
+214
+],
+"cell": [
+29,
+6
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+551,
+174
+],
+"cell": [
+17,
+5
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+524,
+603
+],
+"cell": [
+16,
+18
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1071,
+617
+],
+"cell": [
+33,
+19
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+767,
+462
+],
+"cell": [
+23,
+14
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+1272,
+827
+],
+"cell": [
+39,
+25
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+1309,
+474
+],
+"cell": [
+40,
+14
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+946,
+390
+],
+"cell": [
+29,
+12
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1180,
+274
+],
+"cell": [
+36,
+8
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+651,
+776
+],
+"cell": [
+20,
+24
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+790,
+361
+],
+"cell": [
+24,
+11
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+592,
+821
+],
+"cell": [
+18,
+25
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+91,
+216
+],
+"cell": [
+2,
+6
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+521,
+45
+],
+"cell": [
+16,
+1
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+823,
+595
+],
+"cell": [
+25,
+18
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+574,
+591
+],
+"cell": [
+17,
+18
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1312,
+293
+],
+"cell": [
+40,
+9
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+45,
+331
+],
+"cell": [
+1,
+10
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+332,
+51
+],
+"cell": [
+10,
+1
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+986,
+498
+],
+"cell": [
+30,
+15
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1116,
+646
+],
+"cell": [
+34,
+20
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+646,
+678
+],
+"cell": [
+20,
+21
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+690,
+358
+],
+"cell": [
+21,
+11
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1152,
+374
+],
+"cell": [
+35,
+11
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+907,
+459
+],
+"cell": [
+28,
+14
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+537,
+815
+],
+"cell": [
+16,
+25
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1278,
+694
+],
+"cell": [
+39,
+21
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+32,
+173
+],
+"cell": [
+1,
+5
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1113,
+582
+],
+"cell": [
+34,
+18
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1295,
+826
+],
+"cell": [
+40,
+25
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+270,
+492
+],
+"cell": [
+8,
+15
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+759,
+209
+],
+"cell": [
+23,
+6
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+73,
+381
+],
+"cell": [
+2,
+11
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+510,
+711
+],
+"cell": [
+15,
+22
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+694,
+483
+],
+"cell": [
+21,
+15
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+712,
+509
+],
+"cell": [
+22,
+15
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+557,
+135
+],
+"cell": [
+17,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+813,
+411
+],
+"cell": [
+25,
+12
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+958,
+333
+],
+"cell": [
+29,
+10
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+126,
+494
+],
+"cell": [
+3,
+15
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+1190,
+564
+],
+"cell": [
+37,
+17
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+876,
+24
+],
+"cell": [
+27,
+0
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+1287,
+731
+],
+"cell": [
+40,
+22
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+471,
+518
+],
+"cell": [
+14,
+16
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+329,
+396
+],
+"cell": [
+10,
+12
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1071,
+165
+],
+"cell": [
+33,
+5
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+312,
+388
+],
+"cell": [
+9,
+12
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+629,
+704
+],
+"cell": [
+19,
+22
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+218,
+681
+],
+"cell": [
+6,
+21
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+310,
+690
+],
+"cell": [
+9,
+21
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+344,
+609
+],
+"cell": [
+10,
+19
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+291,
+407
+],
+"cell": [
+9,
+12
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+59,
+331
+],
+"cell": [
+1,
+10
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+177,
+205
+],
+"cell": [
+5,
+6
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+1326,
+152
+],
+"cell": [
+41,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+198,
+526
+],
+"cell": [
+6,
+16
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+1145,
+767
+],
+"cell": [
+35,
+23
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+698,
+291
+],
+"cell": [
+21,
+9
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+318,
+27
+],
+"cell": [
+9,
+0
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+111,
+614
+],
+"cell": [
+3,
+19
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+698,
+626
+],
+"cell": [
+21,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+152,
+135
+],
+"cell": [
+4,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+602,
+626
+],
+"cell": [
+18,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+845,
+761
+],
+"cell": [
+26,
+23
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+556,
+629
+],
+"cell": [
+17,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1166,
+198
+],
+"cell": [
+36,
+6
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+272,
+155
+],
+"cell": [
+8,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+123,
+601
+],
+"cell": [
+3,
+18
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+629,
+577
+],
+"cell": [
+19,
+18
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+750,
+518
+],
+"cell": [
+23,
+16
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+277,
+371
+],
+"cell": [
+8,
+11
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+943,
+280
+],
+"cell": [
+29,
+8
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+414,
+198
+],
+"cell": [
+12,
+6
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+895,
+212
+],
+"cell": [
+27,
+6
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+383,
+820
+],
+"cell": [
+11,
+25
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1128,
+609
+],
+"cell": [
+35,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+124,
+744
+],
+"cell": [
+3,
+23
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+492,
+804
+],
+"cell": [
+15,
+25
+],
+"flip": false
+},
+{
+"kind": "standing_stone",
+"pos": [
+980,
+165
+],
+"cell": [
+30,
+5
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+889,
+274
+],
+"cell": [
+27,
+8
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+595,
 298
 ],
 "cell": [
@@ -630,37 +4254,97 @@
 "flip": true
 },
 {
-"kind": "slate_1",
+"kind": "standing_stone",
 "pos": [
-758,
-48
+861,
+163
 ],
 "cell": [
-23,
-1
+26,
+5
 ],
-"flip": false
+"flip": true
 },
 {
-"kind": "steppe_tuft_0",
+"kind": "steppe_tuft_1",
 "pos": [
-543,
-187
+541,
+174
 ],
 "cell": [
 16,
 5
 ],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1092,
+223
+],
+"cell": [
+34,
+6
+],
 "flip": false
 },
 {
 "kind": "steppe_tuft_0",
 "pos": [
-649,
-138
+639,
+318
 ],
 "cell": [
-20,
+19,
+9
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+744,
+780
+],
+"cell": [
+23,
+24
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1178,
+302
+],
+"cell": [
+36,
+9
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+810,
+536
+],
+"cell": [
+25,
+16
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+184,
+134
+],
+"cell": [
+5,
 4
 ],
 "flip": false
@@ -668,83 +4352,479 @@
 {
 "kind": "steppe_tuft_1",
 "pos": [
-98,
-223
+881,
+387
 ],
 "cell": [
-3,
-6
+27,
+12
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+659,
+706
+],
+"cell": [
+20,
+22
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1105,
+153
+],
+"cell": [
+34,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+78,
+153
+],
+"cell": [
+2,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1138,
+521
+],
+"cell": [
+35,
+16
 ],
 "flip": false
 },
 {
 "kind": "steppe_tuft_0",
 "pos": [
-65,
-95
+1179,
+768
 ],
 "cell": [
-2,
-2
+36,
+23
 ],
 "flip": true
 },
 {
 "kind": "steppe_tuft_0",
 "pos": [
-668,
-274
+729,
+395
 ],
 "cell": [
-20,
-8
+22,
+12
 ],
 "flip": true
 },
 {
-"kind": "slate_1",
+"kind": "steppe_tuft_1",
 "pos": [
-90,
-232
+747,
+798
 ],
 "cell": [
-2,
-7
+23,
+24
 ],
 "flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+234,
+778
+],
+"cell": [
+7,
+24
+],
+"flip": false
 },
 {
 "kind": "storm_crystal",
 "pos": [
-530,
-458
+990,
+624
 ],
 "cell": [
-16,
-14
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-470,
-273
-],
-"cell": [
-14,
-8
+30,
+19
 ],
 "flip": false
 },
 {
 "kind": "steppe_tuft_1",
 "pos": [
-623,
-105
+1193,
+585
 ],
 "cell": [
-19,
+37,
+18
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1026,
+337
+],
+"cell": [
+32,
+10
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+672,
+664
+],
+"cell": [
+20,
+20
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+382,
+505
+],
+"cell": [
+11,
+15
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+317,
+808
+],
+"cell": [
+9,
+25
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+84,
+323
+],
+"cell": [
+2,
+10
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+832,
+204
+],
+"cell": [
+25,
+6
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+803,
+182
+],
+"cell": [
+25,
+5
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1177,
+318
+],
+"cell": [
+36,
+9
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+246,
+506
+],
+"cell": [
+7,
+15
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+741,
+617
+],
+"cell": [
+23,
+19
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+308,
+142
+],
+"cell": [
+9,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+213,
+679
+],
+"cell": [
+6,
+21
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+1324,
+737
+],
+"cell": [
+41,
+23
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+145,
+330
+],
+"cell": [
+4,
+10
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1015,
+49
+],
+"cell": [
+31,
+1
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1207,
+23
+],
+"cell": [
+37,
+0
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+676,
+147
+],
+"cell": [
+21,
+4
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+243,
+279
+],
+"cell": [
+7,
+8
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1273,
+808
+],
+"cell": [
+39,
+25
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1046,
+135
+],
+"cell": [
+32,
+4
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1092,
+818
+],
+"cell": [
+34,
+25
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+521,
+290
+],
+"cell": [
+16,
+9
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+209,
+699
+],
+"cell": [
+6,
+21
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1150,
+555
+],
+"cell": [
+35,
+17
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+289,
+20
+],
+"cell": [
+9,
+0
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+521,
+65
+],
+"cell": [
+16,
+2
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+503,
+128
+],
+"cell": [
+15,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1014,
+32
+],
+"cell": [
+31,
+0
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+296,
+125
+],
+"cell": [
+9,
 3
 ],
 "flip": false
@@ -752,47 +4832,503 @@
 {
 "kind": "steppe_tuft_0",
 "pos": [
-15,
-392
+460,
+124
 ],
 "cell": [
-0,
-12
-],
-"flip": false
-},
-{
-"kind": "slate_1",
-"pos": [
-416,
-376
-],
-"cell": [
-12,
-11
+14,
+3
 ],
 "flip": true
 },
 {
 "kind": "steppe_tuft_1",
 "pos": [
-266,
-196
+657,
+293
 ],
 "cell": [
-8,
-6
+20,
+9
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+405,
+657
+],
+"cell": [
+12,
+20
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+828,
+685
+],
+"cell": [
+25,
+21
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+545,
+618
+],
+"cell": [
+17,
+19
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+226,
+774
+],
+"cell": [
+7,
+24
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1093,
+811
+],
+"cell": [
+34,
+25
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+753,
+472
+],
+"cell": [
+23,
+14
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+809,
+824
+],
+"cell": [
+25,
+25
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+529,
+138
+],
+"cell": [
+16,
+4
 ],
 "flip": false
 },
 {
 "kind": "slate_0",
 "pos": [
-670,
-458
+1044,
+635
 ],
 "cell": [
-20,
+32,
+19
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+749,
+150
+],
+"cell": [
+23,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+683,
+381
+],
+"cell": [
+21,
+11
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+257,
+403
+],
+"cell": [
+8,
+12
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+776,
+601
+],
+"cell": [
+24,
+18
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+99,
+552
+],
+"cell": [
+3,
+17
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+724,
+512
+],
+"cell": [
+22,
+15
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+1323,
+645
+],
+"cell": [
+41,
+20
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+1155,
+258
+],
+"cell": [
+36,
+8
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+607,
+452
+],
+"cell": [
+18,
+14
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+179,
+303
+],
+"cell": [
+5,
+9
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+1220,
+457
+],
+"cell": [
+38,
+14
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+1178,
+777
+],
+"cell": [
+36,
+24
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+186,
+23
+],
+"cell": [
+5,
+0
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+443,
+118
+],
+"cell": [
+13,
+3
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+515,
+588
+],
+"cell": [
+16,
+18
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1173,
+184
+],
+"cell": [
+36,
+5
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+93,
+814
+],
+"cell": [
+2,
+25
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+556,
+489
+],
+"cell": [
+17,
+15
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+457,
+512
+],
+"cell": [
+14,
+16
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+9,
+761
+],
+"cell": [
+0,
+23
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+159,
+150
+],
+"cell": [
+4,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1114,
+616
+],
+"cell": [
+34,
+19
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+168,
+630
+],
+"cell": [
+5,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1219,
+193
+],
+"cell": [
+38,
+6
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1317,
+446
+],
+"cell": [
+41,
+13
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+992,
+531
+],
+"cell": [
+30,
+16
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1272,
+664
+],
+"cell": [
+39,
+20
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+573,
+139
+],
+"cell": [
+17,
+4
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+366,
+660
+],
+"cell": [
+11,
+20
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+1329,
+547
+],
+"cell": [
+41,
+17
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+425,
+471
+],
+"cell": [
+13,
 14
 ],
 "flip": false
@@ -800,60 +5336,768 @@
 {
 "kind": "steppe_tuft_0",
 "pos": [
-263,
-186
+825,
+156
 ],
 "cell": [
-8,
+25,
+4
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+543,
+18
+],
+"cell": [
+16,
+0
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+115,
+781
+],
+"cell": [
+3,
+24
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+500,
+219
+],
+"cell": [
+15,
+6
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+494,
+762
+],
+"cell": [
+15,
+23
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+47,
+203
+],
+"cell": [
+1,
+6
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1251,
+758
+],
+"cell": [
+39,
+23
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1130,
+561
+],
+"cell": [
+35,
+17
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+56,
+162
+],
+"cell": [
+1,
 5
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+790,
+388
+],
+"cell": [
+24,
+12
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+1308,
+454
+],
+"cell": [
+40,
+14
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+446,
+148
+],
+"cell": [
+13,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+218,
+467
+],
+"cell": [
+6,
+14
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1133,
+191
+],
+"cell": [
+35,
+5
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+186,
+32
+],
+"cell": [
+5,
+0
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+405,
+511
+],
+"cell": [
+12,
+15
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+991,
+696
+],
+"cell": [
+30,
+21
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+567,
+65
+],
+"cell": [
+17,
+2
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1166,
+363
+],
+"cell": [
+36,
+11
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+1199,
+526
+],
+"cell": [
+37,
+16
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+905,
+507
+],
+"cell": [
+28,
+15
 ],
 "flip": false
 },
 {
 "kind": "slate_0",
 "pos": [
-65,
-84
+15,
+539
 ],
 "cell": [
-2,
-2
+0,
+16
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1247,
+736
+],
+"cell": [
+38,
+22
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+176,
+415
+],
+"cell": [
+5,
+12
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+479,
+697
+],
+"cell": [
+14,
+21
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1244,
+310
+],
+"cell": [
+38,
+9
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1259,
+735
+],
+"cell": [
+39,
+22
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+972,
+345
+],
+"cell": [
+30,
+10
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+364,
+589
+],
+"cell": [
+11,
+18
 ],
 "flip": false
 },
 {
 "kind": "slate_1",
 "pos": [
-76,
-287
+305,
+560
 ],
 "cell": [
-2,
-8
+9,
+17
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+454,
+367
+],
+"cell": [
+14,
+11
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+317,
+145
+],
+"cell": [
+9,
+4
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+37,
+104
+],
+"cell": [
+1,
+3
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+463,
+57
+],
+"cell": [
+14,
+1
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1308,
+126
+],
+"cell": [
+40,
+3
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+484,
+653
+],
+"cell": [
+15,
+20
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+1081,
+809
+],
+"cell": [
+33,
+25
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+1067,
+35
+],
+"cell": [
+33,
+1
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+1049,
+656
+],
+"cell": [
+32,
+20
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+736,
+696
+],
+"cell": [
+22,
+21
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+709,
+76
+],
+"cell": [
+22,
+2
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+179,
+38
+],
+"cell": [
+5,
+1
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+1306,
+73
+],
+"cell": [
+40,
+2
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+1036,
+348
+],
+"cell": [
+32,
+10
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+1296,
+139
+],
+"cell": [
+40,
+4
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+989,
+828
+],
+"cell": [
+30,
+25
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+366,
+770
+],
+"cell": [
+11,
+24
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1197,
+331
+],
+"cell": [
+37,
+10
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+655,
+189
+],
+"cell": [
+20,
+5
 ],
 "flip": false
 },
 {
 "kind": "standing_stone",
 "pos": [
-233,
-211
+1218,
+371
 ],
 "cell": [
-7,
-6
+38,
+11
 ],
 "flip": false
 },
 {
-"kind": "slate_1",
+"kind": "steppe_tuft_0",
 "pos": [
-501,
-198
+476,
+474
+],
+"cell": [
+14,
+14
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+967,
+791
+],
+"cell": [
+30,
+24
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+25,
+327
+],
+"cell": [
+0,
+10
+],
+"flip": false
+},
+{
+"kind": "standing_stone",
+"pos": [
+758,
+384
+],
+"cell": [
+23,
+11
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+695,
+34
+],
+"cell": [
+21,
+1
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+446,
+586
+],
+"cell": [
+13,
+18
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+863,
+624
+],
+"cell": [
+26,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+390,
+827
+],
+"cell": [
+12,
+25
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+333,
+655
+],
+"cell": [
+10,
+20
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+330,
+809
+],
+"cell": [
+10,
+25
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1204,
+176
+],
+"cell": [
+37,
+5
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+635,
+594
+],
+"cell": [
+19,
+18
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+611,
+779
+],
+"cell": [
+19,
+24
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+481,
+169
 ],
 "cell": [
 15,
-6
+5
 ],
 "flip": false
 },
@@ -861,490 +6105,34 @@
 "kind": "steppe_tuft_0",
 "pos": [
 231,
-199
+641
 ],
 "cell": [
 7,
-6
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-183,
-194
-],
-"cell": [
-5,
-6
-],
-"flip": true
-},
-{
-"kind": "standing_stone",
-"pos": [
-584,
-172
-],
-"cell": [
-18,
-5
-],
-"flip": true
-},
-{
-"kind": "slate_1",
-"pos": [
-367,
-112
-],
-"cell": [
-11,
-3
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-312,
-386
-],
-"cell": [
-9,
-12
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-122,
-177
-],
-"cell": [
-3,
-5
+20
 ],
 "flip": false
 },
 {
-"kind": "storm_crystal",
-"pos": [
-100,
-190
-],
-"cell": [
-3,
-5
-],
-"flip": false
-},
-{
-"kind": "slate_0",
-"pos": [
-133,
-397
-],
-"cell": [
-4,
-12
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-383,
-104
-],
-"cell": [
-11,
-3
-],
-"flip": true
-},
-{
-"kind": "storm_crystal",
-"pos": [
-105,
-405
-],
-"cell": [
-3,
-12
-],
-"flip": true
-},
-{
 "kind": "steppe_tuft_0",
 "pos": [
-360,
-401
+806,
+367
 ],
 "cell": [
-11,
-12
-],
-"flip": false
-},
-{
-"kind": "slate_0",
-"pos": [
-335,
-394
-],
-"cell": [
-10,
-12
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-548,
-186
-],
-"cell": [
-17,
-5
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-462,
-12
-],
-"cell": [
-14,
-0
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-259,
-167
-],
-"cell": [
-8,
-5
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-20,
-457
-],
-"cell": [
-0,
-14
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-81,
-289
-],
-"cell": [
-2,
-9
-],
-"flip": true
-},
-{
-"kind": "slate_0",
-"pos": [
-150,
-402
-],
-"cell": [
-4,
-12
-],
-"flip": false
-},
-{
-"kind": "slate_0",
-"pos": [
-55,
-122
-],
-"cell": [
-1,
-3
-],
-"flip": true
-},
-{
-"kind": "slate_0",
-"pos": [
-468,
-24
-],
-"cell": [
-14,
-0
-],
-"flip": false
-},
-{
-"kind": "slate_1",
-"pos": [
-442,
-182
-],
-"cell": [
-13,
-5
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-9,
-368
-],
-"cell": [
-0,
+25,
 11
 ],
 "flip": true
 },
 {
-"kind": "standing_stone",
-"pos": [
-117,
-289
-],
-"cell": [
-3,
-9
-],
-"flip": false
-},
-{
-"kind": "slate_0",
-"pos": [
-23,
-436
-],
-"cell": [
-0,
-13
-],
-"flip": true
-},
-{
-"kind": "slate_0",
-"pos": [
-263,
-23
-],
-"cell": [
-8,
-0
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-701,
-16
-],
-"cell": [
-21,
-0
-],
-"flip": true
-},
-{
 "kind": "steppe_tuft_0",
 "pos": [
-577,
-12
-],
-"cell": [
-18,
-0
-],
-"flip": false
-},
-{
-"kind": "slate_0",
-"pos": [
-525,
-186
-],
-"cell": [
-16,
-5
-],
-"flip": true
-},
-{
-"kind": "slate_0",
-"pos": [
-495,
-307
-],
-"cell": [
-15,
-9
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-756,
-346
-],
-"cell": [
-23,
-10
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-496,
-471
-],
-"cell": [
-15,
-14
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-54,
-9
-],
-"cell": [
-1,
-0
-],
-"flip": true
-},
-{
-"kind": "storm_crystal",
-"pos": [
-543,
-195
-],
-"cell": [
-16,
-6
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-686,
-339
-],
-"cell": [
-21,
-10
-],
-"flip": false
-},
-{
-"kind": "slate_0",
-"pos": [
-301,
-10
-],
-"cell": [
-9,
-0
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-573,
-188
-],
-"cell": [
-17,
-5
-],
-"flip": false
-},
-{
-"kind": "slate_0",
-"pos": [
-557,
-295
-],
-"cell": [
-17,
-9
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-157,
-193
-],
-"cell": [
-4,
-6
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-468,
-198
-],
-"cell": [
-14,
-6
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-744,
-444
-],
-"cell": [
-23,
-13
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-180,
+1305,
 361
 ],
 "cell": [
-5,
+40,
 11
 ],
 "flip": true
@@ -1352,56 +6140,80 @@
 {
 "kind": "steppe_tuft_1",
 "pos": [
-637,
-16
+498,
+775
 ],
 "cell": [
-19,
-0
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-9,
-305
-],
-"cell": [
-0,
-9
+15,
+24
 ],
 "flip": true
 },
 {
 "kind": "steppe_tuft_1",
 "pos": [
-228,
-106
+1032,
+78
 ],
 "cell": [
-7,
-3
+32,
+2
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+803,
+486
+],
+"cell": [
+25,
+15
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+464,
+585
+],
+"cell": [
+14,
+18
 ],
 "flip": false
 },
 {
-"kind": "steppe_tuft_1",
+"kind": "steppe_tuft_0",
 "pos": [
-590,
+23,
+718
+],
+"cell": [
+0,
+22
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1274,
+812
+],
+"cell": [
+39,
+25
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+653,
 404
-],
-"cell": [
-18,
-12
-],
-"flip": false
-},
-{
-"kind": "slate_1",
-"pos": [
-652,
-407
 ],
 "cell": [
 20,
@@ -1410,49 +6222,121 @@
 "flip": false
 },
 {
-"kind": "steppe_tuft_1",
+"kind": "steppe_tuft_0",
 "pos": [
-672,
-467
+901,
+481
 ],
 "cell": [
-21,
-14
+28,
+15
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+826,
+29
+],
+"cell": [
+25,
+0
 ],
 "flip": true
 },
 {
 "kind": "steppe_tuft_1",
 "pos": [
-286,
-270
+1037,
+515
 ],
 "cell": [
-8,
-8
+32,
+16
 ],
 "flip": false
 },
 {
-"kind": "storm_crystal",
+"kind": "standing_stone",
 "pos": [
-402,
-23
+841,
+607
 ],
 "cell": [
-12,
-0
+26,
+18
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1189,
+243
+],
+"cell": [
+37,
+7
 ],
 "flip": true
 },
 {
 "kind": "steppe_tuft_0",
 "pos": [
-377,
-301
+1333,
+324
 ],
 "cell": [
-11,
+41,
+10
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+976,
+788
+],
+"cell": [
+30,
+24
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+274,
+41
+],
+"cell": [
+8,
+1
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+885,
+46
+],
+"cell": [
+27,
+1
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+63,
+297
+],
+"cell": [
+1,
 9
 ],
 "flip": false
@@ -1460,8 +6344,776 @@
 {
 "kind": "steppe_tuft_1",
 "pos": [
-426,
+752,
+77
+],
+"cell": [
+23,
+2
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+967,
+661
+],
+"cell": [
+30,
+20
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+830,
+654
+],
+"cell": [
+25,
+20
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+422,
+473
+],
+"cell": [
+13,
+14
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1185,
+690
+],
+"cell": [
+37,
+21
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+800,
+272
+],
+"cell": [
+25,
+8
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+850,
+345
+],
+"cell": [
+26,
+10
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+555,
+816
+],
+"cell": [
+17,
+25
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+368,
 309
+],
+"cell": [
+11,
+9
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+254,
+469
+],
+"cell": [
+7,
+14
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+621,
+55
+],
+"cell": [
+19,
+1
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+101,
+805
+],
+"cell": [
+3,
+25
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+711,
+773
+],
+"cell": [
+22,
+24
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+278,
+125
+],
+"cell": [
+8,
+3
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1254,
+796
+],
+"cell": [
+39,
+24
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+190,
+339
+],
+"cell": [
+5,
+10
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+1292,
+152
+],
+"cell": [
+40,
+4
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+1212,
+312
+],
+"cell": [
+37,
+9
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+302,
+395
+],
+"cell": [
+9,
+12
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+447,
+124
+],
+"cell": [
+13,
+3
+],
+"flip": false
+},
+{
+"kind": "standing_stone",
+"pos": [
+1051,
+704
+],
+"cell": [
+32,
+21
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+115,
+236
+],
+"cell": [
+3,
+7
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+705,
+358
+],
+"cell": [
+22,
+11
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+796,
+525
+],
+"cell": [
+24,
+16
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+482,
+374
+],
+"cell": [
+15,
+11
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+515,
+170
+],
+"cell": [
+16,
+5
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+82,
+274
+],
+"cell": [
+2,
+8
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+776,
+755
+],
+"cell": [
+24,
+23
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+345,
+653
+],
+"cell": [
+10,
+20
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+284,
+827
+],
+"cell": [
+8,
+25
+],
+"flip": false
+},
+{
+"kind": "standing_stone",
+"pos": [
+360,
+333
+],
+"cell": [
+11,
+10
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1049,
+811
+],
+"cell": [
+32,
+25
+],
+"flip": true
+},
+{
+"kind": "standing_stone",
+"pos": [
+1223,
+321
+],
+"cell": [
+38,
+10
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+679,
+788
+],
+"cell": [
+21,
+24
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+731,
+575
+],
+"cell": [
+22,
+17
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+1046,
+655
+],
+"cell": [
+32,
+20
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+273,
+58
+],
+"cell": [
+8,
+1
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+815,
+517
+],
+"cell": [
+25,
+16
+],
+"flip": false
+},
+{
+"kind": "slate_1",
+"pos": [
+511,
+776
+],
+"cell": [
+15,
+24
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+475,
+23
+],
+"cell": [
+14,
+0
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+700,
+500
+],
+"cell": [
+21,
+15
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+539,
+602
+],
+"cell": [
+16,
+18
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+858,
+622
+],
+"cell": [
+26,
+19
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+524,
+643
+],
+"cell": [
+16,
+20
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+644,
+300
+],
+"cell": [
+20,
+9
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+442,
+668
+],
+"cell": [
+13,
+20
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+533,
+669
+],
+"cell": [
+16,
+20
+],
+"flip": true
+},
+{
+"kind": "slate_1",
+"pos": [
+857,
+298
+],
+"cell": [
+26,
+9
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+274,
+434
+],
+"cell": [
+8,
+13
+],
+"flip": false
+},
+{
+"kind": "standing_stone",
+"pos": [
+1222,
+792
+],
+"cell": [
+38,
+24
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+130,
+792
+],
+"cell": [
+4,
+24
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+132,
+183
+],
+"cell": [
+4,
+5
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+1217,
+233
+],
+"cell": [
+38,
+7
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+103,
+58
+],
+"cell": [
+3,
+1
+],
+"flip": false
+},
+{
+"kind": "storm_crystal",
+"pos": [
+678,
+10
+],
+"cell": [
+21,
+0
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+606,
+603
+],
+"cell": [
+18,
+18
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+203,
+436
+],
+"cell": [
+6,
+13
+],
+"flip": false
+},
+{
+"kind": "slate_0",
+"pos": [
+202,
+533
+],
+"cell": [
+6,
+16
+],
+"flip": true
+},
+{
+"kind": "slate_0",
+"pos": [
+523,
+173
+],
+"cell": [
+16,
+5
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+262,
+500
+],
+"cell": [
+8,
+15
+],
+"flip": true
+},
+{
+"kind": "storm_crystal",
+"pos": [
+59,
+55
+],
+"cell": [
+1,
+1
+],
+"flip": false
+},
+{
+"kind": "standing_stone",
+"pos": [
+1237,
+29
+],
+"cell": [
+38,
+0
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+776,
+825
+],
+"cell": [
+24,
+25
+],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+804,
+790
+],
+"cell": [
+25,
+24
+],
+"flip": false
+},
+{
+"kind": "steppe_tuft_0",
+"pos": [
+440,
+292
 ],
 "cell": [
 13,
@@ -1470,172 +7122,52 @@
 "flip": false
 },
 {
-"kind": "slate_1",
+"kind": "steppe_tuft_0",
 "pos": [
-8,
-195
+30,
+497
 ],
 "cell": [
 0,
-6
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-512,
-188
-],
-"cell": [
-15,
-5
-],
-"flip": false
-},
-{
-"kind": "storm_crystal",
-"pos": [
-586,
-375
-],
-"cell": [
-18,
-11
-],
-"flip": false
-},
-{
-"kind": "standing_stone",
-"pos": [
-527,
-293
-],
-"cell": [
-16,
-9
-],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-514,
-19
-],
-"cell": [
-16,
-0
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-282,
-301
-],
-"cell": [
-8,
-9
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-218,
-398
-],
-"cell": [
-6,
-12
-],
-"flip": false
-},
-{
-"kind": "storm_crystal",
-"pos": [
-651,
-362
-],
-"cell": [
-20,
-11
-],
-"flip": true
-},
-{
-"kind": "slate_1",
-"pos": [
-22,
-23
-],
-"cell": [
-0,
-0
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-335,
-284
-],
-"cell": [
-10,
-8
-],
-"flip": false
-},
-{
-"kind": "steppe_tuft_1",
-"pos": [
-208,
-178
-],
-"cell": [
-6,
-5
+15
 ],
 "flip": true
 },
 {
 "kind": "steppe_tuft_1",
 "pos": [
-478,
-302
+480,
+318
 ],
 "cell": [
 14,
 9
 ],
+"flip": true
+},
+{
+"kind": "steppe_tuft_1",
+"pos": [
+894,
+170
+],
+"cell": [
+27,
+5
+],
 "flip": false
 },
 {
 "kind": "steppe_tuft_0",
 "pos": [
-23,
-443
+436,
+789
 ],
 "cell": [
-0,
-13
+13,
+24
 ],
-"flip": true
-},
-{
-"kind": "steppe_tuft_0",
-"pos": [
-658,
-11
-],
-"cell": [
-20,
-0
-],
-"flip": true
+"flip": false
 }
 ]
 }
