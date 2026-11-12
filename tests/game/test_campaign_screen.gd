@@ -97,7 +97,6 @@ func test_a_won_stage_shows_its_stars_and_opens_the_next() -> void:
 	add_child_autofree(game)
 	await wait_process_frames(2)
 	assert_eq(game.sim.config.stage.id, &"ember_1")
-	assert_true(game.sim.tree.is_allocated(&"fire_entry"))
 	game.sim.wave_index = game.sim.total_waves() - 1
 	game.sim._end_run(true)
 	await wait_process_frames(2)

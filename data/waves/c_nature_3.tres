@@ -122,7 +122,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r16"]
 script = ExtResource("3_s")
-element = &"earth"
+element = &"fire"
 description = "A marching column, stragglers, Mender packs, Lightdrinkers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r8"), SubResource("r9"), SubResource("r10"), SubResource("r11"), SubResource("r12"), SubResource("r13"), SubResource("r14"), SubResource("r15")])
 
@@ -287,7 +287,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r37"]
 script = ExtResource("3_s")
-element = &"fire"
+element = &"void"
 description = "A marching column, brutes under escort, Mender packs, Wardeds in a line, Gravecallers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r27"), SubResource("r28"), SubResource("r29"), SubResource("r30"), SubResource("r31"), SubResource("r32"), SubResource("r33"), SubResource("r34"), SubResource("r35"), SubResource("r36")])
 
@@ -659,7 +659,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r83"]
 script = ExtResource("3_s")
-element = &"fire"
+element = &"void"
 description = "A marching column, brutes under escort, Mender packs, Wardeds in a line, Gravecallers and Wailing Widows and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r72"), SubResource("r73"), SubResource("r74"), SubResource("r75"), SubResource("r76"), SubResource("r77"), SubResource("r78"), SubResource("r79"), SubResource("r80"), SubResource("r81"), SubResource("r82")])
 
@@ -915,7 +915,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r114"]
 script = ExtResource("3_s")
-element = &"earth"
+element = &"fire"
 description = "A marching column, brutes under escort, Mender packs, a pincer, Wardeds in a line, Lightdrinkers and Umbral Stalkers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r100"), SubResource("r101"), SubResource("r102"), SubResource("r103"), SubResource("r104"), SubResource("r105"), SubResource("r106"), SubResource("r107"), SubResource("r108"), SubResource("r109"), SubResource("r110"), SubResource("r111"), SubResource("r112"), SubResource("r113")])
 
@@ -1158,7 +1158,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r143"]
 script = ExtResource("3_s")
-element = &"fire"
+element = &"void"
 description = "Stragglers, brutes under escort, Mender packs, a pincer, Wardeds in a line, runner packs, Wailing Widows and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r128"), SubResource("r129"), SubResource("r130"), SubResource("r131"), SubResource("r132"), SubResource("r133"), SubResource("r134"), SubResource("r135"), SubResource("r136"), SubResource("r137"), SubResource("r138"), SubResource("r139"), SubResource("r140"), SubResource("r141"), SubResource("r142")])
 

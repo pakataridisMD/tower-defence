@@ -54,7 +54,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r7"]
 script = ExtResource("3_s")
-element = &"fire"
+element = &"nature"
 description = "A marching column, runner packs, stragglers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2"), SubResource("r3"), SubResource("r4"), SubResource("r5"), SubResource("r6")])
 
@@ -193,7 +193,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r24"]
 script = ExtResource("3_s")
-element = &"nature"
+element = &"storm"
 description = "Stragglers, runner packs, Brute packs, Squall Witches and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r16"), SubResource("r17"), SubResource("r18"), SubResource("r19"), SubResource("r20"), SubResource("r21"), SubResource("r22"), SubResource("r23")])
 
@@ -595,7 +595,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r73"]
 script = ExtResource("3_s")
-element = &"nature"
+element = &"storm"
 description = "A marching column, a flank attack, Brute packs, brutes under escort, Gale Harpys and Spark Wisps and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r62"), SubResource("r63"), SubResource("r64"), SubResource("r65"), SubResource("r66"), SubResource("r67"), SubResource("r68"), SubResource("r69"), SubResource("r70"), SubResource("r71"), SubResource("r72")])
 
@@ -853,7 +853,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r104"]
 script = ExtResource("3_s")
-element = &"fire"
+element = &"nature"
 description = "Stragglers, a flank attack, Brute packs, Hulking Brutes, brutes under escort, Squall Witches and Stormriders, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r87"), SubResource("r88"), SubResource("r89"), SubResource("r90"), SubResource("r91"), SubResource("r92"), SubResource("r93"), SubResource("r94"), SubResource("r95"), SubResource("r96"), SubResource("r97"), SubResource("r98"), SubResource("r99"), SubResource("r100"), SubResource("r101"), SubResource("r102"), SubResource("r103")])
 
@@ -1099,7 +1099,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r133"]
 script = ExtResource("3_s")
-element = &"nature"
+element = &"storm"
 description = "A marching column, a flank attack, Brute packs, brutes under escort, Squall Witches and Gale Harpys, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r119"), SubResource("r120"), SubResource("r121"), SubResource("r122"), SubResource("r123"), SubResource("r124"), SubResource("r125"), SubResource("r126"), SubResource("r127"), SubResource("r128"), SubResource("r129"), SubResource("r130"), SubResource("r131"), SubResource("r132")])
 
@@ -1629,7 +1629,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r196"]
 script = ExtResource("3_s")
-element = &"nature"
+element = &"storm"
 is_boss = true
 health_multiplier = 0.24
 description = "A marching column, brutes under escort, Brute packs, Squall Witches, a flank attack and a closing surge."

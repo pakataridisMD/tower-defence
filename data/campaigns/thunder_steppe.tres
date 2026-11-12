@@ -6,10 +6,9 @@
 
 [sub_resource type="Resource" id="r1"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"storm"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r2"]
 script = ExtResource("3_s")
@@ -17,18 +16,16 @@ id = &"storm_1"
 display_name = "Windswept Pass"
 description = "A narrow pass between standing stones. Thunder is waiting to be called."
 map = &"c_storm_1"
-allowed_elements = Array[StringName]([&"storm", &"nature", &"fire"])
-starting_nodes = Array[StringName]([&"storm_entry"])
+horde_element = &"earth"
 modifiers = Array[ExtResource("2_s")]([SubResource("r1")])
-rule_text = PackedStringArray("Home ground: Storm towers deal 20% more damage.", "Only Storm, Nature and Fire can be drafted. You start with Storm.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
+rule_text = PackedStringArray("The horde here is Earth: find the element it fears. Every element can be drafted, and you start with one more skill point.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r3"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"storm"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r4"]
 script = ExtResource("2_s")
@@ -42,18 +39,16 @@ id = &"storm_2"
 display_name = "Galeback Ridge"
 description = "Splitters crack open on the ridge. Chain lightning loves a crowd."
 map = &"c_storm_2"
-allowed_elements = Array[StringName]([&"storm", &"nature", &"fire"])
-starting_nodes = Array[StringName]([&"storm_entry"])
+horde_element = &"earth"
 modifiers = Array[ExtResource("2_s")]([SubResource("r3"), SubResource("r4")])
-rule_text = PackedStringArray("Home ground: Storm towers deal 20% more damage.", "Only Storm, Nature and Fire can be drafted. You start with Storm.", "The last wave is led by Gorrath the Quarried, the Stone Herald (armoured, charges when wounded, breaks into boulders).", "Tailwind: towers attack 10% faster.")
+rule_text = PackedStringArray("The horde here is Earth: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The last wave is led by Gorrath the Quarried, the Stone Herald (armoured, charges when wounded, breaks into boulders).", "Tailwind: towers attack 10% faster.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r6"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"storm"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r7"]
 script = ExtResource("2_s")
@@ -67,18 +62,16 @@ id = &"storm_3"
 display_name = "The Long Squall"
 description = "The road dives down and climbs back up three times. Long, but never far from a spire."
 map = &"c_storm_3"
-allowed_elements = Array[StringName]([&"storm", &"nature", &"fire"])
-starting_nodes = Array[StringName]([&"storm_entry"])
+horde_element = &"earth"
 modifiers = Array[ExtResource("2_s")]([SubResource("r6"), SubResource("r7")])
-rule_text = PackedStringArray("Home ground: Storm towers deal 20% more damage.", "Only Storm, Nature and Fire can be drafted. You start with Storm.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.", "Thin air: towers cost 15% more.")
+rule_text = PackedStringArray("The horde here is Earth: find the element it fears. Every element can be drafted, and you start with one more skill point.", "Thin air: towers cost 15% more.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r9"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"storm"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r10"]
 script = ExtResource("3_s")
@@ -87,10 +80,9 @@ display_name = "Eye of the Storm"
 description = "The Thunderhead spins at the centre of the last storm. Nothing slows it, and lightning only tickles. Fire and Nature will have to do."
 map = &"c_storm_4"
 is_guardian = true
-allowed_elements = Array[StringName]([&"storm", &"nature", &"fire"])
-starting_nodes = Array[StringName]([&"storm_entry"])
+horde_element = &"earth"
 modifiers = Array[ExtResource("2_s")]([SubResource("r9")])
-rule_text = PackedStringArray("Home ground: Storm towers deal 20% more damage.", "Only Storm, Nature and Fire can be drafted. You start with Storm.", "The Warden resists Storm: bring a neighbour.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
+rule_text = PackedStringArray("The horde here is Earth: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The Warden is Storm, and fears Earth.")
 first_clear_points = 6
 
 [sub_resource type="Resource" id="r11"]

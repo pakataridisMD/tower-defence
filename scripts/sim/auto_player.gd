@@ -82,12 +82,17 @@ func _init(
 			offset += PATH_SAMPLE_SPACING
 
 
-## A bot with a plan that fits the run: in a campaign stage it drafts the home element and its
-## neighbours, otherwise it plays the default Fire, Storm and Nature plan.
+## A bot with a plan that fits the run: in a land it drafts the element the horde fears and its
+## neighbours (or a stage's first allowed element and its neighbours), otherwise it plays the default Fire, Storm and Nature plan.
 static func for_sim(p_sim: RunSim) -> AutoPlayer:
 	var stage := p_sim.config.stage
 	var bot: AutoPlayer
-	if stage == null or stage.allowed_elements.is_empty():
+	if stage != null and stage.allowed_elements.is_empty() and not stage.horde_element.is_empty():
+		# Every element is open: build round the one the land's horde fears.
+		var fear := p_sim.config.element_at(ElementRules.opposite_index(p_sim.config.element_index(stage.horde_element)))
+		var counter := plan_for_elements(p_sim.config, fear.id)
+		bot = AutoPlayer.new(p_sim, counter[0], counter[1])
+	elif stage == null or stage.allowed_elements.is_empty():
 		bot = AutoPlayer.new(p_sim)
 	else:
 		var plan := plan_for_elements(p_sim.config, stage.allowed_elements[0])

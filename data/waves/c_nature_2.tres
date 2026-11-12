@@ -38,7 +38,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r5"]
 script = ExtResource("3_s")
-element = &"fire"
+element = &"void"
 description = "A marching column, runner packs and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2"), SubResource("r3"), SubResource("r4")])
 
@@ -180,7 +180,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r23"]
 script = ExtResource("3_s")
-element = &"earth"
+element = &"fire"
 description = "Stragglers, a flank attack, Mender packs, Gravecallers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r14"), SubResource("r15"), SubResource("r16"), SubResource("r17"), SubResource("r18"), SubResource("r19"), SubResource("r20"), SubResource("r21"), SubResource("r22")])
 
@@ -348,7 +348,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r44"]
 script = ExtResource("3_s")
-element = &"fire"
+element = &"void"
 description = "A marching column, a pincer, Hulking Brutes, Mender packs, Lightdrinkers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r33"), SubResource("r34"), SubResource("r35"), SubResource("r36"), SubResource("r37"), SubResource("r38"), SubResource("r39"), SubResource("r40"), SubResource("r41"), SubResource("r42"), SubResource("r43")])
 
@@ -713,7 +713,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r89"]
 script = ExtResource("3_s")
-element = &"fire"
+element = &"void"
 description = "Stragglers, a pincer, Mender packs, Hulking Brutes, runner packs, Gravecallers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r76"), SubResource("r77"), SubResource("r78"), SubResource("r79"), SubResource("r80"), SubResource("r81"), SubResource("r82"), SubResource("r83"), SubResource("r84"), SubResource("r85"), SubResource("r86"), SubResource("r87"), SubResource("r88")])
 
@@ -909,7 +909,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r113"]
 script = ExtResource("3_s")
-element = &"earth"
+element = &"fire"
 description = "A marching column, a pincer, Mender packs, runner packs, Lightdrinkers and Umbral Stalkers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r102"), SubResource("r103"), SubResource("r104"), SubResource("r105"), SubResource("r106"), SubResource("r107"), SubResource("r108"), SubResource("r109"), SubResource("r110"), SubResource("r111"), SubResource("r112")])
 

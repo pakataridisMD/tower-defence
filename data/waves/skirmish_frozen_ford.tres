@@ -38,7 +38,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r5"]
 script = ExtResource("3_s")
-element = &"storm"
+element = &"fire"
 description = "A marching column, runner packs and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2"), SubResource("r3"), SubResource("r4")])
 
@@ -169,7 +169,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r21"]
 script = ExtResource("3_s")
-element = &"void"
+element = &"storm"
 description = "Stragglers, a flank attack, runner packs, Glass-Singers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r13"), SubResource("r14"), SubResource("r15"), SubResource("r16"), SubResource("r17"), SubResource("r18"), SubResource("r19"), SubResource("r20")])
 
@@ -326,7 +326,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r40"]
 script = ExtResource("3_s")
-element = &"storm"
+element = &"fire"
 description = "A marching column, a pincer, Hulking Brutes, runner packs, Cinderhounds and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r30"), SubResource("r31"), SubResource("r32"), SubResource("r33"), SubResource("r34"), SubResource("r35"), SubResource("r36"), SubResource("r37"), SubResource("r38"), SubResource("r39")])
 
@@ -669,7 +669,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r81"]
 script = ExtResource("3_s")
-element = &"storm"
+element = &"fire"
 description = "Stragglers, a pincer, runner packs, Hulking Brutes, Glass-Singers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r69"), SubResource("r70"), SubResource("r71"), SubResource("r72"), SubResource("r73"), SubResource("r74"), SubResource("r75"), SubResource("r76"), SubResource("r77"), SubResource("r78"), SubResource("r79"), SubResource("r80")])
 
@@ -857,7 +857,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r103"]
 script = ExtResource("3_s")
-element = &"void"
+element = &"storm"
 description = "A marching column, a pincer, runner packs, Cinderhounds and Smoke Wraiths and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r93"), SubResource("r94"), SubResource("r95"), SubResource("r96"), SubResource("r97"), SubResource("r98"), SubResource("r99"), SubResource("r100"), SubResource("r101"), SubResource("r102")])
 

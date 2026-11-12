@@ -62,25 +62,27 @@ func test_campaign_maps_stay_out_of_skirmish() -> void:
 	assert_false(meta.select_map(&"c_ember_1"))
 
 
-func test_each_element_campaign_favours_its_element() -> void:
+func test_each_land_is_held_by_one_horde_element() -> void:
 	for campaign_id in ELEMENT_CAMPAIGNS:
 		var campaign: CampaignData = registry.campaigns[campaign_id]
-		var home := campaign.element
-		var ring: int = registry.element_index(home)
 		for stage in campaign.stages:
-			assert_eq(stage.allowed_elements[0], home)
-			assert_eq(stage.allowed_elements.size(), 3)
-			for other in stage.allowed_elements.slice(1):
-				assert_true(ElementRules.are_neighbours(ring, registry.element_index(other)), "%s: %s is a neighbour" % [stage.id, other])
-			assert_eq(stage.starting_nodes, [StringName("%s_entry" % home)] as Array[StringName])
+			assert_true(stage.allowed_elements.is_empty(), "%s: every element can be drafted" % stage.id)
+			assert_true(stage.starting_nodes.is_empty(), "%s: no free element, the player finds the weakness" % stage.id)
+			assert_false(stage.horde_element.is_empty())
+			var main: int = registry.element_index(stage.horde_element)
 			var wave_set: WaveSet = registry.wave_sets[registry.maps[stage.map].wave_set]
+			var counts := {}
+			var total := 0
 			for wave in wave_set.waves:
-				if wave.is_boss and stage.is_guardian and wave == wave_set.waves[-1]:
-					continue
-				var aligned: int = registry.element_index(wave.element)
-				var weak_to := ElementRules.opposite_index(aligned)
-				assert_true(stage.allowed_elements.any(func(e: StringName) -> bool: return registry.element_index(e) == weak_to),
-						"%s: every wave is weak to an element you can draft" % stage.id)
+				for group in wave.groups:
+					var enemy: EnemyData = registry.enemies[group.enemy]
+					if enemy.tags.has(&"boss"):
+						continue
+					var el := enemy.element if not enemy.element.is_empty() else (group.element if not group.element.is_empty() else wave.element)
+					counts[el] = counts.get(el, 0) + group.count
+					total += group.count
+			assert_gt(float(counts.get(stage.horde_element, 0)) / total, 0.6, "%s: mostly %s enemies" % [stage.id, stage.horde_element])
+			assert_gte(main, 0)
 
 
 func test_wardens_resist_their_home_element() -> void:
@@ -177,34 +179,17 @@ func test_campaign_rewards_reach_every_run() -> void:
 	assert_true(meta.stage_config(&"storm_1").run_modifiers.has(reward), "other campaigns")
 
 
-func test_a_stage_closes_the_elements_it_does_not_allow() -> void:
+func test_a_land_opens_every_element_and_gives_one_more_point() -> void:
 	var meta := _meta()
 	var sim := RunSim.new(meta.stage_config(&"ember_1"))
-	assert_true(sim.tree.is_allocated(&"fire_entry"), "starts with Fire")
-	assert_true(sim.is_unlocked(&"fire_brazier"))
-	assert_false(sim.tree.can_refund(&"fire_entry"), "the free node stays")
-	for id: StringName in [&"water_entry", &"nature_entry", &"earth_entry", &"bridge_bog", &"bridge_thornstorm"]:
-		assert_true(sim.tree.is_locked(id), "%s is closed" % id)
-	for id: StringName in [&"storm_entry", &"void_entry", &"bridge_plasma", &"bridge_soulflame"]:
+	for id: StringName in [&"fire_entry", &"water_entry", &"nature_entry", &"earth_entry", &"storm_entry", &"void_entry"]:
 		assert_false(sim.tree.is_locked(id), "%s is open" % id)
-	assert_eq(sim.tree.points, registry.run_rules.starting_tree_points, "the free node costs nothing")
+		assert_false(sim.tree.is_allocated(id), "%s is not given away" % id)
+	assert_eq(sim.tree.points, registry.run_rules.starting_tree_points + 1)
 
 
 func test_stage_rules_change_the_run() -> void:
 	var meta := _meta()
-	var sim := RunSim.new(meta.stage_config(&"ember_1"))
-	sim.tree.points = 10
-	var free := Vector2i(-1, -1)
-	for x in sim.config.map.grid_size.x:
-		for y in sim.config.map.grid_size.y:
-			if free.x < 0 and sim.can_place(&"fire_brazier", Vector2i(x, y)):
-				free = Vector2i(x, y)
-	var brazier := sim.place_tower(&"fire_brazier", free)
-	var plain := RunSim.new(RunConfig.from_registry(registry, &"test_road"))
-	plain.allocate_node(&"fire_entry")
-	plain.gold = 1000
-	var other := plain.place_tower(&"fire_brazier", Vector2i(5, 4))
-	assert_almost_eq(brazier.damage, other.damage * 1.2, 0.001, "home ground")
 	var lives_stage := RunSim.new(meta.stage_config(&"nature_2"))
 	assert_eq(lives_stage.lives, registry.run_rules.starting_lives + 5)
 	assert_eq(lives_stage.starting_lives, lives_stage.lives)

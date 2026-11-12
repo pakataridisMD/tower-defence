@@ -98,7 +98,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r13"]
 script = ExtResource("3_s")
-element = &"water"
+element = &"nature"
 description = "A marching column, stragglers, Briarlings and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r7"), SubResource("r8"), SubResource("r9"), SubResource("r10"), SubResource("r11"), SubResource("r12")])
 
@@ -200,7 +200,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r26"]
 script = ExtResource("3_s")
-element = &"storm"
+element = &"water"
 description = "A marching column, runner packs, Briarlings and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r21"), SubResource("r22"), SubResource("r23"), SubResource("r24"), SubResource("r25")])
 
@@ -335,7 +335,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r43"]
 script = ExtResource("3_s")
-element = &"water"
+element = &"nature"
 description = "Stragglers, runner packs, Briarlings and Seedsowers, a flank attack and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r34"), SubResource("r35"), SubResource("r36"), SubResource("r37"), SubResource("r38"), SubResource("r39"), SubResource("r40"), SubResource("r41"), SubResource("r42")])
 
@@ -710,7 +710,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r89"]
 script = ExtResource("3_s")
-element = &"water"
+element = &"nature"
 description = "A marching column, runner packs, Warded packs, a flank attack, Briarlings and Seedsowers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r79"), SubResource("r80"), SubResource("r81"), SubResource("r82"), SubResource("r83"), SubResource("r84"), SubResource("r85"), SubResource("r86"), SubResource("r87"), SubResource("r88")])
 

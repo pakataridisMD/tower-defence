@@ -54,7 +54,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r7"]
 script = ExtResource("3_s")
-element = &"nature"
+element = &"earth"
 description = "A marching column, runner packs, stragglers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2"), SubResource("r3"), SubResource("r4"), SubResource("r5"), SubResource("r6")])
 
@@ -187,7 +187,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r24"]
 script = ExtResource("3_s")
-element = &"earth"
+element = &"water"
 description = "Stragglers, runner packs, Mender packs, Rimebacks and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r16"), SubResource("r17"), SubResource("r18"), SubResource("r19"), SubResource("r20"), SubResource("r21"), SubResource("r22"), SubResource("r23")])
 
@@ -583,7 +583,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r73"]
 script = ExtResource("3_s")
-element = &"earth"
+element = &"water"
 description = "A marching column, a flank attack, Mender packs, brutes under escort, Brinecallers and Drowned Netcasters and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r62"), SubResource("r63"), SubResource("r64"), SubResource("r65"), SubResource("r66"), SubResource("r67"), SubResource("r68"), SubResource("r69"), SubResource("r70"), SubResource("r71"), SubResource("r72")])
 
@@ -841,7 +841,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r104"]
 script = ExtResource("3_s")
-element = &"nature"
+element = &"earth"
 description = "Stragglers, a flank attack, Mender packs, Hulking Rimebacks, brutes under escort, Rimebacks and Fogwives, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r87"), SubResource("r88"), SubResource("r89"), SubResource("r90"), SubResource("r91"), SubResource("r92"), SubResource("r93"), SubResource("r94"), SubResource("r95"), SubResource("r96"), SubResource("r97"), SubResource("r98"), SubResource("r99"), SubResource("r100"), SubResource("r101"), SubResource("r102"), SubResource("r103")])
 
@@ -1081,7 +1081,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r133"]
 script = ExtResource("3_s")
-element = &"earth"
+element = &"water"
 description = "A marching column, a flank attack, Mender packs, brutes under escort, Rimebacks and Brinecallers, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r119"), SubResource("r120"), SubResource("r121"), SubResource("r122"), SubResource("r123"), SubResource("r124"), SubResource("r125"), SubResource("r126"), SubResource("r127"), SubResource("r128"), SubResource("r129"), SubResource("r130"), SubResource("r131"), SubResource("r132")])
 
@@ -1608,7 +1608,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r196"]
 script = ExtResource("3_s")
-element = &"earth"
+element = &"water"
 is_boss = true
 health_multiplier = 0.45
 description = "A marching column, brutes under escort, Mender packs, Rimebacks, a flank attack and a closing surge."

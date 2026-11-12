@@ -54,7 +54,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r7"]
 script = ExtResource("3_s")
-element = &"void"
+element = &"storm"
 description = "A marching column, runner packs, stragglers and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r1"), SubResource("r2"), SubResource("r3"), SubResource("r4"), SubResource("r5"), SubResource("r6")])
 
@@ -176,7 +176,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r22"]
 script = ExtResource("3_s")
-element = &"storm"
+element = &"fire"
 description = "Stragglers, runner packs, Brass Juggernauts and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r15"), SubResource("r16"), SubResource("r17"), SubResource("r18"), SubResource("r19"), SubResource("r20"), SubResource("r21")])
 
@@ -547,7 +547,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r67"]
 script = ExtResource("3_s")
-element = &"storm"
+element = &"fire"
 description = "A marching column, a flank attack, runner packs, brutes under escort, Cinderhounds and Smoke Wraiths and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r57"), SubResource("r58"), SubResource("r59"), SubResource("r60"), SubResource("r61"), SubResource("r62"), SubResource("r63"), SubResource("r64"), SubResource("r65"), SubResource("r66")])
 
@@ -788,7 +788,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r96"]
 script = ExtResource("3_s")
-element = &"void"
+element = &"storm"
 description = "Stragglers, a flank attack, runner packs, Hulking Slagwalkers, brutes under escort, Brass Juggernauts and Slagwalkers, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r80"), SubResource("r81"), SubResource("r82"), SubResource("r83"), SubResource("r84"), SubResource("r85"), SubResource("r86"), SubResource("r87"), SubResource("r88"), SubResource("r89"), SubResource("r90"), SubResource("r91"), SubResource("r92"), SubResource("r93"), SubResource("r94"), SubResource("r95")])
 
@@ -1014,7 +1014,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r123"]
 script = ExtResource("3_s")
-element = &"storm"
+element = &"fire"
 description = "A marching column, a flank attack, runner packs, brutes under escort, Brass Juggernauts and Cinderhounds, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r110"), SubResource("r111"), SubResource("r112"), SubResource("r113"), SubResource("r114"), SubResource("r115"), SubResource("r116"), SubResource("r117"), SubResource("r118"), SubResource("r119"), SubResource("r120"), SubResource("r121"), SubResource("r122")])
 
@@ -1510,7 +1510,7 @@ pattern = 2
 
 [sub_resource type="Resource" id="r182"]
 script = ExtResource("3_s")
-element = &"storm"
+element = &"fire"
 is_boss = true
 health_multiplier = 4.11
 description = "A marching column, brutes under escort, runner packs, Brass Juggernauts, a flank attack and a closing surge."

@@ -438,6 +438,12 @@ HORDE_OF = {h["campaign"]: host for host, h in hordes.HOSTS.items()}
 ALL_HORDE = [r[0] for r in hordes.ROSTER]
 
 
+def horde_element(campaign):
+    """The element of the horde that holds a land (horde.HOSTS), or '' for mixed campaigns."""
+    host = HORDE_OF.get(campaign.get("id", ""))
+    return hordes.HOSTS[host]["element"] if host else ""
+
+
 def horde_kinds(campaign, stage_index):
     """The kinds of the land's own horde met by this stage: two in the first stage, then one more per
     stage. The Convergence and the assault meet all thirty."""
@@ -697,8 +703,9 @@ def plan_waves(campaign, stage_index, n, extra, lanes=1):
     if converge:
         cycle = RING
     else:
-        far = opposite(home)
-        cycle = [far, neighbours(far)[0], far, neighbours(far)[1]]
+        # Mostly the land's own horde element, with a neighbour now and then.
+        main = horde_element(campaign)
+        cycle = [main, main, main, neighbours(main)[0], main, main, main, neighbours(main)[1]]
     waves = []
     for w in range(1, n + 1):
         el = cycle[(w - 1 + stage_index) % len(cycle)]
@@ -825,18 +832,18 @@ def write_campaign(order, c):
         write_map(sid, name, roads, 100 + order * 10 + i, biome, wave_set, built=built)
         mods, rules = [], []
         allowed, starting = [], []
+        main = horde_element(c)
         if home:
-            allowed = [home] + neighbours(home)
-            starting = [ENTRY[home]]
-            mods.append(modifier(t, "damage", 1, 0.20, [home]))
-            rules.append(f"Home ground: {NAMES[home]} towers deal 20% more damage.")
-            rules.append("Only %s, %s and %s can be drafted. You start with %s." % (
-                NAMES[home], NAMES[allowed[1]], NAMES[allowed[2]], NAMES[home]))
+            # Every element can be drafted: finding what the horde fears is up to the player. A free
+            # skill point makes up for the home element's old head start.
+            mods.append(modifier(t, "starting_tree_points", 0, 1, []))
+            rules.append(f"The horde here is {NAMES[main]}: find the element it fears. Every element can be drafted, "
+                         "and you start with one more skill point.")
             if extra.get("boss"):
-                rules.append(f"The Warden resists {NAMES[home]}: bring a neighbour.")
+                rules.append(f"The Warden is {NAMES[home]}, and fears {NAMES[opposite(home)]}.")
         if extra.get("lieutenant"):
             rules.append(f"The last wave is led by {LIEUTENANT_NAMES[extra['lieutenant']]}.")
-        else:
+        elif not home:
             rules.append("Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
         if twist:
             stat, kind, value, tags, text = twist
@@ -846,6 +853,8 @@ def write_campaign(order, c):
                   f"description = {string(story)}", f"map = {sn('c_' + sid)}"]
         if extra.get("boss") or extra.get("boss_pair"):
             fields.append("is_guardian = true")
+        if main:
+            fields.append(f"horde_element = {sn(main)}")
         if allowed:
             fields.append(f"allowed_elements = {sn_array(allowed)}")
         if starting:
