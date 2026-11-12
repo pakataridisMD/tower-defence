@@ -34,7 +34,8 @@ func _init() -> void:
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tabs.add_child(spacer)
-	developer_label = UiStyle.menu_label("Developed by " + CreditsPage.DEVELOPER, "small", 16, UiStyle.MENU_GOLD)
+	developer_label = UiStyle.menu_label(
+			"Developed by %s  (%s)" % [CreditsPage.DEVELOPER, CreditsPage.MAKERS], "small", 16, UiStyle.MENU_GOLD)
 	developer_label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	tabs.add_child(developer_label)
 	var panel := add_panel(Vector2(0, 68), Vector2(1824, 784))

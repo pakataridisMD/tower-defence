@@ -564,7 +564,7 @@ def credits(bg):
     header(ui, "Credits")
     ui.panel(230, 100, 730, 522)
     y = 118
-    blocks = [("Developed by", ["Pasiv Production"]), ("Design and direction", ["Pasiv Production"]),
+    blocks = [("Developed by", ["Pasiv Production"]), ("A game by", ["Doctor Paris and Thanos"]),
               ("Story", ["The War of Seven Crowns"]), ("Narrator", ["Elariel (ElevenLabs)"]),
               ("Music", ["Original score"]), ("Fonts", ["Pirata One, Jersey 10, Pixelify Sans, Silkscreen",
                                                        "SIL Open Font License"]),

@@ -243,4 +243,4 @@ func test_the_settings_page_sets_the_volume() -> void:
 	settings.mutes[&"Music"].button_pressed = true
 	assert_true(AudioSettings.is_muted(&"Music"))
 	AudioSettings.reset_to_defaults()
-	assert_eq(settings.developer_label.text, "Developed by Pasiv Production")
+	assert_eq(settings.developer_label.text, "Developed by Pasiv Production  (Doctor Paris and Thanos)")
