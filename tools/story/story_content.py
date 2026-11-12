@@ -173,7 +173,7 @@ cin("storm_intro", "The Thunder Steppe", "Before the first stage of the Thunder 
     )
 
 cin("storm_herald", "The Sky Herald", "After Highwind (Storm 2). Kaela Stormrider joins.",
-    shot("Over Highwind, Kaela Stormrider brought Vholt's bird down with her own lance. She was the "
+    shot("Over Highwind, Kaela Stormrider brought Vholt's great bird down with her own lance. She was the "
          "Galeborn's war-leader, and he had taught her to ride. For eleven days she had fought his army "
          "alone, falling back from camp to camp.",
          "The black thunderbird crashing on the ridge at Highwind. Kaela on her grey stallion Thunderclap, "

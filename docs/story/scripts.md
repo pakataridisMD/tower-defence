@@ -200,7 +200,7 @@ Start at Stonering Camp.
 
 **1. [The black thunderbird crashing on the ridge at Highwind. Kaela on her grey stallion Thunderclap, lightning lance crackling, white war-paint across her face.]**
 
-> **NARRATOR (YSOLDE):** Over Highwind, Kaela Stormrider brought Vholt's bird down with her own lance. She was the Galeborn's war-leader, and he had taught her to ride. For eleven days she had fought his army alone, falling back from camp to camp.
+> **NARRATOR (YSOLDE):** Over Highwind, Kaela Stormrider brought Vholt's great bird down with her own lance. She was the Galeborn's war-leader, and he had taught her to ride. For eleven days she had fought his army alone, falling back from camp to camp.
 
 **2. [Vholt crawling free of the wreck, the grey light flickering out of his eyes as he looks up at Kaela and her lance.]**
 
