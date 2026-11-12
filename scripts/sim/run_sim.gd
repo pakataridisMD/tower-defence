@@ -112,6 +112,12 @@ const ENDLESS_LOOP := 5
 ## as the same number of stronger enemies instead (the same total health), so the game stays smooth.
 ## 2,000 enemies on the board at once takes about 18 ms a step; 500 takes about 4.
 const MAX_WAVE_ENEMIES := 600
+## Boss ability strength for the first boss of the campaign or of a skirmish; the last gets 1.
+const BOSS_POWER_FIRST := 0.3
+## Stages in each land's campaign, and stages in the whole campaign: six lands of four, the three of
+## the Convergence and the final assault.
+const STAGES_PER_LAND := 4
+const CAMPAIGN_BOSS_STAGES := 28
 
 var config: RunConfig
 var state := State.BUILDING
@@ -277,6 +283,30 @@ func current_wave() -> WaveData:
 			return config.wave_set.waves[_set_index(index)]
 		return null
 	return config.wave_set.waves[index]
+
+
+## How strong the bosses' abilities are in this run, BOSS_POWER_FIRST for the very first boss up to 1
+## for the last (Doctor Paris, 2026-11-12: bosses get harder as you go, first easiest, last hardest,
+## never past the cut abilities). In the campaign it rises stage by stage, from Ashfall Road to the
+## final assault; in a skirmish it rises boss wave by boss wave through the set, and stays at 1 in
+## the endless waves after it.
+func boss_power() -> float:
+	var t := 1.0
+	if config.stage != null and config.campaign != null:
+		var index := maxi(config.campaign.stage_index(config.stage.id), 0)
+		var position := mini(config.campaign.order * STAGES_PER_LAND + index, CAMPAIGN_BOSS_STAGES - 1)
+		t = float(position) / float(CAMPAIGN_BOSS_STAGES - 1)
+	elif config.wave_set != null:
+		var bosses := 0
+		var reached := 0
+		for i in config.wave_set.waves.size():
+			if config.wave_set.waves[i].is_boss:
+				bosses += 1
+				if i <= wave_index:
+					reached += 1
+		if bosses > 1 and wave_index < total_waves():
+			t = float(maxi(reached - 1, 0)) / float(bosses - 1)
+	return lerpf(BOSS_POWER_FIRST, 1.0, clampf(t, 0.0, 1.0))
 
 
 ## 1-based number of the current or next wave. In an assault and in an endless run it keeps
@@ -1353,6 +1383,8 @@ func _spawn(delta: float) -> void:
 			element = config.element_index(group.element)
 		var boss := data.tags.has(&"boss")
 		var enemy := _make_enemy(data, multiplier * (config.wave_set.boss_health_scale if boss else 1.0), lane, element, 0.0)
+		if boss:
+			enemy.boss_power = boss_power()
 		enemies.append(enemy)
 		if boss:
 			boss_arrived.emit(enemy)
@@ -1464,7 +1496,7 @@ func _tick_traits(delta: float) -> void:
 			continue
 		var data := enemy.data
 		if enemy.is_regenerating() and enemy.health < enemy.max_health:
-			enemy.health = minf(enemy.max_health, enemy.health + enemy.max_health * data.regen_per_second * delta)
+			enemy.health = minf(enemy.max_health, enemy.health + enemy.max_health * data.regen_per_second * enemy.boss_power * delta)
 		_tick_summons(enemy, delta)
 		if data.prismatic_interval > 0.0:
 			enemy.prism_timer -= delta
@@ -1480,7 +1512,7 @@ func _tick_summons(enemy: SimEnemy, delta: float) -> void:
 	if data.summon_interval > 0.0 and not data.summon.is_empty():
 		enemy.summon_timer -= delta
 		if enemy.summon_timer <= 0.0:
-			enemy.summon_timer += data.summon_interval
+			enemy.summon_timer += enemy.summon_interval()
 			var called := _release_from(enemy, data.summon, data.summon_count)
 			if data.tags.has(&"boss") and not called.is_empty():
 				boss_ability.emit(enemy, &"summon", called)
@@ -1512,7 +1544,7 @@ func _tick_boss_tricks(delta: float) -> void:
 			var reach := data.ward_radius * data.ward_radius
 			for other in enemies:
 				if other != caster and other.alive and other.position.distance_squared_to(caster.position) <= reach:
-					other.ward = maxf(other.ward, clampf(data.ward_reduction, 0.0, 0.9))
+					other.ward = maxf(other.ward, clampf(data.ward_reduction * caster.boss_power, 0.0, 0.9))
 		if data.silence_interval > 0.0 and data.silence_radius > 0.0:
 			caster.silence_timer -= delta
 			if caster.silence_timer <= 0.0:
@@ -1589,7 +1621,7 @@ func _tick_powers(delta: float) -> void:
 			&"breath":
 				var target := _strongest_tower_near(enemy.position, data.power_radius)
 				if target != null:
-					target.silenced = maxf(target.silenced, data.power_duration)
+					target.silenced = maxf(target.silenced, data.power_duration * enemy.boss_power)
 					enemy.power_timer = data.power_interval
 					enemy_power.emit(enemy, &"breath", [target])
 			_:
@@ -1626,7 +1658,7 @@ func _silence_towers(caster: SimEnemy) -> void:
 	var reach := caster.data.silence_radius * caster.data.silence_radius
 	for tower in towers:
 		if tower.position.distance_squared_to(caster.position) <= reach:
-			tower.silenced = maxf(tower.silenced, caster.data.silence_duration)
+			tower.silenced = maxf(tower.silenced, caster.data.silence_duration * caster.boss_power)
 			hit.append(tower)
 	if not hit.is_empty():
 		towers_silenced.emit(caster, hit)

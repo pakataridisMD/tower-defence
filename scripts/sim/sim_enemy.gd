@@ -103,6 +103,11 @@ var bind_timer := 0.0
 var doom_timer := 0.0
 ## What is left of its barrier, and seconds until the barrier fades.
 var barrier := 0.0
+## How strong a boss's abilities are in this run, 0..1 of their full (already cut) strength: the
+## first bosses of the campaign, and of a skirmish, are weakest (see RunSim.boss_power()). Scales
+## heals, barriers, regeneration, wards, binds, silences and rage; fireballs and summons come less
+## often. Always 1 for an enemy that is not a boss.
+var boss_power := 1.0
 var barrier_left := 0.0
 
 
@@ -158,7 +163,7 @@ func _start_boss_timers() -> void:
 	heal_timer = data.heal_interval * 0.6
 	shield_timer = data.shield_interval * 0.35
 	bind_timer = data.bind_interval * 0.5
-	doom_timer = data.doom_interval * 0.5
+	doom_timer = doom_interval() * 0.5
 	barrier = 0.0
 	barrier_left = 0.0
 
@@ -171,7 +176,7 @@ func speed() -> float:
 	if not unshakable():
 		for status: SimStatus in statuses.values():
 			slow = maxf(slow, status.slow)
-	var rage := data.enrage_speed if enraged else 1.0
+	var rage := 1.0 + (data.enrage_speed - 1.0) * boss_power if enraged else 1.0
 	var cry := 1.0 + haste if haste_left > 0.0 else 1.0
 	var boost := 1.0 + momentum + swarm + (spur if spur_left > 0.0 else 0.0)
 	if power_left > 0.0 and (data.power == &"charge" or data.power == &"submerge"):
@@ -281,3 +286,13 @@ func apply_status(spec: StatusEffectData, source: SimTower, element_multiplier: 
 	status.armour_reduction = maxf(status.armour_reduction, spec.armour_reduction)
 	status.element_multiplier = element_multiplier
 	status.source = source
+
+
+## Seconds between this boss's fireballs: longer the weaker it is.
+func doom_interval() -> float:
+	return data.doom_interval / maxf(boss_power, 0.1)
+
+
+## Seconds between its summons: longer for a weaker boss.
+func summon_interval() -> float:
+	return data.summon_interval / maxf(boss_power, 0.1)

@@ -264,3 +264,50 @@ func test_old_tricks_are_announced_too() -> void:
 	sim._tick_boss_tricks(RunSim.STEP)
 	assert_eq(_named(used, &"silence").size(), 1)
 	assert_eq(_named(used, &"blink").size(), 1)
+
+
+func _campaign_power(campaign_id: StringName, stage_index: int) -> float:
+	var sim := _sim(&"leviathan")
+	sim.config.campaign = registry.campaigns[campaign_id]
+	sim.config.stage = sim.config.campaign.stages[stage_index]
+	return sim.boss_power()
+
+
+func test_bosses_grow_stronger_through_the_campaign() -> void:
+	var first := _campaign_power(&"ember_reach", 0)
+	var middle := _campaign_power(&"frostmere", 2)
+	var last := _campaign_power(&"assault", 0)
+	assert_almost_eq(first, RunSim.BOSS_POWER_FIRST, 0.001, "the first stage's bosses are weakest")
+	assert_between(middle, first + 0.1, last - 0.1)
+	assert_almost_eq(last, 1.0, 0.001, "the final assault's bosses are at full (cut) strength")
+	assert_lt(_campaign_power(&"convergence", 2), last)
+
+
+func test_bosses_grow_stronger_through_a_skirmish() -> void:
+	var sim := _sim(&"leviathan")
+	var waves := WaveSet.new()
+	for i in 5:
+		var wave := WaveData.new()
+		wave.is_boss = i == 1 or i == 3 or i == 4
+		waves.waves.append(wave)
+	sim.config.wave_set = waves
+	sim.config.stage = null
+	var seen: Array[float] = []
+	for i in [1, 3, 4]:
+		sim.wave_index = i
+		seen.append(sim.boss_power())
+	assert_almost_eq(seen[0], RunSim.BOSS_POWER_FIRST, 0.001)
+	assert_almost_eq(seen[1], lerpf(RunSim.BOSS_POWER_FIRST, 1.0, 0.5), 0.001)
+	assert_almost_eq(seen[2], 1.0, 0.001)
+
+
+func test_a_weaker_boss_heals_and_shields_less() -> void:
+	var sim := _sim(&"leviathan")
+	var boss := sim.enemies[0]
+	boss.boss_power = 0.5
+	boss.health = boss.max_health * 0.5
+	boss.heal_timer = 0.0
+	boss.shield_timer = 0.0
+	sim.boss_powers.tick(RunSim.STEP)
+	assert_almost_eq(boss.health, boss.max_health * (0.5 + boss.data.heal_amount * 0.5), 1.0)
+	assert_almost_eq(boss.barrier, boss.max_health * boss.data.shield_amount * 0.5, 0.1)

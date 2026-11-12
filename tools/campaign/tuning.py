@@ -38,18 +38,20 @@ TUNING["void_2"] = {"health": 13.56, "boss": 1.40}
 TUNING["void_3"] = {"health": 7.70, "boss": 1.50}
 TUNING["void_4"] = {"health": 13.49, "boss": 3.55}
 TUNING["converge_1"] = {"health": 11.54, "boss": 0.59}
-# converge_2 lowered from 11.17 to 10.0 on 2026-11-12: the bot lost it on wave 17 once the stronger bosses landed.
-TUNING["converge_2"] = {"health": 10.0, "boss": 0.24, "boss_life": 0.6}
-TUNING["converge_3"] = {"health": 13.83, "boss": 0.24, "boss_life": 0.17}
+TUNING["converge_2"] = {"health": 11.17, "boss": 0.24, "boss_life": 0.67}
+TUNING["converge_3"] = {"health": 13.83, "boss": 0.24, "boss_life": 0.27}
 # Nov 12: every boss got 4x its life (Vael-Orrun 10x) and new abilities (heal, barrier, binding towers,
 # his fireball). "boss_life" softens a stage's bosses alone (WaveSet.boss_health_scale) where the bot could
 # no longer beat them keeping a tenth of its lives; from `campaign_balance.gd -- --tune-bosses`. Stages
 # without it keep the bosses' full life.
+# After the 90% ability cut and the boss ramp (Nov 12, abilities grow from 30% on the first stage to
+# 100% on the last) the three last stages were retuned, so their bosses are the toughest again.
+# assault_1: the bot wins up to 0.72 and loses at 0.77 (Vael-Orrun reaches the end), so 0.65.
 # The final level was rebuilt as 38 rolling waves, Vael-Orrun's three forms on wave 39 and the
 # counter-attack on 40; set by hand with `campaign_balance.gd -- --stage=assault_1 --health=X --boss=X`.
 # The boss is the cliff (his last form must fall before the end of the road): the bot won up to
 # about 0.11 of a wave's health for him and lost at 0.17, so he sits at 0.09.
-TUNING["assault_1"] = {"health": 2.3, "boss": 0.04, "lives": 30, "boss_life": 0.45}
+TUNING["assault_1"] = {"health": 2.3, "boss": 0.04, "lives": 30, "boss_life": 0.65}
 # The skirmish waves (data/waves/prototype.tres), from `campaign_balance.gd -- --skirmish` with no
 # meta tree: it found 0.95, but the Water/Earth/Void plan only scrapes through there, so this sits a
 # little lower.
