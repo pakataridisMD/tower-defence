@@ -87,7 +87,8 @@ func _initialize() -> void:
 
 
 func _play(meta: MetaProgress, stage: StageData) -> RunSim:
-	var sim := RunSim.new(meta.stage_config(stage.id))
+	# With the heroes who have joined, as in the game.
+	var sim := RunSim.new(meta.add_heroes(meta.stage_config(stage.id)))
 	var bot := AutoPlayer.for_sim(sim)
 	var elapsed := 0.0
 	while not sim.is_over() and elapsed < 4000.0:

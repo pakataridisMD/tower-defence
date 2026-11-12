@@ -3,7 +3,7 @@ extends SceneTree
 ## campaign (see tools/campaign/gen_campaign.py). No meta tree bonuses, Normal difficulty.
 ##
 ##   godot --headless -s tools/campaign_balance.gd [-- --stage=<id>] [--tune] [--skirmish] [--compare]
-##       [--heroes] [--list] [--no-meta]
+##       [--heroes] [--list] [--no-meta] [--check]
 ##
 ## --tune searches each stage's health scale so the bot wins keeping a target share of its lives,
 ## and prints lines for tools/campaign/tuning.py. The bot levels its towers and casts its skills,
@@ -81,6 +81,7 @@ func _initialize() -> void:
 		registry.free()
 		quit()
 		return
+	var lost := 0
 	for campaign in meta.campaigns_in_order():
 		for i in campaign.stages.size():
 			var stage := campaign.stages[i]
@@ -92,12 +93,16 @@ func _initialize() -> void:
 				continue
 			var started := Time.get_ticks_msec()
 			var sim := _play(meta, stage)
+			if sim.state != RunSim.State.WON:
+				lost += 1
 			print("%-11s %-26s %s wave %2d/%2d  lives %3d/%3d  stars %d  towers %2d  gold %5d  %s  (%d ms)" % [
 				stage.id, stage.display_name, "WON " if sim.state == RunSim.State.WON else "LOST",
 				sim.wave_index, sim.total_waves(), sim.lives, sim.starting_lives, MetaProgress.stars_for(sim),
 				sim.towers.size(), sim.gold, _wave_summary(), Time.get_ticks_msec() - started])
 	registry.free()
-	quit()
+	# Plain play exits with 1 if the bot lost a stage, so CI can check the balance (--check is the
+	# same as no option; it only says so in the workflow).
+	quit(1 if lost > 0 else 0)
 
 
 var _registry: Node

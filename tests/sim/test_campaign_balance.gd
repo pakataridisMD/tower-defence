@@ -1,13 +1,14 @@
 extends GutTest
-## The scripted bot plays every campaign stage as the player a new player would be by then: the meta
-## tree, the sigils of the lands already finished and the heroes who have joined, from
-## tools/campaign/meta_profiles.json (written by tools/meta_pacing.gd). It levels towers and casts
-## skills but follows one fixed plan, so if it can win, a person can. tools/campaign_balance.gd
-## prints the details.
+## The expected profiles the campaign is tuned against: the player a new player would be by each stage
+## (meta tree, sigils of the lands behind them, heroes), from tools/campaign/meta_profiles.json
+## (written by tools/meta_pacing.gd).
+##
+## Whether the scripted bot wins every stage with them is checked by the "Campaign balance" job in
+## .github/workflows/tests.yml: on the big maps with long waves a full pass takes over ten minutes,
+## so it runs there four stages at a time (tools/campaign_balance.gd -- --check).
 
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
 const PROFILES := "res://tools/campaign/meta_profiles.json"
-const MAX_SIM_SECONDS := 8000.0
 
 var registry: Node
 var profiles: Dictionary = {}
@@ -30,21 +31,12 @@ func test_there_is_an_expected_profile_for_every_stage() -> void:
 		assert_true(profiles.has(String(stage_id)), "%s has a profile in %s" % [stage_id, PROFILES])
 
 
-func test_the_bot_wins_every_stage() -> void:
+func test_the_profiles_grow_through_the_campaign() -> void:
 	var meta := MetaProgress.new(registry, PlayerProfile.new())
+	var last_nodes := -1
 	for campaign in meta.campaigns_in_order():
 		for stage in campaign.stages:
-			var config := meta.stage_config(stage.id)
-			if profiles.has(String(stage.id)):
-				var expected := MetaProgress.new(registry, PlayerProfile.from_dict(profiles[String(stage.id)]))
-				config = expected.add_heroes(expected.stage_config(stage.id))
-			var sim := RunSim.new(config)
-			var bot := AutoPlayer.for_sim(sim)
-			var elapsed := 0.0
-			while not sim.is_over() and elapsed < MAX_SIM_SECONDS:
-				bot.act()
-				sim.step(RunSim.STEP)
-				elapsed += RunSim.STEP
-			gut.p("%s: %s after %d waves, %d of %d lives" % [stage.id, RunSim.State.keys()[sim.state],
-				sim.wave_index, sim.lives, sim.starting_lives])
-			assert_eq(sim.state, RunSim.State.WON, "the bot wins %s" % stage.id)
+			var profile := PlayerProfile.from_dict(profiles.get(String(stage.id), {}))
+			assert_true(profile.meta_nodes.size() >= last_nodes, "%s: the player only gains meta nodes" % stage.id)
+			last_nodes = profile.meta_nodes.size()
+	assert_gt(last_nodes, 50, "by the citadel the player has a good share of the tree")
