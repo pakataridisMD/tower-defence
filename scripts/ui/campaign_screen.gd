@@ -29,6 +29,8 @@ const SPACE := Color("07060d")
 const SMOKE := Color("2a2530")
 ## The city that does not fall.
 const SAVED_CITY := &"converge_3"
+## The glow round a stage where a boss waits.
+const BOSS_GLOW := Color(1.0, 0.12, 0.08)
 
 ## The intro glide, from the whole world down to the next stage, plays once per session.
 static var intro_played := false
@@ -51,6 +53,8 @@ var _medals: Dictionary[StringName, Texture2D] = {}
 var _order: Array[StringName] = []
 var _elements: Dictionary[StringName, ElementData] = {}
 var _hovered: StringName = &""
+## Whether each stage sends a boss, worked out once from its waves.
+var _boss_stages: Dictionary[StringName, bool] = {}
 var _time := 0.0
 var _city_font: Font
 var _small_font: Font
@@ -566,6 +570,21 @@ func _details_text(stage: StageData, campaign: CampaignData) -> String:
 	return "\n".join(lines)
 
 
+## True when one of the stage's waves brings a boss: its medallion glows red on the map.
+func has_boss(stage_id: StringName) -> bool:
+	if not _boss_stages.has(stage_id):
+		var found := false
+		var stage: StageData = DataRegistry.stages.get(stage_id)
+		var wave_set := _wave_set(stage) if stage != null else null
+		if wave_set != null:
+			for wave in wave_set.waves:
+				if wave.is_boss:
+					found = true
+					break
+		_boss_stages[stage_id] = found
+	return _boss_stages[stage_id]
+
+
 func _wave_set(stage: StageData) -> WaveSet:
 	if not stage.wave_set.is_empty():
 		return DataRegistry.wave_sets.get(stage.wave_set)
@@ -875,6 +894,8 @@ func _draw_stage(stage_id: StringName) -> void:
 	var half := drawn.x * 0.5
 	var unlocked := meta.is_stage_unlocked(stage_id)
 	var stars := meta.stars(stage_id)
+	if has_boss(stage_id):
+		_draw_boss_glow(stage_id, at, half, unlocked)
 	if stage_id == selected:
 		var breathe := 1.5 * sin(_time * 3.0)
 		_marks.draw_circle(at, half + 14.0 + breathe, Color(UiStyle.MENU_GOLD_LIGHT, 0.16))
@@ -901,6 +922,18 @@ func _draw_stage(stage_id: StringName) -> void:
 				_marks.draw_texture_rect(star, Rect2(spot - star_size * 0.5, star_size), false,
 						UiStyle.MENU_GOLD_LIGHT if i < stars else Color(0.3, 0.28, 0.36, 0.9))
 	_draw_city_name(stage_id, at, half)
+
+
+## A small red glow that breathes round the medallion of a stage with a boss, dimmer while locked.
+func _draw_boss_glow(stage_id: StringName, at: Vector2, half: float, unlocked: bool) -> void:
+	var salt := float(_order.find(stage_id)) * 0.9
+	var breathe := 0.5 + 0.5 * sin(_time * 2.2 + salt)
+	var strength := 1.0 if unlocked else 0.55
+	for i in 4:
+		var t := float(i) / 3.0
+		var radius := half + 4.0 + 12.0 * (1.0 - t) + 3.0 * breathe
+		_marks.draw_circle(at, radius, Color(BOSS_GLOW, (0.07 + 0.06 * breathe) * strength))
+	_marks.draw_arc(at, half + 3.0 + 1.5 * breathe, 0.0, TAU, 48, Color(BOSS_GLOW.lightened(0.25), (0.45 + 0.35 * breathe) * strength), 2.0)
 
 
 ## The city's name beside its medallion: always for the picked and hovered stage, for every stage

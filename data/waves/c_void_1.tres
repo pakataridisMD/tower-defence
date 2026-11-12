@@ -719,5 +719,5 @@ script = ExtResource("1_s")
 id = &"c_void_1"
 display_name = "Starless Path"
 health_growth = 1.1
-health_scale = 6.67
+health_scale = 6.22
 waves = Array[ExtResource("3_s")]([SubResource("r6"), SubResource("r13"), SubResource("r20"), SubResource("r26"), SubResource("r33"), SubResource("r43"), SubResource("r53"), SubResource("r62"), SubResource("r78"), SubResource("r89")])

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"curse_strength"
+kind = 1
+value = 0.15
+required_tags = Array[StringName]([&"void"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"void_r2_640"
+display_name = "Malediction"
+description = "Curses from void towers are 15% stronger."
+kind = 3
+region = &"void"
+cost = 3
+position = Vector2(-411, -490)
+links = Array[StringName]([&"void_r2_555"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

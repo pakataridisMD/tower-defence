@@ -18,8 +18,11 @@ func before_each() -> void:
 	registry.maps[&"test_road"] = TEST_ROAD
 
 
+## A meta with the normal opening order, whatever the testing switch says.
 func _meta(profile: PlayerProfile = null) -> MetaProgress:
-	return MetaProgress.new(registry, profile if profile != null else PlayerProfile.new())
+	var meta := MetaProgress.new(registry, profile if profile != null else PlayerProfile.new())
+	meta.unlock_all_stages = false
+	return meta
 
 
 ## A finished stage run, without playing it.
@@ -109,6 +112,15 @@ func test_the_lands_open_one_after_another_and_the_convergence_last() -> void:
 		assert_false(meta.is_campaign_unlocked(&"convergence"))
 		_win_campaign(meta, ELEMENT_CAMPAIGNS[i])
 	assert_true(meta.is_stage_unlocked(&"converge_1"))
+
+
+func test_the_testing_switch_opens_every_stage() -> void:
+	var meta := _meta()
+	meta.unlock_all_stages = true
+	for campaign: CampaignData in registry.campaigns.values():
+		assert_true(meta.is_campaign_unlocked(campaign.id), campaign.id)
+		for stage in campaign.stages:
+			assert_true(meta.is_stage_unlocked(stage.id), stage.id)
 
 
 func test_winning_a_stage_opens_the_next() -> void:
@@ -210,6 +222,7 @@ func test_save_keeps_the_stars_and_old_saves_still_load() -> void:
 
 func test_progress_plays_the_chosen_stage() -> void:
 	Progress.use_memory_profile()
+	Progress.meta.unlock_all_stages = false
 	assert_false(Progress.play_stage(&"ember_2"), "locked")
 	assert_true(Progress.play_stage(&"ember_1"))
 	assert_eq(Progress.run_config().stage.id, &"ember_1")

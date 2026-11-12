@@ -157,6 +157,23 @@ func test_path_to_is_empty_for_taken_unknown_or_blocked_nodes() -> void:
 # --- Pick-one choices ----------------------------------------------------------------
 
 ## The small tree with b and d made a pick-one choice (listed on one side only).
+func test_path_cost_counts_every_node_on_the_way() -> void:
+	var state := TreeState.new(graph, 0)
+	assert_eq(state.path_cost(&"c"), 3, "a, b and c")
+	assert_eq(state.path_cost(&"d"), 3, "a and d")
+	assert_eq(state.path_cost(&"start"), -1, "already taken")
+
+
+func test_allocate_path_takes_the_whole_way_or_nothing() -> void:
+	var state := TreeState.new(graph, 2)
+	assert_true(state.allocate_path(&"c").is_empty(), "three points needed, two held")
+	assert_false(state.is_allocated(&"a"))
+	state.points = 3
+	assert_eq(state.allocate_path(&"c"), [&"a", &"b", &"c"] as Array[StringName])
+	assert_eq(state.points, 0)
+	assert_true(state.is_allocated(&"c"))
+
+
 func _choice_graph() -> TreeGraph:
 	var nodes: Array[TreeNodeData] = []
 	for id in graph.ids():

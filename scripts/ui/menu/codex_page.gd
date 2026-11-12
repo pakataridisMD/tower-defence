@@ -189,6 +189,8 @@ func select(id: StringName) -> void:
 			_text.text = e.description
 			if not e.power_text().is_empty():
 				_text.text += "\n\n" + e.power_text()
+			if not e.boss_text().is_empty():
+				_text.text += "\n\n" + e.boss_text()
 			_text.text += "\n\n" + String(ElementRules.PROFILE_TEXT.get(e.affinity, ElementRules.PROFILE_TEXT[ElementRules.PLAIN]))
 			_picture.texture = _enemy_picture(id)
 			_picture.modulate = _enemy_tint(e)

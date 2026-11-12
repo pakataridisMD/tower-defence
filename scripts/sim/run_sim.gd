@@ -20,6 +20,11 @@ signal run_ended(won: bool)
 signal skill_used(skill: SkillData, at: Vector2)
 ## A boss came onto the board, walking in or released by another enemy.
 signal boss_arrived(enemy: SimEnemy)
+## A boss used one of its abilities: &"heal", &"shield", &"shield_break", &"bind" (targets: the towers
+## bound), &"fireball" (targets: [the tower it flies at]), &"destroy_tower" (targets: [the tower, already
+## gone from towers]), &"silence" (targets: towers), &"summon" (targets: the new enemies), &"blink" or
+## &"enrage". See BossAbilities.
+signal boss_ability(boss: SimEnemy, ability: StringName, targets: Array)
 ## A boss silenced these towers.
 signal towers_silenced(boss: SimEnemy, silenced: Array[SimTower])
 ## An enemy used its power (see EnemyData.power), or something happened to it: &"fall" and &"rise"
@@ -30,6 +35,8 @@ signal enemy_power(enemy: SimEnemy, power: StringName, targets: Array)
 signal enemy_blinked(enemy: SimEnemy, from: Vector2)
 ## A boss escaped the board when badly hurt (see EnemyData.escape_below).
 signal enemy_escaped(enemy: SimEnemy)
+## The ground broke open: from the next wave on, part of the horde comes out of this cave (see Caves).
+signal cave_opened(cave: Caves.Cave)
 ## A building of the enemy base fell in an assault.
 signal structure_destroyed(structure: SimEnemy)
 ## Every building of an assault phase fell. `phase` is the new phase; above the stage's last phase
@@ -64,6 +71,9 @@ enum State { BUILDING, WAVE, WON, LOST }
 
 ## Simulation step used by the game scene. Tests may use bigger steps.
 const STEP := 1.0 / 60.0
+## Seconds a break lasts before the next wave starts on its own, unless the stage sets its own
+## auto_wave_delay. The player can start the wave sooner; the first wave always waits for them.
+const AUTO_WAVE_DELAY := 15.0
 ## In an assault, every this many attacks a tower in reach of a building it can hurt shoots the
 ## building, even with enemies in range, so the siege moves on during a crowded wave.
 const SIEGE_EVERY := 3
@@ -89,8 +99,6 @@ const COUNTER_LOOP_GAP := 4.0
 const COUNTER_LOOP_GROWTH := 0.06
 ## A blow at least does this share of its damage, whatever the armour.
 const ALLY_MIN_DAMAGE := 0.2
-## Endless skirmish: every this many waves the horde doubles, in numbers and in health.
-const ENDLESS_STEP := 5
 ## Endless skirmish: past the wave set, its last this many waves come round again and again.
 const ENDLESS_LOOP := 5
 ## No wave brings more enemies than this, however hard the difficulty: past it, a bigger horde comes
@@ -150,6 +158,15 @@ var _structure_cells: Dictionary[Vector2i, SimEnemy] = {}
 var landmarks: Array[Landmarks.Site] = []
 ## Cells the camps and the city stand on, to the site on each.
 var _landmark_cells: Dictionary[Vector2i, Landmarks.Site] = {}
+## Caves that broke open during the run, oldest first. Each has its own lane after the map's roads.
+var caves: Array[Caves.Cave] = []
+## The wave the next cave first sends enemies in; it opens in the break before. 0 when no more come.
+var next_cave_wave := 0
+## Cells cave mounds stand on, to their cave.
+var _cave_cells: Dictionary[Vector2i, Caves.Cave] = {}
+## Cells of the map's own roads (not the caves' digs).
+var _road_cells: Dictionary[Vector2i, bool] = {}
+var _cave_rng := RandomNumberGenerator.new()
 ## The heroes the player can summon in this run, in key order.
 var party: Array[HeroData] = []
 ## Summoned heroes by hero id.
@@ -181,6 +198,8 @@ var _roll_wait := 0.0
 var _muster_cooldowns: Dictionary[StringName, float] = {}
 ## Gold from the camp's supply not yet paid out, under a whole coin.
 var _supply := 0.0
+## The bosses' healing, barriers, binding and fireballs, and the ruins they leave.
+var boss_powers: BossAbilities
 ## The wave being fought as it really comes: grown by the difficulty (and in endless, the round).
 var _wave_as_fought: WaveData
 ## Extra health for the enemies of a wave whose numbers hit MAX_WAVE_ENEMIES.
@@ -188,6 +207,7 @@ var _crowd_health := 1.0
 
 
 func _init(p_config: RunConfig) -> void:
+	boss_powers = BossAbilities.new(self)
 	config = p_config
 	var rules := config.rules
 	var base_gold := rules.starting_gold
@@ -211,8 +231,12 @@ func _init(p_config: RunConfig) -> void:
 	path_curve = lane_curves[0]
 	path_length = lane_lengths[0]
 	_path_cells = config.map.path_cells()
+	_road_cells = _path_cells.duplicate()
 	_place_structures()
 	_place_landmarks()
+	_cave_rng.seed = config.cave_seed if config.cave_seed != 0 else hash(str(config.map.id) + ":" + (str(config.stage.id) if config.stage != null else ""))
+	if caves_come():
+		next_cave_wave = Caves.next_wave(1, _cave_rng)
 	for hero in config.heroes:
 		if hero != null and not party.has(hero) and party.size() < HeroData.MAX_PARTY:
 			party.append(hero)
@@ -248,7 +272,7 @@ func wave_number() -> int:
 	return mini(wave_index + 1, total_waves())
 
 
-## True for an endless skirmish: no last wave, and the horde doubles every ENDLESS_STEP waves.
+## True for an endless skirmish: no last wave, and the horde grows a little every wave.
 func is_endless() -> bool:
 	return config.endless and config.stage == null and not is_assault()
 
@@ -263,22 +287,18 @@ func _set_index(index: int) -> int:
 	return count - loop + (index - count) % loop
 
 
-## How many times the horde has doubled in an endless run by this wave (1-based): 0 for waves 1 to
-## ENDLESS_STEP, 1 for the next ENDLESS_STEP, and so on. Always 0 outside endless.
-func endless_round(number: int = -1) -> int:
-	if not is_endless():
-		return 0
-	var n := wave_number() if number < 0 else number
-	return maxi(n - 1, 0) / ENDLESS_STEP
-
-
-## How much bigger and stronger an endless run has made the horde by this wave: 2 to the round.
+## How strong an endless run has made the horde by this wave (1-based), in numbers and in health
+## each: it starts at RunConfig.endless_start and grows by RunConfig.endless_growth every wave.
+## Always 1 outside endless.
 func endless_multiplier(number: int = -1) -> float:
-	return pow(2.0, endless_round(number))
+	if not is_endless():
+		return 1.0
+	var n := wave_number() if number < 0 else number
+	return config.endless_start * pow(config.endless_growth, maxi(n - 1, 0))
 
 
 ## How many times as many enemies the wave brings as the wave set says: the difficulty's multiplier,
-## doubled every round of an endless run.
+## times the endless run's.
 func enemy_count_multiplier(number: int = -1) -> float:
 	return config.enemy_count_multiplier() * endless_multiplier(number)
 
@@ -544,6 +564,64 @@ func landmark_at(cell: Vector2i) -> Landmarks.Site:
 	return _landmark_cells.get(cell)
 
 
+## The cave whose mound stands on a cell, or null.
+func cave_at(cell: Vector2i) -> Caves.Cave:
+	return _cave_cells.get(cell)
+
+
+## True when caves break open in this run: every run but an assault on the enemy's base.
+func caves_come() -> bool:
+	return config.caves and not is_assault()
+
+
+## Opens the next cave if its wave is the one about to start. Called in the break after each wave.
+func _open_due_cave() -> void:
+	if next_cave_wave <= 0 or wave_number() < next_cave_wave:
+		return
+	var wave := next_cave_wave
+	next_cave_wave = Caves.next_wave(next_cave_wave, _cave_rng) if caves.size() + 1 < Caves.MAX_CAVES else 0
+	var spawns := PackedVector2Array()
+	var bases := PackedVector2Array()
+	for lane in config.map.lane_count():
+		var points := config.map.path_points(lane)
+		if points.size() >= 2:
+			spawns.append(points[0])
+			bases.append(points[points.size() - 1])
+	for site in landmarks:
+		if site.kind == &"city":
+			for cell in site.cells:
+				bases.append(config.map.cell_center(cell))
+	for cave in caves:
+		spawns.append(config.map.cell_center(cave.cell))
+	var blocked := func(cell: Vector2i) -> bool:
+		return _tower_at.has(cell) or _landmark_cells.has(cell) or _structure_cells.has(cell) \
+				or _cave_cells.has(cell) or (_path_cells.has(cell) and not _road_cells.has(cell))
+	var cave := Caves.find(config.map, lane_curves, lane_lengths, func(cell: Vector2i) -> bool: return _road_cells.has(cell),
+			blocked, spawns, bases, _cave_rng)
+	if cave == null:
+		# No room anywhere (the player built over everything): this one never opens.
+		return
+	cave.wave = wave
+	add_cave(cave)
+
+
+## Puts a cave on the board with its own lane: its mound and dig can no longer be built on.
+func add_cave(cave: Caves.Cave) -> void:
+	var curve := Curve2D.new()
+	for point in Caves.lane_points(config.map, cave, lane_curves[cave.joins_lane], lane_lengths[cave.joins_lane]):
+		curve.add_point(point)
+	cave.lane = lane_curves.size()
+	lane_curves.append(curve)
+	lane_lengths.append(curve.get_baked_length())
+	for cell in cave.cells:
+		_cave_cells[cell] = cave
+	for cell in cave.dig:
+		_path_cells[cell] = true
+	caves.append(cave)
+	cave_opened.emit(cave)
+	changed.emit()
+
+
 func is_path(cell: Vector2i) -> bool:
 	return _path_cells.has(cell)
 
@@ -570,11 +648,15 @@ func placement_error(tower_id: StringName, cell: Vector2i) -> String:
 		return "The enemy's building stands here"
 	if _landmark_cells.has(cell):
 		return "The enemy's war camp stands here" if _landmark_cells[cell].kind == &"camp" else "The city stands here"
+	if _cave_cells.has(cell):
+		return "An enemy cave yawns here"
 	var limit := build_limit()
 	if limit >= 0 and cell.x > limit:
 		return "The enemy still holds this ground: bring down its buildings first"
 	if _tower_at.has(cell):
 		return "There is already a tower here"
+	if boss_powers.is_ruin(cell):
+		return "The ruin still burns: build here once the wave is over"
 	if gold < tower_price(tower_id):
 		return "Not enough gold"
 	return ""
@@ -758,6 +840,18 @@ func sell_tower(tower: SimTower) -> int:
 	return refund
 
 
+## A boss's fireball destroys a tower outright: no refund.
+func destroy_tower(tower: SimTower) -> void:
+	if not towers.has(tower):
+		return
+	towers.erase(tower)
+	_tower_at.erase(tower.cell)
+	if tower.is_hero():
+		_heroes_on_board.erase(tower.hero.id)
+	_recompute_towers()
+	changed.emit()
+
+
 func start_next_wave() -> bool:
 	if state != State.BUILDING or current_wave() == null:
 		return false
@@ -815,11 +909,17 @@ func _advance_act() -> void:
 	phase_changed.emit(structure_phase)
 
 
+## Takes a skill web node, and the nodes on the way to it when it is further out, if the points
+## cover them all.
 func allocate_node(id: StringName) -> bool:
-	if is_over() or not tree.allocate(id):
+	if is_over():
+		return false
+	var taken := tree.allocate_path(id)
+	if taken.is_empty():
 		return false
 	if state == State.BUILDING:
-		_taken_this_break[id] = true
+		for node_id in taken:
+			_taken_this_break[node_id] = true
 	_refresh_modifiers()
 	changed.emit()
 	return true
@@ -897,6 +997,7 @@ func _roll_wave() -> void:
 	var finished := current_wave()
 	wave_index += 1
 	var rewards := _pay_wave(finished)
+	boss_powers.clear()
 	wave_cleared.emit(wave_index, rewards[0], rewards[1])
 	_begin_wave()
 
@@ -912,6 +1013,13 @@ func _loop_counter_wave(delta: float) -> void:
 		counter_loops += 1
 		_counter_loop_wait = COUNTER_LOOP_GAP
 		_spawner.start(_wave_as_fought if _wave_as_fought != null else current_wave(), lane_curves.size())
+
+
+## Seconds the break after a cleared wave lasts before the next wave starts on its own.
+func break_length() -> float:
+	if config.stage != null and config.stage.auto_wave_delay > 0.0:
+		return config.stage.auto_wave_delay
+	return AUTO_WAVE_DELAY
 
 
 ## Counts down the break before a wave that starts on its own. Call it while building; the game
@@ -940,11 +1048,12 @@ func _spawn(delta: float) -> void:
 		var element := _wave_element
 		if not group.element.is_empty():
 			element = config.element_index(group.element)
-		var enemy := _make_enemy(data, multiplier, lane, element, 0.0)
+		var boss := data.tags.has(&"boss")
+		var enemy := _make_enemy(data, multiplier * (config.wave_set.boss_health_scale if boss else 1.0), lane, element, 0.0)
 		if group.elite:
 			enemy.make_elite()
 		enemies.append(enemy)
-		if data.tags.has(&"boss"):
+		if boss:
 			boss_arrived.emit(enemy)
 
 
@@ -985,15 +1094,18 @@ func minor_health_share(data: EnemyData) -> float:
 
 ## Enemies that come out of another: splitting on death, or summoned by a boss. They appear a little
 ## behind it on its lane, with its strength and element.
-func _release_from(parent: SimEnemy, enemy_id: StringName, count: int) -> void:
+func _release_from(parent: SimEnemy, enemy_id: StringName, count: int) -> Array[SimEnemy]:
+	var released: Array[SimEnemy] = []
 	var data: EnemyData = config.enemies.get(enemy_id)
 	if data == null:
-		return
+		return released
 	for i in count:
 		var child := _make_enemy(data, parent.health_multiplier, parent.lane, parent.element, parent.progress - 14.0 * i)
 		_arrivals.append(child)
+		released.append(child)
 		if data.tags.has(&"boss"):
 			boss_arrived.emit(child)
+	return released
 
 
 func _move_enemies(delta: float) -> void:
@@ -1036,6 +1148,7 @@ func _move_enemies(delta: float) -> void:
 ## Healing, summoning and changing element, the horde's powers and the bosses' tricks.
 func _tick_traits(delta: float) -> void:
 	_tick_boss_tricks(delta)
+	boss_powers.tick(delta)
 	_tick_horde_auras(delta)
 	_tick_powers(delta)
 	_tick_seeds(delta)
@@ -1067,7 +1180,9 @@ func _tick_summons(enemy: SimEnemy, delta: float) -> void:
 		enemy.summon_timer -= delta
 		if enemy.summon_timer <= 0.0:
 			enemy.summon_timer += data.summon_interval
-			_release_from(enemy, data.summon, data.summon_count)
+			var called := _release_from(enemy, data.summon, data.summon_count)
+			if data.tags.has(&"boss") and not called.is_empty():
+				boss_ability.emit(enemy, &"summon", called)
 
 
 ## Shields, silences, blinks and rage. Buildings of the enemy base use them too, once they can be hurt.
@@ -1091,6 +1206,7 @@ func _tick_boss_tricks(delta: float) -> void:
 			continue
 		if data.enrage_below > 0.0 and not caster.enraged and caster.health < caster.max_health * data.enrage_below:
 			caster.enraged = true
+			boss_ability.emit(caster, &"enrage", [])
 		if data.ward_radius > 0.0 and data.ward_reduction > 0.0:
 			var reach := data.ward_radius * data.ward_radius
 			for other in enemies:
@@ -1114,6 +1230,7 @@ func _tick_boss_tricks(delta: float) -> void:
 					caster.progress += jump
 					caster.position = lane_curves[caster.lane].sample_baked(caster.progress)
 					enemy_blinked.emit(caster, from)
+					boss_ability.emit(caster, &"blink", [])
 
 
 ## Each kind of enemy's own power. See EnemyData.power.
@@ -1212,6 +1329,7 @@ func _silence_towers(caster: SimEnemy) -> void:
 			hit.append(tower)
 	if not hit.is_empty():
 		towers_silenced.emit(caster, hit)
+		boss_ability.emit(caster, &"silence", hit)
 
 
 func _tick_statuses(delta: float) -> void:
@@ -1429,6 +1547,11 @@ func _damage(enemy: SimEnemy, amount: float, source: SimTower) -> void:
 		amount *= 1.0 - enemy.ward
 	if enemy.is_hardened():
 		amount *= 1.0 - clampf(enemy.data.power_amount, 0.0, 0.95)
+	if enemy.barrier > 0.0:
+		# A boss's barrier soaks the blow up first.
+		amount = boss_powers.absorb(enemy, amount)
+		if amount <= 0.0:
+			return
 	if enemy.shell > 0.0:
 		# A Rimeback's ice soaks the blow up first.
 		var soaked := minf(enemy.shell, amount)
@@ -1545,12 +1668,13 @@ func _finish_wave() -> void:
 	var rewards := _pay_wave(finished)
 	projectiles.clear()
 	_bursts.clear()
+	boss_powers.clear()
 	if wave_index >= total_waves() and not is_assault() and not is_endless():
 		_end_run(true)
 	else:
 		state = State.BUILDING
-		if config.stage != null and config.stage.auto_wave_delay > 0.0:
-			break_time_left = config.stage.auto_wave_delay
+		break_time_left = break_length()
+		_open_due_cave()
 	wave_cleared.emit(wave_index, rewards[0], rewards[1])
 	changed.emit()
 
@@ -1735,8 +1859,12 @@ func _cell_error(cell: Vector2i) -> String:
 		return "Heroes stand beside the road, not on it"
 	if _landmark_cells.has(cell):
 		return "The enemy's war camp stands here" if _landmark_cells[cell].kind == &"camp" else "The city stands here"
+	if _cave_cells.has(cell):
+		return "An enemy cave yawns here"
 	if _tower_at.has(cell):
 		return "There is already a tower here"
+	if boss_powers.is_ruin(cell):
+		return "The ruin still burns: build here once the wave is over"
 	return ""
 
 

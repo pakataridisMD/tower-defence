@@ -7,15 +7,17 @@
 script = ExtResource("1_mod")
 stat = &"attacks_per_second"
 kind = 1
-value = 0.15
+value = 0.06
 required_tags = Array[StringName]([&"void"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"void_core"
-display_name = "Hunger"
-description = "Void towers attack 15% faster."
+display_name = "Hungry Dark"
+description = "Void towers attack 6% faster."
+kind = 3
 region = &"void"
-position = Vector2(-182, -105)
-links = Array[StringName]([&"void_entry"])
+cost = 2
+position = Vector2(-333, -193)
+links = Array[StringName]([&"void_c_300", &"void_r2_385"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

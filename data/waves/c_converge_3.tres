@@ -1148,7 +1148,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"void"
 is_boss = true
-health_multiplier = 0.28
+health_multiplier = 0.24
 description = "Stragglers, runner packs, a mixed swarm, Smoke Wraiths and Glass-Singers, a flank attack and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r116"), SubResource("r117"), SubResource("r118"), SubResource("r119"), SubResource("r120"), SubResource("r121"), SubResource("r122"), SubResource("r123"), SubResource("r124"), SubResource("r125"), SubResource("r126"), SubResource("r127"), SubResource("r128")])
 
@@ -1938,7 +1938,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"earth"
 is_boss = true
-health_multiplier = 0.28
+health_multiplier = 0.24
 description = "Stragglers, runner packs, a mixed swarm, Spark Wisps and the Voiceless, a flank attack and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r202"), SubResource("r203"), SubResource("r204"), SubResource("r205"), SubResource("r206"), SubResource("r207"), SubResource("r208"), SubResource("r209"), SubResource("r210"), SubResource("r211"), SubResource("r212"), SubResource("r213"), SubResource("r214")])
 
@@ -2852,7 +2852,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"water"
 is_boss = true
-health_multiplier = 0.28
+health_multiplier = 0.24
 description = "A marching column, brutes under escort, Warded packs, Seedsowers and Greenwitches, a flank attack and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r301"), SubResource("r302"), SubResource("r303"), SubResource("r304"), SubResource("r305"), SubResource("r306"), SubResource("r307"), SubResource("r308"), SubResource("r309"), SubResource("r310"), SubResource("r311"), SubResource("r312")])
 
@@ -2861,5 +2861,6 @@ script = ExtResource("1_s")
 id = &"c_converge_3"
 display_name = "Heart of the Ring"
 health_growth = 1.1
-health_scale = 9.47
+health_scale = 13.83
+boss_health_scale = 0.17
 waves = Array[ExtResource("3_s")]([SubResource("r9"), SubResource("r18"), SubResource("r30"), SubResource("r43"), SubResource("r55"), SubResource("r70"), SubResource("r83"), SubResource("r97"), SubResource("r115"), SubResource("r129"), SubResource("r144"), SubResource("r163"), SubResource("r183"), SubResource("r201"), SubResource("r215"), SubResource("r235"), SubResource("r256"), SubResource("r279"), SubResource("r300"), SubResource("r313")])

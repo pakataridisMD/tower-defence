@@ -60,6 +60,7 @@ var muster_lane := 0
 var upgrade_bias := 0.6
 
 var _path_samples := PackedVector2Array()
+var _caves_seen := 0
 var _coverage_cache: Dictionary[Vector3i, int] = {}
 var _skill_wait := 0
 var _muster_wait := 0
@@ -370,19 +371,51 @@ func _best_aim(skill: SkillData, alive: Array[SimEnemy]) -> Vector3:
 	return best
 
 
+## Takes the planned nodes in order, with the nodes on the way to each, saving up for the next one
+## when it costs more than the bot has. Once every planned node is taken (or out of reach), the rest of the points go on the cheapest open nodes of the planned
+## elements, nearest the Origin first. Keystones are left alone: they need a plan of their own.
 func spend_points() -> void:
-	var took_one := true
-	while took_one and sim.tree.points > 0:
-		took_one = false
-		for id in node_priority:
-			if sim.allocate_node(id):
-				took_one = true
-				break
+	while sim.tree.points > 0:
+		var target := _next_planned_node()
+		if target.is_empty():
+			target = _cheapest_open_node()
+		# A planned node it cannot afford yet is saved up for, as a person would.
+		if target.is_empty() or not sim.allocate_node(target):
+			return
+
+
+## The first planned node not yet taken that can still be reached, or empty when the plan is done.
+func _next_planned_node() -> StringName:
+	for id in node_priority:
+		if not sim.tree.is_allocated(id) and sim.tree.path_cost(id) >= 0:
+			return id
+	return &""
+
+
+func _cheapest_open_node() -> StringName:
+	var regions: Dictionary[StringName, bool] = {}
+	for id in node_priority:
+		if sim.tree.graph.has_node_id(id):
+			regions[sim.tree.graph.node(id).region] = true
+	var best: StringName = &""
+	var best_key := Vector2(INF, INF)
+	for id in sim.tree.graph.ids():
+		var data := sim.tree.graph.node(id)
+		if data.kind == TreeNodeData.Kind.KEYSTONE or not sim.tree.can_allocate(id):
+			continue
+		if not data.region.is_empty() and not regions.has(data.region):
+			continue
+		var key := Vector2(data.cost, data.position.length())
+		if key.x < best_key.x or (key.x == best_key.x and key.y < best_key.y):
+			best_key = key
+			best = id
+	return best
 
 
 ## Spends the gold, best buy first: another tower where it covers the most road, or a level (or
 ## an ascension) for a tower that already stands in a good spot.
 func build_towers() -> void:
+	_see_new_caves()
 	summon_heroes()
 	for purchase in 400:
 		var tower_id := _affordable_tower() if sim.towers.size() < max_towers else &""
@@ -492,6 +525,25 @@ func siege_value(cell: Vector2i, reach: float) -> int:
 		if sim.is_vulnerable(structure) and structure.position.distance_to(center) <= reach:
 			score += SIEGE_WEIGHT
 	return score
+
+
+## A new cave's dig is road worth covering too (the rest of its lane is a road already sampled).
+## Polled rather than connected: a signal from the sim back to the bot would keep both alive.
+func _see_new_caves() -> void:
+	while _caves_seen < sim.caves.size():
+		_add_dig(sim.caves[_caves_seen])
+		_caves_seen += 1
+
+
+func _add_dig(cave: Caves.Cave) -> void:
+	var dig := Curve2D.new()
+	for point in cave.dig_points:
+		dig.add_point(point)
+	var offset := 0.0
+	while offset <= dig.get_baked_length():
+		_path_samples.append(dig.sample_baked(offset))
+		offset += PATH_SAMPLE_SPACING
+	_coverage_cache.clear()
 
 
 ## How many path sample points lie within reach of a cell's centre.

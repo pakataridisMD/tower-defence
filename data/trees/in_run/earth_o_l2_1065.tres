@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"shatter_strength"
+kind = 1
+value = 0.07
+required_tags = Array[StringName]([&"earth"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"earth_o_l2_1065"
+display_name = "Crumble IV"
+description = "Shatter from earth towers is 7% stronger."
+kind = 2
+region = &"earth"
+cost = 4
+position = Vector2(-761, 745)
+links = Array[StringName]([&"earth_o_l2_980"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

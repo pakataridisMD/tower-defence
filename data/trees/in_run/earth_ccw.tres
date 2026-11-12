@@ -7,15 +7,17 @@
 script = ExtResource("1_mod")
 stat = &"damage"
 kind = 1
-value = 0.2
+value = 0.03
 required_tags = Array[StringName]([&"earth"])
 
 [resource]
 script = ExtResource("2_node")
 id = &"earth_ccw"
-display_name = "Heavy Stone"
-description = "Earth towers deal 20% increased damage."
+display_name = "Stonework I"
+description = "Earth towers deal 3% more damage."
+kind = 2
 region = &"earth"
-position = Vector2(-127, 141)
+cost = 1
+position = Vector2(-138, 165)
 links = Array[StringName]([&"earth_entry"])
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])
