@@ -817,14 +817,14 @@
    }
   },
   "feet": [
-   116,
-   360
+   180,
+   466
   ],
   "frame": [
-   232,
-   392
+   360,
+   500
   ],
-  "source": "vael_orrun"
+  "source": "vael_bare"
  },
  "vael_orrun_unmade": {
   "anims": {
@@ -850,15 +850,14 @@
    }
   },
   "feet": [
-   116,
-   360
+   180,
+   466
   ],
   "frame": [
-   232,
-   392
+   360,
+   500
   ],
-  "source": "vael_orrun",
-  "stand_in": true
+  "source": "vael_unmade"
  },
  "vael_orrun_wrath": {
   "anims": {
@@ -884,15 +883,14 @@
    }
   },
   "feet": [
-   116,
-   360
+   180,
+   466
   ],
   "frame": [
-   232,
-   392
+   360,
+   500
   ],
-  "source": "vael_orrun",
-  "stand_in": true
+  "source": "vael_bare_wrath"
  },
  "vholt": {
   "anims": {
