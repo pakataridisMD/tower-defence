@@ -23,7 +23,7 @@ however heavy the lights, fog and particles are.
 
 ```sh
 godot --headless --path cinema --import            # once
-GODOT=godot cinema/render.sh out.mp4 audio.wav seven_crowns
+GODOT=godot cinema/render.sh out.mp4 cinema/audio/seven_crowns_mix.ogg seven_crowns
 ```
 
 On a Mac or PC with a graphics card this runs close to real time. In a cloud box without a GPU it falls back to
@@ -51,3 +51,5 @@ python3 cinema/tools/layer_stills.py                        # write every still 
 ```
 
 Bloom is added in ffmpeg (blend in RGB with `format=gbrp`, or colours shift purple).
+
+`audio/seven_crowns_mix.ogg` is the finished sound of the v2 trailer (music, Elariel voice, effects), so the picture can be compared shot for shot.
