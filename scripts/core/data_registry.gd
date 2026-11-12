@@ -348,6 +348,19 @@ func _validate_skills(errors: PackedStringArray) -> void:
 			errors.append("%s: its modifiers need a duration" % label)
 		if skill.damage <= 0.0 and skill.status_effects.is_empty() and skill.knockback <= 0.0 and skill.modifiers.is_empty():
 			errors.append("%s: does nothing" % label)
+		for i in skill.ranks.size():
+			var rank := skill.ranks[i]
+			if rank == null:
+				errors.append("%s: level %d is empty" % [label, i + 1])
+				continue
+			if i > 0 and rank.cost <= 0:
+				errors.append("%s: level %d needs a gold cost" % [label, i + 1])
+			if i > 0 and skill.ranks[i - 1] != null and rank.cost < skill.ranks[i - 1].cost:
+				errors.append("%s: level %d costs less than the level before" % [label, i + 1])
+			if rank.strikes < 1 or rank.bolts < 0 or rank.power <= 0.0 or rank.reach <= 0.0 or rank.hold <= 0.0:
+				errors.append("%s: level %d has a number out of range" % [label, i + 1])
+			if rank.bolts > 0 and rank.bolt_damage <= 0.0:
+				errors.append("%s: level %d has bolts that do no damage" % [label, i + 1])
 
 
 ## Every hero, in the order they join.

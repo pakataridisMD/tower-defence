@@ -3,12 +3,57 @@
 [ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_skill"]
 [ext_resource type="Script" path="res://scripts/data/status_effect_data.gd" id="2_status"]
 [ext_resource type="Script" path="res://scripts/data/modifier.gd" id="3_mod"]
+[ext_resource type="Script" path="res://scripts/data/skill_rank.gd" id="4_rank"]
 
 [sub_resource type="Resource" id="Mod_0"]
 script = ExtResource("3_mod")
 stat = &"attacks_per_second"
 kind = 1
 value = 0.2
+
+[sub_resource type="Resource" id="Rank_1"]
+script = ExtResource("4_rank")
+
+[sub_resource type="Resource" id="Rank_2"]
+script = ExtResource("4_rank")
+title = "Static Surge"
+description = "Towers attack 28% faster, for 7 seconds."
+cost = 120
+power = 1.4
+hold = 1.4
+
+[sub_resource type="Resource" id="Rank_3"]
+script = ExtResource("4_rank")
+title = "Thunderstorm"
+description = "Six bolts of lightning strike the enemies furthest along."
+cost = 220
+power = 1.4
+hold = 1.4
+bolts = 6
+bolt_damage = 22.0
+launch = 0.3
+
+[sub_resource type="Resource" id="Rank_4"]
+script = ExtResource("4_rank")
+title = "Tempest"
+description = "Ten bolts, and towers attack 34% faster for 8 seconds."
+cost = 360
+power = 1.7
+hold = 1.6
+bolts = 10
+bolt_damage = 24.0
+launch = 0.4
+
+[sub_resource type="Resource" id="Rank_5"]
+script = ExtResource("4_rank")
+title = "Wrath of the Sky"
+description = "Sixteen bolts, and towers attack 40% faster for 10 seconds."
+cost = 550
+power = 2.0
+hold = 2.0
+bolts = 16
+bolt_damage = 28.0
+launch = 0.5
 
 [resource]
 script = ExtResource("1_skill")
@@ -20,3 +65,5 @@ requires_node = &"storm_entry"
 cooldown = 75.0
 modifiers = Array[ExtResource("3_mod")]([SubResource("Mod_0")])
 duration = 5.0
+bolt_time = 2.4
+ranks = Array[ExtResource("4_rank")]([SubResource("Rank_1"), SubResource("Rank_2"), SubResource("Rank_3"), SubResource("Rank_4"), SubResource("Rank_5")])
