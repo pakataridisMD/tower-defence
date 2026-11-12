@@ -431,12 +431,12 @@ def tower(x, y, col, h=9.0):
     s = bpy.context.object; s.data.materials.append(M("pale"))
     bpy.ops.mesh.primitive_ico_sphere_add(radius=0.8, subdivisions=1, location=(x, y, h + 0.9))
     c = bpy.context.object; c.scale = (0.8, 0.8, 1.4)
-    c.data.materials.append(mat("crystal", col, 0.2, emit=col, strength=10))
+    c.data.materials.append(mat("crystal", col, 0.2, emit=col, strength=4))
     light("POINT", (x, y, h + 1.0), (0, 0, 0), 1500, col, 0.5, "crystal")
     return c
 
 
-def beam(a, b, col, radius=0.18, strength=8):
+def beam(a, b, col, radius=0.18, strength=2.5):   # low: strong emission turns pastel-white under AgX
     """A straight bolt of tower light from a to b."""
     import mathutils
     a, b = mathutils.Vector(a), mathutils.Vector(b)

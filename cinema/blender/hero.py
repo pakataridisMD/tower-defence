@@ -887,8 +887,11 @@ def build_human(name, loc=(0, 0, 0), rot_z=0.0, action="Idle", phase=0.0, soft=N
         soft = 0.65 if action.startswith(("Walking", "Running")) else 1.0
     if soft < 1.0:
         soften(rig, action, phase, amount=soft)
-    else:
-        C.play(rig, action, phase)
+    else:   # deaths, sitting/lying down and standing up play once and hold their last pose
+        once = action.startswith("Death") or action.endswith(("_Down", "_StandUp"))
+        st = C.play(rig, action, phase, repeat=1 if once else None)
+        if once:
+            st.extrapolation = "HOLD"
     relax_arms(rig, posture=POSTURES.get(name, HUMAN_POSTURE))
     C.sc.frame_set(C.sc.frame_start)
     stand_up(parts, rig)

@@ -301,6 +301,8 @@ def solenne(seed=11, night=True, sun_lit=0.0, refugees_lights=True):
         x, y = math.cos(a) * r, math.sin(a) * r
         if abs(a - (east % (2 * math.pi))) < 0.06 and r > 60:
             continue   # keep the main road open
+        if math.hypot(x, y + 30) < 11:
+            continue   # and the palace square (mark 'square') clear
         z = 10.0 if r < 50 else 0.0
         house(x, y, z, R.uniform(4, 8), R.uniform(4, 7), R.uniform(5, 10), a + R.uniform(-0.2, 0.2), WALL, ROOF,
               LIT if night and R.random() < 0.5 else None, R)
@@ -318,7 +320,8 @@ def solenne(seed=11, night=True, sun_lit=0.0, refugees_lights=True):
     bounded_fog(1200, 200)
     ew = east + 0.12
     marks = {"east_wall": Vector((math.cos(ew) * 120, math.sin(ew) * 120, 14.0)), "inner_wall": Vector((0, -55, 22.0)),
-             "gate": Vector((0, -128, 0.0)), "square": Vector((0, -30, 10.0))}
+             "gate": Vector((0, -128, 0.0)), "square": Vector((0, -30, 10.0)),
+             "spire": Vector((0, -3.0, 70.0))}
     cams = {"aerial": [(0, (60, -330, 90), (78, 0, 10))], "wall": [(0, (math.cos(ew) * 129, math.sin(ew) * 129, 15.7), (88, 0, math.degrees(ew + math.pi / 2)))]}
     return {"marks": marks, "cams": cams}
 
@@ -577,3 +580,73 @@ def rift():
     C.world(density=0.01, sky=0.03)
     C.moon(2.0)
     return {"marks": {"hero": Vector((0, 0, 0))}, "cams": {"wide": [(0, (5, -16, 3), (84, 0, 16))]}}
+
+
+# ------------------------------------------------------------------ halls (interiors)
+def heartstone(loc, size=0.35, energy=300, name="heartstone"):
+    """The Heartstone: a six-coloured crystal (Vael-Orrun's crown, broken into a key), slowly turning."""
+    bpy.ops.mesh.primitive_ico_sphere_add(radius=size, subdivisions=1, location=loc)
+    o = bpy.context.object; o.name = name; o.scale = (0.7, 0.7, 1.3)
+    m, nt, out = W._blank(name + "_glass")
+    gc = W._n(nt, "ShaderNodeTexCoord"); sep = W._n(nt, "ShaderNodeSeparateXYZ")
+    nt.links.new(gc.outputs["Object"], sep.inputs[0])
+    ang = W._n(nt, "ShaderNodeMath", _operation="ARCTAN2"); nt.links.new(sep.outputs[1], ang.inputs[0]); nt.links.new(sep.outputs[0], ang.inputs[1])
+    rn = nt.nodes.new("ShaderNodeValToRGB"); els = rn.color_ramp.elements
+    cols = [(1, 0.3, 0.08), (0.75, 0.85, 1), (0.35, 1, 0.35), (0.3, 0.85, 1), (1, 0.7, 0.3), (0.7, 0.45, 1), (1, 0.3, 0.08)]
+    els[0].position, els[0].color = 0.0, (*cols[0], 1); els[1].position, els[1].color = 1.0, (*cols[-1], 1)
+    for k in range(1, 6):
+        e = els.new(k / 6); e.color = (*cols[k], 1)
+    norm = nt.nodes.new("ShaderNodeMapRange"); norm.inputs[1].default_value = -math.pi; norm.inputs[2].default_value = math.pi
+    nt.links.new(ang.outputs[0], norm.inputs[0]); nt.links.new(norm.outputs[0], rn.inputs[0])
+    ramp = rn
+    em = W._n(nt, "ShaderNodeEmission"); em.inputs["Strength"].default_value = 12
+    nt.links.new(ramp.outputs[0], em.inputs[0]); nt.links.new(em.outputs[0], out.inputs[0])
+    o.data.materials.append(m)
+    o.rotation_euler.z = 0; o.keyframe_insert("rotation_euler", index=2, frame=1)
+    o.rotation_euler.z = 2 * math.pi; o.keyframe_insert("rotation_euler", index=2, frame=C.sc.frame_end + 480)
+    C.light("POINT", tuple(Vector(loc) + Vector((0, 0, 0.2))), (0, 0, 0), energy, (1.0, 0.85, 0.75), 0.3, name + "_light")
+    return o
+
+
+def hall(ruined=False, heart=True, dawn=False, seed=17):
+    """An interior: the Hall of the Ring in Solenne (white stone, a round dais with the Heartstone, braziers), or with
+    `ruined` the black throne hall of Nhal Vorath (broken columns, grey fires, a stone sky through the roof).
+    Marks: 'hero' (the floor in front of the dais), 'dais' (its top), 'door' (the far side, toward the camera)."""
+    R = random.Random(seed)
+    FLOOR = tex("hall_floor", "castle_brick_07" if not ruined else "aerial_rocks_02", 0.25,
+                (0.75, 0.72, 0.68) if not ruined else (0.2, 0.2, 0.21), 0.5, "rock")
+    STONE = C.M("white_stone") if not ruined else W.basalt("throne_stone", (0.02, 0.02, 0.022), (0.3, 0.3, 0.32), glow=0.0, core_glow=0.0, grey=True)
+    bpy.ops.mesh.primitive_cylinder_add(vertices=96, radius=18, depth=0.4, location=(0, 0, -0.2)); bpy.context.object.data.materials.append(FLOOR)
+    for k in range(16):   # the ring of columns
+        a = 2 * math.pi * k / 16; h = 11 if not ruined else R.uniform(3, 11)
+        if ruined and R.random() < 0.25:
+            continue
+        bpy.ops.mesh.primitive_cylinder_add(vertices=20, radius=0.7, depth=h, location=(math.cos(a) * 14, math.sin(a) * 14 + 4, h / 2))
+        c = bpy.context.object; c.data.materials.append(STONE)
+        if ruined:
+            C.rough_up(c, 0.15, 1.0, subdiv=3)
+    if not ruined:   # dome and wall
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=16, segments=48, ring_count=24, location=(0, 4, 11))
+        d = bpy.context.object; d.scale = (1, 1, 0.55); d.data.materials.append(STONE)
+        bm = d.data
+        for p in bm.polygons:
+            p.use_smooth = True
+        bpy.ops.mesh.primitive_cylinder_add(vertices=96, radius=17, depth=11, location=(0, 4, 5.5), end_fill_type="NOTHING"); w = bpy.context.object
+        w.data.materials.append(STONE); w.modifiers.new("s", "SOLIDIFY").thickness = 0.6
+    bpy.ops.mesh.primitive_cylinder_add(vertices=48, radius=3.0, depth=0.9, location=(0, 6, 0.45)); bpy.context.object.data.materials.append(STONE)
+    if heart and not ruined:
+        heartstone((0, 6, 1.6))
+    fire = (1.0, 0.6, 0.25) if not ruined else (0.75, 0.77, 0.82)
+    for k in range(6):
+        a = math.pi / 2 + 2 * math.pi * (k + 0.5) / 6
+        x, y = math.cos(a) * 9, math.sin(a) * 9 + 4
+        bpy.ops.mesh.primitive_cylinder_add(radius=0.35, depth=1.2, location=(x, y, 0.6)); bpy.context.object.data.materials.append(C.M("iron"))
+        C.light("POINT", (x, y, 1.6), (0, 0, 0), 500, fire, 0.4, "brazier")
+    if dawn:   # a beam of white light down through the roof
+        C.light("SPOT", (0, 6, 30), (0, 0, 0), 2e5, (1.0, 0.97, 0.9), 0.5, "dawn_beam").data.spot_size = 0.25
+    C.world(density=0.02, sky=0.0, colour=(0.03, 0.03, 0.035))
+    bounded_fog(60, 30, -2)
+    if ruined:
+        C.light("AREA", (0, 4, 40), (0, 0, 0), 2e4, (0.7, 0.72, 0.78), 30, "stone_sky_glow")
+    return {"marks": {"hero": Vector((0, 0, 0)), "dais": Vector((0, 6, 0.9)), "door": Vector((0, -12, 0))},
+            "cams": {"wide": [(0, (0, -15, 3.5), (84, 0, 0))], "close": [(0, (2.5, -6.5, 1.8), (88, 0, 20))]}}

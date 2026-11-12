@@ -1,0 +1,7 @@
+{
+ "_": "Shots cut from other renders instead of built by film.py. A string is a trailer shot (its frames in <trailer>/<name>/); a list is a montage of other films' shots, each given an equal share of the line.",
+ "prologue": {"3": "s02_gate_shut", "7": "s03_gate_opens", "8": "s05_oswin", "9": "s06_fall", "10": "s07_unbound",
+              "11": ["ember_intro_2", "storm_intro_2", "nature_intro_2", "water_intro_2", "earth_intro_2", "void_intro_3"],
+              "12": "s09_queen"},
+ "epilogue": {"2": ["ember_warden_3", "storm_warden_3", "water_warden_3", "earth_warden_3", "void_intro_1", "nature_warden_3"]}
+}
