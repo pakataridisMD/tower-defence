@@ -902,27 +902,27 @@ But I have felt every one of them.
 
 ## One Door (`the_hush`)
 
-*Straight after the epilogue's credits.* About 0:44.
+*Straight after the epilogue's credits.* About 0:48.
 
 **1. [After the credits: the Hall of the Ring, rebuilt, empty, night. The Heartstone glows in six colours... then, faintly, a seventh. Ilyra, alone, leans in to look.]**
 
-**2. [Two thousand years ago: the vault under burning Vael. The young king, Vael-Orrun, kneels in the dark with his wife's ring in his fist, listening. Grey creeps into his eyes from the edges.]**
+**2. [Two thousand years ago: the vault under burning Vael. The young Keeper, Vael-Orrun, kneels in the dark with his wife's ring in his fist, listening. Grey creeps into his eyes from the edges.]**
 
 > **???:** He was the first to listen.  
 *(pause)*  
 I taught him how a world goes quiet.
 
-**3. [Six years ago: Cassivane at the foot of the Black Gate, his ear to a crack in the stone, his face wet.]**
+**3. [Behind the Black Gate at the bottom of the Rift: Vael-Orrun, sealed in the dark under the world, leans to the seam of the Gate and whispers through it. The darkness behind him is deeper than dark, and it leans in close to his ear. No figure, only that darkness.]**
 
-> **???:** The Regent bargained with a king.  
+> **???:** Every word he whispered to your Regent,  
 *(pause)*  
-The king was mine.
+I had whispered to him first.
 
-**4. [The beam of white light rising out of the Hollow toward Solenne, as at the end of The Truth; inside it, something with no colour at all.]**
+**4. [The end of the war: Vael-Orrun's white light rising out of the Rift toward Solenne and the Heartstone that was his crown. Inside the light runs a single thin thread of no colour at all.]**
 
-> **???:** I could never cross into your world.  
+> **???:** I could never climb out of the dark.  
 *(pause)*  
-So you carried me home.
+So I waited for you to carry me home.
 
 **5. [Ilyra, frozen in front of the Heartstone. Reflected in both her eyes, very small, something with no colour at all.]**
 
