@@ -445,6 +445,36 @@ func test_the_wheel_zooms_in_on_the_cursor_and_home_shows_everything() -> void:
 	assert_true(game.camera.shows_all())
 
 
+func test_the_wheel_zooms_all_the_way_back_out_to_the_whole_map() -> void:
+	assert_lt(game.camera.min_zoom, 1.0, "the whole-map view sits below the first fixed step")
+	var wheel := InputEventMouseButton.new()
+	wheel.pressed = true
+	wheel.position = BoardCamera.VIEW_CENTER
+	wheel.button_index = MOUSE_BUTTON_WHEEL_UP
+	_push(wheel)
+	_settle_camera()
+	assert_eq(game.board.scale.x, 1.0, "the first step in is x1, not past it")
+	_push(wheel)
+	_push(wheel)
+	_settle_camera()
+	assert_eq(game.board.scale.x, 2.0)
+	wheel.button_index = MOUSE_BUTTON_WHEEL_DOWN
+	for i in 3:
+		_push(wheel)
+		_settle_camera()
+	assert_true(game.camera.shows_all(), "three steps out show the whole map again")
+	assert_almost_eq(game.board.scale.x, game.camera.min_zoom, 0.001)
+	_push(wheel)
+	_settle_camera()
+	assert_almost_eq(game.board.scale.x, game.camera.min_zoom, 0.001, "and it stays there")
+	game.camera.set_view(1.25, Vector2.ZERO)
+	_push(wheel)
+	_settle_camera()
+	_push(wheel)
+	_settle_camera()
+	assert_true(game.camera.shows_all(), "even from a scale between the steps")
+
+
 func test_panning_stops_at_the_edge_of_the_map() -> void:
 	game.camera.set_view(1.0, Vector2.ZERO)
 	game.camera.pan(Vector2(5000, 5000))
