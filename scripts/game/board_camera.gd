@@ -81,9 +81,11 @@ func shows_all() -> bool:
 ## Steps the zoom in (+1) or out (-1), keeping the board point under `screen_point` where it is.
 func step_zoom(direction: int, screen_point: Vector2 = VIEW_CENTER) -> void:
 	var steps := _steps()
-	var index := steps.find(_target_zoom)
-	if index < 0:
-		index = 0
+	# The nearest step to where the zoom is heading, so an odd scale never leaves the wheel stuck.
+	var index := 0
+	for i in steps.size():
+		if absf(steps[i] - _target_zoom) < absf(steps[index] - _target_zoom):
+			index = i
 	var next := clampi(index + direction, 0, steps.size() - 1)
 	if steps[next] == _target_zoom:
 		return
@@ -117,10 +119,12 @@ static func filter_for(scale: float) -> CanvasItem.TextureFilter:
 	return CanvasItem.TEXTURE_FILTER_LINEAR
 
 
+## The scales the wheel steps through: the whole-map view first (which on a big map is between the
+## fixed steps), then every fixed step above it.
 func _steps() -> Array[float]:
-	var steps: Array[float] = []
+	var steps: Array[float] = [min_zoom]
 	for step in ZOOMS:
-		if step >= min_zoom:
+		if step > min_zoom + 0.01:
 			steps.append(step)
 	return steps
 
