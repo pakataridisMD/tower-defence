@@ -1,0 +1,767 @@
+{
+ "biomes": [
+  "meadow",
+  "heart",
+  "fire",
+  "storm",
+  "nature",
+  "water",
+  "earth",
+  "void"
+ ],
+ "pieces": {
+  "banner_0": {
+   "size": [
+    18,
+    46
+   ],
+   "sways": true
+  },
+  "banner_1": {
+   "size": [
+    18,
+    46
+   ],
+   "sways": true
+  },
+  "bonfire": {
+   "fire": [
+    11,
+    6
+   ],
+   "glow": true,
+   "size": [
+    22,
+    14
+   ]
+  },
+  "cage": {
+   "size": [
+    22,
+    28
+   ]
+  },
+  "cart": {
+   "size": [
+    26,
+    20
+   ]
+  },
+  "crates": {
+   "size": [
+    18,
+    18
+   ]
+  },
+  "drum": {
+   "size": [
+    22,
+    20
+   ]
+  },
+  "flame": {
+   "frames": 4,
+   "glow": true,
+   "size": [
+    14,
+    20
+   ]
+  },
+  "folk_0": {
+   "frames": 4,
+   "size": [
+    16,
+    28
+   ]
+  },
+  "folk_1": {
+   "frames": 4,
+   "size": [
+    16,
+    28
+   ]
+  },
+  "folk_2": {
+   "frames": 4,
+   "size": [
+    16,
+    28
+   ]
+  },
+  "folk_3": {
+   "frames": 4,
+   "size": [
+    16,
+    28
+   ]
+  },
+  "folk_4": {
+   "frames": 4,
+   "size": [
+    16,
+    28
+   ]
+  },
+  "gatetower_earth": {
+   "glow": true,
+   "light": [
+    14,
+    36
+   ],
+   "size": [
+    30,
+    66
+   ]
+  },
+  "gatetower_fire": {
+   "glow": true,
+   "light": [
+    14,
+    36
+   ],
+   "size": [
+    30,
+    66
+   ]
+  },
+  "gatetower_heart": {
+   "glow": true,
+   "light": [
+    14,
+    36
+   ],
+   "size": [
+    30,
+    66
+   ]
+  },
+  "gatetower_meadow": {
+   "glow": true,
+   "light": [
+    14,
+    36
+   ],
+   "size": [
+    30,
+    66
+   ]
+  },
+  "gatetower_nature": {
+   "glow": true,
+   "light": [
+    14,
+    36
+   ],
+   "size": [
+    30,
+    66
+   ]
+  },
+  "gatetower_storm": {
+   "glow": true,
+   "light": [
+    14,
+    36
+   ],
+   "size": [
+    30,
+    66
+   ]
+  },
+  "gatetower_void": {
+   "glow": true,
+   "light": [
+    14,
+    36
+   ],
+   "size": [
+    30,
+    66
+   ]
+  },
+  "gatetower_water": {
+   "glow": true,
+   "light": [
+    14,
+    36
+   ],
+   "size": [
+    30,
+    66
+   ]
+  },
+  "guard": {
+   "frames": 4,
+   "size": [
+    16,
+    28
+   ]
+  },
+  "house_earth_0": {
+   "chimney": [
+    26,
+    8
+   ],
+   "glow": true,
+   "size": [
+    40,
+    34
+   ]
+  },
+  "house_earth_1": {
+   "chimney": [
+    10,
+    8
+   ],
+   "glow": true,
+   "size": [
+    36,
+    41
+   ]
+  },
+  "house_earth_2": {
+   "chimney": [
+    32,
+    8
+   ],
+   "glow": true,
+   "size": [
+    46,
+    33
+   ]
+  },
+  "house_fire_0": {
+   "chimney": [
+    26,
+    7
+   ],
+   "glow": true,
+   "size": [
+    40,
+    42
+   ]
+  },
+  "house_fire_1": {
+   "chimney": [
+    10,
+    7
+   ],
+   "glow": true,
+   "size": [
+    36,
+    52
+   ]
+  },
+  "house_fire_2": {
+   "chimney": [
+    32,
+    7
+   ],
+   "glow": true,
+   "size": [
+    46,
+    39
+   ]
+  },
+  "house_heart_0": {
+   "chimney": [
+    26,
+    7
+   ],
+   "glow": true,
+   "size": [
+    40,
+    42
+   ]
+  },
+  "house_heart_1": {
+   "chimney": [
+    10,
+    7
+   ],
+   "glow": true,
+   "size": [
+    36,
+    52
+   ]
+  },
+  "house_heart_2": {
+   "chimney": [
+    32,
+    7
+   ],
+   "glow": true,
+   "size": [
+    46,
+    39
+   ]
+  },
+  "house_meadow_0": {
+   "chimney": [
+    26,
+    7
+   ],
+   "glow": true,
+   "size": [
+    40,
+    42
+   ]
+  },
+  "house_meadow_1": {
+   "chimney": [
+    10,
+    7
+   ],
+   "glow": true,
+   "size": [
+    36,
+    52
+   ]
+  },
+  "house_meadow_2": {
+   "chimney": [
+    32,
+    7
+   ],
+   "glow": true,
+   "size": [
+    46,
+    39
+   ]
+  },
+  "house_nature_0": {
+   "chimney": [
+    26,
+    7
+   ],
+   "glow": true,
+   "size": [
+    40,
+    42
+   ]
+  },
+  "house_nature_1": {
+   "chimney": [
+    10,
+    7
+   ],
+   "glow": true,
+   "size": [
+    36,
+    52
+   ]
+  },
+  "house_nature_2": {
+   "chimney": [
+    32,
+    7
+   ],
+   "glow": true,
+   "size": [
+    46,
+    39
+   ]
+  },
+  "house_storm_0": {
+   "chimney": [
+    26,
+    7
+   ],
+   "glow": true,
+   "size": [
+    40,
+    42
+   ]
+  },
+  "house_storm_1": {
+   "chimney": [
+    10,
+    7
+   ],
+   "glow": true,
+   "size": [
+    36,
+    52
+   ]
+  },
+  "house_storm_2": {
+   "chimney": [
+    32,
+    7
+   ],
+   "glow": true,
+   "size": [
+    46,
+    39
+   ]
+  },
+  "house_void_0": {
+   "glow": true,
+   "size": [
+    40,
+    52
+   ]
+  },
+  "house_void_1": {
+   "glow": true,
+   "size": [
+    36,
+    62
+   ]
+  },
+  "house_void_2": {
+   "glow": true,
+   "size": [
+    46,
+    49
+   ]
+  },
+  "house_water_0": {
+   "chimney": [
+    26,
+    7
+   ],
+   "glow": true,
+   "size": [
+    40,
+    42
+   ]
+  },
+  "house_water_1": {
+   "chimney": [
+    10,
+    7
+   ],
+   "glow": true,
+   "size": [
+    36,
+    52
+   ]
+  },
+  "house_water_2": {
+   "chimney": [
+    32,
+    7
+   ],
+   "glow": true,
+   "size": [
+    46,
+    39
+   ]
+  },
+  "lamp": {
+   "glow": true,
+   "light": [
+    5,
+    6
+   ],
+   "size": [
+    10,
+    30
+   ]
+  },
+  "mud_0": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "mud_1": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "mud_2": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_earth_0": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_earth_1": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_fire_0": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_fire_1": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_heart_0": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_heart_1": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_meadow_0": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_meadow_1": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_nature_0": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_nature_1": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_storm_0": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_storm_1": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_void_0": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_void_1": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_water_0": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "paving_water_1": {
+   "size": [
+    38,
+    38
+   ]
+  },
+  "rack": {
+   "size": [
+    24,
+    26
+   ]
+  },
+  "sentry_0": {
+   "frames": 4,
+   "glow": true,
+   "size": [
+    16,
+    28
+   ]
+  },
+  "sentry_1": {
+   "frames": 4,
+   "glow": true,
+   "size": [
+    16,
+    28
+   ]
+  },
+  "stake_0": {
+   "size": [
+    8,
+    29
+   ]
+  },
+  "stake_1": {
+   "size": [
+    8,
+    27
+   ]
+  },
+  "stake_2": {
+   "size": [
+    8,
+    29
+   ]
+  },
+  "stake_3": {
+   "size": [
+    8,
+    29
+   ]
+  },
+  "stall": {
+   "size": [
+    28,
+    28
+   ]
+  },
+  "tent_a0": {
+   "size": [
+    38,
+    32
+   ]
+  },
+  "tent_a1": {
+   "size": [
+    38,
+    32
+   ]
+  },
+  "tent_b0": {
+   "size": [
+    30,
+    42
+   ]
+  },
+  "tent_b1": {
+   "size": [
+    30,
+    42
+   ]
+  },
+  "tent_c": {
+   "size": [
+    48,
+    46
+   ]
+  },
+  "wall_earth": {
+   "size": [
+    14,
+    24
+   ]
+  },
+  "wall_fire": {
+   "size": [
+    14,
+    24
+   ]
+  },
+  "wall_heart": {
+   "size": [
+    14,
+    24
+   ]
+  },
+  "wall_meadow": {
+   "size": [
+    14,
+    24
+   ]
+  },
+  "wall_nature": {
+   "size": [
+    14,
+    24
+   ]
+  },
+  "wall_storm": {
+   "size": [
+    14,
+    24
+   ]
+  },
+  "wall_void": {
+   "size": [
+    14,
+    24
+   ]
+  },
+  "wall_water": {
+   "size": [
+    14,
+    24
+   ]
+  },
+  "watchtower": {
+   "fire": [
+    15,
+    5
+   ],
+   "glow": true,
+   "size": [
+    30,
+    70
+   ]
+  },
+  "well_earth": {
+   "size": [
+    22,
+    28
+   ]
+  },
+  "well_fire": {
+   "size": [
+    22,
+    28
+   ]
+  },
+  "well_heart": {
+   "size": [
+    22,
+    28
+   ]
+  },
+  "well_meadow": {
+   "size": [
+    22,
+    28
+   ]
+  },
+  "well_nature": {
+   "size": [
+    22,
+    28
+   ]
+  },
+  "well_storm": {
+   "size": [
+    22,
+    28
+   ]
+  },
+  "well_void": {
+   "size": [
+    22,
+    28
+   ]
+  },
+  "well_water": {
+   "size": [
+    22,
+    28
+   ]
+  }
+ }
+}

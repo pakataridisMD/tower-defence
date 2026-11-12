@@ -186,11 +186,11 @@ func test_stage_rules_change_the_run() -> void:
 	var meta := _meta()
 	var sim := RunSim.new(meta.stage_config(&"ember_1"))
 	sim.tree.points = 10
-	var brazier := sim.place_tower(&"fire_brazier", Vector2i(1, 1))
+	var brazier := sim.place_tower(&"fire_brazier", Vector2i(5, 4))
 	var plain := RunSim.new(RunConfig.from_registry(registry, &"switchback"))
 	plain.allocate_node(&"fire_entry")
 	plain.gold = 1000
-	var other := plain.place_tower(&"fire_brazier", Vector2i(1, 1))
+	var other := plain.place_tower(&"fire_brazier", Vector2i(5, 4))
 	assert_almost_eq(brazier.damage, other.damage * 1.2, 0.001, "home ground")
 	var lives_stage := RunSim.new(meta.stage_config(&"nature_2"))
 	assert_eq(lives_stage.lives, registry.run_rules.starting_lives + 5)

@@ -5,8 +5,8 @@ extends GutTest
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
 const MAP := &"switchback"
 ## Buildable cells next to the first stretch of path.
-const CELL := Vector2i(2, 3)
-const NEXT_CELL := Vector2i(3, 3)
+const CELL := Vector2i(3, 3)
+const NEXT_CELL := Vector2i(4, 3)
 
 var registry: Node
 
