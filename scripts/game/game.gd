@@ -233,7 +233,7 @@ func _connect_signals() -> void:
 	hud.level_up_pressed.connect(_level_up_selected)
 	hud.ascend_pressed.connect(_ascend_selected)
 	hud.hybrid_pressed.connect(_hybrid_selected)
-	hud.play_again_pressed.connect(func() -> void: get_tree().reload_current_scene())
+	hud.play_again_pressed.connect(restart_level)
 	hud.menu_pressed.connect(func() -> void: _leave(MENU_SCENE))
 	hud.campaign_pressed.connect(func() -> void: _leave(CAMPAIGN_SCENE))
 	hud.next_stage_pressed.connect(_play_next_stage)
@@ -475,7 +475,7 @@ func close_pause_menu() -> void:
 
 
 ## Keys while the menu is open: Esc resumes (or steps back from "Leave the run?"), Enter says yes
-## to leaving, O opens the audio settings and M mutes. Every other key waits until the menu closes.
+## to leaving, R asks to restart the level, O opens the audio settings and M mutes. Every other key waits until the menu closes.
 func _pause_menu_key(keycode: Key) -> void:
 	match keycode:
 		KEY_ESCAPE:
@@ -494,6 +494,9 @@ func _pause_menu_key(keycode: Key) -> void:
 		KEY_L:
 			if not pause_menu.is_confirming():
 				open_saves(&"load")
+		KEY_R:
+			if not pause_menu.is_confirming():
+				pause_menu.ask_to_leave(&"restart")
 		KEY_M:
 			_toggle_mute()
 
@@ -516,6 +519,13 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	get_tree().set_auto_accept_quit(true)
+
+
+## Restart level: the same stage (or map) again from wave 1, with the party and skill points as
+## they are now. Saved games are left alone; the new battle's first break becomes the autosave.
+func restart_level() -> void:
+	Progress.pending_run = {}
+	get_tree().reload_current_scene()
 
 
 # --- Saved games -----------------------------------------------------------------
@@ -559,6 +569,8 @@ func _leave_from_menu(scene: StringName) -> void:
 	match scene:
 		&"quit":
 			get_tree().quit()
+		&"restart":
+			restart_level()
 		&"campaign":
 			_leave(CAMPAIGN_SCENE)
 		_:
