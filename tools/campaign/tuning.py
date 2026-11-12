@@ -12,7 +12,7 @@
 TUNING["ember_1"] = {"health": 3.05}
 TUNING["ember_2"] = {"health": 3.93, "boss": 0.45}
 TUNING["ember_3"] = {"health": 4.67, "boss": 1.33}
-TUNING["ember_4"] = {"health": 5.71, "boss": 0.45}
+TUNING["ember_4"] = {"health": 5.10, "boss": 0.45}
 TUNING["storm_1"] = {"health": 4.89}
 TUNING["storm_2"] = {"health": 5.71, "boss": 0.77}
 TUNING["storm_3"] = {"health": 4.79, "boss": 3.24}
