@@ -305,7 +305,7 @@ def storm_herald_01():
     return sc
 
 
-def _rider(sc, x, feet, name="kaela", lance=True, light=(1, 1, 1), grey=(150, 150, 156), rear=False):
+def _rider(sc, x, feet, name="kaela", lance=True, light=(1, 1, 1), grey=(150, 150, 156), rear=False, hip=44, horse_light=None):
     """A rider on a grey horse. The horse is drawn here with the kit; the rider is the hero's sprite cut at the
     hips and set into the saddle, with the near leg drawn down the horse's flank."""
     import creatures
@@ -346,13 +346,13 @@ def _rider(sc, x, feet, name="kaela", lance=True, light=(1, 1, 1), grey=(150, 15
     s.part(s.capsule(50, 38, 47, 47, 2.8, 2.4), ramp("2a2a30"), edge=False)
     s.ink()
     arr = np.asarray(s.image()).astype(np.float32)
-    arr[..., :3] *= np.array(light, np.float32)
+    arr[..., :3] *= np.array(horse_light or light, np.float32)
     x0, y0 = int(x - 46), int(feet - f)
     r = creatures.CREATURES[name]()
-    ri = np.asarray(r.image()).astype(np.float32)[:50]
+    ri = np.asarray(r.image()).astype(np.float32)[:hip + 6]
     ri[..., :3] *= np.array(light, np.float32)
     sc._paste(arr[..., :3], arr[..., 3] / 255, x0, y0)
-    sc._paste(ri[..., :3], ri[..., 3] / 255, x0 + 46 - r.w // 2 + 2, y0 + 26 - 44)
+    sc._paste(ri[..., :3], ri[..., 3] / 255, x0 + 46 - r.w // 2 + 2, y0 + 26 - hip)
 
 
 def storm_herald_02():
