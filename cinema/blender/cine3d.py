@@ -391,6 +391,21 @@ def render(default_res=67, default_samples=32):
                     d.use = d.type == kind
                 sc.cycles.device = "GPU"
                 break
+    if "--eevee" in argv:   # EEVEE: the fast GPU renderer (story videos); Cycles stays the default (trailer)
+        for eng in ("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE"):
+            try:
+                r.engine = eng; break
+            except TypeError:
+                continue
+        ee = sc.eevee
+        for k, v in (("taa_render_samples", int(opt("--samples", "64"))), ("use_raytracing", True), ("use_shadows", True),
+                     ("volumetric_tile_size", "4"), ("volumetric_samples", 96), ("use_volumetric_shadows", True),
+                     ("use_gtao", True), ("use_bloom", True), ("fast_gi_method", "GLOBAL_ILLUMINATION")):
+            if hasattr(ee, k):
+                try:
+                    setattr(ee, k, v)
+                except (TypeError, ValueError):
+                    pass
     sc.cycles.samples = int(opt("--samples", str(default_samples))); sc.cycles.use_denoising = True
     sc.cycles.volume_step_rate = 4; sc.cycles.max_bounces = 4
     r.resolution_x, r.resolution_y, r.resolution_percentage = 1920, 1080, int(opt("--res", str(default_res)))

@@ -607,3 +607,116 @@ for _k, (_props, _fn, _sc, _post) in _W.items():
         H.SCALE[_c] = _sc
         if _post:
             H.POSTURES[_c] = _post
+
+
+# ------------------------------------------------------------------ the Wardens as mortal monarchs (prologue)
+def crown(f, mat, points=8, r=0.095, h=0.05, spike=0.06, gems=None, gem_rgb=(1, 0.4, 0.1), name="crown", bent=0.0):
+    """A crown on the head bone: a band with `points` spikes; optional glowing gems; `bent` twists the spikes."""
+    J = f.J; top = J["head-2"].z - 0.045; cy = J["head"].y + 0.01
+    bm = bmesh.new()
+    bmesh.ops.create_cone(bm, cap_ends=False, segments=32, radius1=r, radius2=r * 1.04, depth=h, matrix=Matrix.Translation((0, cy, top)))
+    for k in range(points):
+        a = 2 * math.pi * k / points
+        m = Matrix.Translation((math.cos(a) * r * 1.02, cy + math.sin(a) * r * 1.02, top + h / 2 + spike / 2)) @ Matrix.Rotation(bent * ((k % 2) * 2 - 1), 4, "X")
+        bmesh.ops.create_cone(bm, cap_ends=True, segments=6, radius1=0.012, radius2=0.0, depth=spike, matrix=m)
+    me = bpy.data.meshes.new(name); bm.to_mesh(me); bm.free()
+    o = bpy.data.objects.new(name, me); C.sc.collection.objects.link(o)
+    o.modifiers.new("thick", "SOLIDIFY").thickness = 0.004
+    o.data.materials.append(mat); H.on_bone(o, f.rig, "head"); f.add(o)
+    if gems:
+        G = H.glow_mat(name + "_gem", gem_rgb, 6)
+        for k in range(gems):
+            a = 2 * math.pi * (k + 0.5) / gems
+            bpy.ops.mesh.primitive_ico_sphere_add(radius=0.009, subdivisions=2, location=(math.cos(a) * r * 1.05, cy + math.sin(a) * r * 1.05, top))
+            g = bpy.context.object; g.data.materials.append(G); H.on_bone(g, f.rig, "head"); f.add(g)
+    return o
+
+
+def ignar_king(rig, body, ex, J):
+    """Ignar the Forge-King: huge, bearded, a crown of black iron with ember gems."""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.5, 0.3, 0.22), iris=(0.35, 0.15, 0.05))
+    K.long_coat(f, K.leather("forge_king_coat", (0.07, 0.025, 0.015)), f.kn - 0.1, flare=0.4)
+    K.boots(f, K.leather("forge_king_boots", (0.03, 0.02, 0.015)))
+    K.hair(f, 0.1, 18000, melanin=0.95, redness=0.6)
+    K.beard(f, 0.32, 20000, melanin=0.95, redness=0.6)
+    K.brows(f, 400, 0.016, melanin=0.95, redness=0.6)
+    crown(f, C.mat("black_iron", (0.03, 0.03, 0.03), 0.4, metal=1.0), gems=6, gem_rgb=(1.0, 0.35, 0.05))
+    return [body] + f.parts
+
+
+def aurath_king(rig, body, ex, J):
+    """Aurath the Horse-King: a lean rider, a crown of lightning-bent silver."""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.55, 0.4, 0.3), iris=(0.3, 0.35, 0.4))
+    K.long_coat(f, H.quilted("rider_coat", (0.12, 0.14, 0.18)), f.kn, flare=0.3)
+    K.boots(f, K.leather("rider_boots", (0.05, 0.04, 0.03)))
+    K.hair(f, 0.28, 16000, comb_front=(0, 1, 0.1), comb_back=(0, 0.3, -1), hang_below=f.eye.z, melanin=0.5, redness=0.2)
+    K.stubble(f, 0.006, melanin=0.5, redness=0.2)
+    crown(f, H.steel("bent_silver", 0.02), points=7, spike=0.08, bent=0.35)
+    return [body] + f.parts
+
+
+def elowen_queen(rig, body, ex, J):
+    """Elowen the Green Queen: young, a crown of living branches."""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.62, 0.45, 0.36), iris=(0.2, 0.4, 0.15))
+    G = H.robe_cloth("green_gown", (0.05, 0.16, 0.06), rough=0.8, sheen=0.4)
+    f.add(H.wear(body, "gown", lambda c: f.torso(f.pel - 0.1, f.neck - 0.03, 0.025)(c) or f.sleeves(0.03)(c), G, 0.016, 0.008, smooth=12))
+    f.add(H.skirt("gown_skirt", J, f.s4 + 0.02, 0.0, 0.16, 0.42, G, rig, folds=0.035))
+    f.hide_legs()
+    K.hair(f, 0.55, 18000, comb_front=(0, 1, 0.0), comb_back=(0, 0.3, -1), hang_below=f.eye.z - 0.02, melanin=0.35, redness=0.5)
+    K.brows(f, 220, 0.011, melanin=0.35, redness=0.5)
+    branch_crown(f, n=14, seed=8)
+    return [body] + f.parts
+
+
+def thalassa_queen(rig, body, ex, J):
+    """Thalassa the Sea-Queen: tall, a pearl-and-coral crown, sea-green robes."""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.6, 0.47, 0.4), iris=(0.2, 0.45, 0.42))
+    SEA = H.robe_cloth("sea_robes", (0.06, 0.22, 0.2), rough=0.6, sheen=0.5)
+    f.add(H.wear(body, "robe", lambda c: f.torso(f.pel - 0.1, f.neck - 0.02, 0.025)(c) or f.sleeves(0.02)(c), SEA, 0.018, 0.008, smooth=12))
+    f.add(H.skirt("robe_skirt", J, f.s4 + 0.02, 0.0, 0.17, 0.46, SEA, rig, folds=0.04))
+    f.hide_legs()
+    K.hair(f, 0.6, 18000, comb_front=(0, 1, 0.0), comb_back=(0, 0.3, -1), hang_below=f.eye.z - 0.02, melanin=0.9, redness=0.1)
+    crown(f, C.mat("coral", (0.75, 0.25, 0.2), 0.5), points=9, spike=0.07, bent=0.25, gems=9, gem_rgb=(0.9, 0.9, 0.85))
+    return [body] + f.parts
+
+
+def orrok_king(rig, body, ex, J):
+    """Orrok the Mountain-King: vast, a stone crown carved from the mountain, a beard like a landslide."""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.48, 0.34, 0.26), iris=(0.45, 0.28, 0.08))
+    K.plate_set(f, K.stone("mountain_mail", (0.25, 0.23, 0.2)), legs=False, pauldron=1.3)
+    f.add(H.wear(body, "tunic", f.sleeves(0.05), H.quilted("king_tunic", (0.2, 0.15, 0.1)), 0.014, 0.008))
+    K.boots(f, K.leather("king_boots", (0.05, 0.035, 0.025)))
+    K.beard(f, 0.55, 26000, push=0.2, melanin=0.3, redness=0.1)
+    K.hair(f, 0.12, 16000, melanin=0.3, redness=0.1)
+    crown(f, K.stone("stone_crown", (0.35, 0.32, 0.28)), points=6, r=0.1, h=0.06, spike=0.05)
+    return [body] + f.parts
+
+
+def nyxara_queen(rig, body, ex, J):
+    """Nyxara the Star-Queen: veiled, a crown of black iron set with real stars, her face hidden even then."""
+    f = Fig(rig, body, ex, J)
+    f.skin((0.55, 0.5, 0.55), iris=(0.1, 0.1, 0.15))
+    SKY = starfield("queen_night", cloth=True)
+    f.add(H.wear(body, "gown", lambda c: f.torso(f.pel - 0.1, f.neck - 0.02, 0.025)(c) or f.sleeves(0.03)(c), SKY, 0.016, 0.008, smooth=12))
+    f.add(H.skirt("gown_skirt", J, f.s4 + 0.02, -0.01, 0.15, 0.44, SKY, rig, folds=0.04))
+    f.hide_legs()
+    f.add(H.head_veil(rig, J, H.veil_mat("star_veil", (0.01, 0.01, 0.015), 0.92), drop=0.8, open_front=0.0))
+    crown(f, C.mat("star_iron", (0.03, 0.03, 0.035), 0.4, metal=1.0), points=8, r=0.12, gems=8, gem_rgb=(0.9, 0.92, 1.0))
+    return [body] + f.parts
+
+
+for _k, _props, _fn in (
+        ("ignar_king", dict(height=2.35, gender=1.0, muscle=0.9, weight=0.8, tall=0.9, age=0.6), ignar_king),
+        ("aurath_king", dict(height=2.3, gender=1.0, muscle=0.6, weight=0.2, tall=0.85, age=0.6), aurath_king),
+        ("elowen_queen", dict(height=2.05, gender=0.0, muscle=0.25, weight=0.2, tall=0.5, age=0.45), elowen_queen),
+        ("thalassa_queen", dict(height=2.25, gender=0.0, muscle=0.3, weight=0.25, tall=0.95, age=0.55), thalassa_queen),
+        ("orrok_king", dict(height=2.45, gender=1.0, muscle=1.0, weight=0.95, tall=1.0, age=0.7), orrok_king),
+        ("nyxara_queen", dict(height=2.3, gender=0.0, muscle=0.15, weight=0.05, tall=1.0, age=0.5), nyxara_queen)):
+    H.HUMANS[_k] = (_props, _fn)
+for _k in ("elowen_queen", "thalassa_queen", "nyxara_queen"):
+    H.POSTURES[_k] = H.POSTURES["ysolde"]

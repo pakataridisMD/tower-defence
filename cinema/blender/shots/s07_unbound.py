@@ -18,8 +18,8 @@ for i in range(46):
     rig = C.char(C.SK + kind + ".glb", ((col - 0.5) * 1.6 + random.uniform(-0.3, 0.3), -66 - row * 2.2, 0), math.pi,
                  "Walking_D_Skeletons", random.random(), scale=1.1)
     C.grey_eyes(rig); C.march(rig, 1.0, sign=1)
-cam = C.camera(40, fstop=4.0, focus=herald)
+cam = C.camera(50, fstop=4.0, focus=herald)
 # Low on the road ahead of them, backing away as they come on.
-C.key_cam(cam, [(0, (2.5, -44, 1.4), (90, 0, 172)), (8, (2.0, -40, 1.2), (90, 0, 175))])
+C.key_cam(cam, [(0, (1.6, -50, 1.0), (93, 0, 173)), (8, (1.2, -46.5, 0.9), (94, 0, 175))])   # low and close: she fills the frame as she comes on
 C.shake(cam, 0.003, 4)
 C.render()
