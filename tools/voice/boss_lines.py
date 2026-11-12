@@ -41,6 +41,16 @@ def preset_for(entry: dict) -> dict:
             "stability": entry.get("stability", 0.0)}
 
 
+def for_line(preset: dict, text: str) -> dict:
+    """A whisper has no voice for the beast to growl through, and burying it loses the words:
+    whispered lines keep the monster lighter."""
+    b = preset.get("beast")
+    if not b or not text.lstrip().lower().startswith("[whisper"):
+        return preset
+    return {**preset, "beast": {**b, "pitch": max(b.get("pitch", -3), -2), "sub": b.get("sub", 0) * 0.5,
+                                "growl": b.get("growl", 0) * 0.4, "grit": 0}}
+
+
 def voiced_length(path: Path) -> float:
     """Seconds to the last word, before the hall's echo dies away (the boss's jaw stops there)."""
     x, sr = sf.read(path)
@@ -81,7 +91,7 @@ def main() -> None:
                     with narrate.tempfile.TemporaryDirectory() as tmp:
                         raw = Path(tmp) / "raw.wav"
                         sf.write(raw, narrate._trim(audio, sr), sr)
-                        narrate.master(raw, out, preset)
+                        narrate.master(raw, out, for_line(preset, text))
                     secs = round(sf.info(out).duration - 0.6, 2)   # master() pads 0.6 s of tail
                     item["lines"].setdefault(kind, []).append({"file": rel, "text": text, "secs": secs,
                                                                "voiced": voiced_length(out)})
