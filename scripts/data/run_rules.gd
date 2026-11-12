@@ -6,7 +6,10 @@ extends Resource
 @export var starting_lives: int = 20
 ## Tree points available before the first wave, so the player can pick a first element.
 @export var starting_tree_points: int = 1
-## One in-run tree point every this many waves.
+## Tree points paid every `waves_per_tree_point` waves. The skill web's costs are set against this:
+## its nearest nodes cost 1 point and its rim up to 6.
+@export var tree_points_per_wave: int = 1
+## Tree points are paid every this many waves.
 @export var waves_per_tree_point: int = 2
 ## Extra tree points for beating a boss wave.
 @export var tree_points_per_boss: int = 1
@@ -26,7 +29,7 @@ extends Resource
 func tree_points_after_wave(wave_number: int, wave_was_boss: bool) -> int:
 	var points := 0
 	if waves_per_tree_point > 0 and wave_number % waves_per_tree_point == 0:
-		points += 1
+		points += tree_points_per_wave
 	if wave_was_boss:
 		points += tree_points_per_boss
 	return points

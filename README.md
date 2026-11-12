@@ -22,8 +22,8 @@ Enemies walk the brown road from IN to OUT. Each one that gets out costs lives; 
 Clear all ten waves to win.
 
 1. Open the **skill web** (T) and take a node. An element's first node unlocks its tower and its skill, and
-   the bridge between two elements unlocks their hybrid. You get one point at the start and one for each wave
-   you clear.
+   the bridge between two elements unlocks their hybrid. You get three points at the start and three for each
+   wave you clear; nodes cost more the further they are from the middle.
 2. Pick a tower on the right (or press its number) and click an empty tile to build it. Shift-click builds
    several. Click a tower to level it up, ascend it or fuse it with another element.
 3. Press **Space** to start the next wave. The top bar shows its element: enemies take half damage from that
@@ -60,8 +60,9 @@ the last wave as on the first.
 
 On the main menu, **C** opens the campaign, **M** the meta tree, and **Enter** starts a skirmish.
 
-In the skill web, left-click takes a node. Right-click refunds a node you took in the current break between
-waves, until you start the next wave.
+In the skill web, left-click takes a node; clicking a node further out takes the whole way to it when you have
+the points. Right-click refunds a node you took in the current break between waves (from the tip inward),
+until you start the next wave. Drag or WASD moves the web, the mouse wheel zooms and F shows all of it.
 
 ## Campaign
 
@@ -154,6 +155,24 @@ When exporting the game, add `data/story/*.json` and `assets/story/music/*.json`
 
 `godot --resolution 1920x1080 --fixed-fps 30 res://tools/capture.tscn -- --out=<folder> --story` takes
 screenshots of the cinematic player, two Herald fights, the assault and the campaign map with the citadel.
+
+## Skill web
+
+The skill web is the tree you spend points on during a run (T). It has about 400 nodes, drawn as a spider
+web around the Origin, and is written by `tools/web/gen_skill_web.py` (edit its tables and rerun it, rather
+than editing `data/trees/in_run/*.tres` by hand):
+
+- Six element wedges. Each starts with the element's entry node (its tower and skill), runs out along
+  spokes of small travel nodes and is crossed by ring threads at 385, 640, 895 and 1150. Notables sit on the
+  threads: the core (which with other cores unlocks the dual and triple towers) at 385, the old notable at 640.
+- The outer wedge has six spokes: the element's two side themes, its status, damage, attack speed and its skill.
+- Two keystones at the tip of each wedge, a pick-one choice. Focus, Overcharge and Hoard still need the meta tree.
+- Three bridges on each border: the old bridge that unlocks the neighbours' dual tower, a Confluence and a
+  Concord that make that dual stronger.
+- Costs climb with distance: 1 point for the first rings, then 2, 3, 4 and 5 at the rim, 6 for a keystone;
+  a notable costs one more than its ring. Each bonus is small (2 to 6% on a travel node). Runs pay 3 points
+  at the start, 3 per wave and 3 per boss (`data/rules/run_rules.tres`), so a short stage buys a path or two
+  and only long runs reach the rim.
 
 ## Meta tree and saves
 
@@ -361,8 +380,8 @@ per frame. That keeps runs repeatable, which the balance tests rely on.
 All balance numbers live in `data/`. Open any `.tres` file in Godot and edit it in the Inspector.
 
 - **New tower:** duplicate a file in `data/towers/`, give it a new `id`, and unlock it from a tree node's `unlocks_towers`.
-- **New tree node:** add a `TreeNodeData` file to `data/trees/in_run/` (or `data/trees/meta/` for the meta tree)
-  and list the id of a node it connects to in `links`. Links work both ways. `region` is the element id in the
+- **New tree node:** change the tables in `tools/web/gen_skill_web.py` (or `tools/meta/gen_meta_tree.py` for the
+  meta tree) and rerun it. Each node is a `TreeNodeData` file that lists the id of a node it connects to in `links`. Links work both ways. `region` is the element id in the
   skill web and the branch id (`arsenal`, `command`, `expeditions` or `mastery`) in the meta tree.
 - **Meta unlocks:** list ids in a meta node's `unlocks_nodes`, `unlocks_maps` or `unlocks_difficulties`.
   Run-wide bonuses are modifiers to `starting_gold`, `starting_lives`, `starting_tree_points`, `gold_per_wave`,

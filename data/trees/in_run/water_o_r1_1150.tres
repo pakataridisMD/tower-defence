@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"attacks_per_second"
+kind = 1
+value = 0.04
+required_tags = Array[StringName]([&"water"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"water_o_r1_1150"
+display_name = "Swift Current VI"
+description = "Water towers attack 4% faster."
+kind = 2
+region = &"water"
+cost = 5
+position = Vector2(-96, 1146)
+links = Array[StringName]([&"water_o_r1_1065", &"water_o_r2_1150"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

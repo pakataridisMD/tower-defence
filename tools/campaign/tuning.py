@@ -9,33 +9,37 @@
 # waves and the horde's powers. The lands open in order, so those profiles hold. Retuned again the
 # same day once each land's own horde (tools/campaign/horde.py, five kinds per land) joined its waves.
 # converge_2, nature_3 and water_3 sit 5% under what the tune found: the bot only scraped through there.
+# Retuned again on 2026-11-12 when the skill web grew tenfold (397 nodes, climbing costs, smaller
+# bonuses, three skill points a wave): every element and Convergence stage, from a local --tune per stage.
+# nature_4 and earth_3 sit 5% under what that tune found: the bot lost or only scraped through there.
+# These were found with full minor enemy health; the campaign's halving of it (RunSim) comes on top.
 TUNING["ember_1"] = {"health": 3.05}
-TUNING["ember_2"] = {"health": 3.93, "boss": 0.45}
-TUNING["ember_3"] = {"health": 4.67, "boss": 1.33}
-TUNING["ember_4"] = {"health": 5.71, "boss": 0.45}
-TUNING["storm_1"] = {"health": 4.89}
-TUNING["storm_2"] = {"health": 5.71, "boss": 0.77}
-TUNING["storm_3"] = {"health": 4.79, "boss": 3.24}
-TUNING["storm_4"] = {"health": 15.42, "boss": 0.21}
-TUNING["nature_1"] = {"health": 7.7}
-TUNING["nature_2"] = {"health": 11.91, "boss": 0.47}
-TUNING["nature_3"] = {"health": 6.82, "boss": 1.23}
-TUNING["nature_4"] = {"health": 7.04, "boss": 0.53}
-TUNING["water_1"] = {"health": 8.96}
-TUNING["water_2"] = {"health": 11.91, "boss": 0.3}
-TUNING["water_3"] = {"health": 13.62, "boss": 1.09}
-TUNING["water_4"] = {"health": 12.06, "boss": 4.11}
-TUNING["earth_1"] = {"health": 6.15}
-TUNING["earth_2"] = {"health": 7.11, "boss": 7.57}
-TUNING["earth_3"] = {"health": 5.34, "boss": 0.77}
-TUNING["earth_4"] = {"health": 8.51, "boss": 0.24}
-TUNING["void_1"] = {"health": 6.67}
-TUNING["void_2"] = {"health": 11.32, "boss": 1.59}
-TUNING["void_3"] = {"health": 8.51, "boss": 1.53}
-TUNING["void_4"] = {"health": 15.6, "boss": 0.59}
-TUNING["converge_1"] = {"health": 11.47, "boss": 0.71}
-TUNING["converge_2"] = {"health": 8.15, "boss": 0.68}
-TUNING["converge_3"] = {"health": 9.47, "boss": 0.28}
+TUNING["ember_2"] = {"health": 3.86, "boss": 0.39}
+TUNING["ember_3"] = {"health": 4.01, "boss": 1.30}
+TUNING["ember_4"] = {"health": 6.00, "boss": 0.33}
+TUNING["storm_1"] = {"health": 6.59}
+TUNING["storm_2"] = {"health": 6.81, "boss": 1.39}
+TUNING["storm_3"] = {"health": 5.26, "boss": 1.97}
+TUNING["storm_4"] = {"health": 13.49, "boss": 0.28}
+TUNING["nature_1"] = {"health": 6.75}
+TUNING["nature_2"] = {"health": 10.95, "boss": 0.45}
+TUNING["nature_3"] = {"health": 6.30, "boss": 1.74}
+TUNING["nature_4"] = {"health": 6.55, "boss": 0.45}
+TUNING["water_1"] = {"health": 8.59}
+TUNING["water_2"] = {"health": 11.32, "boss": 0.36}
+TUNING["water_3"] = {"health": 13.46, "boss": 0.85}
+TUNING["water_4"] = {"health": 11.71, "boss": 3.03}
+TUNING["earth_1"] = {"health": 6.22}
+TUNING["earth_2"] = {"health": 9.77, "boss": 0.28}
+TUNING["earth_3"] = {"health": 4.93, "boss": 3.96}
+TUNING["earth_4"] = {"health": 8.59, "boss": 2.85}
+TUNING["void_1"] = {"health": 6.22}
+TUNING["void_2"] = {"health": 13.56, "boss": 1.40}
+TUNING["void_3"] = {"health": 7.70, "boss": 1.50}
+TUNING["void_4"] = {"health": 13.49, "boss": 3.55}
+TUNING["converge_1"] = {"health": 11.54, "boss": 0.59}
+TUNING["converge_2"] = {"health": 11.17, "boss": 0.24}
+TUNING["converge_3"] = {"health": 13.83, "boss": 0.24}
 # The final level was rebuilt as 38 rolling waves, Vael-Orrun's three forms on wave 39 and the
 # counter-attack on 40; set by hand with `campaign_balance.gd -- --stage=assault_1 --health=X --boss=X`.
 # The boss is the cliff (his last form must fall before the end of the road): the bot won up to

@@ -878,7 +878,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"earth"
 is_boss = true
-health_multiplier = 0.77
+health_multiplier = 1.39
 description = "Stragglers, an ambush, Splitter packs, brutes under escort, Runebearers, runner packs and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r100"), SubResource("r101"), SubResource("r102"), SubResource("r103"), SubResource("r104"), SubResource("r105"), SubResource("r106"), SubResource("r107"), SubResource("r108"), SubResource("r109"), SubResource("r110"), SubResource("r111")])
 
@@ -887,5 +887,5 @@ script = ExtResource("1_s")
 id = &"c_storm_2"
 display_name = "Galeback Ridge"
 health_growth = 1.1
-health_scale = 5.71
+health_scale = 6.81
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r13"), SubResource("r22"), SubResource("r30"), SubResource("r39"), SubResource("r48"), SubResource("r57"), SubResource("r67"), SubResource("r78"), SubResource("r88"), SubResource("r99"), SubResource("r112")])

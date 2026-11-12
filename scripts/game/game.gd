@@ -14,6 +14,8 @@ const SPEEDS: Array[int] = [1, 2, 3]
 ## frame cannot snowball into a slower one.
 const MAX_STEPS_PER_FRAME := 12
 const MENU_SCENE := "res://scenes/main.tscn"
+## The skill web's ring threads, drawn as dotted circles behind its nodes (see tools/web/gen_skill_web.py).
+const WEB_RING_RADII: Array[float] = [385.0, 640.0, 895.0, 1150.0]
 const CAMPAIGN_SCENE := "res://scenes/campaign/campaign_map.tscn"
 ## Seconds the autoplayer waits at each point of a break, so footage shows the build phase.
 const BOT_BREAK := 1.5
@@ -169,10 +171,20 @@ func _build_views() -> void:
 	add_child(web_layer)
 	web = SkillWebView.new()
 	web.title = "Skill web"
-	web.subtitle = "Take nodes to unlock towers and make them stronger. You earn a point for every wave you clear. " + \
-		"The core nodes of two elements unlock their dual tower, and of three their triple. " + \
-		"Right-click refunds a node taken in this break, until you start the next wave."
+	var rules := sim.config.rules
+	web.subtitle = ("Take nodes to unlock towers and make them stronger. Every wave you clear pays %d points, and " +
+		"nodes cost more the further out they are. Click a far node to take the whole way to it. The core nodes of " +
+		"two elements unlock their dual tower, and of three their triple. Right-click refunds a node taken in this " +
+		"break, from the tip inward.") % rules.tree_points_per_wave
+	web.navigable = true
+	web.takes_paths = true
+	web.ring_radii = WEB_RING_RADII
+	web.count_noun = "nodes"
+	web.close_text = "Close (T)"
 	web.can_refund = sim.can_refund_node
+	var whole_web := UiStyle.button("Whole web (F)", 20)
+	whole_web.pressed.connect(func() -> void: web.show_whole_tree())
+	web.add_header_button(whole_web)
 	web.hide()
 	web_layer.add_child(web)
 

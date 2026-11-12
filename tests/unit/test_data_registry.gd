@@ -33,7 +33,7 @@ func test_prototype_content_loads() -> void:
 
 func test_in_run_tree_unlocks_every_prototype_tower() -> void:
 	var graph: TreeGraph = registry.in_run_tree()
-	var state := TreeState.new(graph, 999)
+	var state := TreeState.new(graph, 100000)
 	# Take every node, nearest first, as a player with unlimited points would.
 	var taken_any := true
 	while taken_any:
@@ -41,7 +41,13 @@ func test_in_run_tree_unlocks_every_prototype_tower() -> void:
 		for id in graph.ids():
 			if state.allocate(id):
 				taken_any = true
-	assert_eq(state.allocated_ids().size(), graph.size(), "every node is reachable")
+	# Each keystone pair is a pick-one choice: one of the two stays closed.
+	var closed := 0
+	for id in graph.ids():
+		if state.is_excluded(id):
+			closed += 1
+	assert_gt(closed, 0, "the keystone pairs close their partners")
+	assert_eq(state.allocated_ids().size() + closed, graph.size(), "every node is reachable")
 	for tower_id: StringName in registry.towers:
 		var data: TowerData = registry.towers[tower_id]
 		if data.requires_nodes.is_empty():
