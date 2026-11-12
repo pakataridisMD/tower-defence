@@ -2,6 +2,13 @@ class_name RunConfig
 extends RefCounted
 ## Everything a run needs. Built from the loaded data, or by hand in tests.
 
+## Endless skirmish: the horde starts at half strength and grows 3% a wave, in numbers and in health
+## each. Played by the bot on Switchback: a new player falls around wave 15 whatever the rate (the
+## first Warden after the map's own waves); a player who has freed the six lands reaches about wave
+## 95 at 3%, 80 at 4% and 60 at 5%.
+const ENDLESS_START := 0.5
+const ENDLESS_GROWTH := 1.03
+
 var map: MapData
 var wave_set: WaveSet
 var rules: RunRules
@@ -17,9 +24,12 @@ var run_modifiers: Array[Modifier] = []
 var locked_tree_nodes: Array[StringName] = []
 ## The difficulty level picked for the run. Null plays at normal strength.
 var difficulty: DifficultyData
-## Endless skirmish: after the last wave the waves keep coming, and every RunSim.ENDLESS_STEP waves they
-## bring twice as many enemies with twice the health (see RunSim).
+## Endless skirmish: after the last wave the waves keep coming. The horde starts at endless_start of
+## the map's numbers and health and grows by endless_growth every wave, in numbers and in health
+## each (see RunSim.endless_multiplier).
 var endless := false
+var endless_start := ENDLESS_START
+var endless_growth := ENDLESS_GROWTH
 ## Skill web nodes taken for free at the start, such as a campaign stage's starting nodes.
 var granted_tree_nodes: Array[StringName] = []
 ## The campaign stage being played and its campaign, or null in a skirmish.
