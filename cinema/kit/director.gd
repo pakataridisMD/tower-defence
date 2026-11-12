@@ -35,6 +35,11 @@ func _ready() -> void:
 	film = load("res://films/%s.gd" % name).new()
 	edit = film.edit()
 	t_end = edit[-1][1]
+	if OS.get_environment("CUES_OUT") != "":
+		_write_cues(OS.get_environment("CUES_OUT"))
+		get_tree().quit()
+		set_process(false)
+		return
 	if OS.get_environment("T0") != "":
 		t_start = float(OS.get_environment("T0"))
 	if OS.get_environment("T1") != "":
@@ -62,8 +67,12 @@ func _ready() -> void:
 	flash_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ov.add_child(flash_rect)
 	var font := load("res://fonts/Cinzel.ttf") as FontFile
-	sub_label = _label(font, 44, Color(0.96, 0.93, 0.88), 3, 600, Color(0, 0, 0, 0.85), 10)
-	sub_label.position = Vector2(0, 900)
+	sub_label = _label(font, 38, Color(0.96, 0.93, 0.88), 3, 600, Color(0, 0, 0, 0.85), 10)
+	# Long lines wrap onto up to three rows that sit just above the lower letterbox bar.
+	sub_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	sub_label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+	sub_label.position = Vector2(160, 810)
+	sub_label.size = Vector2(1600, 196)
 	ov.add_child(sub_label)
 	card_small = _label(font, 30, Color(1, 1, 1), 12, 600, Color(0, 0, 0, 0.7), 14)
 	ov.add_child(card_small)
@@ -137,6 +146,16 @@ func _process(_delta: float) -> void:
 	if frame >= frames:
 		# Movie Maker still writes the frame drawn this iteration, then the tree quits before the next one.
 		get_tree().quit()
+
+
+## Writes the film's length and audio cues (kind, file, start seconds), one tab-separated line each, for render.sh.
+func _write_cues(path: String) -> void:
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	f.store_line("length\t\t%.4f" % t_end)
+	if film.has_method("audio"):
+		for c in film.audio():
+			f.store_line("%s\t%s\t%.4f" % [c[0], c[1], c[2]])
+	f.close()
 
 
 func Stage_ease(a: float) -> float:

@@ -14,6 +14,7 @@ however heavy the lights, fog and particles are.
 | `kit/stage.gd` | One shot's stage: parallax camera rig over depth layers, and builders for split stills, animated lit actors, people, lights, glows, fog, sky, ridges, drifting particles, bursts and lightning. |
 | `kit/*.gdshader` | Smooth pixel-art sampling (with and without normal maps), sky, fog, post. |
 | `films/seven_crowns.gd` | The 78 s "War of Seven Crowns" story trailer, 18 shots. |
+| `films/cutscene.gd` | Any game cutscene, built from `data/story/cinematics/<SCENE>.json`, its images, voice lines and music cue. `films/scenes/<SCENE>.gd` can stage single shots by hand (`func shot_NN(st, init, info)`). |
 | `art/stills/<cinematic>_<NN>/` | Story stills split into depth layers (`0.png` back ... `front`), made by `tools/layer_stills.py`. |
 | `art/anim`, `art/people`, `art/land` | Copies of the pix2d sprites (with normal maps), hero figures and landing art. |
 | `fonts/Cinzel.ttf` | Cinzel by Natanael Gama, SIL Open Font License 1.1 (free for commercial use). |
@@ -25,6 +26,14 @@ however heavy the lights, fog and particles are.
 godot --headless --path cinema --import            # once
 GODOT=godot cinema/render.sh out.mp4 cinema/audio/seven_crowns_mix.ogg seven_crowns
 ```
+
+A game cutscene builds its own sound (music ducked under each voice line):
+
+```sh
+SCENE=earth_herald GODOT=godot cinema/render.sh earth_herald.mp4 auto cutscene
+```
+
+`STORY_ROOT=<other checkout>` takes the story data, images and voices from another branch.
 
 On a Mac or PC with a graphics card this runs close to real time. In a cloud box without a GPU it falls back to
 `xvfb-run` + software OpenGL and takes about 1 to 2 hours for 78 s.
