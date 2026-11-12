@@ -6,10 +6,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -24,7 +39,8 @@
   "frame": [
    106,
    112
-  ]
+  ],
+  "height": 67
  },
  "battering_ram": {
   "anims": {
@@ -33,10 +49,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -51,7 +82,8 @@
   "frame": [
    130,
    102
-  ]
+  ],
+  "height": 40
  },
  "crossbowman": {
   "anims": {
@@ -60,10 +92,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -78,7 +125,8 @@
   "frame": [
    106,
    112
-  ]
+  ],
+  "height": 49
  },
  "ember_knight": {
   "anims": {
@@ -87,10 +135,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -105,7 +168,8 @@
   "frame": [
    106,
    112
-  ]
+  ],
+  "height": 62
  },
  "firebrand": {
   "anims": {
@@ -114,10 +178,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -132,7 +211,8 @@
   "frame": [
    106,
    112
-  ]
+  ],
+  "height": 48
  },
  "footman": {
   "anims": {
@@ -141,10 +221,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -159,7 +254,8 @@
   "frame": [
    106,
    112
-  ]
+  ],
+  "height": 53
  },
  "gale_lancer": {
   "anims": {
@@ -168,10 +264,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -186,7 +297,8 @@
   "frame": [
    122,
    116
-  ]
+  ],
+  "height": 58
  },
  "griffin_rider": {
   "anims": {
@@ -195,10 +307,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -213,7 +340,8 @@
   "frame": [
    126,
    120
-  ]
+  ],
+  "height": 71
  },
  "hollow_hunter": {
   "anims": {
@@ -222,10 +350,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -240,7 +383,8 @@
   "frame": [
    106,
    112
-  ]
+  ],
+  "height": 48
  },
  "ironbreaker": {
   "anims": {
@@ -249,10 +393,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -267,7 +426,8 @@
   "frame": [
    110,
    104
-  ]
+  ],
+  "height": 46
  },
  "lantern_cleric": {
   "anims": {
@@ -276,10 +436,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -294,7 +469,8 @@
   "frame": [
    106,
    112
-  ]
+  ],
+  "height": 48
  },
  "pearl_marine": {
   "anims": {
@@ -303,10 +479,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -321,7 +512,8 @@
   "frame": [
    106,
    112
-  ]
+  ],
+  "height": 57
  },
  "pikeman": {
   "anims": {
@@ -330,10 +522,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -348,7 +555,8 @@
   "frame": [
    106,
    112
-  ]
+  ],
+  "height": 69
  },
  "root_archer": {
   "anims": {
@@ -357,10 +565,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -375,7 +598,8 @@
   "frame": [
    108,
    114
-  ]
+  ],
+  "height": 50
  },
  "spire_golem": {
   "anims": {
@@ -384,10 +608,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -402,7 +641,8 @@
   "frame": [
    128,
    128
-  ]
+  ],
+  "height": 68
  },
  "stormcaller": {
   "anims": {
@@ -411,10 +651,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -429,7 +684,8 @@
   "frame": [
    106,
    112
-  ]
+  ],
+  "height": 60
  },
  "sunstone_catapult": {
   "anims": {
@@ -438,10 +694,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -456,7 +727,8 @@
   "frame": [
    120,
    110
-  ]
+  ],
+  "height": 30
  },
  "tide_priestess": {
   "anims": {
@@ -465,10 +737,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -483,7 +770,8 @@
   "frame": [
    106,
    112
-  ]
+  ],
+  "height": 61
  },
  "veil_blade": {
   "anims": {
@@ -492,10 +780,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -510,7 +813,8 @@
   "frame": [
    106,
    112
-  ]
+  ],
+  "height": 48
  },
  "warhound": {
   "anims": {
@@ -519,10 +823,25 @@
     "frames": 8,
     "loop": false
    },
+   "cry": {
+    "fps": 9,
+    "frames": 8,
+    "loop": false
+   },
    "death": {
     "fps": 10,
     "frames": 8,
     "loop": false
+   },
+   "hurt": {
+    "fps": 14,
+    "frames": 4,
+    "loop": false
+   },
+   "idle": {
+    "fps": 6,
+    "frames": 6,
+    "loop": true
    },
    "walk": {
     "fps": 10,
@@ -537,6 +856,7 @@
   "frame": [
    108,
    96
-  ]
+  ],
+  "height": 36
  }
 }

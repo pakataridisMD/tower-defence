@@ -1,0 +1,38 @@
+{
+  "id": "realm_storm_1_calm",
+  "title": "Thunderhead",
+  "duration": 103.7838,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 25.95,
+      "name": "B"
+    },
+    {
+      "time": 51.89,
+      "name": "C"
+    },
+    {
+      "time": 77.84,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 103.7838,
+  "loop_samples": 4576865,
+  "handover_seconds": 103.7838,
+  "bpm": 148,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "realm_storm_1_calm.ogg",
+    "wave": "realm_storm_1_wave.ogg",
+    "boss": "realm_storm_1_boss.ogg"
+  }
+}

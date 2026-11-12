@@ -1,6 +1,6 @@
 class_name PlayerProfile
 extends RefCounted
-## Everything that lasts between runs: meta points, the meta tree nodes taken, run records and the
+## Everything that lasts between runs, for one playthrough (one New Game): meta points, the meta tree nodes taken, run records and the
 ## map and difficulty picked last, and the campaign stages won. SaveFile stores it as versioned JSON.
 
 ## Bump this when the saved shape changes, and teach migrate() to upgrade older saves.
@@ -9,6 +9,10 @@ const VERSION := 4
 ## Every meta point ever earned. Unspent points are this minus the cost of the nodes taken, so
 ## changing a node's cost in an update can never leave a save with negative points.
 var meta_points_earned := 0
+## Which playthrough this is: each New Game gets the next number, and its own name ("Game 2").
+## Saves made before playthroughs existed are Game 1.
+var playthrough_id := 1
+var playthrough_name := "Game 1"
 ## Meta tree nodes taken, not counting the start, in the order they were taken.
 var meta_nodes: Array[StringName] = []
 var runs_played := 0
@@ -18,6 +22,10 @@ var best_waves := 0
 var enemies_killed := 0
 var last_map: StringName = &""
 var last_difficulty: StringName = &""
+## True when the last skirmish picked was endless.
+var last_endless := false
+## Most waves cleared in an endless skirmish, by map id.
+var endless_best: Dictionary[StringName, int] = {}
 ## Best stars (1 to 3) for each campaign stage won. A stage that is missing has not been won.
 var stage_stars: Dictionary[StringName, int] = {}
 ## Story cinematics already played, in the order they were seen. Each plays on its own only once;
@@ -50,6 +58,7 @@ func to_dict() -> Dictionary:
 		stars[String(id)] = stage_stars[id]
 	return {
 		"version": VERSION,
+		"playthrough": {"id": playthrough_id, "name": playthrough_name},
 		"meta_points_earned": meta_points_earned,
 		"meta_nodes": nodes,
 		"stats": {
@@ -60,6 +69,7 @@ func to_dict() -> Dictionary:
 		},
 		"last_map": String(last_map),
 		"last_difficulty": String(last_difficulty),
+		"endless": {"on": last_endless, "best": _string_keys(endless_best)},
 		"campaign": {"stars": stars},
 		"story": {"seen": seen},
 		"heroes": {"party": party},
@@ -89,6 +99,11 @@ static func _read_counts(source: Variant, into: Dictionary[StringName, int]) -> 
 static func from_dict(saved: Dictionary) -> PlayerProfile:
 	var data := migrate(saved)
 	var profile := PlayerProfile.new()
+	var playthrough: Variant = data.get("playthrough", {})
+	if playthrough is Dictionary:
+		profile.playthrough_id = maxi(1, _read_int(playthrough, "id"))
+		var name := _read_string(playthrough, "name")
+		profile.playthrough_name = name if not name.is_empty() else "Game %d" % profile.playthrough_id
 	profile.meta_points_earned = maxi(0, _read_int(data, "meta_points_earned"))
 	var nodes: Variant = data.get("meta_nodes", [])
 	if nodes is Array:
@@ -103,6 +118,10 @@ static func from_dict(saved: Dictionary) -> PlayerProfile:
 		profile.enemies_killed = maxi(0, _read_int(stats, "enemies_killed"))
 	profile.last_map = StringName(_read_string(data, "last_map"))
 	profile.last_difficulty = StringName(_read_string(data, "last_difficulty"))
+	var endless: Variant = data.get("endless", {})
+	if endless is Dictionary:
+		profile.last_endless = (endless as Dictionary).get("on", false) == true
+		_read_counts((endless as Dictionary).get("best", {}), profile.endless_best)
 	var campaign: Variant = data.get("campaign", {})
 	if campaign is Dictionary:
 		var stars: Variant = (campaign as Dictionary).get("stars", {})

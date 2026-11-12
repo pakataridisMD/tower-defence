@@ -12,9 +12,16 @@ extends Resource
 ## elements that are not neighbours, which have no bridge node between them.
 @export var requires_nodes: Array[StringName] = []
 ## Extra tags that tree modifiers can target. Element ids, "hybrid" and "triple" are added automatically.
+## "longshot" marks the long-range towers: they cover most of the map, never fuse into hybrids and
+## sit after the base towers in the shop.
 @export var tags: Array[StringName] = []
 
+## Which enemy in range a tower shoots. FIRST is the one closest to leaving the map; WEAKEST is the
+## one with the least health left, so the shots finish off stragglers and swarms.
+enum Targeting { FIRST, WEAKEST }
+
 @export_group("Attack")
+@export var targeting: Targeting = Targeting.FIRST
 @export var damage: float = 10.0
 @export var attacks_per_second: float = 1.0
 ## Pixels.
@@ -67,6 +74,11 @@ func is_dual() -> bool:
 
 func is_triple() -> bool:
 	return elements.size() == 3
+
+
+## True for the long-range rapid-fire towers (tag "longshot").
+func is_longshot() -> bool:
+	return tags.has(&"longshot")
 
 
 ## Tags used to decide which modifiers apply to this tower.

@@ -1189,6 +1189,93 @@
     42,
     76
    ]
+  },
+  "storm_skyneedle": {
+   "size": [
+    34,
+    118
+   ],
+   "anchor": [
+    17,
+    114
+   ],
+   "muzzle": [
+    0,
+    -110
+   ],
+   "light": {
+    "color": "#ffe27a",
+    "offset": [
+     0,
+     -110
+    ],
+    "energy": 0.9,
+    "range": 95,
+    "height": 60
+   },
+   "emitter": "sparks",
+   "emitter_offset": [
+    0,
+    -110
+   ]
+  },
+  "nature_eyrie": {
+   "size": [
+    48,
+    106
+   ],
+   "anchor": [
+    24,
+    102
+   ],
+   "muzzle": [
+    17,
+    -76
+   ],
+   "light": {
+    "color": "#9ae04a",
+    "offset": [
+     17,
+     -76
+    ],
+    "energy": 0.7,
+    "range": 85,
+    "height": 50
+   },
+   "emitter": "leaves",
+   "emitter_offset": [
+    17,
+    -76
+   ]
+  },
+  "fire_flare_battery": {
+   "size": [
+    46,
+    96
+   ],
+   "anchor": [
+    23,
+    92
+   ],
+   "muzzle": [
+    7,
+    -75
+   ],
+   "light": {
+    "color": "#ff9a48",
+    "offset": [
+     7,
+     -71
+    ],
+    "energy": 1.0,
+    "range": 110,
+    "height": 52
+   },
+   "emitter": "fire",
+   "emitter_offset": [
+    7,
+    -75
+   ]
   }
  },
  "enemies": {
