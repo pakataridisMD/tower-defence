@@ -25,6 +25,7 @@ import final_bosses  # noqa: E402,F401
 import vael_forms  # noqa: E402,F401
 import vael_remake  # noqa: E402,F401
 import vael_demon  # noqa: E402,F401
+import vael_ascend  # noqa: E402,F401
 
 PAD = 28
 FPS = {"idle": 6, "walk": 10, "attack": 14, "death": 10}
@@ -58,6 +59,8 @@ STYLE.update({"vael_orrun_bone": "swing", "vael_orrun_knight": "swing", "vael_or
 DEATH.update({"vael_orrun_bone": "titan", "vael_orrun_knight": "titan", "vael_orrun_beast": "titan"})
 PADS.update({"vael_orrun_knight": 44, "vael_orrun_beast": 36})
 STYLE.update({"vael_hollow": "swing", "vael_eclipse": "float", "vael_throne": "swing"})
+STYLE.update({"vael_ascend": "float"})
+PADS.update({"vael_ascend": 30})
 STYLE.update({"vael_demon": "swing", "vael_demon_winged": "swing", "vael_demon_sorcerer": "float"})
 DEATH.update({"vael_demon": "titan", "vael_demon_winged": "titan", "vael_demon_sorcerer": "titan"})
 PADS.update({"vael_demon": 40, "vael_demon_winged": 36, "vael_demon_sorcerer": 34})

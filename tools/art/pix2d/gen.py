@@ -11,6 +11,7 @@ import people  # noqa: F401
 import vael_forms  # noqa: F401
 import vael_remake  # noqa: F401
 import vael_demon  # noqa: F401
+import vael_ascend  # noqa: F401
 
 ap = argparse.ArgumentParser()
 ap.add_argument("names", nargs="*")
