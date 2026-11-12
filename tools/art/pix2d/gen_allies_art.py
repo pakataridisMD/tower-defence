@@ -3,9 +3,10 @@
 
 usage: python3 tools/art/pix2d/gen_allies_art.py [names] [--out DIR] [--sheet FILE] [--gif FILE] [--zoom N]
 
-Writes <id>_walk.png, <id>_attack.png, <id>_death.png and their _n.png normal strips (frames left to right)
-into assets/art/game/allies/, and allies.json with each one's frame size, feet point and frame counts,
-which scripts/game/ally_art.gd reads. --sheet writes a labelled sheet of the rest poses for review and
+Writes <id>_<anim>.png and its _n.png normal strip (frames left to right) for every animation, into
+assets/art/game/allies/, and allies.json with each one's frame size, feet point, height above the feet and
+frame counts, which scripts/game/ally_art.gd reads. The animations: walk, idle (standing in the line between
+blows), attack, hurt (a flinch from a heavy blow), cry (the war cry it gives when it shouts) and death. --sheet writes a labelled sheet of the rest poses for review and
 --gif an animated preview.
 """
 import argparse
@@ -22,11 +23,12 @@ import anim  # noqa: E402
 import creatures  # noqa: E402
 
 OUT = os.path.join("assets", "art", "game", "allies")
-ANIMS = ("walk", "attack", "death")
+ANIMS = ("walk", "idle", "attack", "hurt", "cry", "death")
 
 creatures.CREATURES.update(allies.UNITS)
 anim.STYLE.update(allies.STYLES)
-_walk, _attack, _death = anim.walk, anim.attack, anim.death
+_walk, _attack, _death, _idle = anim.walk, anim.attack, anim.death, anim.idle
+anim.FPS.update({"hurt": 14, "cry": 9})
 
 
 def walk(i, n, style, name):
@@ -94,7 +96,72 @@ def death(i, n, style, name):
     return _death(i, n, base, name)
 
 
-anim.ANIMS.update({"walk": (walk, 8), "attack": (attack, 8), "death": (death, 8)})
+def idle(i, n, style, name):
+    """Standing in the line: breathing, weapon ready, a small shift of weight. Fliers hover."""
+    b = math.sin(2 * math.pi * i / n)
+    lag = math.sin(2 * math.pi * i / n - 1.0)
+    if style == "fly":
+        return {"_all": (0, 0, -6 + 1.5 * b), "wing": (0.35 * b, 0, 0), "wing_f": (0.3 * b, 0, 0),
+                "leg_n": (0.5, 0, 0), "leg_f": (0.45, 0, 0), "head": (0.03 * lag, 0, 0), **anim._sway(0.15, lag)}
+    if style in ("ram", "catapult"):
+        return {"body": (0, 0, 0.4 * max(0, b)), "weapon": (0.01 * b, 0, 0)}
+    p = _idle(i, n, {"charge": "lunge"}.get(style, style), name)
+    p["weapon"] = (0.05 * b, 0, 0)
+    return p
+
+
+def hurt(i, n, style, name):
+    """A heavy blow lands: the body snaps back, the head jerks, the weapon dips, then it squares up again."""
+    q = (0, 1.0, 0.7, 0.25)[i]
+    if style in ("ram", "catapult"):
+        return {"_all": (0, -2 * q, 0), "body": (-0.04 * q, 0, -1 * q), "weapon": (0.06 * q, 0, 0)}
+    if style == "fly":
+        return {"_all": (-0.18 * q, -3 * q, -6 - 2 * q), "wing": (-0.5 * q, 0, 0), "wing_f": (-0.4 * q, 0, 0),
+                "leg_n": (0.5, 0, 0), "leg_f": (0.45, 0, 0), "head": (-0.15 * q, 0, 0)}
+    if style in ("lunge", "charge"):
+        return {"_all": (-0.08 * q, -3 * q, 0), "neck": (-0.25 * q, 0, 0), "head": (-0.2 * q, 0, 0), "jaw": (0.3 * q, 0, 0),
+                "leg_n": (0.15 * q, 0, 0), "leg_f": (0.1 * q, 0, 0), "tail": (0.2 * q, 0, 0)}
+    return {"_all": (-0.09 * q, -2 * q, 0), "body": (-0.06 * q, 0, 1 * q), "head": (-0.18 * q, 0, 0), "jaw": (0.3 * q, 0, 0),
+            "weapon": (0.25 * q, 0, 0), "hand_w": (0.2 * q, 0, 0), "arm_f": (-0.25 * q, 0, 0), "fore_f": (-0.2 * q, 0, 0),
+            "arm_n": (0.15 * q, 0, 0), "leg_n": (-0.2 * q, 0, 0), "shin_n": (0.25 * q, 0, 0),
+            "leg_f": (0.1 * q, 0, 0), "shin_f": (0.15 * q, 0, 0), **anim._sway(1, -0.3 * q)}
+
+
+def cry(i, n, style, name):
+    """The war cry: the weapon goes up and is shaken at the sky twice, head back, mouth open. Beasts rear and howl."""
+    up = (0.2, 0.6, 1.0, 0.85, 1.0, 0.85, 1.0, 0.6)[i]   # lift, then two pumps
+    pump = (0, 0, 0, 1, 0, 1, 0, 0)[i]
+    if style in ("ram", "catapult"):
+        return {"body": (0, 0, -1.0 * pump), "weapon": (-0.02 * up, 0, 0)}
+    if style == "fly":
+        return {"_all": (-0.12 * up, 0, -8 - 3 * up), "wing": (-0.6 * up + 0.3 * pump, 0, 0), "wing_f": (-0.5 * up + 0.3 * pump, 0, 0),
+                "leg_n": (0.5, 0, 0), "leg_f": (0.45, 0, 0), "neck": (-0.2 * up, 0, 0), "head": (-0.2 * up, 0, 0),
+                "jaw": (0.4 * up, 0, 0), "weapon": (-0.4 * up, -2 * up, 0)}
+    if style in ("lunge", "charge"):    # rear up and howl
+        return {"_all": (-0.16 * up, 0, -2 * up), "neck": (-0.4 * up, 0, 0), "head": (-0.3 * up, 0, 0), "jaw": (0.5 * up, 0, 0),
+                "leg_n": (-0.3 * up, 0, 0), "leg_f": (-0.25 * up, 0, 0), "leg_n2": (0.15 * up, 0, 0), "leg_f2": (0.15 * up, 0, 0),
+                "tail": (-0.2 * up, 0, 0), "weapon": (-0.3 * up, -2 * up, 0)}
+    body = {"body": (-0.05 * up, 0, -1.0 * pump), "head": (-0.16 * up, 0, 0), "jaw": (0.5 * up, 0, 0),
+            "leg_n": (-0.12 * up, 0, 0), "shin_n": (0.12 * up, 0, 0), "arm_n": (-0.2 * up, 0, 0),
+            **anim._sway(1, 0.2 * up - 0.15 * pump)}
+    turn = CRY_TURN.get(name, CRY_TURN_STYLE.get(style, 0.5)) * up
+    lift = -3 * up - 1.5 * pump
+    if style == "shoot":        # the bow goes up in the off hand
+        return {**body, "arm_f": (-0.9 * up, 0, -2 * up), "weapon": (-0.6 * up, 0, -3 * up)}
+    if style in ("recoil", "raise"):   # held up high
+        return {**body, "weapon": (-turn, 0, lift - 2 * up), "hand_w": (-0.15 * turn, 0, 0), "arm_f": (-0.5 * up, 0, -2 * up)}
+    # a blade, spear, axe or stone fist turned up at the sky and shaken
+    return {**body, "weapon": (-turn, 0, lift), "hand_w": (-0.15 * turn, 0, 0), "arm_f": (-0.4 * up, 0, 0),
+            "fore_f": (-0.3 * up, 0, 0)}
+
+
+# How far (radians) the weapon turns up for the war cry: each is held at its own angle at rest.
+CRY_TURN_STYLE = {"swing": 0.45, "thrust": 0.35, "raise": 0.1, "recoil": 0.7, "heavy": 0.7}
+CRY_TURN = {"veil_blade": 0.8, "firebrand": 0.6, "banner_bearer": 0.05, "spire_golem": 2.2}
+
+
+anim.ANIMS.update({"walk": (walk, 8), "idle": (idle, 6), "attack": (attack, 8), "hurt": (hurt, 4), "cry": (cry, 8),
+                   "death": (death, 8)})
 
 
 def main():
@@ -119,7 +186,10 @@ def main():
             s = fr[0][2]
             if entry is None:
                 entry = {"frame": [s.w, s.h], "feet": [s.w // 2, s.bh - 4 + anim.PAD], "anims": {}}
-            entry["anims"][an] = {"frames": len(fr), "fps": anim.FPS[an], "loop": an == "walk"}
+            if an == "walk":   # art pixels from the feet to the top of the head, for its health bar
+                top = min((f[0].getbbox() or (0, s.h, 0, 0))[1] for f in fr)
+                entry["height"] = entry["feet"][1] - top
+            entry["anims"][an] = {"frames": len(fr), "fps": anim.FPS[an], "loop": an in ("walk", "idle")}
             allf[(name, an)] = [f[0] for f in fr]
         meta[name] = entry
         print(name)
@@ -154,7 +224,9 @@ def sheet(names, allf, path, zoom):
 
 def preview(names, allf, path, zoom):
     """Every unit walking twice, attacking twice and dying, side by side."""
-    seq = [("walk", i) for i in range(8)] * 2 + [("attack", i) for i in range(8)] * 2 + [("death", i) for i in range(8)] + [("death", 7)] * 6
+    seq = [("walk", i) for i in range(8)] * 2 + [("idle", i) for i in range(6)] * 2 + [("attack", i) for i in range(8)] * 2 + \
+        [("hurt", i) for i in range(4)] + [("idle", 0)] * 3 + [("cry", i) for i in range(8)] * 2 + \
+        [("death", i) for i in range(8)] + [("death", 7)] * 6
     cols = 5
     cw, ch = 100, 86
     rows = math.ceil(len(names) / cols)

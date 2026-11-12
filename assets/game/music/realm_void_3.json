@@ -1,0 +1,38 @@
+{
+  "id": "realm_void_3_calm",
+  "title": "Hollow Engine",
+  "duration": 55.6522,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 13.91,
+      "name": "B"
+    },
+    {
+      "time": 27.83,
+      "name": "C"
+    },
+    {
+      "time": 41.74,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 55.6522,
+  "loop_samples": 2454261,
+  "handover_seconds": 55.6522,
+  "bpm": 138,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "realm_void_3_calm.ogg",
+    "wave": "realm_void_3_wave.ogg",
+    "boss": "realm_void_3_boss.ogg"
+  }
+}

@@ -98,6 +98,23 @@ fades out over 3 s and the calm layer comes back. Both are about -16 LUFS.
 
     python3 tools/music/render_loop.py boss boss_entrance    # about 1 minute
 
+
+### Realm tracks (one pool per element map)
+
+`loops/realms.py` holds 21 more battle loops in the same three layers: three for each element's
+land (fire, water, earth, storm, nature, void) and three for the Convergence (`heart`). Each is a
+small score in scale degrees (key, mode, tempo, metre, one chord per bar, an 8-bar theme), and the
+element sets the sound: war drums and anvils for fire, rolling arpeggios for water, half-time
+timpani and tubas for earth, galloping snares for storm, log drums and pizzicato for nature,
+tritones, gongs and grinding semitones for void. 92 to 160 bpm, loops of 56 to 110 s, Vorbis q4.
+
+    python3 tools/music/render_loop.py --realms        # all 21, about a minute each
+    python3 tools/music/render_loop.py realm_void_2    # one
+
+`BattleMusic.REALM_TRACKS` maps each map biome to its three tracks; Hold the Line is added to every
+pool, and the meadow skirmish maps get all 22. A run starts on a random track of its pool and
+crossfades (4 s) to the next one in the build phase after every 3 waves and after every boss wave.
+
 ## Rendering
 
     sudo apt-get install fluidsynth fluid-soundfont-gm ffmpeg

@@ -59,6 +59,8 @@ var _air: Node2D
 var _ambient: CanvasModulate
 var _sun: DirectionalLight2D
 var _fireflies: CPUParticles2D
+## The wind, rain, snow, ash and dust over the map (see Weather).
+var weather: WeatherArt
 ## Glowing cracks and glints in the ground, brighter at night.
 var _ground_glow: Node2D
 ## The map's biome tints the light and the motes in the air.
@@ -156,6 +158,26 @@ class TowerVisual:
 	## The level and ascension this visual last showed, to mark the moment they change.
 	var level := 1
 	var ascended := false
+	## The building's sprite. With an animation sheet (towers/anim/anim.json, tools/art/pix2d/tower_anim.py) it
+	## has one row per look (levels 1-3, then each ascendancy) and idle frames then attack frames across.
+	var body: Sprite2D
+	var anim: Dictionary = {}
+	## The row of the sheet it shows: TowerLook.stage_index().
+	var stage := 0
+	## Seconds of idle loop, started at a random point so towers side by side do not move in step.
+	var idle_time := 0.0
+	## Seconds into the attack it is playing, or below 0 while it idles.
+	var attack_time := -1.0
+	## Seconds until it may throw another flourish of its element when it fires.
+	var flourish_wait := 0.0
+	## Its shadow's picture: the rest frame of its current look.
+	var silhouette: AtlasTexture
+	## Muzzle and light where the level-1 art put them; an ascended tower stands on a dais and lifts them.
+	var base_muzzle := Vector2.ZERO
+	var base_light := Vector2.ZERO
+	## The crown's own particles (fire, sparks, drips...), which rise with the crown onto the dais.
+	var emitter: CPUParticles2D
+	var base_emitter := Vector2.ZERO
 
 
 class EnemyVisual:
@@ -296,6 +318,9 @@ func setup(p_sim: RunSim) -> void:
 	_build_citadel()
 	army = AllyArt.new(self)
 	_build_fireflies()
+	weather = WeatherArt.new()
+	_air.add_child(weather)
+	weather.build(self, Weather.for_map(sim.config.map))
 	sim.chain_fired.connect(_on_chain_fired)
 	sim.projectile_landed.connect(_on_projectile_landed)
 	sim.enemy_killed.connect(_on_enemy_killed)
@@ -306,6 +331,7 @@ func setup(p_sim: RunSim) -> void:
 	sim.citadel_struck.connect(_on_citadel_struck)
 	sim.structure_destroyed.connect(_on_structure_destroyed)
 	sim.ally_attacked.connect(_on_ally_attacked)
+	sim.tower_attacked.connect(_on_tower_attacked)
 	sim.ally_healed.connect(_on_ally_healed)
 	sim.allies_mustered.connect(_on_allies_mustered)
 	_update_light(0.0)
@@ -322,13 +348,28 @@ func _build_resources() -> void:
 	var sway := Shader.new()
 	sway.code = """
 shader_type canvas_item;
-// Sways the top of a sprite while its base stays planted.
+// Sways the top of a sprite in the wind while its base stays planted. WeatherArt drives it: a steady
+// lean downwind, a flutter that quickens as the wind rises, and gust fronts that sweep across the map
+// and bow everything they pass.
 uniform float strength = 0.9;
+uniform float phase = 0.0;
+uniform float lean = 0.0;
+uniform float gust = 0.0;
+uniform float gust_at = -100000.0;
+uniform float gust_width = 150.0;
+uniform vec2 wind_dir = vec2(1.0, 0.0);
+uniform vec2 map_origin = vec2(0.0);
+uniform float map_scale = 1.0;
 void vertex() {
-	float top = 1.0 - UV.y;
+	float top = pow(1.0 - UV.y, 1.4);
 	vec2 world = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
-	float t = TIME * 1.7 + world.x * 0.02 + world.y * 0.015;
-	VERTEX.x += (sin(t) + 0.35 * sin(t * 2.7)) * strength * top;
+	vec2 m = (world - map_origin) / map_scale;
+	float t = phase + m.x * 0.02 + m.y * 0.015;
+	float d = (dot(m, wind_dir) - gust_at) / gust_width;
+	float front = exp(-d * d);
+	float flutter = (sin(t) + 0.35 * sin(t * 2.7)) * strength * (1.0 + 0.8 * front);
+	float push = (lean + gust * front * (0.85 + 0.15 * sin(t * 3.3))) * sign(wind_dir.x);
+	VERTEX.x += (flutter + push) * top;
 }
 """
 	_sway_material = ShaderMaterial.new()
@@ -528,6 +569,7 @@ func _process(delta: float) -> void:
 	if sim == null:
 		return
 	_elapsed += delta
+	weather.update(delta)
 	_update_light(delta)
 	_sync_towers(delta)
 	_sync_enemies(delta)
@@ -557,6 +599,9 @@ func _update_light(delta: float) -> void:
 	day_night.advance(delta)
 	_ambient.color = day_night.ambient() * BIOME_TINTS[_biome]
 	_sun.energy = day_night.sun_energy()
+	if weather != null:
+		_ambient.color *= weather.ambient_tint()
+		_sun.energy *= weather.sun_scale()
 	_sun.color = day_night.sun_color()
 	var motes := day_night.night()
 	if _biome in [&"fire", &"water", &"void", &"heart"]:
@@ -618,7 +663,9 @@ func _sync_towers(delta: float) -> void:
 			var ascending := ascended and not visual.ascended
 			visual.level = level_now
 			visual.ascended = ascended
+			_set_stage(visual)
 			_celebrate(visual, ascending)
+		_animate_tower(visual, delta)
 
 
 func _make_tower(tower: SimTower) -> TowerVisual:
@@ -643,12 +690,29 @@ func _make_tower(tower: SimTower) -> TowerVisual:
 	body.centered = false
 	body.offset = offset
 	visual.root.add_child(body)
+	visual.body = body
 	visual.glow = Sprite2D.new()
 	visual.glow.texture = load(ART + "towers/%s_glow.png" % tower.data.id)
 	visual.glow.centered = false
 	visual.glow.offset = offset
 	visual.glow.material = _additive
 	visual.root.add_child(visual.glow)
+	var sheet := TowerLook.sheet_info(tower.data.id)
+	if TowerLook.has_sheet(sheet):
+		# The animated sheet replaces the still: every look of the tower, idling and attacking.
+		visual.anim = sheet
+		var cell_anchor: Array = sheet["anchor"]
+		offset = -Vector2(cell_anchor[0], cell_anchor[1])
+		var path := ART + String(sheet["sheet"])
+		body.texture = lit_texture(path)
+		visual.glow.texture = load(path + "_glow.png")
+		for sprite: Sprite2D in [body, visual.glow]:
+			sprite.offset = offset
+			sprite.hframes = TowerLook.columns(sheet)
+			sprite.vframes = (sheet["stages"] as Array).size()
+		visual.idle_time = randf() * 10.0
+		visual.silhouette = AtlasTexture.new()
+		visual.silhouette.atlas = (body.texture as CanvasTexture).diffuse_texture
 	var light_meta: Dictionary = meta.get("light", {})
 	var light_offset: Array = light_meta.get("offset", [0, -30])
 	visual.light_energy = light_meta.get("energy", 1.0)
@@ -658,15 +722,58 @@ func _make_tower(tower: SimTower) -> TowerVisual:
 	visual.root.add_child(visual.light)
 	var muzzle: Array = meta.get("muzzle", [0, -30])
 	visual.muzzle = Vector2(muzzle[0], muzzle[1])
+	visual.base_muzzle = visual.muzzle
+	visual.base_light = visual.light.position
 	var emitter_offset: Array = meta.get("emitter_offset", muzzle)
 	var emitter := _tower_emitter(String(meta.get("emitter", "")))
 	if emitter != null:
 		emitter.position = visual.root.position + Vector2(emitter_offset[0], emitter_offset[1])
 		_air.add_child(emitter)
 		visual.root.tree_exiting.connect(emitter.queue_free)
-	visual.caster = _add_caster(visual.root, (body.texture as CanvasTexture).diffuse_texture, offset, 1.0)
+		visual.emitter = emitter
+		visual.base_emitter = emitter.position
+	var silhouette: Texture2D = (body.texture as CanvasTexture).diffuse_texture
+	if visual.silhouette != null:
+		silhouette = visual.silhouette
+		_set_stage(visual)
+	visual.caster = _add_caster(visual.root, silhouette, offset, 1.0)
 	visual.caster.blob.scale = Vector2(1.0, 0.45) * 28.0 / 32.0
 	return visual
+
+
+## Shows the look for the tower's level or ascendancy: its row of the sheet, its shadow, and its muzzle
+## and light lifted onto the dais once it has ascended.
+func _set_stage(visual: TowerVisual) -> void:
+	if visual.anim.is_empty():
+		return
+	visual.stage = TowerLook.stage_index(visual.tower, (visual.anim["stages"] as Array).size())
+	var cell: Array = visual.anim["cell"]
+	visual.silhouette.region = Rect2(0, visual.stage * float(cell[1]), cell[0], cell[1])
+	var lift := Vector2(0, -TowerLook.lift(visual.anim, visual.stage))
+	visual.muzzle = visual.base_muzzle + lift
+	visual.light.position = visual.base_light + lift
+	if visual.emitter != null:
+		visual.emitter.position = visual.base_emitter + lift
+	_animate_tower(visual, 0.0)
+
+
+## Plays the tower's idle loop, or its attack once it has fired, with a small recoil on the strike.
+func _animate_tower(visual: TowerVisual, delta: float) -> void:
+	if visual.anim.is_empty():
+		return
+	visual.idle_time += delta
+	visual.flourish_wait = maxf(0.0, visual.flourish_wait - delta)
+	if visual.attack_time >= 0.0:
+		visual.attack_time += delta
+		if visual.attack_time >= TowerLook.attack_length(visual.anim):
+			visual.attack_time = -1.0
+	var frame := TowerLook.frame(visual.anim, visual.stage, visual.idle_time, visual.attack_time)
+	visual.body.frame = frame
+	visual.glow.frame = frame
+	var kick := TowerLook.recoil(visual.anim, visual.attack_time)
+	var squash := Vector2(1.0 + 0.025 * kick, 1.0 - 0.035 * kick)
+	visual.body.scale = squash
+	visual.glow.scale = squash
 
 
 ## A hero standing on its tile: its sprite, a light in its colour and a shadow.
@@ -734,6 +841,13 @@ func _celebrate(visual: TowerVisual, ascending: bool) -> void:
 	_ring(visual.root.position, color, 4.0, 30.0 if ascending else 20.0, 0.45)
 	if ascending:
 		_ring(visual.root.position, Color.WHITE, 2.0, 44.0, 0.7)
+		# A major upgrade: a pillar of light comes down on the tower as it is remade, and the ground shakes off dust.
+		var top := visual.root.position + Vector2(0, -150)
+		for dx in [-2.0, 0.0, 2.0]:
+			_beam(top + Vector2(dx, 0), visual.root.position + Vector2(dx, -2), color.lerp(Color.WHITE, 0.5), 0.6, 2.0 if dx == 0.0 else 1.0)
+		_ring(visual.root.position, color, 6.0, 60.0, 0.9, 2.0)
+		_burst(visual.root.position + Vector2(0, -2), Color(0.7, 0.62, 0.5), 18, 30.0, false)
+		_pulse_light(visual.root.position + visual.muzzle, color, 2.5, 160.0, 0.9)
 	visual.pulse = 2.0
 
 
@@ -1537,6 +1651,56 @@ func _beam(from: Vector2, to: Vector2, color: Color, life: float, width := 1.0) 
 
 
 # ------------------------------------------------------------------ effects
+
+## A tower strikes: its attack plays (gather, flare, settle) and its crown throws off a flourish of its element.
+func _on_tower_attacked(tower: SimTower, _target: SimEnemy) -> void:
+	var visual: TowerVisual = _towers.get(tower.id)
+	if visual == null or visual.anim.is_empty():
+		return
+	# A tower that fires faster than its attack plays starts again from the gather, not mid-flare.
+	if visual.attack_time < 0.0 or visual.attack_time > TowerLook.attack_length(visual.anim) * 0.5:
+		visual.attack_time = 0.0
+	visual.pulse = maxf(visual.pulse, 1.0)
+	if visual.flourish_wait > 0.0:
+		return
+	visual.flourish_wait = 0.4
+	_attack_flourish(visual)
+
+
+## The element's own flourish where the tower's crown releases its shot.
+func _attack_flourish(visual: TowerVisual) -> void:
+	var at := visual.root.position + visual.muzzle
+	var base := visual.root.position
+	var color: Color = visual.colors[0]
+	var big := visual.stage >= 3
+	match visual.shot_style:
+		&"fire":
+			_burst(at + Vector2(0, -2), Color(1.0, 0.62, 0.2), 12 if big else 7, 30.0)
+			_pulse_light(at, Color(1.0, 0.6, 0.25), 1.6, 70.0, 0.25)
+		&"storm":
+			for k in 2 + int(big):
+				var a := randf() * TAU
+				var mid := at + Vector2(cos(a), sin(a)) * 5.0 + Vector2(randf_range(-2, 2), randf_range(-2, 2))
+				var end := at + Vector2(cos(a), sin(a)) * randf_range(9.0, 14.0)
+				_beam(at, mid, Color(0.8, 0.9, 1.0), 0.12)
+				_beam(mid, end, Color(0.6, 0.75, 1.0), 0.12)
+			_pulse_light(at, Color(0.75, 0.85, 1.0), 1.8, 70.0, 0.15)
+		&"water":
+			_ring(at, Color(0.5, 0.85, 1.0), 2.0, 11.0 if big else 8.0, 0.3)
+			_burst(at, Color(0.55, 0.85, 1.0), 6, 22.0, false)
+		&"nature":
+			_burst(at, Color(0.55, 0.85, 0.3), 7 if big else 5, 20.0, false)
+			_sparks(at, Color(0.8, 1.0, 0.5), 4, 8.0)
+		&"earth":
+			_ring(base, Color(0.75, 0.6, 0.4), 4.0, 16.0 if big else 12.0, 0.35)
+			_burst(base + Vector2(0, -1), Color(0.6, 0.5, 0.38), 6, 18.0, false)
+		&"void":
+			# The void pulls in before it lets go: a ring closing on the crown.
+			_ring(at, Color(0.65, 0.4, 1.0), 14.0 if big else 11.0, 2.0, 0.28)
+			_sparks(at, Color(0.8, 0.6, 1.0), 5, 9.0)
+		_:
+			_sparks(at, color.lerp(Color.WHITE, 0.3), 5, 8.0)
+
 
 func _on_chain_fired(tower: SimTower, points: PackedVector2Array) -> void:
 	var visual: TowerVisual = _towers.get(tower.id)

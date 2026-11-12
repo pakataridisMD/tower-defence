@@ -43,3 +43,5 @@ assets/fonts/** -filter -diff -merge -text
 assets/art/worldmap/** -filter -diff -merge -text
 # The studio splash sound is rendered by tools/sfx/intro.py; plain Git like the other sounds.
 assets/audio/intro/** -filter -diff -merge -text
+# The army's battle shouts are recorded by tools/army/voice_shouts.py in cloud sessions; plain Git like the narration.
+assets/audio/army/** -filter -diff -merge -text

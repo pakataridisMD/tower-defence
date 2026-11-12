@@ -390,16 +390,30 @@ def write_map(stage_id, name, roads, order, biome, wave_set, holes=0, fixed_cell
     return len(lanes)
 
 
-# The skirmish maps, sketched the same way.
+# The skirmish maps, sketched the same way: (id, name, menu order, sketch, biome, land). The first two
+# play the shared skirmish waves (data/waves/prototype.tres). The others each stand in one of the six
+# lands and play their own waves (data/waves/skirmish_<id>.tres): that land's horde and its corrupted
+# Warden at the end (see SKIRMISH_LANDS).
 SKIRMISH_MAPS = [
-    ("switchback", "Switchback", 0, [(-1, 2), (19, 2), (19, 6), (4, 6), (4, 10), (19, 10), (19, 13), (24, 13)]),
-    ("serpentine", "Serpentine", 1, [(-1, 12), (4, 12), (4, 2), (10, 2), (10, 12), (16, 12), (16, 2), (21, 2), (21, 12), (24, 12)]),
+    ("switchback", "Switchback", 0, [(-1, 2), (19, 2), (19, 6), (4, 6), (4, 10), (19, 10), (19, 13), (24, 13)], "meadow", None),
+    ("serpentine", "Serpentine", 1, [(-1, 12), (4, 12), (4, 2), (10, 2), (10, 12), (16, 12), (16, 2), (21, 2), (21, 12), (24, 12)], "meadow", None),
+    ("cinderfall", "Cinderfall", 2, [(-1, 7), (5, 7), (5, 2), (12, 2), (12, 12), (19, 12), (19, 5), (24, 5)], "fire", "ember_reach"),
+    ("stormcrown", "Stormcrown", 3, [(3, -1), (3, 12), (20, 12), (20, 2), (9, 2), (9, 8), (15, 8), (15, 15)], "storm", "thunder_steppe"),
+    ("thornwild", "Thornwild", 4, [(-1, 2), (7, 2), (7, 12), (16, 12), (16, 2), (24, 2)], "nature", "verdant_deep"),
+    ("frozen_ford", "Frozen Ford", 5, [(12, -1), (12, 4), (3, 4), (3, 11), (21, 11), (21, 4), (17, 4), (17, 15)], "water", "frostmere"),
+    ("red_gorge", "Red Gorge", 6, [(-1, 10), (4, 10), (4, 3), (10, 3), (10, 10), (16, 10), (16, 3), (21, 3), (21, 15)], "earth", "sunscar_canyon"),
+    ("riftwalk", "Riftwalk", 7, {"lanes": [[(-1, 3), (9, 3), (9, 7), (17, 7), (17, 12), (24, 12)],
+                                          [(-1, 11), (6, 11), (6, 7), (9, 7), (17, 7), (17, 12), (24, 12)]]}, "void", "hollow_rift"),
 ]
 
 
 def write_skirmish_maps():
-    for map_id, name, order, sketch in SKIRMISH_MAPS:
-        write_map(map_id, name, sketch, order, "meadow", "prototype", holes=SKIRMISH_HOLES, skirmish=True, map_id=map_id)
+    for map_id, name, order, sketch, biome, land in SKIRMISH_MAPS:
+        built = build_roads(map_id, sketch, holes=SKIRMISH_HOLES)
+        wave_set = "prototype"
+        if land:
+            wave_set = write_land_skirmish(map_id, name, land, len(built))
+        write_map(map_id, name, sketch, order, biome, wave_set, skirmish=True, map_id=map_id, built=built)
 
 
 # ------------------------------------------------------------------------------------ waves
@@ -889,6 +903,33 @@ def plan_assault_waves(stage):
 SKIRMISH = {"id": "prototype", "name": "Skirmish waves", "waves": 10, "growth": 1.12,
             "elements": ["fire", "storm", "nature"], "boss": "warden"}
 
+# Skirmish is three times as hard as it was tuned (Doctor Paris, 2026-11-12): every skirmish wave set
+# has this many times the health its tuning found. The tuning (TUNING[<wave set>]["health"]) is still
+# where a no-talent bot keeps about 40% of its lives; this goes on top of it.
+SKIRMISH_HARDNESS = 3.0
+
+# The land skirmish maps: their land's waves as in its second stage (three of its horde kinds, its
+# signature enemies), twelve of them, and the land's corrupted Warden on the last.
+SKIRMISH_LAND_WAVES = 12
+SKIRMISH_LAND_STAGE = 1
+
+
+def write_land_skirmish(map_id, name, land_id, lanes):
+    land = next(c for c in CAMPAIGNS if c["id"] == land_id)
+    warden = next(st[7]["boss"] for st in land["stages"] if len(st) > 7 and st[7].get("boss"))
+    wave_set = "skirmish_" + map_id
+    tune = TUNING.get(wave_set, {})
+    t = Tres("WaveSet")
+    script = t.script("res://scripts/data/wave_set.gd")
+    refs = [t.sub(WAVE, wave_fields(t, el, boss, groups, text, tune.get("boss", 1.0)))
+            for el, boss, groups, text in plan_waves(land, SKIRMISH_LAND_STAGE, SKIRMISH_LAND_WAVES, {"boss": warden}, lanes)]
+    t.write(f"data/waves/{wave_set}.tres", [
+        f"script = {script}", f"id = {sn(wave_set)}", f"display_name = {string(name + ' waves')}",
+        f"health_growth = {tune.get('growth', 1.1)}",
+        f"health_scale = {round(tune.get('health', 1.0) * SKIRMISH_HARDNESS, 3)}",
+        f"waves = {typed(t, WAVE, refs)}"])
+    return wave_set
+
 
 def plan_skirmish_waves(sk):
     waves = []
@@ -915,7 +956,8 @@ def write_skirmish(sk):
             for el, boss, groups, text in plan_skirmish_waves(sk)]
     t.write(f"data/waves/{sk['id']}.tres", [
         f"script = {script}", f"id = {sn(sk['id'])}", f"display_name = {string(sk['name'])}",
-        f"health_growth = {tune.get('growth', sk['growth'])}", f"health_scale = {tune.get('health', 1.0)}",
+        f"health_growth = {tune.get('growth', sk['growth'])}",
+        f"health_scale = {round(tune.get('health', 1.0) * SKIRMISH_HARDNESS, 3)}",
         f"waves = {typed(t, WAVE, refs)}"])
 
 

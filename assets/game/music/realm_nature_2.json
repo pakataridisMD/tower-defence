@@ -1,0 +1,38 @@
+{
+  "id": "realm_nature_2_calm",
+  "title": "The Thorn March",
+  "duration": 87.2727,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 21.82,
+      "name": "B"
+    },
+    {
+      "time": 43.64,
+      "name": "C"
+    },
+    {
+      "time": 65.45,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 87.2727,
+  "loop_samples": 3848727,
+  "handover_seconds": 87.2727,
+  "bpm": 132,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "realm_nature_2_calm.ogg",
+    "wave": "realm_nature_2_wave.ogg",
+    "boss": "realm_nature_2_boss.ogg"
+  }
+}

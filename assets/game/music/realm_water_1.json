@@ -1,0 +1,38 @@
+{
+  "id": "realm_water_1_calm",
+  "title": "Black Tide",
+  "duration": 68.5714,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 17.14,
+      "name": "B"
+    },
+    {
+      "time": 34.29,
+      "name": "C"
+    },
+    {
+      "time": 51.43,
+      "name": "D"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 68.5714,
+  "loop_samples": 3024000,
+  "handover_seconds": 68.5714,
+  "bpm": 112,
+  "layers": [
+    "calm",
+    "wave",
+    "boss"
+  ],
+  "files": {
+    "calm": "realm_water_1_calm.ogg",
+    "wave": "realm_water_1_wave.ogg",
+    "boss": "realm_water_1_boss.ogg"
+  }
+}

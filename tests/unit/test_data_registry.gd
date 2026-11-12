@@ -24,7 +24,7 @@ func test_all_six_elements_load_in_ring_order() -> void:
 
 
 func test_prototype_content_loads() -> void:
-	assert_eq(registry.towers.size(), 41, "6 base towers, 15 duals (one per element pair) and 20 triples")
+	assert_eq(registry.towers.size(), 44, "6 base towers, 3 long-range towers, 15 duals (one per element pair) and 20 triples")
 	assert_eq(registry.enemies.size(), 60, "16 base enemies, 30 of the six hordes, 6 Heralds, the Regent, 3 old citadel buildings, Nhal Vorath and Vael-Orrun's three forms")
 	assert_true(registry.wave_sets.has(&"prototype"))
 	assert_eq(registry.wave_sets[&"prototype"].waves.size(), 10)

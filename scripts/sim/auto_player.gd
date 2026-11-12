@@ -124,7 +124,7 @@ static func plan_for_elements(config: RunConfig, home: StringName) -> Array:
 			towers.append(hybrid)
 	var bases: Array[TowerData] = []
 	for tower: TowerData in config.towers.values():
-		if not tower.is_hybrid() and (tower.elements.has(h) or tower.elements.has(n) or tower.elements.has(p)):
+		if not tower.is_hybrid() and not tower.is_longshot() and (tower.elements.has(h) or tower.elements.has(n) or tower.elements.has(p)):
 			bases.append(tower)
 	bases.sort_custom(func(a: TowerData, b: TowerData) -> bool: return value_for_gold(a) > value_for_gold(b))
 	for tower in bases:
