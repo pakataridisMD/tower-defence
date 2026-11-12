@@ -84,6 +84,7 @@ func test_picking_a_stage_brings_it_into_view() -> void:
 
 func test_locked_stages_cannot_begin() -> void:
 	var screen := await _open_campaign()
+	Progress.meta.unlock_all_stages = false
 	screen.select(&"converge_3")
 	assert_true(_begin_button(screen).disabled)
 	screen.begin()

@@ -46,6 +46,15 @@ const BRANCH_COLORS: Dictionary[StringName, Color] = {
 const REPLAY_WIN_POINTS := 1
 const REPLAY_LIMIT := 3
 
+## TESTING SWITCH: while true, every campaign stage (all six lands, the Convergence and the final
+## assault on the citadel) can be played from the world map in any order. Set it to false before
+## release to bring back the normal order (each land opens after the one before, each stage after
+## the stage before it).
+const UNLOCK_ALL_STAGES := true
+
+## Starts as UNLOCK_ALL_STAGES. Tests that check the normal opening order set it to false.
+var unlock_all_stages := UNLOCK_ALL_STAGES
+
 ## A DataRegistry, or a node with the same fields in tests.
 var registry: Node
 var profile: PlayerProfile
@@ -282,6 +291,8 @@ func is_campaign_unlocked(campaign_id: StringName) -> bool:
 	var campaign: CampaignData = registry.campaigns.get(campaign_id)
 	if campaign == null:
 		return false
+	if unlock_all_stages:
+		return true
 	return campaign.requires_campaigns.all(func(id: StringName) -> bool: return is_campaign_complete(id))
 
 
@@ -290,6 +301,8 @@ func is_stage_unlocked(stage_id: StringName) -> bool:
 	var campaign: CampaignData = registry.campaign_of(stage_id)
 	if campaign == null or not is_campaign_unlocked(campaign.id):
 		return false
+	if unlock_all_stages:
+		return true
 	var index := campaign.stage_index(stage_id)
 	return index == 0 or stars(campaign.stages[index - 1].id) > 0
 
