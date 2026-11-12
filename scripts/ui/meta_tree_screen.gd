@@ -39,11 +39,10 @@ func _ready() -> void:
 	web.navigable = true
 	web.ring_radii = RING_RADII
 	web.count_noun = "talents"
-	web.subtitle = ("Meta points pay for records: %d for each new wave cleared on a stage or map and %d for its first " +
-		"win, plus a bonus for each stage's first win. Hard and Nightmare raise the record. Replays without a record " +
-		"pay %d, %d times per stage. Every talent adds a tower to your runs and any talent can be bought at any time: " +
-		"duals near the middle, triples at the edge. The six base towers are always yours. Refunds are free: right-click a talent.") % [rules.meta_points_per_wave, rules.meta_points_for_win,
-		MetaProgress.REPLAY_WIN_POINTS, MetaProgress.REPLAY_LIMIT]
+	web.subtitle = ("Every talent adds a tower to all your runs, and any talent can be bought at any time; the six " +
+		"base towers are always yours. Meta points pay for records: %d per new wave cleared on a stage or map, %d " +
+		"for its first win, %d for a replay without a record (%d times per stage). Right-click refunds for free.") % [
+		rules.meta_points_per_wave, rules.meta_points_for_win, MetaProgress.REPLAY_WIN_POINTS, MetaProgress.REPLAY_LIMIT]
 	web.points_noun = "meta point"
 	web.close_text = "Back (Esc)"
 	web.taken_text = "Taken. Right-click to refund."

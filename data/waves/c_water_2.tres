@@ -953,7 +953,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 0.36
+health_multiplier = 0.28
 description = "Stragglers, a flank attack, runner packs, brutes under escort, Glass-Singers, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r100"), SubResource("r101"), SubResource("r102"), SubResource("r103"), SubResource("r104"), SubResource("r105"), SubResource("r106"), SubResource("r107"), SubResource("r108"), SubResource("r109"), SubResource("r110"), SubResource("r111"), SubResource("r112"), SubResource("r113")])
 

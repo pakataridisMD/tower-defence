@@ -1027,7 +1027,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"water"
 is_boss = true
-health_multiplier = 0.39
+health_multiplier = 0.23
 description = "Stragglers, a flank attack, Mender packs, brutes under escort, Mire Eels, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r110"), SubResource("r111"), SubResource("r112"), SubResource("r113"), SubResource("r114"), SubResource("r115"), SubResource("r116"), SubResource("r117"), SubResource("r118"), SubResource("r119"), SubResource("r120"), SubResource("r121"), SubResource("r122"), SubResource("r123"), SubResource("r124")])
 

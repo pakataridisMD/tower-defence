@@ -1583,7 +1583,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"nature"
 is_boss = true
-health_multiplier = 2.85
+health_multiplier = 2.79
 description = "A marching column, brutes under escort, Brute packs, Squall Witches, a flank attack and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r179"), SubResource("r180"), SubResource("r181"), SubResource("r182"), SubResource("r183"), SubResource("r184"), SubResource("r185"), SubResource("r186"), SubResource("r187"), SubResource("r188"), SubResource("r189")])
 
@@ -1592,5 +1592,5 @@ script = ExtResource("1_s")
 id = &"c_earth_4"
 display_name = "Titan's Cradle"
 health_growth = 1.1
-health_scale = 8.59
+health_scale = 5.77
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r15"), SubResource("r24"), SubResource("r36"), SubResource("r45"), SubResource("r59"), SubResource("r71"), SubResource("r84"), SubResource("r100"), SubResource("r114"), SubResource("r129"), SubResource("r146"), SubResource("r162"), SubResource("r178"), SubResource("r190")])

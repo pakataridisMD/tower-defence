@@ -1024,7 +1024,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"nature"
 is_boss = true
-health_multiplier = 1.4
+health_multiplier = 1.23
 description = "Stragglers, a flank attack, Warded packs, brutes under escort, Greenwitches, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r110"), SubResource("r111"), SubResource("r112"), SubResource("r113"), SubResource("r114"), SubResource("r115"), SubResource("r116"), SubResource("r117"), SubResource("r118"), SubResource("r119"), SubResource("r120"), SubResource("r121"), SubResource("r122"), SubResource("r123"), SubResource("r124")])
 
@@ -1033,5 +1033,5 @@ script = ExtResource("1_s")
 id = &"c_void_2"
 display_name = "Fractured Steps"
 health_growth = 1.1
-health_scale = 13.56
+health_scale = 7.38
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r13"), SubResource("r23"), SubResource("r32"), SubResource("r42"), SubResource("r52"), SubResource("r63"), SubResource("r73"), SubResource("r85"), SubResource("r97"), SubResource("r109"), SubResource("r125")])

@@ -1399,7 +1399,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"fire"
 is_boss = true
-health_multiplier = 3.96
+health_multiplier = 1.99
 description = "A marching column, brutes under escort, Brute packs, a pincer, Splitters in a line, runner packs, Gale Harpys and Spark Wisps and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r156"), SubResource("r157"), SubResource("r158"), SubResource("r159"), SubResource("r160"), SubResource("r161"), SubResource("r162"), SubResource("r163"), SubResource("r164"), SubResource("r165"), SubResource("r166"), SubResource("r167"), SubResource("r168"), SubResource("r169"), SubResource("r170"), SubResource("r171")])
 
@@ -1408,5 +1408,5 @@ script = ExtResource("1_s")
 id = &"c_earth_3"
 display_name = "Mesa Loop"
 health_growth = 1.1
-health_scale = 4.93
+health_scale = 3.0
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r16"), SubResource("r26"), SubResource("r37"), SubResource("r45"), SubResource("r58"), SubResource("r69"), SubResource("r81"), SubResource("r95"), SubResource("r110"), SubResource("r123"), SubResource("r139"), SubResource("r155"), SubResource("r172")])
