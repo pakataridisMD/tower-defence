@@ -105,7 +105,9 @@ STYLES = {
     "sovereign": {"room": 0.2, "rt60": 2.6, "layers": [[0.5, 0.3]]},   # Vael-Orrun: dark hall, sub-octave shadow
     "twin": {"room": 0.14, "rt60": 1.8, "layers": [[0.5, 0.8]]},       # Aurath speaks in two voices at once
     "titan": {"room": 0.14, "rt60": 2.0, "semitones": -2},             # Orrok: stone giant
-    "hush": {"master": "hush"},                                 # the hidden god: layered, flat, inhuman
+    # The hidden god. Every word must land: the clean take stays on top at full level,
+    # with only a faint octave below and a short, light room. No echo, no lowpass.
+    "hush": {"room": 0.06, "rt60": 1.0, "layers": [[0.5, 0.2]], "lufs": -16.0},
 }
 
 
@@ -273,7 +275,7 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
             "acompressor=threshold=-24dB:ratio=2.5:attack=8:release=160:makeup=2",  # keep acted dynamics
             "alimiter=limit=0.89:attack=2:release=50",
             "apad=pad_dur=0.6",
-            "loudnorm=I=-15:TP=-1:LRA=7",
+            f"loudnorm=I={preset.get('lufs', -15.0)}:TP=-1:LRA=7",
             "aresample=44100",
         ]
     else:
@@ -306,7 +308,7 @@ def master(wav_in: Path, ogg_out: Path, preset: dict) -> None:
         subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(roomy),
                         "-filter_complex" if layers else "-af", graph, "-ac", "1", str(mastered)], check=True)
         if preset.get("master") == "trailer":
-            _level(mastered, -15.0)
+            _level(mastered, preset.get("lufs", -15.0))
         _write_ogg(mastered, ogg_out)
 
 
