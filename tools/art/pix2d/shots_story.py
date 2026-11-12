@@ -1707,60 +1707,56 @@ def the_hush_02():
 
 
 def the_hush_03():
-    """Six years ago: Cassivane at his daughter's grave in the rain. Above him, a thin crack of starless dark opens in
-    the night sky."""
-    sc = Scene(403)
-    sky(sc, "night")
-    sc.bands("10121c", "1e2232", 0, 130, n=6)
-    sc.stars(70, 120)
-    crack = [(196, 6), (192, 18), (199, 30), (194, 44), (201, 58), (197, 68)]
-    for (x0, y0), (x1, y1) in zip(crack, crack[1:]):                  # a hairline with nothing in it, not even stars
-        for w in (-1, 0, 1):
-            sc.line(x0 + w, y0, x1 + w, y1, (0, 0, 0))
-    sc.ridge(128, 4, "1a1c22", 61, freq=0.9)
-    sc.bands("1e2028", "0c0d12", 128, H, n=4)
-    sc.rect(176, 126, 196, 160, (70, 72, 80))                          # the headstone
-    sc.disc(186, 126, 10, (70, 72, 80), squash=0.7)
-    sc.rect(176, 120, 178, 160, (110, 112, 120))
-    sc.poly([(170, 160), (206, 160), (210, 166), (166, 166)], (40, 34, 30))
-    for k in range(3):                                                 # flowers on the grave
-        sc.c[160, 182 + k * 4] = (200, 190, 220)
-    im, fx, fy = arr_of("cassivane_marshal", pose={"head": (0.3, 0, 0), "body": (0.08, 0, 1)}, light=(0.6, 0.62, 0.75))
-    paste(sc, im, 140, 168, fx, fy)
-    rng = np.random.default_rng(31)
-    for _ in range(260):                                               # rain
-        x, y = int(rng.integers(0, W + 20)), int(rng.integers(-6, H))
-        sc.line(x, y, x - 2, y + 5, (110, 118, 140))
-    sc.vignette(0.55)
+    """Behind the Black Gate at the bottom of the Rift: Vael-Orrun, sealed in the dark under the world, leans to the seam
+    of the Gate and whispers through it. The darkness behind him is deeper than dark, and it leans in close to his ear.
+    No figure, only that darkness."""
+    sc = Scene(413)
+    sc.c[:] = (16, 14, 20)
+    sc.bands("141218", "1c1a22", 0, H, n=4)
+    gx = 196                                                           # the Gate: two black doors, a seam of the world's light
+    sc.rect(gx - 30, 0, W, H, (26, 24, 30))
+    for x in range(gx - 26, W, 22):
+        sc.rect(x, 0, x + 2, H, (36, 34, 42))
+        for y in range(14, H, 30):
+            sc.disc(x + 1, y, 2, (52, 50, 60))
+    for y in range(0, H, 46):
+        sc.rect(gx - 30, y, W, y + 4, (34, 32, 40))
+    sc.rect(gx, 0, gx + 1, H, (210, 200, 180))
+    sc.glow(gx, 90, 26, (200, 190, 170), 0.3, squash=3.0)
+    sc.put("vael_orrun", 128, 352, pose={"body": (0.1, 2, 0), "head": (0.12, 0, 0)}, light=(0.8, 0.8, 0.86), rim=(200, 190, 170))
+    # the dark behind him: pure black, no edge, no face, bending over his shoulder toward his ear
+    m = sc.poly([(0, 0), (90, 0), (126, 20), (148, 58), (153, 80), (139, 74), (120, 64), (104, 70), (96, 90), (84, 130),
+                 (70, 180), (0, 180)], None)
+    sc.c[m] = (0, 0, 0)
+    d = np.hypot(sc.xs - 70, sc.ys - 60)
+    sc.blend(~m & (sc.xs < gx - 30), (0, 0, 0), np.clip(1 - d / 140, 0, 1) * 0.6, steps=4)
     return sc
 
 
 def the_hush_04():
-    """The Crack in the Hollow Rift seen from the far side, from the Outer Hollow: wide open where the Concord marched
-    through. The six Wardens' light spills in from the world beyond it."""
-    sc = Scene(404)
-    sc.bands("060508", "141218", 0, H, n=5)
-    sc.stars(30, H, cols=((60, 60, 70), (40, 40, 50)))
-    edge = [(150, 0), (142, 30), (132, 60), (120, 100), (104, 140), (92, 180)]
-    edge2 = [(176, 0), (186, 30), (198, 60), (214, 100), (232, 140), (250, 180)]
-    rift = sc.poly(edge + edge2[::-1], None)
-    sc.bands("6a8ac0", "f0d8a0", 0, H, n=6, mask=rift)                 # the world beyond, at dawn
-    sc.ridge(150, 6, "4a5a3a", 71, freq=1.6)
-    sc.c[~rift & (sc.ys >= 140)] = 0
-    sc.bands("141218", "060508", 140, H, n=3, mask=~rift)
-    for i, c in enumerate(RINGC):                                      # six beams spilling in
-        a = math.radians(-60 + i * 24)
-        x0, y0 = 170, 110
-        m = sc.poly([(x0, y0), (x0 + math.sin(a - 0.08) * 400, y0 + math.cos(a - 0.08) * 400 - 260),
-                     (x0 + math.sin(a + 0.08) * 400, y0 + math.cos(a + 0.08) * 400 - 260)], None)
-        sc.blend(m & ~rift, c, 0.22)
-    for p in (edge, edge2):                                            # the lips of the Crack, lit
-        for (x0, y0), (x1, y1) in zip(p, p[1:]):
-            sc.line(x0, y0, x1, y1, (230, 220, 200))
-    tiny_army(sc, 30, 110, 176, 10, (40, 44, 60), rows=2)             # what the Concord left on this side: tracks, a banner
-    sc.rect(60, 150, 62, 172, (50, 40, 30))
-    sc.poly([(62, 150), (78, 154), (62, 158)], (52, 80, 138))
-    sc.vignette(0.5)
+    """The end of the war: Vael-Orrun's white light rising out of the Rift toward Solenne and the Heartstone that was his
+    crown. Inside the light runs a single thin thread of no colour at all."""
+    sc = Scene(414)
+    sky(sc, "dawn")
+    sc.ridge(122, 4, "6a5a6a", 81, freq=0.8)
+    sc.bands("5a4a54", "2a2228", 126, H, n=5)
+    solenne(sc, 66, 130, 0.45, glow=False)
+    heartstone(sc, 66, 102, 0.35)
+    rift = sc.poly([(232, 132), (246, 134), (266, 140), (300, 152), (320, 158), (320, 170), (296, 160), (262, 148),
+                    (240, 140)], (6, 4, 8))                              # the Rift, a black split in the plain
+    sc.line(232, 132, 320, 158, (120, 100, 110))
+    p0, p1, p2 = np.array([262.0, 146.0]), np.array([170.0, -30.0]), np.array([66.0, 100.0])
+    pts = [(1 - u) ** 2 * p0 + 2 * (1 - u) * u * p1 + u * u * p2 for u in np.linspace(0, 1, 160)]
+    band = np.zeros((H, W), bool)
+    for k, (x, y) in enumerate(pts):
+        r = 9 - 5 * k / len(pts)
+        band |= np.hypot(sc.xs - x, sc.ys - y) < r
+    sc.glow(170, 50, 120, (255, 250, 236), 0.35)
+    sc.blend(band, (255, 255, 250), 0.9)
+    for (x0, y0), (x1, y1) in zip(pts, pts[1:]):                        # a single thread of no colour, inside the light
+        sc.line(x0, y0, x1, y1, NOCOLOUR)
+    sc.glow(66, 102, 22, (255, 250, 236), 0.6)
+    sc.vignette(0.35)
     return sc
 
 
