@@ -34,7 +34,7 @@ extends Node
 ## Add --skills to film every player skill at its last level (and the Meteor at its first, to compare)
 ## in a busy battle: numbered JPEG frames in <out>/skills/ at 960x540 (make a clip from them), plus
 ## <out>/skills_hud.png, the skill bar with its level-up buttons.
-## Add --bosses to take the bosses' abilities: the red glow on boss stages on the map, a boss healing, raising
+## Add --boss-abilities to take the bosses' abilities: the red glow on boss stages on the map, a boss healing, raising
 ## its barrier and binding towers, and Vael-Orrun's fireball burning a tower down, plus frames for clips
 ## (<out>/bosses/<boss>/NNNN.png).
 ## Add --skirmish to take the Skirmish page (a hard level and Endless picked), a battle on each land
@@ -69,7 +69,7 @@ var _quick := false
 var _campaign := false
 var _ui := false
 var _story := false
-var _bosses := false
+var _boss_abilities := false
 var _heroes := false
 var _menu := false
 var _saves := false
@@ -120,8 +120,8 @@ func _ready() -> void:
 			_ui = true
 		elif arg == "--edge":
 			_edge = true
-		elif arg == "--bosses":
-			_bosses = true
+		elif arg == "--boss-abilities":
+			_boss_abilities = true
 		elif arg == "--story":
 			_story = true
 		elif arg == "--heroes":
@@ -206,8 +206,8 @@ func _ready() -> void:
 		_run_edge()
 	elif _story:
 		_run_story()
-	elif _bosses:
-		_run_bosses()
+	elif _boss_abilities:
+		_run_boss_abilities()
 	elif _heroes:
 		_run_heroes()
 	elif _ui:
@@ -876,7 +876,7 @@ func _run_story() -> void:
 	get_tree().quit()
 
 
-func _run_bosses() -> void:
+func _run_boss_abilities() -> void:
 	Progress.use_memory_profile(_campaign_profile())
 	var screen := CAMPAIGN_SCENE.instantiate() as CampaignScreen
 	add_child(screen)
@@ -1603,13 +1603,13 @@ func _run_skills() -> void:
 		var target := _inner_crowd(sim)
 		game.camera.set_view(1.6 if skill.is_targeted() else 1.0, target)
 		caption.text = "%s  (%s, level %d)" % [skill.title_at(entry[1]), skill.display_name, entry[1]]
-		await _film(folder, frame, 8)
+		await _film_frames(folder, frame, 8)
 		if not sim.skill_error(skill_id).is_empty():
 			push_warning("Capture: %s cannot be cast: %s" % [skill_id, sim.skill_error(skill_id)])
 		game._cast_skill(skill_id, target)
 		var cast: SimSkillCast = sim.skill_casts().back() if not sim.skill_casts().is_empty() else null
 		var length := (cast.length() if cast != null else 0.0) + 1.6
-		await _film(folder, frame, int(length * 30.0))
+		await _film_frames(folder, frame, int(length * 30.0))
 	print("Saved clip ", folder)
 	game.free()
 	get_tree().quit()
@@ -1635,7 +1635,7 @@ static func _inner_crowd(sim: RunSim) -> Vector2:
 
 
 ## Saves `frames` frames, one per drawn frame, as half-size JPEGs numbered on from `counter[0]`.
-func _film(folder: String, counter: Array, frames: int) -> void:
+func _film_frames(folder: String, counter: Array, frames: int) -> void:
 	for i in frames:
 		await RenderingServer.frame_post_draw
 		var image := get_viewport().get_texture().get_image()
