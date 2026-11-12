@@ -28,7 +28,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 from kit import hexc  # noqa: E402
-from gen_lighting_demo import encode_normals, fbm, normals_from_height, value_noise  # noqa: E402
+from gen_lighting_demo import BAYER4 as BAYER, encode_normals, fbm, normals_from_height, value_noise  # noqa: E402
 import gen_game_art as old  # noqa: E402
 import props as P  # noqa: E402
 
@@ -68,18 +68,21 @@ STYLES = {
                   "small": [("fern_a", 4), ("fern_b", 3), ("bush_round", 3), ("bush_berry", 2), ("rock_mossy", 2),
                             ("stump", 1), ("log", 2), ("mushroom_1", 2), ("mushroom_0", 1), ("flowers_1", 2), ("tuft_0", 3)]},
     },
-    "fire": {
-        "kind": "basalt",
-        "ground": pal("1c1618", "262022", "302829", "3b3132", "473b3a", "564844"),
-        "ash": pal("4a4240", "5a504c", "6a5f58"),
+    "fire": {  # Ember Reach: grey ash fields over dark basalt, a few lava rivers, a pale paved road you can't miss
+        "kind": "ashland", "road_kind": "paved",
+        "ground": pal("1d1617", "261d1d", "2f2524", "392d2a", "443531", "4f3e38"),
+        "ash": pal("4a3f3a", "564841", "63534a", "705e52", "806b5c"),
+        "crust": pal("2a1a16", "3a2219", "52291a"),
         "lava": pal("8a1e10", "d8481a", "ff8a2a", "ffc85a", "fff2c0"),
         "tuft": pal("2a1c16", "4a2c1a", "6a3a1c", "8a4a20", "b06024"),
-        "road": pal("2a2422", "352e2b", "413835", "4d433e", "5a4e48", "6a5c54"),
+        "road": pal("5e5244", "766856", "8c7c66", "a08e74", "b4a284", "cbb998"),
+        "kerb": pal("1a1414", "2c2422", "3e3430", "54483f"),
         "bank": pal("120e0e", "1c1616"),
-        "cobble": True, "flower_rate": 0.0, "tuft_rate": 0.12,
-        "props": {"tree": [("dead_tree_0", 3), ("dead_tree_1", 2), ("basalt_cols", 2)],
-                  "small": [("basalt_rock_0", 3), ("basalt_rock_1", 2), ("ember_shard", 1),
+        "cobble": True, "flower_rate": 0.0, "tuft_rate": 0.10,
+        "props": {"tree": [("dead_tree_0", 3), ("dead_tree_1", 2), ("basalt_cols", 3)],
+                  "small": [("basalt_rock_0", 4), ("basalt_rock_1", 3), ("ember_shard", 1),
                             ("ash_tuft_0", 3), ("ash_tuft_1", 3), ("charred_log", 1), ("skull_rock", 1)]},
+        "small_rate": 0.35,
     },
     "storm": {  # a windswept plateau of pale grass, slate outcrops
         "kind": "grass",
@@ -489,7 +492,189 @@ def paint_snow(st, W, H, road_d, half, rng):
     return rgb, height, glow
 
 
-PAINTERS = {"grass": paint_grass, "basalt": paint_basalt, "snow": paint_snow}
+def _stamp(mask, x, y, r):
+    H, W = mask.shape
+    ri = int(math.ceil(r))
+    x0, x1, y0, y1 = max(0, int(x) - ri), min(W, int(x) + ri + 1), max(0, int(y) - ri), min(H, int(y) + ri + 1)
+    if x0 >= x1 or y0 >= y1:
+        return
+    yy, xx = np.mgrid[y0:y1, x0:x1]
+    mask[y0:y1, x0:x1] |= np.hypot(xx + 0.5 - x, yy + 0.5 - y) <= r
+
+
+def paint_ashland(st, W, H, road_d, half, rng):
+    """The fire land, calm enough to read: dark basalt plates mostly buried under grey ash, and the heat kept to a
+    few long lava rivers and pools well away from the road, each with a halo of warm crust around it."""
+    tones, ash_t, crust = st["ground"], st["ash"], st["crust"]
+    cell = half / 0.46
+    ident, d1, d2 = voronoi(H, W, 11, rng)
+    per = rng.random(ident.max() + 1)
+    big = fbm(H, W, [80, 32], rng)
+    level = np.clip((per[ident] * 0.5 + big * 0.6) * (len(tones) - 2), 0, len(tones) - 3).astype(int) + 1
+    rgb = tones[level].copy()
+    height = np.full((H, W), 0.5)
+    gap = d2 - d1
+    seam = gap < 1.1
+    gy, gx = np.gradient(gap)
+    rim = (gap < 2.4) & ~seam
+    rgb[rim & ((gx + gy) > 0.15)] = tones[np.clip(level + 1, 0, len(tones) - 1)][rim & ((gx + gy) > 0.15)]
+    rgb[seam] = tones[0]
+    height[seam] = -0.4
+    # ash: wide soft fields with a dithered edge, ripples in lighter bands, seams showing faintly through
+    yy, xx = np.mgrid[0:H, 0:W]
+    a = fbm(H, W, [110, 44, 14], rng)
+    dith = BAYER[(yy % 4), (xx % 4)]
+    ash = a + (dith - 0.5) * 0.06 > 0.53
+    ripple = (np.sin(yy * 0.9 + fbm(H, W, [18, 7], rng) * 9) > 0.82)
+    alv = np.clip((a - 0.53) * 11, 0, 3).astype(int)
+    alv = np.where(ripple, np.minimum(alv + 1, len(ash_t) - 1), alv)
+    rgb[ash] = ash_t[alv][ash]
+    rgb[ash & seam & (a < 0.6)] = ash_t[0] * 0.8 + tones[0] * 0.2
+    height[ash] = 0.4
+    # the lower edge of every ash drift casts a one-pixel shade on the stone below it
+    under = np.zeros_like(ash)
+    under[1:] = ash[:-1] & ~ash[1:]
+    rgb[under] = tones[0]
+    # broad scorched stretches: the ground warms toward rust where the old flows ran
+    scorch = np.clip((fbm(H, W, [150, 60], rng) - 0.5) * 2.6, 0, 1)[..., None]
+    rgb = rgb * (1 - scorch * 0.35) + np.array(hexc("5a3122"), np.float64) * scorch * 0.35
+    # the trodden verge: darker, bare stone right beside the road so the road's edge stands out
+    verge = (road_d < half + 5) & (road_d >= half)
+    rgb[verge] = rgb[verge] * 0.72
+    # lava rivers: wandering lines that never come near the road
+    lava = np.zeros((H, W), bool)
+    keep = cell * 2.2
+    for _ in range(max(3, int(W * H / 170000))):
+        for _try in range(60):
+            x, y = float(rng.uniform(10, W - 10)), float(rng.uniform(10, H - 10))
+            if road_d[int(y), int(x)] > keep + 20:
+                break
+        else:
+            continue
+        ang = float(rng.uniform(0, math.tau))
+        for side in (1, -1):
+            px, py, a_ = x, y, ang + (0 if side == 1 else math.pi)
+            heading = a_
+            for k in range(int(rng.integers(50, 120))):
+                a_ += float(rng.normal(0, 0.22)) + (heading - a_) * 0.08     # wander, but keep one way: no loops
+                px += math.cos(a_) * 1.6
+                py += math.sin(a_) * 1.6
+                if not (2 <= px < W - 2 and 2 <= py < H - 2) or road_d[int(py), int(px)] < keep:
+                    break
+                _stamp(lava, px, py, 1.5 + 1.3 * abs(math.sin(k * 0.17)))
+    # pools
+    pools = np.zeros((H, W), bool)
+    for _ in range(max(2, int(W * H / 260000))):
+        for _try in range(80):
+            x, y = float(rng.uniform(30, W - 30)), float(rng.uniform(30, H - 30))
+            r = float(rng.uniform(9, 16))
+            if road_d[int(y), int(x)] > keep + r + 10:
+                break
+        else:
+            continue
+        ang = np.arctan2(yy - y, xx - x)
+        rag = 1 + 0.15 * np.sin(ang * 5 + rng.uniform(0, 6)) + 0.08 * np.sin(ang * 11)
+        pools |= np.hypot((xx - x) / 1.5, (yy - y)) < r * rag
+    lava |= pools
+    # crust and heat around the lava (distance out to 7 px), then the molten surface itself
+    near = np.zeros((H, W))
+    grow = lava.copy()
+    for k in range(1, 8):
+        nxt = grow | np.roll(grow, 1, 0) | np.roll(grow, -1, 0) | np.roll(grow, 1, 1) | np.roll(grow, -1, 1)
+        near[nxt & ~grow] = k
+        grow = nxt
+    glow = np.zeros((H, W, 4), np.uint8)
+    ring = (near > 0) & (near <= 2)
+    rgb[ring] = crust[0]
+    rgb[(near == 1)] = crust[2]
+    warm = (near > 2) & (near <= 7)
+    w = (1 - (near - 2) / 6.0)[..., None]
+    rgb = np.where(warm[..., None], rgb * (1 - w * 0.45) + crust[2] * w * 0.45, rgb)
+    glow[near > 0, :3] = st["lava"][0].astype(np.uint8)
+    glow[near > 0, 3] = np.clip((8 - near[near > 0]) * 22, 0, 160).astype(np.uint8)
+    core_d = np.zeros((H, W))
+    shrink = lava.copy()
+    for k in range(1, 5):
+        shrink = shrink & np.roll(shrink, 1, 0) & np.roll(shrink, -1, 0) & np.roll(shrink, 1, 1) & np.roll(shrink, -1, 1)
+        core_d[shrink] = k
+    flow = fbm(H, W, [9, 4], rng)
+    li = np.clip(1 + core_d * 0.7 + (flow - 0.5) * 2.0, 1, 3).astype(int)
+    li = np.where((core_d >= 1) & (flow < 0.3), 4, li)              # a few white-hot threads
+    li = np.where(pools, np.clip(1 + (core_d >= 2) + (flow < 0.35), 1, 2), li).astype(int)   # pools stay deep orange
+    rgb[lava] = st["lava"][li][lava]
+    crust_on = lava & (((flow > 0.7) & (core_d >= 2)) | (pools & (flow > 0.56) & (core_d >= 2)))  # cooled skins
+    rgb[crust_on] = crust[1]
+    glow[lava, :3] = st["lava"][np.clip(li, 1, 4)][lava].astype(np.uint8)
+    glow[lava, 3] = 235
+    glow[pools & ~crust_on, 3] = 150
+    glow[crust_on, 3] = 40
+    height[lava] = -0.6
+    # sparse charred tufts and a few embers in the ash
+    tufts(rgb, height, (road_d > half + 3) & (near == 0) & ~lava, np.full((H, W), st["tuft_rate"]), st["tuft"], rng,
+          spacing=(9, 7))
+    for _ in range(int(W * H / 5000)):
+        x, y = int(rng.integers(1, W - 1)), int(rng.integers(1, H - 1))
+        if road_d[y, x] < half + 4 or lava[y, x]:
+            continue
+        c = st["lava"][3] if rng.random() < 0.3 else st["lava"][2]
+        rgb[y, x] = c
+        glow[y, x, :3] = c.astype(np.uint8)
+        glow[y, x, 3] = 180
+    return rgb, height, glow
+
+
+def paint_paved_road(st, rgb, height, glow, road_d, dist, half, rng):
+    """A pale paved road: dusty flagstones in a dark kerb, lit on the far side and with a shadow on the near side,
+    so it reads at a glance against the dark ground at any zoom, day or night."""
+    H, W = road_d.shape
+    road, kerb = st["road"], st["kerb"]
+    on = road_d < half
+    inner = road_d < half - 3
+    ident, d1, d2 = voronoi(H, W, 7, rng, jitter=0.6)
+    per = rng.random(ident.max() + 1)
+    dust = fbm(H, W, [26, 10, 4], rng)
+    tone = np.clip((per[ident] * 1.6 + dust * 1.8).astype(int) + 1, 1, len(road) - 2)
+    gap = d2 - d1
+    seam = gap < 1.0
+    gy, gx = np.gradient(gap)
+    lit = (gap < 2.0) & ~seam & ((gx + gy) > 0.1)
+    dark = (gap < 2.0) & ~seam & ((gx + gy) < -0.1)
+    fill = road[tone]
+    fill[lit] = road[np.clip(tone + 1, 0, len(road) - 1)][lit]
+    fill[dark] = road[np.clip(tone - 1, 0, len(road) - 1)][dark]
+    fill[seam] = road[0]
+    # wheel-worn middle: the stones there are smoother and paler
+    worn = np.abs(dist - half * 0.42) < 2.2
+    fill[worn & ~seam] = road[np.clip(tone + 1, 0, len(road) - 1)][worn & ~seam]
+    rgb[inner] = fill[inner]
+    height[inner] = np.where(seam, -0.7, -0.35)[inner]
+    glow[on] = 0
+    # the kerb: a band of dark blocks along both edges, their tops lit
+    band = on & ~inner
+    kid, kd1, kd2 = voronoi(H, W, 4, rng, jitter=0.5)
+    kper = rng.random(kid.max() + 1)
+    kt = (kper[kid] * 1.99).astype(int) + 1
+    rgb[band] = kerb[kt][band]
+    kseam = band & ((kd2 - kd1) < 0.9)
+    rgb[kseam] = kerb[0]
+    top = np.zeros_like(on)
+    top[1:] = band[1:] & ~band[:-1]
+    rgb[top & band] = kerb[3]
+    height[band] = -0.1
+    # a shadow cast by the far kerb onto the road, and one on the ground beyond the near kerb
+    shade = inner & np.roll(band, 1, 0) & np.roll(band, 2, 0)
+    rgb[shade] = rgb[shade] * 0.78
+    out_shadow = (~on) & (np.roll(on, 1, 0) | np.roll(on, 2, 0)) & ~np.roll(on, -1, 0)
+    rgb[out_shadow] = rgb[out_shadow] * 0.55
+    # a little rubble on the stones
+    for _ in range(int(W * H / 2600)):
+        x, y = int(rng.integers(1, W - 3)), int(rng.integers(1, H - 3))
+        if road_d[y, x] < half - 5:
+            pebble(rgb, height, x, y, kerb)
+
+
+PAINTERS = {"grass": paint_grass, "basalt": paint_basalt, "snow": paint_snow, "ashland": paint_ashland}
+ROADS = {"paved": paint_paved_road}
 
 
 # ------------------------------------------------------------------------------------------------ one map
@@ -510,7 +695,7 @@ def make_ground(m, props_info, preview=None):
     wobble = (fbm(H, W, [9, 4], rng) - 0.5) * 3.0
     road_d = dist + wobble
     rgb, height, glow = PAINTERS[st["kind"]](st, W, H, road_d, half, rng)
-    paint_road(st, rgb, height, glow, road_d, dist, half, rng)
+    ROADS.get(st.get("road_kind"), paint_road)(st, rgb, height, glow, road_d, dist, half, rng)
     hole_style = {"road": [tuple(c) for c in st["road"]], "tip": tuple(st["tuft"][4])}
     for hx, hy in holes:
         old.paint_hole(rgb, height, glow, hole_style, hx, hy, cell_art, rng)
@@ -529,7 +714,7 @@ def make_ground(m, props_info, preview=None):
     elif os.path.exists(glow_path):
         os.remove(glow_path)
 
-    props = place_props(m, st, props_info, road_d, hole_d, half, cell_art, W, H, rng)
+    props = place_props(m, st, props_info, road_d, hole_d, half, cell_art, W, H, rng, hot=glow[..., 3] >= 150)
     with open(os.path.join(folder, m["id"] + ".json"), "w") as fh:
         json.dump({"size": [W, H], "biome": m["biome"], "props": props}, fh, indent=0)
     if preview:
@@ -542,9 +727,17 @@ def make_ground(m, props_info, preview=None):
         pv.save(os.path.join(preview, m["id"] + ".png"))
 
 
-def place_props(m, st, props_info, road_d, hole_d, half, cell_art, W, H, rng):
+def place_props(m, st, props_info, road_d, hole_d, half, cell_art, W, H, rng, hot=None):
     """Trees in groves and along the board's edges, small things scattered, nothing on the road or a hole."""
     out = []
+
+    def on_lava(x, y, w):
+        if hot is None or not hot.any():
+            return False
+        y0, y1 = max(0, int(y) - 3), min(H, int(y) + 2)
+        x0, x1 = max(0, int(x - w / 2)), min(W, int(x + w / 2) + 1)
+        return bool(hot[y0:y1, x0:x1].sum() > 1)
+
     grove = fbm(H, W, [120, 50], rng)
     trees = [k for k, n in st["props"]["tree"] for _ in range(n)]
     small = [k for k, n in st["props"]["small"] for _ in range(n)]
@@ -558,16 +751,20 @@ def place_props(m, st, props_info, road_d, hole_d, half, cell_art, W, H, rng):
         w = props_info[kind]["size"][0]
         if road_d[int(y), int(x)] < half + w * 0.45 + 4 or hole_d[int(y), int(x)] < cell_art * 1.3 + w * 0.5:
             continue
+        if on_lava(x, y, w):
+            continue
         if any(abs(x - tx) < w * 0.6 and abs(y - ty) < 10 for tx, ty in taken):
             continue
         taken.append((x, y))
         out.append({"kind": kind, "pos": [round(x), round(y)], "cell": [int(x // cell_art), int(y // cell_art)],
                     "flip": bool(rng.random() < 0.5)})
-    for _ in range(int(m["grid"][0] * m["grid"][1] * 0.6)):
+    for _ in range(int(m["grid"][0] * m["grid"][1] * 0.6 * st.get("small_rate", 1.0))):
         x, y = float(rng.uniform(4, W - 4)), float(rng.uniform(10, H - 2))
         kind = small[int(rng.integers(0, len(small)))]
         w = props_info[kind]["size"][0]
         if road_d[int(y), int(x)] < half + w * 0.5 + 2 or hole_d[int(y), int(x)] < cell_art * 1.1 + w * 0.5:
+            continue
+        if on_lava(x, y, w):
             continue
         out.append({"kind": kind, "pos": [round(x), round(y)], "cell": [int(x // cell_art), int(y // cell_art)],
                     "flip": bool(rng.random() < 0.5)})
