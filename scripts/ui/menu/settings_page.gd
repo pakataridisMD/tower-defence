@@ -1,7 +1,7 @@
 class_name SettingsPage
 extends MenuPage
-## Settings: Sound (a volume slider and mute switch for every bus, as in the in-run audio panel)
-## and Video (window mode and v-sync). Every change applies and saves at once. The studio's
+## Settings: Sound (a volume slider and mute switch for every bus, as in the in-run audio panel,
+## and the title screen's music on or off) and Video (window mode and v-sync). Every change applies and saves at once. The studio's
 ## name sits at the right of the tab row.
 
 const TABS: Array[String] = ["Sound", "Video"]
@@ -13,6 +13,8 @@ var _percent: Dictionary[StringName, Label] = {}
 var _sections: Array[Control] = []
 var _tab_buttons: Array[Button] = []
 var developer_label: Label
+## Turns the title screen's music on and off (on when pressed).
+var menu_music: CheckBox
 
 
 func _init() -> void:
@@ -61,6 +63,7 @@ func refresh() -> void:
 		sliders[bus].set_value_no_signal(roundf(AudioSettings.volume(bus) * 100.0))
 		mutes[bus].set_pressed_no_signal(AudioSettings.is_muted(bus))
 		_show(bus)
+	menu_music.set_pressed_no_signal(AudioSettings.menu_music_on())
 
 
 func _sound() -> Control:
@@ -104,6 +107,16 @@ func _sound() -> Control:
 		grid.add_child(mute)
 		mutes[bus] = mute
 		_show(bus)
+	var gap := Control.new()
+	gap.custom_minimum_size = Vector2(0, 10)
+	column.add_child(gap)
+	column.add_child(UiStyle.menu_label("MUSIC", "small", 16, UiStyle.MENU_GOLD))
+	menu_music = UiStyle.menu_switch()
+	menu_music.text = "Menu music (plays on the title screen)"
+	menu_music.focus_mode = Control.FOCUS_NONE
+	menu_music.button_pressed = AudioSettings.menu_music_on()
+	menu_music.toggled.connect(AudioSettings.set_menu_music)
+	column.add_child(menu_music)
 	return column
 
 

@@ -1,0 +1,38 @@
+{
+  "id": "menu_main",
+  "title": "The Last Watch",
+  "duration": 102.8571,
+  "markers": [
+    {
+      "time": 0.0,
+      "name": "A"
+    },
+    {
+      "time": 22.86,
+      "name": "B"
+    },
+    {
+      "time": 45.71,
+      "name": "C"
+    },
+    {
+      "time": 68.57,
+      "name": "D"
+    },
+    {
+      "time": 91.43,
+      "name": "E"
+    }
+  ],
+  "loop": true,
+  "loop_seconds": 102.8571,
+  "loop_samples": 4536000,
+  "handover_seconds": 102.8571,
+  "bpm": 84,
+  "layers": [
+    "main"
+  ],
+  "files": {
+    "main": "menu_main.ogg"
+  }
+}
