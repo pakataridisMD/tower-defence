@@ -4,13 +4,17 @@ extends SceneTree
 ## filled after each stage, to check that the tree keeps growing across the whole campaign instead
 ## of filling up in the first land (see tools/meta/gen_meta_tree.py).
 ##
-##   godot --headless -s tools/meta_pacing.gd [-- --tries=<n>] [--quick] [--no-spend]
+##   godot --headless -s tools/meta_pacing.gd [-- --tries=<n>] [--quick] [--no-spend] [--profiles=<path>]
 ##
 ## A lost stage is played again, up to --tries times (default 2), and every attempt pays its meta
 ## points like a real run. --quick plays only the first stage of each land. The bot spends points on
 ## the cheapest open node, preferring the land it is about to play, and skips nodes with a
 ## downside (the player picks those on purpose). --no-spend keeps the points, to compare against a
 ## player who never opens the tree. The citadel assault is left out: it is its own mode.
+## --profiles writes the player's profile as it stands before each stage (meta tree, finished
+## campaigns' sigils, heroes) to a JSON file, keyed by stage id, with the assault getting the profile
+## after the last stage. tools/campaign_balance.gd tunes every stage against those profiles, and
+## tools/campaign/meta_profiles.json is the copy it reads by default.
 
 const TRIES_DEFAULT := 2
 
@@ -23,8 +27,14 @@ func _initialize() -> void:
 	var tries := TRIES_DEFAULT
 	var quick := false
 	var spend := not OS.get_cmdline_user_args().has("--no-spend")
+	var profiles_path := ""
+	var profiles := {}
 	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--tries="):
+		if arg.begins_with("--profiles="):
+			profiles_path = arg.trim_prefix("--profiles=")
+			if profiles_path.is_relative_path():
+				profiles_path = "res://" + profiles_path
+		elif arg.begins_with("--tries="):
 			tries = maxi(1, int(arg.trim_prefix("--tries=")))
 		elif arg == "--quick":
 			quick = true
@@ -49,6 +59,8 @@ func _initialize() -> void:
 			for attempt in tries:
 				if spend:
 					_spend(meta, focus)
+				if attempt == 0:
+					profiles[String(stage.id)] = meta.profile.to_dict()
 				var sim := _play(meta, stage)
 				earned += meta.record_run(sim)
 				earned += int(meta.record_stage(sim).get("first_clear_points", 0))
@@ -64,12 +76,19 @@ func _initialize() -> void:
 				stage_count, stage.id, result, lives, earned, meta.profile.meta_points_earned, spent,
 				roundi(100.0 * spent / full), meta.tree.allocated_ids().size() - 1,
 				(Time.get_ticks_msec() - started) / 1000])
+	if not profiles_path.is_empty():
+		profiles["assault_1"] = meta.profile.to_dict()
+		var file := FileAccess.open(profiles_path, FileAccess.WRITE)
+		file.store_string(JSON.stringify(profiles, "\t", true))
+		file.close()
+		print("PACING profiles for %d stages written to %s" % [profiles.size(), profiles_path])
 	registry.free()
 	quit()
 
 
 func _play(meta: MetaProgress, stage: StageData) -> RunSim:
-	var sim := RunSim.new(meta.stage_config(stage.id))
+	# With the heroes who have joined, as in the game.
+	var sim := RunSim.new(meta.add_heroes(meta.stage_config(stage.id)))
 	var bot := AutoPlayer.for_sim(sim)
 	var elapsed := 0.0
 	while not sim.is_over() and elapsed < 4000.0:

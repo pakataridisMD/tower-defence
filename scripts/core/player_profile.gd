@@ -4,7 +4,7 @@ extends RefCounted
 ## map and difficulty picked last, and the campaign stages won. SaveFile stores it as versioned JSON.
 
 ## Bump this when the saved shape changes, and teach migrate() to upgrade older saves.
-const VERSION := 3
+const VERSION := 4
 
 ## Every meta point ever earned. Unspent points are this minus the cost of the nodes taken, so
 ## changing a node's cost in an update can never leave a save with negative points.
@@ -25,6 +25,14 @@ var stage_stars: Dictionary[StringName, int] = {}
 var seen_cinematics: Array[StringName] = []
 ## Heroes picked for the next run, in key order. Empty brings the most recent heroes to join.
 var hero_party: Array[StringName] = []
+## Best meta point score reached on each campaign stage (keyed by stage id) and skirmish map (keyed
+## by "skirmish:<map id>"), difficulty multiplier included. A run only pays for beating it.
+var run_records: Dictionary[StringName, int] = {}
+## How many small replay rewards each stage or skirmish map has paid (see MetaProgress.REPLAY_LIMIT).
+var replays_paid: Dictionary[StringName, int] = {}
+## Set when loading a save from before records existed (version 3 or older). MetaProgress then
+## works out its records from the stages won and caps its meta points at what they are worth.
+var needs_records := false
 
 
 func to_dict() -> Dictionary:
@@ -55,7 +63,25 @@ func to_dict() -> Dictionary:
 		"campaign": {"stars": stars},
 		"story": {"seen": seen},
 		"heroes": {"party": party},
+		"records": {"best": _string_keys(run_records), "replays": _string_keys(replays_paid)},
 	}
+
+
+static func _string_keys(source: Dictionary) -> Dictionary:
+	var result := {}
+	for id in source:
+		result[String(id)] = source[id]
+	return result
+
+
+static func _read_counts(source: Variant, into: Dictionary[StringName, int]) -> void:
+	if not source is Dictionary:
+		return
+	for id: Variant in source:
+		if id is String and not (id as String).is_empty():
+			var count := maxi(0, _read_int(source, id))
+			if count > 0:
+				into[StringName(id)] = count
 
 
 ## Builds a profile from saved data. Missing or malformed fields fall back to their defaults, so a
@@ -99,6 +125,11 @@ static func from_dict(saved: Dictionary) -> PlayerProfile:
 			for id: Variant in party:
 				if id is String and not (id as String).is_empty() and not profile.hero_party.has(StringName(id)):
 					profile.hero_party.append(StringName(id))
+	var records: Variant = data.get("records", {})
+	if records is Dictionary:
+		_read_counts((records as Dictionary).get("best", {}), profile.run_records)
+		_read_counts((records as Dictionary).get("replays", {}), profile.replays_paid)
+	profile.needs_records = data.get("needs_records", false) == true
 	return profile
 
 
@@ -112,6 +143,11 @@ static func migrate(saved: Dictionary) -> Dictionary:
 	if not (version is int or version is float) or int(version) < 3:
 		# Version 3 added the story. Older saves have seen none of it.
 		data["story"] = {"seen": []}
+	if not (version is int or version is float) or int(version) < 4:
+		# Version 4 pays meta points only for new records. Older saves could replay a stage for points
+		# without end, so their records are rebuilt from the stages won (see MetaProgress).
+		data["records"] = {"best": {}, "replays": {}}
+		data["needs_records"] = true
 	data["version"] = VERSION
 	return data
 

@@ -94,15 +94,19 @@ func test_wardens_resist_their_home_element() -> void:
 		assert_eq(boss.element, campaign.element, "%s's Warden is %s" % [campaign_id, campaign.element])
 
 
-func test_a_new_player_can_start_any_element_campaign_but_not_the_convergence() -> void:
+func test_the_lands_open_one_after_another_and_the_convergence_last() -> void:
 	var meta := _meta()
-	for campaign_id in ELEMENT_CAMPAIGNS:
-		var first: StageData = (registry.campaigns[campaign_id] as CampaignData).stages[0]
-		assert_true(meta.is_stage_unlocked(first.id), first.id)
-		var second: StageData = (registry.campaigns[campaign_id] as CampaignData).stages[1]
-		assert_false(meta.is_stage_unlocked(second.id), second.id)
-	assert_false(meta.is_campaign_unlocked(&"convergence"))
-	assert_false(meta.is_stage_unlocked(&"converge_1"))
+	assert_true(meta.is_stage_unlocked(&"ember_1"), "a new player starts in the Ember Reach")
+	for i in ELEMENT_CAMPAIGNS.size():
+		var campaign: CampaignData = registry.campaigns[ELEMENT_CAMPAIGNS[i]]
+		assert_true(meta.is_stage_unlocked(campaign.stages[0].id), "%s opens after the land before it" % campaign.id)
+		assert_false(meta.is_stage_unlocked(campaign.stages[1].id), campaign.stages[1].id)
+		if i + 1 < ELEMENT_CAMPAIGNS.size():
+			var next: CampaignData = registry.campaigns[ELEMENT_CAMPAIGNS[i + 1]]
+			assert_false(meta.is_stage_unlocked(next.stages[0].id), "%s waits for %s" % [next.id, campaign.id])
+		assert_false(meta.is_campaign_unlocked(&"convergence"))
+		_win_campaign(meta, ELEMENT_CAMPAIGNS[i])
+	assert_true(meta.is_stage_unlocked(&"converge_1"))
 
 
 func test_winning_a_stage_opens_the_next() -> void:
@@ -226,3 +230,32 @@ func test_progress_plays_the_chosen_stage() -> void:
 	assert_eq(Progress.run_config().stage.id, &"ember_1")
 	Progress.play_skirmish()
 	assert_null(Progress.run_config().stage)
+
+
+func test_replaying_a_won_stage_pays_almost_nothing() -> void:
+	var meta := _meta()
+	var waves := RunSim.new(meta.stage_config(&"ember_1")).total_waves()
+	var worth: int = registry.run_rules.meta_points_after_run(waves, true)
+	assert_eq(meta.record_run(_finished(meta, &"ember_1", false, 0)), 2, "two waves cleared")
+	assert_eq(meta.record_run(_finished(meta, &"ember_1", true, 5)), worth - 2, "the rest of the stage")
+	var replays := 0
+	for i in 20:
+		replays += meta.record_run(_finished(meta, &"ember_1", true, 5))
+	assert_eq(replays, MetaProgress.REPLAY_WIN_POINTS * MetaProgress.REPLAY_LIMIT, "twenty replays, capped")
+	assert_eq(meta.record_run(_finished(meta, &"ember_2", false, 0)), 2, "other stages keep their own record")
+
+
+func test_old_saves_lose_points_farmed_by_replays() -> void:
+	var farmed := {"version": 3, "meta_points_earned": 5000, "meta_nodes": ["command_gold"],
+		"campaign": {"stars": {"ember_1": 3}}}
+	var profile := PlayerProfile.from_dict(farmed)
+	assert_true(profile.needs_records)
+	var meta := _meta(profile)
+	var waves := RunSim.new(meta.stage_config(&"ember_1")).total_waves()
+	var worth: int = registry.run_rules.meta_points_after_run(waves, true) + 3
+	assert_eq(meta.profile.meta_points_earned, worth, "capped at what winning ember_1 is worth")
+	assert_eq(meta.profile.run_records[&"ember_1"], worth - 3)
+	assert_true(meta.tree.is_allocated(&"command_gold"), "nodes it can still afford stay taken")
+	assert_eq(meta.record_run(_finished(meta, &"ember_1", true, 5)), MetaProgress.REPLAY_WIN_POINTS, "a replay now")
+	var honest := _meta(PlayerProfile.from_dict({"version": 3, "meta_points_earned": 4}))
+	assert_eq(honest.profile.meta_points_earned, 0, "nothing won, nothing kept")

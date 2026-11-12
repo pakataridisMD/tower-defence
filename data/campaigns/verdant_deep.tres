@@ -108,6 +108,7 @@ order = 2
 element = &"nature"
 tagline = "The Hollow against the Grove"
 description = "Something hollow has crept under the canopy. Its Menders walk the roots at night. Poison stops their healing, and it spreads."
+requires_campaigns = Array[StringName]([&"thunder_steppe"])
 stages = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r5"), SubResource("r8"), SubResource("r10")])
 reward_name = "Sigil of the Grove"
 reward_description = "Nature towers deal 10% increased damage in every run."

@@ -174,7 +174,7 @@ func _build_top_bar() -> void:
 	_wave_button.pressed.connect(func() -> void: start_wave_pressed.emit())
 	_menu_button = _bar_button(row, 128)
 	_menu_button.text = "Menu (Esc)"
-	_menu_button.tooltip_text = "Pause, audio settings, back to the main menu, or quit the game."
+	_menu_button.tooltip_text = "Pause the run: resume, exit to the main menu, audio settings, or quit to the desktop."
 	_menu_button.pressed.connect(func() -> void: pause_menu_pressed.emit())
 
 
@@ -816,7 +816,7 @@ func _help_text() -> String:
 	var keys: Array[Array] = [
 		["T", "skill web"], ["F1 F2 F3", "heroes"], ["1-9", "pick a tower"], ["Tab", "next tower page"], ["Q W E  A S D", "skills"],
 		["Z X C V", "upgrade the tower"], ["Del", "sell the tower"], ["Space", "start the wave"],
-		["F", "speed"], ["P", "pause"], ["O", "audio"], ["M", "mute"], ["Esc", "back"],
+		["F", "speed"], ["P", "pause"], ["O", "audio"], ["M", "mute"], ["Esc", "menu, exit"],
 	]
 	var lines: PackedStringArray = []
 	lines.append("[b]How to play[/b]")
@@ -983,12 +983,15 @@ func show_story_note(text: String) -> void:
 	_end_stage.show()
 
 
-## The win or lose panel, with the run's numbers and the meta points it paid.
-func show_end(won: bool, meta_points: int) -> void:
+## The win or lose panel, with the run's numbers and the meta points it paid, and why (`note`:
+## a new record, a replay reward, or no new record).
+func show_end(won: bool, meta_points: int, note := "") -> void:
 	_end_title.text = "Victory" if won else "Defeat"
 	_end_title.add_theme_color_override("font_color", UiStyle.GOOD if won else UiStyle.BAD)
 	_end_stats.text = "Waves cleared: %d of %d\nEnemies killed: %d\nLives left: %d\nGold earned: %d" % [
 		sim.wave_index, sim.total_waves(), sim.kills, sim.lives, sim.gold_earned]
-	_end_meta.text = "+%d meta point%s. Spend them in the meta tree from the main menu." % [
+	_end_meta.text = "+%d meta point%s. Spend them in Talents from the main menu." % [
 		meta_points, "" if meta_points == 1 else "s"]
+	if not note.is_empty():
+		_end_meta.text += "\n" + note
 	_end_panel.show()
