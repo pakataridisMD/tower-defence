@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_b1i6m")
 id = &"warden"
-display_name = "Warden"
+display_name = "Ashdrake"
 max_health = 1200.0
 speed = 45.0
 armour = 8.0
@@ -16,4 +16,4 @@ power = &"breath"
 power_interval = 9.0
 power_duration = 2.5
 power_radius = 220.0
-description = "A corrupted dragon that scorches the towers around it."
+description = "Wild. A drake from the volcano, burning grey. It scorches the towers around it."

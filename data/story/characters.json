@@ -6,7 +6,7 @@
     "side": "hero",
     "element": "",
     "joins": "start",
-    "blurb": "Solenne's toughest soldier, always the last one through the gate. She leads every evacuation of the war.",
+    "blurb": "Solenne's toughest soldier, always the last one through the gate. She dragged the blind Queen clear on the Night of Falling Stars, and reads Fennick's notes to the Spirewright since he died.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -17,7 +17,7 @@
     "side": "hero",
     "element": "fire",
     "joins": "after ember_2",
-    "blurb": "A giant smith who forged half the gates of Solenne, freed from the Saltmother's tide-cage still swearing. His forge-hammer never cools.",
+    "blurb": "The giant smith who forged Solenne's gates. The Saltmother kept him in a salt cage for nine days to make him forge her chains, and he refused every day. His hammer never cools.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -28,18 +28,18 @@
     "side": "hero",
     "element": "storm",
     "joins": "after storm_2",
-    "blurb": "First rider of the Galeborn, who had never ridden in the direction of retreat. Lightning lance, and a grey stallion called Thunderclap.",
+    "blurb": "War-leader of the Galeborn, who fought the Stone alone for eleven days. Lightning lance, and a grey stallion called Thunderclap. The Herald Vholt was her teacher.",
     "boss_enemy": "",
     "hidden": false
   },
   {
     "id": "sylvaine",
     "name": "Sylvaine Thornwhisper",
-    "title": "Warden-Archer of the Deep",
+    "title": "Bow of the Deep",
     "side": "hero",
     "element": "nature",
     "joins": "after nature_2",
-    "blurb": "Three hundred years old, she held Elderhollow alone for nine days. Her arrows grow where they land.",
+    "blurb": "The Deepwood's best archer, three hundred years old. She held Elderhollow's root-doors alone until every child was out, and carries the last seed of the oldest tree.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -50,7 +50,7 @@
     "side": "hero",
     "element": "water",
     "joins": "after water_2",
-    "blurb": "A blind young seer who reads the future in ice. She has seen a death at the end of the war, and will not say whose.",
+    "blurb": "A blind young seer who reads the future in ice. She kept forty children alive inside a tower of ice. She has seen a death at the end of the war, and will not say whose.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -68,11 +68,11 @@
   {
     "id": "corvin",
     "name": "Corvin the Uncrowned",
-    "title": "Ranger-King of the Rift",
+    "title": "Ranger of the Rift",
     "side": "hero",
     "element": "void",
     "joins": "after void_2",
-    "blurb": "The Queen's exiled half-brother, framed for murder by the Regent. He knew the truth for six years and nobody listened.",
+    "blurb": "The Queen's half-brother. He accused Cassivane of treason, was framed for murder and exiled, and spent six years watching the Black Gate from the edge of the Rift.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -83,7 +83,7 @@
     "side": "hero",
     "element": "fire",
     "joins": "after ember_4",
-    "blurb": "The Warden of Fire, freed from the madness that made him the Cinder Tyrant. Black stone and a molten heart.",
+    "blurb": "The Warden of Fire, one of the six monarchs who sleep to hold the Black Gate shut. Driven mad as the Cinder Tyrant, freed under Pyrrhenhall. Black stone and a molten heart.",
     "boss_enemy": "cinder_tyrant",
     "hidden": false
   },
@@ -94,7 +94,7 @@
     "side": "hero",
     "element": "storm",
     "joins": "after storm_4",
-    "blurb": "The Warden of Storm, freed from the Thunderhead. A rider of cloud and lightning who is never quite still.",
+    "blurb": "The Warden of Storm, freed from the Thunderhead over Aurvanis. A rider of cloud and lightning who is never quite still.",
     "boss_enemy": "thunderhead",
     "hidden": false
   },
@@ -105,7 +105,7 @@
     "side": "hero",
     "element": "nature",
     "joins": "after nature_4",
-    "blurb": "The Warden of Nature, freed from the Elder Broodmother. Very old, very tired, and still growing.",
+    "blurb": "The Warden of Nature, cut out of the Elder Broodmother at Sylvanmere. Very old, very tired, and still growing.",
     "boss_enemy": "broodmother",
     "hidden": false
   },
@@ -116,7 +116,7 @@
     "side": "hero",
     "element": "water",
     "joins": "after water_4",
-    "blurb": "The Warden of Water, freed from the Tidal Leviathan. She remembers every ship and every child.",
+    "blurb": "The Warden of Water, freed from the Tidal Leviathan under Pearlhaven. She gave away her forgetting, so she remembers everything, including what the six did at Vael.",
     "boss_enemy": "leviathan",
     "hidden": false
   },
@@ -127,7 +127,7 @@
     "side": "hero",
     "element": "earth",
     "joins": "after earth_4",
-    "blurb": "The Warden of Earth, freed from the Mountain Titan. A slow stone giant with trees on his shoulders.",
+    "blurb": "The Warden of Earth, freed from the Mountain Titan under Grundhallow. A slow stone giant with trees on his shoulders, who had not spoken in two thousand years.",
     "boss_enemy": "mountain_titan",
     "hidden": false
   },
@@ -138,7 +138,7 @@
     "side": "hero",
     "element": "void",
     "joins": "after void_4",
-    "blurb": "The Warden of Void, who fought the Hollow King's crown from the inside. Keeper of the road of the dead.",
+    "blurb": "The Warden of Void, who fought the Hollow King's crown from the inside at Umbrael. She can hear what walks under her land.",
     "boss_enemy": "hollow_king",
     "hidden": false
   },
@@ -149,7 +149,7 @@
     "side": "hero",
     "element": "void,storm",
     "joins": "after converge_1",
-    "blurb": "The Regent's lost daughter, six years a captive of the dark. She bends the Outer Hollow, and she is the only one her father might stop for.",
+    "blurb": "Cassivane's daughter. Six years ago she slipped into the Black Gate and was caught; she came back empty, and found herself again on her own once she was free of her father's cage.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -160,7 +160,7 @@
     "side": "hero",
     "element": "all",
     "joins": "after converge_2",
-    "blurb": "The last knight of the Sunstone, kept alive by its light for nine hundred years. It is broken, and she has one fight left.",
+    "blurb": "The last knight of the Sunstone, kept alive by its light for a thousand years. Since it broke she has been dying, and she has one fight left.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -171,7 +171,7 @@
     "side": "hero",
     "element": "all",
     "joins": "during converge_3",
-    "blurb": "The Grey Lantern fell into the Crack at the start of the war. He walked the road of the dead the whole way round the world, and came back carrying every light the war put out.",
+    "blurb": "Pushed the Black Gate back to a cart-wide gap at the start of the war and fell through it. He walked back under the world, found the last piece of the Sunstone at the bottom of the Rift, and relit it.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -182,7 +182,7 @@
     "side": "ally",
     "element": "",
     "joins": "",
-    "blurb": "Ruler of the Concord. Blinded when the Sunstone broke, she rules by voice and tells the story.",
+    "blurb": "Ruler of the Concord. Blinded on the Night of Falling Stars while she ran with the Heartstone; she rules by voice and tells the story.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -193,7 +193,7 @@
     "side": "ally",
     "element": "",
     "joins": "",
-    "blurb": "The gruff old engineer who designed every tower. He held the Dawn Gate on the Night of Falling Stars.",
+    "blurb": "The gruff old engineer who designed every tower and briefs the Spirewright. He died holding Solenne's east gate on the Night of Falling Stars.",
     "boss_enemy": "",
     "hidden": false
   },
@@ -204,7 +204,7 @@
     "side": "villain",
     "element": "fire,void",
     "joins": "",
-    "blurb": "Lord Marshal of the Concord, who opened the Crack to bring his daughter back from the dead.",
+    "blurb": "Lord Marshal of the Concord. He cut a sliver off the Heartstone and unlocked the Black Gate, because Vael-Orrun promised to give back his daughter.",
     "boss_enemy": "sundered_heart",
     "hidden": false
   },
@@ -215,7 +215,7 @@
     "side": "herald",
     "element": "water",
     "joins": "",
-    "blurb": "Once the Tidefolk's high priestess. Walks inside a column of black seawater. Boss of Cinder Steps.",
+    "blurb": "Once the Tidefolk's high priestess, sent to the Rift by Cassivane and sent back empty. Walks inside a column of black seawater. Boss of Brazier Hold.",
     "boss_enemy": "saltmother",
     "hidden": false
   },
@@ -226,7 +226,7 @@
     "side": "herald",
     "element": "earth",
     "joins": "",
-    "blurb": "A Stoneborn general who carved out his own heart. Breaks into walking boulders. Boss of Galeback Ridge.",
+    "blurb": "A Stoneborn general who held the Kharum Pass for a month, sent back from the Rift with a stone for a heart. Breaks into walking boulders. Boss of Highwind.",
     "boss_enemy": "gorrath",
     "hidden": false
   },
@@ -237,7 +237,7 @@
     "side": "herald",
     "element": "void",
     "joins": "",
-    "blurb": "A Veilwalker singer who walked the dead to rest and now sings them awake. Boss of Rootway.",
+    "blurb": "A Veilwalker singer who sang at funerals, and now sings the dead awake. Dying, she names the Marshal. Boss of Elderhollow.",
     "boss_enemy": "pale_vesper",
     "hidden": false
   },
@@ -248,7 +248,7 @@
     "side": "herald",
     "element": "fire",
     "joins": "",
-    "blurb": "The Concord's youngest messenger, an ever-burning boy who never stops running. Boss of Saltmarsh Bends.",
+    "blurb": "The Concord's youngest messenger, sent to the Rift with a letter under Cassivane's seal. An ever-burning boy who never stops running. Boss of Reedhaven.",
     "boss_enemy": "ashwick",
     "hidden": false
   },
@@ -259,7 +259,7 @@
     "side": "herald",
     "element": "storm",
     "joins": "",
-    "blurb": "Kaela's old teacher, riding a thunderbird of black cloud. Boss of Canyon Switchbacks.",
+    "blurb": "Kaela's old teacher, riding a thunderbird of black cloud. Boss of the Kharum Terraces.",
     "boss_enemy": "vholt",
     "hidden": false
   },
@@ -270,7 +270,7 @@
     "side": "herald",
     "element": "nature",
     "joins": "",
-    "blurb": "The Deepwood's wisest healer, grown through with thorns. Boss of Fractured Steps.",
+    "blurb": "The Deepwood's wisest healer, grown through with thorns. Boss of Vesperhold.",
     "boss_enemy": "mother_briar",
     "hidden": false
   },
@@ -288,11 +288,11 @@
   {
     "id": "vael_orrun",
     "name": "Vael-Orrun",
-    "title": "the Sunderer",
+    "title": "the High King",
     "side": "overlord",
     "element": "",
     "joins": "",
-    "blurb": "Once the good king who kept the peace between the seven kingdoms, betrayed and burned out by the other six. He turned to the Unmaking for justice and became a tyrant, and has come back to reclaim his crown and his throne.",
+    "blurb": "King of Orrun, the middle kingdom, two thousand years ago. The songs call him a tyrant, beaten and shut behind the Black Gate. He wants his crown back: the Heartstone, the key to his prison.",
     "boss_enemy": "vael_orrun",
     "hidden": false
   }

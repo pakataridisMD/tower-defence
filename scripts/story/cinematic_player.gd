@@ -50,6 +50,9 @@ var _done := false
 var _skipping := false
 ## Shot start times in the music, when the music was written shot by shot.
 var _markers := PackedFloat32Array()
+## A pre-rendered film playing in place of the stills, and when each of its shots starts.
+var _video: VideoStreamPlayer
+var _video_times := PackedFloat32Array()
 
 
 func _ready() -> void:
@@ -85,6 +88,9 @@ func _process(delta: float) -> void:
 	if _done:
 		return
 	_time += delta
+	if _video != null:
+		_tick_video()
+		return
 	var music_target := MUSIC_DB - (MUSIC_DUCK_DB if _voice.playing else 0.0)
 	_music.volume_db = move_toward(_music.volume_db, music_target, delta * MUSIC_DUCK_DB * 3.0)
 	if _fade_out >= 0.0:
@@ -114,6 +120,9 @@ func is_done() -> bool:
 func next_shot() -> void:
 	if _done:
 		return
+	if _video != null:
+		_end_video()
+		return
 	if _fade_out < 0.0:
 		_fade_out = 0.0
 
@@ -121,6 +130,9 @@ func next_shot() -> void:
 ## Skips what is left of this cinematic.
 func skip_cinematic() -> void:
 	if _done:
+		return
+	if _video != null:
+		_end_video()
 		return
 	_voice.stop()
 	# Stay on the shot showing now while it fades out; the next step moves past the last shot.
@@ -173,6 +185,8 @@ func _next_cinematic() -> void:
 		return
 	if mark_seen and is_inside_tree() and get_node_or_null("/root/Progress") != null:
 		Progress.mark_seen(_cinematic["id"])
+	if _start_video():
+		return
 	var path := story.music_for(_cinematic["id"])
 	_markers = story.shot_markers(_cinematic["id"])
 	var stream: AudioStream = load(path) if not path.is_empty() else null
@@ -209,6 +223,55 @@ func _advance() -> void:
 	shot_started.emit(_cinematic["id"], _shot)
 
 
+## Plays the cinematic's pre-rendered film, if it has one: it carries its own voice and music.
+func _start_video() -> bool:
+	var path := story.video_for(_cinematic["id"])
+	var stream: VideoStream = load(path) if not path.is_empty() else null
+	if stream == null:
+		return false
+	_music.stop()
+	_video = VideoStreamPlayer.new()
+	_video.stream = stream
+	_video.expand = true
+	_video.bus = _bus(&"Music")
+	_video.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Drawn under this control, so the subtitles land on top of the film.
+	_video.show_behind_parent = true
+	_video.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(_video)
+	_video.finished.connect(_end_video)
+	_video.play()
+	_video_times = story.video_shot_times(_cinematic["id"])
+	_shot = 0
+	_time = 0.0
+	_length = _video_times[1] - _video_times[0] if _video_times.size() > 1 else 6.0
+	shot_started.emit(_cinematic["id"], 0)
+	return true
+
+
+func _tick_video() -> void:
+	var shot := _shot
+	var at := _video.stream_position if _video.is_playing() else _time
+	while shot + 1 < _video_times.size() and at >= _video_times[shot + 1]:
+		shot += 1
+	if shot != _shot:
+		_shot = shot
+		_time = 0.0
+		_length = _video_times[shot + 1] - _video_times[shot] if shot + 1 < _video_times.size() else 6.0
+		shot_started.emit(_cinematic["id"], _shot)
+	queue_redraw()
+
+
+func _end_video() -> void:
+	if _video == null:
+		return
+	var video := _video
+	_video = null
+	video.stop()
+	video.queue_free()
+	_next_cinematic()
+
+
 func _finish() -> void:
 	_done = true
 	finished.emit()
@@ -230,6 +293,12 @@ func _finish() -> void:
 # --- Drawing ---------------------------------------------------------------------
 
 func _draw() -> void:
+	if _video != null:
+		# The film draws itself (a child, under this); only the subtitles go over it, when its shot
+		# times are known.
+		if not _video_times.is_empty() and _shot < _shots().size():
+			_draw_subtitle(_shots()[_shot], 1.0)
+		return
 	draw_rect(Rect2(Vector2.ZERO, size), Color.BLACK)
 	if _done or _cinematic.is_empty():
 		return
@@ -334,7 +403,7 @@ func _draw_subtitle(shot: Dictionary, alpha: float) -> void:
 		return
 	var reveal := clampf((_time - 0.3) / maxf(1.0, _length * 0.55), 0.0, 1.0)
 	var shown := text.substr(0, ceili(text.length() * reveal))
-	var speaker := str(shot.get("speaker", ""))
+	var speaker := story.speaker_name(StringName(str(shot.get("speaker", "")))) if story != null else ""
 	var width := minf(size.x - 240.0, 1400.0)
 	var left := (size.x - width) * 0.5
 	var top := size.y - BAR_HEIGHT - 150.0

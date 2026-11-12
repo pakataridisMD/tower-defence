@@ -16,6 +16,10 @@ const IMAGE_PATH := "res://assets/story/images/%s/%02d.png"
 const VOICE_PATH := "res://assets/story/voice/%s/%02d.ogg"
 const PORTRAIT_PATH := "res://assets/story/portraits/%s.png"
 const MUSIC_PATH := "res://assets/story/music/%s.ogg"
+## A finished, pre-rendered film of a whole cinematic (picture, voice and music mixed in). When one
+## exists it plays instead of the stills. Its <id>.json may list when each shot starts, in seconds,
+## as {"shots": [0.0, 6.2, ...]}, so the player can show the subtitles over it.
+const VIDEO_PATH := "res://assets/story/video/%s.ogv"
 ## The music thread's map of which cue plays under each cinematic: {"cinematics": {id: cue}}.
 const MUSIC_MAP := "res://assets/story/music/cinematic_music.json"
 ## Words a narrator reads per second, to time a shot that has no voice line yet.
@@ -35,12 +39,15 @@ var stage_scenes: Dictionary = {}
 var night_from_stages_won := 0
 ## The named boss of a stage, by stage id (a character id).
 var stage_bosses: Dictionary = {}
-## The final assault: {intro, outro, movements: [{name, minutes, boss, cinematic}]}.
+## The final assault: {intro, waves: [{wave, cinematic}], movements: [{name, minutes, boss, cinematic}],
+## truth, outro, post_credits}. After the win: truth, then outro, then post_credits.
 var assault: Dictionary = {}
-## The city each stage defends, by stage id: {name, fall_text, capital}.
+## The town each stage defends, by stage id: {name, fall_text, saved, capital}.
 var cities: Dictionary = {}
 ## Characters by id.
 var characters: Dictionary = {}
+## Where the cinematics' films are looked for (tests point it elsewhere).
+var video_path := VIDEO_PATH
 ## Cinematics by id, each {id, title, music, shots: [{text, speaker, art_note, image, voice, duration}]}.
 var cinematics: Dictionary = {}
 ## Problems found while reading the files, as readable lines.
@@ -160,6 +167,26 @@ func has_cinematic(id: StringName) -> bool:
 
 
 ## The music file for a cinematic, or "" when it has none or the file is not there yet.
+func video_for(id: StringName) -> String:
+	var path := video_path % id
+	return path if ResourceLoader.exists(path) else ""
+
+
+## When each shot starts in the cinematic's film, from the film's sidecar <id>.json; empty without one
+## (the film then carries its own subtitles, if any).
+func video_shot_times(id: StringName) -> PackedFloat32Array:
+	var times := PackedFloat32Array()
+	var path := (video_path % id).get_basename() + ".json"
+	if not FileAccess.file_exists(path):
+		return times
+	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if data is Dictionary and (data as Dictionary).get("shots") is Array:
+		for t: Variant in (data as Dictionary)["shots"]:
+			if t is float or t is int:
+				times.append(float(t))
+	return times
+
+
 func music_for(id: StringName) -> String:
 	var cue := str(cinematic(id).get("music", ""))
 	if cue.is_empty():
@@ -205,10 +232,14 @@ func all_triggered_cinematics() -> Array[StringName]:
 				if moment is Dictionary:
 					add.call(moment.get("cinematic"))
 	add.call(assault.get("intro"))
-	add.call(assault.get("outro"))
+	for key in ["truth", "outro", "post_credits"]:
+		add.call(assault.get(key))
 	for movement: Variant in assault.get("movements", []):
 		if movement is Dictionary:
 			add.call(movement.get("cinematic"))
+	for moment: Variant in assault.get("waves", []):
+		if moment is Dictionary:
+			add.call(moment.get("cinematic"))
 	return result
 
 
@@ -228,6 +259,8 @@ func lost_scene(stage_id: StringName) -> StringName:
 ## The scene that plays when this wave of a stage starts, if any ({wave, cinematic}).
 func scene_at_wave(stage_id: StringName, wave_number: int) -> StringName:
 	var scenes: Variant = stage_scenes.get(String(stage_id), {})
+	if stage_id == StringName(str(assault.get("stage", "assault_1"))):
+		scenes = {"during": assault.get("waves", [])}
 	if not scenes is Dictionary:
 		return &""
 	for moment: Variant in scenes.get("during", []):
@@ -265,6 +298,16 @@ func due_after_win(stage_id: StringName, stages_won: int, seen: Array[StringName
 		own = StringName(str(assault["outro"]))
 	if not own.is_empty() and cinematics.has(own) and not seen.has(own):
 		result.push_front(own)
+	# After the assault: the truth, then the epilogue, then the scene after the credits.
+	if stage_id == StringName(str(assault.get("stage", "assault_1"))):
+		var at := 0
+		for key in ["truth", "outro", "post_credits"]:
+			var id := StringName(str(assault.get(key, "")))
+			if id.is_empty() or not cinematics.has(id) or seen.has(id):
+				continue
+			result.erase(id)
+			result.insert(at, id)
+			at += 1
 	return result
 
 
@@ -284,13 +327,22 @@ func due_before_stage(stage_id: StringName, seen: Array[StringName]) -> Array[St
 	return result
 
 
-## The city a stage defends: {name, fall_text, capital}, or an empty dictionary.
+## The town a stage defends: {name, fall_text, saved, capital}, or an empty dictionary.
 func city(stage_id: StringName) -> Dictionary:
 	var entry: Variant = cities.get(String(stage_id), {})
 	return entry if entry is Dictionary else {}
 
 
 ## The character who is this boss enemy, or an empty dictionary.
+## The name to show above a line: the character's name from characters.json (hidden characters keep
+## theirs, "???"), or the id itself for a speaker who is not a character, such as the narrator.
+func speaker_name(speaker: StringName) -> String:
+	if speaker.is_empty():
+		return ""
+	var person: Dictionary = characters.get(speaker, {})
+	return str(person.get("name", speaker))
+
+
 func character_for_enemy(enemy_id: StringName) -> Dictionary:
 	for person: Dictionary in characters.values():
 		if StringName(str(person.get("boss_enemy", ""))) == enemy_id:

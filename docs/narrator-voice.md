@@ -1,35 +1,84 @@
-# Narrator voice
+# Narrator and character voices
 
-The story cinematics are narrated by one deep, calm female voice. This page covers
-which voice tech we use, the licensing for a commercial Steam release, and how to
-regenerate the lines when the script changes.
+The story cinematics are narrated by one deep, calm female voice, and every other
+speaking character has a voice of their own. This page covers which voice tech we
+use, the licensing for a commercial Steam release, and how to regenerate the lines
+when the script changes.
 
-## What ships now: Kokoro, generated locally
+## What ships now: ElevenLabs v3, every speaking character voiced
 
 `tools/voice/narrate.py` turns each shot's `text` in `data/story/cinematics/<id>.json`
 into `assets/story/voice/<id>/<NN>.ogg` (one file per shot, numbered from 01), which
 is what the cinematic player loads. Setup and commands are in the script's header.
 
+- **Narrator:** Queen Ysolde (speakers `narrator` and `ysolde`) is the ElevenLabs v3
+  Voice Library voice **Elariel**, picked by Doctor Paris from six auditions
+  (preset `regal_el`).
+- **Characters:** every other speaker has their own voice in `tools/voice/cast.json`
+  (Doctor Paris asked for all of them to be voiced, 2026-11-12). A speaker missing from
+  the cast stays as subtitles. Each voice gets a style in `narrate.py`'s `STYLES`:
+
+  | Speaker | Character | Voice | Style | Why |
+  |---|---|---|---|---|
+  | `vael_orrun` | Vael-Orrun, the Sunderer | Victor | sovereign | Ancient, deep and slow. A dark hall and a faint sub-octave shadow, so every element in the room goes still. |
+  | `cassivane` | Cassivane Dral, the Ashen Regent | Dominic | mortal | British, brooding, commanding. Not cruel: certain. |
+  | `the_hush` | The Hush (secret, post-credits) | True | hush | Calm and cold; the clean take on top, a faint octave below. |
+  | `oswin` | Oswin, the Grey/White Lantern | Cornelius | mortal | Old British sage. Wry and endlessly patient. |
+  | `fennick` | Master Tobias Fennick | Adam | mortal | Gruff, gravelly old Scot. The engineer who shouts orders. |
+  | `tamsin` | Tamsin Reed | Charmion | mortal | Husky British soldier. Dry, kind, tired, unbreakable. |
+  | `brannoc` | Brannoc Emberhand | Viking Bjorn | mortal | Gravelly, booming Northern raider of a smith. |
+  | `kaela` | Kaela Stormrider | Blondie | mortal | Intense, powerful British rider who never retreats. |
+  | `sylvaine` | Sylvaine Thornwhisper | Valory | mortal | Calm, mysterious, three hundred years patient. |
+  | `mirelle` | Mirelle the Tide-Seer | Arabella | seer | Young, soft, mysterious. A touch of cold air around her. |
+  | `gorrim` | Gorrim Stonebeard | Gravel Midnight | mortal | Deep, rough, gritty old shieldmaster. |
+  | `corvin` | Corvin the Uncrowned | Gideon | mortal | Rugged, gravelly, Northern. Bitter restraint. |
+  | `ilyra` | Ilyra the Unbroken | Grace | mortal | Soft-spoken, moody young British woman. |
+  | `seraphel` | Seraphel the Dawnblade | Cate | mortal | Deep, resonant, elegant knight with one fight left. |
+  | `ignar` | Ignar, the Cinder Warden | Flint | warden | Deep, raspy and warm, like a bonfire. |
+  | `aurath` | Aurath of the Storms | Ethereal Husk | twin | Atmospheric, gravelly female voice doubled an octave down: two voices at once. |
+  | `elowen` | Elowen the Evergreen | Beatrice | warden | Old, gentle, slow. Her land is dying. |
+  | `thalassa` | Thalassa of the Deep | Tessa | warden | Mystical, deep, prophetic. She remembers everything. |
+  | `orrok` | Orrok the Mountain | John Doe | titan | Very deep and very slow. He barely speaks. |
+  | `nyxara` | Nyxara of the Hollow | Bella | warden | Deep, elegant, haunting. Keeper of the road of the dead. |
+  | `pale_vesper` | The Pale Vesper (Herald) | Veda Sky | herald | Chilling singer's voice, hollowed out. |
+  | `vholt` | Vholt Stormcrown (Herald) | Jerry B. | herald | Gruff old commander, hollowed out. |
+
+  Styles: `mortal` is close and dry like the narrator. `warden` is a bigger, older space.
+  `herald` is hollowed out, with a thin chorus and scooped mids. `sovereign` adds a dark
+  hall and a sub-octave shadow. `twin` doubles the voice an octave down. `titan` sits
+  2 semitones lower. `seer` has a little cold air. `hush` keeps the clean take on top at full level,
+  with a faint octave (0.2) and a short room, 1 dB under the rest. (An earlier, heavily
+  layered Hush could not be understood: speech-to-text misheard 73% of its words.)
+- **Acting:** `tools/voice/direction.json` gives every sentence an emotion, and
+  `elevenlabs_tts.py` turns each emotion into a v3 audio tag such as `[shouting]`,
+  `[whispers]`, `[gasps] [shocked]` or `[menacing, quietly]`. `check_direction.py` lists any
+  voiced sentence without an entry. `respell` in direction.json changes how a sentence is
+  spelled for ElevenLabs when it mispronounces a name; subtitles keep the script's spelling.
+- **Checking:** run ElevenLabs speech-to-text (`/v1/speech-to-text`, `scribe_v1`) on every
+  line and compare with the script; misheard names show up as high word error rates. A
+  full check of all 154 lines cost about 900 credits.
+- **Credits:** replies are cached in `tools/voice/cache/` (git-ignored), so only new or
+  changed paragraphs cost credits. A full pass of every line (154 lines, Black Gate script) cost about 8.8k credits.
+  Re-render only the characters with `--speakers cast`.
+- **Level:** every line is mastered trailer-style (close, chest, presence, de-essed,
+  compressed) and leveled to -15 LUFS with peaks under about -1 dBFS.
+- **New account:** a Voice Library voice must be added to the account before it can be
+  used. `cast.json` keeps each voice's library owner id for that
+  (`POST /v1/voices/add/<owner>/<voice_id>`).
+- **Licensing:** ElevenLabs paid plans include a commercial licence for the audio.
+  Steam's AI-content disclosure must declare the AI-generated voices.
+
+## Free fallback: Kokoro, generated locally
+
 - **Model:** Kokoro-82M, Apache-2.0 weights. Commercial use is allowed with no fee,
-  no account and no attribution requirement, so the audio can ship in a paid game.
-- **Voice:** the `regal` preset, chosen by Doctor Paris: a British blend of Kokoro's
-  `bf_emma` (60%) and its lowest female voice `af_kore` (40%), slow and dramatic
-  (0.8x speed, 0.75 s between sentences, 1.6 s at blank lines), with
-  movie-trailer mastering (Doctor Paris asked for a clearer, trailer-like voice): close
-  and dry, chest boost, presence at 3 kHz, de-essed, tightly compressed. `warm` (80/20, slightly lighter) is the other finalist.
+  no account and no attribution requirement.
+- **Presets:** `regal` (British blend of `bf_emma` and `af_kore`, slow and dramatic,
+  trailer mastering), `warm`, `elder`, `whisper` and `hush`. Pick one with `--preset`
+  or per shot with `"voice_preset"`, or opt a shot out with `"voice": false`.
 - **Keeping it natural:** no pitch shifting (it made the voice sound electronic),
-  one sentence at a time with 0.32 s breaths between them, a soft convolution hall
-  instead of discrete echoes, faint room tone under the pauses, the synthetic fizz
-  around 5.5 kHz tamed, normalised to -16 LUFS.
-- **Who is voiced:** shots whose `speaker` is `narrator` or `ysolde` (Queen Ysolde
-  is the narrator), plus `the_hush`, the hidden god teased at the end of the
-  epilogue. The Hush uses the free Kokoro `hush` preset: three layers (an octave
-  down, the dry voice and a fifth up) with a short dark echo, about 4 dB quieter
-  than Ysolde. Other characters stay as subtitles until they get voices.
-- **Presets:** `regal` (default narrator), `elder` (lower, American, storybook),
-  `whisper` (quiet or sad beats). A shot can pick one with `"voice_preset"`,
-  or opt out of narration with `"voice": false`.
-- **Pauses:** a blank line inside a shot's text becomes a 0.9 s dramatic pause.
+  one sentence at a time with breaths between them, a soft convolution hall, faint
+  room tone under the pauses.
+- **Pauses:** a blank line inside a shot's text becomes a dramatic pause.
 - `tools/voice/mix_preview.py` lays a cinematic's lines over its music, starting each
   line at its shot marker from the music cue sheet. Trailer style: the music is boosted
   and compressed, dips only about 5 dB under the voice and is notched at 2-4 kHz so the
@@ -53,8 +102,7 @@ survey. A human actor avoids that and the reviews that sometimes come with it.
 
 ## Recommendation
 
-Develop with Kokoro: it is free, already wired in and regenerates whenever the
-lore changes. Before launch, re-record the final script once, either with an
-ElevenLabs paid month (fast, cheap) or with a hired actor (best for the trailer
-and reviews). The file layout stays the same, so swapping voices is only a
-matter of replacing the .ogg files.
+Ship with ElevenLabs v3 (Doctor Paris chose it and has a paid plan): Elariel narrates,
+and the cast in `cast.json` voices everyone else. Keep Kokoro for offline work. A hired
+actor is still an option for the trailer. The file layout stays the same, so swapping
+any voice only means replacing the .ogg files.
