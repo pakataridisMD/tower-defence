@@ -23,6 +23,7 @@ import bosses  # noqa: E402,F401  (adds the bosses to creatures.CREATURES)
 import wardens  # noqa: E402,F401
 import final_bosses  # noqa: E402,F401
 import vael_forms  # noqa: E402,F401
+import vael_remake  # noqa: E402,F401
 
 PAD = 28
 FPS = {"idle": 6, "walk": 10, "attack": 14, "death": 10}
@@ -55,6 +56,15 @@ STYLE.update({"vael_orrun_bone": "swing", "vael_orrun_knight": "swing", "vael_or
               "vael_orrun_beast": "swing", "vael_orrun_wraith": "float"})
 DEATH.update({"vael_orrun_bone": "titan", "vael_orrun_knight": "titan", "vael_orrun_beast": "titan"})
 PADS.update({"vael_orrun_knight": 44, "vael_orrun_beast": 36})
+STYLE.update({"vael_hollow": "swing", "vael_eclipse": "float", "vael_throne": "swing"})
+DEATH.update({"vael_hollow": "titan", "vael_throne": "titan"})
+PADS.update({"vael_hollow": 40, "vael_eclipse": 30, "vael_throne": 36})
+GAPE.update({"vael_hollow": {"idle": [(0.03 * v, 0, 0) for v in (0, 1, 2, 2, 1, 0)],
+                             "attack": [(0.08 * v, 0, 0) for v in (0, 1, 2, 3, 5, 5, 2, 0)],
+                             "death": [(0.08 * v, 0, 0) for v in (1, 2, 3, 4, 5, 5, 5, 5)]},
+             "vael_throne": {"idle": [(0, 0, v) for v in (0, 1, 1, 1, 0, 0)],
+                             "attack": [(0, 0, v) for v in (0, 1, 2, 3, 5, 5, 2, 0)],
+                             "death": [(0, 0, v) for v in (1, 3, 5, 6, 6, 6, 6, 6)]}})
 ORBIT = {"orb_earth": math.pi / 3, "orb_nature": math.pi / 4}   # aura turns by one symmetry step per loop
 
 

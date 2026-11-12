@@ -9,6 +9,7 @@ import wardens  # noqa: F401
 import final_bosses  # noqa: F401
 import people  # noqa: F401
 import vael_forms  # noqa: F401
+import vael_remake  # noqa: F401
 
 ap = argparse.ArgumentParser()
 ap.add_argument("names", nargs="*")
