@@ -212,56 +212,12 @@ def cinder_tyrant(pose=None, pad=0):
     return s
 
 
-def vael_orrun(pose=None, pad=0):
-    """Vael-Orrun, the High King: a towering figure of black glass under a crown of spikes. His face is a gaunt skull
-    of ashen glass with six burning eyes and a jaw torn open to the stolen Heartstone fire in his throat."""
-    s = Sprite(176, 336, pose, pad, origin=(0, 32))
-    # cape of black glass behind
-    s.g("cloak", 88, 70)
-    cape = [(52, 70), (124, 70), (152, 200), (160, 286), (124, 294), (52, 294), (16, 286), (24, 200)]
-    s.fill(s.poly(cape), GLASS_D[1])
-    for (x0, y0, x1, y1), t in (((52, 70, 24, 200), 3), ((24, 200, 16, 286), 2), ((124, 70, 152, 200), 0), ((152, 200, 160, 286), 0),
-                                ((40, 150, 34, 290), 2), ((138, 150, 144, 290), 0)):
-        s.line(x0, y0, x1, y1, GLASS_D[t])
-    # hanging arm (rear), long fingers
-    s.g("arm_f", 62, 80)
-    s.part(s.capsule(62, 80, 46, 140, 7.5), GLASS, bias=-0.1)
-    s.g("fore_f", 46, 140, "arm_f")
-    s.part(s.capsule(46, 140, 42, 196, 6.5, 4.5), GLASS, bias=-0.1, edge=False)
-    for dx, ln in ((-5, 16), (-2, 22), (1, 24), (4, 20)):
-        s.part(s.capsule(42 + dx, 198, 41 + dx * 1.4, 198 + ln, 1.4, 0.8), GLASS, edge=False)
-        s.line(41 + dx * 1.4, 198 + ln, 42 + dx * 1.6, 202 + ln, TOOTH[2])
-    # robe: long faceted planes of glass
-    s.g("body")
-    facets = [([(64, 72), (78, 72), (72, 292), (44, 292), (54, 180)], 3), ([(78, 72), (90, 72), (92, 292), (72, 292)], 2),
-              ([(90, 72), (102, 72), (112, 292), (92, 292)], 1), ([(102, 72), (112, 72), (122, 180), (132, 292), (112, 292)], 0)]
-    for pts, t in facets:
-        s.fill(s.poly(pts), GLASS[t])
-    for (x0, y0, x1, y1), t in (((78, 72, 72, 292), 4), ((90, 72, 92, 292), 3), ((102, 72, 112, 292), 2), ((64, 72, 54, 180), 4), ((54, 180, 44, 292), 4)):
-        s.line(x0, y0, x1, y1, GLASS[t])
-    s.line(67, 90, 61, 170, (150, 150, 190))                           # a hard glass highlight
-    s.line(68, 96, 64, 150, (220, 222, 245))
-    # hem crumbling to ash
-    rng = np.random.default_rng(3)
-    for _ in range(70):
-        x, y = int(rng.integers(40, 136)), int(rng.integers(284, 300))
-        s.px(x, y, GREY_GLOW[int(rng.integers(0, 2))] if rng.random() < 0.5 else GLASS[int(rng.integers(0, 3))])
-    # the stolen Heartstone light in the chest, and cracks bleeding the six colours
-    s.fill(s.poly([(88, 96), (100, 114), (88, 138), (76, 114)]), (255, 214, 120), glow=True)
-    s.fill(s.poly([(88, 101), (96, 114), (88, 131), (80, 114)]), (255, 240, 190), glow=True)
-    s.fill(s.poly([(88, 107), (92, 114), (88, 123), (84, 114)]), (255, 255, 245), glow=True)
-    cracks = [[(96, 106), (106, 98), (104, 88), (112, 80)], [(100, 114), (110, 120), (108, 134), (118, 150), (114, 170)],
-              [(92, 132), (98, 150), (94, 170), (102, 200), (98, 236)], [(84, 132), (78, 152), (82, 176), (72, 206), (76, 250)],
-              [(76, 114), (66, 122), (68, 138), (58, 156), (60, 180)], [(80, 106), (70, 98), (72, 86), (66, 78)]]
-    for pts, col in zip(cracks, RING):
-        _crack(s, pts, col, (255, 255, 255))
-    # shoulders: tall angular pauldrons
-    for sx, sgn in ((62, -1), (114, 1)):
-        s.fill(s.poly([(sx - 14 * sgn, 66), (sx + 12 * sgn, 84), (sx + 20 * sgn, 76), (sx + 22 * sgn, 50)]), GLASS[1 if sgn > 0 else 3])
-        s.fill(s.poly([(sx + 12 * sgn, 84), (sx + 20 * sgn, 76), (sx + 26 * sgn, 96)]), GLASS[0 if sgn > 0 else 2])
-        s.line(sx - 14 * sgn, 66, sx + 22 * sgn, 50, GLASS[4 if sgn < 0 else 2])
-        s.fill(s.poly([(sx + 14 * sgn, 60), (sx + 22 * sgn, 50), (sx + 28 * sgn, 22)]), GLASS[2 if sgn < 0 else 0])
-        s.line(sx + 14 * sgn, 60, sx + 28 * sgn, 22, GLASS[4 if sgn < 0 else 1])
+def _vael_head(s, dx=0, dy=0):
+    """Vael-Orrun's head (crown, skull face, jaw), drawn as the "head" group; dx, dy move it for other bodies."""
+    assert not s._ident, "give the sprite an origin or pad so the head can be moved"
+    old = s.pose
+    r, hx, hy = old.get("head", (0, 0, 0))
+    s.pose = {**old, "head": (r, hx + dx, hy + dy)}
     # head: a gaunt skull of ashen glass with the black crown driven into it, six burning eyes, and a jaw hanging open
     # on the stolen Heartstone fire in his throat. The jaw hinges behind the cheek so it can gape wider when he strikes.
     s.g("head", 88, 68)
@@ -346,7 +302,61 @@ def vael_orrun(pose=None, pad=0):
     for x, y, ln in ((78, 76, 4), (80, 84, 10), (84, 89, 4), (88, 91, 5), (92, 90, 4), (96, 87, 5), (99, 80, 11), (101, 70, 4)):
         s.fill(s.poly([(x - 1.2, y), (x + 1.6, y), (x + 0.3, y - ln)]), TOOTH[2])
         s.line(x - 1, y, x, y - ln + 1, TOOTH[4])
+    s.pose = old
     s.g("body")
+
+
+def vael_orrun(pose=None, pad=0):
+    """Vael-Orrun, the High King: a towering figure of black glass under a crown of spikes. His face is a gaunt skull
+    of ashen glass with six burning eyes and a jaw torn open to the stolen Heartstone fire in his throat."""
+    s = Sprite(176, 336, pose, pad, origin=(0, 32))
+    # cape of black glass behind
+    s.g("cloak", 88, 70)
+    cape = [(52, 70), (124, 70), (152, 200), (160, 286), (124, 294), (52, 294), (16, 286), (24, 200)]
+    s.fill(s.poly(cape), GLASS_D[1])
+    for (x0, y0, x1, y1), t in (((52, 70, 24, 200), 3), ((24, 200, 16, 286), 2), ((124, 70, 152, 200), 0), ((152, 200, 160, 286), 0),
+                                ((40, 150, 34, 290), 2), ((138, 150, 144, 290), 0)):
+        s.line(x0, y0, x1, y1, GLASS_D[t])
+    # hanging arm (rear), long fingers
+    s.g("arm_f", 62, 80)
+    s.part(s.capsule(62, 80, 46, 140, 7.5), GLASS, bias=-0.1)
+    s.g("fore_f", 46, 140, "arm_f")
+    s.part(s.capsule(46, 140, 42, 196, 6.5, 4.5), GLASS, bias=-0.1, edge=False)
+    for dx, ln in ((-5, 16), (-2, 22), (1, 24), (4, 20)):
+        s.part(s.capsule(42 + dx, 198, 41 + dx * 1.4, 198 + ln, 1.4, 0.8), GLASS, edge=False)
+        s.line(41 + dx * 1.4, 198 + ln, 42 + dx * 1.6, 202 + ln, TOOTH[2])
+    # robe: long faceted planes of glass
+    s.g("body")
+    facets = [([(64, 72), (78, 72), (72, 292), (44, 292), (54, 180)], 3), ([(78, 72), (90, 72), (92, 292), (72, 292)], 2),
+              ([(90, 72), (102, 72), (112, 292), (92, 292)], 1), ([(102, 72), (112, 72), (122, 180), (132, 292), (112, 292)], 0)]
+    for pts, t in facets:
+        s.fill(s.poly(pts), GLASS[t])
+    for (x0, y0, x1, y1), t in (((78, 72, 72, 292), 4), ((90, 72, 92, 292), 3), ((102, 72, 112, 292), 2), ((64, 72, 54, 180), 4), ((54, 180, 44, 292), 4)):
+        s.line(x0, y0, x1, y1, GLASS[t])
+    s.line(67, 90, 61, 170, (150, 150, 190))                           # a hard glass highlight
+    s.line(68, 96, 64, 150, (220, 222, 245))
+    # hem crumbling to ash
+    rng = np.random.default_rng(3)
+    for _ in range(70):
+        x, y = int(rng.integers(40, 136)), int(rng.integers(284, 300))
+        s.px(x, y, GREY_GLOW[int(rng.integers(0, 2))] if rng.random() < 0.5 else GLASS[int(rng.integers(0, 3))])
+    # the stolen Heartstone light in the chest, and cracks bleeding the six colours
+    s.fill(s.poly([(88, 96), (100, 114), (88, 138), (76, 114)]), (255, 214, 120), glow=True)
+    s.fill(s.poly([(88, 101), (96, 114), (88, 131), (80, 114)]), (255, 240, 190), glow=True)
+    s.fill(s.poly([(88, 107), (92, 114), (88, 123), (84, 114)]), (255, 255, 245), glow=True)
+    cracks = [[(96, 106), (106, 98), (104, 88), (112, 80)], [(100, 114), (110, 120), (108, 134), (118, 150), (114, 170)],
+              [(92, 132), (98, 150), (94, 170), (102, 200), (98, 236)], [(84, 132), (78, 152), (82, 176), (72, 206), (76, 250)],
+              [(76, 114), (66, 122), (68, 138), (58, 156), (60, 180)], [(80, 106), (70, 98), (72, 86), (66, 78)]]
+    for pts, col in zip(cracks, RING):
+        _crack(s, pts, col, (255, 255, 255))
+    # shoulders: tall angular pauldrons
+    for sx, sgn in ((62, -1), (114, 1)):
+        s.fill(s.poly([(sx - 14 * sgn, 66), (sx + 12 * sgn, 84), (sx + 20 * sgn, 76), (sx + 22 * sgn, 50)]), GLASS[1 if sgn > 0 else 3])
+        s.fill(s.poly([(sx + 12 * sgn, 84), (sx + 20 * sgn, 76), (sx + 26 * sgn, 96)]), GLASS[0 if sgn > 0 else 2])
+        s.line(sx - 14 * sgn, 66, sx + 22 * sgn, 50, GLASS[4 if sgn < 0 else 2])
+        s.fill(s.poly([(sx + 14 * sgn, 60), (sx + 22 * sgn, 50), (sx + 28 * sgn, 22)]), GLASS[2 if sgn < 0 else 0])
+        s.line(sx + 14 * sgn, 60, sx + 28 * sgn, 22, GLASS[4 if sgn < 0 else 1])
+    _vael_head(s)
     # raised arm (front): reaching out, palm open, colour draining to grey around the hand
     s.g("weapon", 112, 82)
     s.part(s.capsule(112, 82, 128, 132, 7.5), GLASS)

@@ -22,6 +22,7 @@ import creatures  # noqa: E402
 import bosses  # noqa: E402,F401  (adds the bosses to creatures.CREATURES)
 import wardens  # noqa: E402,F401
 import final_bosses  # noqa: E402,F401
+import vael_forms  # noqa: E402,F401
 
 PAD = 28
 FPS = {"idle": 6, "walk": 10, "attack": 14, "death": 10}
@@ -48,6 +49,12 @@ GAPE = {"vael_orrun": {"idle": [(0, 0, v) for v in (0, 1, 2, 2, 1, 0)],
                        "walk": [(0, 0, v) for v in (0, 1, 1, 0, 0, 1, 1, 0)],
                        "attack": [(0.02 * v, 0, v) for v in (0, 1, 3, 5, 9, 10, 5, 1)],
                        "death": [(0.03 * v, 0, v) for v in (2, 5, 8, 10, 10, 10, 10, 10)]}}
+for _v in ("vael_orrun_bone", "vael_orrun_knight", "vael_orrun_sixarm", "vael_orrun_beast", "vael_orrun_wraith"):
+    GAPE[_v] = GAPE["vael_orrun"]
+STYLE.update({"vael_orrun_bone": "swing", "vael_orrun_knight": "swing", "vael_orrun_sixarm": "float",
+              "vael_orrun_beast": "swing", "vael_orrun_wraith": "float"})
+DEATH.update({"vael_orrun_bone": "titan", "vael_orrun_knight": "titan", "vael_orrun_beast": "titan"})
+PADS.update({"vael_orrun_knight": 44, "vael_orrun_beast": 36})
 ORBIT = {"orb_earth": math.pi / 3, "orb_nature": math.pi / 4}   # aura turns by one symmetry step per loop
 
 
