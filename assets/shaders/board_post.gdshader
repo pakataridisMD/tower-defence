@@ -17,7 +17,10 @@ uniform float vignette = 0.32;
 vec3 bright(vec2 uv) {
 	vec3 c = texture(screen_texture, uv).rgb;
 	float l = max(c.r, max(c.g, c.b));
-	return c * smoothstep(bloom_threshold, 1.0, l);
+	// Coloured light (fire, magic, lava) blooms fully; pale ground such as snow and marble only a little,
+	// so bright lands do not wash out.
+	float sat = (l - min(c.r, min(c.g, c.b))) / max(l, 0.001);
+	return c * smoothstep(bloom_threshold, 1.0, l) * mix(0.2, 1.0, smoothstep(0.12, 0.45, sat));
 }
 
 void fragment() {

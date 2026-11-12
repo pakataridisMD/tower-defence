@@ -126,7 +126,7 @@ STYLES = {
         "tuft": pal("5a4a34", "7a6440", "967e50", "b09a68", "cab680"),
         "road": pal("3e5670", "4a6480", "587490", "6a86a0", "7e98b0", "96aec2"),
         "bank": pal("2a3a4c", "34465a"),
-        "cobble": True, "tuft_rate": 0.25,
+        "cobble": True, "tuft_rate": 0.1,
         "props": {"tree": [("snow_pine", 4), ("ice_spire", 1)],
                   "small": [("snow_rock_0", 3), ("snow_rock_1", 2), ("reed_0", 4), ("reed_1", 3), ("ice_chunk", 2),
                             ("snow_bush", 2)]},
