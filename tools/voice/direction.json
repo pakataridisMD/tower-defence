@@ -1,5 +1,5 @@
 {
-  "_doc": "Acting direction for the narrator. 'emotions' define how a sentence is performed (speed multiplier, voice blend override, gain in dB, pause before in seconds, exclaim = end on '!' for more energetic delivery). 'lines' map cinematic id -> exact sentence text -> emotion. Subtitles are not affected.",
+  "_doc": "Acting direction for the narrator. 'emotions' define how a sentence is performed (speed multiplier, voice blend override, gain in dB, pause before in seconds, exclaim = end on '!' for more energetic delivery). 'lines' map cinematic id -> exact sentence text -> emotion. Subtitles are not affected. 'respell' maps an exact sentence to the spelling sent to ElevenLabs when it mispronounces a name (found with a speech-to-text check).",
   "emotions": {
     "calm": {
       "speed": 1.0
@@ -620,5 +620,9 @@
       "Gates are my trade.": "wry",
       "Let me.": "gruff"
     }
+  },
+  "respell": {
+    "Tell Ysolde I saw one more dawn.": "Tell Isolde I saw one more dawn.",
+    "Behind a fallen terrace we found what was left of the Canyon's shield-company.": "Behind a fallen terrace we found what was left of the canyon's shield company."
   }
 }

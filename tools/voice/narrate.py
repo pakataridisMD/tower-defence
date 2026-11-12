@@ -177,6 +177,14 @@ def direction_for(cid: str | None) -> dict[str, dict]:
             if name in emotions}
 
 
+def respellings() -> dict[str, str]:
+    """sentence text -> how to spell it for the TTS, for names it mispronounces
+    (direction.json "respell"). Subtitles keep the script's spelling."""
+    if not DIRECTION_FILE.exists():
+        return {}
+    return json.loads(DIRECTION_FILE.read_text(encoding="utf-8")).get("respell", {})
+
+
 def speak(text: str, preset: dict, direction: dict | None = None) -> tuple[np.ndarray, int]:
     """Raw speech, one sentence at a time with natural breaths between them.
     A blank line in the text becomes a longer, dramatic pause. Each sentence can
@@ -212,12 +220,14 @@ def speak_elevenlabs(text: str, preset: dict, direction: dict | None = None) -> 
     One request per paragraph; blank lines become pauses of para_gap seconds."""
     import elevenlabs_tts as el
     direction = direction or {}
+    respell = respellings()
     out, sr = [], 44100
     paras = [p.strip() for p in text.split("\n\n") if p.strip()]
     for pi, para in enumerate(paras):
         sentences = [x for x in re.split(r"(?<=[.!?])\s+", " ".join(para.split())) if x]
         emotions = [EMOTION_NAMES.get(id(direction[x])) if x in direction else None for x in sentences]
-        audio, sr = el.decode(el.tts(el.tagged(sentences, emotions), preset["voice_id"],
+        said = [respell.get(x, x) for x in sentences]
+        audio, sr = el.decode(el.tts(el.tagged(said, emotions), preset["voice_id"],
                                      preset.get("stability", 0.0)))
         out.append(_trim(audio, sr))
         if pi < len(paras) - 1:

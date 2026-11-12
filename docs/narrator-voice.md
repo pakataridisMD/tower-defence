@@ -22,7 +22,7 @@ is what the cinematic player loads. Setup and commands are in the script's heade
   |---|---|---|---|---|
   | `vael_orrun` | Vael-Orrun, the Sunderer | Victor | sovereign | Ancient, deep and slow. A dark hall and a faint sub-octave shadow, so every element in the room goes still. |
   | `cassivane` | Cassivane Dral, the Ashen Regent | Dominic | mortal | British, brooding, commanding. Not cruel: certain. |
-  | `the_hush` | The Hush (secret, post-credits) | True | hush | A dark whisper, layered an octave down and a fifth up: flat, quiet, inhuman. |
+  | `the_hush` | The Hush (secret, post-credits) | True | hush | Calm and cold; the clean take on top, a faint octave below. |
   | `oswin` | Oswin, the Grey/White Lantern | Cornelius | mortal | Old British sage. Wry and endlessly patient. |
   | `fennick` | Master Tobias Fennick | Adam | mortal | Gruff, gravelly old Scot. The engineer who shouts orders. |
   | `tamsin` | Tamsin Reed | Charmion | mortal | Husky British soldier. Dry, kind, tired, unbreakable. |
@@ -46,14 +46,19 @@ is what the cinematic player loads. Setup and commands are in the script's heade
   Styles: `mortal` is close and dry like the narrator. `warden` is a bigger, older space.
   `herald` is hollowed out, with a thin chorus and scooped mids. `sovereign` adds a dark
   hall and a sub-octave shadow. `twin` doubles the voice an octave down. `titan` sits
-  2 semitones lower. `seer` has a little cold air. `hush` is layered and inhuman, and
-  about 5 dB quieter than everyone else.
+  2 semitones lower. `seer` has a little cold air. `hush` keeps the clean take on top at full level,
+  with a faint octave (0.2) and a short room, 1 dB under the rest. (An earlier, heavily
+  layered Hush could not be understood: speech-to-text misheard 73% of its words.)
 - **Acting:** `tools/voice/direction.json` gives every sentence an emotion, and
   `elevenlabs_tts.py` turns each emotion into a v3 audio tag such as `[shouting]`,
   `[whispers]`, `[gasps] [shocked]` or `[menacing, quietly]`. `check_direction.py` lists any
-  voiced sentence without an entry.
+  voiced sentence without an entry. `respell` in direction.json changes how a sentence is
+  spelled for ElevenLabs when it mispronounces a name; subtitles keep the script's spelling.
+- **Checking:** run ElevenLabs speech-to-text (`/v1/speech-to-text`, `scribe_v1`) on every
+  line and compare with the script; misheard names show up as high word error rates. A
+  full check of all 154 lines cost about 900 credits.
 - **Credits:** replies are cached in `tools/voice/cache/` (git-ignored), so only new or
-  changed paragraphs cost credits. A full pass of every line is about 9k characters.
+  changed paragraphs cost credits. A full pass of every line (154 lines, Black Gate script) cost about 8.8k credits.
   Re-render only the characters with `--speakers cast`.
 - **Level:** every line is mastered trailer-style (close, chest, presence, de-essed,
   compressed) and leveled to -15 LUFS with peaks under about -1 dBFS.
