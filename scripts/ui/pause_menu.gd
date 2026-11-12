@@ -1,12 +1,15 @@
 class_name PauseMenu
 extends Control
-## The menu Esc opens during a run: resume, exit to the main menu, exit to the campaign map (in a
-## campaign stage), the audio settings, or quit to the desktop. The run waits while it is open
+## The menu Esc opens during a run: resume, save or load a game (Game opens Saved games over it),
+## exit to the main menu, exit to the campaign map (in a campaign stage), the audio settings, or quit
+## to the desktop. The run waits while it is open
 ## (Game pauses it). Leaving a run that is still going asks once first, because the run is lost;
 ## Enter confirms and Esc steps back.
 
 signal resume_requested
 signal audio_requested
+## Save game or Load game: `mode` is &"save" or &"load".
+signal saves_requested(mode: StringName)
 ## `scene` is &"menu", &"campaign" or &"quit".
 signal leave_requested(scene: StringName)
 
@@ -24,6 +27,8 @@ const LEAVE_BUTTON: Dictionary[StringName, String] = {
 }
 
 var resume_button: Button
+var save_button: Button
+var load_button: Button
 var audio_button: Button
 var fullscreen_button: Button
 var campaign_button: Button
@@ -76,6 +81,8 @@ func _init() -> void:
 	_choices.add_theme_constant_override("separation", 12)
 	column.add_child(_choices)
 	resume_button = _add_button(_choices, "Resume  (Esc)", func() -> void: resume_requested.emit())
+	save_button = _add_button(_choices, "Save game  (S)", func() -> void: saves_requested.emit(&"save"))
+	load_button = _add_button(_choices, "Load game  (L)", func() -> void: saves_requested.emit(&"load"))
 	menu_button = _add_button(_choices, "Exit to main menu", func() -> void: ask_to_leave(&"menu"))
 	campaign_button = _add_button(_choices, "Exit to campaign map", func() -> void: ask_to_leave(&"campaign"))
 	audio_button = _add_button(_choices, "Audio settings  (O)", func() -> void: audio_requested.emit())

@@ -187,3 +187,16 @@ func test_endless_keeps_its_own_record_and_best_wave() -> void:
 	var saved := PlayerProfile.from_dict(meta.profile.to_dict())
 	assert_true(saved.last_endless)
 	assert_eq(saved.endless_best.get(sim.config.map.id, 0), 17)
+
+
+func test_a_saved_endless_run_stays_endless() -> void:
+	var sim := _sim(&"hard", true)
+	sim.wave_index = 7
+	var run := RunSnapshot.capture(sim)
+	assert_true(run.get("endless", false))
+	assert_eq(run.get("difficulty"), "hard")
+	var info := Progress.slot_info(run)
+	assert_eq(info.get("where"), "Endless skirmish")
+	assert_string_contains(SavesPage.SlotRow.details(info), "Wave 8")
+	assert_false(SavesPage.SlotRow.details(info).contains("Wave 8 of"), "an endless run has no last wave")
+	assert_false(RunSnapshot.capture(_sim(&"hard")).get("endless", true))
