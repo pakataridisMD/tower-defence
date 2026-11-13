@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"attack_range"
+kind = 1
+value = 0.04
+required_tags = Array[StringName]([&"water"])
+
+[sub_resource type="Resource" id="Resource_m1"]
+script = ExtResource("1_mod")
+stat = &"attacks_per_second"
+kind = 1
+value = 0.03
+required_tags = Array[StringName]([&"water"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"water_reach"
+display_name = "Water Reach"
+description = "Water towers have 4% more range. Water towers attack 3% faster."
+kind = 3
+region = &"water"
+cost = 6
+position = Vector2(-754, 679)
+links = Array[StringName]([&"water_thrift"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0"), SubResource("Resource_m1")])

@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("2_node")
 id = &"nature_entry"
-display_name = "Seedling"
-description = "Unlocks the Thornbush tower and the Entangle skill."
+display_name = "Nature I"
+description = "Seedling. Opens the Thornbush tower and the Entangle skill."
 kind = 1
 region = &"nature"
 cost = 1
-position = Vector2(113, 65)
+position = Vector2(-200, -230)
 links = Array[StringName]([&"start"])
 unlocks_towers = Array[StringName]([&"nature_thornbush"])

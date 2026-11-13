@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("2_node")
 id = &"fire_entry"
-display_name = "Kindle"
-description = "Unlocks the Brazier tower and the Meteor skill."
+display_name = "Fire I"
+description = "Kindle. Opens the Brazier tower and the Meteor skill."
 kind = 1
 region = &"fire"
 cost = 1
-position = Vector2(0, -130)
+position = Vector2(-1000, -230)
 links = Array[StringName]([&"start"])
 unlocks_towers = Array[StringName]([&"fire_brazier"])

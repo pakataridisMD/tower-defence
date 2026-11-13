@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_triple_cinderstorm"
 display_name = "Cinderstorm"
-description = "Adds the Cinderstorm (Fire + Storm + Nature) to your towers. In a run, take Stoked Coals, Gathering Storm and Toxic Sap in the skill web to build it."
+description = "Adds the Cinderstorm (Fire + Storm + Nature) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Fire III, Storm III and Nature III."
 kind = 3
-region = &"triples"
-cost = 20
-position = Vector2(700, 0)
-links = Array[StringName]([&"talent_hybrid_wildfire"])
+region = &"forge"
+cost = 10
+position = Vector2(1070, 379)
+links = Array[StringName]([&"storm_reach"])
 unlocks_towers = Array[StringName]([&"triple_cinderstorm"])

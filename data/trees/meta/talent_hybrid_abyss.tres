@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_hybrid_abyss"
 display_name = "Abyss"
-description = "Adds the Abyss (Water + Void) to your towers. In a run, take Deep Water and Hungry Dark in the skill web to build it."
+description = "Adds the Abyss (Water + Void) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Water III and Void III."
 kind = 3
-region = &"duals"
-cost = 14
-position = Vector2(-470, 0)
-links = Array[StringName]([&"talent_hybrid_quagmire", &"talent_hybrid_gravity_well"])
+region = &"forge"
+cost = 8
+position = Vector2(-1070, 379)
+links = Array[StringName]([&"earth_seismic"])
 unlocks_towers = Array[StringName]([&"hybrid_abyss"])

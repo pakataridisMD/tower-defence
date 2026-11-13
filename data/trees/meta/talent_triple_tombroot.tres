@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_triple_tombroot"
 display_name = "Tombroot"
-description = "Adds the Tombroot (Nature + Earth + Void) to your towers. In a run, take Toxic Sap, Fault Line and Hungry Dark in the skill web to build it."
-kind = 5
-region = &"triples"
-cost = 24
-position = Vector2(-922, 230)
+description = "Adds the Tombroot (Nature + Earth + Void) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Nature III, Earth III and Void III."
+kind = 3
+region = &"forge"
+cost = 12
+position = Vector2(-1228, 585)
 links = Array[StringName]([&"talent_hybrid_blightroot"])
 unlocks_towers = Array[StringName]([&"triple_tombroot"])

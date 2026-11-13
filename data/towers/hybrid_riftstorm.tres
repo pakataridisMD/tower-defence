@@ -63,5 +63,4 @@ chain_falloff = 0.2
 aura_radius = 120.0
 aura_damage = 0.1
 status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0")])
-requires_nodes = Array[StringName]([&"storm_core", &"void_core"])
 ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_singularity"), SubResource("Asc_void_lightning")])

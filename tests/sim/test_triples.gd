@@ -21,7 +21,7 @@ func before_each() -> void:
 
 func _sim() -> RunSim:
 	var sim := RunSim.new(RunConfig.from_registry(registry, MAP))
-	sim.tree.points = 40
+	sim.tree.points = 100
 	sim.gold = 5000
 	return sim
 
@@ -36,8 +36,13 @@ func _triples() -> Array[TowerData]:
 
 func _take_cores(sim: RunSim, elements: Array[StringName]) -> void:
 	for element_id in elements:
-		sim.allocate_node(StringName("%s_entry" % element_id))
 		sim.allocate_node(StringName("%s_core" % element_id))
+
+
+## Takes the skill tree nodes of these towers, with the levels they need.
+func _take_towers(sim: RunSim, towers: Array[StringName]) -> void:
+	for tower_id in towers:
+		assert_true(sim.allocate_node(StringName("tower_%s" % tower_id)), "took the node of %s" % tower_id)
 
 
 func test_every_set_of_three_elements_has_exactly_one_triple() -> void:
@@ -72,20 +77,23 @@ func test_wave_resistance_averages_the_three_elements() -> void:
 	assert_almost_eq(ElementRules.damage_multiplier(indices, registry.element_index(&"earth")), 3.5 / 3.0, 0.0001)
 
 
-func test_a_triple_unlocks_from_its_three_core_nodes() -> void:
+func test_a_triple_has_a_node_that_needs_its_three_level_three_nodes() -> void:
 	var sim := _sim()
 	_take_cores(sim, [&"fire", &"storm"])
+	assert_false(sim.tree.can_allocate(&"tower_triple_cinderstorm"), "Nature III is missing")
 	assert_false(sim.is_unlocked(&"triple_cinderstorm"))
 	assert_string_contains(sim.placement_error(&"triple_cinderstorm", CELL), "Unlock")
 	_take_cores(sim, [&"nature"])
+	assert_false(sim.is_unlocked(&"triple_cinderstorm"), "the levels alone do not open it")
+	_take_towers(sim, [&"triple_cinderstorm"])
 	assert_true(sim.is_unlocked(&"triple_cinderstorm"))
 	assert_not_null(sim.place_tower(&"triple_cinderstorm", CELL))
-	assert_false(sim.is_unlocked(&"triple_starfall"), "no Void core yet")
+	assert_false(sim.is_unlocked(&"triple_starfall"), "its node is not taken")
 
 
 func test_a_dual_can_fuse_into_a_triple_and_a_base_tower_cannot_skip_a_step() -> void:
 	var sim := _sim()
-	_take_cores(sim, [&"fire", &"nature", &"earth"])
+	_take_towers(sim, [&"hybrid_wildfire", &"triple_worldforge"])
 	var base := sim.place_tower(&"fire_brazier", CELL)
 	assert_does_not_have(sim.hybrid_options(base), &"triple_worldforge", "a base tower becomes a dual first")
 	assert_has(sim.hybrid_options(base), &"hybrid_wildfire")
@@ -104,7 +112,7 @@ func test_a_dual_can_fuse_into_a_triple_and_a_base_tower_cannot_skip_a_step() ->
 
 func test_an_ascended_dual_cannot_fuse() -> void:
 	var sim := _sim()
-	_take_cores(sim, [&"fire", &"nature", &"earth"])
+	_take_towers(sim, [&"hybrid_wildfire", &"triple_worldforge"])
 	var tower := sim.place_tower(&"hybrid_wildfire", CELL)
 	sim.level_up(tower)
 	sim.level_up(tower)
@@ -115,7 +123,7 @@ func test_an_ascended_dual_cannot_fuse() -> void:
 
 func test_triples_can_level_up_and_ascend() -> void:
 	var sim := _sim()
-	_take_cores(sim, [&"void", &"fire", &"storm"])
+	_take_towers(sim, [&"triple_starfall"])
 	var tower := sim.place_tower(&"triple_starfall", CELL)
 	sim.level_up(tower)
 	sim.level_up(tower)
@@ -127,9 +135,9 @@ func test_triples_can_level_up_and_ascend() -> void:
 func test_every_triple_fights_a_wave() -> void:
 	for data in _triples():
 		var sim := RunSim.new(RunConfig.from_registry(registry, MAP))
-		sim.tree.points = 20
+		sim.tree.points = 40
 		sim.gold = 1000
-		_take_cores(sim, data.elements)
+		_take_towers(sim, [data.id])
 		var tower := sim.place_tower(data.id, CELL)
 		assert_not_null(tower, "built %s" % data.id)
 		if tower == null:

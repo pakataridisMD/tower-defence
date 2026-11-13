@@ -57,13 +57,13 @@ func test_in_run_tree_unlocks_every_prototype_tower() -> void:
 				assert_true(state.is_allocated(node_id), "%s needs %s" % [tower_id, node_id])
 
 
-func test_hybrid_of_non_neighbours_is_reported() -> void:
+func test_a_hybrid_without_a_skill_tree_node_is_reported() -> void:
 	var bad := TowerData.new()
 	bad.id = &"bad_hybrid"
 	bad.elements = [&"fire", &"nature"]
 	registry.towers[bad.id] = bad
 	var errors: PackedStringArray = registry.validate()
-	assert_true(errors.size() == 1 and "requires_nodes" in errors[0], "Got: %s" % [errors])
+	assert_true(errors.size() == 1 and "skill tree node of its own" in errors[0], "Got: %s" % [errors])
 
 
 func test_unknown_tree_link_is_reported() -> void:
@@ -91,20 +91,21 @@ func test_unknown_enemy_in_a_wave_is_reported() -> void:
 
 func test_the_meta_tree_can_be_completed() -> void:
 	var graph: TreeGraph = registry.meta_tree()
-	var state := TreeState.new(graph, 999)
+	var state := TreeState.new(graph, 9999)
 	var taken_any := true
 	while taken_any:
 		taken_any = false
 		for id in graph.ids():
 			if state.allocate(id):
 				taken_any = true
-	# Pick-one choices (if any) close their partner, so one node of each pair stays open.
+	# Pick-one choices close their partner, so one node of each pair stays open.
 	var pairs := 0
 	for id in graph.ids():
 		for other in graph.exclusions(id):
 			if String(other) > String(id):
 				pairs += 1
 				assert_false(state.is_allocated(id) and state.is_allocated(other), "%s and %s both taken" % [id, other])
+	assert_gt(pairs, 0, "the meta tree has pick-one choices")
 	assert_eq(state.allocated_ids().size(), graph.size() - pairs, "every other meta node is reachable")
 
 

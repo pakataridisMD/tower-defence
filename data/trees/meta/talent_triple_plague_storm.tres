@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_triple_plague_storm"
 display_name = "Plague Storm"
-description = "Adds the Plague Storm (Storm + Nature + Void) to your towers. In a run, take Gathering Storm, Toxic Sap and Hungry Dark in the skill web to build it."
-kind = 5
-region = &"triples"
-cost = 24
-position = Vector2(-198, 929)
+description = "Adds the Plague Storm (Storm + Nature + Void) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Storm III, Nature III and Void III."
+kind = 3
+region = &"forge"
+cost = 12
+position = Vector2(-987, 936)
 links = Array[StringName]([&"talent_hybrid_blightroot"])
 unlocks_towers = Array[StringName]([&"triple_plague_storm"])

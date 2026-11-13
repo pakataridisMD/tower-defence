@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_storm_skyneedle"
 display_name = "Skyneedle"
-description = "Adds the Skyneedle (Storm) to your towers. In a run, take Gathering Storm in the skill web to build it."
-kind = 1
-region = &"longshots"
-cost = 10
-position = Vector2(250, 0)
-links = Array[StringName]([&"meta_start"])
+description = "Adds the Skyneedle (Storm) to the towers your runs can unlock. In a run it opens at Storm III in the skill tree."
+kind = 3
+region = &"forge"
+cost = 6
+position = Vector2(703, 111)
+links = Array[StringName]([&"mastery_storm"])
 unlocks_towers = Array[StringName]([&"storm_skyneedle"])

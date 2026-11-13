@@ -69,5 +69,4 @@ attack_range = 160.0
 projectile_speed = 700.0
 bounty_bonus = 1
 status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
-requires_nodes = Array[StringName]([&"nature_core", &"earth_core"])
 ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_elder_oak"), SubResource("Asc_thornplate")])

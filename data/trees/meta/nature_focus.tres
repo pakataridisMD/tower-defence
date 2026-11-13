@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"damage"
+kind = 1
+value = 0.02
+required_tags = Array[StringName]([&"nature"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"nature_focus"
+display_name = "Nature Focus"
+description = "Nature towers deal 2% more damage."
+kind = 2
+region = &"nature"
+cost = 3
+position = Vector2(375, 650)
+links = Array[StringName]([&"mastery_nature"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])
+icon = &"leaf"

@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_hybrid_blightroot"
 display_name = "Blightroot"
-description = "Adds the Blightroot (Nature + Void) to your towers. In a run, take Contagion and Abyssal Pull in the skill web to build it."
+description = "Adds the Blightroot (Nature + Void) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Nature IV and Void IV."
 kind = 3
-region = &"duals"
-cost = 18
-position = Vector2(-606, 350)
-links = Array[StringName]([&"talent_hybrid_ironbark", &"talent_hybrid_abyss"])
+region = &"forge"
+cost = 10
+position = Vector2(-1052, 607)
+links = Array[StringName]([&"confluence_water_earth"])
 unlocks_towers = Array[StringName]([&"hybrid_blightroot"])

@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"slow_strength"
+kind = 1
+value = 0.06
+required_tags = Array[StringName]([&"water"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"water_b2_c"
+display_name = "Rime"
+description = "Pick up to two of these four. Slows from water towers are 6% stronger."
+kind = 2
+region = &"water"
+cost = 1
+position = Vector2(246, -635)
+links = Array[StringName]([&"water_level2", &"water_core"])
+choice_group = &"water_b2"
+choice_limit = 2
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

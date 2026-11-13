@@ -69,5 +69,4 @@ projectile_speed = 420.0
 splash_radius = 55.0
 knockback = 14.0
 status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
-requires_nodes = Array[StringName]([&"water_core", &"void_core"])
 ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_maelstrom"), SubResource("Asc_drowned_god")])

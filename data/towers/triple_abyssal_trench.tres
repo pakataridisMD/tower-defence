@@ -65,7 +65,6 @@ id = &"triple_abyssal_trench"
 display_name = "Abyssal Trench"
 description = "Opens the deep under their feet: the whole group is dragged back, stunned and cursed."
 elements = Array[StringName]([&"water", &"earth", &"void"])
-requires_nodes = Array[StringName]([&"water_core", &"earth_core", &"void_core"])
 tags = Array[StringName]([&"area"])
 cost = 300
 damage = 34.0

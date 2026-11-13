@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"cost"
+kind = 1
+value = -0.02
+
+[resource]
+script = ExtResource("2_node")
+id = &"command_haggler"
+display_name = "Haggler"
+description = "Towers cost 2% less."
+kind = 2
+region = &"command"
+cost = 3
+position = Vector2(305, 0)
+links = Array[StringName]([&"command_purse"])
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

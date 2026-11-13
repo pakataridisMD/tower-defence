@@ -69,7 +69,6 @@ id = &"triple_mire_colossus"
 display_name = "Mire Colossus"
 description = "A walking swamp of stone and root: crushing splashes that poison, slow and crack armour."
 elements = Array[StringName]([&"nature", &"water", &"earth"])
-requires_nodes = Array[StringName]([&"nature_core", &"water_core", &"earth_core"])
 tags = Array[StringName]([&"area"])
 cost = 300
 damage = 30.0

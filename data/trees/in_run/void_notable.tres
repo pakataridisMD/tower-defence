@@ -13,11 +13,10 @@ required_tags = Array[StringName]([&"void"])
 [resource]
 script = ExtResource("2_node")
 id = &"void_notable"
-display_name = "Abyssal Pull"
-description = "Auras from void towers grant 5% more increased damage."
+display_name = "Void IV"
+description = "Void level IV. Needs one pick from the branch below it. Needed for the dual towers Blightroot (with Nature IV). Auras from void towers grant 5% more increased damage."
 kind = 3
 region = &"void"
 cost = 3
-position = Vector2(-554, -320)
-links = Array[StringName]([&"void_c_555", &"void_r1_640"])
+position = Vector2(1000, -1040)
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

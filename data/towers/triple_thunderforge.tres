@@ -66,7 +66,6 @@ id = &"triple_thunderforge"
 display_name = "Thunderforge"
 description = "A hammer of lightning on a molten anvil: heavy chains that burn, stun and shatter."
 elements = Array[StringName]([&"fire", &"storm", &"earth"])
-requires_nodes = Array[StringName]([&"fire_core", &"storm_core", &"earth_core"])
 cost = 340
 damage = 34.0
 attacks_per_second = 0.8

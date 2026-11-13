@@ -60,7 +60,6 @@ id = &"triple_plague_storm"
 display_name = "Plague Storm"
 description = "A cursed stormfront raining pestilence: chains of poison that spread from the dead."
 elements = Array[StringName]([&"storm", &"nature", &"void"])
-requires_nodes = Array[StringName]([&"storm_core", &"nature_core", &"void_core"])
 cost = 340
 damage = 12.0
 attacks_per_second = 1.4

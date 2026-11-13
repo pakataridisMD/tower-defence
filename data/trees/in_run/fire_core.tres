@@ -13,11 +13,10 @@ required_tags = Array[StringName]([&"fire"])
 [resource]
 script = ExtResource("2_node")
 id = &"fire_core"
-display_name = "Stoked Coals"
-description = "Fire towers deal 8% more damage."
+display_name = "Fire III"
+description = "Fire level III. Needs one pick from the branch below it. Opens the Flare Battery tower. Needed for the dual towers Magma Forge (with Earth III) and Wildfire (with Nature III). Needed for every triple tower with Fire in it. Fire towers deal 8% more damage."
 kind = 3
 region = &"fire"
 cost = 2
-position = Vector2(0, -385)
-links = Array[StringName]([&"fire_c_300", &"fire_r2_385"])
+position = Vector2(-1000, -770)
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

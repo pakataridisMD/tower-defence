@@ -13,11 +13,10 @@ required_tags = Array[StringName]([&"earth"])
 [resource]
 script = ExtResource("2_node")
 id = &"earth_notable"
-display_name = "Avalanche"
-description = "Earth towers crush every enemy within 25 of the target."
+display_name = "Earth IV"
+description = "Earth level IV. Needs one pick from the branch below it. Needed for the dual towers Lodestone (with Storm IV). Earth towers crush every enemy within 25 of the target."
 kind = 3
 region = &"earth"
 cost = 3
-position = Vector2(-554, 320)
-links = Array[StringName]([&"earth_c_555", &"earth_r1_640"])
+position = Vector2(600, -1040)
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

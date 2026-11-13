@@ -68,5 +68,4 @@ attack_range = 150.0
 projectile_speed = 520.0
 splash_radius = 85.0
 status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
-requires_nodes = Array[StringName]([&"fire_notable", &"water_notable"])
 ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_geyser"), SubResource("Asc_scald")])

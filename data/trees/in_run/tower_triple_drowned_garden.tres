@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"tower_triple_drowned_garden"
+display_name = "Drowned Garden"
+description = "Unlocks the Drowned Garden tower (Nature + Water + Void). Needs Nature III, Water III and Void III."
+kind = 4
+cost = 3
+position = Vector2(800, -815)
+requires = Array[StringName]([&"nature_core", &"water_core", &"void_core"])
+unlocks_towers = Array[StringName]([&"triple_drowned_garden"])

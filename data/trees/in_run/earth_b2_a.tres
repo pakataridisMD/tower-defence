@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"damage"
+kind = 1
+value = 0.06
+required_tags = Array[StringName]([&"earth"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"earth_b2_a"
+display_name = "Granite"
+description = "Pick up to two of these four. Earth towers deal 6% more damage."
+kind = 2
+region = &"earth"
+cost = 1
+position = Vector2(554, -635)
+links = Array[StringName]([&"earth_level2", &"earth_core"])
+choice_group = &"earth_b2"
+choice_limit = 2
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

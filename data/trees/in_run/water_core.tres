@@ -13,11 +13,10 @@ required_tags = Array[StringName]([&"water"])
 [resource]
 script = ExtResource("2_node")
 id = &"water_core"
-display_name = "Deep Water"
-description = "Water towers deal 8% more damage."
+display_name = "Water III"
+description = "Water level III. Needs one pick from the branch below it. Needed for the dual towers Abyss (with Void III) and Squall (with Storm III). Needed for every triple tower with Water in it. Water towers deal 8% more damage."
 kind = 3
 region = &"water"
 cost = 2
-position = Vector2(0, 385)
-links = Array[StringName]([&"water_c_300", &"water_r2_385"])
+position = Vector2(200, -770)
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

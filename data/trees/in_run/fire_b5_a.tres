@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"damage"
+kind = 1
+value = 0.08
+required_tags = Array[StringName]([&"fire"])
+
+[sub_resource type="Resource" id="Resource_m1"]
+script = ExtResource("1_mod")
+stat = &"splash_radius"
+kind = 1
+value = 0.1
+required_tags = Array[StringName]([&"fire"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"fire_b5_a"
+display_name = "Pyre Lord"
+description = "Pick one of these three. Fire towers deal 8% more damage. Fire towers hit 10% wider areas."
+kind = 2
+region = &"fire"
+cost = 4
+position = Vector2(-1000, -1445)
+links = Array[StringName]([&"fire_level5", &"fire_level6"])
+choice_group = &"fire_b5"
+choice_limit = 1
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0"), SubResource("Resource_m1")])

@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("2_node")
 id = &"storm_entry"
-display_name = "Static"
-description = "Unlocks the Spire tower and the Surge skill."
+display_name = "Storm I"
+description = "Static. Opens the Spire tower and the Surge skill."
 kind = 1
 region = &"storm"
 cost = 1
-position = Vector2(113, -65)
+position = Vector2(-600, -230)
 links = Array[StringName]([&"start"])
 unlocks_towers = Array[StringName]([&"storm_spire"])

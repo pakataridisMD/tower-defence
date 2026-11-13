@@ -700,7 +700,7 @@ func _refresh() -> void:
 	if wave != null and not wave.description.is_empty():
 		_next.tooltip_text += "\n" + wave.description
 	var points := sim.tree.points
-	_web_button.text = "Skill web (T)" + ("  ·  %d to spend" % points if points > 0 else "")
+	_web_button.text = "Skill tree (T)" + ("  ·  %d to spend" % points if points > 0 else "")
 	_web_button.add_theme_color_override("font_color", UiStyle.GOLD if points > 0 else UiStyle.TEXT)
 	_speed_button.text = "Paused (P)" if paused else "Speed %dx (F)" % speed
 	_wave_button.disabled = sim.state != RunSim.State.BUILDING
@@ -812,8 +812,8 @@ func _refresh_shop_tabs() -> void:
 		tab.text = names[tier] if tier == 1 else "%s %d" % [names[tier], unlocked[tier]]
 		tab.set_pressed_no_signal(tier == _shop_tier)
 		tab.tooltip_text = "" if unlocked[tier] > 0 else \
-				("Take a bridge node, or the core nodes of two elements, to unlock dual towers." if tier == 2 \
-				else "Take the core nodes of three elements to unlock their triple tower.")
+				("Reach level II in two neighbour elements of the skill tree to unlock their dual tower." if tier == 2 \
+				else "Reach level III in three elements of the skill tree to unlock their triple tower.")
 	# The grid scrolls once a tab holds more towers than fit above the tower panel.
 	_shop_scroll.custom_minimum_size.y = minf(_shop_grid.get_combined_minimum_size().y, SHOP_MAX_HEIGHT)
 
@@ -896,7 +896,7 @@ func _skill_tooltip(skill: SkillData, unlocked: bool, key: String) -> String:
 		lines.append("Closed in this run.")
 	elif not unlocked:
 		var node_data := sim.tree.graph.node(skill.requires_node)
-		lines.append("Locked: take %s in the skill web." % (node_data.display_name if node_data != null else String(skill.requires_node)))
+		lines.append("Locked: take %s in the skill tree." % (node_data.display_name if node_data != null else String(skill.requires_node)))
 	return "\n".join(lines)
 
 
@@ -908,22 +908,27 @@ func _element_names(data: TowerData) -> String:
 	return " + ".join(names)
 
 
-## Where a locked tower is unlocked: a skill web node, or the meta tree when that node is locked too.
+## Where a locked tower is unlocked: its talent first, then its node or level in the skill tree.
 func _unlock_hint(tower_id: StringName) -> String:
 	var data: TowerData = sim.config.towers[tower_id]
 	if sim.config.locked_towers.has(tower_id):
 		return "Unlock in Talents: %s" % sim.config.locked_towers[tower_id]
-	if not data.requires_nodes.is_empty():
-		var needed: PackedStringArray = []
-		for node_data in sim.config.tree_nodes:
-			if data.requires_nodes.has(node_data.id):
-				needed.append(node_data.display_name)
-		return "Unlock: take %s" % " and ".join(needed)
+	var needed: PackedStringArray = []
 	for node_data in sim.config.tree_nodes:
 		if node_data.unlocks_towers.has(tower_id):
 			if sim.tree.is_locked(node_data.id):
 				return "Unlock in Talents"
-			return "Unlock: %s" % node_data.display_name
+			for other in node_data.requires:
+				if not sim.tree.is_allocated(other):
+					needed.append(sim.tree.graph.node(other).display_name)
+			if needed.is_empty():
+				return "Unlock: take %s in the skill tree (T)" % node_data.display_name
+			return "Unlock: reach %s, then take %s in the skill tree" % [" and ".join(needed), node_data.display_name]
+	for node_data in sim.config.tree_nodes:
+		if data.requires_nodes.has(node_data.id) and not sim.tree.is_allocated(node_data.id):
+			needed.append(node_data.display_name)
+	if not needed.is_empty():
+		return "Unlock: reach %s" % " and ".join(needed)
 	return "Locked"
 
 
@@ -975,13 +980,13 @@ func _help_text() -> String:
 	var dim := UiStyle.TEXT_DIM.to_html(false)
 	var gold := UiStyle.GOLD.to_html(false)
 	var keys: Array[Array] = [
-		["T", "skill web"], ["F1 F2 F3", "heroes"], ["1-9", "pick a tower"], ["Tab", "next tower page"], ["Q W E  A S D", "skills"],
+		["T", "skill tree"], ["F1 F2 F3", "heroes"], ["1-9", "pick a tower"], ["Tab", "next tower page"], ["Q W E  A S D", "skills"],
 		["Z X C V", "upgrade the tower"], ["Del", "sell the tower"], ["Space", "start the wave"],
 		["F", "speed"], ["P", "pause"], ["O", "audio"], ["M", "mute"], ["Esc", "menu, exit"],
 	]
 	var lines: PackedStringArray = []
 	lines.append("[b]How to play[/b]")
-	lines.append("Take an element in the skill web: it opens that element's tower and its skill.")
+	lines.append("Take an element in the skill tree: level I opens its tower and its skill, higher levels open dual and triple towers.")
 	lines.append("Pick a tower and click a free tile. Shift-click builds several.")
 	lines.append("Click a tower to level it up, to ascend it at level %d or to fuse it." % SimTower.MAX_LEVEL)
 	lines.append("Enemies resist their own element and are weak to the opposite one.")

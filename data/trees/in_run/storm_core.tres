@@ -13,11 +13,10 @@ required_tags = Array[StringName]([&"storm"])
 [resource]
 script = ExtResource("2_node")
 id = &"storm_core"
-display_name = "Gathering Storm"
-description = "Storm towers attack 6% faster."
+display_name = "Storm III"
+description = "Storm level III. Needs one pick from the branch below it. Opens the Skyneedle tower. Needed for the dual towers Riftstorm (with Void III) and Squall (with Water III). Needed for every triple tower with Storm in it. Storm towers attack 6% faster."
 kind = 3
 region = &"storm"
 cost = 2
-position = Vector2(333, -192)
-links = Array[StringName]([&"storm_c_300", &"storm_r2_385"])
+position = Vector2(-600, -770)
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

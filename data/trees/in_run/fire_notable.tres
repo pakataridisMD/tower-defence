@@ -13,11 +13,10 @@ required_tags = Array[StringName]([&"fire"])
 [resource]
 script = ExtResource("2_node")
 id = &"fire_notable"
-display_name = "Inferno"
-description = "Burning enemies spread their burn to enemies within 50 when they die."
+display_name = "Fire IV"
+description = "Fire level IV. Needs one pick from the branch below it. Needed for the dual towers Steam Vent (with Water IV). Burning enemies spread their burn to enemies within 50 when they die."
 kind = 3
 region = &"fire"
 cost = 3
-position = Vector2(0, -640)
-links = Array[StringName]([&"fire_c_555", &"fire_r1_640"])
+position = Vector2(-1000, -1040)
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

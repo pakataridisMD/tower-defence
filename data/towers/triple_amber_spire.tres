@@ -66,7 +66,6 @@ id = &"triple_amber_spire"
 display_name = "Amber Spire"
 description = "Lightning trapped in ancient amber: chains that poison and stun, and pay out in gold."
 elements = Array[StringName]([&"storm", &"nature", &"earth"])
-requires_nodes = Array[StringName]([&"storm_core", &"nature_core", &"earth_core"])
 cost = 340
 damage = 26.0
 attacks_per_second = 0.9

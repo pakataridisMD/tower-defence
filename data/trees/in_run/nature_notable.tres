@@ -13,11 +13,10 @@ required_tags = Array[StringName]([&"nature"])
 [resource]
 script = ExtResource("2_node")
 id = &"nature_notable"
-display_name = "Contagion"
-description = "When a poisoned enemy dies, its poison spreads to 1 more nearby enemy."
+display_name = "Nature IV"
+description = "Nature level IV. Needs one pick from the branch below it. Needed for the dual towers Blightroot (with Void IV). When a poisoned enemy dies, its poison spreads to 1 more nearby enemy."
 kind = 3
 region = &"nature"
 cost = 3
-position = Vector2(554, 320)
-links = Array[StringName]([&"nature_c_555", &"nature_r1_640"])
+position = Vector2(-200, -1040)
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

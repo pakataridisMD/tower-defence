@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"arsenal_overcharge"
+display_name = "Overcharge"
+description = "Adds the Overcharge keystone to the skill web: towers attack 30% faster but cost 20% more."
+kind = 3
+region = &"arsenal"
+cost = 8
+position = Vector2(131, -187)
+links = Array[StringName]([&"arsenal_cadence"])
+unlocks_nodes = Array[StringName]([&"keystone_overcharge"])

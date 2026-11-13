@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"expedition_hard"
+display_name = "Hard Mode"
+description = "Unlocks the Grim and Merciless difficulties: two and four times the enemies, with two and four times the health. Runs earn 50% and 100% more meta points."
+kind = 3
+region = &"expeditions"
+cost = 6
+position = Vector2(-175, 343)
+links = Array[StringName]([&"expedition_hardened"])
+unlocks_difficulties = Array[StringName]([&"hard", &"merciless"])

@@ -66,7 +66,6 @@ id = &"triple_polar_rift"
 display_name = "Polar Rift"
 description = "A magnetic tear in the sky: cursed, stunning chains and a field that charges nearby towers."
 elements = Array[StringName]([&"storm", &"earth", &"void"])
-requires_nodes = Array[StringName]([&"storm_core", &"earth_core", &"void_core"])
 cost = 340
 damage = 24.0
 attacks_per_second = 0.9

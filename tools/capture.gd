@@ -411,7 +411,8 @@ const SKIRMISH_SHOTS := [
 func _run_skirmish() -> void:
 	var profile := _demo_profile()
 	profile.meta_points_earned = 400
-	profile.meta_nodes.append_array([&"talent_hybrid_soulflame", &"talent_hybrid_bog", &"talent_triple_cinderstorm"])
+	profile.meta_nodes.append_array([&"expedition_scouts", &"expedition_hardened", &"expedition_hard",
+			&"expedition_nightmare"])
 	Progress.use_memory_profile(profile)
 	Progress.select_difficulty(&"merciless")
 	Progress.set_endless(true)
@@ -1017,13 +1018,16 @@ func _film(follow: Callable, seconds: float) -> void:
 		await get_tree().process_frame
 
 
-## A player some way into the campaign: the storm land done, a few storm towers unlocked in Talents,
-## a few points left to spend.
+## A player some way into the campaign: the storm land done, part of the economy wing, one map and
+## three towers unlocked in Talents, a few points left to spend.
 static func _demo_profile() -> PlayerProfile:
 	var profile := PlayerProfile.new()
-	profile.meta_points_earned = 75
-	profile.meta_nodes = [&"talent_hybrid_plasma", &"talent_hybrid_thornstorm", &"talent_storm_skyneedle",
-		&"talent_hybrid_wildfire", &"talent_hybrid_squall"]
+	profile.meta_points_earned = 100
+	profile.meta_nodes = [&"command_gold", &"command_purse", &"command_levy", &"command_salvage", &"command_tithe",
+		&"starpath_30", &"starpath_15", &"starpath_0", &"mastery_storm", &"storm_focus", &"storm_power", &"storm_heart",
+		&"storm_haste", &"mastery_range", &"mastery_will", &"expedition_serpentine", &"arsenal_edge", &"arsenal_drill",
+		&"arsenal_cadence", &"arsenal_cadence_2", &"starpath_345", &"starpath_330", &"talent_hybrid_plasma",
+		&"talent_hybrid_thornstorm", &"talent_storm_skyneedle"]
 	profile.runs_played = 3
 	profile.runs_won = 1
 	profile.best_waves = 10
@@ -1138,15 +1142,15 @@ func _run() -> void:
 	var meta_tree := META_TREE_SCENE.instantiate()
 	add_child(meta_tree)
 	await _wait(0.5)
-	_hover(meta_tree.web.screen_position(&"talent_hybrid_steam"))
+	_hover(meta_tree.web.screen_position(&"arsenal_hoard"))
 	await _wait(0.2)
 	await _shot("meta_tree")
 	meta_tree.web.show_whole_tree()
 	_hover(Vector2(4, 4))
 	await _wait(0.3)
 	await _shot("meta_tree_whole")
-	meta_tree.web.zoom_by(3.0, meta_tree.web.screen_position(&"talent_hybrid_wildfire"))
-	_hover(meta_tree.web.screen_position(&"talent_triple_cinderstorm"))
+	meta_tree.web.zoom_by(3.0, meta_tree.web.screen_position(&"storm_heart"))
+	_hover(meta_tree.web.screen_position(&"talent_storm_skyneedle"))
 	await _wait(0.3)
 	await _shot("meta_tree_close")
 	meta_tree.free()
@@ -1157,17 +1161,27 @@ func _run() -> void:
 		await _wait(0.3)
 		game._toggle_web()
 		await _wait(0.3)
-		_hover(game.web.screen_position(&"bridge_plasma"))
+		# Fire II and Storm II taken, the mouse on their dual tower's node.
+		game.sim.tree.points = 9
+		for id: StringName in [&"fire_level2", &"storm_level2"]:
+			game.sim.allocate_node(id)
+		_hover(game.web.screen_position(&"tower_hybrid_plasma"))
 		await _wait(0.2)
 		await _shot("skill_web_start")
 		game.web.show_whole_tree()
 		await _wait(0.3)
 		await _shot("skill_web_whole")
+		# The level III line, with the blocks of dual and triple towers between the columns, as a
+		# veteran with every Forge talent sees them.
+		game.sim.tree.unlock_all()
+		game.sim.tree.points = 20
+		for id: StringName in [&"tower_hybrid_plasma", &"fire_core", &"storm_core", &"nature_level2"]:
+			game.sim.allocate_node(id)
 		game.web.reset_view()
-		game.web.zoom_by(0.7, game.web.screen_position(&"start"))
-		game.web.pan_by(game.web.screen_position(&"start") - game.web.screen_position(&"fire_notable"))
+		game.web.zoom_by(1.3, game.web.screen_position(&"start"))
+		game.web.pan_by(Vector2(560, 470) - game.web.screen_position(&"tower_triple_cinderstorm"))
 		await _wait(0.2)
-		_hover(game.web.screen_position(&"fire_notable"))
+		_hover(game.web.screen_position(&"tower_triple_cinderstorm"))
 		await _wait(0.2)
 		await _shot("skill_web_far")
 		print("Screenshots saved to ", _out)

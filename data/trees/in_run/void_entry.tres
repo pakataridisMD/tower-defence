@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("2_node")
 id = &"void_entry"
-display_name = "Whisper"
-description = "Unlocks the Obelisk tower and the Doom skill."
+display_name = "Void I"
+description = "Whisper. Opens the Obelisk tower and the Doom skill."
 kind = 1
 region = &"void"
 cost = 1
-position = Vector2(-113, -65)
+position = Vector2(1000, -230)
 links = Array[StringName]([&"start"])
 unlocks_towers = Array[StringName]([&"void_obelisk"])

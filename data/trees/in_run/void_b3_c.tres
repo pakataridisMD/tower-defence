@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"skill_damage"
+kind = 1
+value = 0.2
+required_tags = Array[StringName]([&"skill", &"void"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"void_b3_c"
+display_name = "Final Hour"
+description = "Pick one of these three. The Doom skill deals 20% more damage."
+kind = 2
+region = &"void"
+cost = 2
+position = Vector2(1092, -905)
+links = Array[StringName]([&"void_core", &"void_notable"])
+choice_group = &"void_b3"
+choice_limit = 1
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

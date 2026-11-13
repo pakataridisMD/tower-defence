@@ -62,7 +62,6 @@ id = &"triple_cinderstorm"
 display_name = "Cinderstorm"
 description = "A burning thundercloud: its bolts chain through the wave, setting it alight and seeding it with poison."
 elements = Array[StringName]([&"fire", &"storm", &"nature"])
-requires_nodes = Array[StringName]([&"fire_core", &"storm_core", &"nature_core"])
 cost = 300
 damage = 20.0
 attacks_per_second = 1.3

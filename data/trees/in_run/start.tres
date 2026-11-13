@@ -6,7 +6,7 @@
 script = ExtResource("2_node")
 id = &"start"
 display_name = "Origin"
-description = "Every run starts here."
+description = "Every run starts here. Each element climbs its own path from level I to level VI."
 kind = 0
 cost = 0
 position = Vector2(0, 0)

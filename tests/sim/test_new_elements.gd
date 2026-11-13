@@ -48,18 +48,18 @@ func test_each_new_element_unlocks_its_tower() -> void:
 		assert_true(sim.is_unlocked(pair[1]), "%s unlocked" % pair[1])
 
 
-func test_every_hybrid_has_a_bridge_between_its_elements() -> void:
+func test_every_neighbour_dual_has_a_node_at_level_two_of_both_elements() -> void:
 	var sim := _sim()
 	for pair: Array in [
-		[&"bridge_bog", &"hybrid_bog", [&"nature_entry", &"nature_cw", &"water_entry", &"water_ccw"]],
-		[&"bridge_quagmire", &"hybrid_quagmire", [&"water_entry", &"water_cw", &"earth_entry", &"earth_ccw"]],
-		[&"bridge_gravity_well", &"hybrid_gravity_well", [&"earth_entry", &"earth_cw", &"void_entry", &"void_ccw"]],
-		[&"bridge_soulflame", &"hybrid_soulflame", [&"void_entry", &"void_cw", &"fire_entry", &"fire_ccw"]],
+		[&"hybrid_bog", &"nature_level2", &"water_level2"],
+		[&"hybrid_quagmire", &"water_level2", &"earth_level2"],
+		[&"hybrid_gravity_well", &"earth_level2", &"void_level2"],
+		[&"hybrid_soulflame", &"void_level2", &"fire_level2"],
 	]:
-		for id: StringName in pair[2]:
-			sim.allocate_node(id)
-		assert_true(sim.allocate_node(pair[0]), "took %s" % pair[0])
-		assert_true(sim.is_unlocked(pair[1]))
+		var node_id := StringName("tower_%s" % pair[0])
+		assert_true(sim.allocate_node(node_id), "took %s" % node_id)
+		assert_true(sim.tree.is_allocated(pair[1]) and sim.tree.is_allocated(pair[2]), "with %s and %s" % [pair[1], pair[2]])
+		assert_true(sim.is_unlocked(pair[0]), "%s unlocked" % pair[0])
 
 
 func test_stuns_stop_enemies_but_never_chain_forever() -> void:
@@ -138,9 +138,8 @@ func test_a_base_tower_can_become_a_hybrid_in_place() -> void:
 	var sim := _sim()
 	sim.allocate_node(&"water_entry")
 	var tower := sim.place_tower(&"water_wellspring", CELL)
-	assert_eq(sim.hybrid_options(tower), [] as Array[StringName], "no bridge taken yet")
-	for id: StringName in [&"water_ccw", &"nature_entry", &"nature_cw", &"bridge_bog"]:
-		assert_true(sim.allocate_node(id))
+	assert_eq(sim.hybrid_options(tower), [] as Array[StringName], "the Bog's node is not taken yet")
+	assert_true(sim.allocate_node(&"tower_hybrid_bog"))
 	assert_eq(sim.hybrid_options(tower), [&"hybrid_bog"] as Array[StringName])
 	var price := sim.hybrid_upgrade_price(tower, &"hybrid_bog")
 	assert_eq(price, sim.tower_price(&"hybrid_bog") - sim.tower_price(&"water_wellspring"))
@@ -156,8 +155,7 @@ func test_a_base_tower_can_become_a_hybrid_in_place() -> void:
 
 func test_hybrid_upgrade_needs_gold() -> void:
 	var sim := _sim()
-	for id: StringName in [&"void_entry", &"void_cw", &"fire_entry", &"fire_ccw", &"bridge_soulflame"]:
-		sim.allocate_node(id)
+	sim.allocate_node(&"tower_hybrid_soulflame")
 	var tower := sim.place_tower(&"fire_brazier", CELL)
 	sim.gold = 0
 	assert_string_contains(sim.hybrid_upgrade_error(tower, &"hybrid_soulflame"), "gold")
@@ -235,8 +233,7 @@ func test_ascendancies_can_add_status_stacks() -> void:
 
 func test_a_levelled_base_tower_keeps_its_level_as_a_hybrid_but_ascended_ones_cannot_change() -> void:
 	var sim := _sim()
-	for id: StringName in [&"water_entry", &"water_ccw", &"nature_entry", &"nature_cw", &"bridge_bog"]:
-		sim.allocate_node(id)
+	sim.allocate_node(&"tower_hybrid_bog")
 	var tower := sim.place_tower(&"water_wellspring", CELL)
 	sim.level_up(tower)
 	assert_true(sim.upgrade_to_hybrid(tower, &"hybrid_bog"))
@@ -272,23 +269,26 @@ func test_every_element_pair_has_exactly_one_hybrid() -> void:
 	assert_eq(pairs.size(), 15)
 
 
-func test_far_hybrids_unlock_from_both_elements_nodes() -> void:
+func test_far_hybrids_have_a_node_at_level_three_of_both_elements() -> void:
 	var sim := _sim()
-	for id: StringName in [&"fire_entry", &"fire_core", &"nature_entry"]:
+	for id: StringName in [&"fire_core", &"nature_level2"]:
 		sim.allocate_node(id)
+	assert_false(sim.tree.can_allocate(&"tower_hybrid_wildfire"), "Nature III is missing")
 	assert_false(sim.is_unlocked(&"hybrid_wildfire"))
 	assert_string_contains(sim.placement_error(&"hybrid_wildfire", CELL), "Unlock")
 	sim.allocate_node(&"nature_core")
+	assert_true(sim.allocate_node(&"tower_hybrid_wildfire"))
 	assert_true(sim.is_unlocked(&"hybrid_wildfire"))
 	assert_not_null(sim.place_tower(&"hybrid_wildfire", CELL))
 
 
-func test_opposite_hybrids_need_both_notables_and_are_never_resisted() -> void:
+func test_opposite_hybrids_need_level_four_of_both_and_are_never_resisted() -> void:
 	var sim := _sim()
-	for id: StringName in [&"fire_entry", &"fire_core", &"fire_notable", &"water_entry", &"water_core"]:
+	for id: StringName in [&"fire_notable", &"water_core"]:
 		sim.allocate_node(id)
-	assert_false(sim.is_unlocked(&"hybrid_steam"))
+	assert_false(sim.tree.can_allocate(&"tower_hybrid_steam"), "Water IV is missing")
 	sim.allocate_node(&"water_notable")
+	assert_true(sim.allocate_node(&"tower_hybrid_steam"))
 	assert_true(sim.is_unlocked(&"hybrid_steam"))
 	var steam: TowerData = registry.towers[&"hybrid_steam"]
 	var indices: Array[int] = registry.tower_element_indices(steam)
@@ -298,8 +298,7 @@ func test_opposite_hybrids_need_both_notables_and_are_never_resisted() -> void:
 
 func test_a_base_tower_can_become_a_far_hybrid() -> void:
 	var sim := _sim()
-	for id: StringName in [&"storm_entry", &"storm_core", &"void_entry", &"void_core"]:
-		sim.allocate_node(id)
+	assert_true(sim.allocate_node(&"tower_hybrid_riftstorm"))
 	var tower := sim.place_tower(&"storm_spire", CELL)
 	assert_has(sim.hybrid_options(tower), &"hybrid_riftstorm")
 	assert_true(sim.upgrade_to_hybrid(tower, &"hybrid_riftstorm"))
@@ -312,9 +311,7 @@ func test_far_hybrids_fight_a_wave() -> void:
 		sim.tree.points = 200
 		sim.gold = 1000
 		var data: TowerData = registry.towers[tower_id]
-		for element_id in data.elements:
-			for part in ["entry", "core", "notable"]:
-				sim.allocate_node(StringName("%s_%s" % [element_id, part]))
+		sim.allocate_node(StringName("tower_%s" % tower_id))
 		var tower := sim.place_tower(tower_id, CELL)
 		assert_not_null(tower, "built %s" % tower_id)
 		if tower == null:

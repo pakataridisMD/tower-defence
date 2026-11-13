@@ -64,39 +64,38 @@ func _button_starting_with(screen: Control, text: String) -> Button:
 # --- Meta tree screen --------------------------------------------------------------
 
 func test_clicking_a_meta_node_takes_it_and_spends_points() -> void:
-	_use_profile(10)
+	_use_profile(5)
 	var screen = await _open(META_TREE_SCENE)
-	_click(screen.web.screen_position(&"talent_hybrid_plasma"))
-	assert_true(Progress.meta.tree.is_allocated(&"talent_hybrid_plasma"))
-	assert_has(Progress.meta.profile.meta_nodes, &"talent_hybrid_plasma")
-	assert_eq(Progress.meta.points(), 2, "the Plasma Coil costs 8")
-	assert_false(Progress.run_config().locked_towers.has(&"hybrid_plasma"), "and is open in the next run")
+	_click(screen.web.screen_position(&"command_gold"))
+	assert_true(Progress.meta.tree.is_allocated(&"command_gold"))
+	assert_has(Progress.meta.profile.meta_nodes, &"command_gold")
+	assert_eq(Progress.meta.points(), 3, "War Chest costs 2")
 
 
 func test_a_node_without_enough_points_is_not_taken() -> void:
 	_use_profile(1)
 	var screen = await _open(META_TREE_SCENE)
-	_click(screen.web.screen_position(&"talent_hybrid_plasma"))
-	assert_false(Progress.meta.tree.is_allocated(&"talent_hybrid_plasma"), "it costs 8")
+	_click(screen.web.screen_position(&"mastery_range"))
+	assert_false(Progress.meta.tree.is_allocated(&"mastery_range"), "it costs 3")
 	assert_eq(Progress.meta.points(), 1)
 
 
 func test_right_click_refunds_a_meta_node_any_time() -> void:
-	_use_profile(10, [&"talent_hybrid_plasma"])
+	_use_profile(5, [&"command_gold"])
 	var screen = await _open(META_TREE_SCENE)
-	_click(screen.web.screen_position(&"talent_hybrid_plasma"), MOUSE_BUTTON_RIGHT)
-	assert_false(Progress.meta.tree.is_allocated(&"talent_hybrid_plasma"))
-	assert_eq(Progress.meta.points(), 10)
+	_click(screen.web.screen_position(&"command_gold"), MOUSE_BUTTON_RIGHT)
+	assert_false(Progress.meta.tree.is_allocated(&"command_gold"))
+	assert_eq(Progress.meta.points(), 5)
 
 
 func test_refund_all_needs_a_second_click() -> void:
-	_use_profile(30, [&"talent_hybrid_plasma", &"talent_hybrid_wildfire"])
+	_use_profile(5, [&"command_gold", &"command_purse"])
 	var screen = await _open(META_TREE_SCENE)
 	_press(screen.refund_all)
-	assert_true(Progress.meta.tree.is_allocated(&"talent_hybrid_wildfire"), "the first click only asks")
+	assert_true(Progress.meta.tree.is_allocated(&"command_purse"), "the first click only asks")
 	_press(screen.refund_all)
 	assert_eq(Progress.meta.profile.meta_nodes.size(), 0)
-	assert_eq(Progress.meta.points(), 30)
+	assert_eq(Progress.meta.points(), 5)
 	assert_true(screen.refund_all.disabled, "nothing left to refund")
 
 
@@ -109,21 +108,22 @@ func _key(keycode: Key) -> void:
 	get_tree().root.push_input(press)
 
 
-func test_a_new_player_has_every_map_and_level_open() -> void:
+func test_a_new_player_sees_locked_maps_and_levels() -> void:
 	_use_profile(0)
 	var menu = await _open(MENU_SCENE)
 	menu.open_page(&"skirmish")
 	var serpentine := _button_starting_with(menu, "Serpentine")
 	assert_not_null(serpentine)
-	assert_false(serpentine.disabled, "talents only unlock towers now")
-	assert_false(_button_starting_with(menu, "Grim").disabled)
-	assert_false(_button_starting_with(menu, "Oblivion").disabled)
+	assert_true(serpentine.disabled)
+	assert_string_contains(serpentine.tooltip_text, "Talents")
+	assert_true(_button_starting_with(menu, "Grim").disabled)
+	assert_true(_button_starting_with(menu, "Oblivion").disabled)
 	assert_false(_button_starting_with(menu, "Cinderfall").disabled, "the land maps are open from the start")
 	assert_true(_button_starting_with(menu, "Switchback").button_pressed)
 
 
 func test_picking_an_unlocked_map_and_level_sets_up_the_next_run() -> void:
-	_use_profile(0)
+	_use_profile(20, [&"expedition_serpentine", &"expedition_scouts", &"expedition_hardened", &"expedition_hard"])
 	var menu = await _open(MENU_SCENE)
 	menu.open_page(&"skirmish")
 	_pick(_button_starting_with(menu, "Serpentine"))

@@ -14,8 +14,8 @@ const SPEEDS: Array[int] = [1, 2, 3]
 ## frame cannot snowball into a slower one.
 const MAX_STEPS_PER_FRAME := 12
 const MENU_SCENE := "res://scenes/main.tscn"
-## The skill web's ring threads, drawn as dotted circles behind its nodes (see tools/web/gen_skill_web.py).
-const WEB_RING_RADII: Array[float] = [385.0, 640.0, 895.0, 1150.0]
+## Names of the skill tree's element levels, bottom to top (see tools/web/gen_skill_web.py).
+const WEB_LEVEL_NAMES: Array[String] = ["Level I", "Level II", "Level III", "Level IV", "Level V", "Level VI"]
 const CAMPAIGN_SCENE := "res://scenes/campaign/campaign_map.tscn"
 ## Seconds the autoplayer waits at each point of a break, so footage shows the build phase.
 const BOT_BREAK := 1.5
@@ -184,19 +184,25 @@ func _build_views() -> void:
 	web_layer.layer = 2
 	add_child(web_layer)
 	web = SkillWebView.new()
-	web.title = "Skill web"
+	web.title = "Skill tree"
 	var rules := sim.config.rules
-	web.subtitle = ("Take nodes to unlock towers and make them stronger. Every wave you clear pays %d points, and " +
-		"nodes cost more the further out they are. Click a far node to take the whole way to it. The core nodes of " +
-		"two elements unlock their dual tower, and of three their triple. Right-click refunds a node taken in this " +
-		"break, from the tip inward.") % rules.tree_points_per_wave
+	web.subtitle = ("Each element climbs its own path, level I to VI: level I opens its tower and skill. The tower " +
+		"pictures between the paths are the dual and triple towers: each needs the level it stands on in every " +
+		"element under its picture (hover to see them). Between two levels, pick one option of the branch (two " +
+		"where it has four). Every wave you clear pays %d points. Right-click refunds a node taken in this break.") \
+		% rules.tree_points_per_wave
 	web.navigable = true
 	web.takes_paths = true
-	web.ring_radii = WEB_RING_RADII
+	web.ring_radii = []
+	web.level_lines = _web_levels()
+	web.level_names = WEB_LEVEL_NAMES
+	web.column_labels = true
+	web.start_anchor = Vector2(0.5, 0.92)
+	web.start_zoom = 0.8
 	web.count_noun = "nodes"
 	web.close_text = "Close (T)"
 	web.can_refund = sim.can_refund_node
-	var whole_web := UiStyle.button("Whole web (F)", 20)
+	var whole_web := UiStyle.button("Whole tree (F)", 20)
 	whole_web.pressed.connect(func() -> void: web.show_whole_tree())
 	web.add_header_button(whole_web)
 	web.hide()
@@ -325,6 +331,18 @@ func _input(event: InputEvent) -> void:
 		else:
 			hud.cycle_shop_tier()
 		get_viewport().set_input_as_handled()
+
+
+## Heights of the skill tree's element levels, bottom first: where its level nodes sit.
+func _web_levels() -> Array[float]:
+	var heights: Array[float] = []
+	for node_data in sim.config.tree_nodes:
+		var is_level := node_data.kind == TreeNodeData.Kind.ENTRY or node_data.kind == TreeNodeData.Kind.NOTABLE
+		if is_level and not heights.has(node_data.position.y):
+			heights.append(node_data.position.y)
+	heights.sort()
+	heights.reverse()
+	return heights
 
 
 ## Keys: Space starts the wave, T opens the skill web, F changes speed, P pauses, O opens the audio
@@ -611,7 +629,7 @@ func _choose_tower(tower_id: StringName) -> void:
 	if tower_id.is_empty() or sim.is_over():
 		return
 	if not sim.is_unlocked(tower_id):
-		hud.show_message("Unlock this tower in the skill web first (T)", UiStyle.BAD)
+		hud.show_message("Unlock this tower in the skill tree first (T)", UiStyle.BAD)
 	elif sim.gold < sim.tower_price(tower_id):
 		hud.show_message("Not enough gold", UiStyle.BAD)
 	else:
