@@ -8,7 +8,7 @@ import hero
 from story.kit import aim, push, drift, doors, darkness, sundered_heart, falling_stars, hand_glow, shards, towers, silent, glow_moss
 from story.void import ring_map
 
-if "vael_orrun" not in hero.HUMANS:   # stand-in until the demon king is modelled
+if "vael_orrun" not in hero.HUMANS:   # only when vael.py was not imported (it builds the real demon king)
     hero.HUMANS["vael_orrun"] = hero.HUMANS["keeper"]; hero.SCALE["vael_orrun"] = 2.3
 
 SIX = ["ignar", "aurath", "elowen", "thalassa", "orrok", "nyxara"]

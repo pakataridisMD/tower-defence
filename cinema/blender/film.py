@@ -17,7 +17,7 @@ import sys, os, json, math, importlib
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import bpy
 from mathutils import Vector
-import cine3d as C, hero, cast, wardens, heralds, sets
+import cine3d as C, hero, cast, wardens, heralds, vael, sets
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 VOICE = json.load(open(os.path.join(HERE, "story", "voice.json")))
