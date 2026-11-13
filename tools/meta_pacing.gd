@@ -51,7 +51,7 @@ func _initialize() -> void:
 				continue
 			var stage := campaign.stages[i]
 			stage_count += 1
-			var focus := campaign.element
+			var focus := _focus(meta, stage, campaign.element)
 			var result := "LOST"
 			var lives := ""
 			var earned := 0
@@ -100,6 +100,18 @@ func _play(meta: MetaProgress, stage: StageData) -> RunSim:
 
 ## Buys open talents, cheapest first, talents whose tower carries the focus land's element counting
 ## as half price, until no open talent is affordable.
+## The element the bot builds round on this stage (AutoPlayer.for_sim): the one a land's horde
+## fears, else the stage's first allowed element, else the campaign's own.
+static func _focus(meta: MetaProgress, stage: StageData, fallback: StringName) -> StringName:
+	var config := meta.stage_config(stage.id)
+	if not stage.allowed_elements.is_empty():
+		return stage.allowed_elements[0]
+	var main := AutoPlayer.main_element(config)
+	if main.is_empty():
+		return fallback
+	return config.element_at(ElementRules.opposite_index(config.element_index(main))).id
+
+
 func _spend(meta: MetaProgress, focus: StringName) -> void:
 	var graph := meta.tree.graph
 	while true:
