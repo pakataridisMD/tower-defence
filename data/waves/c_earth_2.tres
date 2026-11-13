@@ -910,7 +910,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"earth"
 is_boss = true
-health_multiplier = 3.41
+health_multiplier = 0.15
 description = "Stragglers, an ambush, Brute packs, brutes under escort, Runebearers, runner packs and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r104"), SubResource("r105"), SubResource("r106"), SubResource("r107"), SubResource("r108"), SubResource("r109"), SubResource("r110"), SubResource("r111"), SubResource("r112"), SubResource("r113"), SubResource("r114"), SubResource("r115")])
 
@@ -919,5 +919,5 @@ script = ExtResource("1_s")
 id = &"c_earth_2"
 display_name = "Canyon Switchbacks"
 health_growth = 1.1
-health_scale = 18.92
+health_scale = 4.0
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r13"), SubResource("r22"), SubResource("r30"), SubResource("r41"), SubResource("r50"), SubResource("r59"), SubResource("r69"), SubResource("r82"), SubResource("r92"), SubResource("r103"), SubResource("r116")])

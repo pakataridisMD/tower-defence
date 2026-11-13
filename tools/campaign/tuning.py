@@ -12,42 +12,41 @@
 # Retuned again on 2026-11-12 when the skill web grew tenfold (397 nodes, climbing costs, smaller
 # bonuses, three skill points a wave): every element and Convergence stage, from a local --tune per stage.
 # nature_4 and earth_3 sit 5% under what that tune found: the bot lost or only scraped through there.
-# Retuned again on 2026-11-12 when the Talents tree became tower unlocks only (no stat bonuses): the
-# Balance workflow's [tune] values x0.95, taken only where they are lower than before, so no stage
-# got harder. earth_3, earth_4, water_3 and converge_1 then sat on a knife edge against the new
-# meta profiles, so they were tuned again locally and sit 10% under what that found (earth_3 lower
-# still, at 3.0: the bot lost its third wave at 4.2 but won at 3.0).
 # These were found with full minor enemy health; the campaign's halving of it (RunSim) comes on top.
 # Retuned 2026-11-12 night for elemental affinities (attuned, warded, tank, Hulking elites) and each
 # land fought by its own element's horde with every element open (the bot brings what the horde fears).
-# Stages at 18.92 hit the bisect's ceiling: the counter-element bot wins them easily.
-TUNING["ember_1"] = {"health": 2.17}
-TUNING["ember_2"] = {"health": 1.83, "boss": 3.69}
-TUNING["ember_3"] = {"health": 3.09, "boss": 1.91}
-TUNING["ember_4"] = {"health": 2.09, "boss": 3.82}
-TUNING["storm_1"] = {"health": 8.81}
-TUNING["storm_2"] = {"health": 5.79, "boss": 3.44}
-TUNING["storm_3"] = {"health": 6.17, "boss": 2.47}
-TUNING["storm_4"] = {"health": 2.96, "boss": 7.57}
-TUNING["nature_1"] = {"health": 10.51}
-TUNING["nature_2"] = {"health": 4.96, "boss": 0.10}
-TUNING["nature_3"] = {"health": 8.00, "boss": 0.28}
-TUNING["nature_4"] = {"health": 8.00, "boss": 0.21}
-TUNING["water_1"] = {"health": 18.92}
-TUNING["water_2"] = {"health": 18.92, "boss": 2.29}
-TUNING["water_3"] = {"health": 10.14, "boss": 2.15}
-TUNING["water_4"] = {"health": 4.88, "boss": 7.57}
-TUNING["earth_1"] = {"health": 18.92}
-TUNING["earth_2"] = {"health": 18.92, "boss": 3.41}
-TUNING["earth_3"] = {"health": 9.53, "boss": 2.26}
-TUNING["earth_4"] = {"health": 15.14, "boss": 1.94}
-TUNING["void_1"] = {"health": 13.46}
-TUNING["void_2"] = {"health": 8.46, "boss": 1.26}
-TUNING["void_3"] = {"health": 9.18, "boss": 0.66}
-TUNING["void_4"] = {"health": 12.37, "boss": 2.20}
-TUNING["converge_1"] = {"health": 13.55, "boss": 0.98}
-TUNING["converge_2"] = {"health": 7.50, "boss": 0.42, "boss_life": 0.67}
-TUNING["converge_3"] = {"health": 13.09, "boss": 0.24, "boss_life": 0.27}
+# Retuned 2026-11-13 when the Talents tree became tower unlocks only: the old talents' stat bonuses
+# (about +100% damage, +35% attack speed, gold and lives) are gone, so every stage came down. From the
+# Balance workflow's [tune] against meta profiles where the pacing bot buys the towers of the element it
+# plays (the one the land's horde fears). ember_2, storm_1, nature_4, water_3, earth_2 and void_1 were set
+# by hand from the --check runs (earth_2's boss wave lowered to 0.15: the bot lost at the boss at 0.30).
+TUNING["ember_1"] = {"health": 2.23}
+TUNING["ember_2"] = {"health": 1.40, "boss": 2.00}
+TUNING["ember_3"] = {"health": 2.56, "boss": 2.47}
+TUNING["ember_4"] = {"health": 2.03, "boss": 0.21}
+TUNING["storm_1"] = {"health": 4.00}
+TUNING["storm_2"] = {"health": 4.33, "boss": 2.96}
+TUNING["storm_3"] = {"health": 3.21, "boss": 3.38}
+TUNING["storm_4"] = {"health": 0.84, "boss": 0.18}
+TUNING["nature_1"] = {"health": 4.83}
+TUNING["nature_2"] = {"health": 2.66, "boss": 7.57}
+TUNING["nature_3"] = {"health": 3.42, "boss": 0.45}
+TUNING["nature_4"] = {"health": 2.00, "boss": 0.21}
+TUNING["water_1"] = {"health": 9.03}
+TUNING["water_2"] = {"health": 4.67, "boss": 0.24}
+TUNING["water_3"] = {"health": 2.50, "boss": 0.30}
+TUNING["water_4"] = {"health": 0.88, "boss": 0.18}
+TUNING["earth_1"] = {"health": 6.81}
+TUNING["earth_2"] = {"health": 4.00, "boss": 0.15}
+TUNING["earth_3"] = {"health": 2.68, "boss": 0.30}
+TUNING["earth_4"] = {"health": 1.28, "boss": 0.12}
+TUNING["void_1"] = {"health": 4.50}
+TUNING["void_2"] = {"health": 2.38, "boss": 0.30}
+TUNING["void_3"] = {"health": 2.74, "boss": 0.83}
+TUNING["void_4"] = {"health": 2.15, "boss": 0.28}
+TUNING["converge_1"] = {"health": 1.16, "boss": 0.21}
+TUNING["converge_2"] = {"health": 1.19, "boss": 0.21, "boss_life": 0.67}
+TUNING["converge_3"] = {"health": 3.27, "boss": 0.21, "boss_life": 0.27}
 # Nov 12: every boss got 4x its life (Vael-Orrun 10x) and new abilities (heal, barrier, binding towers,
 # his fireball). "boss_life" softens a stage's bosses alone (WaveSet.boss_health_scale) where the bot could
 # no longer beat them keeping a tenth of its lives; from `campaign_balance.gd -- --tune-bosses`. Stages
@@ -61,8 +60,9 @@ TUNING["converge_3"] = {"health": 13.09, "boss": 0.24, "boss_life": 0.27}
 # counter-attack on 40; set by hand with `campaign_balance.gd -- --stage=assault_1 --health=X --boss=X`.
 # The boss is the cliff (his last form must fall before the end of the road): the bot won up to
 # about 0.11 of a wave's health for him and lost at 0.17, so he sits at 0.09.
-# 2026-11-12: lowered from 2.3 to 1.9 when talents became tower unlocks only (the bot lost wave 37 at 2.3).
-TUNING["assault_1"] = {"health": 1.90, "boss": 0.04, "lives": 30, "boss_life": 0.55}
+# 2026-11-13: lowered from 2.3 to 0.55 when talents became tower unlocks only: the bot lost wave 29 to the
+# Brass Juggernauts at anything from 1.0 up and won at 0.6.
+TUNING["assault_1"] = {"health": 0.55, "boss": 0.04, "lives": 30, "boss_life": 0.55}
 # The skirmish waves (data/waves/prototype.tres), from `campaign_balance.gd -- --skirmish` with no
 # meta tree: it found 0.95, but the Water/Earth/Void plan only scrapes through there, so this sits a
 # little lower.
@@ -73,9 +73,12 @@ TUNING["prototype"] = {"health": 0.45}
 # `campaign_balance.gd -- --skirmish --map=<map>` with no meta tree, x0.95, played by a bot that brings the
 # element the land's horde fears (AutoPlayer.counter_plan). gen_campaign.py triples them
 # (SKIRMISH_HARDNESS), as it does the prototype waves above.
-TUNING["skirmish_cinderfall"] = {"health": 0.39}
-TUNING["skirmish_stormcrown"] = {"health": 0.84}
-TUNING["skirmish_thornwild"] = {"health": 0.64}
-TUNING["skirmish_frozen_ford"] = {"health": 0.47}
-TUNING["skirmish_red_gorge"] = {"health": 0.63}
-TUNING["skirmish_riftwalk"] = {"health": 0.4}
+# 2026-11-13: retuned with talents as tower unlocks only (no stat bonuses). The Warden on the last wave
+# beat the veteran at full strength, so its wave and its own life are softened too (Stormcrown's
+# thunderhead most of all).
+TUNING["skirmish_cinderfall"] = {"health": 0.23, "boss": 0.35, "boss_life": 0.4}
+TUNING["skirmish_stormcrown"] = {"health": 0.15, "boss": 0.35, "boss_life": 0.15}
+TUNING["skirmish_thornwild"] = {"health": 0.20, "boss": 0.35, "boss_life": 0.4}
+TUNING["skirmish_frozen_ford"] = {"health": 0.11, "boss": 0.35, "boss_life": 0.4}
+TUNING["skirmish_red_gorge"] = {"health": 0.14, "boss": 0.35, "boss_life": 0.4}
+TUNING["skirmish_riftwalk"] = {"health": 0.15, "boss": 0.35, "boss_life": 0.4}

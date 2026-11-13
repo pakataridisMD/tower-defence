@@ -1417,7 +1417,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"water"
 is_boss = true
-health_multiplier = 2.26
+health_multiplier = 0.3
 description = "A marching column, brutes under escort, Brute packs, a pincer, Splitters in a line, runner packs, the Oathbroken and Quarry Hounds and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r162"), SubResource("r163"), SubResource("r164"), SubResource("r165"), SubResource("r166"), SubResource("r167"), SubResource("r168"), SubResource("r169"), SubResource("r170"), SubResource("r171"), SubResource("r172"), SubResource("r173"), SubResource("r174"), SubResource("r175"), SubResource("r176"), SubResource("r177")])
 
@@ -1426,5 +1426,5 @@ script = ExtResource("1_s")
 id = &"c_earth_3"
 display_name = "Mesa Loop"
 health_growth = 1.1
-health_scale = 9.53
+health_scale = 2.68
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r16"), SubResource("r26"), SubResource("r37"), SubResource("r47"), SubResource("r60"), SubResource("r71"), SubResource("r83"), SubResource("r99"), SubResource("r114"), SubResource("r127"), SubResource("r143"), SubResource("r161"), SubResource("r178")])

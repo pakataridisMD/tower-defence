@@ -1607,5 +1607,5 @@ script = ExtResource("1_s")
 id = &"c_nature_4"
 display_name = "Heart of the Grove"
 health_growth = 1.1
-health_scale = 8.0
+health_scale = 2.0
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r15"), SubResource("r24"), SubResource("r36"), SubResource("r47"), SubResource("r61"), SubResource("r73"), SubResource("r86"), SubResource("r104"), SubResource("r118"), SubResource("r133"), SubResource("r150"), SubResource("r168"), SubResource("r184"), SubResource("r196")])
