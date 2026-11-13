@@ -99,6 +99,42 @@ func test_a_higher_level_hits_harder_and_wider() -> void:
 	assert_eq(strong.blows_of(&"strike").size(), 6, "Cataclysm drops six comets")
 
 
+func test_meteor_burns_last_longer_and_reach_further_each_level() -> void:
+	var skill: SkillData = registry.skills[&"meteor"]
+	var burn_time := 0.0
+	var reach := 0.0
+	for level in range(1, 6):
+		var sim := _sim()
+		sim.skill_levels[&"meteor"] = level
+		_wave_with_enemies(sim, 1)
+		assert_true(sim.use_skill(&"meteor", sim.enemies[0].position))
+		var cast: SimSkillCast = sim.skill_casts()[0]
+		var burn: StatusEffectData = null
+		for effect in cast.effects:
+			if effect.kind == &"burn":
+				burn = effect
+		assert_not_null(burn, "level %d sets what it hits alight" % level)
+		assert_gt(burn.duration, burn_time, "level %d burns longer" % level)
+		assert_gt(cast.radius, reach, "level %d lands wider" % level)
+		burn_time = burn.duration
+		reach = cast.radius
+	assert_gte(burn_time, 10.0, "Cataclysm's burns last ten seconds")
+
+	# The burn keeps hurting after the blast, on an enemy that lived through it.
+	var sim := _sim()
+	_wave_with_enemies(sim, 1)
+	var enemy := sim.enemies[0]
+	enemy.max_health = 1.0e9
+	enemy.health = enemy.max_health
+	assert_true(sim.use_skill(&"meteor", enemy.position))
+	_run(sim, skill.impact_delay + 0.1)
+	assert_true(enemy.has_status(&"burn"), "it is burning after the blast")
+	var after_blast := enemy.health
+	_run(sim, 5.0)
+	assert_true(enemy.has_status(&"burn"), "still burning five seconds on")
+	assert_lt(enemy.health, after_blast, "the burn kept hurting")
+
+
 func test_a_blazing_meteor_throws_enemies_off_their_feet() -> void:
 	var sim := _sim()
 	sim.skill_levels[&"meteor"] = 2
@@ -119,7 +155,7 @@ func test_firestorm_burns_what_walks_in_after_it_landed() -> void:
 	_wave_with_enemies(sim, 1)
 	# Land it on the road ahead of the first enemy, so it walks into the fire.
 	var first := sim.enemies[0]
-	var ahead := sim.lane_curves[first.lane].sample_baked(first.progress + 140.0)
+	var ahead := sim.lane_curves[first.lane].sample_baked(first.progress + 200.0)
 	assert_true(sim.use_skill(&"meteor", ahead))
 	_run(sim, 0.7)
 	var cast: SimSkillCast = sim.skill_casts()[0]

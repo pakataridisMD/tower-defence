@@ -233,7 +233,9 @@ func _add_comet(cast: SimSkillCast, blow: SimSkillCast.Blow) -> void:
 	var comet := Comet.new()
 	comet.cast = cast
 	comet.blow = blow
-	comet.size = clampf(blow.radius / maxf(1.0, cast.radius), 0.5, 1.0) * (1.2 + 0.15 * float(cast.level))
+	# The rock grows with its level and (gently) with how wide the blast it brings is.
+	var wide := sqrt(clampf(cast.radius / 110.0, 0.6, 2.0))
+	comet.size = clampf(blow.radius / maxf(1.0, cast.radius), 0.5, 1.0) * (1.2 + 0.15 * float(cast.level)) * wide
 	comet.anim = _anim(&"comet", art._air, true)
 	if comet.anim == null:
 		return
@@ -579,7 +581,7 @@ func _add_field(cast: SimSkillCast, zone: SimSkillCast.Zone) -> void:
 	var radius := zone.radius / BoardArt.SCALE
 	match cast.skill.element:
 		&"fire":
-			var count := clampi(int(radius * radius / 70.0), 10, 40)
+			var count := clampi(int(radius * radius / 70.0), 10, 56)
 			for k in count:
 				var spot := at + _scatter(k, radius * 0.9)
 				var flame := _anim(&"ground_fire", art._actors, true)
