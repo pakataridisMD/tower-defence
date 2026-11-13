@@ -28,6 +28,8 @@ const POST_SHADER := preload("res://assets/shaders/board_post.gdshader")
 var sim: RunSim
 var board: BoardView
 var post_layer: CanvasLayer
+## The rain, snow, ash or dust drawn over the whole battle view (see WeatherOverlay).
+var weather_overlay: WeatherOverlay
 ## Pans and zooms the board.
 var camera: BoardCamera
 var hud: Hud
@@ -165,12 +167,18 @@ func _build_views() -> void:
 	post_material.shader = POST_SHADER
 	post.material = post_material
 	post_layer.add_child(post)
+	if board.art != null and board.art.weather != null:
+		weather_overlay = WeatherOverlay.new()
+		weather_overlay.setup(board.art.weather, BoardCamera.VIEW_RECT)
+		post_layer.add_child(weather_overlay)
 
 	var hud_layer := CanvasLayer.new()
 	add_child(hud_layer)
 	hud = Hud.new()
 	hud_layer.add_child(hud)
 	hud.setup(sim)
+	if board.art != null and board.art.weather != null:
+		hud.show_weather(board.art.weather)
 
 	var web_layer := CanvasLayer.new()
 	web_layer.layer = 2

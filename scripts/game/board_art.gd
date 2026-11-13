@@ -351,7 +351,7 @@ func setup(p_sim: RunSim) -> void:
 	_build_fireflies()
 	weather = WeatherArt.new()
 	_air.add_child(weather)
-	weather.build(self, Weather.for_map(sim.config.map))
+	weather.build(self, Weather.for_map(sim.config.map, sim.total_waves()))
 	skill_fx = SkillFx.new()
 	add_child(skill_fx)
 	skill_fx.setup(self)
