@@ -853,9 +853,12 @@ HUMANS = {"tamsin": (dict(height=2.1, gender=0.0, muscle=0.8, weight=0.4, tall=0
                           targets={"nose/nose-hump-incr": 0.6}), tamsin_mh)}
 
 
-def soften(rig, action, phase=0.0, base="Idle", amount=0.65):
+GESTURES = ("Interact", "Use_Item", "Cheer", "Spellcast", "PickUp", "Throw", "2H_Melee_Idle")
+
+
+def soften(rig, action, phase=0.0, base="Idle", amount=0.65, speed=1.0):
     """Play `action` at `amount` strength over `base`: the stand-in walks kick their legs like toys; mixed 65/35
-    with the idle they read as a human stride."""
+    with the idle they read as a human stride. speed < 1 plays it slower (game gestures are snappy loops)."""
     ad = rig.animation_data_create(); ad.action = None
     for tr in list(ad.nla_tracks):
         ad.nla_tracks.remove(tr)
@@ -865,6 +868,8 @@ def soften(rig, action, phase=0.0, base="Idle", amount=0.65):
     tr = ad.nla_tracks.new(prev=ad.nla_tracks[0])
     st = tr.strips.new(action, int(1 - phase * L), act)
     st.repeat = math.ceil((C.sc.frame_end + L) / L) + 1
+    if speed != 1.0:
+        st.scale = 1.0 / speed
     st.use_animated_influence = True; st.influence = amount
     st.keyframe_insert("influence", frame=1)
     return st
@@ -883,10 +888,11 @@ def build_human(name, loc=(0, 0, 0), rot_z=0.0, action="Idle", phase=0.0, soft=N
     sc = SCALE.get(name, 1.0)   # giants are built at human size (so face and hair recipes fit) and scaled up whole
     rig.scale = (sc, sc, sc)
     rig["meshes"] = [p.name for p in parts]
-    if soft is None:
-        soft = 0.65 if action.startswith(("Walking", "Running")) else 1.0
+    gesture = action.startswith(GESTURES)
+    if soft is None:   # game walks and gestures are too big and too quick for a real body: damp and slow them
+        soft = 0.65 if action.startswith(("Walking", "Running")) else 0.55 if gesture else 1.0
     if soft < 1.0:
-        soften(rig, action, phase, amount=soft)
+        soften(rig, action, phase, amount=soft, speed=0.6 if gesture else 1.0)
     else:   # deaths, sitting/lying down and standing up play once and hold their last pose
         once = action.startswith("Death") or action.endswith(("_Down", "_StandUp"))
         st = C.play(rig, action, phase, repeat=1 if once else None)

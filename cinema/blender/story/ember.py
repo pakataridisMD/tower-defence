@@ -42,7 +42,7 @@ SHOTS = {
              extra=lambda S, r: sets.ash_fall(),
              cam=[aim(0, (3.2, -6, 0.7), (0, 13, 1.4)), aim(1, (2.4, -6.5, 0.8), (0, -1.5, 1.3))], norm=True, lens=40, focus="ashwick"),
         # Fennick pointing at a tower plan on a cart; Tamsin behind waving the carts through.
-        dict(set="ember", cast=[("fennick", (0.4, 0, 0), -15, "Interact"), ("tamsin", (-1.8, 2.6, 0), -30, "Cheer")],
+        dict(set="ember", cast=[("fennick", (0.4, 0, 0), -15, "Interact"), ("tamsin", (-1.8, 2.6, 0), -30, "Interact")],
              extra=lambda S, r: cart(S, (1.5, 0.5, 0)),
              cam=[(0, (1.4, -4.6, 1.6), (88, 0, 14)), (24.9, (0.9, -3.6, 1.55), (88, 0, 10))], lens=45, focus="fennick"),
     ],

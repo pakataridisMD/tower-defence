@@ -87,7 +87,7 @@ SHOTS = {
           **drift((4, -6, 1.8), (2, -5, 1.6), (1, 0, 1.4), lens=32)),
         S(SOLENNE_NIGHT, mark="gate", cast=[("fennick", (0, 10, 0), 170, "Interact")], extra=lambda S_, r: towers(S_, ((-5, 14), (5, 15)), (1, 0.6, 0.3)),
           **push((0, 10, 1.4), (3.0, 2.4), side=0.5, lens=40, focus="fennick")),
-        S(SOLENNE_NIGHT, mark="gate", cast=[("fennick", (0, 10, 0), 200, "Cheer")],
+        S(SOLENNE_NIGHT, mark="gate", cast=[("fennick", (0, 10, 0), 200, "Interact")],
           **push((0, 10, 1.45), (2.2, 1.8), side=-0.3, lens=50, focus="fennick")),
         S(SOLENNE_NIGHT, mark="gate", extra=lambda S_, r: shards(S_, (0, 8, 0), n=90, top=16, spread=6, start=0.8, rgb=(0.6, 0.58, 0.55)),
           **drift((6, 30, 3), (5, 28, 3), (0, 8, 5), lens=30)),
@@ -194,7 +194,7 @@ SHOTS = {
         S(HOLLOW, cast=line_of(["tamsin", "kaela", "brannoc"], y=4, gap=2.4, face=180), extra=lambda S_, r: towers(S_, ((-8, 8), (8, 10)), (0.9, 0.7, 0.4)),
           **drift((-6, -6, 4), (-3, -5, 3), (0, 20, 3), lens=28)),
         S(HOLLOW, mark="gate", cast=[("vael_orrun", (0, 2, 24), 0, "Idle")], **drift((0, -40, 4), (0, -34, 4), (0, 0, 20), lens=28)),
-        S(HOLLOW, cast=[("tamsin", (0, 0, 0), 0, "Cheer")], **push((0, 0, 1.6), (2.6, 2.0), side=0.4, lens=50, focus="tamsin")),
+        S(HOLLOW, cast=[("tamsin", (0, 0, 0), 0, "Interact")], **push((0, 0, 1.6), (2.6, 2.0), side=0.4, lens=50, focus="tamsin")),
     ],
     "the_turning": [
         S(HOLLOW, mark="gate", cast=[("vael_orrun", (0, -6, 0), 180, "Running_A", {"walk": (2.5, (1, 1))})],

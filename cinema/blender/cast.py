@@ -739,9 +739,9 @@ def fennick(rig, body, ex, J):
     # side-whiskers: big white mutton-chops from the cheeks and jaw
     mz = f.mouth.z
     chops = lambda c: (0.04 < ax(c) < 0.085 and f.jaw.z - 0.02 < c.z < f.eye.z - 0.02 and c.y < J["head"].y + 0.02)
-    f.add(H.comb_hair(rig, H.scalp_points(body, chops, 12000, seed=14), f.hc, "whiskers", 0.04,
-                      lambda p: (0.5 * p.x / max(abs(p.x), 1e-3), -0.2, -1.0), segs=6, lift=0.0, jitter=0.25, radius=0.0012,
-                      push=0.15, wrap_above=99.0, colour=(0.85, 0.84, 0.8)))
+    f.add(H.comb_hair(rig, H.scalp_points(body, chops, 8000, seed=14), f.hc, "whiskers", 0.05,
+                      lambda p: (0.5 * p.x / max(abs(p.x), 1e-3), -0.2, -1.0), segs=7, lift=0.0, jitter=0.35, radius=0.0008,
+                      push=0.08, wrap_above=99.0, wave=0.08, colour=(0.8, 0.79, 0.76)))   # fine wispy strands, not a felt pad
     side = lambda c: abs(c.x) > 0.06 and c.z < f.eye.z + 0.05 and c.y > f.eye.y + 0.05 and f.scalp(c)
     hair(f, 0.025, 6000, keep=side, colour=(0.85, 0.84, 0.8))
     brows(f, 500, 0.018, colour=(0.85, 0.84, 0.8))
