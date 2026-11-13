@@ -105,6 +105,9 @@ const WEATHER_SHOTS := [
 var _tower_looks: PackedStringArray = []
 ## --longshot: the three long-range towers built in the middle of a map, firing across it.
 var _longshot := false
+## --affinities: a water wave of attuned, warded and tank kinds and a Hulking elite, with the hover
+## card over a few of them.
+var _affinities := false
 
 
 func _ready() -> void:
@@ -160,6 +163,8 @@ func _ready() -> void:
 			_fx_shots = true
 		elif arg == "--longshot":
 			_longshot = true
+		elif arg == "--affinities":
+			_affinities = true
 		elif arg.begins_with("--towers"):
 			_tower_looks = arg.trim_prefix("--towers").trim_prefix("=").split(",", false)
 			if _tower_looks.is_empty():
@@ -184,6 +189,8 @@ func _ready() -> void:
 		_run_army()
 	elif _longshot:
 		_run_longshot()
+	elif _affinities:
+		_run_affinities()
 	elif _powers:
 		_run_powers()
 	elif not _bosses.is_empty():
@@ -1234,6 +1241,58 @@ func _run_powers() -> void:
 ## Each boss in turn walks on, and is made to go through its moves while the camera follows it:
 ## frames in <out>/bosses/f_NNNN.png and the voice lines it says, by frame, in <out>/bosses/cues.json
 ## (tools/art/boss_film.py turns them into a film with sound). --fixed-fps 30 keeps frames and time in step.
+func _run_affinities() -> void:
+	var game := GAME_SCENE.instantiate() as Game
+	game.autoplay = true
+	add_child(game)
+	await _wait(0.2)
+	game._speed_index = 0
+	game.hud.speed = Game.SPEEDS[0]
+	var wave := WaveData.new()
+	wave.element = &"water"
+	var groups: Array[SpawnGroup] = []
+	for entry: Array in [[&"grunt", 5, 0.7, 0.0, false], [&"brinecaller", 3, 1.0, 0.5, false], [&"fogwife", 3, 1.0, 1.5, false],
+			[&"rimeback", 2, 1.5, 2.5, false], [&"brute", 1, 1.0, 1.0, true], [&"rimeback", 1, 1.0, 3.0, true]]:
+		var group := SpawnGroup.new()
+		group.enemy = entry[0]
+		group.count = entry[1]
+		group.spawn_interval = entry[2]
+		group.start_delay = entry[3]
+		group.elite = entry[4]
+		groups.append(group)
+	wave.groups = groups
+	var waves := WaveSet.new()
+	waves.id = &"affinities"
+	waves.health_growth = 1.0
+	waves.waves = [wave, wave] as Array[WaveData]
+	game.sim.config.wave_set = waves
+	await _until(func() -> bool: return game.sim.state == RunSim.State.WAVE)
+	await _wait(9.0)
+	var follow := _follow_horde(game, Vector2.INF)
+	game.camera.set_view(2.0, follow)
+	await _wait(0.3)
+	await _shot("affinities_wave")
+	var picks: Array[SimEnemy] = []
+	for want: Array in [[&"brute", true], [&"brinecaller", false], [&"fogwife", false], [&"rimeback", false]]:
+		for enemy in game.sim.enemies:
+			if enemy.alive and enemy.data.id == want[0] and enemy.elite == want[1]:
+				picks.append(enemy)
+				break
+	for enemy in picks:
+		for i in 3:
+			game.camera.set_view(2.0, enemy.position)
+			game.board._mouse = enemy.position + Vector2(0, -8)
+			game.board._screen_mouse = game.board.view_rect.get_center()
+			await get_tree().process_frame
+		game.get_tree().paused = true
+		game.board._mouse = enemy.position + Vector2(0, -8)
+		game.board.hovered_enemy = enemy
+		game.board.queue_redraw()
+		await _shot("affinities_card_%s%s" % [enemy.data.id, "_elite" if enemy.elite else ""])
+		game.get_tree().paused = false
+	get_tree().quit()
+
+
 func _run_bosses() -> void:
 	var game := GAME_SCENE.instantiate() as Game
 	add_child(game)

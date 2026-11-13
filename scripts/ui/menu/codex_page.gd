@@ -182,6 +182,8 @@ func select(id: StringName) -> void:
 				parts.append(String(tag).to_upper())
 			if not e.horde.is_empty():
 				parts.append("OF THE " + String(e.horde).to_upper())
+			if not e.affinity.is_empty():
+				parts.append(String(ElementRules.PROFILE_NAMES.get(e.affinity, "")).to_upper())
 			_caption.text = "  -  ".join(parts)
 			_lore.text = e.lore
 			_text.text = e.description
@@ -189,6 +191,7 @@ func select(id: StringName) -> void:
 				_text.text += "\n\n" + e.power_text()
 			if not e.boss_text().is_empty():
 				_text.text += "\n\n" + e.boss_text()
+			_text.text += "\n\n" + String(ElementRules.PROFILE_TEXT.get(e.affinity, ElementRules.PROFILE_TEXT[ElementRules.PLAIN]))
 			_picture.texture = _enemy_picture(id)
 			_picture.modulate = _enemy_tint(e)
 			_stat("Health", "%d" % roundi(e.max_health))

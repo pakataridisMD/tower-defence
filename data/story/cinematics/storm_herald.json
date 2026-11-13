@@ -1,30 +1,38 @@
 {
   "id": "storm_herald",
-  "title": "The Stone Herald",
+  "title": "The Sky Herald",
   "shots": [
     {
-      "text": "Gorrath had been a Stoneborn general, the man who held the Kharum Pass for a month. He went to the Rift two years ago, like the Saltmother. He came back with his heart cut out and a carved stone in its place.",
+      "text": "Over Highwind, Kaela Stormrider brought Vholt's great bird down with her own lance. She was the Galeborn's war-leader, and he had taught her to ride. For eleven days she had fought his army alone, falling back from camp to camp.",
       "speaker": "narrator",
-      "art_note": "Gorrath breaking apart on the ridge into boulders that keep rolling, then stop. The carved stone heart in his chest cracks.",
+      "art_note": "The black thunderbird crashing on the ridge at Highwind. Kaela on her grey stallion Thunderclap, lightning lance crackling, white war-paint across her face.",
       "image": "",
       "voice": "",
-      "duration": 19.8
+      "duration": 18.9
     },
     {
-      "text": "Out of the dust rode Kaela Stormrider, the Galeborn's war-leader. She had been fighting his army alone for eleven days, falling back from camp to camp.",
-      "speaker": "narrator",
-      "art_note": "Kaela Stormrider bursting out of the dust on her grey stallion Thunderclap, lightning lance crackling, white war-paint across her face.",
+      "text": "Kaela... someone I trusted asked me to go to the Rift. So I went. I'm sorry, girl.\n\nFinish it. Clean, the way I taught you.",
+      "speaker": "vholt",
+      "art_note": "Vholt crawling free of the wreck, the grey light flickering out of his eyes as he looks up at Kaela and her lance.",
       "image": "",
       "voice": "",
-      "duration": 12.8
+      "duration": 13.6
     },
     {
-      "text": "Eleven days I've been riding away from that thing. I hate riding away. Point me at the next one.",
+      "text": "She finished it facing him, the way he taught her.",
+      "speaker": "narrator",
+      "art_note": "Kaela standing over the fallen warchief, lance lowered, rain starting.",
+      "image": "",
+      "voice": "",
+      "duration": 5.8
+    },
+    {
+      "text": "Eleven days I rode away from his army. I hate riding away. Point me at the next one.",
       "speaker": "kaela",
       "art_note": "Kaela reining in beside the player's towers, looking back at Highwind. Joins as a hero.",
       "image": "",
       "voice": "",
-      "duration": 9.8
+      "duration": 9.3
     }
   ]
 }

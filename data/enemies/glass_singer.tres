@@ -12,6 +12,7 @@ bounty = 6
 leak_damage = 1
 description = "Hollowed. A cold old Kindler who sings glass into being. She wards three allies with glass that stops a tower's blow."
 element = &"fire"
+affinity = &"warded"
 power = &"glass_ward"
 power_interval = 7.0
 power_radius = 160.0

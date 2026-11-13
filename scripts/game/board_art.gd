@@ -1043,7 +1043,7 @@ func _make_enemy(enemy: SimEnemy, tint: Color) -> EnemyVisual:
 	var anchor: Array = meta["anchor"]
 	var offset := -Vector2(anchor[0], anchor[1])
 	var size: Array = meta["size"]
-	visual.size_scale = enemy_scale(enemy.data.id)
+	visual.size_scale = enemy_scale(enemy.data.id) * (ELITE_SCALE if enemy.elite else 1.0)
 	visual.size = Vector2(size[0], size[1]) * visual.size_scale
 	visual.root = Node2D.new()
 	visual.root.position = _art_pos(enemy.position) + Vector2(0, ENEMY_DROP)
@@ -2465,6 +2465,10 @@ static func enemy_height(enemy_id: StringName) -> float:
 
 ## How many times larger than its art a boss is drawn, so it stands BOSS_CELLS[id] cells tall. Whole
 ## numbers keep the pixel art crisp. 1 for everything else.
+## A Hulking elite (SpawnGroup.elite) is drawn this many times its kind's size.
+const ELITE_SCALE := 2.0
+
+
 static func enemy_scale(enemy_id: StringName) -> float:
 	var cells: float = BOSS_CELLS.get(enemy_id, 0.0)
 	var meta := enemy_info(enemy_id)

@@ -96,6 +96,14 @@ func element_color_at(ring_index: int) -> Color:
 	return Color.WHITE
 
 
+## The element at a ring index, or null for -1.
+func element_at(ring_index: int) -> ElementData:
+	for element: ElementData in elements.values():
+		if element.ring_index == ring_index:
+			return element
+	return null
+
+
 func element_color(id: StringName) -> Color:
 	var element: ElementData = elements.get(id)
 	return element.color if element != null else Color.WHITE

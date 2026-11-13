@@ -14,6 +14,7 @@ leak_damage = 3
 tags = Array[StringName]([&"armoured"])
 description = "Wild. An ancient oak torn up and walking. Every 6 s it grows, gaining a tenth more health, up to five times."
 element = &"nature"
+affinity = &"tank"
 power = &"grow"
 power_interval = 6.0
 power_amount = 0.1

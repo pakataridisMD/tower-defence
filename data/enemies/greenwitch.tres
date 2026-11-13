@@ -12,6 +12,7 @@ bounty = 6
 leak_damage = 1
 description = "Hollowed. A Deepwood apothecary. Poison on the horde near her heals it instead of hurting it."
 element = &"nature"
+affinity = &"attuned"
 power = &"remedy"
 power_radius = 150.0
 horde = &"grove"

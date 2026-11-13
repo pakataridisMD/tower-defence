@@ -6,29 +6,26 @@
 
 [sub_resource type="Resource" id="r1"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"fire"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r2"]
 script = ExtResource("3_s")
 id = &"ember_1"
 display_name = "Ashfall Road"
-description = "The first villages smoulder under a grey sky. The Tide comes in small, wet packs."
+description = "The first villages smoulder under a grey sky. The Flame comes in small, burning packs."
 map = &"c_ember_1"
-allowed_elements = Array[StringName]([&"fire", &"storm", &"void"])
-starting_nodes = Array[StringName]([&"fire_entry"])
+horde_element = &"fire"
 modifiers = Array[ExtResource("2_s")]([SubResource("r1")])
-rule_text = PackedStringArray("Home ground: Fire towers deal 20% more damage.", "Only Fire, Storm and Void can be drafted. You start with Fire.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
+rule_text = PackedStringArray("The horde here is Fire: find the element it fears. Every element can be drafted, and you start with one more skill point.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r3"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"fire"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r4"]
 script = ExtResource("2_s")
@@ -40,20 +37,18 @@ value = 10.0
 script = ExtResource("3_s")
 id = &"ember_2"
 display_name = "Cinder Steps"
-description = "Menders walk with the Tide now. Keep them burning, or they will heal."
+description = "Menders walk with the Flame now. Kill them quickly, or they will heal."
 map = &"c_ember_2"
-allowed_elements = Array[StringName]([&"fire", &"storm", &"void"])
-starting_nodes = Array[StringName]([&"fire_entry"])
+horde_element = &"fire"
 modifiers = Array[ExtResource("2_s")]([SubResource("r3"), SubResource("r4")])
-rule_text = PackedStringArray("Home ground: Fire towers deal 20% more damage.", "Only Fire, Storm and Void can be drafted. You start with Fire.", "The last wave is led by Saltmother Ourra, the Drowned Herald (shields the horde).", "Rich veins: +10 gold after every wave.")
+rule_text = PackedStringArray("The horde here is Fire: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The last wave is led by Ashwick the Kindled, the Flame Herald (fast, silences towers).", "Rich veins: +10 gold after every wave.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r6"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"fire"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r7"]
 script = ExtResource("2_s")
@@ -67,30 +62,27 @@ id = &"ember_3"
 display_name = "Obsidian Crossing"
 description = "The road crosses itself on a field of black glass. Every tower there fires twice."
 map = &"c_ember_3"
-allowed_elements = Array[StringName]([&"fire", &"storm", &"void"])
-starting_nodes = Array[StringName]([&"fire_entry"])
+horde_element = &"fire"
 modifiers = Array[ExtResource("2_s")]([SubResource("r6"), SubResource("r7")])
-rule_text = PackedStringArray("Home ground: Fire towers deal 20% more damage.", "Only Fire, Storm and Void can be drafted. You start with Fire.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.", "Ash clouds: towers have 10% less range.")
+rule_text = PackedStringArray("The horde here is Fire: find the element it fears. Every element can be drafted, and you start with one more skill point.", "Ash clouds: towers have 10% less range.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r9"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"fire"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r10"]
 script = ExtResource("3_s")
 id = &"ember_4"
 display_name = "Throne of Cinders"
-description = "At the caldera the Cinder Tyrant waits: the Warden of Fire, burning wrong. It shrugs off flame. Bring Storm or Void."
+description = "At the caldera the Cinder Tyrant waits: the Warden of Fire, burning wrong. It shrugs off flame. Bring Water."
 map = &"c_ember_4"
 is_guardian = true
-allowed_elements = Array[StringName]([&"fire", &"storm", &"void"])
-starting_nodes = Array[StringName]([&"fire_entry"])
+horde_element = &"fire"
 modifiers = Array[ExtResource("2_s")]([SubResource("r9")])
-rule_text = PackedStringArray("Home ground: Fire towers deal 20% more damage.", "Only Fire, Storm and Void can be drafted. You start with Fire.", "The Warden resists Fire: bring a neighbour.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
+rule_text = PackedStringArray("The horde here is Fire: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The Warden is Fire, and fears Water.")
 first_clear_points = 6
 
 [sub_resource type="Resource" id="r11"]
@@ -106,8 +98,8 @@ id = &"ember_reach"
 display_name = "The Ember Reach"
 order = 0
 element = &"fire"
-tagline = "The Tide against the Volcano"
-description = "The Warden of Fire has gone silent, and the sea has come up the mountain. Hold the ash roads with flame while the Tide's Menders knit their wounds shut."
+tagline = "The Flame turned on its own mountain"
+description = "The Warden of Fire has gone mad, and the mountain's own fire marches on its towns. Fire will not stop the Flame: bring what puts it out."
 stages = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r5"), SubResource("r8"), SubResource("r10")])
 reward_name = "Sigil of Embers"
 reward_description = "Fire towers deal 10% increased damage in every run."

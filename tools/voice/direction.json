@@ -158,18 +158,20 @@
       "Then the ground gave way, and he fell through.": "grief",
       "His lantern was still lit.": "hope",
       "Six armies came out through the gap, each led by a grey-eyed champion we called a Herald.": "dread",
-      "Each went to one land, to drive its Warden mad.": "cold",
-      "A land whose Warden is mad cannot keep out the element opposite its own.": "calm",
-      "The sea climbs the volcano.": "calm",
-      "Stone climbs the plains.": "calm",
-      "The Herald's army comes in with it.": "dread",
       "I am Ysolde, Queen of Solenne.": "pride",
       "You are a Spirewright, the last of Oswin's apprentices.": "warm",
       "You build the towers.": "calm",
       "We take the lands back one at a time.": "passion",
       "Hold the road to each town.": "fierce",
       "Kill its Herald.": "fierce",
-      "Free its Warden.": "passion"
+      "Free its Warden.": "passion",
+      "Each Herald went home, to the land they were born in.": "dread",
+      "A Warden lets its own people come close.": "grief",
+      "There each Herald whispered to its Warden until the Warden went mad.": "dread",
+      "A mad Warden turns its own element on its own people.": "dread",
+      "The volcano poured out its fire.": "dread",
+      "The forest strangled its towns.": "dread",
+      "And the Herald raised an army out of the land itself.": "cold"
     },
     "assault_intro": {
       "A road is cut into the wall of the Rift.": "calm",
@@ -244,76 +246,79 @@
       "Only the Sundered Heart kept coming.": "dread"
     },
     "earth_herald": {
-      "Over the Kharum Terraces, Kaela brought Vholt's bird down with her own lance.": "pride",
-      "She was there when he hit the ground.": "grief",
-      "Kaela...": "weary",
-      "I went to the Rift because the Marshal asked me to.": "weary",
-      "I'm sorry, girl.": "tender",
-      "Finish it.": "gruff",
-      "Clean, the way I taught you.": "tender",
       "Behind a fallen terrace we found what was left of the Canyon's shield-company.": "calm",
       "Gorrim Stonebeard was standing in front of them, with a stone door for a shield.": "pride",
       "One iron ring in my beard for every friend I've buried.": "gruff",
-      "Thirty-one.": "grief",
-      "Let's not make it thirty-two.": "wry"
+      "On the Kharum Terraces Gorrath came down the steps himself.": "dread",
+      "He had gone to the Rift two years ago and come back with his heart cut out and a carved stone in its place.": "grief",
+      "When it cracked, he broke apart into boulders that kept rolling, then stopped.": "awe",
+      "Twenty years ago he had held the Kharum Pass beside Gorrath.": "grief",
+      "He makes thirty-two.": "grief",
+      "Let's not make it thirty-three.": "wry"
     },
     "earth_intro": {
       "Sunscar Canyon is red rock.": "calm",
       "The Stoneborn live in cities carved into its walls.": "calm",
       "Its Warden, Orrok, sleeps in the mountain at its head, under Grundhallow.": "awe",
-      "Orrok had gone mad, and the canyon could not keep out the storm.": "dread",
-      "Lightning in armour walked down the walls.": "dread",
-      "Over it, on a bird of black cloud, rode the Herald Vholt Stormcrown: a Galeborn warchief, and Kaela's old teacher.": "calm",
-      "He taught me to ride.": "bitter",
-      "He taught me never to turn my back on a fight.": "pride",
-      "If I have to kill him, I'll do it facing him.": "fierce"
+      "Orrok had gone mad, and the canyon turned on the Stoneborn.": "dread",
+      "Its walls broke off and walked.": "dread",
+      "Every oath carved in its cities broke at once, and the oath-breakers turned to stone and marched.": "dread",
+      "Their Herald was Gorrath, the Stoneborn general who once held the Kharum Pass for a month.": "bitter",
+      "Stone doesn't feel a blade.": "gruff",
+      "It feels lightning.": "wry",
+      "Give me towers that throw it, and I'll do the rest.": "fierce"
     },
     "earth_warden": {
       "...Thank you.": "weary",
       "Under Grundhallow the Mountain Titan fell, a giant of grey stone.": "pride",
       "The grey came off it like dust, and under it was Orrok.": "awe",
       "It was the first thing he had said in two thousand years.": "tender",
-      "The storm left the canyon, and the Stoneborn buried their dead in the Deep Halls.": "grief",
       "That's the last ring.": "grief",
       "Hear me say it.": "gruff",
-      "No more.": "fierce"
+      "No more.": "fierce",
+      "The walking stone lay down, and the Stoneborn buried their dead in the Deep Halls.": "grief"
     },
     "ember_herald": {
-      "At Brazier Hold the Saltmother came up the road herself, inside a column of black seawater.": "dread",
-      "She had been the high priestess of the Tidefolk.": "calm",
-      "Two years ago she went east to the Rift, and nobody knew why.": "calm",
-      "When she fell, we found a cage of salt on the steps.": "calm",
-      "In it was Brannoc Emberhand, the smith who forged Solenne's gates.": "pride",
-      "She had kept him nine days to make him forge chains for her army.": "bitter",
-      "Nine days she asked me for chains.": "gruff",
-      "Nine days I told her no.": "pride",
-      "Now give me a wall to stand on.": "fierce"
+      "Now give me a wall to stand on.": "fierce",
+      "At Brazier Hold Ashwick came down the road himself, running, the way he always ran.": "dread",
+      "He was born in Kethra.": "calm",
+      "As a boy he swept Brannoc's forge; then he became the Concord's youngest messenger.": "tender",
+      "Two years ago he ran east to the Rift, and nobody knew why.": "calm",
+      "When he fell, we found Brannoc Emberhand, the smith who forged Solenne's gates, chained in his own forge.": "pride",
+      "Ashwick had kept him there nine days to make him forge chains for the horde.": "bitter",
+      "Nine days that boy asked me for chains.": "gruff",
+      "He used to sweep my floor.": "grief",
+      "Nine days I told him no.": "pride"
     },
     "ember_intro": {
       "The Ember Reach is a land of volcanoes, and the Emberfolk forge in their heat.": "calm",
       "Its Warden, Ignar, sleeps in the fire under the mountain of Pyrrhenhall.": "awe",
-      "Ignar had gone mad, and the sea was climbing the mountain.": "dread",
-      "Inside the water came the Herald's army: the drowned, led by the Saltmother.": "dread",
       "The town of Kethra was first on their road.": "calm",
       "I'm Fennick.": "wry",
       "I design the towers; you build them.": "wry",
-      "Fire burns, water slows, and you, child, will place them where I tell you.": "gruff",
       "Hold the road to Kethra.": "command",
-      "The Saltmother is somewhere up that mountain.": "calm",
-      "Kill her, and her army loses its head.": "fierce"
+      "Ignar had gone mad, and the mountain's fire came out to burn the people it once kept warm.": "dread",
+      "Out of it walked the Herald's army: cinder hounds, smiths sealed in slag, the smoke of burned houses.": "dread",
+      "At its head ran a boy made of embers, the Herald Ashwick.": "dread",
+      "Those things are made of fire, so fire won't hurt them.": "wry",
+      "Water will.": "gruff",
+      "And you, child, will place it where I tell you.": "wry",
+      "Ashwick is somewhere up that mountain.": "calm",
+      "Kill him, and his army loses its head.": "fierce"
     },
     "ember_warden": {
       "Under Pyrrhenhall we fought the thing Ignar had become, the Cinder Tyrant, a giant of grey fire.": "dread",
       "When it fell, the grey burned off it, and Ignar woke.": "awe",
-      "Someone whispered in my sleep until I forgot what I was.": "hollow",
       "I am awake now.": "passion",
       "I will burn for you.": "fierce",
-      "With its Warden awake, the Reach could keep the sea out again.": "hope",
-      "By morning the water had run back down the mountain, and the Emberfolk lit their forges.": "warm",
       "One land back.": "pride",
       "Five to go.": "wry",
       "Pack your tools, Spirewright.": "warm",
-      "The Thunder Steppe is next.": "calm"
+      "The Thunder Steppe is next.": "calm",
+      "A boy of my own people sat by my fire and whispered, until I forgot what I was.": "hollow",
+      "I burned the people I swore to keep warm.": "grief",
+      "With its Warden awake, the fire went back under the mountain.": "calm",
+      "By morning the slopes had cooled to black stone, and the Emberfolk lit their forges again.": "hope"
     },
     "epilogue": {
       "I am Ysolde, Queen of Solenne.": "pride",
@@ -371,31 +376,33 @@
     "mirror_spire": {},
     "nature_herald": {
       "The Marshal sent us to the Rift.": "hollow",
-      "At Elderhollow the Pale Vesper fell.": "calm",
-      "She had been a Veilwalker singer who sang at funerals.": "tender",
-      "She too had gone to the Rift two years ago.": "calm",
       "Before she died, the grey went out of her eyes.": "awe",
       "Six of us.": "hollow",
       "Study the Gate, he said...": "bitter",
       "He knew what was behind it.": "dread",
       "Cassivane was my Marshal and my friend.": "grief",
       "I did not believe her.": "bitter",
-      "I thought it was the Hollow talking.": "grief",
       "In the root-halls we found Sylvaine Thornwhisper, the Deepwood's best archer.": "calm",
       "She had held the root-doors alone while the whole town climbed out.": "pride",
       "They're all out.": "weary",
       "Every child.": "pride",
-      "Now show me where to stand.": "fierce"
+      "Now show me where to stand.": "fierce",
+      "At Elderhollow Mother Briar fell, and the thorns that had grown through her went brown and crumbled.": "calm",
+      "For forty years she had healed the Deepwood.": "tender",
+      "Two years ago she went east to the Rift, like Ashwick, like Vholt.": "calm",
+      "I thought it was the madness talking.": "bitter"
     },
     "nature_intro": {
       "The Verdant Deep is a forest of trees as tall as towers.": "awe",
       "The Deepwood live in the branches.": "calm",
       "Its Warden, Elowen, sleeps in the oldest tree of all, at Sylvanmere.": "calm",
-      "Elowen had gone mad, and the forest could not keep out the Hollow, the dark from behind the Gate.": "dread",
-      "It crept in under the trees.": "dread",
-      "With it came a Herald who sang the dead back onto their feet: the Pale Vesper.": "cold",
-      "The Deepwood have buried their dead under these trees for a thousand years.": "grief",
-      "Now we know where her army comes from.": "bitter"
+      "Elowen had gone mad, and her forest turned on the people who lived in it.": "dread",
+      "Thorns closed the roads.": "dread",
+      "Oaks tore up their roots and walked.": "dread",
+      "Leading them was the Herald Mother Briar, the Deepwood's wisest healer, grown through with thorns.": "grief",
+      "Fennick says green wood rots in the dark of the Rift, so build the void towers.": "calm",
+      "I say build them fast.": "wry",
+      "Those trees are walking toward Fernholt.": "dread"
     },
     "nature_warden": {
       "At Sylvanmere we cut Elowen out of the Elder Broodmother, the rotten thing that had grown over her inside the oldest tree.": "calm",
@@ -403,8 +410,8 @@
       "The tree is dying.": "weary",
       "It has one seed left.": "tender",
       "Take it, child, and plant it somewhere the dark can't reach.": "hope",
-      "The Hollow drew back out of the forest.": "hope",
-      "Three lands were free, and we went home to Solenne for one night's rest.": "warm"
+      "Three lands were free, and we went home to Solenne for one night's rest.": "warm",
+      "The thorns let go of the roads, and the walking oaks lay down where they stood.": "hope"
     },
     "night_of_falling_stars": {
       "The gatehouse came down on him.": "shock",
@@ -462,59 +469,70 @@
       "That is not how it happened.": "cold"
     },
     "storm_herald": {
-      "Gorrath had been a Stoneborn general, the man who held the Kharum Pass for a month.": "pride",
-      "He went to the Rift two years ago, like the Saltmother.": "calm",
-      "He came back with his heart cut out and a carved stone in its place.": "dread",
-      "Out of the dust rode Kaela Stormrider, the Galeborn's war-leader.": "pride",
-      "She had been fighting his army alone for eleven days, falling back from camp to camp.": "weary",
-      "Eleven days I've been riding away from that thing.": "bitter",
       "I hate riding away.": "anger",
-      "Point me at the next one.": "fierce"
+      "Point me at the next one.": "fierce",
+      "Over Highwind, Kaela Stormrider brought Vholt's great bird down with her own lance.": "pride",
+      "She was the Galeborn's war-leader, and he had taught her to ride.": "grief",
+      "For eleven days she had fought his army alone, falling back from camp to camp.": "calm",
+      "Kaela...": "weary",
+      "someone I trusted asked me to go to the Rift.": "weary",
+      "So I went.": "weary",
+      "I'm sorry, girl.": "tender",
+      "Finish it.": "gruff",
+      "Clean, the way I taught you.": "tender",
+      "She finished it facing him, the way he taught her.": "grief",
+      "Eleven days I rode away from his army.": "bitter"
     },
     "storm_intro": {
       "The Thunder Steppe is grassland on a high plateau.": "calm",
       "The Galeborn live there on horseback and steer by the storms.": "calm",
       "Its Warden, Aurath, sleeps in the storms themselves.": "awe",
-      "Aurath had gone mad, and the storms had stopped moving.": "dread",
-      "Without them the Steppe could not keep out the earth.": "calm",
-      "Walking stone climbed the cliffs, led by the Herald Gorrath.": "dread",
       "The Galeborn don't build walls.": "wry",
       "Your towers are the only walls they've got.": "gruff",
-      "Start at Stonering Camp.": "calm"
+      "Start at Stonering Camp.": "calm",
+      "Aurath had gone mad, and the storms turned on the camps they used to guide.": "dread",
+      "Lightning struck the tents.": "dread",
+      "Dead riders came back on horses of lightning.": "dread",
+      "Over them, on a bird of black cloud, rode the Herald Vholt Stormcrown, the warchief who had taught half the Steppe to ride.": "bitter",
+      "And lightning doesn't hurt lightning.": "wry",
+      "Build stone.": "gruff",
+      "It grounds the stuff.": "wry"
     },
     "storm_warden": {
       "Over Aurvanis we brought down the Thunderhead, a storm gone solid as black glass.": "pride",
       "It was Aurath's madness.": "calm",
-      "It shattered, and the sky moved again for the first time in a month.": "awe",
-      "A voice told me to be still.": "hollow",
-      "So I was still, and the stone walked in.": "bitter",
       "Never again.": "fierce",
       "My winds are yours.": "passion",
-      "The walking stone fell where it stood.": "pride",
       "The Galeborn rode home to Aurvanis.": "warm",
-      "Two lands were free.": "hope"
+      "Two lands were free.": "hope",
+      "It shattered, and for the first time in a month the rain fell with no lightning in it.": "hope",
+      "A voice I knew told me my riders had betrayed me.": "hollow",
+      "So I struck them down, camp by camp.": "grief",
+      "The dead riders fell from their horses where they stood.": "calm"
     },
     "void_herald": {
-      "Mother Briar fell on the steps of Vesperhold, and the thorns that had grown through her went brown and crumbled.": "calm",
-      "Tied in her thorns was my half-brother, Corvin.": "awe",
       "Six years ago he was found over a dead man, and I exiled him for murder.": "grief",
       "He had lived on the edge of the Rift ever since, watching the Gate.": "calm",
       "Six years I told them it was the Marshal.": "bitter",
       "Now they believe me.": "wry",
       "The man I was exiled for killing saw Cassivane cut a piece off the Heartstone.": "cold",
-      "That's why he died.": "grief"
+      "That's why he died.": "grief",
+      "The Pale Vesper fell on the steps of Vesperhold, still singing, and the dead she had raised lay down around her.": "awe",
+      "In the crypt under her steps, among the dead she had not yet woken, lay my half-brother, Corvin.": "grief"
     },
     "void_intro": {
       "The last land was the Hollow Rift, where the war began.": "calm",
       "The Veilwalkers guard it.": "calm",
       "Their Warden, Nyxara, sleeps in the dark along its edge.": "dread",
       "From the edge you can see the Black Gate, miles down, and the gap in it, and a grey line of soldiers still coming out.": "dread",
-      "Nyxara had gone mad, and the Rift could not keep out the forest.": "calm",
-      "Thorns grew over everything, and dead trees walked.": "dread",
-      "Their Herald was Mother Briar, once the Deepwood's best healer.": "grief",
       "The Veilwalkers at Lamplight say some nights a white light moves along the bottom of the Rift.": "awe",
       "Slowly.": "awe",
-      "Like someone walking with a lantern.": "hope"
+      "Like someone walking with a lantern.": "hope",
+      "Nyxara had gone mad, and the dark of the Rift climbed out over the Veilwalker towns.": "dread",
+      "Their dead got up and walked, and hunters made of night walked with them.": "dread",
+      "Their Herald was the Pale Vesper, the Veilwalkers' own funeral singer, who now sang the dead awake.": "grief",
+      "The dark hates growing things.": "cold",
+      "Plant my forest in its road.": "fierce"
     },
     "void_warden": {
       "At Umbrael we fought the Hollow King, Nyxara's madness wearing an iron crown.": "dread",
@@ -528,25 +546,26 @@
       "You're late.": "calm",
       "Only a little.": "wry",
       "I saw that too.": "wry",
-      "Ashwick had been the Concord's youngest messenger.": "tender",
-      "Two years ago he ran east to the Rift with a letter, and never came back.": "grief",
-      "When he fell in the reeds, his satchel split open.": "calm",
-      "The letter was still in it, under Cassivane's seal.": "dread",
-      "In the middle of the burning reeds stood a tower of ice that had not melted.": "awe",
       "Inside it was Mirelle, a blind Tidefolk seer who reads the future in ice.": "calm",
-      "She had kept forty children alive in there.": "pride"
+      "She had kept forty children alive in there.": "pride",
+      "At Reedhaven the Saltmother's column of seawater burst on the ice.": "awe",
+      "She had been the high priestess of the Tidefolk.": "calm",
+      "When she fell, we found an order sewn into her robes, sending her to the Rift to study the Gate.": "calm",
+      "It was sealed with Cassivane's seal.": "dread",
+      "In the middle of the flooded reeds stood a tower of ice the sea had not broken.": "awe"
     },
     "water_intro": {
       "Frostmere is a frozen sea in the north.": "calm",
       "The Tidefolk build their towns on the ice.": "calm",
       "Its Warden, Thalassa, sleeps in the water under it.": "awe",
       "We fought there in the dark.": "weary",
-      "Thalassa had gone mad, and the ice could not keep out fire.": "dread",
-      "Burning runners came across it, and the ice melted behind them.": "dread",
-      "They were led by a boy made of embers, the Herald Ashwick.": "grief",
       "Fennick always said water slows.": "tender",
-      "Out here we're standing on it.": "wry",
-      "Let's prove him right.": "fierce"
+      "Thalassa had gone mad, and the sea under the ice rose against the Tidefolk.": "dread",
+      "It broke the ice from underneath, and the drowned climbed out of the holes: fishermen still casting their nets, priests still praying.": "dread",
+      "They were led by the Tidefolk's own high priestess, the Saltmother.": "bitter",
+      "Not this water.": "wry",
+      "In the margin of his notes he wrote one word: fire.": "calm",
+      "So we burn it.": "fierce"
     },
     "water_warden": {
       "She said she had seen a death at the very end of the war.": "whisper",
@@ -554,9 +573,10 @@
       "Under Pearlhaven we brought down the Tidal Leviathan, an eel of grey ice as long as the harbour.": "pride",
       "It broke apart, and Thalassa rose out of the water.": "awe",
       "I remember every ship that ever sailed this sea, and every child on it.": "tender",
-      "I will remember what you did here.": "warm",
-      "The fire went out on the ice, and the sea froze over again.": "hope",
-      "That night Mirelle looked into the ice for a long time.": "dread"
+      "That night Mirelle looked into the ice for a long time.": "dread",
+      "I drowned some of them this winter.": "grief",
+      "I will remember that too.": "cold",
+      "The sea lay down under the ice, and the holes froze over.": "calm"
     },
     "the_hush": {
       "He was the first to listen.": "calm",
@@ -624,6 +644,7 @@
   "respell": {
     "Tell Ysolde I saw one more dawn.": "Tell Isolde I saw one more dawn.",
     "Behind a fallen terrace we found what was left of the Canyon's shield-company.": "Behind a fallen terrace we found what was left of the canyon's shield company.",
-    "Ride, Galeborn, ride!": "[shouting, clearly] Ride, Gale-Born, ride!"
+    "Ride, Galeborn, ride!": "[shouting, clearly] Ride, Gale-Born, ride!",
+    "Over Highwind, Kaela Stormrider brought Vholt's great bird down with her own lance.": "Over Highwind, Kaela Stormrider brought Volt's great bird down with her own lance."
   }
 }

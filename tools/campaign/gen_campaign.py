@@ -3,11 +3,11 @@
 (data/waves/c_*.tres) for every stage.
 
 There is a campaign for each of the six elements and a seventh, the Convergence, that opens once
-all six are finished. Each element campaign is fought in that element's land against a horde from
-the far side of the ring: the opposite element and its two neighbours. Every wave is therefore weak
-to one of the three elements the stage allows (the home element and its neighbours), and the
-home element's towers get a bonus. The last stage of each campaign ends with the element's own
-corrupted Warden, which resists the home element, so the player has to lean on a neighbour.
+all six are finished. Each element campaign is fought in that element's land against that element's own horde
+(tools/campaign/horde.py HOSTS): the fire land against the Flame, and so on. Most waves are of the
+land's element, so they fear the opposite one, and every element can be drafted: finding the weakness
+is the player's job. The last stage ends with the element's own corrupted Warden, of the same element.
+The Convergence and the assault mix every horde.
 
 The files are plain Godot resources and can be edited in the editor, but running this script again
 overwrites them. Change the tables below instead, then run:
@@ -54,32 +54,32 @@ def boss_life(tune):
 CAMPAIGNS = [
     {
         "id": "ember_reach", "element": "fire", "name": "The Ember Reach",
-        "tagline": "The Tide against the Volcano",
-        "description": "The Warden of Fire has gone silent, and the sea has come up the mountain. Hold the "
-                       "ash roads with flame while the Tide's Menders knit their wounds shut.",
+        "tagline": "The Flame turned on its own mountain",
+        "description": "The Warden of Fire has gone mad, and the mountain's own fire marches on its towns. "
+                       "Fire will not stop the Flame: bring what puts it out.",
         "signature": "mender", "second": "splitter",
         "reward": ("Sigil of Embers", "Fire towers deal 10% increased damage in every run.",
                    [("damage", 1, 0.10, ["fire"])]),
         "stages": [
-            ("ember_1", "Ashfall Road", "The first villages smoulder under a grey sky. The Tide comes in small, wet packs.",
+            ("ember_1", "Ashfall Road", "The first villages smoulder under a grey sky. The Flame comes in small, burning packs.",
              [(-1, 7), (7, 7), (7, 3), (16, 3), (16, 11), (24, 11)], 10, 1.0, None),
-            ("ember_2", "Cinder Steps", "Menders walk with the Tide now. Keep them burning, or they will heal.",
+            ("ember_2", "Cinder Steps", "Menders walk with the Flame now. Kill them quickly, or they will heal.",
              [(-1, 2), (5, 2), (5, 12), (11, 12), (11, 4), (17, 4), (17, 12), (24, 12)], 12, 1.0,
-             ("gold_per_wave", 0, 10, [], "Rich veins: +10 gold after every wave."), {"lieutenant": "saltmother"}),
+             ("gold_per_wave", 0, 10, [], "Rich veins: +10 gold after every wave."), {"lieutenant": "ashwick"}),
             ("ember_3", "Obsidian Crossing", "The road crosses itself on a field of black glass. Every tower there fires twice.",
              [(-1, 4), (18, 4), (18, 11), (9, 11), (9, -1)], 14, 1.0,
              ("attack_range", 1, -0.10, [], "Ash clouds: towers have 10% less range.")),
             ("ember_4", "Throne of Cinders", "At the caldera the Cinder Tyrant waits: the Warden of Fire, burning wrong. "
-             "It shrugs off flame. Bring Storm or Void.",
+             "It shrugs off flame. Bring Water.",
              [(12, -1), (12, 2), (2, 2), (2, 12), (21, 12), (21, 2), (16, 2), (16, 8), (7, 8), (7, 15)], 15, 1.0, None,
              {"boss": "cinder_tyrant"}),
         ],
     },
     {
         "id": "thunder_steppe", "element": "storm", "name": "The Thunder Steppe",
-        "tagline": "The Stone against the Sky",
-        "description": "The high grass is flattened and the storms have stopped. Earth's horde climbs the "
-                       "plateau, and the Splitters break into swarms that only lightning can catch.",
+        "tagline": "The Sky turned on its own plains",
+        "description": "The high grass is flattened and the storms run wild. The Sky's own horde rides the "
+                       "plateau, and lightning only tickles it. Earth grounds a storm.",
         "signature": "splitter", "second": "brute",
         "reward": ("Sigil of Thunder", "Storm towers attack 8% faster in every run.",
                    [("attacks_per_second", 1, 0.08, ["storm"])]),
@@ -88,67 +88,67 @@ CAMPAIGNS = [
              [(-1, 11), (6, 11), (6, 4), (13, 4), (13, 10), (24, 10)], 10, 1.0, None),
             ("storm_2", "Galeback Ridge", "Splitters crack open on the ridge. Chain lightning loves a crowd.",
              [(-1, 3), (20, 3), (20, 7), (3, 7), (3, 11), (24, 11)], 12, 1.0,
-             ("attacks_per_second", 1, 0.10, [], "Tailwind: towers attack 10% faster."), {"lieutenant": "gorrath"}),
+             ("attacks_per_second", 1, 0.10, [], "Tailwind: towers attack 10% faster."), {"lieutenant": "vholt"}),
             ("storm_3", "The Long Squall", "The road dives down and climbs back up three times. Long, but never far from a spire.",
              [(3, -1), (3, 12), (9, 12), (9, 2), (15, 2), (15, 12), (21, 12), (21, -1)], 14, 1.0,
              ("cost", 1, 0.15, [], "Thin air: towers cost 15% more.")),
             ("storm_4", "Eye of the Storm", "The Thunderhead spins at the centre of the last storm. Nothing slows it, "
-             "and lightning only tickles. Fire and Nature will have to do.",
+             "and lightning only tickles. Bring Earth.",
              [(-1, 1), (22, 1), (22, 13), (1, 13), (1, 4), (19, 4), (19, 10), (5, 10), (5, 7), (24, 7)], 15, 1.0, None,
              {"boss": "thunderhead"}),
         ],
     },
     {
         "id": "verdant_deep", "element": "nature", "name": "The Verdant Deep",
-        "tagline": "The Hollow against the Grove",
-        "description": "Something hollow has crept under the canopy. Its Menders walk the roots at night. "
-                       "Poison stops their healing, and it spreads.",
+        "tagline": "The Grove turned on its own forest",
+        "description": "The forest itself has risen against its people: thorn, bark and beast. Its Menders walk "
+                       "the roots at night. The Void withers what grows.",
         "signature": "mender", "second": "warded",
         "reward": ("Sigil of the Grove", "Nature towers deal 10% increased damage in every run.",
                    [("damage", 1, 0.10, ["nature"])]),
         "stages": [
-            ("nature_1", "Mossy Trail", "Soft ground and quiet birds. The first hollow things are slow.",
+            ("nature_1", "Mossy Trail", "Soft ground and quiet birds. The first thorn-things are slow.",
              [(-1, 4), (9, 4), (9, 10), (17, 10), (17, 5), (24, 5)], 10, 1.0, None),
             ("nature_2", "Rootway", "The road threads between the roots of trees older than the ring.",
              [(-1, 12), (4, 12), (4, 2), (12, 2), (12, 12), (19, 12), (19, 2), (24, 2)], 12, 1.0,
-             ("starting_lives", 0, 5, [], "Deep roots: +5 lives."), {"lieutenant": "pale_vesper"}),
+             ("starting_lives", 0, 5, [], "Deep roots: +5 lives."), {"lieutenant": "mother_briar"}),
             ("nature_3", "Bramble Maze", "Thorns everywhere. Warded beasts walk through poison as if it were rain.",
              [(-1, 7), (4, 7), (4, 1), (10, 1), (10, 13), (16, 13), (16, 1), (21, 1), (21, 9), (24, 9)], 14, 1.0,
              ("sell_refund", 0, 0.2, [], "Recycling: selling refunds 20% more.")),
             ("nature_4", "Heart of the Grove", "The Elder Broodmother nests in the oldest tree, shedding young as she walks. "
-             "Fire and Storm will thin the brood.",
+             "The Void will thin the brood.",
              [(11, 15), (11, 10), (2, 10), (2, 2), (21, 2), (21, 12), (15, 12), (15, 6), (7, 6), (7, -1)], 15, 1.0, None,
              {"boss": "broodmother"}),
         ],
     },
     {
         "id": "frostmere", "element": "water", "name": "Frostmere",
-        "tagline": "The Flame against the Ice",
-        "description": "The lake is boiling at the edges. Fire's horde marches across the ice, and its runners are "
-                       "fast. Slow them, freeze them, drown them.",
+        "tagline": "The Tide turned on its own lake",
+        "description": "The lake has risen against its shores, and the drowned walk across the ice. Water "
+                       "barely wets them. Fire boils the Tide away.",
         "signature": "runner", "second": "warded",
         "reward": ("Sigil of the Tide", "Water towers have 8% increased range in every run.",
                    [("attack_range", 1, 0.08, ["water"])]),
         "stages": [
-            ("water_1", "Tidepool Shore", "Fishing huts and frozen nets. The first sparks skitter across the shingle.",
+            ("water_1", "Tidepool Shore", "Fishing huts and frozen nets. The first drowned crawl up the shingle.",
              [(-1, 2), (6, 2), (6, 9), (14, 9), (14, 5), (24, 5)], 10, 1.0, None),
             ("water_2", "Saltmarsh Bends", "Reed beds and narrow causeways. Runners come in long, quick lines.",
              [(-1, 6), (3, 6), (3, 12), (9, 12), (9, 3), (15, 3), (15, 12), (20, 12), (20, 6), (24, 6)], 12, 1.0,
-             ("starting_gold", 0, 60, [], "Fishing fleet: start with 60 more gold."), {"lieutenant": "ashwick"}),
+             ("starting_gold", 0, 60, [], "Fishing fleet: start with 60 more gold."), {"lieutenant": "saltmother"}),
             ("water_3", "Frozen Causeway", "The causeway crosses the lake four times. The ice groans under the Warded.",
              [(-1, 13), (21, 13), (21, 9), (2, 9), (2, 5), (21, 5), (21, 1), (-1, 1)], 14, 1.0,
              ("gold_per_wave", 1, -0.3, [], "Frozen trade: 30% less gold after each wave.")),
             ("water_4", "The Drowned Throne", "The Tidal Leviathan rises from the black water: too big to slow, too old "
-             "to freeze. Nature and Earth must break it.",
+             "to freeze. Fire must boil it.",
              [(-1, 7), (5, 7), (5, 2), (18, 2), (18, 12), (10, 12), (10, 5), (14, 5), (14, 15)], 15, 1.0, None,
              {"boss": "leviathan"}),
         ],
     },
     {
         "id": "sunscar_canyon", "element": "earth", "name": "Sunscar Canyon",
-        "tagline": "The Sky against the Stone",
-        "description": "Storm's horde pours down the canyon walls in armour. Earth's heavy blows and "
-                       "shattering hits crack what lightning cannot.",
+        "tagline": "The Stone turned on its own canyon",
+        "description": "The canyon's own stone has risen, and its horde pours down the walls in armour. Earth "
+                       "only chips it. Storm cracks the Stone.",
         "signature": "brute", "second": "splitter",
         "reward": ("Sigil of Stone", "Earth towers deal 10% increased damage in every run.",
                    [("damage", 1, 0.10, ["earth"])]),
@@ -157,21 +157,21 @@ CAMPAIGNS = [
              [(4, -1), (4, 8), (12, 8), (12, 4), (19, 4), (19, 15)], 10, 1.0, None),
             ("earth_2", "Canyon Switchbacks", "The road zigzags down the canyon wall, five long terraces.",
              [(-1, 1), (21, 1), (21, 5), (2, 5), (2, 9), (21, 9), (21, 13), (-1, 13)], 12, 1.0,
-             ("damage", 1, 0.10, ["earth"], "Bedrock: Earth towers deal a further 10% more damage."), {"lieutenant": "vholt"}),
+             ("damage", 1, 0.10, ["earth"], "Bedrock: Earth towers deal a further 10% more damage."), {"lieutenant": "gorrath"}),
             ("earth_3", "Mesa Loop", "A loop around a flat-topped mesa, then a sprint for the exit.",
              [(-1, 10), (7, 10), (7, 3), (16, 3), (16, 10), (10, 10), (10, 13), (24, 13)], 14, 1.0,
              ("starting_lives", 1, -0.25, [], "Rockfall: 25% fewer lives.")),
             ("earth_4", "Titan's Cradle", "The Mountain Titan wakes. Every hit under 22 damage bounces off its hide. "
-             "Big blows, burns and poison find a way.",
+             "Storm, big blows and burns find a way.",
              [(-1, 3), (6, 3), (6, 12), (17, 12), (17, 3), (10, 3), (10, 8), (24, 8)], 15, 1.0, None,
              {"boss": "mountain_titan"}),
         ],
     },
     {
         "id": "hollow_rift", "element": "void", "name": "The Hollow Rift",
-        "tagline": "The Grove against the Dark",
-        "description": "The rift where the ring cracked first. Nature's horde grows wild here, warded in bark, "
-                       "and only the Void's curses and auras can tear it down.",
+        "tagline": "The Hollow turned on its own rift",
+        "description": "The rift where the ring cracked first. The Hollow's own dead and shades pour out of it, "
+                       "and the Void does nothing to them. Nature fills the hollow.",
         "signature": "warded", "second": "mender",
         "reward": ("Sigil of the Hollow", "Void towers deal 10% increased damage in every run.",
                    [("damage", 1, 0.10, ["void"])]),
@@ -180,7 +180,7 @@ CAMPAIGNS = [
              [(-1, 5), (8, 5), (8, 11), (16, 11), (16, 3), (24, 3)], 10, 1.0, None),
             ("void_2", "Fractured Steps", "The ground is broken into floating steps.",
              [(-1, 12), (5, 12), (5, 8), (10, 8), (10, 3), (15, 3), (15, 10), (20, 10), (20, 1), (24, 1)], 12, 1.0,
-             ("bounty_bonus", 0, 1, [], "Soul tithe: +1 gold for every kill."), {"lieutenant": "mother_briar"}),
+             ("bounty_bonus", 0, 1, [], "Soul tithe: +1 gold for every kill."), {"lieutenant": "pale_vesper"}),
             ("void_3", "Mirror Rift", "The road comes in at the top and leaves an arm's length away, the long way round.",
              [(11, -1), (11, 4), (3, 4), (3, 11), (20, 11), (20, 4), (13, 4), (13, -1)], 14, 1.0,
              ("attack_range", 1, 0.10, [], "Thin veil: towers have 10% more range.")),
@@ -445,6 +445,12 @@ HORDE_OF = {h["campaign"]: host for host, h in hordes.HOSTS.items()}
 ALL_HORDE = [r[0] for r in hordes.ROSTER]
 
 
+def horde_element(campaign):
+    """The element of the horde that holds a land (horde.HOSTS), or '' for mixed campaigns."""
+    host = HORDE_OF.get(campaign.get("id", ""))
+    return hordes.HOSTS[host]["element"] if host else ""
+
+
 def horde_kinds(campaign, stage_index):
     """The kinds of the land's own horde met by this stage: two in the first stage, then one more per
     stage. The Convergence and the assault meet all thirty."""
@@ -454,10 +460,11 @@ def horde_kinds(campaign, stage_index):
     return hordes.ids_of(host)[:2 + stage_index]
 
 
-def G(enemy, count, interval, delay=0.0, pattern=STREAM, lane=-1, pack=5, gap=4.0, element=None):
+def G(enemy, count, interval, delay=0.0, pattern=STREAM, lane=-1, pack=5, gap=4.0, element=None, elite=False):
     """One spawn group. Counts are rounded and never below one."""
     return {"enemy": enemy, "count": max(1, int(round(count))), "interval": round(interval, 3),
-            "delay": round(delay, 2), "pattern": pattern, "lane": lane, "pack": pack, "gap": gap, "element": element}
+            "delay": round(delay, 2), "pattern": pattern, "lane": lane, "pack": pack, "gap": gap, "element": element,
+            "elite": elite}
 
 
 def span(g):
@@ -486,6 +493,8 @@ def group(t, g):
         fields.append(f"pattern = {g['pattern']}")
     if g["pattern"] == PACKS:
         fields += [f"pack_size = {g['pack']}", f"pack_gap = {g['gap']}"]
+    if g.get("elite"):
+        fields.append("elite = true")
     return t.sub(GROUP, fields)
 
 
@@ -626,6 +635,22 @@ def plural(name):
     return name + "s"
 
 
+def elite_due(c):
+    """Hulking elites (SpawnGroup.elite) march in every fourth wave from the fifth, from a land's second
+    stage on (only near the end of its first)."""
+    return c["w"] >= 5 and c["w"] % 4 == 1 and (c["stage"] >= 1 or (c["w"] >= 9 and bool(c.get("horde"))))
+
+
+def beat_juggernauts(w, c):
+    """A few Hulking elites of the heaviest kind about: twice the size, five times the health, and only
+    the opposite element really hurts them."""
+    heavy = [k for k in c.get("horde", []) if HORDE_HEALTH.get(k, 0) >= 110]
+    kind = heavy[(c["w"] // 4) % len(heavy)] if heavy else "brute"
+    n = 1 + (1 if c["stage"] >= 2 else 0) + (1 if c["w"] >= 13 else 0)
+    w.beat("Hulking " + plural(ENEMY_NAMES[kind]), [G(kind, n, 4.5, elite=True),
+                                                   G("grunt", 3 * c["p"], 0.6, 1.0, SCATTER)])
+
+
 def beat_swarm(w, c):
     kind = "splitter" if c["w"] % 2 else "mender"
     w.beat("a mixed swarm", [G(kind, 2 + c["w"] // 3, 1.0, pattern=SCATTER), G("grunt", 3 * c["p"], 0.7, 1.0, SCATTER)])
@@ -657,6 +682,8 @@ def compose(c, required, closer=True):
     middle = []
     for k in range(max(len(picked), len(required))):
         middle += picked[k:k + 1] + required[k:k + 1]
+    if elite_due(c):
+        middle.insert(len(middle) // 2, beat_juggernauts)
     for b in middle:
         b(w, c)
     if closer:
@@ -683,8 +710,9 @@ def plan_waves(campaign, stage_index, n, extra, lanes=1):
     if converge:
         cycle = RING
     else:
-        far = opposite(home)
-        cycle = [far, neighbours(far)[0], far, neighbours(far)[1]]
+        # Mostly the land's own horde element, with a neighbour now and then.
+        main = horde_element(campaign)
+        cycle = [main, main, main, neighbours(main)[0], main, main, main, neighbours(main)[1]]
     waves = []
     for w in range(1, n + 1):
         el = cycle[(w - 1 + stage_index) % len(cycle)]
@@ -811,18 +839,18 @@ def write_campaign(order, c):
         write_map(sid, name, roads, 100 + order * 10 + i, biome, wave_set, built=built)
         mods, rules = [], []
         allowed, starting = [], []
+        main = horde_element(c)
         if home:
-            allowed = [home] + neighbours(home)
-            starting = [ENTRY[home]]
-            mods.append(modifier(t, "damage", 1, 0.20, [home]))
-            rules.append(f"Home ground: {NAMES[home]} towers deal 20% more damage.")
-            rules.append("Only %s, %s and %s can be drafted. You start with %s." % (
-                NAMES[home], NAMES[allowed[1]], NAMES[allowed[2]], NAMES[home]))
+            # Every element can be drafted: finding what the horde fears is up to the player. A free
+            # skill point makes up for the home element's old head start.
+            mods.append(modifier(t, "starting_tree_points", 0, 1, []))
+            rules.append(f"The horde here is {NAMES[main]}: find the element it fears. Every element can be drafted, "
+                         "and you start with one more skill point.")
             if extra.get("boss"):
-                rules.append(f"The Warden resists {NAMES[home]}: bring a neighbour.")
+                rules.append(f"The Warden is {NAMES[home]}, and fears {NAMES[opposite(home)]}.")
         if extra.get("lieutenant"):
             rules.append(f"The last wave is led by {LIEUTENANT_NAMES[extra['lieutenant']]}.")
-        else:
+        elif not home:
             rules.append("Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
         if twist:
             stat, kind, value, tags, text = twist
@@ -832,6 +860,8 @@ def write_campaign(order, c):
                   f"description = {string(story)}", f"map = {sn('c_' + sid)}"]
         if extra.get("boss") or extra.get("boss_pair"):
             fields.append("is_guardian = true")
+        if main:
+            fields.append(f"horde_element = {sn(main)}")
         if allowed:
             fields.append(f"allowed_elements = {sn_array(allowed)}")
         if starting:

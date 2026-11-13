@@ -13,6 +13,7 @@ leak_damage = 1
 tags = Array[StringName]([&"fast"])
 description = "Wild. A crackling scrap of a dead stormsinger's last note. The tower that kills it is shocked silent for 2 s."
 element = &"storm"
+affinity = &"attuned"
 power = &"static"
 power_duration = 2.0
 horde = &"sky"

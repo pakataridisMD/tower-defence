@@ -15,6 +15,9 @@ extends Resource
 @export var is_guardian: bool = false
 
 @export_group("Rules")
+## The element of the land's horde: most of its enemies are of it, so they fear the opposite one. Empty
+## where every element comes (the Convergence, the assault).
+@export var horde_element: StringName
 ## Elements whose regions of the skill web can be taken. Empty allows every element. Bridges and
 ## keystones next to a closed region close too.
 @export var allowed_elements: Array[StringName] = []

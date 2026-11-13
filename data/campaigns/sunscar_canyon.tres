@@ -6,10 +6,9 @@
 
 [sub_resource type="Resource" id="r1"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"earth"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r2"]
 script = ExtResource("3_s")
@@ -17,18 +16,16 @@ id = &"earth_1"
 display_name = "Red Gulch"
 description = "Dust devils and red rock. The armoured ones are slow, at least."
 map = &"c_earth_1"
-allowed_elements = Array[StringName]([&"earth", &"void", &"water"])
-starting_nodes = Array[StringName]([&"earth_entry"])
+horde_element = &"earth"
 modifiers = Array[ExtResource("2_s")]([SubResource("r1")])
-rule_text = PackedStringArray("Home ground: Earth towers deal 20% more damage.", "Only Earth, Void and Water can be drafted. You start with Earth.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
+rule_text = PackedStringArray("The horde here is Earth: find the element it fears. Every element can be drafted, and you start with one more skill point.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r3"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"earth"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r4"]
 script = ExtResource("2_s")
@@ -43,18 +40,16 @@ id = &"earth_2"
 display_name = "Canyon Switchbacks"
 description = "The road zigzags down the canyon wall, five long terraces."
 map = &"c_earth_2"
-allowed_elements = Array[StringName]([&"earth", &"void", &"water"])
-starting_nodes = Array[StringName]([&"earth_entry"])
+horde_element = &"earth"
 modifiers = Array[ExtResource("2_s")]([SubResource("r3"), SubResource("r4")])
-rule_text = PackedStringArray("Home ground: Earth towers deal 20% more damage.", "Only Earth, Void and Water can be drafted. You start with Earth.", "The last wave is led by Vholt Stormcrown, the Sky Herald (blinks, silences towers).", "Bedrock: Earth towers deal a further 10% more damage.")
+rule_text = PackedStringArray("The horde here is Earth: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The last wave is led by Gorrath the Quarried, the Stone Herald (armoured, charges when wounded, breaks into boulders).", "Bedrock: Earth towers deal a further 10% more damage.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r6"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"earth"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r7"]
 script = ExtResource("2_s")
@@ -68,30 +63,27 @@ id = &"earth_3"
 display_name = "Mesa Loop"
 description = "A loop around a flat-topped mesa, then a sprint for the exit."
 map = &"c_earth_3"
-allowed_elements = Array[StringName]([&"earth", &"void", &"water"])
-starting_nodes = Array[StringName]([&"earth_entry"])
+horde_element = &"earth"
 modifiers = Array[ExtResource("2_s")]([SubResource("r6"), SubResource("r7")])
-rule_text = PackedStringArray("Home ground: Earth towers deal 20% more damage.", "Only Earth, Void and Water can be drafted. You start with Earth.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.", "Rockfall: 25% fewer lives.")
+rule_text = PackedStringArray("The horde here is Earth: find the element it fears. Every element can be drafted, and you start with one more skill point.", "Rockfall: 25% fewer lives.")
 first_clear_points = 3
 
 [sub_resource type="Resource" id="r9"]
 script = ExtResource("2_s")
-stat = &"damage"
-kind = 1
-value = 0.2
-required_tags = Array[StringName]([&"earth"])
+stat = &"starting_tree_points"
+kind = 0
+value = 1.0
 
 [sub_resource type="Resource" id="r10"]
 script = ExtResource("3_s")
 id = &"earth_4"
 display_name = "Titan's Cradle"
-description = "The Mountain Titan wakes. Every hit under 22 damage bounces off its hide. Big blows, burns and poison find a way."
+description = "The Mountain Titan wakes. Every hit under 22 damage bounces off its hide. Storm, big blows and burns find a way."
 map = &"c_earth_4"
 is_guardian = true
-allowed_elements = Array[StringName]([&"earth", &"void", &"water"])
-starting_nodes = Array[StringName]([&"earth_entry"])
+horde_element = &"earth"
 modifiers = Array[ExtResource("2_s")]([SubResource("r9")])
-rule_text = PackedStringArray("Home ground: Earth towers deal 20% more damage.", "Only Earth, Void and Water can be drafted. You start with Earth.", "The Warden resists Earth: bring a neighbour.", "Every element can be drafted. Every wave mixes elements, and enemies come from several roads.")
+rule_text = PackedStringArray("The horde here is Earth: find the element it fears. Every element can be drafted, and you start with one more skill point.", "The Warden is Earth, and fears Storm.")
 first_clear_points = 6
 
 [sub_resource type="Resource" id="r11"]
@@ -107,8 +99,8 @@ id = &"sunscar_canyon"
 display_name = "Sunscar Canyon"
 order = 4
 element = &"earth"
-tagline = "The Sky against the Stone"
-description = "Storm's horde pours down the canyon walls in armour. Earth's heavy blows and shattering hits crack what lightning cannot."
+tagline = "The Stone turned on its own canyon"
+description = "The canyon's own stone has risen, and its horde pours down the walls in armour. Earth only chips it. Storm cracks the Stone."
 requires_campaigns = Array[StringName]([&"frostmere"])
 stages = Array[ExtResource("3_s")]([SubResource("r2"), SubResource("r5"), SubResource("r8"), SubResource("r10")])
 reward_name = "Sigil of Stone"

@@ -32,6 +32,10 @@ enum Pattern {
 @export var pack_size: int = 5
 ## Seconds from the last enemy of a pack to the first of the next (PACKS only).
 @export var pack_gap: float = 4.0
+## Every enemy of the group comes as a Hulking elite: drawn twice the size, with SimEnemy.ELITE_* times
+## the health, more armour and bounty, slower, and the tank affinity (it shrugs off all but the
+## opposite element).
+@export var elite: bool = false
 
 
 ## Seconds after start_delay at which each enemy of the group appears, in order. SCATTER uses
