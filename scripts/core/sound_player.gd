@@ -324,7 +324,9 @@ func _on_node_added(node: Node) -> void:
 	var button := node as BaseButton
 	if button == null or button.has_meta(&"no_sfx"):
 		return
-	button.pressed.connect(func() -> void: play(&"ui_click"))
+	# A "Back" button steps back a page, and sounds like it.
+	var back := button is Button and (button as Button).text == "Back"
+	button.pressed.connect(func() -> void: play(&"ui_back" if back else &"ui_click"))
 	button.mouse_entered.connect(func() -> void:
 		if not button.disabled:
 			play(&"ui_hover"))

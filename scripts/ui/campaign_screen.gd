@@ -692,6 +692,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	var handled := true
 	match key.keycode:
 		KEY_ESCAPE:
+			SoundPlayer.sfx(&"ui_back")
 			back_to_menu()
 		KEY_ENTER, KEY_KP_ENTER:
 			begin()

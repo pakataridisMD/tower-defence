@@ -46,9 +46,13 @@ func _ready() -> void:
 		player.play(fposmod(resume_at, stream.get_length()) if stream.get_length() > 0.0 else 0.0)
 
 
+## Set while another piece of menu music plays instead (the Credits page plays the trailer score).
+static var held := false
+
+
 ## True while the player wants menu music.
 static func wanted() -> bool:
-	return AudioSettings.menu_music_on()
+	return AudioSettings.menu_music_on() and not held
 
 
 func _process(delta: float) -> void:

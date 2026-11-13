@@ -315,6 +315,12 @@ func open_page(id: StringName) -> void:
 	page = id
 
 
+## Back to the title screen from the keyboard (Esc), with the Back sound the button makes.
+func go_back() -> void:
+	SoundPlayer.sfx(&"ui_back")
+	close_page()
+
+
 ## Back to the title screen.
 func close_page() -> void:
 	if page.is_empty():
@@ -540,6 +546,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if new_game_dialog.visible:
 		match key.keycode:
 			KEY_ESCAPE, KEY_BACKSPACE:
+				SoundPlayer.sfx(&"ui_back")
 				new_game_dialog.hide()
 			KEY_ENTER, KEY_KP_ENTER, KEY_N:
 				# Handled first: a new game leaves this scene.
@@ -553,6 +560,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if quit_dialog.visible:
 		match key.keycode:
 			KEY_ESCAPE:
+				SoundPlayer.sfx(&"ui_back")
 				quit_dialog.hide()
 			KEY_Q, KEY_ENTER, KEY_KP_ENTER:
 				get_tree().quit()
@@ -564,12 +572,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		# Handled first: loading a slot leaves this scene.
 		get_viewport().set_input_as_handled()
 		if not (pages[page] as SavesPage).handle_key(key.keycode) and key.keycode in [KEY_ESCAPE, KEY_BACKSPACE]:
-			close_page()
+			go_back()
 		return
 	if not page.is_empty():
 		match key.keycode:
 			KEY_ESCAPE, KEY_BACKSPACE:
-				close_page()
+				go_back()
 			KEY_ENTER, KEY_KP_ENTER:
 				if page == &"skirmish":
 					play_skirmish()

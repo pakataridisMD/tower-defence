@@ -11,8 +11,14 @@ extends Node
 ## Share of the starting lives at which the "base nearly lost" warning sounds, once per run.
 const LIVES_WARNING_SHARE := 0.25
 ## Most tower attack sounds and hit sounds started per second; a big board would be a wall of noise.
-const ATTACKS_PER_SECOND := 14.0
+const ATTACKS_PER_SECOND := 8.0
 const HITS_PER_SECOND := 12.0
+## The sounds a battle repeats all the time (burning and other status ticks, dying, coins, tower
+## shots and small blasts) sit this far under the rest, so the battle stays a bed under the music and voices and
+## stays quiet even with every volume slider at full. Sliders top out at 0 dB, so this is a ceiling.
+const REPEAT_DB := {
+	&"status": -16.0, &"coin": -14.0, &"death": -9.0, &"attack": -8.0, &"blast": -8.0,
+}
 ## Enemies this armoured clank when shot.
 const ARMOUR_CLANK := 8.0
 ## A boss says something every this many seconds of wave time (random in between).
@@ -21,6 +27,9 @@ const TALK_EVERY := Vector2(13.0, 21.0)
 const FIRST_WORDS := 8.5
 ## Below this share of its health a boss roars (if the simulation has no enrage of its own).
 const WOUNDED_SHARE := 0.35
+## A boss's footsteps play this much louder than their files (+6 dB, twice the level), so its weight is
+## felt as it walks. The step files peak near -7 dB, so this does not clip.
+const BOSS_STEP_DB := 6.0
 ## Bosses that are part of a bigger one and get no reveal or footsteps of their own.
 const MINOR_BOSSES: Array[StringName] = [&"hollow_shade"]
 const STAR_DELAY := 1.3
@@ -73,9 +82,32 @@ func setup(p_sim: RunSim, p_board_offset: Vector2) -> void:
 
 
 func play(sound: StringName, at: Variant = null, volume_db: float = 0.0) -> bool:
+	volume_db += repeat_db(sound)
 	if at is Vector2:
 		at = board.to_global(at) if board != null else (at as Vector2) + board_offset
 	return SoundPlayer.sfx(sound, at, volume_db)
+
+
+## Plays a sound at its full level even if the battle usually repeats it quietly (a skill's blows).
+func _play_full(sound: StringName, at: Variant = null, volume_db: float = 0.0) -> bool:
+	return play(sound, at, volume_db - repeat_db(sound))
+
+
+## How far a sound is pulled down because the battle repeats it all the time (0 for the rest).
+static func repeat_db(sound: StringName) -> float:
+	var name := String(sound)
+	# Enemies being hit (impacts and armour clanks) keep their full level: the player wants them heard.
+	if name.begins_with("status_"):
+		return REPEAT_DB[&"status"]
+	if name == "coin":
+		return REPEAT_DB[&"coin"]
+	if name.begins_with("death_"):
+		return REPEAT_DB[&"death"]
+	if name == "explosion_small" or name == "explosion_medium":
+		return REPEAT_DB[&"blast"]
+	if name.begins_with("tower_") and not name.begins_with("tower_place_") and not name in ["tower_level_up", "tower_ascend", "tower_hybrid", "tower_sell"]:
+		return REPEAT_DB[&"attack"]
+	return 0.0
 
 
 ## Stars after a campaign stage, one chime each, after the victory fanfare has started.
@@ -242,16 +274,16 @@ func _on_skill_struck(cast: SimSkillCast, blow: SimSkillCast.Blow, hit: Array[Si
 	match blow.kind:
 		&"strike":
 			if cast.skill.element == &"fire":
-				play(&"explosion_large" if blow.main else &"explosion_medium", blow.at)
+				_play_full(&"explosion_large" if blow.main else &"explosion_medium", blow.at)
 			elif cast.skill.is_targeted():
-				play(StringName("impact_" + cast.skill.element), blow.at)
+				_play_full(StringName("impact_" + cast.skill.element), blow.at)
 		&"bolt":
-			play(StringName("impact_" + cast.skill.element), blow.at)
+			_play_full(StringName("impact_" + cast.skill.element), blow.at)
 		&"finale":
-			play(&"explosion_large", blow.at)
+			_play_full(&"explosion_large", blow.at)
 		&"sweep":
 			if not hit.is_empty():
-				play(&"impact_water", hit[0].position, -6.0)
+				_play_full(&"impact_water", hit[0].position, -6.0)
 
 
 func _impact_of(tower: SimTower) -> StringName:
@@ -368,7 +400,7 @@ func _tick_bosses(step: float) -> void:
 			state["step"] -= step
 			if state["step"] <= 0.0:
 				state["step"] = clampf(30.0 / speed, 0.45, 1.3)
-				play(StringName("boss_%s_step" % set_name), enemy.position)
+				play(StringName("boss_%s_step" % set_name), enemy.position, BOSS_STEP_DB)
 		state["talk"] -= step
 		if state["talk"] <= 0.0:
 			state["talk"] = randf_range(TALK_EVERY.x, TALK_EVERY.y)
