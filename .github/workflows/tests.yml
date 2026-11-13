@@ -1,5 +1,8 @@
 name: Tests
 
+# Runs on the self-hosted Mac mini (labels self-hosted, macOS, godot), so it uses no GitHub minutes.
+# One job at a time runs there. A pull request from a fork never runs on the Mac: the repository is
+# public, and a fork's code must not run on a home machine.
 on:
   push:
     branches: [main]
@@ -7,34 +10,31 @@ on:
 
 jobs:
   unit-tests:
-    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, macOS, godot]
     timeout-minutes: 15
-    env:
-      GODOT_VERSION: 4.7.2
     steps:
       - uses: actions/checkout@v5
 
-      - name: Download Godot ${{ env.GODOT_VERSION }}
-        run: |
-          curl -sSL --fail -o /tmp/godot.zip \
-            "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
-          unzip -q /tmp/godot.zip -d /tmp/godot
-          mv "/tmp/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64" /tmp/godot/godot
+      - uses: ./.github/actions/godot
+        with:
+          version: 4.7.2
 
       - name: Import the project
-        run: /tmp/godot/godot --headless --import
+        run: |
+          "$GODOT" --headless --import
 
       - name: Run unit tests (GUT)
         run: |
           set -o pipefail
-          /tmp/godot/godot --headless -s addons/gut/gut_cmdln.gd 2>&1 | tee gut.log
+          "$GODOT" --headless -s addons/gut/gut_cmdln.gd 2>&1 | tee gut.log
           # GUT skips a test script that fails to parse and still passes, and a script error in the
           # game only logs a line, so fail the build here.
           if grep -E "Parse Error|Failed to load script|SCRIPT ERROR" gut.log; then exit 1; fi
 
       - name: Smoke test (the bot plays a full run in the real game scenes and saves its progress)
         run: |
-          timeout 600 /tmp/godot/godot --headless --fixed-fps 60 --quit-after 200000 -- --autoplay --quit-at-end --save-path=user://smoke_save.json 2>&1 | tee smoke.log
+          timeout 600 "$GODOT" --headless --fixed-fps 60 --quit-after 200000 -- --autoplay --quit-at-end --save-path=user://smoke_save.json 2>&1 | tee smoke.log
           grep -q "Autoplay run ended" smoke.log
           if grep -E "SCRIPT ERROR|^ERROR" smoke.log; then exit 1; fi
           save_file="$(sed -n 's/^Progress saved to //p' smoke.log)"
@@ -43,34 +43,32 @@ jobs:
           grep -q '"runs_played": 1' "$save_file"
 
       - name: Simulation benchmark (for information, never fails the build)
-        run: /tmp/godot/godot --headless -s tools/benchmark_sim.gd || true
+        run: |
+          "$GODOT" --headless -s tools/benchmark_sim.gd || true
 
   # The scripted bot plays every campaign stage as the player a new player would be by then (meta
   # tree, sigils, heroes from tools/campaign/meta_profiles.json) and must win each. A full pass takes
-  # over ten minutes on the big maps, so it runs here four stages at a time, beside the unit tests.
+  # over ten minutes on the big maps, so it runs four stages at a time.
   campaign-balance:
-    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: [self-hosted, macOS, godot]
     timeout-minutes: 30
-    env:
-      GODOT_VERSION: 4.7.2
     steps:
       - uses: actions/checkout@v5
 
-      - name: Download Godot ${{ env.GODOT_VERSION }}
-        run: |
-          curl -sSL --fail -o /tmp/godot.zip \
-            "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
-          unzip -q /tmp/godot.zip -d /tmp/godot
-          mv "/tmp/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64" /tmp/godot/godot
+      - uses: ./.github/actions/godot
+        with:
+          version: 4.7.2
 
       - name: Import the project
-        run: /tmp/godot/godot --headless --import
+        run: |
+          "$GODOT" --headless --import
 
       - name: The bot wins every stage
         run: |
-          /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --list 2>/dev/null | sed -n 's/^STAGE //p' > stages.txt
+          "$GODOT" --headless -s tools/campaign_balance.gd -- --list 2>/dev/null | sed -n 's/^STAGE //p' > stages.txt
           test "$(wc -l < stages.txt)" -gt 20
-          xargs -P4 -I{} sh -c '/tmp/godot/godot --headless -s tools/campaign_balance.gd -- --check --stage={} 2>&1 | grep -E "^[a-z]+_[0-9]|ERROR"' < stages.txt > results.txt || true
+          xargs -P4 -I{} sh -c '"$GODOT" --headless -s tools/campaign_balance.gd -- --check --stage={} 2>&1 | grep -E "^[a-z]+_[0-9]|ERROR"' < stages.txt > results.txt || true
           sort results.txt
           test "$(grep -c ' WON ' results.txt)" -eq "$(wc -l < stages.txt)"
           if grep -E "LOST|ERROR" results.txt; then exit 1; fi

@@ -1,0 +1,55 @@
+name: Set up Godot
+description: >-
+  Finds (or downloads) the Godot editor of the given version, puts its path in $GODOT, and on a
+  self-hosted Mac points HOME at this job's temp folder so the tests never touch the saves and
+  settings of someone playing the game on that machine.
+inputs:
+  version:
+    description: Godot version, such as 4.7.2
+    required: true
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        GODOT_VERSION: ${{ inputs.version }}
+      run: |
+        set -euo pipefail
+        godot=""
+        case "$RUNNER_OS" in
+          macOS)
+            # Godot on macOS keeps user:// under $HOME/Library/Application Support, where the real
+            # game saves live on the Mac mini. Give each job its own throwaway home.
+            fake_home="$RUNNER_TEMP/godot-home"
+            rm -rf "$fake_home" && mkdir -p "$fake_home"
+            echo "HOME=$fake_home" >> "$GITHUB_ENV"
+            cached="$RUNNER_TOOL_CACHE/godot-$GODOT_VERSION/Godot.app/Contents/MacOS/Godot"
+            for candidate in "${GODOT_BIN:-}" /Applications/Godot.app/Contents/MacOS/Godot "$cached"; do
+              if [ -n "$candidate" ] && [ -x "$candidate" ] \
+                  && "$candidate" --headless --version 2>/dev/null | grep -q "^${GODOT_VERSION}\.stable"; then
+                godot="$candidate"
+                break
+              fi
+            done
+            if [ -z "$godot" ]; then
+              echo "No Godot $GODOT_VERSION installed here, downloading it to $RUNNER_TOOL_CACHE"
+              rm -rf "$RUNNER_TOOL_CACHE/godot-$GODOT_VERSION" && mkdir -p "$RUNNER_TOOL_CACHE/godot-$GODOT_VERSION"
+              curl -sSL --fail -o "$RUNNER_TEMP/godot.zip" \
+                "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_macos.universal.zip"
+              unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TOOL_CACHE/godot-$GODOT_VERSION"
+              godot="$cached"
+            fi
+            ;;
+          Linux)
+            curl -sSL --fail -o "$RUNNER_TEMP/godot.zip" \
+              "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+            unzip -q -o "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+            godot="$RUNNER_TEMP/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+            ;;
+          *)
+            echo "No Godot setup for $RUNNER_OS" >&2
+            exit 1
+            ;;
+        esac
+        echo "Using $godot ($("$godot" --headless --version))"
+        echo "GODOT=$godot" >> "$GITHUB_ENV"

@@ -3,7 +3,7 @@ name: Balance
 # Plays the campaign and the skirmish with the scripted player and prints how it did. It takes a
 # while, so it only runs when asked: by hand, or by a commit on a branch whose message contains
 # [compare] (how several kinds of bot do, a minute or two), [tune] (new numbers for
-# tools/campaign/tuning.py, about half an hour over four runners) or [pacing] (how much of the meta tree a player
+# tools/campaign/tuning.py, the longest run) or [pacing] (how much of the meta tree a player
 # has after each campaign stage, see tools/meta_pacing.gd).
 on:
   workflow_dispatch:
@@ -16,48 +16,41 @@ jobs:
       github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
       || contains(github.event.head_commit.message, '[compare]')
       || contains(github.event.head_commit.message, '[pacing]')
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
-    # The campaign tune is split over four runners (a quarter of the stages each); the other steps
-    # run on the first one only.
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [0, 1, 2, 3]
-    env:
-      GODOT_VERSION: 4.7.2
+    # Runs on the self-hosted Mac mini (no GitHub minutes), one job at a time. Six stages run at once
+    # there, which leaves room for the Blender renders the Mac also does.
+    runs-on: [self-hosted, macOS, godot]
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v5
 
-      - name: Download Godot ${{ env.GODOT_VERSION }}
-        run: |
-          curl -sSL --fail -o /tmp/godot.zip \
-            "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
-          unzip -q /tmp/godot.zip -d /tmp/godot
-          mv "/tmp/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64" /tmp/godot/godot
+      - uses: ./.github/actions/godot
+        with:
+          version: 4.7.2
 
       - name: Import the project
-        run: /tmp/godot/godot --headless --import
+        run: |
+          "$GODOT" --headless --import
 
       - name: How each kind of bot does
-        if: matrix.shard == 0 && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[compare]'))
-        run: /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --compare 2>&1 | grep -E "COMPARE|ERROR"
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[compare]')
+        run: |
+          "$GODOT" --headless -s tools/campaign_balance.gd -- --compare 2>&1 | grep -E "COMPARE|ERROR"
 
       - name: Tune the skirmish waves
-        if: matrix.shard == 0 && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]'))
-        run: /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --skirmish 2>&1 | grep -E "skirmish|SKIRMISH|ERROR"
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
+        run: |
+          "$GODOT" --headless -s tools/campaign_balance.gd -- --skirmish 2>&1 | grep -E "skirmish|SKIRMISH|ERROR"
 
       - name: Tune the campaign
         if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[tune]')
-        # One stage per process, four at a time, on each of four runners: the long waves on the big
-        # maps make a single pass take well over an hour. The shards rotate, so the slow last stage of
-        # each campaign does not all land on one runner.
+        # One stage per process, six at a time: the long waves on the big maps make a single pass take
+        # well over an hour.
         run: |
-          /tmp/godot/godot --headless -s tools/campaign_balance.gd -- --list 2>/dev/null | sed -n 's/^STAGE //p' \
-            | awk -v shard=${{ matrix.shard }} '(NR - 1 + int((NR - 1) / 4)) % 4 == shard' > stages.txt
+          "$GODOT" --headless -s tools/campaign_balance.gd -- --list 2>/dev/null | sed -n 's/^STAGE //p' > stages.txt
           cat stages.txt
-          xargs -P4 -I{} sh -c '/tmp/godot/godot --headless -s tools/campaign_balance.gd -- --tune --stage={} 2>&1 | grep -E "TUNING|ERROR"' < stages.txt
+          xargs -P6 -I{} sh -c '"$GODOT" --headless -s tools/campaign_balance.gd -- --tune --stage={} 2>&1 | grep -E "TUNING|ERROR"' < stages.txt
 
       - name: Meta tree pacing across the campaign
-        if: matrix.shard == 0 && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[pacing]'))
-        run: /tmp/godot/godot --headless -s tools/meta_pacing.gd 2>&1 | grep -E "PACING|ERROR"
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[pacing]')
+        run: |
+          "$GODOT" --headless -s tools/meta_pacing.gd 2>&1 | grep -E "PACING|ERROR"
