@@ -319,20 +319,40 @@ def point_light(f, name, loc, rgb, energy, bone, size=0.1):
     return lo
 
 
-def flame_crown(f, n=13, r=0.1, h=0.2, rgb=(1.0, 0.45, 0.08), smoke=False):
-    """A crown of slow flames standing on the head (Ignar). smoke: black smoke instead (the Cinder Tyrant)."""
-    top = f.J["head-2"].z - 0.01; cy = f.J["head"].y + 0.005
-    M = flame_mat("crown_flame", rgb, 1.6) if not smoke else C.mat("crown_smoke", (0.01, 0.01, 0.01), 1.0)
-    for i in range(n):
-        a = 2 * math.pi * i / n
-        hh = h * (0.7 + 0.6 * ((i * 37) % 7) / 7)
-        bpy.ops.mesh.primitive_cone_add(vertices=12, radius1=0.016, radius2=0.001, depth=hh,
-                                        location=(math.cos(a) * r, cy + math.sin(a) * r * 0.9, top + hh / 2))
-        o = bpy.context.object; o.name = "crown_flame"; o.rotation_euler = (math.sin(a) * -0.25, math.cos(a) * 0.25, 0)
-        o.modifiers.new("sub", "SUBSURF").levels = 2
-        o.data.materials.append(M); bpy.ops.object.shade_smooth(); H.on_bone(o, f.rig, "head"); f.add(o)
+def flame_crown(f, n=11, r=0.085, h=0.17, rgb=(1.0, 0.45, 0.08), smoke=False):
+    """A crown of slow flames standing on the head (Ignar): a glowing cracked circlet with wide, overlapping tongues
+    of fire that lean in, sway and fade to clear at the tips. smoke: black smoke instead (the Cinder Tyrant)."""
+    top = f.J["head-2"].z - 0.03; cy = f.J["head"].y + 0.005
     if not smoke:
-        point_light(f, "crown_fire", (0, cy, top + 0.12), rgb, 6, "head", 0.08)
+        M_in = flame_mat("crown_flame_core", (1.0, 0.75, 0.3), 9.0)    # hot yellow inner tongues
+        M_out = flame_mat("crown_flame", rgb, 5.0)                       # deep orange-red outer ones
+        for m in (M_in, M_out):
+            for nd in m.node_tree.nodes:
+                if nd.type == "TEX_NOISE":
+                    nd.inputs["Scale"].default_value = 14.0
+    else:
+        M_in = M_out = C.mat("crown_smoke", (0.01, 0.01, 0.01), 1.0)
+    bpy.ops.mesh.primitive_torus_add(major_radius=r * 1.02, minor_radius=0.012, location=(0, cy, top + 0.005))
+    band = bpy.context.object; band.name = "crown_band"; band.scale.y = 0.92
+    band.data.materials.append(basalt("crown_basalt", (0, cy, top), rgb if not smoke else (0.85, 0.85, 0.9), crack_w=0.01, glow=6.0, core_glow=0.0, grey=smoke))
+    H.on_bone(band, f.rig, "head"); f.add(band)
+    rnd = random.Random(11)
+    for layer, (M, k, rr) in enumerate(((M_out, n, r), (M_in, n - 3, r * 0.8))):
+        for i in range(k):
+            a = 2 * math.pi * (i + 0.5 * layer) / k + rnd.uniform(-0.15, 0.15)
+            hh = h * (0.55 + 0.6 * rnd.random()) * (0.75 if layer else 1.0)
+            bpy.ops.mesh.primitive_cone_add(vertices=16, radius1=0.032, radius2=0.002, depth=hh,
+                                            location=(math.cos(a) * rr, cy + math.sin(a) * rr * 0.9, top + hh / 2))
+            o = bpy.context.object; o.name = "crown_flame"; o.scale.y = 0.55
+            o.rotation_euler = (math.sin(a) * 0.18, -math.cos(a) * 0.18, a + math.pi / 2)   # lean in toward the middle
+            tw = o.modifiers.new("lick", "SIMPLE_DEFORM"); tw.deform_method = "TWIST"; tw.angle = rnd.uniform(-1.2, 1.2)
+            o.modifiers.new("sub", "SUBSURF").levels = 2
+            o.data.materials.append(M); bpy.ops.object.shade_smooth(); H.on_bone(o, f.rig, "head"); f.add(o)
+            for t in range(1, C.sc.frame_end + 24, 6):   # a slow lick: each tongue sways and stretches on its own beat
+                ph = 2 * math.pi * (t / 24.0) * (0.6 + 0.5 * rnd.random()) + i
+                o.scale.z = 1.0 + 0.18 * math.sin(ph); o.keyframe_insert("scale", index=2, frame=t)
+    if not smoke:
+        point_light(f, "crown_fire", (0, cy, top + 0.1), rgb, 8, "head", 0.08)
 
 
 def branch_crown(f, n=44, seed=3, blossom=(0.95, 0.93, 0.9), grey=False):
@@ -500,6 +520,29 @@ def thalassa(rig, body, ex, J, corrupt=False):
     return [body] + f.parts
 
 
+def face_rocks(f, mat, seed=4):
+    """Turn a human face into a mountain's: a heavy overhanging brow ledge, slab cheekbones, a boulder jaw and a
+    cracked crown of stones on the skull, all on the head bone. The geode eyes sit deep under the brow."""
+    R = random.Random(seed)
+    hy = f.J["head"].y; e = f.eye; m = f.mouth; top = f.J["head-2"].z
+    pieces = [((0.0, e.y - 0.025, e.z + 0.032), (0.1, 0.05, 0.03), 0.0),               # brow ledge over the eyes
+              ((0.0, e.y + 0.0, e.z + 0.075), (0.085, 0.05, 0.04), 0.0),                # forehead slab
+              ((0.06, e.y - 0.005, e.z - 0.058), (0.04, 0.045, 0.04), 0.3),           # cheek slabs
+              ((-0.06, e.y - 0.005, e.z - 0.058), (0.04, 0.045, 0.04), -0.3),
+              ((0.0, m.y - 0.005, m.z - 0.03), (0.085, 0.06, 0.055), 0.0),              # boulder jaw over mouth and chin
+              ((0.0, e.y - 0.012, e.z - 0.01), (0.02, 0.03, 0.04), 0.0)]                # nose ridge
+    for i in range(7):                                                                  # stones over the skull
+        a = 2 * math.pi * i / 7
+        pieces.append(((math.cos(a) * 0.06, hy + math.sin(a) * 0.06, top - 0.03), (0.045, 0.045, 0.035), a))
+    for (x, y, z), sc, rot in pieces:
+        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=1.0, location=(x, y, z))
+        o = bpy.context.object; o.name = "face_rock"; o.scale = sc; o.rotation_euler = (R.uniform(-0.2, 0.2), R.uniform(-0.2, 0.2), rot)
+        for v in o.data.vertices:   # chip the ball into a rough, faceted stone
+            v.co *= 0.82 + 0.3 * R.random()
+        o.data.materials.append(mat); H.on_bone(o, f.rig, "head"); f.add(o)
+        lumpy(o, 0.025, 0.012, "VORONOI", "chips")   # faceted and chipped: broken stone, not river pebbles
+
+
 def orrok(rig, body, ex, J, corrupt=False):
     """Orrok the Mountain. An enormous slow stone giant, moss and small pines on his shoulders, eyes like two amber
     geodes. (corrupt: the Mountain Titan, grey lichen over his eyes, his trees dead.)"""
@@ -509,6 +552,7 @@ def orrok(rig, body, ex, J, corrupt=False):
     lumpy(body, 0.02, 0.012, name="grain")
     GEO = C.mat("geode", (1.0, 0.55, 0.1), 0.15, emit=(1.0, 0.5, 0.08), strength=8 if not corrupt else 0.5)
     glow_eyes(f, (1.0, 0.55, 0.1), 0, 0.6 if not corrupt else 0.0, 1.05, mat=GEO)
+    face_rocks(f, mountain_stone("mountain_face", (0.21, 0.2, 0.18), moss=0.5, lichen=corrupt))
     sh = f.sh; y = J["spine-1"].y
     sites = []
     for sd in (1, -1):

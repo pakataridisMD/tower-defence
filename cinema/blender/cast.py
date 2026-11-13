@@ -157,16 +157,22 @@ def hair(f, length=0.07, count=20000, comb_front=(0, 1, 0.05), comb_back=(0, 1, 
                       lambda p: comb_front if p.y < hc.y - 0.025 else comb_back, jitter=jitter, **kw))
 
 
-def beard(f, length=0.12, count=14000, name="beard", moustache=True, push=0.12, **colour):
+def beard(f, length=0.12, count=14000, name="beard", moustache=True, push=0.12, radius=0.0016, jitter=0.1, wave=0.0,
+          comb=(0, -0.08, -1), full=False, **colour):
+    """A full beard from the chin and jaw. Thinner strands, more jitter and a little `wave` keep a dark beard from
+    reading as one solid block (Brannoc)."""
     mz = f.mouth.z; ax = Fig.ax
-    chin = lambda c: (c.y < f.J["head"].y - 0.03 and f.jaw.z - 0.075 < c.z < mz - 0.012 and ax(c) < 0.068)
-    f.add(H.comb_hair(f.rig, H.scalp_points(f.body, chin, count, seed=8), f.hc, name, length, (0, -0.08, -1),
-                      segs=8 if length > 0.1 else 5, lift=0.0, jitter=0.1, radius=0.0016, push=push, wrap_above=99.0, **colour))
+    # chin and jaw, plus the cheeks up to the mouth's corners at the sides: a full beard, not a goatee
+    chin = lambda c: (c.y < f.J["head"].y - 0.03 and f.jaw.z - 0.075 < c.z < (mz - 0.012 if ax(c) < 0.035 else mz + 0.025)
+                      and ax(c) < (0.068 if not full else 0.085))
+    f.add(H.comb_hair(f.rig, H.scalp_points(f.body, chin, count, seed=8), f.hc, name, length, comb,
+                      segs=10 if length > 0.1 else 5, lift=0.0, jitter=jitter, radius=radius, push=push, wrap_above=99.0,
+                      wave=wave, **colour))
     if moustache:
         lip = lambda c: (c.y < f.J["head"].y - 0.06 and mz + 0.006 < c.z < mz + 0.022 and ax(c) < 0.03)
-        f.add(H.comb_hair(f.rig, H.scalp_points(f.body, lip, 2500, seed=10), f.hc, name + "_moustache", min(0.06, length),
-                          lambda p: (0.7 * p.x / max(abs(p.x), 1e-3), -0.35, -1.4), segs=5, lift=0.0, jitter=0.1,
-                          radius=0.0014, push=0.2, wrap_above=99.0, **colour))
+        f.add(H.comb_hair(f.rig, H.scalp_points(f.body, lip, 2500, seed=10), f.hc, name + "_moustache", min(0.06 if not full else 0.045, length),
+                          lambda p: (0.7 * p.x / max(abs(p.x), 1e-3), -0.35 if not full else -0.15, -1.4), segs=5, lift=0.0,
+                          jitter=0.1, radius=0.0014 if not full else radius, push=0.2 if not full else 0.08, wrap_above=99.0, **colour))
 
 
 def stubble(f, length=0.004, count=9000, radius=0.0007, **colour):
@@ -432,7 +438,8 @@ def brannoc(rig, body, ex, J):
     f.add(H.wear(body, "runes", lambda c: c.x < -(f.sh.x + 0.04) and ax(c) < f.wr.x - 0.03 and c.z > f.neck - 0.4,
                  rune_overlay("ember_runes", (1.0, 0.4, 0.08), 26, 8, 0.05), 0.002, 0.0))
     boots(f, leather("brannoc_boots", (0.06, 0.04, 0.03)))
-    beard(f, 0.24, 18000, melanin=0.95, redness=0.1)
+    # black-brown, thinner strands with some wave, lying on the chest: highlights read in low light, not a black block
+    beard(f, 0.24, 11000, push=0.04, radius=0.0011, jitter=0.2, wave=0.06, comb=(0, 0.12, -1), full=True, melanin=0.88, redness=0.3)
     beard_rings(f, BRASS, 6, 0.22)
     brows(f, 500, 0.016, melanin=0.95, redness=0.1)
     forge_hammer(f)

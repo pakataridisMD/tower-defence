@@ -18,15 +18,20 @@ def herald_eyes(f):
 
 # ------------------------------------------------------------------ materials
 def black_water(name="black_sea"):
-    """Black seawater: clear dark surface ripples, a deep absorbing volume with a little teal scatter."""
+    """Black seawater: a thin rippled surface (no refraction, so a face inside stays clear and lights behind don't
+    smear into white streaks) over a deep absorbing volume with a little teal scatter."""
     m, nt, out = W._blank(name)
-    b = W._n(nt, "ShaderNodeBsdfPrincipled", Roughness=0.04, IOR=1.33)
-    b.inputs["Base Color"].default_value = (0.5, 0.65, 0.65, 1); b.inputs["Transmission Weight"].default_value = 1.0
     tc = W._n(nt, "ShaderNodeTexCoord")
     no = W._n(nt, "ShaderNodeTexNoise", _noise_dimensions="4D", Scale=6.0, Detail=6.0)
     nt.links.new(tc.outputs["Object"], no.inputs["Vector"]); W._animate_w(no, 1 / 30)
-    bu = W._n(nt, "ShaderNodeBump", Strength=0.3); nt.links.new(no.outputs["Fac"], bu.inputs["Height"]); nt.links.new(bu.outputs["Normal"], b.inputs["Normal"])
-    nt.links.new(b.outputs[0], out.inputs["Surface"])
+    bu = W._n(nt, "ShaderNodeBump", Strength=0.3); nt.links.new(no.outputs["Fac"], bu.inputs["Height"])
+    gl = W._n(nt, "ShaderNodeBsdfGlossy", Roughness=0.25); gl.inputs["Color"].default_value = (0.22, 0.3, 0.3, 1)
+    nt.links.new(bu.outputs["Normal"], gl.inputs["Normal"])
+    tr = W._n(nt, "ShaderNodeBsdfTransparent"); tr.inputs["Color"].default_value = (0.75, 0.9, 0.9, 1)
+    fr = W._n(nt, "ShaderNodeFresnel", IOR=1.33); nt.links.new(bu.outputs["Normal"], fr.inputs["Normal"])
+    mx = W._n(nt, "ShaderNodeMixShader"); nt.links.new(fr.outputs[0], mx.inputs[0])
+    nt.links.new(tr.outputs[0], mx.inputs[1]); nt.links.new(gl.outputs[0], mx.inputs[2])
+    nt.links.new(mx.outputs[0], out.inputs["Surface"])
     vol = W._n(nt, "ShaderNodeVolumePrincipled", Density=0.5)
     vol.inputs["Color"].default_value = (0.05, 0.25, 0.25, 1); vol.inputs["Absorption Color"].default_value = (0.02, 0.08, 0.08, 1)
     nt.links.new(vol.outputs[0], out.inputs["Volume"])
@@ -75,7 +80,7 @@ def water_column(f, radius=0.62, height=3.6, n_fish=16, n_lanterns=5, seed=6):
     for fc in piv.animation_data.action.fcurves if hasattr(piv.animation_data.action, "fcurves") else []:
         for k in fc.keyframe_points:
             k.interpolation = "LINEAR"
-    FISH = C.mat("drowned_fish", (0.35, 0.37, 0.36), 0.4, metal=0.3)
+    FISH = C.mat("drowned_fish", (0.12, 0.14, 0.14), 0.55, metal=0.1)
     for i in range(n_fish):
         a = R.uniform(0, 2 * math.pi); r = R.uniform(0.3, radius - 0.1)
         bpy.ops.mesh.primitive_uv_sphere_add(radius=0.04, location=(math.cos(a) * r, math.sin(a) * r, R.uniform(0.2, height - 0.2)))
@@ -183,7 +188,8 @@ def ourra(rig, body, ex, J):
     f.add(H.wear(body, "robe_top", lambda c: f.torso(f.pel - 0.1, f.neck - 0.02, 0.025)(c) or f.sleeves(0.05)(c), TEAL, 0.02, 0.01, smooth=12))
     f.add(H.skirt("robe_skirt", J, f.s4 + 0.02, 0.02, 0.17, 0.42, TEAL, rig, folds=0.05))
     f.hide_legs()
-    K.hair(f, 0.5, 14000, comb_front=(0, 1, -0.3), comb_back=(0, 0.3, -1), hang_below=f.eye.z - 0.02, jitter=0.4, colour=(0.3, 0.32, 0.31))
+    K.hair(f, 0.5, 14000, comb_front=(0, 1, -0.3), comb_back=(0, 0.3, -1), hang_below=f.eye.z - 0.02, jitter=0.25, push=0.06, wave=0.05,
+           colour=(0.3, 0.32, 0.31))   # wet hair hangs close, not sprayed out
     water_column(f)
     H.grey_dust(body, 300)
     return [body] + f.parts

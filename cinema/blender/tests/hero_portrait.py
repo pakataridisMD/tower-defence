@@ -14,7 +14,10 @@ C.light("AREA", (-3.5, -2.5, 2.2), (70, 0, -55), 120, (0.4, 0.5, 0.8), 3, "fill"
 C.light("AREA", (2.5, -2.0, 2.0), (70, 0, 50), 220, (1.0, 0.78, 0.6), 1.0, "warm_key")
 rig = hero.build_human(name, (0, 0, 0), -0.35, "Idle")
 k = hero.HUMANS[name][0].get("height", 2.1) * hero.SCALE.get(name, 1.0) / 2.1   # frame taller heroes the same way
-if shot == "close":
+if shot == "front":   # straight on at face height, tight: beards, faces, crowns
+    cam = C.camera(85, 2.8, 2.2 * k)
+    C.key_cam(cam, [(0, (0.35 * k, -2.2 * k, 1.95 * k), (90, 0, 9))])
+elif shot == "close":
     cam = C.camera(70, 2.8, 2.6 * k)
     C.key_cam(cam, [(0, (0.9 * k, -2.5 * k, 1.85 * k), (90, 0, 20))])
 else:
