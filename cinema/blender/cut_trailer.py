@@ -47,13 +47,16 @@ def main():
         parts.append(p)
     height = int(subprocess.check_output(["ffprobe", "-v", "error", "-select_streams", "v", "-show_entries", "stream=height",
                                           "-of", "csv=p=0", parts[0]]))
-    font = os.path.join(REPO, "assets", "fonts", "PirataOne-Regular.ttf")
-    card = os.path.join(tmp, "card.mp4")   # the title card: black, the title fades in, then the credit line
-    run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", "color=c=black:s=%dx%d:r=24:d=%f" % (width, height, TITLE_SECONDS), "-vf",
-         "drawtext=fontfile=%s:text='HOLD THE ROAD':fontsize=%d:fontcolor=0xE8D9B0:x=(w-tw)/2:y=(h-th)/2-%d:alpha='if(lt(t,6),0,min(1,(t-6)/1.5))',"
-         "drawtext=fontfile=%s:text='Developed by Pasiv Production':fontsize=%d:fontcolor=0x9A9080:x=(w-tw)/2:y=(h/2)+%d:alpha='if(lt(t,9),0,min(1,(t-9)/1.5))'"
-         % (font, height // 6, height // 14, font, height // 22, height // 10),
-         "-c:v", "libx264", "-crf", "18", "-pix_fmt", "yuv420p", card])
+    # the title card: black, the title fades in at 6 s, then the credit line at 9 s. The text layers are PNGs from
+    # title/make_title_pngs.py, so this works with an ffmpeg built without drawtext (the Mac's Homebrew one).
+    title_dir = os.path.join(HERE, "title")
+    card = os.path.join(tmp, "card.mp4")
+    run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", "color=c=black:s=%dx%d:r=24:d=%f" % (width, height, TITLE_SECONDS),
+         "-loop", "1", "-framerate", "24", "-i", os.path.join(title_dir, "title.png"),
+         "-loop", "1", "-framerate", "24", "-i", os.path.join(title_dir, "credit.png"), "-filter_complex",
+         "[1:v]scale=%d:%d,format=rgba,fade=t=in:st=6:d=1.5:alpha=1[t];[2:v]scale=%d:%d,format=rgba,fade=t=in:st=9:d=1.5:alpha=1[c];"
+         "[0:v][t]overlay=shortest=1[a];[a][c]overlay=shortest=1,format=yuv420p" % (width, height, width, height),
+         "-t", "%f" % TITLE_SECONDS, "-c:v", "libx264", "-crf", "18", "-pix_fmt", "yuv420p", card])
     parts.append(card)
     lst = os.path.join(tmp, "list.txt"); open(lst, "w").write("".join("file '%s'\n" % p for p in parts))
     video = os.path.join(tmp, "video.mp4")
