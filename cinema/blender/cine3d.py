@@ -412,6 +412,21 @@ def render(default_res=67, default_samples=32):
     r.resolution_x, r.resolution_y, r.resolution_percentage = 1920, 1080, int(opt("--res", str(default_res)))
     r.use_motion_blur = "--no-mblur" not in argv; r.motion_blur_shutter = 0.5   # --no-mblur: speed test / fast previews
     sc.view_settings.view_transform = "AgX"; sc.view_settings.look = "AgX - Medium High Contrast"
+    if "--pixel" in argv:   # the game's pixel-art look: tiny frame, hard pixels, dark outlines, brighter punchier colour
+        px = int(opt("--pixel", "384"))
+        r.resolution_percentage = max(1, round(100 * px / 1920))
+        sc.cycles.filter_width = 0.01; r.use_motion_blur = False
+        sc.view_settings.look = "AgX - Punchy"; sc.view_settings.exposure = float(opt("--px-exposure", "0.9"))
+        if "--px-lines" in argv:   # Freestyle outlines: slow (about a minute a frame on the cloud box)
+            r.use_freestyle = True; r.line_thickness_mode = "ABSOLUTE"; r.line_thickness = 1.0
+            vl = bpy.context.view_layer; vl.use_freestyle = True
+            fs = vl.freestyle_settings
+            ls = fs.linesets[0] if fs.linesets else fs.linesets.new("outline")
+            ls.select_by_visibility = True; ls.select_by_edge_types = True
+            ls.select_silhouette = True; ls.select_border = True; ls.select_crease = False
+            if ls.linestyle is None:
+                ls.linestyle = bpy.data.linestyles.new("pixel_outline")
+            ls.linestyle.color = (0.06, 0.035, 0.03); ls.linestyle.thickness = 1.0
     r.image_settings.file_format = "PNG"
     os.makedirs(OUT, exist_ok=True)
     for f in range(f0, f1 + 1, int(opt("--step", "1"))):   # --step N: every Nth frame (animatic previews)
