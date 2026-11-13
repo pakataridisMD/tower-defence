@@ -1,7 +1,9 @@
 """Render whole story films on the Mac, shot by shot, then cut each film with its voice lines.
 
     python3 render_story.py --blender /Applications/Blender.app/Contents/MacOS/Blender --renders DIR --root VOICE_ROOT \
-        [--films ember_intro storm_intro ...] [--samples 16] [--res 67]
+        [--films ember_intro storm_intro ...] [--samples 16] [--res 67] [--sprites]
+
+--sprites: the chosen look (the game's pixel characters as cards in the 3D sets) and every film; use a new --renders folder.
 
 Runs one Blender job at a time (Cycles GPU), so it never doubles up on the Mac's memory. Every shot renders into
 <renders>/<film>_<n>/ and is resumable: run the same command again after a stop and finished frames are skipped.
@@ -17,6 +19,11 @@ REUSE = json.load(open(os.path.join(HERE, "story", "reuse.json")))
 READY = ["ember_intro", "storm_intro", "nature_intro", "void_intro", "earth_intro",
          "storm_herald", "nature_herald", "void_herald", "earth_herald",
          "storm_warden", "nature_warden", "void_warden", "water_warden"]
+# --sprites (the chosen look, Nov 13): every film, the lands first in play order, then the main story
+LANDS = [l + "_" + p for l in ("ember", "storm", "nature", "water", "earth", "void") for p in ("intro", "herald", "warden")]
+MAIN = ["prologue", "regents_counsel", "night_of_falling_stars", "long_night", "lumen_gate", "convergence_intro", "crossroads",
+        "capital_prelude", "dawn", "heart_falls", "assault_intro", "the_turning", "the_high_king", "the_truth", "the_hush",
+        "solenne_falls", "epilogue"]
 
 
 def arg(name, default=None):
@@ -42,7 +49,8 @@ def log(renders, text):
 
 def main():
     blender = arg("--blender", "blender"); renders = os.path.abspath(arg("--renders")); root = arg("--root")
-    films = args_list("--films") or READY
+    sprite_look = "--sprites" in sys.argv
+    films = args_list("--films") or (LANDS + MAIN if sprite_look else READY)
     samples = arg("--samples", "16"); res = arg("--res", "67")
     os.makedirs(os.path.join(renders, "films"), exist_ok=True)
     for film in films:
@@ -56,7 +64,7 @@ def main():
                 continue
             log(renders, "start %s %d" % (film, n)); t0 = time.time()
             r = subprocess.run([blender, "-b", "-P", os.path.join(HERE, "film.py"), "--", out, "--film", film, "--shot", str(n),
-                                "--res", res, "--samples", samples, "--gpu"],
+                                "--res", res, "--samples", samples, "--gpu"] + (["--sprites"] if sprite_look else []),
                                stdout=open(out + ".log", "w"), stderr=subprocess.STDOUT)
             frames = len([f for f in os.listdir(out) if f.endswith(".png")]) if os.path.isdir(out) else 0
             if r.returncode == 0 and frames:

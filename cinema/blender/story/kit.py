@@ -146,9 +146,13 @@ def hand_glow(rigs, who, rgb=(0.4, 1.0, 0.45), energy=40, side="r", size=0.035):
     rig = rigs[who]
     G = hero.glow_mat("seed_glow", rgb, 20)
     bpy.ops.mesh.primitive_uv_sphere_add(radius=size); s = bpy.context.object; s.data.materials.append(G)
+    L = C.light("POINT", (0, 0, 0), (0, 0, 0), energy, rgb, 0.05, "seed_light")
+    if rig.type != "ARMATURE":   # a sprite card: hold it out in front at hand height
+        for o in (s, L):
+            o.parent = rig; o.location = (0.3, -0.25, 1.0)
+        return
     bone = "handslot." + side if ("handslot." + side) in rig.pose.bones else "hand." + side
-    C.attach(s, rig, bone)
-    L = C.light("POINT", (0, 0, 0), (0, 0, 0), energy, rgb, 0.05, "seed_light"); C.attach(L, rig, bone)
+    C.attach(s, rig, bone); C.attach(L, rig, bone)
 
 
 def rise(rigs, who, depth=4.0, t0=0.5, t1=6.0):

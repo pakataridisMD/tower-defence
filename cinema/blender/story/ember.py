@@ -28,7 +28,10 @@ def flare(S, rigs, who="brannoc", at=1.0, energy=600):
     """A hand-held prop flares orange at `at` seconds (Brannoc's hammer head)."""
     rig = rigs[who]
     L = C.light("POINT", (0, 0, 0), (0, 0, 0), 0, (1.0, 0.45, 0.12), 0.2, "flare")
-    g = bpy.data.objects[rig["grip.r"]]; L.parent = g; L.location = (0, 0, 0.6)
+    if "grip.r" in rig:
+        g = bpy.data.objects[rig["grip.r"]]; L.parent = g; L.location = (0, 0, 0.6)
+    else:   # a sprite card: the flare in front of him at hammer height
+        L.parent = rig; L.location = (0.5, -0.3, 1.4)
     for t, e in ((0, 0), (at, 0), (at + 0.3, energy), (at + 2.0, energy * 0.4)):
         L.data.energy = e; L.data.keyframe_insert("energy", frame=C.sec(t))
 

@@ -1,6 +1,7 @@
 """Render one shot of a story cinematic from its spec in story/<land>.py.
 
     blender -b -P film.py -- OUT --film ember_warden --shot 2 [--frames A B] [--step N] [--res R] [--samples S] [--gpu] [--eevee] [--mid]
+        [--sprites]   the game's pixel-art characters as lit cards in the 3D set (sprites.py), the chosen story look
 
 A spec is a dict (see story/ember.py):
     set:   name of a builder in sets.py (+ "set_args")
@@ -17,7 +18,7 @@ import sys, os, json, math, importlib
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import bpy
 from mathutils import Vector
-import cine3d as C, hero, cast, wardens, heralds, vael, sets
+import cine3d as C, hero, cast, wardens, heralds, vael, sets, sprites
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 VOICE = json.load(open(os.path.join(HERE, "story", "voice.json")))
@@ -51,10 +52,12 @@ def build(film, n):
     for entry in sp.get("cast", []):
         who, pos, face, action = entry[:4]
         opt = entry[4] if len(entry) > 4 else {}
-        rig = hero.build_human(who, mark + Vector(pos), math.radians(face), action, opt.get("phase", 0.0), opt.get("soft"))
-        if "scale" in opt:   # a figure bigger than life (the Thunderhead as a storm-giant)
-            rig.scale = [v * opt["scale"] for v in rig.scale]
-        if "at" in opt:   # start the action `at` seconds in (it holds its first pose until then)
+        rig = sprites.card(who, action, mark + Vector(pos), face, opt) if "--sprites" in C.argv else None
+        if rig is None:   # a 3D body (default, or no sprites drawn for this one yet)
+            rig = hero.build_human(who, mark + Vector(pos), math.radians(face), action, opt.get("phase", 0.0), opt.get("soft"))
+            if "scale" in opt:   # a figure bigger than life (the Thunderhead as a storm-giant)
+                rig.scale = [v * opt["scale"] for v in rig.scale]
+        if "at" in opt and rig.animation_data:   # start the action `at` seconds in (it holds its first pose until then)
             for tr in rig.animation_data.nla_tracks:
                 for st in tr.strips:
                     if st.action and st.action.name == action:
@@ -66,6 +69,10 @@ def build(film, n):
     if "extra" in sp:
         sp["extra"](S, rigs)
     cam = C.camera(sp.get("lens", 35), sp.get("fstop"), rigs.get(sp.get("focus")))
+    if any(r.get("sprite") for r in rigs.values()):   # sprite cards turn to this camera and get a soft key light
+        sprites.face_camera(cam)
+        if not sp.get("key"):
+            sprites.key_light(cam)
     if isinstance(sp["cam"], str):   # a set's own camera: already in set coordinates
         C.key_cam(cam, S["cams"][sp["cam"]])
     else:                           # shot keys are relative to the mark; with "norm" their times run 0..1 over the shot

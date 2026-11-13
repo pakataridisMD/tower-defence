@@ -351,6 +351,9 @@ def thunderbird(name="thunderbird", loc=(0, 0, 3.0), span=7.0, flap=24):
 def mount(rider, saddle):
     """Seat a rider rig (built with action Sit_Chair_Idle) on a saddle: hips on the saddle point."""
     bpy.context.view_layer.update()
+    if rider.type != "ARMATURE":   # a sprite card sits with its feet a little below the saddle
+        rider.parent = saddle; rider.matrix_parent_inverse = Matrix.Identity(4); rider.location = (0, 0, -0.6)
+        return rider
     hips = rider.matrix_world @ rider.pose.bones["hips"].head
     off = rider.matrix_world.translation - hips
     rider.parent = saddle; rider.matrix_parent_inverse = Matrix.Identity(4)
