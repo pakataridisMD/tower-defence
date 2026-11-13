@@ -90,14 +90,15 @@ var _look: PackedStringArray = []
 ## With --look: shoot the towers' effects in a fight (shots, hits, a Meteor and a Doom) instead of the look shots.
 var _fx_shots := false
 var _weather := false
+var _weather_only: PackedStringArray = []
 ## The weather test: stage, then the kinds of weather to shoot there.
 const WEATHER_SHOTS := [
 	["nature_2", [Weather.Kind.CLEAR, Weather.Kind.RAIN, Weather.Kind.STORM]],
-	["storm_1", [Weather.Kind.STORM]],
+	["storm_1", [Weather.Kind.STORM, Weather.Kind.RAIN]],
 	["water_3", [Weather.Kind.SNOW, Weather.Kind.BLIZZARD]],
-	["ember_1", [Weather.Kind.ASH]],
-	["earth_1", [Weather.Kind.DUST]],
-	["void_1", [Weather.Kind.ASH]],
+	["ember_1", [Weather.Kind.ASH, Weather.Kind.DUST]],
+	["earth_1", [Weather.Kind.DUST, Weather.Kind.RAIN]],
+	["void_1", [Weather.Kind.ASH, Weather.Kind.STORM]],
 ]
 
 ## --towers[=a,b]: every look of these towers (levels 1-3 and both ascendancies) built beside the road,
@@ -159,6 +160,10 @@ func _ready() -> void:
 			_horde = StringName(arg.trim_prefix("--horde="))
 		elif arg == "--weather":
 			_weather = true
+		elif arg.begins_with("--weather="):
+			# Only these stages, comma separated (e.g. --weather=water_3,ember_1).
+			_weather = true
+			_weather_only = arg.trim_prefix("--weather=").split(",")
 		elif arg == "--fx":
 			_fx_shots = true
 		elif arg == "--longshot":
@@ -529,6 +534,8 @@ func _run_weather() -> void:
 	Progress.use_memory_profile(_campaign_profile())
 	for entry: Array in WEATHER_SHOTS:
 		var stage: String = entry[0]
+		if not _weather_only.is_empty() and not stage in _weather_only:
+			continue
 		Progress.active_stage = StringName(stage)
 		var game := GAME_SCENE.instantiate() as Game
 		game.autoplay = true
@@ -542,12 +549,14 @@ func _run_weather() -> void:
 		var row := _look_row(game)
 		sim.wave_index = 6
 		var sky := game.board.art.weather
-		print("Weather in %s: %s" % [stage, sky.weather.spells(40).map(
-				func(s: Array) -> String: return "%s waves %d-%d" % [Weather.describe(s[0]), s[1], s[2]])])
+		print("Weather in %s (%s land, %d waves): %s" % [stage, sky.weather.biome, sky.weather.waves,
+				sky.weather.plan.map(func(s: Array) -> String: return "%s waves %d-%d" % [Weather.describe(s[0]), s[1], s[2]])])
 		await _until(func() -> bool: return sim.state == RunSim.State.WAVE and sim.time_in_wave > 6.0 or sim.is_over())
 		game.camera.set_view(1.0, row)
 		for kind: Weather.Kind in entry[1]:
 			var label := Weather.describe(kind).to_lower().replace(" ", "_")
+			# As if the run had rolled this spell for this wave and the next.
+			sky.weather.plan = [] if kind == Weather.Kind.CLEAR else [[kind, sim.wave_number(), sim.wave_number() + 1]]
 			sky.force(kind)
 			_light(game.board.art, DayNight.DAY)
 			await _wait(2.5)

@@ -1,6 +1,7 @@
 extends GutTest
-## The weather over the maps: every map has wind, some missions get a few waves of rain, storm, snow,
-## ash or dust, and the board draws it (falling weather, snow settling, lightning, the trees bowing).
+## The weather over the maps: every map has wind, each run rolls one or two short spells of rain, storm,
+## snow, ash or dust that fit the land, and the board draws it (falling weather, snow settling,
+## lightning, the trees bowing) with a screen-wide layer, a badge and a banner so it is plain to see.
 
 const DataRegistryScript := preload("res://scripts/core/data_registry.gd")
 const GAME_SCENE := preload("res://scenes/game/game.tscn")
@@ -13,56 +14,84 @@ func before_each() -> void:
 	registry.reload()
 
 
-func test_each_map_always_gets_the_same_weather() -> void:
+func test_each_map_keeps_its_wind_but_rolls_new_weather() -> void:
 	for map_id: StringName in registry.maps:
 		var map: MapData = registry.maps[map_id]
-		var first := Weather.for_map(map)
-		var again := Weather.for_map(map)
-		assert_eq(first.has_spells, again.has_spells, "%s spells" % map_id)
+		var first := Weather.for_map(map, 20)
+		var again := Weather.for_map(map, 20)
 		assert_eq(first.wind_dir, again.wind_dir, "%s wind" % map_id)
-		for n in range(1, 41):
-			assert_eq(first.kind_at(n), again.kind_at(n), "%s wave %d" % [map_id, n])
+		assert_eq(first.wind, again.wind, "%s wind strength" % map_id)
+	# The same dice give the same weather; different runs roll different weather.
+	var a := Weather.make(&"c_nature_2", &"nature", 20, 7)
+	var b := Weather.make(&"c_nature_2", &"nature", 20, 7)
+	assert_eq(a.plan, b.plan, "a fixed seed gives the same weather")
+	var plans := {}
+	for i in 30:
+		plans[str(Weather.make(&"c_nature_2", &"nature", 20).plan)] = true
+	assert_gt(plans.size(), 5, "each run rolls its own weather")
 
 
-func test_spells_last_a_few_waves_and_fit_the_land() -> void:
-	var with_spells := 0
+func test_at_most_two_spells_of_one_or_two_waves() -> void:
+	for land: StringName in Weather.SPELLS:
+		for waves in [6, 8, 10, 12, 14, 20, 40]:
+			for roll in 40:
+				var weather := Weather.make(&"rolled", land, waves, roll * 31 + waves)
+				var spells := weather.plan
+				var where := "%s, %d waves, roll %d" % [land, waves, roll]
+				assert_between(spells.size(), 1, Weather.MAX_SPELLS, "%s: one or two spells" % where)
+				var last_end := 0
+				for spell: Array in spells:
+					var length: int = int(spell[2]) - int(spell[1]) + 1
+					assert_between(length, 1, 2, "%s: a spell lasts one or two waves" % where)
+					assert_gte(int(spell[1]), Weather.FIRST_WAVE, "%s: wave 1 is clear" % where)
+					assert_lte(int(spell[2]), waves, "%s: inside the level" % where)
+					if last_end > 0:
+						assert_gt(int(spell[1]), last_end + Weather.GAP, "%s: clear waves between spells" % where)
+					last_end = int(spell[2])
+				assert_eq(weather.kind_at(1), Weather.Kind.CLEAR, "%s opens clear" % where)
+				# Count the waves with weather straight from kind_at too.
+				var stormy := 0
+				for n in range(1, waves + 30):
+					if weather.kind_at(n) != Weather.Kind.CLEAR:
+						stormy += 1
+				assert_lte(stormy, Weather.MAX_SPELLS * Weather.MAX_WAVES, "%s: no more than four waves of weather" % where)
+	# Both one and two spells come up.
+	var counts := {}
+	for roll in 60:
+		counts[Weather.make(&"rolled", &"nature", 14, roll).plan.size()] = true
+	assert_true(counts.has(1) and counts.has(2), "some levels get one spell, some two")
+
+
+func test_only_weather_that_fits_the_land() -> void:
+	var never := {
+		&"fire": [Weather.Kind.SNOW, Weather.Kind.BLIZZARD, Weather.Kind.RAIN, Weather.Kind.STORM],
+		&"water": [Weather.Kind.ASH, Weather.Kind.DUST, Weather.Kind.RAIN, Weather.Kind.STORM],
+		&"earth": [Weather.Kind.SNOW, Weather.Kind.BLIZZARD, Weather.Kind.ASH],
+		&"nature": [Weather.Kind.ASH, Weather.Kind.DUST, Weather.Kind.SNOW, Weather.Kind.BLIZZARD],
+		&"storm": [Weather.Kind.ASH, Weather.Kind.DUST],
+		&"void": [Weather.Kind.SNOW, Weather.Kind.BLIZZARD, Weather.Kind.RAIN, Weather.Kind.DUST],
+	}
+	for land: StringName in never:
+		var allowed := Weather.allowed(land)
+		for kind: Weather.Kind in never[land]:
+			assert_false(kind in allowed, "no %s in the %s lands" % [Weather.describe(kind), land])
 	for map_id: StringName in registry.maps:
 		var map: MapData = registry.maps[map_id]
-		var weather := Weather.for_map(map)
-		assert_gt(weather.wind, 0.0, "%s has wind" % map_id)
-		assert_gt(absf(weather.wind_dir.x), 0.9, "%s: the wind blows across the map" % map_id)
-		var spells := weather.spells(40)
-		if not weather.has_spells:
-			assert_eq(spells.size(), 0, "%s stays clear" % map_id)
-			continue
-		with_spells += 1
-		assert_gt(spells.size(), 0, "%s has weather" % map_id)
-		var allowed: Array = Weather.SPELLS[weather.biome]
-		for spell: Array in spells:
-			assert_true(spell[0] in allowed, "%s: %s fits its land" % [map_id, Weather.describe(spell[0])])
-			var length: int = spell[2] - spell[1] + 1
-			assert_between(length, 2, 3, "%s: a spell lasts two or three waves" % map_id)
-		# The first spell comes early, so the player sees it in the first few waves.
-		assert_between(int(spells[0][1]), 3, 5, "%s first spell" % map_id)
-		assert_eq(weather.kind_at(1), Weather.Kind.CLEAR, "%s opens clear" % map_id)
-	assert_gt(with_spells, registry.maps.size() / 2, "most missions get some weather")
+		for roll in 20:
+			var weather := Weather.make(map.id, map.biome, 14, roll)
+			for spell: Array in weather.plan:
+				assert_true(spell[0] in Weather.allowed(weather.biome),
+						"%s: %s fits its land" % [map_id, Weather.describe(spell[0])])
+	assert_gt(Weather.make(&"any_storm_map", &"storm").wind, Weather.make(&"any_storm_map", &"void").wind,
+			"the storm land is windier")
 
 
-func test_storm_and_frozen_lands_always_get_their_weather() -> void:
-	var storm := Weather.make(&"any_storm_map", &"storm")
-	var water := Weather.make(&"any_water_map", &"water")
-	assert_true(storm.has_spells)
-	assert_true(water.has_spells)
-	for spell: Array in water.spells(40):
-		assert_true(Weather.is_snow(spell[0]), "the frozen shore gets snow")
-	assert_gt(storm.wind, Weather.make(&"any_storm_map", &"void").wind, "the storm land is windier")
-
-
-func test_weather_keeps_coming_in_endless_runs() -> void:
-	var weather := Weather.make(&"endless_test", &"nature")
-	var spells := weather.spells(400)
-	assert_gt(spells.size(), 10, "spells keep rolling in long after wave 40")
-	assert_gt(int(spells[-1][1]), 300)
+func test_no_weather_past_the_level_in_endless_runs() -> void:
+	var weather := Weather.make(&"endless_test", &"nature", 20, 3)
+	for n in range(21, 400):
+		assert_eq(weather.kind_at(n), Weather.Kind.CLEAR, "wave %d is clear" % n)
+		if weather.kind_at(n) != Weather.Kind.CLEAR:
+			break
 
 
 func test_the_board_draws_wind_and_weather() -> void:
@@ -94,11 +123,29 @@ func test_the_board_draws_wind_and_weather() -> void:
 	assert_gt(_count_lines(sky), lines_before, "the bolt is drawn")
 	assert_gt(sky.ambient_tint().v, tint.v, "the sky flashes")
 
+	# It is plain to see: the screen-wide layer shows the storm, the corner badge names it and a banner
+	# announced it as it broke.
+	await wait_process_frames(2)
+	var overlay := game.weather_overlay
+	assert_not_null(overlay, "the battle view has a weather layer")
+	assert_true(overlay.visible, "the weather layer shows")
+	assert_eq(int(overlay.param(&"kind")), int(Weather.Kind.STORM))
+	assert_gt(float(overlay.param(&"intensity")), 0.9, "at full strength")
+	var badge := game.hud.weather_badge
+	assert_not_null(badge, "the HUD has a weather badge")
+	assert_true(badge.badge_visible(), "the badge shows while it rains")
+	assert_eq(badge._title.text, "Thunderstorm")
+	assert_string_contains(badge.banner_text(), "THUNDERSTORM", "the banner announces it")
+
 	# Letting the waves decide again, the weather fades back out to the mission's own.
 	sky.force(-1)
 	sky.intensity = 0.05
 	sky.update(1.0)
 	assert_eq(sky.kind, sky.weather.kind_at(game.sim.wave_number()), "back to the mission's weather")
+	await wait_process_frames(2)
+	if sky.kind == Weather.Kind.CLEAR:
+		assert_false(badge.badge_visible(), "the badge hides when the sky clears")
+		assert_false(overlay.visible, "and so does the weather layer")
 
 	# A gust front sweeps downwind across the map.
 	sky._gust_wait = 0.0

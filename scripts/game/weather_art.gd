@@ -8,9 +8,10 @@ extends Node2D
 ## BoardArt owns it: it lives in the air layer (art pixels), drives the shared sway shader of the
 ## props, and tints the light through ambient_tint() and sun_scale().
 
-## How fast a spell comes in and goes out, in intensity per second (about 8 and 6 seconds).
-const FADE_IN := 0.12
-const FADE_OUT := 0.17
+## How fast a spell comes in and goes out, in intensity per second (about 4 seconds each way): a
+## spell lasts only a wave or two, so it arrives quickly and is plain to see.
+const FADE_IN := 0.25
+const FADE_OUT := 0.25
 ## Art pixels added around the map so the weather also covers its edges when zoomed out.
 const MARGIN := 48.0
 ## How each kind of weather tints the light at full strength, and how much sun gets through.
@@ -169,6 +170,16 @@ func sun_scale() -> float:
 	return lerpf(1.0, SUN[kind], intensity) + _flash * 0.8
 
 
+## How bright the lightning flash is now (0 to 1).
+func flash() -> float:
+	return _flash
+
+
+## The kind of weather the waves call for now (what the sky is turning to).
+func target_kind() -> Weather.Kind:
+	return _target_kind()
+
+
 # ------------------------------------------------------------------ wind
 
 func _update_wind(delta: float) -> void:
@@ -256,7 +267,7 @@ func _bolt(points: PackedVector2Array, power: float) -> void:
 # ------------------------------------------------------------------ the emitters
 
 func _make_textures() -> void:
-	_streak = _image(1, 11, func(_x: int, y: int) -> Color: return Color(1, 1, 1, 0.2 + 0.8 * float(y) / 10.0))
+	_streak = _image(1, 14, func(_x: int, y: int) -> Color: return Color(1, 1, 1, 0.25 + 0.75 * float(y) / 13.0))
 	_drop = _image(3, 1, func(x: int, _y: int) -> Color: return Color(1, 1, 1, 1.0 if x == 1 else 0.55))
 	_flake = _image(1, 1, func(_x: int, _y: int) -> Color: return Color.WHITE)
 	_flake_big = _image(2, 2, func(x: int, y: int) -> Color: return Color(1, 1, 1, 1.0 if x == y else 0.6))
@@ -327,8 +338,8 @@ func _build_debris() -> void:
 
 
 func _build_rain() -> void:
-	for spec in [[Weather.Kind.RAIN, 900.0, 300.0, 360.0, 0.3, Color(0.8, 0.86, 0.98, 0.8)],
-			[Weather.Kind.STORM, 600.0, 380.0, 450.0, 0.55, Color(0.82, 0.88, 1.0, 0.9)]]:
+	for spec in [[Weather.Kind.RAIN, 700.0, 300.0, 360.0, 0.3, Color(0.82, 0.88, 1.0, 0.95)],
+			[Weather.Kind.STORM, 450.0, 380.0, 450.0, 0.55, Color(0.86, 0.9, 1.0, 1.0)]]:
 		var rain := _emitter(_count(spec[1], 300, 2400), 0.36, _streak)
 		rain.position.y -= 40.0
 		rain.direction = _slant(1.0, float(spec[4]) * weather.wind)
@@ -336,6 +347,8 @@ func _build_rain() -> void:
 		rain.initial_velocity_min = spec[2]
 		rain.initial_velocity_max = spec[3]
 		rain.particle_flag_align_y = true
+		rain.scale_amount_min = 1.0
+		rain.scale_amount_max = 1.6
 		var drop: Color = spec[5]
 		rain.color_ramp = _fade([Color(drop, 0.0), drop, drop, Color(drop, 0.0)], [0.0, 0.15, 0.8, 1.0])
 		# Drops landing: small splashes all over the ground.
@@ -354,9 +367,11 @@ func _build_snow() -> void:
 	for spec in [[Weather.Kind.SNOW, 1.0, 14.0, 28.0, 0.6], [Weather.Kind.BLIZZARD, 2.0, 40.0, 75.0, 2.4]]:
 		var many := float(spec[1])
 		var small := _emitter(_count(1100.0 / many, 300, 2400), 6.0, _flake_big)
+		small.scale_amount_min = 1.0
+		small.scale_amount_max = 1.5
 		var big := _emitter(_count(3000.0 / many, 120, 900), 5.0, _flake_big)
-		big.scale_amount_min = 1.5
-		big.scale_amount_max = 2.0
+		big.scale_amount_min = 2.0
+		big.scale_amount_max = 3.0
 		for flakes: CPUParticles2D in [small, big]:
 			flakes.direction = _slant(1.0, float(spec[4]) * weather.wind)
 			flakes.spread = 18.0
