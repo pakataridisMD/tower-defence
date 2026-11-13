@@ -62,7 +62,9 @@ TUNING["converge_3"] = {"health": 3.27, "boss": 0.21, "boss_life": 0.27}
 # about 0.11 of a wave's health for him and lost at 0.17, so he sits at 0.09.
 # 2026-11-13: lowered from 2.3 to 0.55 when talents became tower unlocks only: the bot lost wave 29 to the
 # Brass Juggernauts at anything from 1.0 up and won at 0.6.
-TUNING["assault_1"] = {"health": 0.55, "boss": 0.04, "lives": 30, "boss_life": 0.55}
+# 2026-11-13: 0.55 -> 0.53 when the Meteor got stronger. 0.55 sat on an unlucky point for the bot
+# (it lost wave 29 there while winning at 0.50, 0.52, 0.53, 0.54, 0.56 and 0.58), not a real cliff.
+TUNING["assault_1"] = {"health": 0.53, "boss": 0.04, "lives": 30, "boss_life": 0.55}
 # The skirmish waves (data/waves/prototype.tres), from `campaign_balance.gd -- --skirmish` with no
 # meta tree: it found 0.95, but the Water/Earth/Void plan only scrapes through there, so this sits a
 # little lower.
