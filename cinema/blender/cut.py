@@ -30,17 +30,17 @@ def frames_for(film, n, renders, trailer, step, fps):
     """The frame files for shot n (and the step they were rendered at), or None when the shot doesn't exist."""
     d = os.path.join(renders, "%s_%d" % (film, n))
     if os.path.isdir(d):
-        return sorted(glob.glob(os.path.join(d, "f*.png"))), step
+        return sorted(glob.glob(os.path.join(d, "f[0-9][0-9][0-9][0-9].png"))), step
     r = REUSE.get(film, {}).get(str(n))
     if isinstance(r, str) and trailer:
-        fs = sorted(glob.glob(os.path.join(trailer, r, "f*.png")))
+        fs = sorted(glob.glob(os.path.join(trailer, r, "f[0-9][0-9][0-9][0-9].png")))
         return (fs, 1) if fs else None
     if isinstance(r, list):
         line = VOICE.get(film, {}).get("%02d" % n)
         total = int(((line["duration"] + 0.4) if line else 6.0) * fps / step)
         share = max(1, total // len(r)); out = []
         for name in r:
-            fs = sorted(glob.glob(os.path.join(renders, name, "f*.png")))
+            fs = sorted(glob.glob(os.path.join(renders, name, "f[0-9][0-9][0-9][0-9].png")))
             mid = len(fs) // 2
             out += fs[max(0, mid - share // 2):max(0, mid - share // 2) + share]
         return (out, step) if out else None

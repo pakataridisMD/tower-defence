@@ -434,8 +434,10 @@ def render(default_res=67, default_samples=32):
         if os.path.exists(path) and "--force" not in argv:
             continue  # resumable: rerun the same command to finish a cut-short render
         sc.frame_set(f)
-        r.filepath = path
+        part = os.path.join(OUT, "f%04d.part.png" % f)   # written aside, then renamed: a render stopped mid-write
+        r.filepath = part                                # (paused for other work) never leaves a broken frame behind
         bpy.ops.render.render(write_still=True)
+        os.replace(part, path)
 
 
 ELEMENTS = [(1.0, 0.25, 0.08), (0.75, 0.85, 1.0), (0.35, 1.0, 0.3), (0.15, 0.85, 0.85), (0.95, 0.7, 0.25), (0.65, 0.3, 1.0)]
