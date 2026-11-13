@@ -392,6 +392,7 @@ def render(default_res=67, default_samples=32):
                 sc.cycles.device = "GPU"
                 break
     if "--eevee" in argv:   # EEVEE: the fast GPU renderer (story videos); Cycles stays the default (trailer)
+        # speed knobs: --samples N (TAA), --vol-tile 8 and --vol-samples 32 (cheaper fog), --no-mblur
         for eng in ("BLENDER_EEVEE_NEXT", "BLENDER_EEVEE"):
             try:
                 r.engine = eng; break
@@ -399,7 +400,7 @@ def render(default_res=67, default_samples=32):
                 continue
         ee = sc.eevee
         for k, v in (("taa_render_samples", int(opt("--samples", "64"))), ("use_raytracing", True), ("use_shadows", True),
-                     ("volumetric_tile_size", "4"), ("volumetric_samples", 96), ("use_volumetric_shadows", True),
+                     ("volumetric_tile_size", opt("--vol-tile", "4")), ("volumetric_samples", int(opt("--vol-samples", "96"))), ("use_volumetric_shadows", True),
                      ("use_gtao", True), ("use_bloom", True), ("fast_gi_method", "GLOBAL_ILLUMINATION")):
             if hasattr(ee, k):
                 try:
@@ -409,7 +410,7 @@ def render(default_res=67, default_samples=32):
     sc.cycles.samples = int(opt("--samples", str(default_samples))); sc.cycles.use_denoising = True
     sc.cycles.volume_step_rate = 4; sc.cycles.max_bounces = 4
     r.resolution_x, r.resolution_y, r.resolution_percentage = 1920, 1080, int(opt("--res", str(default_res)))
-    r.use_motion_blur = True; r.motion_blur_shutter = 0.5
+    r.use_motion_blur = "--no-mblur" not in argv; r.motion_blur_shutter = 0.5   # --no-mblur: speed test / fast previews
     sc.view_settings.view_transform = "AgX"; sc.view_settings.look = "AgX - Medium High Contrast"
     r.image_settings.file_format = "PNG"
     os.makedirs(OUT, exist_ok=True)
