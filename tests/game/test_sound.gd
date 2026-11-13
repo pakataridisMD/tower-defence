@@ -140,3 +140,40 @@ func test_a_boss_is_revealed_once_and_heard_walking_and_dying() -> void:
 	assert_false(heard.has(&"boss_earth_voice"), "so the synthetic voice stays quiet")
 	assert_true(heard.has(&"boss_earth_enrage"), "it roars when badly wounded")
 	assert_true(heard.has(&"boss_earth_death"), "its death")
+
+
+func test_sounds_the_battle_repeats_stay_quiet() -> void:
+	for sound: StringName in [&"impact_fire", &"impact_void", &"hit_armour", &"status_burn", &"coin"]:
+		var level: float = sfx.sounds[sound].get("volume_db", 0.0) + GameAudio.repeat_db(sound)
+		assert_lte(level, -18.0, "%s is a quiet bed even with every slider at full" % sound)
+	assert_lt(GameAudio.repeat_db(&"tower_fire_brazier"), 0.0, "tower shots are pulled down")
+	assert_lt(GameAudio.repeat_db(&"death_grunt"), 0.0, "ordinary deaths are pulled down")
+	for sound: StringName in [&"tower_level_up", &"tower_place_fire", &"boss_fire_death", &"victory", &"explosion_large", &"skill_meteor"]:
+		assert_eq(GameAudio.repeat_db(sound), 0.0, "%s keeps its full level" % sound)
+	assert_lte(GameAudio.HITS_PER_SECOND, 6.0)
+
+
+func test_back_buttons_make_the_back_sound() -> void:
+	var back := MenuItemButton.new("Back", "Esc")
+	add_child_autofree(back)
+	await get_tree().process_frame
+	back.pressed.emit()
+	assert_eq(sfx.history.back(), &"ui_back")
+	var other := MenuItemButton.new("Play", "Enter")
+	add_child_autofree(other)
+	await get_tree().process_frame
+	await wait_seconds(0.05)
+	other.pressed.emit()
+	assert_eq(sfx.history.back(), &"ui_click")
+
+
+func test_the_credits_play_the_trailer_score() -> void:
+	for path: String in CreditsMusic.FILES:
+		assert_true(ResourceLoader.exists(path), "%s exists" % path)
+	var music := CreditsMusic.new()
+	add_child_autofree(music)
+	music.set_open(true)
+	assert_eq(MenuMusic.held, AudioSettings.menu_music_on(), "the title music steps aside")
+	music.set_open(false)
+	await wait_process_frames(2)
+	assert_false(MenuMusic.held, "and comes back when the page closes")

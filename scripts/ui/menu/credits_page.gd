@@ -1,6 +1,7 @@
 class_name CreditsPage
 extends MenuPage
-## Credits: who made the game and the free fonts and tools it uses.
+## Credits: who made the game and the free fonts and tools it uses, over the trailer score
+## (CreditsMusic) while the page is open.
 
 ## The studio that made the game (a working name for now) and its two makers, equal partners.
 ## Shown here and on the Settings page.
@@ -18,8 +19,14 @@ const LINES: Array[Array] = [
 ]
 
 
+var music: CreditsMusic
+
+
 func _init() -> void:
 	super("Credits")
+	music = CreditsMusic.new()
+	add_child(music)
+	visibility_changed.connect(func() -> void: music.set_open(is_visible_in_tree()))
 	var panel := add_panel(Vector2(412, 0), Vector2(1000, 852))
 	var column := VBoxContainer.new()
 	column.alignment = BoxContainer.ALIGNMENT_CENTER
