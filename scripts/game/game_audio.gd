@@ -12,12 +12,12 @@ extends Node
 const LIVES_WARNING_SHARE := 0.25
 ## Most tower attack sounds and hit sounds started per second; a big board would be a wall of noise.
 const ATTACKS_PER_SECOND := 8.0
-const HITS_PER_SECOND := 6.0
-## The sounds a battle repeats all the time (enemies being hit, burning, clanking, dying, coins and
-## tower shots) sit this far under the rest, so the battle stays a bed under the music and voices and
+const HITS_PER_SECOND := 12.0
+## The sounds a battle repeats all the time (burning and other status ticks, dying, coins, tower
+## shots and small blasts) sit this far under the rest, so the battle stays a bed under the music and voices and
 ## stays quiet even with every volume slider at full. Sliders top out at 0 dB, so this is a ceiling.
 const REPEAT_DB := {
-	&"hit": -16.0, &"status": -16.0, &"coin": -14.0, &"death": -9.0, &"attack": -8.0, &"blast": -8.0,
+	&"status": -16.0, &"coin": -14.0, &"death": -9.0, &"attack": -8.0, &"blast": -8.0,
 }
 ## Enemies this armoured clank when shot.
 const ARMOUR_CLANK := 8.0
@@ -27,6 +27,9 @@ const TALK_EVERY := Vector2(13.0, 21.0)
 const FIRST_WORDS := 8.5
 ## Below this share of its health a boss roars (if the simulation has no enrage of its own).
 const WOUNDED_SHARE := 0.35
+## A boss's footsteps play this much louder than their files (+6 dB, twice the level), so its weight is
+## felt as it walks. The step files peak near -7 dB, so this does not clip.
+const BOSS_STEP_DB := 6.0
 ## Bosses that are part of a bigger one and get no reveal or footsteps of their own.
 const MINOR_BOSSES: Array[StringName] = [&"hollow_shade"]
 const STAR_DELAY := 1.3
@@ -93,8 +96,7 @@ func _play_full(sound: StringName, at: Variant = null, volume_db: float = 0.0) -
 ## How far a sound is pulled down because the battle repeats it all the time (0 for the rest).
 static func repeat_db(sound: StringName) -> float:
 	var name := String(sound)
-	if name.begins_with("impact_") or name == "hit_armour":
-		return REPEAT_DB[&"hit"]
+	# Enemies being hit (impacts and armour clanks) keep their full level: the player wants them heard.
 	if name.begins_with("status_"):
 		return REPEAT_DB[&"status"]
 	if name == "coin":
@@ -236,12 +238,10 @@ func _on_projectile_landed(shot: SimProjectile) -> void:
 		_hit_budget -= 1.0
 	var target := shot.target
 	if target != null and target.alive:
-		if target.armour >= ARMOUR_CLANK and _hit_budget >= 1.0:
-			if play(&"hit_armour", shot.position):
-				_hit_budget -= 1.0
-		if not shot.source.effects.is_empty() and not target.data.status_immune and _hit_budget >= 1.0:
-			if play(StringName("status_" + _status_word(shot.source.effects[0].kind)), shot.position):
-				_hit_budget -= 1.0
+		if target.armour >= ARMOUR_CLANK:
+			play(&"hit_armour", shot.position)
+		if not shot.source.effects.is_empty() and not target.data.status_immune:
+			play(StringName("status_" + _status_word(shot.source.effects[0].kind)), shot.position)
 
 
 func _on_chain_fired(tower: SimTower, points: PackedVector2Array) -> void:
@@ -400,7 +400,7 @@ func _tick_bosses(step: float) -> void:
 			state["step"] -= step
 			if state["step"] <= 0.0:
 				state["step"] = clampf(30.0 / speed, 0.45, 1.3)
-				play(StringName("boss_%s_step" % set_name), enemy.position)
+				play(StringName("boss_%s_step" % set_name), enemy.position, BOSS_STEP_DB)
 		state["talk"] -= step
 		if state["talk"] <= 0.0:
 			state["talk"] = randf_range(TALK_EVERY.x, TALK_EVERY.y)

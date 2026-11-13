@@ -143,14 +143,14 @@ func test_a_boss_is_revealed_once_and_heard_walking_and_dying() -> void:
 
 
 func test_sounds_the_battle_repeats_stay_quiet() -> void:
-	for sound: StringName in [&"impact_fire", &"impact_void", &"hit_armour", &"status_burn", &"coin"]:
+	for sound: StringName in [&"status_burn", &"status_poison", &"coin"]:
 		var level: float = sfx.sounds[sound].get("volume_db", 0.0) + GameAudio.repeat_db(sound)
 		assert_lte(level, -18.0, "%s is a quiet bed even with every slider at full" % sound)
 	assert_lt(GameAudio.repeat_db(&"tower_fire_brazier"), 0.0, "tower shots are pulled down")
 	assert_lt(GameAudio.repeat_db(&"death_grunt"), 0.0, "ordinary deaths are pulled down")
-	for sound: StringName in [&"tower_level_up", &"tower_place_fire", &"boss_fire_death", &"victory", &"explosion_large", &"skill_meteor"]:
+	assert_eq(GameAudio.BOSS_STEP_DB, 6.0, "boss footsteps play twice as loud")
+	for sound: StringName in [&"impact_fire", &"impact_void", &"hit_armour", &"tower_level_up", &"tower_place_fire", &"boss_fire_death", &"victory", &"explosion_large", &"skill_meteor"]:
 		assert_eq(GameAudio.repeat_db(sound), 0.0, "%s keeps its full level" % sound)
-	assert_lte(GameAudio.HITS_PER_SECOND, 6.0)
 
 
 func test_back_buttons_make_the_back_sound() -> void:
