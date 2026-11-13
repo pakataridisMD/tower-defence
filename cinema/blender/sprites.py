@@ -120,9 +120,23 @@ def card(who, action, loc, face_deg, opt=None):
     if nrm:
         tn = _tex(nt, nrm, n, start - phase, once); nm = nt.nodes.new("ShaderNodeNormalMap"); nm.inputs["Strength"].default_value = 0.8
         nt.links.new(tn.outputs["Color"], nm.inputs["Color"]); nt.links.new(nm.outputs["Normal"], b.inputs["Normal"])
+    self_light = float(C.opt("--sprite-light", "0"))   # a faint glow of the drawing's own colours, so far or
+    emit = tg_out = None                                   # unlit figures still read (the game shows its sprites lit)
     if glw:
-        tg = _tex(nt, glw, n, start - phase, once); nt.links.new(tg.outputs["Color"], b.inputs["Emission Color"])
-        b.inputs["Emission Strength"].default_value = 2.0
+        tg = _tex(nt, glw, n, start - phase, once); tg_out = tg.outputs["Color"]
+    if self_light > 0:
+        mx = nt.nodes.new("ShaderNodeMix"); mx.data_type = "RGBA"; mx.blend_type = "ADD"
+        mx.inputs[0].default_value = self_light / 2.0      # factor: emission strength is 2, so this is self_light overall
+        nt.links.new(tc.outputs["Color"], mx.inputs[7])
+        if tg_out:
+            nt.links.new(tg_out, mx.inputs[6])
+        else:
+            mx.inputs[6].default_value = (0, 0, 0, 1)
+        emit = mx.outputs[2]
+    elif tg_out:
+        emit = tg_out
+    if emit:
+        nt.links.new(emit, b.inputs["Emission Color"]); b.inputs["Emission Strength"].default_value = 2.0
     o.data.materials.append(m)
     o["face_camera"] = True
     if "scale" in opt:
