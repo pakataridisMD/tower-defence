@@ -39,6 +39,7 @@ def dur(path):
 
 def main():
     shots = arg("--shots"); out = arg("--out"); root = arg("--root", REPO); width = int(arg("--width", "1280"))
+    os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
     tmp = tempfile.mkdtemp(); parts = []
     for name, speed in SHOTS:   # every shot to one size and rate, speed applied
         p = os.path.join(tmp, name + ".mp4")
