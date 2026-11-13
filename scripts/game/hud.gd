@@ -98,6 +98,8 @@ var _campaign_button: Button
 var _next_stage_button: Button
 ## The muster bar of the final assault's counter-attack, or null in any other stage.
 var muster: MusterBar
+## The weather badge and banner (see WeatherBadge), when the board has weather.
+var weather_badge: WeatherBadge
 
 
 func setup(p_sim: RunSim) -> void:
@@ -115,6 +117,15 @@ func setup(p_sim: RunSim) -> void:
 	get_tree().node_added.connect(_on_node_added)
 	sim.wave_cleared.connect(_on_wave_cleared)
 	sim.wave_started.connect(_announce_wave)
+
+
+## Shows the weather on screen: a banner as it rolls in and a badge in the corner while it lasts.
+func show_weather(sky: WeatherArt) -> void:
+	weather_badge = WeatherBadge.new()
+	# Under the end screen, over the board messages.
+	add_child(weather_badge)
+	move_child(weather_badge, _end_panel.get_index())
+	weather_badge.setup(sky, sim)
 
 
 func _on_node_added(node: Node) -> void:
