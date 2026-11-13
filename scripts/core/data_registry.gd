@@ -268,8 +268,10 @@ func _validate_unlocks(errors: PackedStringArray) -> void:
 	var gated_difficulties: Dictionary[StringName, bool] = {}
 	for node_data in meta_tree_nodes:
 		var label := "meta tree node '%s'" % node_data.id
-		if not node_data.unlocks_towers.is_empty():
-			errors.append("%s: towers are unlocked in the in-run web, not the meta tree" % label)
+		for tower_id in node_data.unlocks_towers:
+			var tower: TowerData = towers.get(tower_id)
+			if tower != null and not tower.is_hybrid() and tower.requires_nodes.is_empty():
+				errors.append("%s: base towers are always open, so no talent may lock '%s'" % [label, tower_id])
 		for id in node_data.unlocks_nodes:
 			if not in_run_ids.has(id):
 				errors.append("%s: unlocks unknown in-run node '%s'" % [label, id])

@@ -1024,7 +1024,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"storm"
 is_boss = true
-health_multiplier = 1.0
+health_multiplier = 0.35
 description = "A marching column, brutes under escort, Splitter packs, the Voiceless, a flank attack and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r114"), SubResource("r115"), SubResource("r116"), SubResource("r117"), SubResource("r118"), SubResource("r119"), SubResource("r120"), SubResource("r121"), SubResource("r122"), SubResource("r123"), SubResource("r124")])
 
@@ -1033,5 +1033,6 @@ script = ExtResource("1_s")
 id = &"skirmish_stormcrown"
 display_name = "Stormcrown waves"
 health_growth = 1.1
-health_scale = 2.52
+health_scale = 0.45
+boss_health_scale = 0.15
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r13"), SubResource("r23"), SubResource("r32"), SubResource("r44"), SubResource("r54"), SubResource("r65"), SubResource("r75"), SubResource("r89"), SubResource("r101"), SubResource("r113"), SubResource("r125")])

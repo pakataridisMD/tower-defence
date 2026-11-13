@@ -1056,7 +1056,7 @@ pattern = 2
 script = ExtResource("3_s")
 element = &"nature"
 is_boss = true
-health_multiplier = 0.1
+health_multiplier = 7.57
 description = "Stragglers, a flank attack, Mender packs, brutes under escort, Greenwitches, a pincer and a closing surge."
 groups = Array[ExtResource("2_s")]([SubResource("r114"), SubResource("r115"), SubResource("r116"), SubResource("r117"), SubResource("r118"), SubResource("r119"), SubResource("r120"), SubResource("r121"), SubResource("r122"), SubResource("r123"), SubResource("r124"), SubResource("r125"), SubResource("r126"), SubResource("r127"), SubResource("r128")])
 
@@ -1065,5 +1065,5 @@ script = ExtResource("1_s")
 id = &"c_nature_2"
 display_name = "Rootway"
 health_growth = 1.1
-health_scale = 4.96
+health_scale = 2.66
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r13"), SubResource("r23"), SubResource("r32"), SubResource("r44"), SubResource("r54"), SubResource("r65"), SubResource("r75"), SubResource("r89"), SubResource("r101"), SubResource("r113"), SubResource("r129")])

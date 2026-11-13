@@ -8,34 +8,18 @@ extends RefCounted
 ## unlocks_* list stays locked until one of those meta nodes is taken. Anything no meta node lists
 ## is open from the start.
 
-## Display names and colours of the meta tree branches, keyed by the nodes' region: four inner
-## wings, the Starpath ring road between them and one constellation per element on the outer ring
-## (in the element's own colour). The tree itself is written by tools/meta/gen_meta_tree.py.
+## Display names and colours of the meta tree branches, keyed by the nodes' region. Every talent
+## unlocks one tower: the long-range towers, the duals and the triples. The tree itself is written
+## by tools/meta/gen_meta_tree.py.
 const BRANCH_NAMES: Dictionary[StringName, String] = {
-	&"arsenal": "Arsenal",
-	&"command": "Command",
-	&"expeditions": "Expeditions",
-	&"mastery": "Mastery",
-	&"starpath": "Starpath",
-	&"fire": "Fire",
-	&"storm": "Storm",
-	&"nature": "Nature",
-	&"water": "Water",
-	&"earth": "Earth",
-	&"void": "Void",
+	&"longshots": "Long-range towers",
+	&"duals": "Dual towers",
+	&"triples": "Triple towers",
 }
 const BRANCH_COLORS: Dictionary[StringName, Color] = {
-	&"arsenal": Color("ef6f6c"),
-	&"command": Color("f4c95d"),
-	&"expeditions": Color("4cc9f0"),
-	&"mastery": Color("b388eb"),
-	&"starpath": Color("c9d3ee"),
-	&"fire": Color("e4572e"),
-	&"storm": Color("f2c14e"),
-	&"nature": Color("5bb450"),
-	&"water": Color("2e86de"),
-	&"earth": Color("a0785a"),
-	&"void": Color("8e5cd9"),
+	&"longshots": Color("ef6f6c"),
+	&"duals": Color("4cc9f0"),
+	&"triples": Color("b388eb"),
 }
 
 ## Meta points are paid for records, not for playing: each campaign stage and each skirmish map
@@ -74,6 +58,8 @@ func _init(p_registry: Node, p_profile: PlayerProfile) -> void:
 	if profile.needs_records:
 		_rebuild_records()
 	tree = TreeState.new(TreeGraph.new(registry.meta_tree_nodes), profile.meta_points_earned)
+	# Every talent can be bought from the very start: its links only show how the towers relate.
+	tree.free_pick = true
 	tree.restore(profile.meta_nodes)
 	selected_map = profile.last_map
 	selected_difficulty = profile.last_difficulty
@@ -119,14 +105,37 @@ func is_difficulty_unlocked(id: StringName) -> bool:
 	return registry.difficulties.has(id) and _is_open(&"unlocks_difficulties", id)
 
 
-## In-run web nodes that no taken meta node has unlocked yet.
+## In-run web nodes that no taken meta node has unlocked yet, and the web's pure tower nodes (its
+## bridges) whose every tower is still locked in the Talents tree, so the web shows them as locked.
 func locked_in_run_nodes() -> Array[StringName]:
 	var unlocked := _listed(&"unlocks_nodes", true)
 	var result: Array[StringName] = []
 	for id in _listed(&"unlocks_nodes", false):
 		if not unlocked.has(id):
 			result.append(id)
+	var towers := locked_towers()
+	for node_data: TreeNodeData in registry.in_run_tree_nodes:
+		if node_data.unlocks_towers.is_empty() or not node_data.modifiers.is_empty() or result.has(node_data.id):
+			continue
+		if node_data.unlocks_towers.all(func(tower_id: StringName) -> bool: return towers.has(tower_id)):
+			result.append(node_data.id)
 	return result
+
+
+## Towers listed by a talent that is not taken yet, each with that talent's name. Towers no talent
+## lists (the six base towers) are always open.
+func locked_towers() -> Dictionary[StringName, String]:
+	var unlocked := _listed(&"unlocks_towers", true)
+	var result: Dictionary[StringName, String] = {}
+	for node_data: TreeNodeData in registry.meta_tree_nodes:
+		for tower_id in node_data.unlocks_towers:
+			if not unlocked.has(tower_id) and not result.has(tower_id):
+				result[tower_id] = node_data.display_name
+	return result
+
+
+func is_tower_unlocked(tower_id: StringName) -> bool:
+	return _is_open(&"unlocks_towers", tower_id)
 
 
 ## The meta node that unlocks a map, difficulty level or in-run node, for "Unlock in ..." hints.
@@ -191,6 +200,7 @@ func run_config() -> RunConfig:
 	config.run_modifiers = tree.modifiers()
 	config.run_modifiers.append_array(campaign_rewards())
 	config.locked_tree_nodes = locked_in_run_nodes()
+	config.locked_towers = locked_towers()
 	config.difficulty = registry.difficulties.get(selected_difficulty)
 	config.endless = endless
 	return config
@@ -348,6 +358,7 @@ func stage_config(stage_id: StringName) -> RunConfig:
 	config.run_modifiers.append_array(campaign_rewards())
 	config.run_modifiers.append_array(stage.modifiers)
 	config.locked_tree_nodes = locked_in_run_nodes()
+	config.locked_towers = locked_towers()
 	for id in closed_nodes(stage):
 		if not config.locked_tree_nodes.has(id):
 			config.locked_tree_nodes.append(id)

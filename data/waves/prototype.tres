@@ -643,5 +643,5 @@ script = ExtResource("1_s")
 id = &"prototype"
 display_name = "Skirmish waves"
 health_growth = 1.12
-health_scale = 2.55
+health_scale = 1.35
 waves = Array[ExtResource("3_s")]([SubResource("r6"), SubResource("r12"), SubResource("r19"), SubResource("r26"), SubResource("r33"), SubResource("r42"), SubResource("r50"), SubResource("r58"), SubResource("r68"), SubResource("r79")])

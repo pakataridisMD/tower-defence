@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"talent_hybrid_magma"
+display_name = "Magma Forge"
+description = "Adds the Magma Forge (Earth + Fire) to your towers. In a run, take Fault Line and Stoked Coals in the skill web to build it."
+kind = 3
+region = &"duals"
+cost = 14
+position = Vector2(-235, -407)
+links = Array[StringName]([&"talent_hybrid_gravity_well", &"talent_hybrid_soulflame"])
+unlocks_towers = Array[StringName]([&"hybrid_magma"])

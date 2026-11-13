@@ -52,14 +52,11 @@ func test_every_level_doubles_the_one_before() -> void:
 		assert_gt(level.meta_point_multiplier, before.meta_point_multiplier, "harder levels pay more")
 
 
-func test_every_level_is_unlocked_by_a_talent_except_normal() -> void:
+## Talents only unlock towers, so every difficulty level is open from the start.
+func test_every_level_is_open_from_the_start() -> void:
 	var meta := MetaProgress.new(registry, PlayerProfile.new())
 	for level in meta.difficulties_in_order():
-		if level.id == &"normal":
-			assert_true(meta.is_difficulty_unlocked(level.id))
-		else:
-			assert_false(meta.is_difficulty_unlocked(level.id), "%s starts locked" % level.id)
-			assert_not_null(meta.unlocked_by(&"unlocks_difficulties", level.id), "%s has a talent" % level.id)
+		assert_true(meta.is_difficulty_unlocked(level.id), String(level.id))
 
 
 func test_a_scaled_group_has_more_enemies_in_the_same_time() -> void:

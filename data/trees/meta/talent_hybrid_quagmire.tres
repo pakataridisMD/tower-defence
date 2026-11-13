@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"talent_hybrid_quagmire"
+display_name = "Quagmire"
+description = "Adds the Quagmire (Water + Earth) to your towers. In a run, take the Quagmire bridge in the skill web to build it."
+kind = 1
+region = &"duals"
+cost = 8
+position = Vector2(-217, 125)
+links = Array[StringName]([&"meta_start"])
+unlocks_towers = Array[StringName]([&"hybrid_quagmire"])

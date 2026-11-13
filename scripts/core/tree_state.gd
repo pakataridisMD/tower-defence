@@ -4,7 +4,8 @@ extends RefCounted
 ##
 ## Rules: the start node is always taken; a node can be taken when it links to a taken node
 ## and the player has enough points; a node can be refunded only if every other taken node
-## still connects back to the start without it.
+## still connects back to the start without it. With free_pick on (the Talents tree), links do not
+## matter: any node can be taken or refunded on its own, as long as the points cover it.
 
 signal changed
 
@@ -13,6 +14,8 @@ var points: int = 0
 var _allocated: Dictionary[StringName, bool] = {}
 var _locked: Dictionary[StringName, bool] = {}
 var _granted: Dictionary[StringName, bool] = {}
+## When true, nodes need no taken neighbour and refunds need not keep the tree connected.
+var free_pick := false
 
 
 func _init(p_graph: TreeGraph, p_points: int = 0) -> void:
@@ -75,6 +78,8 @@ func can_allocate(id: StringName) -> bool:
 		return false
 	if graph.node(id).cost > points:
 		return false
+	if free_pick:
+		return true
 	for other in graph.neighbours(id):
 		if is_allocated(other):
 			return true
@@ -93,6 +98,8 @@ func allocate(id: StringName) -> bool:
 func can_refund(id: StringName) -> bool:
 	if id == graph.start_id or not is_allocated(id) or is_granted(id):
 		return false
+	if free_pick:
+		return true
 	return _count_connected_without(id) == _allocated.size() - 1
 
 
@@ -112,6 +119,8 @@ func path_to(id: StringName) -> Array[StringName]:
 	var path: Array[StringName] = []
 	if not graph.has_node_id(id) or is_allocated(id) or is_locked(id) or is_excluded(id):
 		return path
+	if free_pick:
+		return [graph.start_id, id] as Array[StringName]
 	# Breadth-first from the target outwards; toward[n] is the next step from n back to the target.
 	var toward: Dictionary[StringName, StringName] = {id: &""}
 	var queue: Array[StringName] = [id]

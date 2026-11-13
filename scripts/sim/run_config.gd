@@ -22,6 +22,9 @@ var skills: Dictionary[StringName, SkillData] = {}
 var run_modifiers: Array[Modifier] = []
 ## In-run tree nodes the player has not unlocked yet in the meta tree.
 var locked_tree_nodes: Array[StringName] = []
+## Towers the player has not unlocked in the Talents tree yet, each with the name of the talent that
+## unlocks it. They cannot be built (or fused into) in this run whatever the skill web says.
+var locked_towers: Dictionary[StringName, String] = {}
 ## The difficulty level picked for the run. Null plays at normal strength.
 var difficulty: DifficultyData
 ## Endless skirmish: after the last wave the waves keep coming. The horde starts at endless_start of
