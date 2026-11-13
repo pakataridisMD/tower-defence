@@ -3,7 +3,7 @@
 Every cast member that has sprites in art/story/characters/<name>/ (anim_K.png, anim_K_n.png normal map, anim_K_glow.png)
 becomes a flat card that turns to face the camera, lit by the set through its normal map, its glow as emission, pixels
 kept hard. The card hangs under an empty that stands in for the rig, so walks (C.march), rises and mounts still work.
-Characters without sprites (the mortal monarchs, the Keeper, Seraphel) stay 3D bodies until they are drawn."""
+Characters without sprites stay 3D bodies."""
 import os, glob, math, shutil, tempfile
 import bpy
 from mathutils import Vector
@@ -15,6 +15,9 @@ ALIAS = {"ashwick": "herald_ashwick", "briar": "herald_briar", "gorrath": "heral
          "vesper": "herald_vesper", "vholt": "herald_vholt", "broodmother": "elder_broodmother",
          "cassivane_ash": "cassivane_ashen", "oswin": "oswin_grey"}
 FPS = 8   # the sprite animations are drawn for 8 frames a second
+# most drawings face screen-left; the film-only cast (drawn Nov 13 on a 96x88 canvas) faces screen-right
+FACES_RIGHT = {"keeper", "seraphel", "seraphel_grey", "ignar_king", "aurath_king", "elowen_queen", "thalassa_queen",
+               "orrok_king", "nyxara_queen"}
 
 
 def folder(who):
@@ -60,8 +63,8 @@ def _seq(d, who, anim, suffix, hold, colour):
     if colour:   # the drawn figure's height in pixels (rows with any alpha), for sizing the card
         import numpy as np
         a = np.empty(px[0] * px[1] * 4, dtype=np.float32); img.pixels.foreach_get(a)
-        rows = np.where(a.reshape(px[1], px[0], 4)[:, :, 3].max(axis=1) > 0.1)[0]
-        img["fig"] = (int(rows.min()), int(rows.max()) + 1) if len(rows) else (0, px[1])
+        rows = np.where(a.reshape(px[1], px[0], 4)[:, :, 3].max(axis=1) > 0.1)[0]   # Blender rows run bottom-up
+        img["fig"] = (int(rows.min()), int(rows.max()) + 1) if len(rows) else (0, px[1])   # (feet row, top of head)
     img.source = "SEQUENCE"
     return img, n
 
@@ -94,14 +97,17 @@ def card(who, action, loc, face_deg, opt=None):
     height = props.get("height", 1.75) * hero.SCALE.get(who, 1.0)
     per_px = height / max(1, f1 - f0)   # metres per art pixel, so the drawn figure stands `height` tall
     wm, hm = w_px * per_px, h_px * per_px
-    foot = (h_px - f1) * per_px          # empty canvas under the feet
+    foot = f0 * per_px                   # empty canvas under the feet (rows count from the bottom)
     root = bpy.data.objects.new("rig_" + who, None); C.sc.collection.objects.link(root)
     root.location = loc; root.rotation_euler.z = math.radians(face_deg)
     root["sprite"] = True
     bpy.ops.mesh.primitive_plane_add(size=1)
     o = bpy.context.object; o.name = "sprite_" + who
     fwd = Vector((math.sin(math.radians(face_deg)), -math.cos(math.radians(face_deg)), 0))
-    flip = -1 if fwd.x > 0.25 else 1   # the drawings face screen-left; mirror a figure turned to the right
+    if ALIAS.get(who, who) in FACES_RIGHT:   # mirror a figure turned against the way it was drawn
+        flip = -1 if fwd.x < -0.25 else 1
+    else:
+        flip = -1 if fwd.x > 0.25 else 1
     for v in o.data.vertices:   # stand the card up, the drawn feet on the ground
         v.co = Vector((v.co.x * wm * flip, 0, (v.co.y + 0.5) * hm - foot))
     o.parent = root; o.location = (0, 0, 0)
