@@ -999,4 +999,5 @@ id = &"skirmish_cinderfall"
 display_name = "Cinderfall waves"
 health_growth = 1.1
 health_scale = 0.9
+boss_health_scale = 0.4
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r13"), SubResource("r23"), SubResource("r32"), SubResource("r42"), SubResource("r52"), SubResource("r63"), SubResource("r73"), SubResource("r85"), SubResource("r97"), SubResource("r109"), SubResource("r121")])

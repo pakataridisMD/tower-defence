@@ -925,4 +925,5 @@ id = &"skirmish_frozen_ford"
 display_name = "Frozen Ford waves"
 health_growth = 1.1
 health_scale = 1.05
+boss_health_scale = 0.4
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r12"), SubResource("r21"), SubResource("r29"), SubResource("r38"), SubResource("r47"), SubResource("r57"), SubResource("r66"), SubResource("r77"), SubResource("r88"), SubResource("r99"), SubResource("r110")])

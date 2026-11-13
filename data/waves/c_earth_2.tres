@@ -912,4 +912,5 @@ id = &"c_earth_2"
 display_name = "Canyon Switchbacks"
 health_growth = 1.1
 health_scale = 6.47
+boss_health_scale = 0.17
 waves = Array[ExtResource("3_s")]([SubResource("r5"), SubResource("r13"), SubResource("r22"), SubResource("r30"), SubResource("r39"), SubResource("r48"), SubResource("r57"), SubResource("r67"), SubResource("r78"), SubResource("r88"), SubResource("r99"), SubResource("r112")])

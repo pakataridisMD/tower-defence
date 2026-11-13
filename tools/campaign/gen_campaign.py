@@ -934,7 +934,7 @@ def write_land_skirmish(map_id, name, land_id, lanes):
         f"script = {script}", f"id = {sn(wave_set)}", f"display_name = {string(name + ' waves')}",
         f"health_growth = {tune.get('growth', 1.1)}",
         f"health_scale = {round(tune.get('health', 1.0) * SKIRMISH_HARDNESS, 3)}",
-        f"waves = {typed(t, WAVE, refs)}"])
+        *boss_life(tune), f"waves = {typed(t, WAVE, refs)}"])
     return wave_set
 
 

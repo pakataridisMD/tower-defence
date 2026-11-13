@@ -1872,4 +1872,5 @@ id = &"c_converge_1"
 display_name = "Shattered Crossroads"
 health_growth = 1.1
 health_scale = 7.78
+boss_health_scale = 0.49
 waves = Array[ExtResource("3_s")]([SubResource("r7"), SubResource("r14"), SubResource("r23"), SubResource("r31"), SubResource("r40"), SubResource("r52"), SubResource("r65"), SubResource("r76"), SubResource("r91"), SubResource("r104"), SubResource("r118"), SubResource("r135"), SubResource("r151"), SubResource("r166"), SubResource("r185"), SubResource("r204")])

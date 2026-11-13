@@ -2,28 +2,25 @@
 	"assault_1": {
 		"campaign": {
 			"stars": {
-				"converge_2": 3,
-				"converge_3": 3,
 				"earth_1": 3,
-				"earth_2": 1,
+				"earth_3": 2,
+				"earth_4": 2,
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
+				"storm_2": 1,
+				"storm_3": 1,
 				"void_1": 3,
 				"void_2": 1,
 				"void_3": 1,
-				"void_4": 2,
-				"water_1": 2,
-				"water_2": 1,
+				"void_4": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3,
 				"water_4": 2
 			}
 		},
@@ -43,72 +40,71 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench",
 			"talent_triple_mire_colossus",
 			"talent_triple_hellforge",
+			"talent_triple_cinderstorm",
+			"talent_triple_rainwild",
 			"talent_triple_amber_spire",
 			"talent_triple_starfall",
 			"talent_triple_drowned_garden",
 			"talent_triple_mistwraith",
-			"talent_triple_rainwild",
-			"talent_triple_boiling_marsh",
-			"talent_triple_obsidian_geyser"
+			"talent_triple_boiling_marsh"
 		],
-		"meta_points_earned": 465,
+		"meta_points_earned": 455,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
 		},
 		"records": {
 			"best": {
-				"converge_1": 5,
-				"converge_2": 20,
-				"converge_3": 22,
+				"converge_1": 15,
+				"converge_2": 17,
+				"converge_3": 9,
 				"earth_1": 12,
-				"earth_2": 14,
-				"earth_3": 3,
-				"earth_4": 2,
+				"earth_2": 11,
+				"earth_3": 16,
+				"earth_4": 17,
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"void_1": 12,
 				"void_2": 14,
 				"void_3": 16,
 				"void_4": 17,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13,
+				"water_3": 16,
 				"water_4": 17
 			},
 			"replays": {}
 		},
 		"stats": {
-			"best_waves": 20,
-			"enemies_killed": 29575,
-			"runs_played": 31,
-			"runs_won": 23
+			"best_waves": 17,
+			"enemies_killed": 38732,
+			"runs_played": 34,
+			"runs_won": 20
 		},
 		"story": {
 			"seen": []
@@ -119,25 +115,24 @@
 		"campaign": {
 			"stars": {
 				"earth_1": 3,
-				"earth_2": 1,
+				"earth_3": 2,
+				"earth_4": 2,
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
+				"storm_2": 1,
+				"storm_3": 1,
 				"void_1": 3,
 				"void_2": 1,
 				"void_3": 1,
-				"void_4": 2,
-				"water_1": 2,
-				"water_2": 1,
+				"void_4": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3,
 				"water_4": 2
 			}
 		},
@@ -157,28 +152,29 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench",
 			"talent_triple_mire_colossus",
 			"talent_triple_hellforge",
+			"talent_triple_cinderstorm",
+			"talent_triple_rainwild",
 			"talent_triple_amber_spire",
 			"talent_triple_starfall",
 			"talent_triple_drowned_garden",
 			"talent_triple_mistwraith"
 		],
-		"meta_points_earned": 401,
+		"meta_points_earned": 414,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -186,37 +182,37 @@
 		"records": {
 			"best": {
 				"earth_1": 12,
-				"earth_2": 14,
-				"earth_3": 3,
-				"earth_4": 2,
+				"earth_2": 11,
+				"earth_3": 16,
+				"earth_4": 17,
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"void_1": 12,
 				"void_2": 14,
 				"void_3": 16,
 				"void_4": 17,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13,
+				"water_3": 16,
 				"water_4": 17
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 23962,
-			"runs_played": 27,
-			"runs_won": 21
+			"enemies_killed": 29666,
+			"runs_played": 28,
+			"runs_won": 20
 		},
 		"story": {
 			"seen": []
@@ -227,25 +223,24 @@
 		"campaign": {
 			"stars": {
 				"earth_1": 3,
-				"earth_2": 1,
+				"earth_3": 2,
+				"earth_4": 2,
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
+				"storm_2": 1,
+				"storm_3": 1,
 				"void_1": 3,
 				"void_2": 1,
 				"void_3": 1,
-				"void_4": 2,
-				"water_1": 2,
-				"water_2": 1,
+				"void_4": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3,
 				"water_4": 2
 			}
 		},
@@ -265,67 +260,68 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench",
 			"talent_triple_mire_colossus",
 			"talent_triple_hellforge",
+			"talent_triple_cinderstorm",
+			"talent_triple_rainwild",
 			"talent_triple_amber_spire",
 			"talent_triple_starfall",
 			"talent_triple_drowned_garden",
 			"talent_triple_mistwraith"
 		],
-		"meta_points_earned": 406,
+		"meta_points_earned": 429,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
 		},
 		"records": {
 			"best": {
-				"converge_1": 5,
+				"converge_1": 15,
 				"earth_1": 12,
-				"earth_2": 14,
-				"earth_3": 3,
-				"earth_4": 2,
+				"earth_2": 11,
+				"earth_3": 16,
+				"earth_4": 17,
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"void_1": 12,
 				"void_2": 14,
 				"void_3": 16,
 				"void_4": 17,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13,
+				"water_3": 16,
 				"water_4": 17
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 24482,
-			"runs_played": 29,
-			"runs_won": 21
+			"enemies_killed": 32764,
+			"runs_played": 30,
+			"runs_won": 20
 		},
 		"story": {
 			"seen": []
@@ -335,27 +331,25 @@
 	"converge_3": {
 		"campaign": {
 			"stars": {
-				"converge_2": 3,
 				"earth_1": 3,
-				"earth_2": 1,
+				"earth_3": 2,
+				"earth_4": 2,
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
+				"storm_2": 1,
+				"storm_3": 1,
 				"void_1": 3,
 				"void_2": 1,
 				"void_3": 1,
-				"void_4": 2,
-				"water_1": 2,
-				"water_2": 1,
+				"void_4": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3,
 				"water_4": 2
 			}
 		},
@@ -375,69 +369,70 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench",
 			"talent_triple_mire_colossus",
 			"talent_triple_hellforge",
+			"talent_triple_cinderstorm",
+			"talent_triple_rainwild",
 			"talent_triple_amber_spire",
 			"talent_triple_starfall",
 			"talent_triple_drowned_garden",
 			"talent_triple_mistwraith",
-			"talent_triple_rainwild"
+			"talent_triple_boiling_marsh"
 		],
-		"meta_points_earned": 431,
+		"meta_points_earned": 446,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
 		},
 		"records": {
 			"best": {
-				"converge_1": 5,
-				"converge_2": 20,
+				"converge_1": 15,
+				"converge_2": 17,
 				"earth_1": 12,
-				"earth_2": 14,
-				"earth_3": 3,
-				"earth_4": 2,
+				"earth_2": 11,
+				"earth_3": 16,
+				"earth_4": 17,
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"void_1": 12,
 				"void_2": 14,
 				"void_3": 16,
 				"void_4": 17,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13,
+				"water_3": 16,
 				"water_4": 17
 			},
 			"replays": {}
 		},
 		"stats": {
-			"best_waves": 18,
-			"enemies_killed": 26680,
-			"runs_played": 30,
-			"runs_won": 22
+			"best_waves": 17,
+			"enemies_killed": 36914,
+			"runs_played": 32,
+			"runs_won": 20
 		},
 		"story": {
 			"seen": []
@@ -448,19 +443,17 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
-				"water_1": 2,
-				"water_2": 1,
+				"storm_2": 1,
+				"storm_3": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3,
 				"water_4": 2
 			}
 		},
@@ -480,23 +473,22 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench",
 			"talent_triple_mire_colossus"
 		],
-		"meta_points_earned": 290,
+		"meta_points_earned": 272,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -506,27 +498,27 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13,
+				"water_3": 16,
 				"water_4": 17
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 17090,
-			"runs_played": 17,
-			"runs_won": 15
+			"enemies_killed": 20042,
+			"runs_played": 19,
+			"runs_won": 13
 		},
 		"story": {
 			"seen": []
@@ -538,19 +530,17 @@
 			"stars": {
 				"earth_1": 3,
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
-				"water_1": 2,
-				"water_2": 1,
+				"storm_2": 1,
+				"storm_3": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3,
 				"water_4": 2
 			}
 		},
@@ -570,24 +560,23 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench",
 			"talent_triple_mire_colossus",
 			"talent_triple_hellforge"
 		],
-		"meta_points_earned": 305,
+		"meta_points_earned": 287,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -598,27 +587,27 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13,
+				"water_3": 16,
 				"water_4": 17
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 17582,
-			"runs_played": 18,
-			"runs_won": 16
+			"enemies_killed": 20532,
+			"runs_played": 20,
+			"runs_won": 14
 		},
 		"story": {
 			"seen": []
@@ -629,21 +618,18 @@
 		"campaign": {
 			"stars": {
 				"earth_1": 3,
-				"earth_2": 1,
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
-				"water_1": 2,
-				"water_2": 1,
+				"storm_2": 1,
+				"storm_3": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3,
 				"water_4": 2
 			}
 		},
@@ -663,25 +649,24 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench",
 			"talent_triple_mire_colossus",
 			"talent_triple_hellforge",
-			"talent_triple_amber_spire"
+			"talent_triple_cinderstorm"
 		],
-		"meta_points_earned": 322,
+		"meta_points_earned": 298,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -689,31 +674,31 @@
 		"records": {
 			"best": {
 				"earth_1": 12,
-				"earth_2": 14,
+				"earth_2": 11,
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13,
+				"water_3": 16,
 				"water_4": 17
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 18274,
-			"runs_played": 19,
-			"runs_won": 17
+			"enemies_killed": 21910,
+			"runs_played": 22,
+			"runs_won": 14
 		},
 		"story": {
 			"seen": []
@@ -724,21 +709,19 @@
 		"campaign": {
 			"stars": {
 				"earth_1": 3,
-				"earth_2": 1,
+				"earth_3": 2,
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
-				"water_1": 2,
-				"water_2": 1,
+				"storm_2": 1,
+				"storm_3": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3,
 				"water_4": 2
 			}
 		},
@@ -758,25 +741,25 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench",
 			"talent_triple_mire_colossus",
 			"talent_triple_hellforge",
-			"talent_triple_amber_spire"
+			"talent_triple_cinderstorm",
+			"talent_triple_rainwild"
 		],
-		"meta_points_earned": 325,
+		"meta_points_earned": 317,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -784,32 +767,32 @@
 		"records": {
 			"best": {
 				"earth_1": 12,
-				"earth_2": 14,
-				"earth_3": 3,
+				"earth_2": 11,
+				"earth_3": 16,
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13,
+				"water_3": 16,
 				"water_4": 17
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 18582,
-			"runs_played": 21,
-			"runs_won": 17
+			"enemies_killed": 23187,
+			"runs_played": 23,
+			"runs_won": 15
 		},
 		"story": {
 			"seen": []
@@ -894,7 +877,7 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3
+				"ember_2": 1
 			}
 		},
 		"endless": {
@@ -925,7 +908,7 @@
 		},
 		"stats": {
 			"best_waves": 12,
-			"enemies_killed": 1166,
+			"enemies_killed": 1165,
 			"runs_played": 2,
 			"runs_won": 2
 		},
@@ -938,8 +921,8 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3
+				"ember_2": 1,
+				"ember_3": 2
 			}
 		},
 		"endless": {
@@ -973,7 +956,7 @@
 		},
 		"stats": {
 			"best_waves": 14,
-			"enemies_killed": 2406,
+			"enemies_killed": 2404,
 			"runs_played": 3,
 			"runs_won": 3
 		},
@@ -986,13 +969,11 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
+				"ember_2": 1,
+				"ember_3": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3
+				"storm_2": 1,
+				"storm_3": 1
 			}
 		},
 		"endless": {
@@ -1011,15 +992,14 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
-			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone"
+			"talent_hybrid_gravity_well",
+			"talent_hybrid_quagmire"
 		],
-		"meta_points_earned": 148,
+		"meta_points_earned": 130,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1029,19 +1009,19 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17
+				"storm_4": 14
 			},
 			"replays": {}
 		},
 		"stats": {
-			"best_waves": 15,
-			"enemies_killed": 8177,
-			"runs_played": 8,
-			"runs_won": 8
+			"best_waves": 14,
+			"enemies_killed": 11203,
+			"runs_played": 10,
+			"runs_won": 6
 		},
 		"story": {
 			"seen": []
@@ -1052,14 +1032,12 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3
+				"storm_2": 1,
+				"storm_3": 1
 			}
 		},
 		"endless": {
@@ -1078,16 +1056,15 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie"
 		],
-		"meta_points_earned": 163,
+		"meta_points_earned": 145,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1097,20 +1074,20 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17
+				"storm_4": 14
 			},
 			"replays": {}
 		},
 		"stats": {
-			"best_waves": 15,
-			"enemies_killed": 8625,
-			"runs_played": 9,
-			"runs_won": 9
+			"best_waves": 14,
+			"enemies_killed": 11650,
+			"runs_played": 11,
+			"runs_won": 7
 		},
 		"story": {
 			"seen": []
@@ -1121,15 +1098,13 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3
+				"storm_2": 1,
+				"storm_3": 1
 			}
 		},
 		"endless": {
@@ -1148,18 +1123,17 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss"
 		],
-		"meta_points_earned": 180,
+		"meta_points_earned": 162,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1169,21 +1143,21 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17
+				"storm_4": 14
 			},
 			"replays": {}
 		},
 		"stats": {
-			"best_waves": 15,
-			"enemies_killed": 9437,
-			"runs_played": 10,
-			"runs_won": 10
+			"best_waves": 14,
+			"enemies_killed": 12460,
+			"runs_played": 12,
+			"runs_won": 8
 		},
 		"story": {
 			"seen": []
@@ -1194,16 +1168,13 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3
+				"storm_2": 1,
+				"storm_3": 1
 			}
 		},
 		"endless": {
@@ -1222,19 +1193,17 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
-			"talent_hybrid_abyss",
-			"talent_hybrid_blightroot"
+			"talent_hybrid_abyss"
 		],
-		"meta_points_earned": 199,
+		"meta_points_earned": 175,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1244,22 +1213,22 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17
+				"storm_4": 14
 			},
 			"replays": {}
 		},
 		"stats": {
-			"best_waves": 15,
-			"enemies_killed": 10616,
-			"runs_played": 11,
-			"runs_won": 11
+			"best_waves": 14,
+			"enemies_killed": 14846,
+			"runs_played": 14,
+			"runs_won": 8
 		},
 		"story": {
 			"seen": []
@@ -1270,9 +1239,8 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3
+				"ember_2": 1,
+				"ember_3": 2
 			}
 		},
 		"endless": {
@@ -1290,10 +1258,9 @@
 			"talent_fire_flare_battery",
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
-			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well"
+			"talent_hybrid_wildfire"
 		],
-		"meta_points_earned": 74,
+		"meta_points_earned": 65,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1303,15 +1270,15 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17
+				"ember_4": 14
 			},
 			"replays": {}
 		},
 		"stats": {
-			"best_waves": 15,
-			"enemies_killed": 3882,
-			"runs_played": 4,
-			"runs_won": 4
+			"best_waves": 14,
+			"enemies_killed": 5348,
+			"runs_played": 5,
+			"runs_won": 3
 		},
 		"story": {
 			"seen": []
@@ -1322,9 +1289,8 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
+				"ember_2": 1,
+				"ember_3": 2,
 				"storm_1": 2
 			}
 		},
@@ -1344,11 +1310,10 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle"
 		],
-		"meta_points_earned": 89,
+		"meta_points_earned": 80,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1358,16 +1323,16 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"storm_1": 12
 			},
 			"replays": {}
 		},
 		"stats": {
-			"best_waves": 15,
-			"enemies_killed": 4376,
-			"runs_played": 5,
-			"runs_won": 5
+			"best_waves": 14,
+			"enemies_killed": 5838,
+			"runs_played": 6,
+			"runs_won": 4
 		},
 		"story": {
 			"seen": []
@@ -1378,11 +1343,10 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
+				"ember_2": 1,
+				"ember_3": 2,
 				"storm_1": 2,
-				"storm_2": 2
+				"storm_2": 1
 			}
 		},
 		"endless": {
@@ -1401,12 +1365,11 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm"
 		],
-		"meta_points_earned": 106,
+		"meta_points_earned": 97,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1416,17 +1379,17 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"storm_1": 12,
 				"storm_2": 14
 			},
 			"replays": {}
 		},
 		"stats": {
-			"best_waves": 15,
-			"enemies_killed": 5224,
-			"runs_played": 6,
-			"runs_won": 6
+			"best_waves": 14,
+			"enemies_killed": 6681,
+			"runs_played": 7,
+			"runs_won": 5
 		},
 		"story": {
 			"seen": []
@@ -1437,12 +1400,11 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
+				"ember_2": 1,
+				"ember_3": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2
+				"storm_2": 1,
+				"storm_3": 1
 			}
 		},
 		"endless": {
@@ -1461,14 +1423,13 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
-			"talent_hybrid_quagmire"
+			"talent_hybrid_gravity_well"
 		],
-		"meta_points_earned": 125,
+		"meta_points_earned": 116,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1478,7 +1439,7 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16
@@ -1486,10 +1447,10 @@
 			"replays": {}
 		},
 		"stats": {
-			"best_waves": 15,
-			"enemies_killed": 6605,
-			"runs_played": 7,
-			"runs_won": 7
+			"best_waves": 14,
+			"enemies_killed": 8061,
+			"runs_played": 8,
+			"runs_won": 6
 		},
 		"story": {
 			"seen": []
@@ -1500,21 +1461,20 @@
 		"campaign": {
 			"stars": {
 				"earth_1": 3,
-				"earth_2": 1,
+				"earth_3": 2,
+				"earth_4": 2,
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
-				"water_1": 2,
-				"water_2": 1,
+				"storm_2": 1,
+				"storm_3": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3,
 				"water_4": 2
 			}
 		},
@@ -1534,25 +1494,26 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench",
 			"talent_triple_mire_colossus",
 			"talent_triple_hellforge",
+			"talent_triple_cinderstorm",
+			"talent_triple_rainwild",
 			"talent_triple_amber_spire"
 		],
-		"meta_points_earned": 327,
+		"meta_points_earned": 340,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1560,33 +1521,33 @@
 		"records": {
 			"best": {
 				"earth_1": 12,
-				"earth_2": 14,
-				"earth_3": 3,
-				"earth_4": 2,
+				"earth_2": 11,
+				"earth_3": 16,
+				"earth_4": 17,
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13,
+				"water_3": 16,
 				"water_4": 17
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 18814,
-			"runs_played": 23,
-			"runs_won": 17
+			"enemies_killed": 24740,
+			"runs_played": 24,
+			"runs_won": 16
 		},
 		"story": {
 			"seen": []
@@ -1597,22 +1558,21 @@
 		"campaign": {
 			"stars": {
 				"earth_1": 3,
-				"earth_2": 1,
+				"earth_3": 2,
+				"earth_4": 2,
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
+				"storm_2": 1,
+				"storm_3": 1,
 				"void_1": 3,
-				"water_1": 2,
-				"water_2": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3,
 				"water_4": 2
 			}
 		},
@@ -1632,26 +1592,26 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench",
 			"talent_triple_mire_colossus",
 			"talent_triple_hellforge",
-			"talent_triple_amber_spire",
-			"talent_triple_starfall"
+			"talent_triple_cinderstorm",
+			"talent_triple_rainwild",
+			"talent_triple_amber_spire"
 		],
-		"meta_points_earned": 342,
+		"meta_points_earned": 355,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1659,34 +1619,34 @@
 		"records": {
 			"best": {
 				"earth_1": 12,
-				"earth_2": 14,
-				"earth_3": 3,
-				"earth_4": 2,
+				"earth_2": 11,
+				"earth_3": 16,
+				"earth_4": 17,
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"void_1": 12,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13,
+				"water_3": 16,
 				"water_4": 17
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 19580,
-			"runs_played": 24,
-			"runs_won": 18
+			"enemies_killed": 25456,
+			"runs_played": 25,
+			"runs_won": 17
 		},
 		"story": {
 			"seen": []
@@ -1697,23 +1657,22 @@
 		"campaign": {
 			"stars": {
 				"earth_1": 3,
-				"earth_2": 1,
+				"earth_3": 2,
+				"earth_4": 2,
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
+				"storm_2": 1,
+				"storm_3": 1,
 				"void_1": 3,
 				"void_2": 1,
-				"water_1": 2,
-				"water_2": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3,
 				"water_4": 2
 			}
 		},
@@ -1733,26 +1692,27 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench",
 			"talent_triple_mire_colossus",
 			"talent_triple_hellforge",
+			"talent_triple_cinderstorm",
+			"talent_triple_rainwild",
 			"talent_triple_amber_spire",
 			"talent_triple_starfall"
 		],
-		"meta_points_earned": 359,
+		"meta_points_earned": 372,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1760,35 +1720,35 @@
 		"records": {
 			"best": {
 				"earth_1": 12,
-				"earth_2": 14,
-				"earth_3": 3,
-				"earth_4": 2,
+				"earth_2": 11,
+				"earth_3": 16,
+				"earth_4": 17,
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"void_1": 12,
 				"void_2": 14,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13,
+				"water_3": 16,
 				"water_4": 17
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 20423,
-			"runs_played": 25,
-			"runs_won": 19
+			"enemies_killed": 26274,
+			"runs_played": 26,
+			"runs_won": 18
 		},
 		"story": {
 			"seen": []
@@ -1799,24 +1759,23 @@
 		"campaign": {
 			"stars": {
 				"earth_1": 3,
-				"earth_2": 1,
+				"earth_3": 2,
+				"earth_4": 2,
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
+				"storm_2": 1,
+				"storm_3": 1,
 				"void_1": 3,
 				"void_2": 1,
 				"void_3": 1,
-				"water_1": 2,
-				"water_2": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3,
 				"water_4": 2
 			}
 		},
@@ -1836,27 +1795,28 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench",
 			"talent_triple_mire_colossus",
 			"talent_triple_hellforge",
+			"talent_triple_cinderstorm",
+			"talent_triple_rainwild",
 			"talent_triple_amber_spire",
 			"talent_triple_starfall",
 			"talent_triple_drowned_garden"
 		],
-		"meta_points_earned": 378,
+		"meta_points_earned": 391,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1864,36 +1824,36 @@
 		"records": {
 			"best": {
 				"earth_1": 12,
-				"earth_2": 14,
-				"earth_3": 3,
-				"earth_4": 2,
+				"earth_2": 11,
+				"earth_3": 16,
+				"earth_4": 17,
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"void_1": 12,
 				"void_2": 14,
 				"void_3": 16,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13,
+				"water_3": 16,
 				"water_4": 17
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 22070,
-			"runs_played": 26,
-			"runs_won": 20
+			"enemies_killed": 27723,
+			"runs_played": 27,
+			"runs_won": 19
 		},
 		"story": {
 			"seen": []
@@ -1904,17 +1864,14 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3
+				"storm_2": 1,
+				"storm_3": 1
 			}
 		},
 		"endless": {
@@ -1933,20 +1890,19 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm"
+			"talent_hybrid_lodestone"
 		],
-		"meta_points_earned": 222,
+		"meta_points_earned": 198,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -1956,23 +1912,23 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17
+				"storm_4": 14
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 12275,
-			"runs_played": 12,
-			"runs_won": 12
+			"enemies_killed": 16316,
+			"runs_played": 15,
+			"runs_won": 9
 		},
 		"story": {
 			"seen": []
@@ -1983,18 +1939,15 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
-				"water_1": 2
+				"storm_2": 1,
+				"storm_3": 1,
+				"water_1": 3
 			}
 		},
 		"endless": {
@@ -2013,21 +1966,19 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
-			"talent_hybrid_steam"
+			"talent_hybrid_lodestone"
 		],
-		"meta_points_earned": 237,
+		"meta_points_earned": 213,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -2037,24 +1988,24 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"water_1": 12
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 12731,
-			"runs_played": 13,
-			"runs_won": 13
+			"enemies_killed": 16783,
+			"runs_played": 16,
+			"runs_won": 10
 		},
 		"story": {
 			"seen": []
@@ -2065,19 +2016,16 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
-				"water_1": 2,
-				"water_2": 1
+				"storm_2": 1,
+				"storm_3": 1,
+				"water_1": 3,
+				"water_2": 2
 			}
 		},
 		"endless": {
@@ -2096,21 +2044,20 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam"
 		],
-		"meta_points_earned": 254,
+		"meta_points_earned": 230,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -2120,15 +2067,15 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"water_1": 12,
 				"water_2": 14
 			},
@@ -2136,9 +2083,9 @@
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 13480,
-			"runs_played": 14,
-			"runs_won": 14
+			"enemies_killed": 17531,
+			"runs_played": 17,
+			"runs_won": 11
 		},
 		"story": {
 			"seen": []
@@ -2149,19 +2096,17 @@
 		"campaign": {
 			"stars": {
 				"ember_1": 2,
-				"ember_2": 3,
-				"ember_3": 3,
-				"ember_4": 3,
-				"nature_1": 3,
+				"ember_2": 1,
+				"ember_3": 2,
+				"nature_1": 2,
 				"nature_2": 1,
-				"nature_3": 1,
-				"nature_4": 1,
+				"nature_4": 2,
 				"storm_1": 2,
-				"storm_2": 2,
-				"storm_3": 2,
-				"storm_4": 3,
-				"water_1": 2,
-				"water_2": 1
+				"storm_2": 1,
+				"storm_3": 1,
+				"water_1": 3,
+				"water_2": 2,
+				"water_3": 3
 			}
 		},
 		"endless": {
@@ -2180,22 +2125,21 @@
 			"talent_hybrid_magma",
 			"talent_hybrid_bog",
 			"talent_hybrid_wildfire",
-			"talent_hybrid_gravity_well",
 			"talent_hybrid_thornstorm",
 			"talent_storm_skyneedle",
 			"talent_hybrid_riftstorm",
 			"talent_hybrid_squall",
+			"talent_hybrid_gravity_well",
 			"talent_hybrid_quagmire",
-			"talent_hybrid_lodestone",
 			"talent_nature_eyrie",
 			"talent_hybrid_ironbark",
 			"talent_hybrid_abyss",
 			"talent_hybrid_blightroot",
-			"talent_triple_cinderstorm",
+			"talent_hybrid_lodestone",
 			"talent_hybrid_steam",
 			"talent_triple_abyssal_trench"
 		],
-		"meta_points_earned": 267,
+		"meta_points_earned": 249,
 		"playthrough": {
 			"id": 1,
 			"name": "Game 1"
@@ -2205,26 +2149,26 @@
 				"ember_1": 12,
 				"ember_2": 14,
 				"ember_3": 16,
-				"ember_4": 17,
+				"ember_4": 14,
 				"nature_1": 12,
 				"nature_2": 14,
-				"nature_3": 16,
+				"nature_3": 13,
 				"nature_4": 17,
 				"storm_1": 12,
 				"storm_2": 14,
 				"storm_3": 16,
-				"storm_4": 17,
+				"storm_4": 14,
 				"water_1": 12,
 				"water_2": 14,
-				"water_3": 13
+				"water_3": 16
 			},
 			"replays": {}
 		},
 		"stats": {
 			"best_waves": 15,
-			"enemies_killed": 15678,
-			"runs_played": 16,
-			"runs_won": 14
+			"enemies_killed": 18635,
+			"runs_played": 18,
+			"runs_won": 12
 		},
 		"story": {
 			"seen": []
