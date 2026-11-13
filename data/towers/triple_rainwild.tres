@@ -61,7 +61,6 @@ id = &"triple_rainwild"
 display_name = "Rainwild"
 description = "A living storm over the jungle: chilling rain, lightning and venom in every bolt."
 elements = Array[StringName]([&"storm", &"nature", &"water"])
-requires_nodes = Array[StringName]([&"storm_core", &"nature_core", &"water_core"])
 cost = 300
 damage = 16.0
 attacks_per_second = 1.5

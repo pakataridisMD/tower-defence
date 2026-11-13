@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("2_node")
 id = &"water_entry"
-display_name = "Spring"
-description = "Unlocks the Wellspring tower and the Tidal Wave skill."
+display_name = "Water I"
+description = "Spring. Opens the Wellspring tower and the Tidal Wave skill."
 kind = 1
 region = &"water"
 cost = 1
-position = Vector2(0, 130)
+position = Vector2(200, -230)
 links = Array[StringName]([&"start"])
 unlocks_towers = Array[StringName]([&"water_wellspring"])

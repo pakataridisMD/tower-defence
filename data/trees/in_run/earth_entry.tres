@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource("2_node")
 id = &"earth_entry"
-display_name = "Bedrock"
-description = "Unlocks the Monolith tower and the Earthquake skill."
+display_name = "Earth I"
+description = "Bedrock. Opens the Monolith tower and the Earthquake skill."
 kind = 1
 region = &"earth"
 cost = 1
-position = Vector2(-113, 65)
+position = Vector2(600, -230)
 links = Array[StringName]([&"start"])
 unlocks_towers = Array[StringName]([&"earth_monolith"])

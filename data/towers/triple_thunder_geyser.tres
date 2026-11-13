@@ -60,7 +60,6 @@ id = &"triple_thunder_geyser"
 display_name = "Thunder Geyser"
 description = "Superheated steam charged with lightning: scalding chains that slow everything they touch."
 elements = Array[StringName]([&"fire", &"storm", &"water"])
-requires_nodes = Array[StringName]([&"fire_core", &"storm_core", &"water_core"])
 cost = 340
 damage = 22.0
 attacks_per_second = 1.1

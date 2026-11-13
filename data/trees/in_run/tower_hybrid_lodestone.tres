@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"tower_hybrid_lodestone"
+display_name = "Lodestone"
+description = "Unlocks the Lodestone tower (Storm + Earth). Needs Storm IV and Earth IV."
+kind = 4
+cost = 3
+position = Vector2(0, -1040)
+requires = Array[StringName]([&"storm_notable", &"earth_notable"])
+unlocks_towers = Array[StringName]([&"hybrid_lodestone"])

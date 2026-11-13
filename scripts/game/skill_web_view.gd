@@ -57,7 +57,7 @@ class Region:
 var tree: TreeState
 ## Keyed by the region id that nodes carry.
 var regions: Dictionary[StringName, Region] = {}
-var title := "Skill web"
+var title := "Skill tree"
 ## Short text under the title, such as how refunds work.
 var subtitle := ""
 ## Word for the points this tree spends, as in "3 points to spend".
@@ -73,6 +73,18 @@ var taken_text := "Taken."
 var navigable := false
 ## Dotted circles drawn around the start, in tree units.
 var ring_radii: Array[float] = [130.0, 255.0, 380.0]
+## Dotted lines drawn across the tree at these heights (tree units), each with its name at the left:
+## the element levels of the in-game skill tree.
+var level_lines: Array[float] = []
+var level_names: Array[String] = []
+## Names each region under the foot of its column instead of beside its farthest node. For a tree
+## laid out in columns that climb.
+var column_labels := false
+## Where the start node sits in the view when the tree is first shown, as a share of the view area:
+## the middle for a wheel, near the bottom for a tree that climbs.
+var start_anchor := Vector2(0.5, 0.5)
+## Zoom when the tree is first shown.
+var start_zoom := 1.0
 ## Clicking a node further out takes the nodes on the way too (RunSim.allocate_node does), so the
 ## tooltip offers that.
 var takes_paths := false
@@ -212,9 +224,10 @@ func pan_by(offset: Vector2) -> void:
 func reset_view() -> void:
 	if tree == null:
 		return
-	_scale = clampf(1.0, _min_zoom(), ZOOM_MAX)
+	_scale = clampf(start_zoom, _min_zoom(), ZOOM_MAX)
 	_art = _art_for(_scale)
-	_origin = _view_area().get_center()
+	var area := _view_area()
+	_origin = area.position + area.size * start_anchor
 	_clamp_origin()
 	_place_region_labels()
 	queue_redraw()
@@ -445,6 +458,18 @@ func _place_region_labels() -> void:
 		var best: TreeNodeData = farthest.get(data.region)
 		if best == null or data.position.length() > best.position.length():
 			farthest[data.region] = data
+	if column_labels:
+		# Under the foot of each column, centred on it.
+		for region_id in farthest:
+			var foot: TreeNodeData = null
+			for id in tree.graph.ids():
+				var data := tree.graph.node(id)
+				if data.region == region_id and (foot == null or data.position.y > foot.position.y):
+					foot = data
+			var text_width := _font.get_string_size(regions[region_id].display_name, HORIZONTAL_ALIGNMENT_LEFT, -1,
+					LABEL_FONT_SIZE).x + EMBLEM_GAP
+			_label_spots[region_id] = foot.position + Vector2(-text_width * 0.5, _radius(foot) + 34.0) / _scale
+		return
 	for region_id in farthest:
 		var data := farthest[region_id]
 		var text_width := _font.get_string_size(regions[region_id].display_name, HORIZONTAL_ALIGNMENT_LEFT, -1,
@@ -525,8 +550,8 @@ func _colors(data: TreeNodeData) -> Array[Color]:
 	elif regions.has(data.region):
 		result.append(regions[data.region].color)
 	else:
-		# Bridges take the colours of the regions they join.
-		for other in tree.graph.neighbours(data.id):
+		# Bridges and combination nodes take the colours of the regions they join.
+		for other in tree.graph.neighbours(data.id) + tree.graph.requirements(data.id):
 			var neighbour := tree.graph.node(other)
 			if regions.has(neighbour.region) and not result.has(regions[neighbour.region].color):
 				result.append(regions[neighbour.region].color)
@@ -545,6 +570,7 @@ func _draw() -> void:
 		return
 	_draw_auras()
 	_draw_rings()
+	_draw_levels()
 	_draw_stars()
 	var path: Array[StringName] = []
 	if not _hovered.is_empty():
@@ -659,6 +685,25 @@ func _draw_rings() -> void:
 			draw_rect(Rect2(at, Vector2(2, 2)), Color(0.6, 0.66, 0.9, 0.09 if i % 4 else 0.16))
 
 
+## The level lines: a dotted line across the tree at each height, named at its left end. The name
+## stays on screen when the tree is panned sideways.
+func _draw_levels() -> void:
+	var left := _to_screen(Vector2(_bounds.position.x, 0.0)).x - 150.0
+	var right := _to_screen(Vector2(_bounds.end.x, 0.0)).x + 150.0
+	for i in level_lines.size():
+		var y := _to_screen(Vector2(0.0, level_lines[i])).y
+		if y < HEADER_BAND or y > size.y:
+			continue
+		var x := maxf(left, 0.0)
+		while x < minf(right, size.x):
+			draw_rect(Rect2(_snap(Vector2(x, y), 2.0), Vector2(6, 2)), Color(0.6, 0.66, 0.9, 0.13))
+			x += 16.0
+		if i < level_names.size():
+			var at := Vector2(maxf(left, 18.0), y - 8.0)
+			draw_string_outline(_font, at, level_names[i], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, 6, BACKDROP)
+			draw_string(_font, at, level_names[i], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color(0.75, 0.8, 0.95, 0.75))
+
+
 func _draw_stars() -> void:
 	var sparkle := TreeArt.texture("sparkle")
 	for star in _stars:
@@ -701,8 +746,29 @@ func _draw_links(path: Array[StringName], view: Rect2) -> void:
 			else:
 				draw_line(a, b, LINK_NEAR if near_taken or far_taken else LINK_OPEN, width)
 	for i in range(1, path.size()):
-		draw_dashed_line(_snap(screen_position(path[i - 1])), _snap(screen_position(path[i])), LINK_PATH, width * 2.0,
-				10.0)
+		# The way to a combination node climbs several columns: only its linked steps are drawn.
+		if tree.graph.neighbours(path[i]).has(path[i - 1]):
+			draw_dashed_line(_snap(screen_position(path[i - 1])), _snap(screen_position(path[i])), LINK_PATH,
+					width * 2.0, 10.0)
+	_draw_requirement_lines(width)
+
+
+## Lines from the hovered combination node to the levels it needs, or from a hovered level to the
+## combination nodes that need it. They show only on hover, so the tree stays readable.
+func _draw_requirement_lines(width: float) -> void:
+	if _hovered.is_empty():
+		return
+	var pairs: Array[Array] = []
+	for other in tree.graph.requirements(_hovered):
+		pairs.append([_hovered, other])
+	for other in tree.graph.dependents(_hovered):
+		pairs.append([other, _hovered])
+	for pair: Array in pairs:
+		var level := tree.graph.node(pair[1])
+		var met := tree.is_allocated(pair[1])
+		var color := Color(_node_color(level).lightened(0.25), 0.95 if met else 0.6)
+		draw_dashed_line(_snap(screen_position(pair[0])), _snap(screen_position(pair[1])), color,
+				width * (2.0 if met else 1.0), 6.0)
 
 
 ## Specks of light running outward along a taken link.
@@ -785,6 +851,7 @@ func _draw_node(data: TreeNodeData) -> void:
 		_draw_art_centered(TreeArt.icon(TreeArt.node_icon(data)), at, Color(mark, mark, mark))
 	if locked or closed:
 		_draw_art(TreeArt.icon(&"lock"), at + Vector2(half - 9.0 * _art, half - 10.0 * _art))
+	_draw_pips(data, at + Vector2(0.0, half + 3.0 * _art))
 	if taken:
 		var glint := pow(maxf(0.0, sin(_time * 1.3 + seed * 40.0)), 14.0)
 		if glint > 0.05:
@@ -794,6 +861,23 @@ func _draw_node(data: TreeNodeData) -> void:
 
 
 ## The gem's colour: the region's colour, darker and greyer when out of reach.
+## A row of small squares under a combination node, one per level it needs, in that level's
+## element colour: bright once the level is taken, dim until then.
+func _draw_pips(data: TreeNodeData, at: Vector2) -> void:
+	var needs := tree.graph.requirements(data.id)
+	if needs.is_empty():
+		return
+	var side := 3.0 * _art
+	var gap := 1.0 * _art
+	var x := at.x - (needs.size() * side + (needs.size() - 1) * gap) * 0.5
+	for other in needs:
+		var color := _node_color(tree.graph.node(other))
+		var box := Rect2(_snap(Vector2(x, at.y)), Vector2(side, side))
+		draw_rect(box.grow(_art), LINK_GROOVE)
+		draw_rect(box, color.lightened(0.15) if tree.is_allocated(other) else color.darkened(0.55))
+		x += side + gap
+
+
 static func _gem_tint(color: Color, lit: float) -> Color:
 	var grey := Color(color.get_luminance(), color.get_luminance(), color.get_luminance())
 	var tint := color.lerp(grey, clampf((0.75 - lit) * 0.8, 0.0, 0.45)) * lit
@@ -848,7 +932,7 @@ func _draw_tooltip(data: TreeNodeData, path: Array[StringName]) -> void:
 	var at := node_at + Vector2(_radius(data) + 18.0, -20.0)
 	if at.x + width > size.x - 16.0:
 		at.x = node_at.x - _radius(data) - 18.0 - width
-	var height := 56.0 + 26.0 * _wrapped_line_count(lines, text_width - 32.0)
+	var height := 56.0 + _text_height(lines, text_width - 32.0)
 	if picture != null:
 		height = maxf(height, picture.get_height() * TreeArt.SCALE + 36.0)
 	at.y = clampf(at.y, 16.0, size.y - height - 16.0)
@@ -863,7 +947,7 @@ func _draw_tooltip(data: TreeNodeData, path: Array[StringName]) -> void:
 		var color := UiStyle.TEXT if i == 0 else UiStyle.GOLD
 		draw_multiline_string(_font, Vector2(at.x + 16, y), lines[i], HORIZONTAL_ALIGNMENT_LEFT, text_width - 32.0, 19,
 				-1, color)
-		y += 26.0 * _wrapped_line_count([lines[i]], text_width - 32.0)
+		y += _text_height([lines[i]], text_width - 32.0)
 	if picture != null:
 		var picture_size := picture.get_size() * TreeArt.SCALE
 		var spot := Vector2(at.x + text_width, at.y + (height - picture_size.y) * 0.5)
@@ -885,6 +969,14 @@ func _status(data: TreeNodeData, path: Array[StringName]) -> String:
 		return "Closed: you took %s instead. Refund it to choose this." % tree.graph.node(closer).display_name
 	if tree.can_allocate(data.id):
 		return "Click to take (%s)." % _points(data.cost)
+	var needs := tree.graph.requirements(data.id)
+	if not needs.is_empty() and (path.is_empty() or not takes_paths):
+		var missing: PackedStringArray = []
+		for other in needs:
+			if not tree.is_allocated(other):
+				missing.append(tree.graph.node(other).display_name)
+		if not missing.is_empty():
+			return "Needs %s first." % " and ".join(missing)
 	if path.size() > 2:
 		var total := 0
 		for i in range(1, path.size()):
@@ -906,9 +998,9 @@ func _points(amount: int) -> String:
 	return "%d %s%s" % [amount, points_noun, "" if amount == 1 else "s"]
 
 
-func _wrapped_line_count(lines: Array[String], width: float) -> int:
-	var total := 0
+## How tall the paragraphs are once each is wrapped to the width, with a gap after each.
+func _text_height(lines: Array[String], width: float) -> float:
+	var total := 0.0
 	for line in lines:
-		var text_width := _font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, 19).x
-		total += maxi(1, ceili(text_width / width))
+		total += _font.get_multiline_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, width, 19).y + 8.0
 	return total

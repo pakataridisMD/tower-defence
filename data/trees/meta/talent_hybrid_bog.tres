@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_hybrid_bog"
 display_name = "Bog"
-description = "Adds the Bog (Nature + Water) to your towers. In a run, take the Bog bridge in the skill web to build it."
-kind = 1
-region = &"duals"
-cost = 8
-position = Vector2(0, 250)
-links = Array[StringName]([&"meta_start"])
+description = "Adds the Bog (Nature + Water) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Nature II and Water II."
+kind = 3
+region = &"forge"
+cost = 5
+position = Vector2(0, 668)
+links = Array[StringName]([&"starpath_90"])
 unlocks_towers = Array[StringName]([&"hybrid_bog"])

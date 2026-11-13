@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"damage"
+kind = 1
+value = 0.1
+required_tags = Array[StringName]([&"water", &"hybrid"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"water_b4_d"
+display_name = "Tide Bond"
+description = "Pick up to two of these four. Dual and triple towers with Water in them deal 10% more damage."
+kind = 2
+region = &"water"
+cost = 3
+position = Vector2(338, -1175)
+links = Array[StringName]([&"water_notable", &"water_level5"])
+choice_group = &"water_b4"
+choice_limit = 2
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

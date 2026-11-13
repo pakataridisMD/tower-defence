@@ -13,11 +13,10 @@ required_tags = Array[StringName]([&"earth"])
 [resource]
 script = ExtResource("2_node")
 id = &"earth_core"
-display_name = "Fault Line"
-description = "Shatter from earth towers is 15% stronger."
+display_name = "Earth III"
+description = "Earth level III. Needs one pick from the branch below it. Needed for the dual towers Ironbark (with Nature III) and Magma Forge (with Fire III). Needed for every triple tower with Earth in it. Shatter from earth towers is 15% stronger."
 kind = 3
 region = &"earth"
 cost = 2
-position = Vector2(-333, 192)
-links = Array[StringName]([&"earth_c_300", &"earth_r2_385"])
+position = Vector2(600, -770)
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

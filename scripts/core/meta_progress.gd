@@ -8,18 +8,37 @@ extends RefCounted
 ## unlocks_* list stays locked until one of those meta nodes is taken. Anything no meta node lists
 ## is open from the start.
 
-## Display names and colours of the meta tree branches, keyed by the nodes' region. Every talent
-## unlocks one tower: the long-range towers, the duals and the triples. The tree itself is written
-## by tools/meta/gen_meta_tree.py.
+## Display names and colours of the meta tree branches, keyed by the nodes' region: four inner
+## wings, the Starpath ring road between them and one constellation per element on the outer ring
+## (in the element's own colour), and the Forge: the talents that add a tower to what runs can
+## unlock, spread along those paths. The tree itself is written by tools/meta/gen_meta_tree.py.
 const BRANCH_NAMES: Dictionary[StringName, String] = {
-	&"longshots": "Long-range towers",
-	&"duals": "Dual towers",
-	&"triples": "Triple towers",
+	&"arsenal": "Arsenal",
+	&"command": "Command",
+	&"expeditions": "Expeditions",
+	&"mastery": "Mastery",
+	&"starpath": "Starpath",
+	&"forge": "Forge",
+	&"fire": "Fire",
+	&"storm": "Storm",
+	&"nature": "Nature",
+	&"water": "Water",
+	&"earth": "Earth",
+	&"void": "Void",
 }
 const BRANCH_COLORS: Dictionary[StringName, Color] = {
-	&"longshots": Color("ef6f6c"),
-	&"duals": Color("4cc9f0"),
-	&"triples": Color("b388eb"),
+	&"arsenal": Color("ef6f6c"),
+	&"command": Color("f4c95d"),
+	&"expeditions": Color("4cc9f0"),
+	&"mastery": Color("b388eb"),
+	&"starpath": Color("c9d3ee"),
+	&"forge": Color("2ec4b6"),
+	&"fire": Color("e4572e"),
+	&"storm": Color("f2c14e"),
+	&"nature": Color("5bb450"),
+	&"water": Color("2e86de"),
+	&"earth": Color("a0785a"),
+	&"void": Color("8e5cd9"),
 }
 
 ## Meta points are paid for records, not for playing: each campaign stage and each skirmish map
@@ -58,8 +77,6 @@ func _init(p_registry: Node, p_profile: PlayerProfile) -> void:
 	if profile.needs_records:
 		_rebuild_records()
 	tree = TreeState.new(TreeGraph.new(registry.meta_tree_nodes), profile.meta_points_earned)
-	# Every talent can be bought from the very start: its links only show how the towers relate.
-	tree.free_pick = true
 	tree.restore(profile.meta_nodes)
 	selected_map = profile.last_map
 	selected_difficulty = profile.last_difficulty
@@ -76,6 +93,14 @@ func points() -> int:
 
 func allocate(id: StringName) -> bool:
 	if not tree.allocate(id):
+		return false
+	_sync_profile()
+	return true
+
+
+## Takes a talent together with the talents on the way to it, when the points cover them all.
+func allocate_path(id: StringName) -> bool:
+	if tree.allocate_path(id).is_empty():
 		return false
 	_sync_profile()
 	return true
@@ -105,20 +130,22 @@ func is_difficulty_unlocked(id: StringName) -> bool:
 	return registry.difficulties.has(id) and _is_open(&"unlocks_difficulties", id)
 
 
-## In-run web nodes that no taken meta node has unlocked yet, and the web's pure tower nodes (its
-## bridges) whose every tower is still locked in the Talents tree, so the web shows them as locked.
+## Skill tree nodes that no taken meta node has unlocked yet: the keystones a talent lists
+## (unlocks_nodes), and the node of every dual or triple tower whose Forge talent is not taken.
 func locked_in_run_nodes() -> Array[StringName]:
 	var unlocked := _listed(&"unlocks_nodes", true)
 	var result: Array[StringName] = []
 	for id in _listed(&"unlocks_nodes", false):
 		if not unlocked.has(id):
 			result.append(id)
-	var towers := locked_towers()
+	var shut := locked_towers()
 	for node_data: TreeNodeData in registry.in_run_tree_nodes:
-		if node_data.unlocks_towers.is_empty() or not node_data.modifiers.is_empty() or result.has(node_data.id):
+		if node_data.requires.is_empty() or result.has(node_data.id):
 			continue
-		if node_data.unlocks_towers.all(func(tower_id: StringName) -> bool: return towers.has(tower_id)):
-			result.append(node_data.id)
+		for tower_id in node_data.unlocks_towers:
+			if shut.has(tower_id):
+				result.append(node_data.id)
+				break
 	return result
 
 
@@ -367,8 +394,8 @@ func stage_config(stage_id: StringName) -> RunConfig:
 	return config
 
 
-## Skill web nodes a stage closes: every node of an element it does not allow, and the bridges and
-## keystones next to one.
+## Skill tree nodes a stage closes: every node of an element it does not allow, the keystones
+## above one and the dual and triple towers that need one.
 func closed_nodes(stage: StageData) -> Array[StringName]:
 	var result: Array[StringName] = []
 	if stage.allowed_elements.is_empty():
@@ -381,7 +408,7 @@ func closed_nodes(stage: StageData) -> Array[StringName]:
 			continue
 		var shut: bool = closed.call(node_data)
 		if not shut and node_data.region.is_empty():
-			for other in graph.neighbours(node_data.id):
+			for other in graph.neighbours(node_data.id) + graph.requirements(node_data.id):
 				if closed.call(graph.node(other)):
 					shut = true
 					break

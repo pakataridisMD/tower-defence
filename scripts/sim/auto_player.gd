@@ -7,10 +7,10 @@ extends RefCounted
 ## the --autoplay flag to record footage without a human.
 
 const DEFAULT_NODES: Array[StringName] = [
-	&"fire_entry", &"storm_entry", &"fire_cw", &"storm_ccw", &"bridge_plasma",
-	&"fire_core", &"storm_core", &"fire_notable", &"storm_cw", &"storm_notable",
-	&"nature_entry", &"nature_ccw", &"bridge_thornstorm", &"fire_ccw",
-	&"nature_core", &"nature_notable", &"nature_cw",
+	&"fire_entry", &"storm_entry", &"fire_level2", &"storm_level2", &"tower_hybrid_plasma", &"fire_core",
+	&"storm_core", &"fire_b2_b", &"storm_b2_b", &"fire_notable", &"nature_entry", &"nature_level2",
+	&"tower_hybrid_thornstorm", &"storm_notable", &"nature_core", &"fire_level5", &"storm_level5", &"fire_b4_b",
+	&"storm_b4_b", &"nature_notable", &"fire_level6", &"storm_level6", &"nature_level5", &"nature_level6",
 ]
 const DEFAULT_TOWERS: Array[StringName] = [
 	&"hybrid_plasma", &"fire_brazier", &"storm_spire", &"hybrid_thornstorm", &"nature_thornbush",
@@ -153,16 +153,22 @@ static func plan_for_elements(config: RunConfig, home: StringName) -> Array:
 	var h := ids[0]
 	var n := ids[1]
 	var p := ids[2]
-	var nodes: Array[StringName] = [
-		StringName("%s_entry" % h), StringName("%s_entry" % n), StringName("%s_cw" % h), StringName("%s_ccw" % n),
-		_bridge(config, h, n), StringName("%s_core" % h), StringName("%s_core" % n), StringName("%s_notable" % h),
-		StringName("%s_ccw" % h), StringName("%s_entry" % p), StringName("%s_cw" % p), _bridge(config, p, h),
-		StringName("%s_cw" % n), StringName("%s_notable" % n), StringName("%s_core" % p), StringName("%s_notable" % p),
-		StringName("%s_ccw" % p),
-	]
+	# Level I and II of the home element and its neighbour first, and their dual tower's node. Then
+	# level III and a second pick from the branches of four, then the third element (and its dual
+	# with the home element) and the higher levels.
+	var first := _hybrid(config, h, n)
+	var second := _hybrid(config, p, h)
+	var nodes: Array[StringName] = []
+	for step: Array in [[h, "entry"], [n, "entry"], [h, "level2"], [n, "level2"], [first], [h, "core"], [n, "core"],
+			[h, "b2_b"], [n, "b2_b"], [h, "notable"], [p, "entry"], [p, "level2"], [second], [n, "notable"],
+			[p, "core"], [h, "level5"], [n, "level5"], [h, "b4_b"], [n, "b4_b"], [p, "notable"], [h, "level6"],
+			[n, "level6"], [p, "level5"], [p, "level6"]]:
+		if step.size() == 2:
+			nodes.append(StringName("%s_%s" % step))
+		elif not step[0].is_empty():
+			nodes.append(StringName("tower_%s" % step[0]))
 	var towers: Array[StringName] = []
-	for pair: Array in [[h, n], [p, h]]:
-		var hybrid := _hybrid(config, pair[0], pair[1])
+	for hybrid: StringName in [first, second]:
 		if not hybrid.is_empty():
 			towers.append(hybrid)
 	var bases: Array[TowerData] = []
@@ -184,19 +190,10 @@ static func value_for_gold(tower: TowerData) -> float:
 	return (tower.damage * tower.attacks_per_second * hits + dot) / float(tower.cost)
 
 
-## The bridge node between two neighbouring elements' regions, or an empty id.
-static func _bridge(config: RunConfig, a: StringName, b: StringName) -> StringName:
-	var hybrid := _hybrid(config, a, b)
-	for node_data in config.tree_nodes:
-		if node_data.kind == TreeNodeData.Kind.BRIDGE and node_data.unlocks_towers.has(hybrid):
-			return node_data.id
-	return &""
-
-
-## The hybrid tower of two elements unlocked by a bridge, or an empty id.
+## The dual tower of two neighbouring elements, or an empty id.
 static func _hybrid(config: RunConfig, a: StringName, b: StringName) -> StringName:
 	for tower: TowerData in config.towers.values():
-		if tower.is_hybrid() and tower.elements.has(a) and tower.elements.has(b) and tower.requires_nodes.is_empty():
+		if tower.is_dual() and tower.elements.has(a) and tower.elements.has(b):
 			return tower.id
 	return &""
 

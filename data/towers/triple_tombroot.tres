@@ -67,7 +67,6 @@ id = &"triple_tombroot"
 display_name = "Tombroot"
 description = "Roots through a graveyard: heavy cursed thorns that shatter armour and feed on the dead."
 elements = Array[StringName]([&"nature", &"earth", &"void"])
-requires_nodes = Array[StringName]([&"nature_core", &"earth_core", &"void_core"])
 cost = 340
 damage = 46.0
 attacks_per_second = 0.7

@@ -13,11 +13,10 @@ required_tags = Array[StringName]([&"nature"])
 [resource]
 script = ExtResource("2_node")
 id = &"nature_core"
-display_name = "Toxic Sap"
-description = "Poison from nature towers deals 8% more damage."
+display_name = "Nature III"
+description = "Nature level III. Needs one pick from the branch below it. Opens the Eyrie tower. Needed for the dual towers Ironbark (with Earth III) and Wildfire (with Fire III). Needed for every triple tower with Nature in it. Poison from nature towers deals 8% more damage."
 kind = 3
 region = &"nature"
 cost = 2
-position = Vector2(333, 192)
-links = Array[StringName]([&"nature_c_300", &"nature_r2_385"])
+position = Vector2(-200, -770)
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

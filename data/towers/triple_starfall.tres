@@ -60,7 +60,6 @@ id = &"triple_starfall"
 display_name = "Starfall"
 description = "Pulls burning stars from the void: cursed chains of fire, and an aura that empowers every tower nearby."
 elements = Array[StringName]([&"void", &"fire", &"storm"])
-requires_nodes = Array[StringName]([&"void_core", &"fire_core", &"storm_core"])
 cost = 300
 damage = 18.0
 attacks_per_second = 1.2

@@ -65,7 +65,6 @@ id = &"triple_tidal_dynamo"
 display_name = "Tidal Dynamo"
 description = "A tide-driven engine: surging chains that slow, stun and hurl enemies back."
 elements = Array[StringName]([&"storm", &"water", &"earth"])
-requires_nodes = Array[StringName]([&"storm_core", &"water_core", &"earth_core"])
 cost = 340
 damage = 24.0
 attacks_per_second = 1.0

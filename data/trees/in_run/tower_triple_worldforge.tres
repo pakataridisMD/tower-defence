@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"tower_triple_worldforge"
+display_name = "Worldforge"
+description = "Unlocks the Worldforge tower (Fire + Nature + Earth). Needs Fire III, Nature III and Earth III."
+kind = 4
+cost = 3
+position = Vector2(-355, -725)
+requires = Array[StringName]([&"fire_core", &"nature_core", &"earth_core"])
+unlocks_towers = Array[StringName]([&"triple_worldforge"])

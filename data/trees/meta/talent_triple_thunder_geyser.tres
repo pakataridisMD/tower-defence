@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_triple_thunder_geyser"
 display_name = "Thunder Geyser"
-description = "Adds the Thunder Geyser (Fire + Storm + Water) to your towers. In a run, take Stoked Coals, Gathering Storm and Deep Water in the skill web to build it."
-kind = 5
-region = &"triples"
-cost = 24
-position = Vector2(922, 230)
+description = "Adds the Thunder Geyser (Fire + Storm + Water) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Fire III, Storm III and Water III."
+kind = 3
+region = &"forge"
+cost = 12
+position = Vector2(1228, 585)
 links = Array[StringName]([&"talent_hybrid_steam"])
 unlocks_towers = Array[StringName]([&"triple_thunder_geyser"])

@@ -13,11 +13,10 @@ required_tags = Array[StringName]([&"void"])
 [resource]
 script = ExtResource("2_node")
 id = &"void_core"
-display_name = "Hungry Dark"
-description = "Void towers attack 6% faster."
+display_name = "Void III"
+description = "Void level III. Needs one pick from the branch below it. Needed for the dual towers Abyss (with Water III) and Riftstorm (with Storm III). Needed for every triple tower with Void in it. Void towers attack 6% faster."
 kind = 3
 region = &"void"
 cost = 2
-position = Vector2(-333, -193)
-links = Array[StringName]([&"void_c_300", &"void_r2_385"])
+position = Vector2(1000, -770)
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

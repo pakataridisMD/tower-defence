@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_triple_mire_colossus"
 display_name = "Mire Colossus"
-description = "Adds the Mire Colossus (Nature + Water + Earth) to your towers. In a run, take Toxic Sap, Deep Water and Fault Line in the skill web to build it."
+description = "Adds the Mire Colossus (Nature + Water + Earth) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Nature III, Water III and Earth III."
 kind = 3
-region = &"triples"
-cost = 20
-position = Vector2(-350, 606)
-links = Array[StringName]([&"talent_hybrid_ironbark"])
+region = &"forge"
+cost = 10
+position = Vector2(-863, 737)
+links = Array[StringName]([&"water_reach"])
 unlocks_towers = Array[StringName]([&"triple_mire_colossus"])

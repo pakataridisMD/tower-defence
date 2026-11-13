@@ -154,14 +154,14 @@ func test_refunds_only_until_the_next_wave_starts() -> void:
 
 func test_tree_bonuses_apply_to_towers_already_built() -> void:
 	var sim := _sim()
-	sim.tree.points = 5
+	sim.tree.points = 6
 	sim.allocate_node(&"fire_entry")
 	var tower := sim.place_tower(&"fire_brazier", CELL)
 	assert_eq(tower.damage, 8.0)
-	# Taking the core takes the two travel nodes on the way: 3% + 3% + 8% increased damage.
+	# Taking level III takes the way to it: a 4% pick, level II's 5%, an attack speed pick and its own 8%.
 	sim.allocate_node(&"fire_core")
 	assert_true(sim.tree.is_allocated(&"fire_core"))
-	assert_almost_eq(tower.damage, 8.0 * 1.14, 0.0001)
+	assert_almost_eq(tower.damage, 8.0 * 1.17, 0.0001)
 
 
 func test_keystone_raises_tower_prices() -> void:

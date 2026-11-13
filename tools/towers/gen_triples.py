@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Writes the 20 triple-element towers to data/towers/triple_*.tres.
 
-Every set of three elements has one tower, as in Element TD. A triple unlocks once the core node of
-each of its three elements is taken in the skill web, and a dual hybrid can turn into it in place.
+Every set of three elements has one tower, as in Element TD. A triple has a node of its own in the
+in-game skill tree (tools/web/gen_skill_web.py), which needs level III of each of its three elements,
+and a dual hybrid can turn into it in place.
 Edit the TRIPLES table and rerun; do not edit the .tres files by hand.
 
 Run from the repository root:  python3 tools/towers/gen_triples.py
@@ -226,8 +227,7 @@ def write_tower(short_id, name, elements, description, cost, stats, effects, asc
                 'modifiers = Array[ExtResource("4_mod")]([%s])' % ", ".join('SubResource("%s")' % m for m in mod_ids), ""]
     stats = dict(stats, cost=cost)
     out += ["[resource]", 'script = ExtResource("1_tower")', 'id = &"%s"' % tower_id, 'display_name = "%s"' % name,
-            'description = "%s"' % description, "elements = %s" % names(elements),
-            "requires_nodes = %s" % names(e + "_core" for e in elements)]
+            'description = "%s"' % description, "elements = %s" % names(elements)]
     if any(stats.get(key, 0) for key in AREA_STATS):
         out.append("tags = %s" % names(["area"]))
     assert set(stats) <= set(STAT_ORDER), set(stats) - set(STAT_ORDER)

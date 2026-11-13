@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_triple_abyssal_trench"
 display_name = "Abyssal Trench"
-description = "Adds the Abyssal Trench (Water + Earth + Void) to your towers. In a run, take Deep Water, Fault Line and Hungry Dark in the skill web to build it."
+description = "Adds the Abyssal Trench (Water + Earth + Void) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Water III, Earth III and Void III."
 kind = 3
-region = &"triples"
-cost = 20
-position = Vector2(-700, 0)
-links = Array[StringName]([&"talent_hybrid_abyss"])
+region = &"forge"
+cost = 10
+position = Vector2(-1070, -379)
+links = Array[StringName]([&"earth_reach"])
 unlocks_towers = Array[StringName]([&"triple_abyssal_trench"])

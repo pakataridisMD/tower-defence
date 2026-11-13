@@ -68,7 +68,6 @@ id = &"triple_witchfire"
 display_name = "Witchfire Tree"
 description = "A burning, cursed tree: its fire and venom leap from every corpse."
 elements = Array[StringName]([&"fire", &"nature", &"void"])
-requires_nodes = Array[StringName]([&"fire_core", &"nature_core", &"void_core"])
 cost = 340
 damage = 14.0
 attacks_per_second = 1.2

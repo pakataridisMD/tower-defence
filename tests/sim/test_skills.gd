@@ -54,7 +54,7 @@ func test_every_element_has_a_skill_in_ring_order() -> void:
 
 func test_a_skill_opens_with_its_element_and_only_works_during_a_wave() -> void:
 	var sim := _sim()
-	assert_string_contains(sim.skill_error(&"meteor"), "skill web")
+	assert_string_contains(sim.skill_error(&"meteor"), "skill tree")
 	assert_false(sim.use_skill(&"meteor", Vector2(100, 100)))
 	sim.allocate_node(&"fire_entry")
 	assert_true(sim.is_skill_unlocked(&"meteor"))
@@ -180,7 +180,7 @@ func test_a_broken_skill_is_reported() -> void:
 	registry.skills[skill.id] = skill
 	var errors := "\n".join(registry.validate())
 	assert_string_contains(errors, "Skill 'broken': unknown element 'plasma'")
-	assert_string_contains(errors, "requires unknown skill web node 'nowhere'")
+	assert_string_contains(errors, "requires unknown skill tree node 'nowhere'")
 	assert_string_contains(errors, "cooldown must be above 0")
 	assert_string_contains(errors, "does nothing")
 

@@ -74,7 +74,6 @@ id = &"triple_obsidian_geyser"
 display_name = "Obsidian Geyser"
 description = "Erupts in shards of volcanic glass: burns, slows, stuns and tears armour apart."
 elements = Array[StringName]([&"fire", &"water", &"earth"])
-requires_nodes = Array[StringName]([&"fire_core", &"water_core", &"earth_core"])
 tags = Array[StringName]([&"area"])
 cost = 340
 damage = 42.0

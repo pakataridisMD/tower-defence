@@ -69,7 +69,6 @@ id = &"triple_hellforge"
 display_name = "Hellforge"
 description = "A cursed furnace hurling slag: it burns, melts armour and marks its victims for death."
 elements = Array[StringName]([&"earth", &"void", &"fire"])
-requires_nodes = Array[StringName]([&"earth_core", &"void_core", &"fire_core"])
 tags = Array[StringName]([&"area"])
 cost = 300
 damage = 40.0

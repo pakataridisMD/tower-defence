@@ -7,9 +7,10 @@ extends SceneTree
 ##   godot --headless -s tools/meta_pacing.gd [-- --tries=<n>] [--quick] [--no-spend] [--profiles=<path>]
 ##
 ## A lost stage is played again, up to --tries times (default 2), and every attempt pays its meta
-## points like a real run. --quick plays only the first stage of each land. The bot spends points on
-## the cheapest open talent, preferring towers of the land it is about to play, and skips nodes with a
-## downside (the player picks those on purpose). --no-spend keeps the points, to compare against a
+## points like a real run. --quick plays only the first stage of each land. Before a stage the bot
+## first buys its way to the Forge talents of the towers its plan for that stage builds (the trees
+## are linked: no talent, no tower), then spends on the cheapest open node, preferring the element
+## it is about to play, and skips nodes with a downside (the player picks those on purpose). --no-spend keeps the points, to compare against a
 ## player who never opens the tree. The citadel assault is left out: it is its own mode.
 ## --profiles writes the player's profile as it stands before each stage (meta tree, finished
 ## campaigns' sigils, heroes) to a JSON file, keyed by stage id, with the assault getting the profile
@@ -51,14 +52,15 @@ func _initialize() -> void:
 				continue
 			var stage := campaign.stages[i]
 			stage_count += 1
-			var focus := _focus(meta, stage, campaign.element)
+			var wanted := _plan_towers(meta, stage)
+			var focus := _focus(registry, wanted)
 			var result := "LOST"
 			var lives := ""
 			var earned := 0
 			var started := Time.get_ticks_msec()
 			for attempt in tries:
 				if spend:
-					_spend(meta, focus)
+					_spend(meta, focus, wanted)
 				if attempt == 0:
 					profiles[String(stage.id)] = meta.profile.to_dict()
 				var sim := _play(meta, stage)
@@ -70,7 +72,7 @@ func _initialize() -> void:
 					break
 				lives = "w%2d/%2d" % [sim.wave_index, sim.total_waves()]
 			if spend:
-				_spend(meta, focus)
+				_spend(meta, focus, wanted)
 			var spent := meta.profile.meta_points_earned - meta.points()
 			print("PACING %2d %-11s %s %-8s +%3d  earned %4d  spent %4d  tree %3d%%  nodes %3d  (%d s)" % [
 				stage_count, stage.id, result, lives, earned, meta.profile.meta_points_earned, spent,
@@ -98,22 +100,43 @@ func _play(meta: MetaProgress, stage: StageData) -> RunSim:
 	return sim
 
 
-## Buys open talents, cheapest first, talents whose tower carries the focus land's element counting
-## as half price, until no open talent is affordable.
-## The element the bot builds round on this stage (AutoPlayer.for_sim): the one a land's horde
-## fears, else the stage's first allowed element, else the campaign's own.
-static func _focus(meta: MetaProgress, stage: StageData, fallback: StringName) -> StringName:
-	var config := meta.stage_config(stage.id)
-	if not stage.allowed_elements.is_empty():
-		return stage.allowed_elements[0]
-	var main := AutoPlayer.main_element(config)
-	if main.is_empty():
-		return fallback
-	return config.element_at(ElementRules.opposite_index(config.element_index(main))).id
+## The towers the bot's plan for this stage builds, best first.
+func _plan_towers(meta: MetaProgress, stage: StageData) -> Array[StringName]:
+	return AutoPlayer.for_sim(RunSim.new(meta.stage_config(stage.id))).tower_priority
 
 
-func _spend(meta: MetaProgress, focus: StringName) -> void:
+## The element most of the plan's towers share: its talents count as half price.
+func _focus(registry: Node, towers: Array[StringName]) -> StringName:
+	var counts: Dictionary[StringName, int] = {}
+	var best: StringName = &""
+	for tower_id in towers:
+		for element: StringName in registry.towers[tower_id].elements:
+			counts[element] = counts.get(element, 0) + 1
+			if best.is_empty() or counts[element] > counts[best]:
+				best = element
+	return best
+
+
+## First walks toward the Forge talent of each wanted tower that is still locked, nearest first,
+## saving up when the next step is too dear. Then buys open nodes, cheapest first, the focus
+## element's own nodes counting as half price, until no open node is affordable.
+func _spend(meta: MetaProgress, focus: StringName, wanted: Array[StringName]) -> void:
 	var graph := meta.tree.graph
+	while true:
+		var target: StringName = &""
+		var target_cost := 0
+		for tower_id in wanted:
+			if meta.is_tower_unlocked(tower_id):
+				continue
+			var talent := meta.unlocked_by(&"unlocks_towers", tower_id)
+			var cost := meta.tree.path_cost(talent.id) if talent != null else -1
+			if cost > 0 and (target.is_empty() or cost < target_cost):
+				target = talent.id
+				target_cost = cost
+		if target.is_empty():
+			break
+		if not meta.allocate(meta.tree.path_to(target)[1]):
+			return
 	while true:
 		var best: StringName = &""
 		var best_score := INF
@@ -121,22 +144,14 @@ func _spend(meta: MetaProgress, focus: StringName) -> void:
 			if not meta.tree.can_allocate(id) or _has_downside(graph.node(id)):
 				continue
 			var data := graph.node(id)
-			var score := float(data.cost) * (0.5 if _serves(meta, data, focus) else 1.0)
+			if not data.unlocks_towers.is_empty():
+				continue
+			var score := float(data.cost) * (0.5 if data.region == focus and not focus.is_empty() else 1.0)
 			if score < best_score or (score == best_score and String(id) < String(best)):
 				best_score = score
 				best = id
 		if best.is_empty() or not meta.allocate(best):
 			return
-
-
-static func _serves(meta: MetaProgress, data: TreeNodeData, focus: StringName) -> bool:
-	if focus.is_empty():
-		return false
-	for tower_id in data.unlocks_towers:
-		var tower: TowerData = meta.registry.towers.get(tower_id)
-		if tower != null and tower.elements.has(focus):
-			return true
-	return data.region == focus
 
 
 static func _has_downside(data: TreeNodeData) -> bool:

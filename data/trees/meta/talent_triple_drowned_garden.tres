@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_triple_drowned_garden"
 display_name = "Drowned Garden"
-description = "Adds the Drowned Garden (Nature + Water + Void) to your towers. In a run, take Toxic Sap, Deep Water and Hungry Dark in the skill web to build it."
-kind = 5
-region = &"triples"
-cost = 24
-position = Vector2(-660, 683)
+description = "Adds the Drowned Garden (Nature + Water + Void) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Nature III, Water III and Void III."
+kind = 3
+region = &"forge"
+cost = 12
+position = Vector2(-1121, 770)
 links = Array[StringName]([&"talent_hybrid_blightroot"])
 unlocks_towers = Array[StringName]([&"triple_drowned_garden"])

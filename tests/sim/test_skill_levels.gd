@@ -62,7 +62,7 @@ func test_a_skill_is_raised_with_gold_once_it_is_open() -> void:
 	var sim := _sim([])
 	sim.gold = 5000
 	assert_eq(sim.skill_level(&"meteor"), 1)
-	assert_string_contains(sim.skill_upgrade_error(&"meteor"), "skill web")
+	assert_string_contains(sim.skill_upgrade_error(&"meteor"), "skill tree")
 	assert_false(sim.upgrade_skill(&"meteor"))
 	sim.allocate_node(&"fire_entry")
 	watch_signals(sim)

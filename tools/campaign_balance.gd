@@ -33,9 +33,10 @@ const SKIRMISH_TARGET := 0.4
 const SKIRMISH_MAP := &"switchback"
 ## A second skirmish plan, built on Water, Earth and Void. The first is the bot's default plan.
 const OTHER_NODES: Array[StringName] = [
-	&"earth_entry", &"water_entry", &"earth_ccw", &"water_cw", &"bridge_quagmire",
-	&"earth_core", &"earth_notable", &"void_entry", &"earth_cw", &"void_ccw", &"bridge_gravity_well",
-	&"water_core", &"water_notable", &"void_core", &"void_notable", &"void_cw", &"water_ccw",
+	&"earth_entry", &"void_entry", &"earth_level2", &"void_level2", &"tower_hybrid_gravity_well", &"earth_core",
+	&"void_core", &"earth_b2_b", &"void_b2_b", &"earth_notable", &"water_entry", &"water_level2",
+	&"tower_hybrid_quagmire", &"void_notable", &"water_core", &"earth_level5", &"void_level5", &"earth_b4_b",
+	&"void_b4_b", &"water_notable", &"earth_level6", &"void_level6", &"water_level5", &"water_level6",
 ]
 const OTHER_TOWERS: Array[StringName] = [
 	&"hybrid_gravity_well", &"hybrid_quagmire", &"earth_monolith", &"void_obelisk", &"water_wellspring",

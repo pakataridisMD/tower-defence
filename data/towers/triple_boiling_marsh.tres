@@ -69,7 +69,6 @@ id = &"triple_boiling_marsh"
 display_name = "Boiling Marsh"
 description = "A cauldron of swamp gas: wide scalding splashes that burn, poison and slow."
 elements = Array[StringName]([&"fire", &"nature", &"water"])
-requires_nodes = Array[StringName]([&"fire_core", &"nature_core", &"water_core"])
 tags = Array[StringName]([&"area"])
 cost = 340
 damage = 24.0

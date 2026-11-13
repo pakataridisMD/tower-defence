@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"tower_triple_hellforge"
+display_name = "Hellforge"
+description = "Unlocks the Hellforge tower (Earth + Void + Fire). Needs Earth III, Void III and Fire III."
+kind = 4
+cost = 3
+position = Vector2(355, -725)
+requires = Array[StringName]([&"earth_core", &"void_core", &"fire_core"])
+unlocks_towers = Array[StringName]([&"triple_hellforge"])

@@ -191,16 +191,15 @@ func _validate_towers(errors: PackedStringArray) -> void:
 				errors.append("%s: unknown element '%s'" % [label, element_id])
 			elif tower.elements.count(element_id) > 1:
 				errors.append("%s: element '%s' is listed twice" % [label, element_id])
-		if tower.is_dual():
-			var indices := tower_element_indices(tower)
-			if indices[0] >= 0 and indices[1] >= 0 and indices[0] != indices[1] \
-					and not ElementRules.are_neighbours(indices[0], indices[1]) and tower.requires_nodes.is_empty():
-				errors.append("%s: hybrids of elements that are not neighbours need requires_nodes" % label)
-		if tower.is_triple() and tower.requires_nodes.is_empty():
-			errors.append("%s: triples have no bridge node, so they need requires_nodes" % label)
+		if tower.is_hybrid():
+			var own_nodes := in_run_tree_nodes.filter(func(n: TreeNodeData) -> bool: return n.unlocks_towers.has(tower.id))
+			if own_nodes.size() != 1 or own_nodes[0].requires.size() != tower.elements.size():
+				errors.append("%s: a dual or triple tower needs one skill tree node of its own that requires a level of each of its elements" % label)
+			if not tower.requires_nodes.is_empty():
+				errors.append("%s: dual and triple towers are unlocked by their skill tree node, not by requires_nodes" % label)
 		for node_id in tower.requires_nodes:
 			if not in_run_tree_nodes.any(func(n: TreeNodeData) -> bool: return n.id == node_id):
-				errors.append("%s: requires unknown skill web node '%s'" % [label, node_id])
+				errors.append("%s: requires unknown skill tree node '%s'" % [label, node_id])
 		if tower.cost <= 0:
 			errors.append("%s: cost must be above 0" % label)
 		if tower.attacks_per_second <= 0.0 or tower.attack_range <= 0.0:
@@ -321,6 +320,9 @@ func _validate_tree(errors: PackedStringArray, tree_name: String, nodes: Array[T
 		for other in node_data.excludes:
 			if not ids.has(other) or other == node_data.id:
 				errors.append("%s node '%s': excludes unknown node '%s'" % [tree_name, node_data.id, other])
+		for other in node_data.requires:
+			if not ids.has(other) or other == node_data.id:
+				errors.append("%s node '%s': requires unknown node '%s'" % [tree_name, node_data.id, other])
 	if starts == 1:
 		var graph := TreeGraph.new(nodes)
 		var reachable := graph.reachable_from_start()
@@ -336,7 +338,7 @@ func _validate_skills(errors: PackedStringArray) -> void:
 			errors.append("%s: unknown element '%s'" % [label, skill.element])
 		if not skill.requires_node.is_empty() \
 				and not in_run_tree_nodes.any(func(n: TreeNodeData) -> bool: return n.id == skill.requires_node):
-			errors.append("%s: requires unknown skill web node '%s'" % [label, skill.requires_node])
+			errors.append("%s: requires unknown skill tree node '%s'" % [label, skill.requires_node])
 		if skill.cooldown <= 0.0:
 			errors.append("%s: cooldown must be above 0" % label)
 		if skill.radius < 0.0:
@@ -446,7 +448,7 @@ func _validate_campaigns(errors: PackedStringArray) -> void:
 					errors.append("%s: allows unknown element '%s'" % [stage_label, element_id])
 			for node_id in stage.starting_nodes:
 				if not node_ids.has(node_id):
-					errors.append("%s: starts with unknown skill web node '%s'" % [stage_label, node_id])
+					errors.append("%s: starts with unknown skill tree node '%s'" % [stage_label, node_id])
 			for modifier in stage.modifiers:
 				if modifier == null or modifier.stat.is_empty():
 					errors.append("%s: a modifier has no stat" % stage_label)

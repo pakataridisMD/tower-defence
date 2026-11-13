@@ -39,4 +39,4 @@ func test_the_profiles_grow_through_the_campaign() -> void:
 			var profile := PlayerProfile.from_dict(profiles.get(String(stage.id), {}))
 			assert_true(profile.meta_nodes.size() >= last_nodes, "%s: the player only gains meta nodes" % stage.id)
 			last_nodes = profile.meta_nodes.size()
-	assert_gt(last_nodes, 25, "by the citadel the player has most of the 38 tower talents")
+	assert_gt(last_nodes, 50, "by the citadel the player has a good share of the tree")

@@ -71,5 +71,4 @@ attack_range = 160.0
 projectile_speed = 380.0
 splash_radius = 65.0
 status_effects = Array[ExtResource("2_status")]([SubResource("Resource_e0"), SubResource("Resource_e1")])
-requires_nodes = Array[StringName]([&"earth_core", &"fire_core"])
 ascendancies = Array[ExtResource("asc_script")]([SubResource("Asc_caldera"), SubResource("Asc_obsidian_core")])

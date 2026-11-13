@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_hybrid_steam"
 display_name = "Steam Vent"
-description = "Adds the Steam Vent (Fire + Water) to your towers. In a run, take Inferno and Glacier in the skill web to build it."
+description = "Adds the Steam Vent (Fire + Water) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Fire IV and Water IV."
 kind = 3
-region = &"duals"
-cost = 18
-position = Vector2(606, 350)
-links = Array[StringName]([&"talent_hybrid_wildfire", &"talent_hybrid_squall"])
+region = &"forge"
+cost = 10
+position = Vector2(1052, 607)
+links = Array[StringName]([&"confluence_storm_nature"])
 unlocks_towers = Array[StringName]([&"hybrid_steam"])

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"tower_hybrid_gravity_well"
+display_name = "Gravity Well"
+description = "Unlocks the Gravity Well tower (Earth + Void). Needs Earth II and Void II."
+kind = 4
+cost = 1
+position = Vector2(800, -500)
+requires = Array[StringName]([&"earth_level2", &"void_level2"])
+unlocks_towers = Array[StringName]([&"hybrid_gravity_well"])

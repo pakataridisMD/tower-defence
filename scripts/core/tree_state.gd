@@ -4,8 +4,8 @@ extends RefCounted
 ##
 ## Rules: the start node is always taken; a node can be taken when it links to a taken node
 ## and the player has enough points; a node can be refunded only if every other taken node
-## still connects back to the start without it. With free_pick on (the Talents tree), links do not
-## matter: any node can be taken or refunded on its own, as long as the points cover it.
+## still connects back to the start without it. A combination node (TreeNodeData.requires) hangs
+## on its requirements instead: it can be taken once all of them are, and holds them in place.
 
 signal changed
 
@@ -14,8 +14,6 @@ var points: int = 0
 var _allocated: Dictionary[StringName, bool] = {}
 var _locked: Dictionary[StringName, bool] = {}
 var _granted: Dictionary[StringName, bool] = {}
-## When true, nodes need no taken neighbour and refunds need not keep the tree connected.
-var free_pick := false
 
 
 func _init(p_graph: TreeGraph, p_points: int = 0) -> void:
@@ -41,6 +39,12 @@ func lock(ids: Array[StringName]) -> void:
 		_locked[id] = true
 
 
+## Opens every locked node, for tests and tools that play a veteran.
+func unlock_all() -> void:
+	_locked.clear()
+	changed.emit()
+
+
 ## Takes nodes for free, such as a campaign stage's starting nodes. They cost no points, ignore
 ## locks and cannot be refunded. Each must link to a taken node, so list them from the start outward.
 func grant(ids: Array[StringName]) -> void:
@@ -61,11 +65,19 @@ func is_locked(id: StringName) -> bool:
 	return _locked.has(id)
 
 
-## The taken node that closes this one, when they are a pick-one choice. Empty if none does.
+## The taken node that closes this one: its pick-one partner, or an option of its branch when the
+## branch is full. Empty if none does.
 func excluded_by(id: StringName) -> StringName:
 	for other in graph.exclusions(id):
 		if is_allocated(other):
 			return other
+	# A branch of options is full once choice_limit of them are taken.
+	var taken: Array[StringName] = []
+	for other in graph.branch_mates(id):
+		if is_allocated(other):
+			taken.append(other)
+	if not taken.is_empty() and taken.size() >= graph.node(id).choice_limit:
+		return taken[0]
 	return &""
 
 
@@ -78,12 +90,22 @@ func can_allocate(id: StringName) -> bool:
 		return false
 	if graph.node(id).cost > points:
 		return false
-	if free_pick:
-		return true
+	var needs := graph.requirements(id)
+	if not needs.is_empty():
+		return _missing(id).is_empty()
 	for other in graph.neighbours(id):
 		if is_allocated(other):
 			return true
 	return false
+
+
+## The requirements of a combination node that are not taken yet.
+func _missing(id: StringName) -> Array[StringName]:
+	var result: Array[StringName] = []
+	for other in graph.requirements(id):
+		if not is_allocated(other):
+			result.append(other)
+	return result
 
 
 func allocate(id: StringName) -> bool:
@@ -98,8 +120,10 @@ func allocate(id: StringName) -> bool:
 func can_refund(id: StringName) -> bool:
 	if id == graph.start_id or not is_allocated(id) or is_granted(id):
 		return false
-	if free_pick:
-		return true
+	# A taken combination node holds its requirements in place.
+	for other in graph.dependents(id):
+		if is_allocated(other):
+			return false
 	return _count_connected_without(id) == _allocated.size() - 1
 
 
@@ -115,12 +139,36 @@ func refund(id: StringName) -> bool:
 ## The shortest chain of nodes that would connect `id` to the taken part of the tree: it starts
 ## with the taken node it grows from and ends with `id`. Empty when `id` is taken, locked or cannot
 ## be reached. The tree screen uses it to show what a far node costs.
+## For a combination node the chain is the way to each requirement that is still missing, one after
+## the other, so two steps next to each other in it need not be linked.
 func path_to(id: StringName) -> Array[StringName]:
 	var path: Array[StringName] = []
 	if not graph.has_node_id(id) or is_allocated(id) or is_locked(id) or is_excluded(id):
 		return path
-	if free_pick:
-		return [graph.start_id, id] as Array[StringName]
+	var needs := graph.requirements(id)
+	if needs.is_empty():
+		return _link_path_to(id)
+	for other in needs:
+		if is_allocated(other):
+			if path.is_empty():
+				path.append(other)
+			continue
+		var way := _link_path_to(other)
+		if way.is_empty():
+			return [] as Array[StringName]
+		if path.is_empty():
+			path.append(way[0])
+		for i in range(1, way.size()):
+			if not path.has(way[i]):
+				path.append(way[i])
+	path.append(id)
+	return path
+
+
+func _link_path_to(id: StringName) -> Array[StringName]:
+	var path: Array[StringName] = []
+	if not graph.has_node_id(id) or is_allocated(id) or is_locked(id) or is_excluded(id):
+		return path
 	# Breadth-first from the target outwards; toward[n] is the next step from n back to the target.
 	var toward: Dictionary[StringName, StringName] = {id: &""}
 	var queue: Array[StringName] = [id]
@@ -216,7 +264,8 @@ func unlocked_towers() -> Array[StringName]:
 	return result
 
 
-## How many taken nodes still connect to the start if `excluded` is removed.
+## How many taken nodes still connect to the start if `excluded` is removed. A taken combination
+## node counts while all its requirements do.
 func _count_connected_without(excluded: StringName) -> int:
 	var seen: Dictionary[StringName, bool] = {graph.start_id: true}
 	var queue: Array[StringName] = [graph.start_id]
@@ -227,4 +276,14 @@ func _count_connected_without(excluded: StringName) -> int:
 				continue
 			seen[next] = true
 			queue.append(next)
-	return seen.size()
+	var count := seen.size()
+	for id: StringName in _allocated:
+		var needs := graph.requirements(id)
+		if id == excluded or seen.has(id) or needs.is_empty():
+			continue
+		var held := true
+		for other in needs:
+			held = held and seen.has(other)
+		if held:
+			count += 1
+	return count

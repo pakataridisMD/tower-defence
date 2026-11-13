@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_nature_eyrie"
 display_name = "Eyrie"
-description = "Adds the Eyrie (Nature) to your towers. In a run, take Toxic Sap in the skill web to build it."
-kind = 1
-region = &"longshots"
-cost = 10
-position = Vector2(125, 217)
-links = Array[StringName]([&"meta_start"])
+description = "Adds the Eyrie (Nature) to the towers your runs can unlock. In a run it opens at Nature III in the skill tree."
+kind = 3
+region = &"forge"
+cost = 6
+position = Vector2(255, 665)
+links = Array[StringName]([&"mastery_nature"])
 unlocks_towers = Array[StringName]([&"nature_eyrie"])

@@ -8,32 +8,32 @@ through a node) and prints what the whole tree costs.
     python3 tools/meta/gen_meta_tree.py            # write the tree
     python3 tools/meta/gen_meta_tree.py --preview out.png   # also draw a quick layout picture
 
-Every talent unlocks one tower, and nothing else: no stat bonuses, no maps, no difficulty levels.
-The six base towers are always open. Each of the other 38 towers (15 duals, 20 triples and the three
-long-range towers) stays out of every run until its talent is taken. Inside a run the skill web
-still decides when a tower can be built (its bridge, or the cores and notables it needs), so a
-talent puts a tower in the player's arsenal and the web opens it during the run.
-
-Any talent can be bought from the very start (MetaProgress sets TreeState.free_pick): the links
-only show how the towers grow out of each other, they do not gate anything.
-
-The tree is a wheel, read from the middle out, laid out on the element ring (fire at the top
-right, then clockwise storm, nature, water, earth, void):
+The tree is a wheel, read from the middle out:
   * Origin in the centre.
-  * Ring 1: the six neighbour duals (each between its two elements) and the three long-range
-    towers (on their element). These are the cheap first steps.
-  * Ring 2: the six duals of elements two apart, each on the element between them, reached from
-    the two neighbour duals beside it.
-  * Ring 3: the three duals of opposite elements, each between two ring 2 duals that carry both
-    its elements.
-  * Ring 3, between them: the six triples of three elements in a row, past the ring 2 dual of
-    their outer two elements.
-  * Ring 4: twelve triples fanned out past the opposite dual they contain, four per fan.
-  * Ring 5: the two triples of every other element, at the very edge.
+  * Four inner wings, one per quadrant: Arsenal (north, tower power and the skill web keystones),
+    Command (east, gold and lives), Expeditions (south, maps, difficulty levels and skill points)
+    and Mastery (west, player skills and range). Each wing forks three ways and ends in a pick-one
+    choice between two keystones.
+  * The Starpath, a ring road of small travel nodes that joins the wings to each other and to the
+    six gates of the outer ring.
+  * Six element constellations on the outer ring, in the element ring's order. Each has a status
+    arm, a speed and cost arm, a pick-one choice and a keystone with a real downside at its tip.
+  * Six confluence bridges between neighbouring constellations, which boost the dual towers that
+    carry both elements.
+  * The Forge: 38 tower talents spread along those paths, one for every tower but the six base
+    towers. A tower stays out of every run until its talent is taken; inside a run the in-game skill
+    tree (tools/web/gen_skill_web.py) still decides when it can be built, by element levels. The
+    two trees are one design: Talents decide what the in-game tree may offer.
+      - the six neighbour duals just outside the Starpath, between two element gates;
+      - the three long-range towers beside their element's gate;
+      - the six duals of elements two apart, and the six triples of three elements in a row, at the
+        ends of the element constellations' arms;
+      - the three duals of opposite elements past a confluence bridge, each fanning out into the
+        four triples that contain it; the two triples of every other element past two more.
 
-Pacing: a clean first pass through the campaign pays roughly 530 meta points (tools/meta_pacing.gd);
-the whole tree costs about 690, so new towers keep coming through the whole campaign and the last
-triples come from replays on harder levels and from skirmish runs.
+Pacing: a clean first pass through the campaign pays roughly 550 meta points; the tree costs about
+1100 to fill, so it keeps growing through the whole campaign and the last nodes come from replays
+on Hard or Nightmare and from skirmish runs.
 """
 
 from __future__ import annotations
@@ -47,37 +47,27 @@ from dataclasses import dataclass, field
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT_DIR = os.path.join(ROOT, "data", "trees", "meta")
 TOWER_DIR = os.path.join(ROOT, "data", "towers")
-WEB_DIR = os.path.join(ROOT, "data", "trees", "in_run")
 
 # TreeNodeData.Kind
 START, ENTRY, MINOR, NOTABLE, BRIDGE, KEYSTONE = range(6)
+# Modifier.Kind
+FLAT, INC, MORE = range(3)
 
-# Element ring order (data/elements/*.tres ring_index) and the angle of each element on the wheel,
-# in degrees clockwise from east (screen y points down).
+# Element ring order (data/elements/*.tres ring_index) and the outer-ring angle of each
+# constellation, in degrees clockwise from east (screen y points down).
 ELEMENTS = ["fire", "storm", "nature", "water", "earth", "void"]
 ELEMENT_NAMES = {"fire": "Fire", "storm": "Storm", "nature": "Nature", "water": "Water", "earth": "Earth",
                  "void": "Void"}
 ELEMENT_ANGLE = {"fire": -60, "storm": 0, "nature": 60, "water": 120, "earth": 180, "void": 240}
 
-# Radius of each ring, in tree units (pixels at the default zoom). The Talents screen draws a
-# dotted circle on each (scripts/ui/meta_tree_screen.gd RING_RADII).
-RING_1 = 250
-RING_2 = 470
-RING_3 = 700
-RING_4 = 950
-RING_5 = 1190
+# Wing centre angles.
+WING_ANGLE = {"arsenal": -90, "command": 0, "expeditions": 90, "mastery": 180}
 
-# Meta points for each kind of talent.
-COST_NEIGHBOUR_DUAL = 8
-COST_LONGSHOT = 10
-COST_TWO_STEP_DUAL = 14
-COST_OPPOSITE_DUAL = 18
-COST_ROW_TRIPLE = 20
-COST_FAN_TRIPLE = 24
-COST_SPREAD_TRIPLE = 30
+RING_RADIUS = 560
+RING_STEP = 15  # degrees between Starpath nodes
 
 # Smallest allowed distance between two node centres, and between a link and a node it does not
-# touch, in tree units.
+# touch, in tree units (pixels at the default zoom).
 MIN_NODE_GAP = 74
 MIN_LINK_CLEARANCE = 30
 
@@ -124,7 +114,473 @@ def add(id: str, name: str, kind: int, region: str, cost: int, pos, links=(), mo
     return node
 
 
-# --- The towers, read from data/ -------------------------------------------------------------
+def choice(a: Node, b: Node) -> None:
+    """Makes two nodes a pick-one choice: taking either closes the other."""
+    a.excludes.append(b.id)
+    b.excludes.append(a.id)
+
+
+# --- Descriptions ------------------------------------------------------------------------
+# Built from the modifiers so the text always matches the numbers.
+
+TAG_NAMES = {"hybrid": "Dual", "triple": "Triple", "area": "Area"}
+TAG_NAMES.update(ELEMENT_NAMES)
+STATUS = {  # noun, plural verb form
+    "burn": ("Burns", True), "poison": ("Poison", False), "slow": ("Slows", True), "curse": ("Curses", True),
+    "stun": ("Stuns", True), "shatter": ("Shatter", False),
+}
+
+
+def _subject(tags: list[str]) -> str:
+    if not tags:
+        return "Towers"
+    if len(tags) == 2 and all(t in ELEMENT_NAMES for t in tags):
+        return "Towers that are both %s and %s" % (ELEMENT_NAMES[tags[0]], ELEMENT_NAMES[tags[1]])
+    return " ".join(TAG_NAMES[t] for t in tags) + " towers"
+
+
+def _from(tags: list[str]) -> str:
+    return "" if not tags else " from " + _subject(tags)[0].lower() + _subject(tags)[1:]
+
+
+def _pct(value: float) -> str:
+    p = abs(value) * 100.0
+    return ("%d" % round(p)) if abs(p - round(p)) < 0.01 else ("%.1f" % p)
+
+
+def _n(value: float) -> str:
+    return "%d" % round(abs(value))
+
+
+def _plural(value: float, one: str, many: str) -> str:
+    return one if round(abs(value)) == 1 else many
+
+
+def sentence(m: Mod) -> str:
+    s, v, up = m.stat, m.value, m.value >= 0
+    subj = _subject(m.tags)
+    pct = _pct(v)
+    if s == "damage":
+        return f"{subj} deal {pct}% {'more' if up else 'less'} damage."
+    if s == "attacks_per_second":
+        return f"{subj} attack {pct}% {'faster' if up else 'slower'}."
+    if s == "attack_range":
+        return f"{subj} have {pct}% {'more' if up else 'less'} range."
+    if s == "projectile_speed":
+        return f"{subj} fire {pct}% faster shots."
+    if s == "splash_radius":
+        return f"{subj} hit {pct}% {'wider' if up else 'narrower'} areas."
+    if s == "cost":
+        return f"{subj} cost {pct}% {'more' if up else 'less'}."
+    if s == "chain_count":
+        return f"Chains{_from(m.tags)} jump to {_n(v)} more {_plural(v, 'enemy', 'enemies')}."
+    if s == "chain_range":
+        return f"Chains{_from(m.tags)} reach {pct}% farther."
+    if s == "chain_falloff":
+        return f"Chains{_from(m.tags)} lose {pct}% {'more' if up else 'less'} damage per jump."
+    if s == "knockback":
+        return f"{subj} push enemies back {pct}% farther."
+    if s == "armour_ignore":
+        return f"{subj} ignore {pct}% of enemy armour."
+    if s == "bounty_bonus":
+        return f"Kills{(' by ' + subj[0].lower() + subj[1:]) if m.tags else ''} pay {_n(v)} more gold."
+    if s == "aura_damage":
+        return f"Auras{_from(m.tags)} lend {pct}% {'more' if up else 'less'} damage."
+    if s == "aura_radius":
+        return f"Auras{_from(m.tags)} reach {pct}% farther."
+    if s == "burn_spread_radius":
+        return f"Burns{_from(m.tags)} spread {pct}% farther."
+    if s == "poison_spread_count":
+        return f"Poison{_from(m.tags)} spreads to {_n(v)} more {_plural(v, 'enemy', 'enemies')}."
+    for status, (noun, plural) in STATUS.items():
+        if s.startswith(status + "_"):
+            part = s[len(status) + 1:]
+            verb = {"damage": ("deal", "deals"), "duration": ("last", "lasts"), "strength": ("are", "is"),
+                    "stacks": ("stack", "stacks")}[part]
+            verb = verb[0] if plural else verb[1]
+            if part == "damage":
+                return f"{noun}{_from(m.tags)} {verb} {pct}% {'more' if up else 'less'} damage."
+            if part == "duration":
+                return f"{noun}{_from(m.tags)} {verb} {pct}% {'longer' if up else 'shorter'}."
+            if part == "strength":
+                return f"{noun}{_from(m.tags)} {verb} {pct}% {'stronger' if up else 'weaker'}."
+            if part == "stacks":
+                return f"{noun}{_from(m.tags)} {verb} {_n(v)} more {_plural(v, 'time', 'times')}."
+    if s == "skill_damage":
+        who = "Skills" if not m.tags or m.tags == ["skill"] else f"{ELEMENT_NAMES[m.tags[-1]]} skills"
+        return f"{who} deal {pct}% {'more' if up else 'less'} damage."
+    if s == "skill_cooldown":
+        return f"Skills recharge {pct}% {'slower' if up else 'faster'}."
+    if s == "starting_gold":
+        if m.kind == FLAT:
+            return f"Start every run with {_n(v)} more gold."
+        return f"Start every run with {pct}% {'more' if up else 'less'} gold."
+    if s == "starting_lives":
+        if m.kind == FLAT:
+            return f"Start every run with {_n(v)} more {_plural(v, 'life', 'lives')}."
+        return f"Start every run with {pct}% {'more' if up else 'fewer'} lives."
+    if s == "starting_tree_points":
+        return f"Start every run with {_n(v)} more skill {_plural(v, 'point', 'points')}."
+    if s == "gold_per_wave":
+        if m.kind == FLAT:
+            return f"Clearing a wave pays {_n(v)} more gold."
+        return f"Clearing a wave pays {pct}% {'more' if up else 'less'} gold."
+    if s == "sell_refund":
+        return f"Selling a tower refunds {pct}% more of its price."
+    if s == "tree_points_per_boss":
+        return f"Boss waves give {_n(v)} more skill {_plural(v, 'point', 'points')}."
+    raise ValueError("no description for stat %s" % s)
+
+
+def describe(node: Node) -> str:
+    parts = [sentence(m) for m in node.mods]
+    if node.desc.startswith("Pick one"):
+        parts.append(node.desc)
+    elif node.desc:
+        parts.insert(0, node.desc)
+    return " ".join(parts)
+
+
+# --- Modifier shorthands ------------------------------------------------------------------
+
+# Strength of the bonuses. The tables below are written at full strength; the bot pacing check
+# (tools/meta_pacing.gd) showed that made the campaign trivial from the second land on, so combat
+# bonuses (POWER) and gold, lives and price cuts (ECON) are halved, rounded to whole numbers.
+# Set META_POWER / META_ECON in the environment to try other values.
+POWER = float(os.environ.get("META_POWER", "0.5"))
+ECONOMY = {"cost", "starting_gold", "gold_per_wave", "sell_refund", "starting_lives", "starting_tree_points",
+           "tree_points_per_boss", "bounty_bonus", "skill_cooldown"}
+
+
+ECON = float(os.environ.get("META_ECON", "0.5"))
+
+
+def inc(stat: str, pct: float, *tags: str) -> Mod:
+    if stat not in ECONOMY and pct > 0:
+        pct = max(1, round(pct * POWER))
+    if stat == "cost" and pct < 0:
+        pct = min(-1, round(pct * ECON))
+    return Mod(stat, INC, pct / 100.0, list(tags))
+
+
+def more(stat: str, pct: float, *tags: str) -> Mod:
+    return Mod(stat, MORE, pct / 100.0, list(tags))
+
+
+# Skill points in a run come three at a time since the skill web grew tenfold (its nodes cost 1 to
+# 6 points, tools/web/gen_skill_web.py), so a talent's skill points are written in old points and
+# multiplied here.
+WEB_POINT_SCALE = 3
+
+
+def flat(stat: str, value: float, *tags: str) -> Mod:
+    if stat in ("starting_gold", "gold_per_wave", "starting_lives") and value > 0:
+        value = max(1, round(value * ECON))
+    if stat in ("starting_tree_points", "tree_points_per_boss"):
+        value *= WEB_POINT_SCALE
+    return Mod(stat, FLAT, value, list(tags))
+
+
+# --- The tree ------------------------------------------------------------------------------
+
+add("meta_start", "Origin", START, "", 0, (0, 0), desc="Every talent grows out from here.")
+
+
+def wing(region: str, spec: dict) -> None:
+    """One inner wing. spec maps slot names to (id, name, kind, cost, mods, extra) tuples."""
+    phi = WING_ANGLE[region]
+    spots = {
+        "root": (112, 0), "stem": (205, 0),
+        "a1": (295, -24), "a2": (385, -27), "a3": (472, -29),
+        "b1": (295, 24), "b2": (385, 27), "b3": (472, 29),
+        "m1": (305, 0), "m2": (400, 0),
+        "c1": (482, -9), "c2": (482, 9),
+        "ax": (228, -35), "bx": (228, 35), "ay": (350, -38), "by": (350, 38),
+    }
+    links = {
+        "root": ["meta_start"], "stem": ["root"],
+        "a1": ["stem"], "a2": ["a1"], "a3": ["a2"],
+        "b1": ["stem"], "b2": ["b1"], "b3": ["b2"],
+        "m1": ["stem"], "m2": ["m1"],
+        "c1": ["m2"], "c2": ["m2"],
+        "ax": ["a1"], "bx": ["b1"], "ay": ["a2"], "by": ["b2"],
+    }
+    made: dict[str, Node] = {}
+    for slot, entry in spec.items():
+        id, name, kind, cost, mods, extra = (list(entry) + [{}])[:6]
+        r, da = spots[slot]
+        made[slot] = add(id, name, kind, region, cost, polar(r, phi + da), mods=mods, **extra)
+    for slot, node in made.items():
+        node.links = [made[l].id if l in made else l for l in links[slot]]
+    choice(made["c1"], made["c2"])
+    # The wing's outer nodes join the Starpath.
+    made["a3"].links.append(ring_id(phi - 30))
+    made["b3"].links.append(ring_id(phi + 30))
+    made["c1"].links.append(ring_id(phi))
+    made["c2"].links.append(ring_id(phi))
+
+
+def ring_id(degrees: float) -> str:
+    return "starpath_%d" % (round(degrees) % 360)
+
+
+# Arsenal: raw tower power, and the keystones of the in-run skill web.
+wing("arsenal", {
+    "root": ("arsenal_edge", "Whetstone", ENTRY, 2, [inc("damage", 3)]),
+    "stem": ("arsenal_drill", "Drill Yard", MINOR, 2, [inc("attacks_per_second", 3)]),
+    "a1": ("arsenal_temper", "Tempered Steel", MINOR, 3, [inc("damage", 3)]),
+    "a2": ("arsenal_temper_2", "Folded Steel", MINOR, 3, [inc("damage", 3)]),
+    "a3": ("arsenal_honed", "Honed Edges", NOTABLE, 5, [inc("damage", 6), inc("projectile_speed", 10)]),
+    "b1": ("arsenal_cadence", "Cadence", MINOR, 3, [inc("attacks_per_second", 3)]),
+    "b2": ("arsenal_cadence_2", "Steady Rhythm", MINOR, 3, [inc("attacks_per_second", 3)]),
+    "b3": ("arsenal_volley", "Rapid Volley", NOTABLE, 5, [inc("attacks_per_second", 6)]),
+    "m1": ("arsenal_alloys", "Alloys", NOTABLE, 5, [inc("damage", 6, "hybrid"), inc("attack_range", 4, "hybrid")]),
+    "m2": ("arsenal_piercer", "Armour Piercer", NOTABLE, 5, [flat("armour_ignore", 0.1)]),
+    "c1": ("arsenal_glass_cannon", "Glass Cannon", KEYSTONE, 12, [more("damage", 20), more("starting_lives", -40)],
+           {"desc": "Pick one: closes Siegecraft.", "icon": "skull"}),
+    "c2": ("arsenal_siegecraft", "Siegecraft", KEYSTONE, 12,
+           [more("splash_radius", 25, "area"), more("damage", 10, "area"), inc("cost", 10)],
+           {"desc": "Pick one: closes Glass Cannon.", "icon": "burst"}),
+    "ax": ("arsenal_focus", "Focus", NOTABLE, 8, [],
+           {"desc": "Adds the Focus keystone to the skill web: towers deal 40% more damage but attack 25% slower.",
+            "unlocks_nodes": ["keystone_focus"]}),
+    "bx": ("arsenal_overcharge", "Overcharge", NOTABLE, 8, [],
+           {"desc": "Adds the Overcharge keystone to the skill web: towers attack 30% faster but cost 20% more.",
+            "unlocks_nodes": ["keystone_overcharge"]}),
+    "ay": ("arsenal_hoard", "Hoard", NOTABLE, 8, [],
+           {"desc": "Adds the Hoard keystone to the skill web: kills earn 1 more gold but towers cost 15% more.",
+            "unlocks_nodes": ["keystone_hoard"]}),
+    "by": ("arsenal_hybrid", "Fusion Lore", NOTABLE, 5, [inc("damage", 8, "hybrid"), inc("damage", 8, "triple")]),
+})
+
+# Command: gold and lives.
+wing("command", {
+    "root": ("command_gold", "War Chest", ENTRY, 2, [flat("starting_gold", 15)]),
+    "stem": ("command_purse", "Full Purse", MINOR, 2, [flat("starting_gold", 10)]),
+    "a1": ("command_sentries", "Sentries", MINOR, 2, [flat("starting_lives", 2)]),
+    "a2": ("command_lives", "Fortify", MINOR, 3, [flat("starting_lives", 3)]),
+    "a3": ("command_walls", "Stone Walls", NOTABLE, 5, [flat("starting_lives", 5)]),
+    "b1": ("command_levy", "Levy", MINOR, 2, [flat("gold_per_wave", 4)]),
+    "b2": ("command_salvage", "Salvage", MINOR, 3, [flat("sell_refund", 0.1)]),
+    "b3": ("command_tithe", "Tithe", NOTABLE, 5, [flat("gold_per_wave", 8)]),
+    "m1": ("command_haggler", "Haggler", MINOR, 3, [inc("cost", -3)]),
+    "m2": ("command_guilds", "Guild Contracts", NOTABLE, 5, [inc("cost", -5)]),
+    "c1": ("command_usury", "Usury", KEYSTONE, 12, [inc("gold_per_wave", 100), more("starting_gold", -40)],
+           {"desc": "Pick one: closes Royal Treasury."}),
+    "c2": ("command_treasury", "Royal Treasury", KEYSTONE, 12, [more("starting_gold", 60), more("gold_per_wave", -50)],
+           {"desc": "Pick one: closes Usury.", "icon": "crown"}),
+    "ax": ("command_bounty", "Bounty Office", NOTABLE, 6, [flat("bounty_bonus", 1)]),
+    "bx": ("command_scrap", "Scrap Dealers", MINOR, 3, [flat("sell_refund", 0.05)]),
+    "ay": ("command_points", "Head Start", KEYSTONE, 15, [flat("starting_tree_points", 1)]),
+    "by": ("command_ledger", "Ledgers", MINOR, 3, [flat("gold_per_wave", 4)]),
+})
+
+# Expeditions: maps, difficulty levels and skill points.
+wing("expeditions", {
+    "root": ("expedition_serpentine", "Serpentine", ENTRY, 4, [],
+             {"desc": "Unlocks the Serpentine map, a winding road with room to build between its bends.",
+              "unlocks_maps": ["serpentine"]}),
+    "stem": ("expedition_scouts", "Scouts", MINOR, 2, [inc("attack_range", 3)]),
+    "a1": ("expedition_trophy_rack", "Trophy Rack", MINOR, 3, [flat("starting_gold", 10)]),
+    "a2": ("expedition_trophies", "Trophy Hunter", NOTABLE, 8, [flat("tree_points_per_boss", 1)]),
+    "a3": ("expedition_veterans", "Veteran Officers", KEYSTONE, 14, [flat("starting_tree_points", 1)]),
+    "b1": ("expedition_hardened", "Hardened", MINOR, 3, [flat("starting_lives", 2)]),
+    "b2": ("expedition_hard", "Hard Mode", NOTABLE, 6, [],
+           {"desc": "Unlocks the Grim and Merciless difficulties: two and four times the enemies, with two and "
+                    "four times the health. Runs earn 50% and 100% more meta points.",
+            "unlocks_difficulties": ["hard", "merciless"]}),
+    "b3": ("expedition_nightmare", "Nightmare", KEYSTONE, 14, [],
+           {"desc": "Unlocks the Nightmare and Oblivion difficulties: eight and sixteen times the enemies, with "
+                    "eight and sixteen times the health, with four and eight times the starting gold. Runs earn 2.5 "
+                    "and 3 times the meta points.",
+            "unlocks_difficulties": ["nightmare", "oblivion"]}),
+    "m1": ("expedition_forage", "Forage", MINOR, 3, [flat("gold_per_wave", 3)]),
+    "m2": ("expedition_cartographer", "Cartographer", NOTABLE, 5, [inc("attack_range", 6)]),
+    "c1": ("expedition_spoils", "Spoils of War", KEYSTONE, 12, [flat("bounty_bonus", 2), more("starting_lives", -30)],
+           {"desc": "Pick one: closes Scholar's Path.", "icon": "coin"}),
+    "c2": ("expedition_scholar", "Scholar's Path", KEYSTONE, 12,
+           [flat("starting_tree_points", 1), more("starting_gold", -25)],
+           {"desc": "Pick one: closes Spoils of War.", "icon": "book"}),
+    "ax": ("expedition_banners", "Battle Banners", MINOR, 3, [inc("damage", 3)]),
+    "bx": ("expedition_watch", "Night Watch", MINOR, 3, [flat("starting_lives", 2)]),
+    "ay": ("expedition_relics", "Relic Hunters", NOTABLE, 5, [flat("bounty_bonus", 1)]),
+    "by": ("expedition_grit", "Grit", MINOR, 3, [flat("starting_lives", 3)]),
+})
+
+# Mastery: the player's skills and tower range.
+wing("mastery", {
+    "root": ("mastery_range", "Long Sight", ENTRY, 3, [inc("attack_range", 4)]),
+    "stem": ("mastery_will", "Focused Will", MINOR, 2, [inc("skill_damage", 8)]),
+    "a1": ("mastery_spellcraft", "Spellcraft", MINOR, 3, [inc("skill_damage", 8)]),
+    "a2": ("mastery_spellcraft_2", "Spellweave", MINOR, 3, [inc("skill_damage", 8)]),
+    "a3": ("mastery_cataclysm", "Cataclysm", NOTABLE, 5, [inc("skill_damage", 20)]),
+    "b1": ("mastery_rites", "Quick Rites", MINOR, 3, [inc("skill_cooldown", -4)]),
+    "b2": ("mastery_rites_2", "Practised Rites", MINOR, 3, [inc("skill_cooldown", -4)]),
+    "b3": ("mastery_quickening", "Quickening", NOTABLE, 5, [inc("skill_cooldown", -8)]),
+    "m1": ("mastery_far_sight", "Far Sight", MINOR, 3, [inc("attack_range", 3)]),
+    "m2": ("mastery_eagle_eye", "Eagle Eye", NOTABLE, 5, [inc("attack_range", 6)]),
+    "c1": ("mastery_archmage", "Archmage", KEYSTONE, 12, [more("skill_damage", 50), more("skill_cooldown", 25)],
+           {"desc": "Pick one: closes Battle Trance.", "icon": "book"}),
+    "c2": ("mastery_trance", "Battle Trance", KEYSTONE, 12, [more("skill_cooldown", -30), more("skill_damage", -20)],
+           {"desc": "Pick one: closes Archmage.", "icon": "speed"}),
+    "ax": ("mastery_sigils", "Sigils", MINOR, 3, [inc("skill_damage", 6)]),
+    "bx": ("mastery_meditation", "Meditation", MINOR, 3, [inc("skill_cooldown", -3)]),
+    "ay": ("mastery_lenses", "Lenses", NOTABLE, 5, [inc("attack_range", 4), inc("projectile_speed", 10)]),
+    "by": ("mastery_mana_tide", "Mana Tide", NOTABLE, 5, [inc("skill_cooldown", -5), inc("skill_damage", 5)]),
+})
+
+
+# The Starpath: a ring road of travel nodes. The nodes where element gates leave are a little richer.
+RING_GIFTS = [
+    ("Pathstone", [inc("damage", 4)]),
+    ("Waymark", [flat("starting_gold", 10)]),
+    ("Milestone", [inc("attacks_per_second", 4)]),
+    ("Cairn", [flat("starting_lives", 1)]),
+    ("Lantern", [inc("attack_range", 4)]),
+]
+gate_angles = {ELEMENT_ANGLE[e] % 360: e for e in ELEMENTS}
+ring_count = 360 // RING_STEP
+for i in range(ring_count):
+    deg = i * RING_STEP
+    id = ring_id(deg)
+    prev = ring_id(deg - RING_STEP)
+    if deg in gate_angles:
+        e = gate_angles[deg]
+        add(id, "%s Waystone" % ELEMENT_NAMES[e], NOTABLE, "starpath", 3, polar(RING_RADIUS, deg), [prev],
+            [inc("damage", 3), inc("damage", 3, e)])
+    else:
+        name, mods = RING_GIFTS[i % len(RING_GIFTS)]
+        add(id, name, MINOR, "starpath", 2, polar(RING_RADIUS, deg), [prev], mods)
+
+
+def constellation(e: str, spec: dict) -> None:
+    th = ELEMENT_ANGLE[e]
+    spots = {
+        "gate": (655, 0), "s1": (750, 0),
+        "l1": (835, -13), "l2": (925, -16), "ln": (1015, -18),
+        "r1": (835, 13), "r2": (925, 16), "rn": (1015, 18),
+        "s2": (870, 0), "s3": (985, 0),
+        "c1": (1095, -7), "c2": (1095, 7), "k": (1205, 0),
+    }
+    links = {
+        "gate": [ring_id(th)], "s1": ["gate"],
+        "l1": ["s1"], "l2": ["l1"], "ln": ["l2"],
+        "r1": ["s1"], "r2": ["r1"], "rn": ["r2"],
+        "s2": ["s1"], "s3": ["s2"],
+        "c1": ["s3"], "c2": ["s3"], "k": ["c1", "c2"],
+    }
+    made: dict[str, Node] = {}
+    for slot, entry in spec.items():
+        id, name, kind, cost, mods, extra = (list(entry) + [{}])[:6]
+        r, da = spots[slot]
+        made[slot] = add(id, name, kind, e, cost, polar(r, th + da), mods=mods, **extra)
+    for slot, node in made.items():
+        node.links = [made[l].id if l in made else l for l in links[slot]]
+    choice(made["c1"], made["c2"])
+
+
+def element_spec(e: str, status: dict, choices: tuple, keystone: tuple, icon: str) -> dict:
+    E = ELEMENT_NAMES[e]
+    spec = {
+        "gate": ("mastery_%s" % e, "%s Attunement" % E, ENTRY, 3, [inc("damage", 5, e)], {"icon": icon}),
+        "s1": ("%s_focus" % e, "%s Focus" % E, MINOR, 3, [inc("damage", 5, e)], {"icon": icon}),
+        "r1": ("%s_haste" % e, "%s Haste" % E, MINOR, 3, [inc("attacks_per_second", 4, e)]),
+        "r2": ("%s_thrift" % e, "%s Thrift" % E, MINOR, 3, [inc("cost", -4, e)]),
+        "rn": ("%s_reach" % e, "%s Reach" % E, NOTABLE, 6, [inc("attack_range", 8, e), inc("attacks_per_second", 6, e)]),
+        "s2": ("%s_power" % e, "%s Power" % E, MINOR, 3, [inc("damage", 6, e)], {"icon": icon}),
+        "s3": ("%s_heart" % e, "Heart of %s" % E, NOTABLE, 6, [inc("damage", 10, e)], {"icon": icon}),
+    }
+    spec.update(status)
+    c1, c2 = choices
+    spec["c1"] = c1[:4] + (c1[4], dict(c1[5] if len(c1) > 5 else {}, desc="Pick one: closes %s." % c2[1]))
+    spec["c2"] = c2[:4] + (c2[4], dict(c2[5] if len(c2) > 5 else {}, desc="Pick one: closes %s." % c1[1]))
+    spec["k"] = keystone
+    return spec
+
+
+constellation("fire", element_spec("fire", {
+    "l1": ("fire_embers", "Embers", MINOR, 3, [inc("burn_damage", 10, "fire")]),
+    "l2": ("fire_smoulder", "Smoulder", MINOR, 3, [inc("burn_duration", 15, "fire")]),
+    "ln": ("fire_kindling", "Kindling", NOTABLE, 6, [inc("burn_spread_radius", 20, "fire"), inc("burn_damage", 10, "fire")]),
+}, (("fire_inferno", "Inferno", NOTABLE, 7, [inc("splash_radius", 15, "fire"), inc("damage", 6, "fire")]),
+    ("fire_searing", "Searing", NOTABLE, 7, [flat("burn_stacks", 1, "fire"), inc("burn_damage", 8, "fire")])),
+    ("fire_pyre", "Pyre Covenant", KEYSTONE, 14, [more("burn_damage", 50, "fire"), more("damage", -25, "fire")]),
+    "flame"))
+
+constellation("storm", element_spec("storm", {
+    "l1": ("storm_conduit", "Conduit", MINOR, 3, [inc("chain_range", 10, "storm")]),
+    "l2": ("storm_grounding", "Grounding", MINOR, 3, [inc("chain_falloff", -15, "storm")]),
+    "ln": ("storm_arc", "Arc Conductor", NOTABLE, 6, [flat("chain_count", 1, "storm")]),
+}, (("storm_overload", "Overload", NOTABLE, 7, [inc("damage", 12, "storm")]),
+    ("storm_static", "Static Field", NOTABLE, 7, [inc("attack_range", 12, "storm")])),
+    ("storm_ball_lightning", "Ball Lightning", KEYSTONE, 14, [flat("chain_count", 2, "storm"), more("damage", -20, "storm")]),
+    "bolt"))
+
+constellation("nature", element_spec("nature", {
+    "l1": ("nature_venom", "Venom", MINOR, 3, [inc("poison_damage", 10, "nature")]),
+    "l2": ("nature_lingering", "Lingering Rot", MINOR, 3, [inc("poison_duration", 15, "nature")]),
+    "ln": ("nature_blight", "Blight Spread", NOTABLE, 6, [flat("poison_spread_count", 1, "nature")]),
+}, (("nature_virulence", "Virulence", NOTABLE, 7, [flat("poison_stacks", 1, "nature")]),
+    ("nature_thornwall", "Thornwall", NOTABLE, 7, [inc("attacks_per_second", 10, "nature")])),
+    ("nature_overgrowth", "Overgrowth", KEYSTONE, 14, [more("poison_damage", 40, "nature"), inc("cost", 20, "nature")]),
+    "leaf"))
+
+constellation("water", element_spec("water", {
+    "l1": ("water_chill", "Chill", MINOR, 3, [inc("slow_strength", 8, "water")]),
+    "l2": ("water_frost", "Hoarfrost", MINOR, 3, [inc("slow_duration", 15, "water")]),
+    "ln": ("water_undertow", "Undertow", NOTABLE, 6, [inc("knockback", 25, "water"), inc("slow_strength", 8, "water")]),
+}, (("water_deep_freeze", "Deep Freeze", NOTABLE, 7, [inc("slow_strength", 12, "water")]),
+    ("water_riptide", "Riptide", NOTABLE, 7, [inc("damage", 15, "water")])),
+    ("water_glacial_heart", "Glacial Heart", KEYSTONE, 14, [more("slow_strength", 25, "water"), more("damage", -30, "water")]),
+    "drop"))
+
+constellation("earth", element_spec("earth", {
+    "l1": ("earth_daze", "Daze", MINOR, 3, [inc("stun_duration", 10, "earth")]),
+    "l2": ("earth_crack", "Crack Armour", MINOR, 3, [inc("shatter_strength", 10, "earth")]),
+    "ln": ("earth_seismic", "Seismic", NOTABLE, 6, [inc("splash_radius", 15, "earth"), inc("stun_duration", 10, "earth")]),
+}, (("earth_bedrock", "Bedrock", NOTABLE, 7, [inc("damage", 15, "earth")]),
+    ("earth_tremor", "Tremor", NOTABLE, 7, [inc("stun_duration", 20, "earth")])),
+    ("earth_fault_line", "Fault Line", KEYSTONE, 14, [more("damage", 30, "earth"), more("attacks_per_second", -20, "earth")]),
+    "rock"))
+
+constellation("void", element_spec("void", {
+    "l1": ("void_hex", "Malice", MINOR, 3, [inc("curse_strength", 8, "void")]),
+    "l2": ("void_linger", "Long Shadow", MINOR, 3, [inc("curse_duration", 15, "void")]),
+    "ln": ("void_aura", "Abyssal Aura", NOTABLE, 6, [inc("aura_damage", 15, "void"), inc("aura_radius", 10, "void")]),
+}, (("void_doom", "Doomsayer", NOTABLE, 7, [inc("curse_strength", 12, "void")]),
+    ("void_rift", "Rift", NOTABLE, 7, [inc("damage", 15, "void")])),
+    ("void_hollow_pact", "Hollow Pact", KEYSTONE, 14,
+     [more("curse_strength", 40, "void"), more("aura_damage", 25, "void"), inc("cost", 25, "void")]),
+    "spiral"))
+
+# Confluence bridges between neighbouring constellations, out past their notables.
+for i, a in enumerate(ELEMENTS):
+    b = ELEMENTS[(i + 1) % len(ELEMENTS)]
+    deg = ELEMENT_ANGLE[a] + 30
+    add("confluence_%s_%s" % (a, b), "%s-%s Confluence" % (ELEMENT_NAMES[a], ELEMENT_NAMES[b]), BRIDGE, "", 8,
+        polar(1080, deg), ["%s_reach" % a, {"fire": "fire_kindling", "storm": "storm_arc", "nature": "nature_blight",
+                                            "water": "water_undertow", "earth": "earth_seismic",
+                                            "void": "void_aura"}[b]],
+        [inc("damage", 12, a, b), inc("attacks_per_second", 6, a, b)])
+
+
+# --- The Forge: tower talents ---------------------------------------------------------------
+# One talent for every tower but the six base towers. The towers are read from data/towers. In a run
+# a dual or triple still has to be taken as a node of the in-game skill tree (combo_levels says what
+# that node needs); a long-range tower opens at the level in its requires_nodes.
+
+COST_NEIGHBOUR_DUAL = 5
+COST_LONGSHOT = 6
+COST_TWO_STEP_DUAL = 8
+COST_ROW_TRIPLE = 10
+COST_OPPOSITE_DUAL = 10
+COST_FAN_TRIPLE = 12
+COST_SPREAD_TRIPLE = 14
+
+BASE_TOWERS = {"fire_brazier", "storm_spire", "nature_thornbush", "water_wellspring", "earth_monolith", "void_obelisk"}
+# In-game skill tree level ids (tools/web/gen_skill_web.py LEVEL_IDS), for the talents' text.
+LEVEL_SUFFIX = {"entry": "I", "level2": "II", "core": "III", "notable": "IV", "level5": "V", "level6": "VI"}
+
 
 @dataclass
 class Tower:
@@ -134,48 +590,41 @@ class Tower:
     requires: list[str]
 
 
-def _field(text: str, name: str) -> str | None:
-    match = re.search(r'^%s = (.*)$' % name, text, re.M)
-    return match.group(1) if match else None
-
-
-def _ids(value: str | None) -> list[str]:
-    return re.findall(r'&"(\w+)"', value or "")
-
-
 def read_towers() -> dict[str, Tower]:
     towers = {}
     for name in sorted(os.listdir(TOWER_DIR)):
         if not name.endswith(".tres"):
             continue
         text = open(os.path.join(TOWER_DIR, name)).read().split("[resource]")[1]
-        id = _ids(_field(text, "id"))[0]
-        towers[id] = Tower(id, _field(text, "display_name").strip('"'), _ids(_field(text, "elements")),
-                           _ids(_field(text, "requires_nodes")))
+
+        def value(key: str) -> str:
+            match = re.search(r'^%s = (.*)$' % key, text, re.M)
+            return match.group(1) if match else ""
+        id = re.findall(r'&"(\w+)"', value("id"))[0]
+        towers[id] = Tower(id, value("display_name").strip('"'), re.findall(r'&"(\w+)"', value("elements")),
+                           re.findall(r'&"(\w+)"', value("requires_nodes")))
     return towers
 
 
-def read_web() -> dict[str, tuple[str, list[str]]]:
-    """In-run web nodes: id -> (display name, towers it unlocks)."""
-    web = {}
-    for name in sorted(os.listdir(WEB_DIR)):
-        if name.endswith(".tres"):
-            text = open(os.path.join(WEB_DIR, name)).read().split("[resource]")[1]
-            web[_ids(_field(text, "id"))[0]] = (_field(text, "display_name").strip('"'),
-                                                 _ids(_field(text, "unlocks_towers")))
-    return web
+def combo_levels(elements: list[str]) -> list[str]:
+    """The in-game skill tree levels a dual or triple tower's node needs (the same rule as
+    tools/web/gen_skill_web.py): neighbours level II, two apart level III, opposite level IV; a
+    triple level III of all three."""
+    if len(elements) == 3:
+        return ["%s_core" % e for e in elements]
+    a, b = (ELEMENTS.index(e) for e in elements)
+    apart = min((a - b) % len(ELEMENTS), (b - a) % len(ELEMENTS))
+    return ["%s_%s" % (e, {1: "level2", 2: "core", 3: "notable"}[apart]) for e in elements]
 
 
 TOWERS = read_towers()
-WEB = read_web()
+for _tower in TOWERS.values():
+    if len(_tower.elements) > 1:
+        _tower.requires = combo_levels(_tower.elements)
 
 
-def tower_of(*elements: str, longshot: bool = False) -> Tower:
-    want = set(elements)
-    found = [t for t in TOWERS.values() if set(t.elements) == want and t.id.startswith(
-        ("hybrid_", "triple_") if len(want) > 1 else ())]
-    if longshot:
-        found = [t for t in TOWERS.values() if t.elements == list(elements) and t.requires]
+def tower_of(*elements: str) -> Tower:
+    found = [t for t in TOWERS.values() if set(t.elements) == set(elements) and len(t.elements) > 1]
     assert len(found) == 1, f"expected one tower of {elements}, found {[t.id for t in found]}"
     return found[0]
 
@@ -185,95 +634,65 @@ def _and(words: list[str]) -> str:
 
 
 def how_to_build(tower: Tower) -> str:
-    """Where the skill web opens the tower during a run."""
-    if tower.requires:
-        return "In a run, take %s in the skill web to build it." % _and([WEB[n][0] for n in tower.requires])
-    for node_id, (name, unlocks) in WEB.items():
-        if tower.id in unlocks:
-            return "In a run, take the %s bridge in the skill web to build it." % name
-    raise ValueError("nothing in the skill web opens %s" % tower.id)
+    """Where the in-game skill tree opens the tower during a run."""
+    levels = []
+    for node_id in tower.requires:
+        element, suffix = node_id.split("_", 1)
+        levels.append("%s %s" % (ELEMENT_NAMES[element], LEVEL_SUFFIX[suffix]))
+    if len(tower.elements) > 1:
+        return "In a run, take its node in the skill tree: it needs %s." % _and(levels)
+    return "In a run it opens at %s in the skill tree." % _and(levels)
 
 
-def talent(tower: Tower, kind: int, region: str, cost: int, pos, links) -> Node:
+def talent(tower: Tower, cost: int, pos, links) -> Node:
     elements = " + ".join(ELEMENT_NAMES[e] for e in tower.elements)
-    desc = "Adds the %s (%s) to your towers. %s" % (tower.name, elements, how_to_build(tower))
-    return add("talent_" + tower.id, tower.name, kind, region, cost, pos, links, desc=desc,
+    desc = "Adds the %s (%s) to the towers your runs can unlock. %s" % (tower.name, elements, how_to_build(tower))
+    return add("talent_" + tower.id, tower.name, NOTABLE, "forge", cost, pos, links, desc=desc,
                unlocks_towers=[tower.id])
-
-
-def describe(node: Node) -> str:
-    return node.desc
-
-
-# --- The tree ------------------------------------------------------------------------------
-
-add("meta_start", "Origin", START, "", 0, (0, 0),
-    desc="Every talent grows out from here. The six base towers are always yours; each talent adds "
-         "another tower to every run.")
 
 
 def ring(i: int) -> str:
     return ELEMENTS[i % len(ELEMENTS)]
 
 
-def angle(i: int) -> float:
-    return ELEMENT_ANGLE[ring(i)]
+STATUS_NOTABLE = {"fire": "fire_kindling", "storm": "storm_arc", "nature": "nature_blight", "water": "water_undertow",
+                  "earth": "earth_seismic", "void": "void_aura"}
 
+for i, e in enumerate(ELEMENTS):
+    th = ELEMENT_ANGLE[e]
+    # The neighbour dual of this element and the next, just outside the Starpath between their gates.
+    talent(tower_of(e, ring(i + 1)), COST_NEIGHBOUR_DUAL, polar(668, th + 30), [ring_id(th + 30)])
+    # The element's long-range tower, beside its gate.
+    for tower in TOWERS.values():
+        if tower.elements == [e] and tower.id not in BASE_TOWERS:
+            talent(tower, COST_LONGSHOT, polar(712, th + 9), ["mastery_%s" % e])
+    # At the ends of the constellation's arms: the dual of the two elements beside this one, and the
+    # triple of all three.
+    talent(tower_of(ring(i - 1), ring(i + 1)), COST_TWO_STEP_DUAL, polar(1135, th - 19.5), [STATUS_NOTABLE[e]])
+    talent(tower_of(ring(i - 1), e, ring(i + 1)), COST_ROW_TRIPLE, polar(1135, th + 19.5), ["%s_reach" % e])
 
-# Ring 1: the neighbour duals, between their elements, and the long-range towers on theirs.
-neighbour = {}
-for i in range(6):
+# Past three of the confluence bridges: the dual of the opposite elements either side of it, fanning
+# out into the four triples that contain it.
+for i in (1, 3, 5):
     a, b = ring(i), ring(i + 1)
-    neighbour[i] = talent(tower_of(a, b), ENTRY, "duals", COST_NEIGHBOUR_DUAL, polar(RING_1, angle(i) + 30),
-                          ["meta_start"])
-for e in ELEMENTS:
-    shots = [t for t in TOWERS.values() if t.elements == [e] and t.requires]
-    for tower in shots:
-        talent(tower, ENTRY, "longshots", COST_LONGSHOT, polar(RING_1, ELEMENT_ANGLE[e]), ["meta_start"])
+    deg = ELEMENT_ANGLE[a] + 30
+    pair = [ring(i - 1), ring(i + 2)]
+    dual = talent(tower_of(*pair), COST_OPPOSITE_DUAL, polar(1215, deg), ["confluence_%s_%s" % (a, b)])
+    others = [x for x in ELEMENTS if x not in pair]
+    others.sort(key=lambda x: (ELEMENT_ANGLE[x] - deg + 180) % 360 - 180)
+    for j, x in enumerate(others):
+        talent(tower_of(pair[0], pair[1], x), COST_FAN_TRIPLE, polar(1360, deg + (-13.5, -4.5, 4.5, 13.5)[j]),
+               [dual.id])
 
-# Ring 2: duals of elements two apart, on the element between them.
-two_step = {}
-for i in range(6):
-    two_step[i] = talent(tower_of(ring(i - 1), ring(i + 1)), NOTABLE, "duals", COST_TWO_STEP_DUAL,
-                         polar(RING_2, angle(i)), [neighbour[(i - 1) % 6].id, neighbour[i].id])
+# Past two of the other confluence bridges: the two triples of every other element.
+for start, i in ((0, 0), (1, 2)):
+    a, b = ring(i), ring(i + 1)
+    talent(tower_of(ring(start), ring(start + 2), ring(start + 4)), COST_SPREAD_TRIPLE,
+           polar(1215, ELEMENT_ANGLE[a] + 30), ["confluence_%s_%s" % (a, b)])
 
-# Ring 3: opposite duals, between the two ring 2 duals that carry both their elements, and the
-# triples of three elements in a row, past the ring 2 dual of their outer elements.
-opposite = {}
-for i in (1, 3, 5):  # at the angles of storm+30, water+30, void+30
-    deg = angle(i) + 30
-    # two_step[i] carries ring(i - 1), two_step[i + 1] carries ring(i + 2): opposite elements.
-    opposite[i] = talent(tower_of(ring(i - 1), ring(i + 2)), NOTABLE, "duals", COST_OPPOSITE_DUAL, polar(RING_3, deg),
-                         [two_step[i].id, two_step[(i + 1) % 6].id])
-for i in range(6):
-    talent(tower_of(ring(i - 1), ring(i), ring(i + 1)), NOTABLE, "triples", COST_ROW_TRIPLE,
-           polar(RING_3, angle(i)), [two_step[i].id])
-
-# Ring 4: each opposite dual fans out into the four triples that contain it, ordered so the third
-# element sits on its own side of the wheel.
-for i, dual in opposite.items():
-    deg = angle(i) + 30
-    pair = TOWERS[dual.unlocks_towers[0]].elements
-    others = [e for e in ELEMENTS if e not in pair]
-
-    def side(e: str) -> float:
-        d = (ELEMENT_ANGLE[e] - deg + 180) % 360 - 180
-        return d
-    others.sort(key=side)
-    for j, e in enumerate(others):
-        talent(tower_of(pair[0], pair[1], e), KEYSTONE, "triples", COST_FAN_TRIPLE,
-               polar(RING_4, deg + (-48, -16, 16, 48)[j]), [dual.id])
-
-# Ring 5: the two triples of every other element, at the edge, past the opposite dual's fan.
-for start, deg in ((0, 330), (1, 90)):
-    elements = [ring(start), ring(start + 2), ring(start + 4)]
-    tower = tower_of(*elements)
-    near = min((n for n in NODES.values() if n.region == "triples" and n.kind == KEYSTONE),
-               key=lambda n: math.dist(n.pos, polar(RING_5, deg)))
-    talent(tower, KEYSTONE, "triples", COST_SPREAD_TRIPLE, polar(RING_5, deg), [near.id])
-
-assert len(NODES) - 1 == sum(1 for t in TOWERS.values() if t.requires or len(t.elements) > 1), \
-    "every tower but the six base towers needs a talent"
+_talents = {n.unlocks_towers[0] for n in NODES.values() if n.unlocks_towers}
+assert _talents == set(TOWERS) - BASE_TOWERS, "every tower but the six base towers needs exactly one talent: %s" % (
+    sorted(set(TOWERS) - BASE_TOWERS - _talents))
 
 
 # --- Checks -------------------------------------------------------------------------------
@@ -295,7 +714,8 @@ def check() -> list[str]:
         for l in n.links + n.excludes:
             if l not in ids:
                 problems.append(f"{n.id}: unknown id {l}")
-        if n.kind != START and not n.mods and not (n.unlocks_towers or n.unlocks_nodes or n.unlocks_maps or n.unlocks_difficulties):
+        if n.kind != START and not n.mods and not (n.unlocks_towers or n.unlocks_nodes or n.unlocks_maps
+                                                   or n.unlocks_difficulties):
             problems.append(f"{n.id}: does nothing")
     nodes = list(NODES.values())
     for i, a in enumerate(nodes):
@@ -392,11 +812,14 @@ def tres(n: Node) -> str:
 
 def preview(path: str) -> None:
     from PIL import Image, ImageDraw
-    size = 2700
+    size = 3100
     img = Image.new("RGB", (size, size), (10, 12, 20))
     d = ImageDraw.Draw(img)
     c = size / 2
-    colors = {"longshots": (239, 111, 108), "duals": (76, 201, 240), "triples": (179, 136, 235), "": (255, 255, 255)}
+    colors = {"arsenal": (239, 111, 108), "command": (244, 201, 93), "expeditions": (76, 201, 240),
+              "mastery": (179, 136, 235), "starpath": (200, 210, 235), "forge": (46, 196, 182), "fire": (228, 87, 46), "storm": (242, 193, 78),
+              "nature": (91, 180, 80), "water": (46, 134, 222), "earth": (160, 120, 90), "void": (142, 92, 217),
+              "": (255, 255, 255)}
     for n in NODES.values():
         for l in n.links:
             a, b = n.pos, NODES[l].pos

@@ -18,10 +18,18 @@ enum Kind { START, ENTRY, MINOR, NOTABLE, BRIDGE, KEYSTONE }
 @export var position: Vector2
 ## Ids of connected nodes. Links work both ways, so each pair only needs listing on one side.
 @export var links: Array[StringName] = []
+## Ids of nodes that must ALL be taken before this one can be: a combination node (a dual or triple
+## tower in the in-run tree, which needs a level of each of its elements). Such a node hangs on its
+## requirements instead of on links, and none of them can be refunded while it is taken.
+@export var requires: Array[StringName] = []
 @export var modifiers: Array[Modifier] = []
 ## Ids of nodes this one is a pick-one choice with: taking either closes the others until it is
 ## refunded. Works both ways, so each pair only needs listing on one side.
 @export var excludes: Array[StringName] = []
+## A branch of options this node belongs to (in-run tree): of all the nodes with the same group, at
+## most choice_limit can be taken. Empty for nodes outside any branch.
+@export var choice_group: StringName
+@export var choice_limit: int = 1
 
 @export_group("Unlocks")
 ## In-run web: ids of towers this node lets the player build.

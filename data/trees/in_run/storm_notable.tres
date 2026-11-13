@@ -13,11 +13,10 @@ required_tags = Array[StringName]([&"storm"])
 [resource]
 script = ExtResource("2_node")
 id = &"storm_notable"
-display_name = "Superconductor"
-description = "Chains from storm towers lose 50% less damage as they jump."
+display_name = "Storm IV"
+description = "Storm level IV. Needs one pick from the branch below it. Needed for the dual towers Lodestone (with Earth IV). Chains from storm towers lose 50% less damage as they jump."
 kind = 3
 region = &"storm"
 cost = 3
-position = Vector2(554, -320)
-links = Array[StringName]([&"storm_c_555", &"storm_r1_640"])
+position = Vector2(-600, -1040)
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

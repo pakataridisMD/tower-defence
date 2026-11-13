@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_hybrid_gravity_well"
 display_name = "Gravity Well"
-description = "Adds the Gravity Well (Earth + Void) to your towers. In a run, take the Gravity Well bridge in the skill web to build it."
-kind = 1
-region = &"duals"
-cost = 8
-position = Vector2(-217, -125)
-links = Array[StringName]([&"meta_start"])
+description = "Adds the Gravity Well (Earth + Void) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Earth II and Void II."
+kind = 3
+region = &"forge"
+cost = 5
+position = Vector2(-579, -334)
+links = Array[StringName]([&"starpath_210"])
 unlocks_towers = Array[StringName]([&"hybrid_gravity_well"])

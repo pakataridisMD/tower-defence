@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_triple_boiling_marsh"
 display_name = "Boiling Marsh"
-description = "Adds the Boiling Marsh (Fire + Nature + Water) to your towers. In a run, take Stoked Coals, Toxic Sap and Deep Water in the skill web to build it."
-kind = 5
-region = &"triples"
-cost = 24
-position = Vector2(660, 683)
+description = "Adds the Boiling Marsh (Fire + Nature + Water) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Fire III, Nature III and Water III."
+kind = 3
+region = &"forge"
+cost = 12
+position = Vector2(1121, 770)
 links = Array[StringName]([&"talent_hybrid_steam"])
 unlocks_towers = Array[StringName]([&"triple_boiling_marsh"])

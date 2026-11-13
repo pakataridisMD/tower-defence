@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_triple_amber_spire"
 display_name = "Amber Spire"
-description = "Adds the Amber Spire (Storm + Nature + Earth) to your towers. In a run, take Gathering Storm, Toxic Sap and Fault Line in the skill web to build it."
-kind = 5
-region = &"triples"
-cost = 24
-position = Vector2(706, -636)
+description = "Adds the Amber Spire (Storm + Nature + Earth) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Storm III, Nature III and Earth III."
+kind = 3
+region = &"forge"
+cost = 12
+position = Vector2(317, -1322)
 links = Array[StringName]([&"talent_hybrid_lodestone"])
 unlocks_towers = Array[StringName]([&"triple_amber_spire"])

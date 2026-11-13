@@ -534,7 +534,7 @@ func skill_error(skill_id: StringName) -> String:
 		var node_data := tree.graph.node(skill.requires_node)
 		if tree.is_locked(skill.requires_node):
 			return "%s is closed in this run" % skill.display_name
-		return "Take %s in the skill web to open %s" % [node_data.display_name if node_data != null else String(skill.requires_node), skill.display_name]
+		return "Take %s in the skill tree to open %s" % [node_data.display_name if node_data != null else String(skill.requires_node), skill.display_name]
 	if state != State.WAVE:
 		return "Skills can only be used during a wave"
 	var left := skill_cooldown_left(skill_id)
@@ -574,7 +574,7 @@ func skill_upgrade_error(skill_id: StringName) -> String:
 	if skill_level(skill_id) >= skill.max_level():
 		return "%s is at its last level" % skill.title_at(skill_level(skill_id))
 	if not is_skill_unlocked(skill_id):
-		return "Open %s in the skill web first" % skill.display_name
+		return "Open %s in the skill tree first" % skill.display_name
 	if gold < skill_upgrade_cost(skill_id):
 		return "Not enough gold"
 	return ""
@@ -979,7 +979,7 @@ func placement_error(tower_id: StringName, cell: Vector2i) -> String:
 	if not config.towers.has(tower_id):
 		return "Unknown tower"
 	if not is_unlocked(tower_id):
-		return "Unlock this tower in the skill web first"
+		return "Unlock this tower in the skill tree first"
 	if not config.map.is_inside(cell):
 		return "Outside the map"
 	if is_path(cell):

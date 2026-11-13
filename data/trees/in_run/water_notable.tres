@@ -13,11 +13,10 @@ required_tags = Array[StringName]([&"water"])
 [resource]
 script = ExtResource("2_node")
 id = &"water_notable"
-display_name = "Glacier"
-description = "Slows from water towers are 15% stronger."
+display_name = "Water IV"
+description = "Water level IV. Needs one pick from the branch below it. Needed for the dual towers Steam Vent (with Fire IV). Slows from water towers are 15% stronger."
 kind = 3
 region = &"water"
 cost = 3
-position = Vector2(0, 640)
-links = Array[StringName]([&"water_c_555", &"water_r1_640"])
+position = Vector2(200, -1040)
 modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0")])

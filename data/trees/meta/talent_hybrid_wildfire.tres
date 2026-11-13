@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_hybrid_wildfire"
 display_name = "Wildfire"
-description = "Adds the Wildfire (Fire + Nature) to your towers. In a run, take Stoked Coals and Toxic Sap in the skill web to build it."
+description = "Adds the Wildfire (Fire + Nature) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Fire III and Nature III."
 kind = 3
-region = &"duals"
-cost = 14
-position = Vector2(470, 0)
-links = Array[StringName]([&"talent_hybrid_plasma", &"talent_hybrid_thornstorm"])
+region = &"forge"
+cost = 8
+position = Vector2(1070, -379)
+links = Array[StringName]([&"storm_arc"])
 unlocks_towers = Array[StringName]([&"hybrid_wildfire"])

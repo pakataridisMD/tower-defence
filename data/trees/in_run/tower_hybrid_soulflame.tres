@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"tower_hybrid_soulflame"
+display_name = "Soulflame"
+description = "Unlocks the Soulflame tower (Void + Fire). Needs Void II and Fire II."
+kind = 4
+cost = 1
+position = Vector2(1150, -500)
+requires = Array[StringName]([&"void_level2", &"fire_level2"])
+unlocks_towers = Array[StringName]([&"hybrid_soulflame"])

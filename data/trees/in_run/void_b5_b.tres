@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/modifier.gd" id="1_mod"]
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[sub_resource type="Resource" id="Resource_m0"]
+script = ExtResource("1_mod")
+stat = &"aura_radius"
+kind = 1
+value = 0.2
+required_tags = Array[StringName]([&"void"])
+
+[sub_resource type="Resource" id="Resource_m1"]
+script = ExtResource("1_mod")
+stat = &"damage"
+kind = 1
+value = 0.04
+required_tags = Array[StringName]([&"void"])
+
+[resource]
+script = ExtResource("2_node")
+id = &"void_b5_b"
+display_name = "Black Sun"
+description = "Pick one of these three. Auras from void towers reach 20% farther. Void towers deal 4% more damage."
+kind = 2
+region = &"void"
+cost = 4
+position = Vector2(908, -1445)
+links = Array[StringName]([&"void_level5", &"void_level6"])
+choice_group = &"void_b5"
+choice_limit = 1
+modifiers = Array[ExtResource("1_mod")]([SubResource("Resource_m0"), SubResource("Resource_m1")])

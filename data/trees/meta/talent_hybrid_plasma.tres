@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_hybrid_plasma"
 display_name = "Plasma Coil"
-description = "Adds the Plasma Coil (Fire + Storm) to your towers. In a run, take the Plasma bridge in the skill web to build it."
-kind = 1
-region = &"duals"
-cost = 8
-position = Vector2(217, -125)
-links = Array[StringName]([&"meta_start"])
+description = "Adds the Plasma Coil (Fire + Storm) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Fire II and Storm II."
+kind = 3
+region = &"forge"
+cost = 5
+position = Vector2(579, -334)
+links = Array[StringName]([&"starpath_330"])
 unlocks_towers = Array[StringName]([&"hybrid_plasma"])

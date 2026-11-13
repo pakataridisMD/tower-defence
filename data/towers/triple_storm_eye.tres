@@ -59,7 +59,6 @@ id = &"triple_storm_eye"
 display_name = "Eye of the Storm"
 description = "A calm and terrible eye: long chains that slow and curse, pushing the wave back."
 elements = Array[StringName]([&"storm", &"water", &"void"])
-requires_nodes = Array[StringName]([&"storm_core", &"water_core", &"void_core"])
 cost = 320
 damage = 14.0
 attacks_per_second = 1.4

@@ -10,15 +10,13 @@ var grass_cell := Vector2i(-1, -1)
 
 
 func before_each() -> void:
-	# Duals and triples are talents: this player has bought them all, so the web can open them.
-	var profile := PlayerProfile.new()
-	profile.meta_points_earned = 10000
-	for node_data: TreeNodeData in DataRegistry.meta_tree_nodes:
-		profile.meta_nodes.append(node_data.id)
-	Progress.use_memory_profile(profile)
+	Progress.use_memory_profile()
 	game = GAME_SCENE.instantiate()
 	add_child_autofree(game)
 	await wait_process_frames(2)
+	# These tests play a veteran who holds every Forge talent, so the skill tree alone opens towers.
+	game.sim.config.locked_towers.clear()
+	game.sim.tree.unlock_all()
 	_find_cells()
 
 
@@ -208,7 +206,7 @@ func test_the_tower_panel_levels_up_and_ascends() -> void:
 
 func test_the_tower_panel_turns_a_base_tower_into_a_hybrid() -> void:
 	game.sim.tree.points = 10
-	for id: StringName in [&"fire_entry", &"fire_cw", &"storm_entry", &"storm_ccw", &"bridge_plasma"]:
+	for id: StringName in [&"fire_level2", &"storm_level2", &"tower_hybrid_plasma"]:
 		game.sim.allocate_node(id)
 	game.sim.gold = 2000
 	var tower := game.sim.place_tower(&"storm_spire", grass_cell)
@@ -222,11 +220,10 @@ func test_the_tower_panel_turns_a_base_tower_into_a_hybrid() -> void:
 
 
 func test_shop_tabs_show_duals_and_triples_once_unlocked() -> void:
-	game.sim.tree.points = 20
+	game.sim.tree.points = 30
 	game.sim.gold = 2000
-	for element: String in ["fire", "storm", "nature"]:
-		game.sim.allocate_node(StringName(element + "_entry"))
-		game.sim.allocate_node(StringName(element + "_core"))
+	for id: StringName in [&"tower_triple_cinderstorm", &"tower_hybrid_wildfire"]:
+		assert_true(game.sim.allocate_node(id), "takes %s and the levels it needs" % id)
 	await wait_process_frames(2)
 	var triple: Button = game.hud._tower_buttons[&"triple_cinderstorm"]
 	assert_false(triple.visible, "the shop opens on the base towers")
@@ -234,13 +231,13 @@ func test_shop_tabs_show_duals_and_triples_once_unlocked() -> void:
 	game.hud.show_shop_tier(3)
 	await wait_process_frames(2)
 	assert_true(triple.visible)
-	assert_false(game.hud._tower_buttons[&"triple_starfall"].visible, "still locked")
+	assert_false(game.hud._tower_buttons[&"triple_starfall"].visible, "its node is not taken")
 	assert_false(game.hud._tower_buttons[&"fire_brazier"].visible, "base towers are on their own tab")
 	_press(triple)
 	assert_eq(game.board.placing, &"triple_cinderstorm")
 	game.hud.show_shop_tier(2)
 	await wait_process_frames(2)
-	assert_true(game.hud._tower_buttons[&"hybrid_wildfire"].visible, "Fire and Nature cores unlock Wildfire")
+	assert_true(game.hud._tower_buttons[&"hybrid_wildfire"].visible, "Wildfire's node is taken")
 
 
 # --- Hotkeys -------------------------------------------------------------------------
@@ -248,7 +245,7 @@ func test_shop_tabs_show_duals_and_triples_once_unlocked() -> void:
 func test_tab_turns_the_shop_page_and_numbers_pick_from_it() -> void:
 	game.sim.tree.points = 20
 	game.sim.gold = 2000
-	for id: StringName in [&"fire_entry", &"fire_cw", &"storm_entry", &"storm_ccw", &"bridge_plasma"]:
+	for id: StringName in [&"fire_level2", &"storm_level2", &"tower_hybrid_plasma"]:
 		game.sim.allocate_node(id)
 	_key(KEY_TAB)
 	assert_eq(game.hud.shop_tier(), 2)
@@ -372,11 +369,11 @@ func test_a_skill_is_levelled_up_with_its_button_or_shift_and_its_key() -> void:
 
 ## The top bar and the side panel used to run off the screen when they had a lot to show.
 func test_the_hud_stays_on_the_screen_at_its_busiest() -> void:
-	game.sim.tree.points = 40
+	game.sim.tree.points = 500
 	game.sim.gold = 99999
-	for element: String in ["fire", "storm", "nature", "water", "earth", "void"]:
-		game.sim.allocate_node(StringName(element + "_entry"))
-		game.sim.allocate_node(StringName(element + "_core"))
+	for id in game.sim.tree.graph.ids():
+		if not game.sim.tree.graph.requirements(id).is_empty():
+			game.sim.allocate_node(id)
 	game.sim.wave_index = game.sim.total_waves() - 1
 	game.sim.place_tower(&"fire_brazier", grass_cell)
 	_click_cell(grass_cell)

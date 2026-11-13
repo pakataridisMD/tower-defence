@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_hybrid_lodestone"
 display_name = "Lodestone"
-description = "Adds the Lodestone (Storm + Earth) to your towers. In a run, take Superconductor and Avalanche in the skill web to build it."
+description = "Adds the Lodestone (Storm + Earth) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Storm IV and Earth IV."
 kind = 3
-region = &"duals"
-cost = 18
-position = Vector2(0, -700)
-links = Array[StringName]([&"talent_hybrid_magma", &"talent_hybrid_riftstorm"])
+region = &"forge"
+cost = 10
+position = Vector2(0, -1215)
+links = Array[StringName]([&"confluence_void_fire"])
 unlocks_towers = Array[StringName]([&"hybrid_lodestone"])

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"tower_triple_tidal_dynamo"
+display_name = "Tidal Dynamo"
+description = "Unlocks the Tidal Dynamo tower (Storm + Water + Earth). Needs Storm III, Water III and Earth III."
+kind = 4
+cost = 3
+position = Vector2(90, -725)
+requires = Array[StringName]([&"storm_core", &"water_core", &"earth_core"])
+unlocks_towers = Array[StringName]([&"triple_tidal_dynamo"])

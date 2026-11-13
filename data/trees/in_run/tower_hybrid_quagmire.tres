@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TreeNodeData" format=3]
+
+[ext_resource type="Script" path="res://scripts/data/tree_node_data.gd" id="2_node"]
+
+[resource]
+script = ExtResource("2_node")
+id = &"tower_hybrid_quagmire"
+display_name = "Quagmire"
+description = "Unlocks the Quagmire tower (Water + Earth). Needs Water II and Earth II."
+kind = 4
+cost = 1
+position = Vector2(400, -500)
+requires = Array[StringName]([&"water_level2", &"earth_level2"])
+unlocks_towers = Array[StringName]([&"hybrid_quagmire"])

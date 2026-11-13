@@ -6,10 +6,10 @@
 script = ExtResource("2_node")
 id = &"talent_triple_thunderforge"
 display_name = "Thunderforge"
-description = "Adds the Thunderforge (Fire + Storm + Earth) to your towers. In a run, take Stoked Coals, Gathering Storm and Fault Line in the skill web to build it."
-kind = 5
-region = &"triples"
-cost = 24
-position = Vector2(262, -913)
+description = "Adds the Thunderforge (Fire + Storm + Earth) to the towers your runs can unlock. In a run, take its node in the skill tree: it needs Fire III, Storm III and Earth III."
+kind = 3
+region = &"forge"
+cost = 12
+position = Vector2(107, -1356)
 links = Array[StringName]([&"talent_hybrid_lodestone"])
 unlocks_towers = Array[StringName]([&"triple_thunderforge"])
